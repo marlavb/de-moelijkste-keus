@@ -1,9 +1,10 @@
-const CACHE_NAME = 'podiumagenda-v1';
+const CACHE_NAME = 'podiumagenda-v2';
 const APP_SHELL = [
   './',
   './index.html',
   './css/styles.css',
   './js/app.js',
+  './js/firebase.js',
   './manifest.json',
   './data/shows.json',
 ];

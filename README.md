@@ -68,6 +68,29 @@ python3 -m http.server 8080 --directory public
 Open daarna de getoonde URL (bv. `http://localhost:8080`) in je (mobiele)
 browser. "Toevoegen aan beginscherm" installeert 'm als PWA.
 
+## Optioneel inloggen instellen (Firebase)
+
+Inloggen is niet nodig om de app te gebruiken. Wil je het (opnieuw)
+instellen op een nieuw Firebase-project, doorloop dan deze drie stappen in
+de [Firebase Console](https://console.firebase.google.com/):
+
+1. **Authentication → Sign-in method** → Google-provider aanzetten
+   (support-e-mailadres invullen, Save).
+2. **Firestore Database** → als er nog geen database is: **Create
+   database** → kies een locatie → start in *production mode* (de rules
+   hieronder regelen de toegang).
+3. **Firestore Database → Rules** → plak de inhoud van `firestore.rules` →
+   **Publish**.
+
+Ga je de app op een ander domein hosten dan `marlavb.github.io`, voeg dat
+domein dan ook toe bij **Authentication → Settings → Authorized domains**
+— anders weigert Google's inlogpopup daar te werken. `localhost` staat er
+standaard al in, dus lokaal testen werkt direct.
+
+De `firebaseConfig`-waarden in `public/js/firebase.js` zijn bewust gewoon
+zichtbaar in de broncode — dat is normaal voor Firebase-webapps en geen
+geheim. De echte toegangscontrole zit in `firestore.rules`.
+
 Let op: `public/data/shows.json` is een momentopname van de laatste
 `npm run scrape`. Na een nieuwe scrape hoef je de app niet opnieuw te
 bouwen — gewoon de pagina verversen.
@@ -148,12 +171,22 @@ Elke voorstelling in `data/shows.json`:
   vooruit (met 1136+ voorstellingen tot in 2028 is "alles" geen bruikbare
   lijst) — een knop onderaan de lijst toont in één tik de rest, voor
   langlopende producties die je maanden van tevoren wil boeken.
-- "Mijn theaters" bepaalt welke theaters überhaupt in de agenda meedoen
-  (opgeslagen in `localStorage`) — los van de quick-filter, die bepaalt wat
-  je *op dit moment* ziet binnen de ingeschakelde theaters.
-- Favorieten (hartje op het detailscherm, opgeslagen in `localStorage`) heeft
-  nu een eigen scherm via de "Favorieten"-tab, met dezelfde
-  datum-gegroepeerde lijst als de agenda en een lege-staat-melding.
+- "Mijn theaters" bepaalt welke theaters überhaupt in de agenda meedoen —
+  los van de quick-filter, die bepaalt wat je *op dit moment* ziet binnen
+  de ingeschakelde theaters.
+- Favorieten (hartje op het detailscherm) heeft een eigen scherm via de
+  "Favorieten"-tab, met dezelfde datum-gegroepeerde lijst als de agenda en
+  een lege-staat-melding.
+- **Inloggen is optioneel.** Zonder inloggen werken theaterkeuze en
+  favorieten zoals altijd, lokaal in `localStorage` op dit ene apparaat.
+  Via "Inloggen met Google" op het Theaters-scherm (`public/js/firebase.js`)
+  worden ze in plaats daarvan gelezen/geschreven in Firestore, onder een
+  document `users/{uid}` — dus gesynchroniseerd op elk apparaat waarop je
+  inlogt. Bij de allereerste keer inloggen op een account wordt wat er
+  lokaal al stond eenmalig meegenomen naar Firestore in plaats van
+  weggegooid; bij een account dat al cloud-data heeft, is die cloud-data
+  leidend. `firestore.rules` zorgt dat elke gebruiker alleen het eigen
+  document kan lezen/schrijven.
 - De "Voeg toe aan agenda"-knop op het detailscherm genereert een
   `.ics`-bestand, downloadbaar in elke agenda-app.
 - `sw.js` cachet de app-shell (cache-first) en `data/shows.json`

@@ -1,3 +1,16 @@
+import {
+  auth,
+  db,
+  googleProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp,
+} from './firebase.js';
+
 // Vaste volgorde/labels voor de theater-filterchips en -kaarten. Nieuwe
 // theaters die nog niet in deze lijst staan, worden onderaan toegevoegd met
 // hun volledige naam — zo blijft de UI werken als er later een stad/theater
@@ -52,6 +65,8 @@ const state = {
   enabledTheaters: loadEnabledTheaters(),
   favorites: loadFavorites(),
   dateWindowDays: DEFAULT_WINDOW_DAYS,
+  user: null, // Firebase User, of null als niet ingelogd (= lokaal-only, zoals voorheen)
+  authError: null,
 };
 
 const els = {
@@ -94,6 +109,7 @@ const els = {
   theatersCount: document.getElementById('theatersCount'),
   favoritesList: document.getElementById('favoritesList'),
   favoritesEmpty: document.getElementById('favoritesEmpty'),
+  authBox: document.getElementById('authBox'),
 };
 
 async function init() {
@@ -139,6 +155,9 @@ async function init() {
 
   window.addEventListener('hashchange', route);
   route();
+
+  renderAuthBox();
+  onAuthStateChanged(auth, handleAuthChange);
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {
@@ -210,7 +229,15 @@ function loadEnabledTheaters() {
   }
 }
 
+// Ingelogd -> Firestore is de bron van waarheid (sync tussen apparaten).
+// Uitgelogd -> gewoon localStorage, zoals voorheen.
 function saveEnabledTheaters() {
+  if (state.user) {
+    setDoc(userDocRef(state.user.uid), { enabledTheaters: state.enabledTheaters }, { merge: true }).catch(
+      (err) => console.error('Kon theaterkeuze niet synchroniseren:', err)
+    );
+    return;
+  }
   localStorage.setItem(STORAGE_KEYS.enabledTheaters, JSON.stringify(state.enabledTheaters));
 }
 
@@ -223,7 +250,160 @@ function loadFavorites() {
 }
 
 function saveFavorites() {
+  if (state.user) {
+    setDoc(userDocRef(state.user.uid), { favorites: [...state.favorites] }, { merge: true }).catch((err) =>
+      console.error('Kon favorieten niet synchroniseren:', err)
+    );
+    return;
+  }
   localStorage.setItem(STORAGE_KEYS.favorites, JSON.stringify([...state.favorites]));
+}
+
+// ---------- Inloggen (optioneel) ----------
+
+function userDocRef(uid) {
+  return doc(db, 'users', uid);
+}
+
+async function handleAuthChange(user) {
+  state.user = user;
+  state.authError = null;
+
+  if (user) {
+    const ref = userDocRef(user.uid);
+    try {
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        // Bestaande cloud-data is leidend (bv. al eerder op een ander apparaat ingelogd).
+        const data = snap.data();
+        state.favorites = new Set(data.favorites ?? []);
+        state.enabledTheaters = data.enabledTheaters ?? state.enabledTheaters;
+      } else {
+        // Eerste keer inloggen op dit account: neem mee wat er lokaal al
+        // stond, in plaats van dat stilzwijgend te laten vallen.
+        await setDoc(ref, {
+          favorites: [...state.favorites],
+          enabledTheaters: state.enabledTheaters,
+          updatedAt: serverTimestamp(),
+        });
+      }
+    } catch (err) {
+      console.error('Kon cloudgegevens niet laden:', err);
+    }
+  } else {
+    state.favorites = loadFavorites();
+    state.enabledTheaters = loadEnabledTheaters();
+  }
+
+  renderAuthBox();
+  renderTheaterFilters();
+  renderGenreFilters();
+  renderFilterBadge();
+  renderSubtitle();
+  renderAgenda();
+
+  const hash = location.hash || '#/';
+  if (hash === '#/theaters') renderTheatersScreen();
+  if (hash === '#/favorieten') renderFavoritesScreen();
+  if (hash.startsWith('#/show/')) {
+    const id = decodeURIComponent(hash.slice('#/show/'.length));
+    const show = state.shows.find((s) => s.id === id);
+    if (show) renderFavoriteButton(show);
+  }
+}
+
+async function handleSignIn() {
+  state.authError = null;
+  try {
+    await signInWithPopup(auth, googleProvider);
+    // handleAuthChange wordt door onAuthStateChanged aangeroepen zodra dit slaagt.
+  } catch (err) {
+    console.error('Inloggen mislukt:', err);
+    state.authError = 'Inloggen is niet gelukt. Probeer het opnieuw.';
+    renderAuthBox();
+  }
+}
+
+async function handleSignOut() {
+  try {
+    await signOut(auth);
+  } catch (err) {
+    console.error('Uitloggen mislukt:', err);
+  }
+}
+
+const GOOGLE_ICON_SVG = `<svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
+  <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
+  <path fill="#FBBC05" d="M3.964 10.706A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.706V4.962H.957A9.001 9.001 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332z"/>
+  <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 7.294C4.672 5.167 6.656 3.58 9 3.58z"/>
+</svg>`;
+
+function renderAuthBox() {
+  if (!els.authBox) return;
+  els.authBox.innerHTML = '';
+
+  const box = document.createElement('div');
+  box.className = 'auth-box' + (state.user ? ' auth-box--signed-in' : '');
+
+  if (state.user) {
+    if (state.user.photoURL) {
+      const avatar = document.createElement('img');
+      avatar.className = 'auth-avatar';
+      avatar.src = state.user.photoURL;
+      avatar.alt = '';
+      avatar.referrerPolicy = 'no-referrer';
+      box.appendChild(avatar);
+    }
+
+    const text = document.createElement('div');
+    text.className = 'auth-box-text';
+    const name = document.createElement('p');
+    name.className = 'auth-box-title';
+    name.textContent = state.user.displayName || state.user.email || 'Ingelogd';
+    const sub = document.createElement('p');
+    sub.className = 'auth-box-desc';
+    sub.textContent = 'Gesynchroniseerd op al je apparaten.';
+    text.append(name, sub);
+    box.appendChild(text);
+
+    const signOutBtn = document.createElement('button');
+    signOutBtn.type = 'button';
+    signOutBtn.className = 'text-btn-small';
+    signOutBtn.textContent = 'Uitloggen';
+    signOutBtn.addEventListener('click', handleSignOut);
+    box.appendChild(signOutBtn);
+  } else {
+    const text = document.createElement('div');
+    text.className = 'auth-box-text';
+    const title = document.createElement('p');
+    title.className = 'auth-box-title';
+    title.textContent = 'Synchroniseer op al je apparaten';
+    const desc = document.createElement('p');
+    desc.className = 'auth-box-desc';
+    desc.textContent = 'Log in om je favorieten en theaterkeuze te bewaren.';
+    text.append(title, desc);
+    box.appendChild(text);
+
+    const signInBtn = document.createElement('button');
+    signInBtn.type = 'button';
+    signInBtn.className = 'google-btn';
+    signInBtn.innerHTML = GOOGLE_ICON_SVG;
+    const label = document.createElement('span');
+    label.textContent = 'Inloggen met Google';
+    signInBtn.appendChild(label);
+    signInBtn.addEventListener('click', handleSignIn);
+    box.appendChild(signInBtn);
+  }
+
+  els.authBox.appendChild(box);
+
+  if (state.authError) {
+    const err = document.createElement('p');
+    err.className = 'auth-error';
+    err.textContent = state.authError;
+    els.authBox.appendChild(err);
+  }
 }
 
 // ---------- Filter sheet ----------
