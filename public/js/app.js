@@ -29,6 +29,14 @@ const THEATER_INFO = {
   meervaart: { adres: 'Meer en Vaart 300' },
 };
 
+// Alleen "uitverkocht" en "wachtlijst" krijgen een badge — "beschikbaar" is
+// de default en verdient geen visuele ruis, en "onbekend" laten we bewust
+// leeg in plaats van een misleidende "beschikbaar"-badge te tonen.
+const BESCHIKBAARHEID_LABELS = {
+  uitverkocht: 'Uitverkocht',
+  wachtlijst: 'Wachtlijst',
+};
+
 const GENRE_CATEGORIES = [
   'Toneel',
   'Musical',
@@ -94,6 +102,7 @@ const els = {
   detailBanner: document.getElementById('detailBanner'),
   detailGenre: document.getElementById('detailGenre'),
   detailTheater: document.getElementById('detailTheater'),
+  detailStatusBadge: document.getElementById('detailStatusBadge'),
   detailTitle: document.getElementById('detailTitle'),
   detailDate: document.getElementById('detailDate'),
   detailTime: document.getElementById('detailTime'),
@@ -101,6 +110,7 @@ const els = {
   detailDescription: document.getElementById('detailDescription'),
   detailOtherDatesWrap: document.getElementById('detailOtherDatesWrap'),
   detailOtherDates: document.getElementById('detailOtherDates'),
+  detailCheckedAt: document.getElementById('detailCheckedAt'),
   detailReserveBtn: document.getElementById('detailReserveBtn'),
   detailReserveLabel: document.getElementById('detailReserveLabel'),
   detailAddCalendar: document.getElementById('detailAddCalendar'),
@@ -584,18 +594,35 @@ function renderShowRow(show) {
   title.className = 'show-title';
   title.textContent = show.titel;
 
+  const metaRow = document.createElement('div');
+  metaRow.className = 'show-meta-row';
+
   const meta = document.createElement('p');
   meta.className = 'show-meta';
   const theaterNaam = THEATER_SHORT_NAMES[show.theaterId] ?? show.theaterNaam;
   meta.textContent = show.tijd ? `${theaterNaam} · ${show.tijd}` : theaterNaam;
+  metaRow.appendChild(meta);
 
-  info.append(title, meta);
+  const badge = makeStatusBadge(show.beschikbaarheid);
+  if (badge) metaRow.appendChild(badge);
+
+  info.append(title, metaRow);
 
   const chevron = svgIcon('<polyline points="9 6 15 12 9 18" />');
   chevron.classList.add('show-chevron');
 
   row.append(dot, info, chevron);
   return row;
+}
+
+/** Geeft een badge-element terug, of null als er niets te tonen valt. */
+function makeStatusBadge(beschikbaarheid) {
+  const label = BESCHIKBAARHEID_LABELS[beschikbaarheid];
+  if (!label) return null;
+  const badge = document.createElement('span');
+  badge.className = `status-badge status-badge--${beschikbaarheid}`;
+  badge.textContent = label;
+  return badge;
 }
 
 function svgIcon(inner) {
@@ -648,6 +675,13 @@ function formatDateShort(isoDate) {
   return `${day} ${MONTHS[month - 1]}`;
 }
 
+// isoTimestamp is opgehaaldOp, een volledige ISO-datetime (UTC) — new Date()
+// zet die vanzelf om naar de lokale tijd van de bezoeker.
+function formatCheckedAt(isoTimestamp) {
+  const d = new Date(isoTimestamp);
+  return `${d.getDate()} ${MONTHS[d.getMonth()]}, ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+}
+
 // ---------- Detail screen ----------
 
 function renderDetail(show) {
@@ -664,6 +698,17 @@ function renderDetail(show) {
     : `${show.theaterNaam}, ${show.stad}`;
 
   els.detailDescription.textContent = show.beschrijving || 'Nog geen omschrijving beschikbaar.';
+
+  const statusLabel = BESCHIKBAARHEID_LABELS[show.beschikbaarheid];
+  if (statusLabel) {
+    els.detailStatusBadge.textContent = statusLabel;
+    els.detailStatusBadge.className = `status-badge status-badge--${show.beschikbaarheid}`;
+    els.detailStatusBadge.hidden = false;
+  } else {
+    els.detailStatusBadge.hidden = true;
+  }
+
+  els.detailCheckedAt.textContent = `Laatst gecontroleerd: ${formatCheckedAt(show.opgehaaldOp)}`;
 
   els.detailReserveLabel.textContent = `Reserveer op ${hostnameOf(show.reserverenUrl)}`;
   els.detailReserveBtn.href = show.reserverenUrl;

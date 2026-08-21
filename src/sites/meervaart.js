@@ -8,6 +8,17 @@ const MAX_LOAD_MORE_CLICKS = 30;
 // hebben geen span in dit formaat en vallen hier vanzelf buiten.
 const DATE_ROW_PATTERN = /^[a-z]{2}\s\d{1,2}\s[a-zé]+(\s-\s\d{1,2}:\d{2})?$/i;
 
+// Meervaart gebruikt exact dezelfde disabled-knopstijl voor "Uitverkocht" als
+// voor tijd-gerelateerde statussen ("Voorstelling bezig/afgelopen") en voor
+// gratis voorstellingen zonder reservering — dus classificeren we op de
+// knoptekst, niet op de (dis)abled-styling. Geen wachtlijst-functie gevonden.
+function classifyBeschikbaarheid(statusTekst) {
+  const tekst = (statusTekst ?? '').trim().toLowerCase();
+  if (tekst === 'uitverkocht') return 'uitverkocht';
+  if (tekst === 'bestel kaarten' || tekst === 'laatste kaarten' || tekst === 'gratis') return 'beschikbaar';
+  return 'onbekend';
+}
+
 /**
  * Haalt de volledige agenda van De Meervaart op.
  *
@@ -116,7 +127,11 @@ export async function scrapeMeervaart({ page, theater, robots, waitForTurn, log 
           .map((el) => {
             const row = el.closest('div.flex.justify-between');
             const href = row?.querySelector('a[href]')?.getAttribute('href') ?? null;
-            return { tekst: el.textContent.trim(), href };
+            // De knop-tekst zelf ("Bestel kaarten" / "Laatste kaarten" /
+            // "Uitverkocht" / "Gratis" / "Voorstelling bezig" / "Voorstelling
+            // afgelopen") staat zowel op <a> als op disabled <button>.
+            const statusTekst = row?.querySelector('a, button')?.textContent.trim().replace(/\s+/g, ' ') ?? null;
+            return { tekst: el.textContent.trim(), href, statusTekst };
           });
       }, DATE_ROW_PATTERN.source);
     } catch (err) {
@@ -144,6 +159,7 @@ export async function scrapeMeervaart({ page, theater, robots, waitForTurn, log 
         tijd,
         genre: normalizeGenre(card.genre),
         genreRuw: card.genre,
+        beschikbaarheid: classifyBeschikbaarheid(row.statusTekst),
         beschrijving: card.beschrijving,
         reserverenUrl: ticketUrl,
         bron: detailUrl,

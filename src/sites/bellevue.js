@@ -4,6 +4,20 @@ import { normalizeGenre } from '../lib/genre.js';
 const AGENDA_PATH = '/agenda';
 const MAX_LISTING_PAGES = 60;
 
+// Bellevue's boekingsknop gebruikt tekst-varianten als "kaarten via",
+// "Kaarten" (ook voor hun eigen javascript:-boekingswidget, dat is dus wél
+// beschikbaar) en "laatste kaarten" voor beschikbare plekken, en een
+// aparte "Wachtlijst"-knop zodra iets vol zit — een losstaande
+// "uitverkocht"-status hebben we nergens aangetroffen. Randgevallen als
+// "Geweest" (voorbije datum), "binnenkort" (nog niet in verkoop) en
+// "geannuleerd" gaan niet over voorraad en worden dus "onbekend".
+function classifyBeschikbaarheid(statusTekst) {
+  const tekst = (statusTekst ?? '').trim().toLowerCase();
+  if (tekst.includes('wachtlijst')) return 'wachtlijst';
+  if (tekst.includes('kaarten')) return 'beschikbaar';
+  return 'onbekend';
+}
+
 /**
  * Haalt de volledige agenda van Theater Bellevue op.
  *
@@ -85,7 +99,11 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log }
           const dagTekst = li.querySelector('.date .start')?.textContent.trim() ?? null;
           const tijdTekst = li.querySelector('.time .start')?.textContent.trim() ?? null;
           const href = li.querySelector('.buttonBox a')?.getAttribute('href') ?? null;
-          return { dagTekst, tijdTekst, href };
+          // .buttonBox bevat ofwel een <a> (bestelbaar/wachtlijst), ofwel een
+          // <span>/<button> (bv. "Geweest", "binnenkort") — pak gewoon de
+          // volledige tekst, ongeacht het element-type.
+          const statusTekst = li.querySelector('.buttonBox')?.textContent.trim().replace(/\s+/g, ' ') ?? null;
+          return { dagTekst, tijdTekst, href, statusTekst };
         });
       });
     } catch (err) {
@@ -117,6 +135,7 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log }
         tijd,
         genre: normalizeGenre(card.genre),
         genreRuw: card.genre,
+        beschikbaarheid: classifyBeschikbaarheid(sub.statusTekst),
         beschrijving: card.beschrijving,
         reserverenUrl: ticketUrl ?? detailUrl,
         bron: detailUrl,

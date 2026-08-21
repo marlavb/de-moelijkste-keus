@@ -4,6 +4,14 @@ import { normalizeGenre } from '../lib/genre.js';
 const AGENDA_PATH = '/agenda/';
 const MAX_LOAD_MORE_CLICKS = 40;
 
+// DeLaMar toont maar drie knop-teksten in de tile-footer; geen wachtlijst.
+function classifyBeschikbaarheid(ticketLabel) {
+  const label = (ticketLabel ?? '').trim().toLowerCase();
+  if (label === 'uitverkocht') return 'uitverkocht';
+  if (label === 'koop tickets' || label === 'laatste tickets') return 'beschikbaar';
+  return 'onbekend';
+}
+
 /**
  * Haalt de volledige agenda van DeLaMar Theater op.
  *
@@ -18,7 +26,8 @@ const MAX_LOAD_MORE_CLICKS = 40;
  *   ticketlink (button--green "Koop tickets" / button--orange "Laatste
  *   tickets"). Bij uitverkochte voorstellingen ontbreekt de ticketlink en
  *   staat er alleen een disabled "Uitverkocht"-badge — dan valt reserverenUrl
- *   terug op de detailpagina.
+ *   terug op de detailpagina. Diezelfde knoptekst gebruiken we ook voor
+ *   `beschikbaarheid` (geen aparte wachtlijst-status op deze site).
  */
 export async function scrapeDelamar({ page, theater, robots, waitForTurn, log }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
@@ -64,8 +73,11 @@ export async function scrapeDelamar({ page, theater, robots, waitForTurn, log })
         const genre = el.querySelector('.tile__image .genres .genre')?.textContent.trim() ?? null;
         const tijdTekst = el.querySelector('.tile__text .genres .genre')?.textContent.trim() ?? null;
         const ticketHref = el.querySelector('.tile__footer a[href]')?.getAttribute('href') ?? null;
+        // Laatste element in de footer is ofwel de ticketlink (Koop tickets /
+        // Laatste tickets) ofwel een disabled span ("Uitverkocht").
+        const ticketLabel = el.querySelector('.tile__footer')?.lastElementChild?.textContent.trim() ?? null;
 
-        items.push({ day: currentDay, titel, beschrijving, detailHref, genre, tijdTekst, ticketHref });
+        items.push({ day: currentDay, titel, beschrijving, detailHref, genre, tijdTekst, ticketHref, ticketLabel });
       }
     }
     return items;
@@ -96,6 +108,7 @@ export async function scrapeDelamar({ page, theater, robots, waitForTurn, log })
       tijd,
       genre: normalizeGenre(item.genre),
       genreRuw: item.genre,
+      beschikbaarheid: classifyBeschikbaarheid(item.ticketLabel),
       beschrijving: item.beschrijving,
       reserverenUrl: item.ticketHref ?? detailUrl,
       bron: theater.agendaUrl,

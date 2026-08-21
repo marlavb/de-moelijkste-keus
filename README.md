@@ -113,6 +113,12 @@ bouwen — gewoon de pagina verversen.
 - `src/lib/genre.js` — mapt de site-specifieke genre-labels van elk
   theater naar één vaste set categorieën (`GENRE_CATEGORIES`) waarop de
   app filtert. Het originele label blijft bewaard als `genreRuw`.
+- `src/lib/beschikbaarheid.js` — legt de vier toegestane waarden voor
+  `beschikbaarheid` vast. Anders dan genre is er geen gedeelde
+  normalize-functie: elke site toont ticketstatus met eigen knop-teksten/
+  CSS-classes, dus elke scraper-module classificeert dat zelf (zie de
+  comments in `src/sites/*.js`) — met "onbekend" als eerlijke fallback
+  zodra een site geen duidelijk voorraad-signaal geeft.
 - `src/sites/*.js` — één module per theater met de eigen scrape-logica.
   Elke site heeft een andere structuur (zie de comments bovenaan elk
   bestand voor wat er per site is uitgezocht), maar levert allemaal
@@ -139,6 +145,7 @@ Elke voorstelling in `data/shows.json`:
   "tijd": "20:00",
   "genre": "Musical",
   "genreRuw": "Musical",
+  "beschikbaarheid": "beschikbaar",
   "beschrijving": "De enige echte officiële Queen musical!",
   "reserverenUrl": "https://tickets.delamar.nl/nl/buyingflow/tickets/46810/114566/",
   "bron": "https://delamar.nl/agenda/",
@@ -152,6 +159,13 @@ Elke voorstelling in `data/shows.json`:
   Familie & Jeugd, Muziek & Concert, Overig) — dit is het veld waarop de
   app filtert. `genreRuw` is het originele, site-specifieke label
   (bv. Bellevue's "kleinkunst" of Meervaart's "theatercollege").
+- `beschikbaarheid` is `"beschikbaar"`, `"uitverkocht"`, `"wachtlijst"` of
+  `"onbekend"` — dit komt uit hetzelfde agenda-/detailbezoek dat de
+  scraper toch al doet, dus geen extra requests. De app toont hiervoor
+  alleen een badge bij `uitverkocht`/`wachtlijst`; bij `onbekend` (site
+  geeft geen duidelijk signaal, of toont iets tijd-gerelateerds zoals
+  "voorstelling bezig") laten we bewust niets zien in plaats van een
+  misleidende "beschikbaar"-badge te tonen.
 - `reserverenUrl` is de directe reserveringslink wanneer die beschikbaar is;
   als een voorstelling is uitverkocht of het theater geen directe link
   toont, valt dit terug op de infopagina van de voorstelling op de site van
@@ -189,6 +203,12 @@ Elke voorstelling in `data/shows.json`:
   document kan lezen/schrijven.
 - De "Voeg toe aan agenda"-knop op het detailscherm genereert een
   `.ics`-bestand, downloadbaar in elke agenda-app.
+- Ticketstatus: een muted-rode "Uitverkocht"- of amberkleurige
+  "Wachtlijst"-badge verschijnt op agenda-rijen en het detailscherm zodra
+  `beschikbaarheid` dat aangeeft (nooit bij `onbekend`). Het detailscherm
+  toont daarnaast "Laatst gecontroleerd: [tijdstip]" boven de
+  reserveringsknop, gebaseerd op `opgehaaldOp` — dit is dus de status van
+  de laatste nachtelijke ververing, niet live.
 - `sw.js` cachet de app-shell (cache-first) en `data/shows.json`
   (network-first, met cache als fallback) voor gebruik zonder internet na
   een eerste bezoek.
