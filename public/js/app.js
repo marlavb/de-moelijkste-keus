@@ -70,6 +70,7 @@ const state = {
   shows: [],
   theaterFilter: 'alle',
   genreFilter: 'alle',
+  podiumpasOnly: false, // lokaal-only, zelfde behandeling als genreFilter — niet in localStorage/Firestore
   enabledTheaters: loadEnabledTheaters(),
   favorites: loadFavorites(),
   dateWindowDays: DEFAULT_WINDOW_DAYS,
@@ -82,6 +83,7 @@ const els = {
   theaterFilters: document.getElementById('theaterFilters'),
   sheetTheaterFilters: document.getElementById('sheetTheaterFilters'),
   sheetGenreFilters: document.getElementById('sheetGenreFilters'),
+  podiumpasToggle: document.getElementById('podiumpasToggle'),
   agendaList: document.getElementById('agendaList'),
   emptyState: document.getElementById('emptyState'),
   filterToggle: document.getElementById('filterToggle'),
@@ -137,6 +139,7 @@ async function init() {
 
   renderTheaterFilters();
   renderGenreFilters();
+  renderPodiumpasToggle();
   renderFilterBadge();
   renderSubtitle();
   renderAgenda();
@@ -144,11 +147,19 @@ async function init() {
   els.filterToggle.addEventListener('click', openSheet);
   els.sheetClose.addEventListener('click', closeSheet);
   els.sheetBackdrop.addEventListener('click', closeSheet);
+  els.podiumpasToggle.addEventListener('click', () => {
+    state.podiumpasOnly = !state.podiumpasOnly;
+    renderPodiumpasToggle();
+    renderFilterBadge();
+    renderAgenda();
+  });
   els.clearFilters.addEventListener('click', () => {
     state.theaterFilter = 'alle';
     state.genreFilter = 'alle';
+    state.podiumpasOnly = false;
     renderTheaterFilters();
     renderGenreFilters();
+    renderPodiumpasToggle();
     renderFilterBadge();
     renderAgenda();
   });
@@ -478,8 +489,16 @@ function renderGenreFilters() {
   }
 }
 
+function renderPodiumpasToggle() {
+  els.podiumpasToggle.classList.toggle('is-on', state.podiumpasOnly);
+  els.podiumpasToggle.setAttribute('aria-checked', String(state.podiumpasOnly));
+}
+
 function renderFilterBadge() {
-  const count = (state.theaterFilter !== 'alle' ? 1 : 0) + (state.genreFilter !== 'alle' ? 1 : 0);
+  const count =
+    (state.theaterFilter !== 'alle' ? 1 : 0) +
+    (state.genreFilter !== 'alle' ? 1 : 0) +
+    (state.podiumpasOnly ? 1 : 0);
   els.filterBadge.textContent = String(count);
   els.filterBadge.hidden = count === 0;
 }
@@ -512,8 +531,9 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     if (!enabled.has(s.theaterId)) return false;
     const theaterOk = state.theaterFilter === 'alle' || s.theaterId === state.theaterFilter;
     const genreOk = state.genreFilter === 'alle' || s.genre === state.genreFilter;
+    const podiumpasOk = !state.podiumpasOnly || s.podiumpas === true;
     const dateOk = maxDate == null || s.datum <= maxDate;
-    return theaterOk && genreOk && dateOk;
+    return theaterOk && genreOk && podiumpasOk && dateOk;
   });
 }
 
@@ -826,8 +846,10 @@ function renderTheatersScreen() {
 
   els.theatersList.innerHTML = '';
   for (const id of ids) {
-    const naam = state.shows.find((s) => s.theaterId === id)?.theaterNaam ?? id;
+    const theaterShow = state.shows.find((s) => s.theaterId === id);
+    const naam = theaterShow?.theaterNaam ?? id;
     const adres = THEATER_INFO[id]?.adres ?? '';
+    const heeftPodiumpas = theaterShow?.podiumpas === true;
     const isOn = state.enabledTheaters[id] !== false;
 
     const card = document.createElement('div');
@@ -840,7 +862,10 @@ function renderTheatersScreen() {
     const addressEl = document.createElement('p');
     addressEl.className = 'theater-card-address';
     addressEl.textContent = adres;
-    info.append(nameEl, addressEl);
+    const podiumpasEl = document.createElement('span');
+    podiumpasEl.className = 'podiumpas-badge' + (heeftPodiumpas ? '' : ' podiumpas-badge--no');
+    podiumpasEl.textContent = heeftPodiumpas ? 'Podiumpas' : 'Geen Podiumpas';
+    info.append(nameEl, addressEl, podiumpasEl);
 
     const toggle = document.createElement('button');
     toggle.type = 'button';

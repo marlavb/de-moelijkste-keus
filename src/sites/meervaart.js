@@ -155,6 +155,7 @@ export async function scrapeMeervaart({ page, theater, robots, waitForTurn, log 
         theaterId: theater.id,
         theaterNaam: theater.naam,
         stad: theater.stad,
+        podiumpas: theater.podiumpas,
         datum,
         tijd,
         genre: normalizeGenre(card.genre),

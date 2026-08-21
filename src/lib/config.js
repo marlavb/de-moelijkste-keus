@@ -6,6 +6,10 @@ const CONTACT = process.env.SCRAPER_CONTACT || 'personal/educational project, no
 export const USER_AGENT_TOKEN = 'DeMoeilijksteKeusBot';
 export const USER_AGENT = `Mozilla/5.0 (compatible; ${USER_AGENT_TOKEN}/0.1; ${CONTACT})`;
 
+// `podiumpas` loopt mee als veld op elke gescrapete voorstelling (net als
+// `naam`/`stad`), zodat de app kan filteren op Podiumpas-theaters zonder een
+// aparte, makkelijk-te-vergeten lijst in de front-end bij te houden — vul
+// 'm dus ook meteen in voor elk nieuw theater dat hier bijkomt.
 export const THEATERS = [
   {
     id: 'delamar',
@@ -13,6 +17,7 @@ export const THEATERS = [
     stad: 'Amsterdam',
     baseUrl: 'https://delamar.nl',
     agendaUrl: 'https://delamar.nl/agenda/',
+    podiumpas: true,
   },
   {
     id: 'bellevue',
@@ -20,6 +25,7 @@ export const THEATERS = [
     stad: 'Amsterdam',
     baseUrl: 'https://www.theaterbellevue.nl',
     agendaUrl: 'https://www.theaterbellevue.nl/agenda',
+    podiumpas: true,
   },
   {
     id: 'meervaart',
@@ -27,5 +33,6 @@ export const THEATERS = [
     stad: 'Amsterdam',
     baseUrl: 'https://meervaart.nl',
     agendaUrl: 'https://meervaart.nl/agenda',
+    podiumpas: true,
   },
 ];
