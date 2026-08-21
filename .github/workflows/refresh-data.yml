@@ -1,0 +1,60 @@
+name: Refresh data
+
+on:
+  schedule:
+    # 04:00 UTC = 05:00 (winter) / 06:00 (zomer) tijd in Amsterdam.
+    - cron: '0 4 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  # Nodig om aan het eind de deploy-workflow te triggeren (zie onderaan).
+  actions: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js instellen
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Dependencies installeren
+        run: npm ci
+
+      - name: Playwright's Chromium installeren
+        run: npx playwright install --with-deps chromium
+
+      - name: Agenda's scrapen (DeLaMar, Bellevue, Meervaart)
+        run: node src/index.js
+
+      - name: public/data/shows.json committen en pushen
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/shows.json
+          if git diff --cached --quiet; then
+            echo "Geen wijzigingen in de data — niets te committen."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "Ververs voorstellingsdata ($(date -u +'%Y-%m-%d %H:%M UTC'))"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Een push met het ingebouwde GITHUB_TOKEN triggert bewust GEEN andere
+      # workflows (GitHub voorkomt zo oneindige workflow-ketens). Daarom
+      # starten we de deploy-workflow hier expliciet, in plaats van erop te
+      # vertrouwen dat de push van hierboven 'm vanzelf aanzet.
+      - name: Deploy-workflow triggeren
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml
