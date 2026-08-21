@@ -1,0 +1,60 @@
+name: Scrape en deploy naar GitHub Pages
+
+on:
+  schedule:
+    # 04:00 UTC = 05:00 (winter) / 06:00 (zomer) tijd in Amsterdam.
+    - cron: '0 4 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Voorkomt dat twee deploys tegelijk lopen; laat een lopende deploy wel
+# gewoon afmaken in plaats van 'm halverwege te annuleren.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js instellen
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Dependencies installeren
+        run: npm ci
+
+      - name: Playwright's Chromium installeren
+        run: npx playwright install --with-deps chromium
+
+      - name: Agenda's scrapen (DeLaMar, Bellevue, Meervaart)
+        run: node src/index.js
+
+      - name: GitHub Pages configureren
+        uses: actions/configure-pages@v5
+
+      - name: public/ als Pages-artefact uploaden
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deployen naar GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
