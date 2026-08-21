@@ -1,0 +1,11 @@
+node_modules/
+.DS_Store
+debug/
+scratch/
+
+# Gescrapete data is een build-artefact, geen source: hij wordt lokaal
+# gegenereerd met `npm run scrape` en door de deploy-workflow vers
+# opgehaald bij elke run. Niet in git, om te voorkomen dat elke scrape
+# een grote, snel verouderende JSON-diff in de geschiedenis dumpt.
+data/
+public/data/
