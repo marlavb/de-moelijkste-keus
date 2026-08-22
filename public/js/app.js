@@ -96,6 +96,8 @@ const state = {
   theaterFilter: 'alle',
   genreFilter: 'alle',
   podiumpasOnly: false, // lokaal-only, zelfde behandeling als genreFilter — niet in localStorage/Firestore
+  searchQuery: '', // lokaal-only, al lowercased/getrimd — niet in localStorage/Firestore
+  searchQueryRaw: '', // ongewijzigde tekst, alleen voor weergave (bv. in de lege-staat-tekst)
   enabledTheaters: loadEnabledTheaters(),
   favorites: loadFavorites(),
   dateWindowDays: DEFAULT_WINDOW_DAYS,
@@ -113,6 +115,12 @@ const els = {
   emptyState: document.getElementById('emptyState'),
   filterToggle: document.getElementById('filterToggle'),
   filterBadge: document.getElementById('filterBadge'),
+  headerTitleGroup: document.getElementById('headerTitleGroup'),
+  headerActions: document.getElementById('headerActions'),
+  headerSearch: document.getElementById('headerSearch'),
+  searchToggle: document.getElementById('searchToggle'),
+  searchInput: document.getElementById('searchInput'),
+  searchClose: document.getElementById('searchClose'),
   sheet: document.getElementById('filterSheet'),
   sheetBackdrop: document.getElementById('sheetBackdrop'),
   sheetClose: document.getElementById('sheetClose'),
@@ -173,6 +181,12 @@ async function init() {
   els.filterToggle.addEventListener('click', openSheet);
   els.sheetClose.addEventListener('click', closeSheet);
   els.sheetBackdrop.addEventListener('click', closeSheet);
+  els.searchToggle.addEventListener('click', openSearch);
+  els.searchClose.addEventListener('click', closeSearch);
+  els.searchInput.addEventListener('input', onSearchInput);
+  els.searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSearch();
+  });
   els.podiumpasToggle.addEventListener('click', () => {
     state.podiumpasOnly = !state.podiumpasOnly;
     renderPodiumpasToggle();
@@ -465,6 +479,40 @@ function closeSheet() {
   els.sheetBackdrop.hidden = true;
 }
 
+// ---------- Zoeken ----------
+
+const SEARCH_DEBOUNCE_MS = 250;
+let searchDebounceTimer = null;
+
+function openSearch() {
+  els.headerTitleGroup.hidden = true;
+  els.headerActions.hidden = true;
+  els.headerSearch.hidden = false;
+  els.searchInput.focus();
+}
+
+function closeSearch() {
+  clearTimeout(searchDebounceTimer);
+  els.searchInput.value = '';
+  state.searchQuery = '';
+  state.searchQueryRaw = '';
+  els.headerSearch.hidden = true;
+  els.headerTitleGroup.hidden = false;
+  els.headerActions.hidden = false;
+  renderAgenda();
+}
+
+function onSearchInput() {
+  clearTimeout(searchDebounceTimer);
+  const value = els.searchInput.value;
+  searchDebounceTimer = setTimeout(() => {
+    const trimmed = value.trim();
+    state.searchQuery = trimmed.toLowerCase();
+    state.searchQueryRaw = trimmed;
+    renderAgenda();
+  }, SEARCH_DEBOUNCE_MS);
+}
+
 // ---------- Agenda screen ----------
 
 function sortKey(show) {
@@ -559,7 +607,11 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     const genreOk = state.genreFilter === 'alle' || s.genre === state.genreFilter;
     const podiumpasOk = !state.podiumpasOnly || s.podiumpas === true;
     const dateOk = maxDate == null || s.datum <= maxDate;
-    return theaterOk && genreOk && podiumpasOk && dateOk;
+    const searchOk =
+      !state.searchQuery ||
+      s.titel.toLowerCase().includes(state.searchQuery) ||
+      s.theaterNaam.toLowerCase().includes(state.searchQuery);
+    return theaterOk && genreOk && podiumpasOk && dateOk && searchOk;
   });
 }
 
@@ -568,11 +620,21 @@ function formatDateHeading(isoDate) {
   return `${WEEKDAYS[dateFromIso(isoDate).getDay()]} ${day} ${MONTHS[month - 1]}`.toUpperCase();
 }
 
+function emptyStateMessage() {
+  const filtersActive = state.theaterFilter !== 'alle' || state.genreFilter !== 'alle' || state.podiumpasOnly;
+  const query = state.searchQueryRaw;
+  if (query && filtersActive) return `Geen voorstellingen gevonden voor "${query}" met deze filters.`;
+  if (query) return `Geen voorstellingen gevonden voor "${query}".`;
+  if (filtersActive) return 'Geen voorstellingen gevonden voor deze filters.';
+  return 'Geen voorstellingen gevonden.';
+}
+
 function renderAgenda() {
   const shows = filteredShows();
 
   if (shows.length === 0) {
     els.agendaList.innerHTML = '';
+    els.emptyState.textContent = emptyStateMessage();
     els.emptyState.hidden = false;
     els.agendaList.appendChild(els.emptyState);
     return;

@@ -23,12 +23,32 @@
     <section class="screen" id="screen-agenda">
       <header class="app-header">
         <div class="header-top">
-          <div>
+          <div id="headerTitleGroup">
             <h1 class="app-title">Podiumagenda</h1>
             <p class="app-subtitle" id="subtitle">Amsterdam</p>
           </div>
-          <div class="header-actions">
-            <button class="icon-btn" type="button" aria-label="Zoeken">
+          <div class="header-search" id="headerSearch" hidden>
+            <svg class="header-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input
+              type="search"
+              id="searchInput"
+              class="header-search-input"
+              placeholder="Zoek op titel of theater..."
+              autocomplete="off"
+              aria-label="Zoek voorstellingen"
+            />
+            <button class="icon-btn" type="button" id="searchClose" aria-label="Zoeken sluiten">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="6" y1="6" x2="18" y2="18" />
+                <line x1="18" y1="6" x2="6" y2="18" />
+              </svg>
+            </button>
+          </div>
+          <div class="header-actions" id="headerActions">
+            <button class="icon-btn" type="button" id="searchToggle" aria-label="Zoeken">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                 <circle cx="11" cy="11" r="7" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />

@@ -97,6 +97,56 @@ a {
   flex-shrink: 0;
 }
 
+.header-actions[hidden],
+.header-search[hidden] {
+  display: none;
+}
+
+.header-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 40px;
+  padding: 0 8px 0 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.header-search-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.header-search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 15px;
+}
+
+.header-search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.header-search .icon-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+}
+
+.header-search .icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
 .icon-btn {
   position: relative;
   flex-shrink: 0;
