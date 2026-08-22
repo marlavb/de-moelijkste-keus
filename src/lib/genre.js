@@ -58,6 +58,25 @@ const GENRE_MAP = {
   komedie: 'Cabaret',
   literair: 'Overig', // literaire/boek-gerelateerde programma's, geen echte match
   poëzie: 'Overig',
+
+  // Schouwburg Amstelveen
+  'te gast': 'Overig', // "gastproductie"-label, geen genre op zich
+  'dans/ballet': 'Dans',
+  'muziek/concert': 'Muziek & Concert',
+  'jeugd/familie': 'Familie & Jeugd',
+  'klassieke muziek': 'Muziek & Concert',
+  'nouveau cirque': 'Overig', // circus past niet echt in een van de 8 categorieën
+  'opera/operette': 'Muziektheater',
+  jongeren: 'Familie & Jeugd',
+  'musical/show': 'Musical',
+  'beeldend theater': 'Toneel',
+  'storytelling/literair theater': 'Toneel',
+
+  // Theater Kikker
+  'specials & festivals': 'Overig',
+  // "language no problem" en "verhuur" zijn bewust NIET gemapt: dat zijn
+  // meta-labels (taal-toegankelijkheid resp. zaalverhuur), geen
+  // genre-pogingen — normalizeGenreFromList() slaat ze vanzelf over.
 };
 
 /**

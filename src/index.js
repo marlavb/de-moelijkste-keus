@@ -12,6 +12,9 @@ import { scrapeIta } from './sites/ita.js';
 import { scrapeKleineKomedie } from './sites/kleinekomedie.js';
 import { scrapeFrascati } from './sites/frascati.js';
 import { scrapeCarre } from './sites/carre.js';
+import { scrapeAmstelveen } from './sites/amstelveen.js';
+import { scrapeStadsschouwburgUtrecht } from './sites/stadsschouwburgutrecht.js';
+import { scrapeTheaterKikker } from './sites/theaterkikker.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -21,6 +24,9 @@ const SCRAPERS = {
   kleinekomedie: scrapeKleineKomedie,
   frascati: scrapeFrascati,
   carre: scrapeCarre,
+  amstelveen: scrapeAmstelveen,
+  stadsschouwburgutrecht: scrapeStadsschouwburgUtrecht,
+  theaterkikker: scrapeTheaterKikker,
 };
 
 const OUTPUT_PATH = path.resolve('data/shows.json');

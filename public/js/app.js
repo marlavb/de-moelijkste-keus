@@ -15,7 +15,18 @@ import {
 // theaters die nog niet in deze lijst staan, worden onderaan toegevoegd met
 // hun volledige naam — zo blijft de UI werken als er later een stad/theater
 // bijkomt.
-const THEATER_ORDER = ['delamar', 'bellevue', 'meervaart', 'ita', 'kleinekomedie', 'frascati', 'carre'];
+const THEATER_ORDER = [
+  'delamar',
+  'bellevue',
+  'meervaart',
+  'ita',
+  'kleinekomedie',
+  'frascati',
+  'carre',
+  'amstelveen',
+  'stadsschouwburgutrecht',
+  'theaterkikker',
+];
 const THEATER_SHORT_NAMES = {
   delamar: 'DeLaMar',
   bellevue: 'Bellevue',
@@ -24,6 +35,9 @@ const THEATER_SHORT_NAMES = {
   kleinekomedie: 'Kleine Komedie',
   frascati: 'Frascati',
   carre: 'Carré',
+  amstelveen: 'Amstelveen',
+  stadsschouwburgutrecht: 'Stadsschouwburg Utrecht',
+  theaterkikker: 'Kikker',
 };
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
@@ -35,6 +49,9 @@ const THEATER_INFO = {
   kleinekomedie: { adres: 'Amstel 56-58' },
   frascati: { adres: 'Nes 63' },
   carre: { adres: 'Amstel 115-125' },
+  amstelveen: { adres: 'Stadsplein 100' },
+  stadsschouwburgutrecht: { adres: 'Lucasbolwerk 24' },
+  theaterkikker: { adres: 'Ganzenmarkt 14' },
 };
 
 // Alleen "uitverkocht" en "wachtlijst" krijgen een badge — "beschikbaar" is
@@ -127,6 +144,7 @@ const els = {
   theatersBack: document.getElementById('theatersBack'),
   theatersList: document.getElementById('theatersList'),
   theatersCount: document.getElementById('theatersCount'),
+  theatersCities: document.getElementById('theatersCities'),
   favoritesList: document.getElementById('favoritesList'),
   favoritesEmpty: document.getElementById('favoritesEmpty'),
   authBox: document.getElementById('authBox'),
@@ -851,6 +869,8 @@ function renderTheatersScreen() {
   );
   const enabledCount = ids.filter((id) => state.enabledTheaters[id] !== false).length;
   els.theatersCount.textContent = `${enabledCount} van ${ids.length}`;
+  const steden = [...new Set(ids.map((id) => state.shows.find((s) => s.theaterId === id)?.stad).filter(Boolean))];
+  els.theatersCities.textContent = steden.join(' & ').toUpperCase();
 
   els.theatersList.innerHTML = '';
   for (const id of ids) {

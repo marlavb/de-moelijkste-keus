@@ -67,4 +67,28 @@ export const THEATERS = [
     agendaUrl: 'https://carre.nl/agenda',
     podiumpas: false,
   },
+  {
+    id: 'amstelveen',
+    naam: 'Schouwburg Amstelveen',
+    stad: 'Amstelveen',
+    baseUrl: 'https://schouwburgamstelveen.nl',
+    agendaUrl: 'https://schouwburgamstelveen.nl/nl/theater/agenda/',
+    podiumpas: true,
+  },
+  {
+    id: 'stadsschouwburgutrecht',
+    naam: 'Stadsschouwburg Utrecht',
+    stad: 'Utrecht',
+    baseUrl: 'https://stadsschouwburg-utrecht.nl',
+    agendaUrl: 'https://stadsschouwburg-utrecht.nl/agenda',
+    podiumpas: true,
+  },
+  {
+    id: 'theaterkikker',
+    naam: 'Theater Kikker',
+    stad: 'Utrecht',
+    baseUrl: 'https://www.theaterkikker.nl',
+    agendaUrl: 'https://www.theaterkikker.nl/agenda',
+    podiumpas: true,
+  },
 ];
