@@ -37,6 +37,27 @@ const GENRE_MAP = {
   muziek: 'Muziek & Concert',
   theatercollege: 'Overig',
   special: 'Overig',
+
+  // ITA
+  'dans-familie': 'Familie & Jeugd',
+  'theater - kind': 'Familie & Jeugd',
+  'theater-familie': 'Familie & Jeugd',
+  perspectief: 'Overig', // lezingen/theatercolleges — geen van de 8 categorieën past echt
+  'events & awards': 'Overig',
+
+  // Frascati
+  mime: 'Toneel',
+  performance: 'Overig', // brede, interdisciplinaire "performance art"-tag, past nergens goed
+  multidisciplinair: 'Overig',
+
+  // De Kleine Komedie
+  muzikaal: 'Muziek & Concert',
+  'verhalen vertellen': 'Toneel',
+  theaterconcert: 'Muziektheater',
+  'stand-up': 'Cabaret',
+  komedie: 'Cabaret',
+  literair: 'Overig', // literaire/boek-gerelateerde programma's, geen echte match
+  poëzie: 'Overig',
 };
 
 /**
@@ -48,4 +69,20 @@ export function normalizeGenre(raw) {
   if (!raw) return null;
   const key = raw.trim().toLowerCase();
   return GENRE_MAP[key] ?? 'Overig';
+}
+
+/**
+ * Voor sites (zoals De Kleine Komedie) die een hele lijst losse tags tonen
+ * in plaats van één duidelijk eerste genre-label — veel van die tags zijn
+ * geen genre (bv. "PREMIÈRE", "MET GASTEN"). Geeft de eerste tag terug die
+ * wél een bekend genre is, of null als geen enkele tag herkend wordt (in
+ * plaats van blind "Overig" te concluderen op basis van niet-genre-tags).
+ */
+export function normalizeGenreFromList(rawTags) {
+  if (!rawTags || rawTags.length === 0) return null;
+  for (const raw of rawTags) {
+    const key = raw.trim().toLowerCase();
+    if (GENRE_MAP[key]) return GENRE_MAP[key];
+  }
+  return null;
 }

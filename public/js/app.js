@@ -15,11 +15,15 @@ import {
 // theaters die nog niet in deze lijst staan, worden onderaan toegevoegd met
 // hun volledige naam — zo blijft de UI werken als er later een stad/theater
 // bijkomt.
-const THEATER_ORDER = ['delamar', 'bellevue', 'meervaart'];
+const THEATER_ORDER = ['delamar', 'bellevue', 'meervaart', 'ita', 'kleinekomedie', 'frascati', 'carre'];
 const THEATER_SHORT_NAMES = {
   delamar: 'DeLaMar',
   bellevue: 'Bellevue',
   meervaart: 'Meervaart',
+  ita: 'ITA',
+  kleinekomedie: 'Kleine Komedie',
+  frascati: 'Frascati',
+  carre: 'Carré',
 };
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
@@ -27,6 +31,10 @@ const THEATER_INFO = {
   delamar: { adres: 'Marnixstraat 402' },
   bellevue: { adres: 'Leidsekade 90' },
   meervaart: { adres: 'Meer en Vaart 300' },
+  ita: { adres: 'Leidseplein 26' },
+  kleinekomedie: { adres: 'Amstel 56-58' },
+  frascati: { adres: 'Nes 63' },
+  carre: { adres: 'Amstel 115-125' },
 };
 
 // Alleen "uitverkocht" en "wachtlijst" krijgen een badge — "beschikbaar" is

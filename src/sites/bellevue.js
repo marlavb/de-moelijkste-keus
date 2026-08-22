@@ -7,14 +7,17 @@ const MAX_LISTING_PAGES = 60;
 // Bellevue's boekingsknop gebruikt tekst-varianten als "kaarten via",
 // "Kaarten" (ook voor hun eigen javascript:-boekingswidget, dat is dus wél
 // beschikbaar) en "laatste kaarten" voor beschikbare plekken, en een
-// aparte "Wachtlijst"-knop zodra iets vol zit — een losstaande
-// "uitverkocht"-status hebben we nergens aangetroffen. Randgevallen als
+// aparte "Wachtlijst"-knop zodra iets vol zit. Update: bij het bouwen van
+// Frascati/De Kleine Komedie (zelfde platform) bleken ook "uitverkocht",
+// "Volgeboekt", "Tickets" en "Aanmelden via email" voor te komen — die
+// hadden we hier niet expliciet gevangen, nu wel. Randgevallen als
 // "Geweest" (voorbije datum), "binnenkort" (nog niet in verkoop) en
 // "geannuleerd" gaan niet over voorraad en worden dus "onbekend".
 function classifyBeschikbaarheid(statusTekst) {
   const tekst = (statusTekst ?? '').trim().toLowerCase();
   if (tekst.includes('wachtlijst')) return 'wachtlijst';
-  if (tekst.includes('kaarten')) return 'beschikbaar';
+  if (tekst.includes('uitverkocht') || tekst.includes('volgeboekt')) return 'uitverkocht';
+  if (tekst.includes('kaarten') || tekst.includes('tickets') || tekst.includes('aanmelden')) return 'beschikbaar';
   return 'onbekend';
 }
 
@@ -114,6 +117,10 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log }
     const parseDay = createDutchAbbrevDayParser();
     for (const sub of subshows) {
       if (!sub.dagTekst) continue;
+      // Langlopende producties tonen soms ook al voorbije uitvoeringen
+      // ("Geweest") in dezelfde lijst — die horen niet in een
+      // toekomstgerichte agenda.
+      if (sub.statusTekst?.trim().toLowerCase() === 'geweest') continue;
       const datum = parseDay(sub.dagTekst);
       if (!datum) {
         log(`kon datum-label niet parsen: "${sub.dagTekst}" (${card.titel}) — overgeslagen.`);

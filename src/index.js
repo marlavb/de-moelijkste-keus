@@ -8,11 +8,19 @@ import { createPoliteWaiter } from './lib/politeness.js';
 import { scrapeDelamar } from './sites/delamar.js';
 import { scrapeBellevue } from './sites/bellevue.js';
 import { scrapeMeervaart } from './sites/meervaart.js';
+import { scrapeIta } from './sites/ita.js';
+import { scrapeKleineKomedie } from './sites/kleinekomedie.js';
+import { scrapeFrascati } from './sites/frascati.js';
+import { scrapeCarre } from './sites/carre.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
   bellevue: scrapeBellevue,
   meervaart: scrapeMeervaart,
+  ita: scrapeIta,
+  kleinekomedie: scrapeKleineKomedie,
+  frascati: scrapeFrascati,
+  carre: scrapeCarre,
 };
 
 const OUTPUT_PATH = path.resolve('data/shows.json');
