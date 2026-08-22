@@ -1,4 +1,4 @@
-const CACHE_NAME = 'podiumagenda-v2';
+const CACHE_NAME = 'podiumagenda-v3';
 const APP_SHELL = [
   './',
   './index.html',
@@ -7,6 +7,20 @@ const APP_SHELL = [
   './js/firebase.js',
   './manifest.json',
   './data/shows.json',
+];
+
+// Bestanden die bepalen welke versie van de app een bezoeker draait, dus
+// altijd network-first — anders blijft een online bezoeker na een deploy
+// vastzitten op oude app-code totdat de cache toevallig verloopt (net
+// gebeurd: een geshipte feature leek te ontbreken door een stale cache).
+const NETWORK_FIRST_PATHS = [
+  '/',
+  '/index.html',
+  '/js/app.js',
+  '/js/firebase.js',
+  '/css/styles.css',
+  '/manifest.json',
+  '/data/shows.json',
 ];
 
 self.addEventListener('install', (event) => {
@@ -23,12 +37,16 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Network-first voor data/shows.json (wil je liefst de nieuwste agenda als
-// er internet is), cache-first voor de rest van de app shell.
+function isNetworkFirst(pathname) {
+  return NETWORK_FIRST_PATHS.some((path) => pathname.endsWith(path));
+}
+
+// Network-first (met cache-fallback voor offline) voor de app shell +
+// shows.json, cache-first voor de rest (bv. icons), die zelden wijzigen.
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  if (url.pathname.endsWith('/data/shows.json')) {
+  if (isNetworkFirst(url.pathname)) {
     event.respondWith(
       fetch(event.request)
         .then((res) => {
