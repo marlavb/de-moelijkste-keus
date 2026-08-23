@@ -15,6 +15,12 @@ import { scrapeCarre } from './sites/carre.js';
 import { scrapeAmstelveen } from './sites/amstelveen.js';
 import { scrapeStadsschouwburgUtrecht } from './sites/stadsschouwburgutrecht.js';
 import { scrapeTheaterKikker } from './sites/theaterkikker.js';
+import { scrapeKrakeling } from './sites/krakeling.js';
+import { scrapeMozaiek } from './sites/mozaiek.js';
+import { scrapeMuziekgebouw } from './sites/muziekgebouw.js';
+import { scrapeScala } from './sites/scala.js';
+import { scrapeOmval } from './sites/omval.js';
+import { scrapeDeLanding } from './sites/delanding.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -27,6 +33,12 @@ const SCRAPERS = {
   amstelveen: scrapeAmstelveen,
   stadsschouwburgutrecht: scrapeStadsschouwburgUtrecht,
   theaterkikker: scrapeTheaterKikker,
+  krakeling: scrapeKrakeling,
+  mozaiek: scrapeMozaiek,
+  muziekgebouw: scrapeMuziekgebouw,
+  scala: scrapeScala,
+  omval: scrapeOmval,
+  delanding: scrapeDeLanding,
 };
 
 const OUTPUT_PATH = path.resolve('data/shows.json');

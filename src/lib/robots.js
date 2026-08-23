@@ -71,6 +71,24 @@ function isPathAllowed(group, path) {
   return best ? best.allow : true;
 }
 
+const ROBOTS_FETCH_ATTEMPTS = 2;
+const ROBOTS_FETCH_RETRY_DELAY_MS = 1500;
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Voorzichtige default-delay voor het geval /robots.txt wél een 2xx
+// oplevert, maar via een redirect ergens anders landt (bv. een inlogpagina
+// achter een CMS-routeprobleem, geobserveerd bij Theater De Krakeling) —
+// dan hebben we de ECHTE robots.txt-inhoud niet gezien en weten we dus
+// niet of er een Crawl-delay bedoeld was. Dat is een andere situatie dan
+// een bevestigde 404 (zoals bij Amstelveen), waar we wél zeker weten dat
+// er geen regels zijn — die blijft op 0ms staan. Hier nemen we liever het
+// zekere voor het onzekere, in lijn met de crawl-delay die de meeste
+// andere Amsterdamse theaters al hanteren.
+const AMBIGUOUS_REDIRECT_CRAWL_DELAY_MS = 5000;
+
 /**
  * Haalt robots.txt op voor een site en geeft een klein object terug waarmee
  * je paden kunt checken en de opgegeven crawl-delay kunt opvragen.
@@ -78,17 +96,47 @@ function isPathAllowed(group, path) {
 export async function loadRobotsRules(baseUrl, userAgent, userAgentToken) {
   const robotsUrl = new URL('/robots.txt', baseUrl).toString();
   let groups = [];
-  try {
-    const res = await fetch(robotsUrl, { headers: { 'User-Agent': userAgent } });
-    if (res.ok) {
-      groups = parseRobotsText(await res.text());
+  let ambiguousRedirect = false;
+
+  // Eén retry op een netwerkfout (niet op een 4xx/5xx-statuscode): een
+  // ontbrekend robots.txt-bestand interpreteren we als "alles toegestaan",
+  // maar een verbindingsfout is geen betrouwbaar signaal daarvoor — die kan
+  // net zo goed een voorbijgaande hapering zijn (in de praktijk gezien: een
+  // connect-timeout naar één specifieke site die bij een tweede poging
+  // meteen weer normaal verbond). Zonder retry zou zo'n hapering ten
+  // onrechte de opgegeven crawl-delay laten vallen.
+  for (let attempt = 1; attempt <= ROBOTS_FETCH_ATTEMPTS; attempt++) {
+    try {
+      const res = await fetch(robotsUrl, { headers: { 'User-Agent': userAgent } });
+      if (res.ok) {
+        if (new URL(res.url).pathname === '/robots.txt') {
+          groups = parseRobotsText(await res.text());
+        } else {
+          // fetch() volgt redirects automatisch; als we na afloop niet meer
+          // op /robots.txt staan, hebben we iets anders binnengekregen (een
+          // inlogpagina, een generieke foutpagina, etc.) — dat NIET als
+          // robots.txt-tekst parsen, en NIET stilzwijgend als "geen
+          // robots.txt" behandelen.
+          ambiguousRedirect = true;
+        }
+      }
+      break;
+    } catch {
+      if (attempt === ROBOTS_FETCH_ATTEMPTS) {
+        // Nog steeds onbereikbaar na de retry -> conservatief interpreteren
+        // we dat als "alles toegestaan".
+        break;
+      }
+      await sleep(ROBOTS_FETCH_RETRY_DELAY_MS);
     }
-  } catch {
-    // Geen robots.txt bereikbaar -> conservatief interpreteren we dat als "alles toegestaan"
   }
 
   const group = selectGroup(groups, userAgentToken);
-  const crawlDelayMs = group?.crawlDelay ? group.crawlDelay * 1000 : 0;
+  const crawlDelayMs = group?.crawlDelay
+    ? group.crawlDelay * 1000
+    : ambiguousRedirect
+      ? AMBIGUOUS_REDIRECT_CRAWL_DELAY_MS
+      : 0;
 
   return {
     robotsUrl,

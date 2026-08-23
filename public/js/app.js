@@ -26,6 +26,12 @@ const THEATER_SHORT_NAMES = {
   amstelveen: 'Amstelveen',
   stadsschouwburgutrecht: 'Stadsschouwburg Utrecht',
   theaterkikker: 'Kikker',
+  krakeling: 'Krakeling',
+  mozaiek: 'Mozaïek',
+  muziekgebouw: 'Muziekgebouw',
+  scala: 'Scala',
+  omval: 'De Omval',
+  delanding: 'De Landing',
 };
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
@@ -40,6 +46,12 @@ const THEATER_INFO = {
   amstelveen: { adres: 'Stadsplein 100' },
   stadsschouwburgutrecht: { adres: 'Lucasbolwerk 24' },
   theaterkikker: { adres: 'Ganzenmarkt 14' },
+  krakeling: { adres: 'Pazzanistraat 15' },
+  mozaiek: { adres: 'Bos en Lommerweg 191' },
+  muziekgebouw: { adres: 'Piet Heinkade 1' },
+  scala: { adres: 'Van Hallstraat 286' },
+  omval: { adres: 'Ouddiemerlaan 104' },
+  delanding: { adres: 'Uilenstede 106' },
 };
 
 // Alleen "uitverkocht" en "wachtlijst" krijgen een badge — "beschikbaar" is

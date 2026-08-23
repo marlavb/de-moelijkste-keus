@@ -77,6 +77,18 @@ const GENRE_MAP = {
   // "language no problem" en "verhuur" zijn bewust NIET gemapt: dat zijn
   // meta-labels (taal-toegankelijkheid resp. zaalverhuur), geen
   // genre-pogingen — normalizeGenreFromList() slaat ze vanzelf over.
+
+  // Scala
+  'stand up': 'Cabaret',
+  comedy: 'Cabaret',
+  'stand-up comedy': 'Cabaret',
+  'muzikaal cabaret': 'Cabaret',
+  verteltheater: 'Toneel', // zelfde concept als de al gemapte 'verhalen vertellen'/'storytelling'
+  'cabareteske ted-talk': 'Overig',
+  'magic show': 'Overig', // goochelen past bij geen van de 8 categorieën
+  'theatrale escaperoom': 'Overig',
+  'sprookjes voor volwassenen': 'Overig',
+  sciencefictionkomedie: 'Overig', // theatraal verhaal met sci-fi/komedie-elementen, geen echte match
 };
 
 /**
