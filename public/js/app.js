@@ -188,6 +188,35 @@ const els = {
   feedbackStatus: document.getElementById('feedbackStatus'),
 };
 
+const SIDEBAR_SECTION_CONTENT_ELS = {
+  stad: () => els.sidebarCityFilters,
+  theater: () => els.sidebarTheaterFilters,
+  genre: () => els.sidebarGenreFilters,
+};
+
+function applySidebarSectionState(sectionId) {
+  const isOpen = state.sidebarSections[sectionId] === 'open';
+  const header = els.sidebarAccordionHeaders[sectionId];
+  const content = SIDEBAR_SECTION_CONTENT_ELS[sectionId]();
+  header.setAttribute('aria-expanded', String(isOpen));
+  content.hidden = !isOpen;
+}
+
+function renderSidebarSections() {
+  for (const id of SIDEBAR_SECTION_IDS) applySidebarSectionState(id);
+}
+
+function toggleSidebarSection(sectionId) {
+  state.sidebarSections[sectionId] = state.sidebarSections[sectionId] === 'open' ? 'closed' : 'open';
+  applySidebarSectionState(sectionId);
+  saveSidebarSections();
+}
+
+// Meteen toepassen (i.p.v. pas na de shows.json-fetch in init() hieronder)
+// zodat de sidebar-accordeons niet eerst kort de verkeerde (statische
+// HTML-)stand laten zien voordat het netwerkverzoek klaar is.
+renderSidebarSections();
+
 async function init() {
   const res = await fetch('data/shows.json');
   const shows = await res.json();
@@ -207,7 +236,6 @@ async function init() {
   renderFilterBadge();
   renderSubtitle();
   renderAgenda();
-  renderSidebarSections();
 
   els.filterToggle.addEventListener('click', openSheet);
   els.sheetClose.addEventListener('click', closeSheet);
@@ -330,8 +358,9 @@ function saveEnabledTheaters() {
 
 // Open/dicht-status van de Stad/Theater/Genre-accordeons in de desktop-
 // sidebar — lokaal-only (geen Firestore-sync nodig voor zoiets kleins).
-// Ontbrekende/onbekende waarden vallen terug op "open", zodat een
-// bezoeker zonder opgeslagen voorkeur niets anders ziet dan voorheen.
+// Ontbrekende/onbekende waarden vallen terug op "closed" (de sidebar
+// oogt anders al snel druk met ~16 theaters over 4 steden) — een
+// expliciet opgeslagen "open" blijft gewoon open.
 function loadSidebarSections() {
   let stored = {};
   try {
@@ -341,7 +370,7 @@ function loadSidebarSections() {
   }
   const sections = {};
   for (const id of SIDEBAR_SECTION_IDS) {
-    sections[id] = stored[id] === 'closed' ? 'closed' : 'open';
+    sections[id] = stored[id] === 'open' ? 'open' : 'closed';
   }
   return sections;
 }
@@ -804,30 +833,6 @@ function renderFavoritesToggle() {
     btn.classList.toggle('is-on', state.favoritesOnly);
     btn.setAttribute('aria-checked', String(state.favoritesOnly));
   }
-}
-
-const SIDEBAR_SECTION_CONTENT_ELS = {
-  stad: () => els.sidebarCityFilters,
-  theater: () => els.sidebarTheaterFilters,
-  genre: () => els.sidebarGenreFilters,
-};
-
-function applySidebarSectionState(sectionId) {
-  const isOpen = state.sidebarSections[sectionId] === 'open';
-  const header = els.sidebarAccordionHeaders[sectionId];
-  const content = SIDEBAR_SECTION_CONTENT_ELS[sectionId]();
-  header.setAttribute('aria-expanded', String(isOpen));
-  content.hidden = !isOpen;
-}
-
-function renderSidebarSections() {
-  for (const id of SIDEBAR_SECTION_IDS) applySidebarSectionState(id);
-}
-
-function toggleSidebarSection(sectionId) {
-  state.sidebarSections[sectionId] = state.sidebarSections[sectionId] === 'open' ? 'closed' : 'open';
-  applySidebarSectionState(sectionId);
-  saveSidebarSections();
 }
 
 /** Rendert alle filter-UI (sidebar + sheet) in één keer — city eerst,
