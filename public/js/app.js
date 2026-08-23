@@ -594,19 +594,33 @@ function theaterStad(id) {
   return state.shows.find((s) => s.theaterId === id)?.stad ?? null;
 }
 
-/** Steden van de op dit moment ingeschakelde theaters, Nederlands
- * gesorteerd — de opties voor het stad-filter. */
+function theaterHasPodiumpas(id) {
+  return state.shows.find((s) => s.theaterId === id)?.podiumpas === true;
+}
+
+/** Podiumpas-only cascadeert net als de stad-selectie: als de toggle aan
+ * staat, blijven alleen Podiumpas-theaters over als optie. */
+function podiumpasFilteredIds(ids) {
+  return state.podiumpasOnly ? ids.filter(theaterHasPodiumpas) : ids;
+}
+
+/** Steden van de op dit moment ingeschakelde (en evt. Podiumpas-only
+ * gefilterde) theaters, Nederlands gesorteerd — de opties voor het
+ * stad-filter. */
 function availableCities() {
-  const cities = new Set(activeTheaterIds().map((id) => theaterStad(id)).filter(Boolean));
+  const ids = podiumpasFilteredIds(activeTheaterIds());
+  const cities = new Set(ids.map((id) => theaterStad(id)).filter(Boolean));
   return [...cities].sort((a, b) => a.localeCompare(b, 'nl'));
 }
 
-/** Theater-opties voor het theater-filter, gecascadeerd op de
- * geselecteerde steden (leeg = geen beperking). */
+/** Theater-opties voor het theater-filter, gecascadeerd op zowel
+ * Podiumpas-only als de geselecteerde steden (leeg = geen beperking). */
 function availableTheaterIds() {
-  const ids = activeTheaterIds();
-  if (state.selectedCities.size === 0) return ids;
-  return ids.filter((id) => state.selectedCities.has(theaterStad(id)));
+  let ids = podiumpasFilteredIds(activeTheaterIds());
+  if (state.selectedCities.size > 0) {
+    ids = ids.filter((id) => state.selectedCities.has(theaterStad(id)));
+  }
+  return ids;
 }
 
 function toggleSetMember(set, value) {
@@ -647,7 +661,10 @@ function onGenreToggle(genre) {
 
 function onPodiumpasToggleClick() {
   state.podiumpasOnly = !state.podiumpasOnly;
-  renderPodiumpasToggle();
+  // renderFilters() cascades into city/theater options (and prunes any
+  // now-stale selectedCities/selectedTheaters), same mechanism as when a
+  // city gets deselected.
+  renderFilters();
   renderFilterBadge();
   renderAgenda();
 }
