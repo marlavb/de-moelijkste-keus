@@ -65,12 +65,56 @@
           </div>
         </div>
 
-        <div class="filter-row filter-row--wrap" id="theaterFilters" role="group" aria-label="Filter op theater"></div>
       </header>
 
-      <main class="agenda-list" id="agendaList" aria-live="polite">
-        <p class="empty-state" id="emptyState" hidden>Geen voorstellingen gevonden voor deze filters.</p>
-      </main>
+      <div class="agenda-body">
+        <aside class="filter-sidebar" id="filterSidebar" aria-label="Filters">
+          <div class="header-search filter-sidebar-search">
+            <svg class="header-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input
+              type="search"
+              id="sidebarSearchInput"
+              class="header-search-input"
+              placeholder="Zoek op titel of theater..."
+              autocomplete="off"
+              aria-label="Zoek voorstellingen"
+            />
+          </div>
+
+          <section class="sheet-section">
+            <h3>Stad</h3>
+            <div class="filter-row filter-row--wrap" id="sidebarCityFilters" role="group" aria-label="Filter op stad"></div>
+          </section>
+          <section class="sheet-section">
+            <h3>Theater</h3>
+            <div class="filter-row filter-row--wrap" id="sidebarTheaterFilters" role="group" aria-label="Filter op theater"></div>
+          </section>
+          <section class="sheet-section">
+            <h3>Genre</h3>
+            <div class="filter-row filter-row--wrap" id="sidebarGenreFilters" role="group" aria-label="Filter op genre"></div>
+          </section>
+          <section class="sheet-section">
+            <div class="toggle-row">
+              <span class="toggle-row-label">Alleen Podiumpas-theaters</span>
+              <button class="switch" type="button" id="sidebarPodiumpasToggle" role="switch" aria-checked="false"></button>
+            </div>
+          </section>
+          <section class="sheet-section">
+            <div class="toggle-row">
+              <span class="toggle-row-label">Toon alleen favorieten</span>
+              <button class="switch" type="button" id="sidebarFavoritesOnlyToggle" role="switch" aria-checked="false"></button>
+            </div>
+          </section>
+          <button class="text-btn" type="button" id="sidebarClearFilters">Filters wissen</button>
+        </aside>
+
+        <main class="agenda-list" id="agendaList" aria-live="polite">
+          <p class="empty-state" id="emptyState" hidden>Geen voorstellingen gevonden voor deze filters.</p>
+        </main>
+      </div>
     </section>
 
     <!-- SCHERM: voorstelling-detail -->
@@ -210,6 +254,10 @@
       </div>
       <div class="sheet-body">
         <section class="sheet-section">
+          <h3>Stad</h3>
+          <div class="filter-row filter-row--wrap" id="sheetCityFilters" role="group" aria-label="Filter op stad"></div>
+        </section>
+        <section class="sheet-section">
           <h3>Theater</h3>
           <div class="filter-row filter-row--wrap" id="sheetTheaterFilters" role="group" aria-label="Filter op theater"></div>
         </section>
@@ -221,6 +269,12 @@
           <div class="toggle-row">
             <span class="toggle-row-label">Alleen Podiumpas-theaters</span>
             <button class="switch" type="button" id="podiumpasToggle" role="switch" aria-checked="false"></button>
+          </div>
+        </section>
+        <section class="sheet-section">
+          <div class="toggle-row">
+            <span class="toggle-row-label">Toon alleen favorieten</span>
+            <button class="switch" type="button" id="favoritesOnlyToggle" role="switch" aria-checked="false"></button>
           </div>
         </section>
       </div>

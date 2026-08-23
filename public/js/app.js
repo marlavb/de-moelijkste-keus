@@ -81,9 +81,15 @@ const DEFAULT_WINDOW_DAYS = 60;
 
 const state = {
   shows: [],
-  theaterFilter: 'alle',
-  genreFilter: 'alle',
-  podiumpasOnly: false, // lokaal-only, zelfde behandeling als genreFilter — niet in localStorage/Firestore
+  // Multi-select filters — een lege Set betekent "geen filter op deze
+  // dimensie" (toon alles), net als de oude 'alle'-waarde. Allemaal
+  // lokaal-only, net als podiumpasOnly hieronder — niet in
+  // localStorage/Firestore.
+  selectedCities: new Set(),
+  selectedTheaters: new Set(),
+  selectedGenres: new Set(),
+  podiumpasOnly: false,
+  favoritesOnly: false,
   searchQuery: '', // lokaal-only, al lowercased/getrimd — niet in localStorage/Firestore
   searchQueryRaw: '', // ongewijzigde tekst, alleen voor weergave (bv. in de lege-staat-tekst)
   enabledTheaters: loadEnabledTheaters(),
@@ -95,10 +101,18 @@ const state = {
 
 const els = {
   subtitle: document.getElementById('subtitle'),
-  theaterFilters: document.getElementById('theaterFilters'),
+  sheetCityFilters: document.getElementById('sheetCityFilters'),
   sheetTheaterFilters: document.getElementById('sheetTheaterFilters'),
   sheetGenreFilters: document.getElementById('sheetGenreFilters'),
   podiumpasToggle: document.getElementById('podiumpasToggle'),
+  favoritesOnlyToggle: document.getElementById('favoritesOnlyToggle'),
+  sidebarCityFilters: document.getElementById('sidebarCityFilters'),
+  sidebarTheaterFilters: document.getElementById('sidebarTheaterFilters'),
+  sidebarGenreFilters: document.getElementById('sidebarGenreFilters'),
+  sidebarPodiumpasToggle: document.getElementById('sidebarPodiumpasToggle'),
+  sidebarFavoritesOnlyToggle: document.getElementById('sidebarFavoritesOnlyToggle'),
+  sidebarSearchInput: document.getElementById('sidebarSearchInput'),
+  sidebarClearFilters: document.getElementById('sidebarClearFilters'),
   agendaList: document.getElementById('agendaList'),
   emptyState: document.getElementById('emptyState'),
   filterToggle: document.getElementById('filterToggle'),
@@ -162,9 +176,7 @@ async function init() {
   }
   saveEnabledTheaters();
 
-  renderTheaterFilters();
-  renderGenreFilters();
-  renderPodiumpasToggle();
+  renderFilters();
   renderFilterBadge();
   renderSubtitle();
   renderAgenda();
@@ -175,25 +187,16 @@ async function init() {
   els.searchToggle.addEventListener('click', openSearch);
   els.searchClose.addEventListener('click', closeSearch);
   els.searchInput.addEventListener('input', onSearchInput);
+  els.sidebarSearchInput.addEventListener('input', onSearchInput);
   els.searchInput.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeSearch();
   });
-  els.podiumpasToggle.addEventListener('click', () => {
-    state.podiumpasOnly = !state.podiumpasOnly;
-    renderPodiumpasToggle();
-    renderFilterBadge();
-    renderAgenda();
-  });
-  els.clearFilters.addEventListener('click', () => {
-    state.theaterFilter = 'alle';
-    state.genreFilter = 'alle';
-    state.podiumpasOnly = false;
-    renderTheaterFilters();
-    renderGenreFilters();
-    renderPodiumpasToggle();
-    renderFilterBadge();
-    renderAgenda();
-  });
+  els.podiumpasToggle.addEventListener('click', onPodiumpasToggleClick);
+  els.sidebarPodiumpasToggle.addEventListener('click', onPodiumpasToggleClick);
+  els.favoritesOnlyToggle.addEventListener('click', onFavoritesToggleClick);
+  els.sidebarFavoritesOnlyToggle.addEventListener('click', onFavoritesToggleClick);
+  els.clearFilters.addEventListener('click', clearAllFilters);
+  els.sidebarClearFilters.addEventListener('click', clearAllFilters);
 
   els.detailBack.addEventListener('click', () => navigate('#/'));
   els.theatersBack.addEventListener('click', () => navigate('#/'));
@@ -349,8 +352,7 @@ async function handleAuthChange(user) {
   }
 
   renderAuthBox();
-  renderTheaterFilters();
-  renderGenreFilters();
+  renderFilters();
   renderFilterBadge();
   renderSubtitle();
   renderAgenda();
@@ -486,6 +488,7 @@ function openSearch() {
 function closeSearch() {
   clearTimeout(searchDebounceTimer);
   els.searchInput.value = '';
+  els.sidebarSearchInput.value = '';
   state.searchQuery = '';
   state.searchQueryRaw = '';
   els.headerSearch.hidden = true;
@@ -494,9 +497,16 @@ function closeSearch() {
   renderAgenda();
 }
 
-function onSearchInput() {
+// Zowel het mobiele (uitklap-header) als het sidebar-zoekveld (breed
+// scherm) roepen dit aan — ze spiegelen elkaars waarde, zodat het bij het
+// resizen van het venster over de breakpoint heen nooit uit sync raakt.
+function onSearchInput(e) {
+  const source = e.target;
+  const other = source === els.searchInput ? els.sidebarSearchInput : els.searchInput;
+  other.value = source.value;
+
   clearTimeout(searchDebounceTimer);
-  const value = els.searchInput.value;
+  const value = source.value;
   searchDebounceTimer = setTimeout(() => {
     const trimmed = value.trim();
     state.searchQuery = trimmed.toLowerCase();
@@ -530,20 +540,111 @@ function activeTheaterIds() {
   return ids.filter((id) => state.enabledTheaters[id] !== false);
 }
 
-function renderTheaterFilters() {
+function theaterStad(id) {
+  return state.shows.find((s) => s.theaterId === id)?.stad ?? null;
+}
+
+/** Steden van de op dit moment ingeschakelde theaters, Nederlands
+ * gesorteerd — de opties voor het stad-filter. */
+function availableCities() {
+  const cities = new Set(activeTheaterIds().map((id) => theaterStad(id)).filter(Boolean));
+  return [...cities].sort((a, b) => a.localeCompare(b, 'nl'));
+}
+
+/** Theater-opties voor het theater-filter, gecascadeerd op de
+ * geselecteerde steden (leeg = geen beperking). */
+function availableTheaterIds() {
   const ids = activeTheaterIds();
-  if (state.theaterFilter !== 'alle' && !ids.includes(state.theaterFilter)) {
-    state.theaterFilter = 'alle';
+  if (state.selectedCities.size === 0) return ids;
+  return ids.filter((id) => state.selectedCities.has(theaterStad(id)));
+}
+
+function toggleSetMember(set, value) {
+  if (set.has(value)) set.delete(value);
+  else set.add(value);
+}
+
+function onCityToggle(city) {
+  const wasSelected = state.selectedCities.has(city);
+  toggleSetMember(state.selectedCities, city);
+  if (wasSelected) {
+    // Stad net uitgezet: theater-selecties in die stad worden anders
+    // "onzichtbaar" actief (ze vallen buiten de gecascadeerde lijst maar
+    // blijven meetellen in filteredShows), dus meteen mee opruimen.
+    for (const id of [...state.selectedTheaters]) {
+      if (theaterStad(id) === city) state.selectedTheaters.delete(id);
+    }
+  }
+  renderCityFilters();
+  renderTheaterFilters();
+  renderFilterBadge();
+  renderAgenda();
+}
+
+function onTheaterToggle(id) {
+  toggleSetMember(state.selectedTheaters, id);
+  renderTheaterFilters();
+  renderFilterBadge();
+  renderAgenda();
+}
+
+function onGenreToggle(genre) {
+  toggleSetMember(state.selectedGenres, genre);
+  renderGenreFilters();
+  renderFilterBadge();
+  renderAgenda();
+}
+
+function onPodiumpasToggleClick() {
+  state.podiumpasOnly = !state.podiumpasOnly;
+  renderPodiumpasToggle();
+  renderFilterBadge();
+  renderAgenda();
+}
+
+function onFavoritesToggleClick() {
+  state.favoritesOnly = !state.favoritesOnly;
+  renderFavoritesToggle();
+  renderFilterBadge();
+  renderAgenda();
+}
+
+function clearAllFilters() {
+  state.selectedCities.clear();
+  state.selectedTheaters.clear();
+  state.selectedGenres.clear();
+  state.podiumpasOnly = false;
+  state.favoritesOnly = false;
+  renderFilters();
+  renderFilterBadge();
+  renderAgenda();
+}
+
+function renderCityFilters() {
+  const cities = availableCities();
+  for (const c of [...state.selectedCities]) {
+    if (!cities.includes(c)) state.selectedCities.delete(c);
   }
 
-  for (const container of [els.theaterFilters, els.sheetTheaterFilters]) {
+  for (const container of [els.sidebarCityFilters, els.sheetCityFilters]) {
     container.innerHTML = '';
-    container.appendChild(
-      makeChip('Alle', state.theaterFilter === 'alle', () => setFilter('theaterFilter', 'alle'))
-    );
+    for (const city of cities) {
+      container.appendChild(makeChip(city, state.selectedCities.has(city), () => onCityToggle(city)));
+    }
+  }
+}
+
+function renderTheaterFilters() {
+  const ids = availableTheaterIds();
+  for (const id of [...state.selectedTheaters]) {
+    if (!ids.includes(id)) state.selectedTheaters.delete(id);
+  }
+
+  for (const container of [els.sidebarTheaterFilters, els.sheetTheaterFilters]) {
+    container.innerHTML = '';
     for (const id of ids) {
       container.appendChild(
-        makeChip(theaterDisplayName(id), state.theaterFilter === id, () => setFilter('theaterFilter', id))
+        makeChip(theaterDisplayName(id), state.selectedTheaters.has(id), () => onTheaterToggle(id))
       );
     }
   }
@@ -552,27 +653,45 @@ function renderTheaterFilters() {
 function renderGenreFilters() {
   const present = GENRE_CATEGORIES.filter((g) => state.shows.some((s) => s.genre === g));
 
-  els.sheetGenreFilters.innerHTML = '';
-  els.sheetGenreFilters.appendChild(
-    makeChip('Alle genres', state.genreFilter === 'alle', () => setFilter('genreFilter', 'alle'))
-  );
-  for (const genre of present) {
-    els.sheetGenreFilters.appendChild(
-      makeChip(genre, state.genreFilter === genre, () => setFilter('genreFilter', genre))
-    );
+  for (const container of [els.sidebarGenreFilters, els.sheetGenreFilters]) {
+    container.innerHTML = '';
+    for (const genre of present) {
+      container.appendChild(makeChip(genre, state.selectedGenres.has(genre), () => onGenreToggle(genre)));
+    }
   }
 }
 
 function renderPodiumpasToggle() {
-  els.podiumpasToggle.classList.toggle('is-on', state.podiumpasOnly);
-  els.podiumpasToggle.setAttribute('aria-checked', String(state.podiumpasOnly));
+  for (const btn of [els.podiumpasToggle, els.sidebarPodiumpasToggle]) {
+    btn.classList.toggle('is-on', state.podiumpasOnly);
+    btn.setAttribute('aria-checked', String(state.podiumpasOnly));
+  }
+}
+
+function renderFavoritesToggle() {
+  for (const btn of [els.favoritesOnlyToggle, els.sidebarFavoritesOnlyToggle]) {
+    btn.classList.toggle('is-on', state.favoritesOnly);
+    btn.setAttribute('aria-checked', String(state.favoritesOnly));
+  }
+}
+
+/** Rendert alle filter-UI (sidebar + sheet) in één keer — city eerst,
+ * want theater cascadeert erop. */
+function renderFilters() {
+  renderCityFilters();
+  renderTheaterFilters();
+  renderGenreFilters();
+  renderPodiumpasToggle();
+  renderFavoritesToggle();
 }
 
 function renderFilterBadge() {
   const count =
-    (state.theaterFilter !== 'alle' ? 1 : 0) +
-    (state.genreFilter !== 'alle' ? 1 : 0) +
-    (state.podiumpasOnly ? 1 : 0);
+    (state.selectedCities.size > 0 ? 1 : 0) +
+    (state.selectedTheaters.size > 0 ? 1 : 0) +
+    (state.selectedGenres.size > 0 ? 1 : 0) +
+    (state.podiumpasOnly ? 1 : 0) +
+    (state.favoritesOnly ? 1 : 0);
   els.filterBadge.textContent = String(count);
   els.filterBadge.hidden = count === 0;
 }
@@ -586,14 +705,6 @@ function makeChip(label, active, onClick) {
   return btn;
 }
 
-function setFilter(key, value) {
-  state[key] = state[key] === value && value !== 'alle' ? 'alle' : value;
-  renderTheaterFilters();
-  renderGenreFilters();
-  renderFilterBadge();
-  renderAgenda();
-}
-
 function filteredShows({ ignoreDateWindow = false } = {}) {
   const enabled = new Set(activeTheaterIds());
   const maxDate =
@@ -603,15 +714,17 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
 
   return state.shows.filter((s) => {
     if (!enabled.has(s.theaterId)) return false;
-    const theaterOk = state.theaterFilter === 'alle' || s.theaterId === state.theaterFilter;
-    const genreOk = state.genreFilter === 'alle' || s.genre === state.genreFilter;
+    const cityOk = state.selectedCities.size === 0 || state.selectedCities.has(s.stad);
+    const theaterOk = state.selectedTheaters.size === 0 || state.selectedTheaters.has(s.theaterId);
+    const genreOk = state.selectedGenres.size === 0 || state.selectedGenres.has(s.genre);
     const podiumpasOk = !state.podiumpasOnly || s.podiumpas === true;
+    const favoritesOk = !state.favoritesOnly || state.favorites.has(s.id);
     const dateOk = maxDate == null || s.datum <= maxDate;
     const searchOk =
       !state.searchQuery ||
       s.titel.toLowerCase().includes(state.searchQuery) ||
       s.theaterNaam.toLowerCase().includes(state.searchQuery);
-    return theaterOk && genreOk && podiumpasOk && dateOk && searchOk;
+    return cityOk && theaterOk && genreOk && podiumpasOk && favoritesOk && dateOk && searchOk;
   });
 }
 
@@ -621,7 +734,12 @@ function formatDateHeading(isoDate) {
 }
 
 function emptyStateMessage() {
-  const filtersActive = state.theaterFilter !== 'alle' || state.genreFilter !== 'alle' || state.podiumpasOnly;
+  const filtersActive =
+    state.selectedCities.size > 0 ||
+    state.selectedTheaters.size > 0 ||
+    state.selectedGenres.size > 0 ||
+    state.podiumpasOnly ||
+    state.favoritesOnly;
   const query = state.searchQueryRaw;
   if (query && filtersActive) return `Geen voorstellingen gevonden voor "${query}" met deze filters.`;
   if (query) return `Geen voorstellingen gevonden voor "${query}".`;
@@ -1022,7 +1140,7 @@ function buildTheaterCard(id) {
 function refreshAfterTheaterToggle() {
   saveEnabledTheaters();
   renderTheatersScreen();
-  renderTheaterFilters();
+  renderFilters();
   renderFilterBadge();
   renderSubtitle();
   renderAgenda();

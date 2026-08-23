@@ -224,8 +224,19 @@ a {
 
 /* Agenda list */
 
+.agenda-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.filter-sidebar {
+  display: none;
+}
+
 .agenda-list {
   flex: 1;
+  min-width: 0;
   padding: 4px 20px 24px;
 }
 
@@ -973,4 +984,50 @@ a {
   font-size: 12px;
   color: var(--text-muted);
   text-align: center;
+}
+
+/* Breed scherm: Cineville-achtige vaste filter-sidebar i.p.v. het
+   filter-icoon + bottom-sheet patroon. Alleen het agenda-scherm wordt
+   breder — de andere schermen (detail/theaters/favorieten) blijven op
+   hun mobiele breedte gecentreerd, zodat die niet ongewenst uitrekken. */
+@media (min-width: 900px) {
+  .app {
+    max-width: 1100px;
+  }
+
+  #screen-detail,
+  #screen-theaters,
+  #screen-favorieten {
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  #headerActions {
+    display: none;
+  }
+
+  .agenda-body {
+    gap: 32px;
+  }
+
+  .filter-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 260px;
+    flex-shrink: 0;
+    padding: 4px 0 24px;
+  }
+
+  .filter-sidebar-search {
+    margin-bottom: 20px;
+  }
+
+  .filter-sidebar .sheet-section {
+    margin-bottom: 22px;
+  }
+
+  .filter-sidebar .text-btn {
+    margin-top: 4px;
+  }
 }
