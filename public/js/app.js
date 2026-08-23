@@ -584,9 +584,23 @@ function sortKey(show) {
 }
 
 function renderSubtitle() {
-  const stad = state.shows[0]?.stad ?? 'Amsterdam';
-  const theaterCount = Object.values(state.enabledTheaters).filter(Boolean).length;
-  els.subtitle.textContent = `${stad} · ${theaterCount} theater${theaterCount === 1 ? '' : 's'}`;
+  const ids = activeTheaterIds();
+  const cities = new Set(ids.map((id) => theaterStad(id)).filter(Boolean));
+  const theaterCount = ids.length;
+  const theaterWoord = theaterCount === 1 ? 'theater' : 'theaters';
+
+  // Bij precies 1 stad noemen we 'm bij naam (leest natuurlijker dan "1
+  // stad"); bij meerdere steden tellen we ze op i.p.v. ze allemaal uit te
+  // schrijven — dat werd op "Mijn theaters" al onhandelbaar lang zodra er
+  // meer dan een paar steden meedoen.
+  let cityText = '';
+  if (cities.size === 1) {
+    cityText = [...cities][0];
+  } else if (cities.size > 1) {
+    cityText = `${cities.size} steden`;
+  }
+
+  els.subtitle.textContent = cityText ? `${theaterCount} ${theaterWoord} in ${cityText}` : `${theaterCount} ${theaterWoord}`;
 }
 
 function theaterDisplayName(id) {
