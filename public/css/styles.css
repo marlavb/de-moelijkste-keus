@@ -273,6 +273,12 @@ a {
   color: inherit;
 }
 
+/* Favoriete productie zonder komende voorstelling: zelfde rij-stijl, maar
+   niet klikbaar (geen detailscherm om naartoe te navigeren). */
+.show-row--inert {
+  cursor: default;
+}
+
 .date-group .show-row:last-child {
   border-bottom: 1px solid var(--border);
 }

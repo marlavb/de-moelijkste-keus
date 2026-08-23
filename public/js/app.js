@@ -72,6 +72,7 @@ const MONTHS_LONG = [
 const STORAGE_KEYS = {
   enabledTheaters: 'podiumagenda:enabledTheaters',
   favorites: 'podiumagenda:favorites',
+  favoritesMigrated: 'podiumagenda:favoritesMigrated',
 };
 
 // Standaard tonen we alleen voorstellingen tot 60 dagen vooruit — met 1136+
@@ -168,6 +169,8 @@ async function init() {
   const shows = await res.json();
   shows.sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
   state.shows = shows;
+
+  migrateFavoritesOnceLocally();
 
   // Theaters die nog nooit eerder gezien zijn (nieuw in de data) staan
   // standaard aan.
@@ -315,6 +318,46 @@ function saveFavorites() {
   localStorage.setItem(STORAGE_KEYS.favorites, JSON.stringify([...state.favorites]));
 }
 
+// Favorieten worden per productie bewaard (theater + titel), niet per
+// specifieke datum/tijd — zelfde groepering als de "andere data"-chips op
+// het detailscherm (renderOtherDates), bewust hergebruikt i.p.v. een
+// nieuwe groeperingslogica te verzinnen.
+function productionKey(show) {
+  return `${show.theaterId}::${show.titel}`;
+}
+
+// Migratie van het oude per-voorstelling-formaat (favorites bevatte
+// show.id's) naar het nieuwe per-productie-formaat. Een opgeslagen waarde
+// die matcht met een show.id in de net geladen shows.json is per definitie
+// oud-formaat (nieuwe sleutels bevatten geen show.id's meer, die hebben
+// een "::" en geen datum/tijd-suffix) — die zetten we om. Een waarde die
+// nergens mee matcht laten we ongemoeid: waarschijnlijk al nieuw-formaat,
+// of een verlopen voorstelling die niet meer in de data staat en dus toch
+// niet meer betrouwbaar te herleiden is.
+function migrateFavorites(favorites) {
+  const migrated = new Set();
+  for (const value of favorites) {
+    const oldShow = state.shows.find((s) => s.id === value);
+    migrated.add(oldShow ? productionKey(oldShow) : value);
+  }
+  return migrated;
+}
+
+function isFavoritesMigratedLocally() {
+  return localStorage.getItem(STORAGE_KEYS.favoritesMigrated) === '1';
+}
+
+// Draait één keer (bewaakt met een localStorage-vlag) om de lokale
+// favorieten te migreren — voor uitgelogde gebruikers is dit de definitieve
+// bron, voor ingelogde gebruikers een onschuldige no-op zodra
+// handleAuthChange() de cloud-versie (met eigen, aparte vlag) heeft geladen.
+function migrateFavoritesOnceLocally() {
+  if (isFavoritesMigratedLocally()) return;
+  state.favorites = migrateFavorites(state.favorites);
+  saveFavorites();
+  localStorage.setItem(STORAGE_KEYS.favoritesMigrated, '1');
+}
+
 // ---------- Inloggen (optioneel) ----------
 
 function userDocRef(uid) {
@@ -334,12 +377,19 @@ async function handleAuthChange(user) {
         const data = snap.data();
         state.favorites = new Set(data.favorites ?? []);
         state.enabledTheaters = data.enabledTheaters ?? state.enabledTheaters;
+
+        if (!data.favoritesMigrated) {
+          state.favorites = migrateFavorites(state.favorites);
+          await setDoc(ref, { favorites: [...state.favorites], favoritesMigrated: true }, { merge: true });
+        }
       } else {
         // Eerste keer inloggen op dit account: neem mee wat er lokaal al
-        // stond, in plaats van dat stilzwijgend te laten vallen.
+        // stond (migrateFavoritesOnceLocally() heeft dat in init() al naar
+        // het nieuwe formaat omgezet), i.p.v. dat stilzwijgend te laten vallen.
         await setDoc(ref, {
           favorites: [...state.favorites],
           enabledTheaters: state.enabledTheaters,
+          favoritesMigrated: true,
           updatedAt: serverTimestamp(),
         });
       }
@@ -718,7 +768,7 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     const theaterOk = state.selectedTheaters.size === 0 || state.selectedTheaters.has(s.theaterId);
     const genreOk = state.selectedGenres.size === 0 || state.selectedGenres.has(s.genre);
     const podiumpasOk = !state.podiumpasOnly || s.podiumpas === true;
-    const favoritesOk = !state.favoritesOnly || state.favorites.has(s.id);
+    const favoritesOk = !state.favoritesOnly || state.favorites.has(productionKey(s));
     const dateOk = maxDate == null || s.datum <= maxDate;
     const searchOk =
       !state.searchQuery ||
@@ -957,10 +1007,11 @@ function renderDetail(show) {
   renderOtherDates(show);
 
   els.detailFavorite.onclick = () => {
-    if (state.favorites.has(show.id)) {
-      state.favorites.delete(show.id);
+    const key = productionKey(show);
+    if (state.favorites.has(key)) {
+      state.favorites.delete(key);
     } else {
-      state.favorites.add(show.id);
+      state.favorites.add(key);
     }
     saveFavorites();
     renderFavoriteButton(show);
@@ -970,7 +1021,7 @@ function renderDetail(show) {
 }
 
 function renderFavoriteButton(show) {
-  const isFavorite = state.favorites.has(show.id);
+  const isFavorite = state.favorites.has(productionKey(show));
   els.detailFavorite.classList.toggle('is-favorite', isFavorite);
   els.detailFavorite.querySelector('svg').setAttribute('fill', isFavorite ? 'currentColor' : 'none');
 }
@@ -1199,19 +1250,102 @@ function renderTheatersScreen() {
 
 // ---------- Favorieten-scherm ----------
 
-function renderFavoritesScreen() {
-  const favShows = state.shows
-    .filter((s) => state.favorites.has(s.id))
-    .sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
+/** Eén rij per favoriete productie i.p.v. per voorstelling-datum. Een
+ * productie zonder aankomende voorstelling wordt nog wel getoond (niet
+ * stilzwijgend weggelaten), maar dan niet-klikbaar met een duidelijke
+ * "geen komende voorstellingen"-tekst — een productie waar zelfs geen
+ * enkele match meer voor bestaat in de data laten we wél weg, want daar is
+ * geen titel/theater meer voor te tonen. */
+function favoriteProductions() {
+  const productions = [];
+  for (const key of state.favorites) {
+    const matches = state.shows.filter((s) => productionKey(s) === key);
+    if (matches.length === 0) continue;
 
-  if (favShows.length === 0) {
+    const soonest = matches
+      .filter((s) => s.datum >= todayIsoDate())
+      .sort((a, b) => sortKey(a).localeCompare(sortKey(b)))[0];
+    const sample = matches[0];
+
+    productions.push({
+      key,
+      titel: sample.titel,
+      theaterId: sample.theaterId,
+      theaterNaam: sample.theaterNaam,
+      podiumpas: sample.podiumpas,
+      soonest: soonest ?? null,
+    });
+  }
+
+  productions.sort((a, b) => {
+    const aSort = a.soonest ? sortKey(a.soonest) : null;
+    const bSort = b.soonest ? sortKey(b.soonest) : null;
+    if (aSort && bSort) return aSort.localeCompare(bSort);
+    if (aSort) return -1; // producties zonder komende datum onderaan
+    if (bSort) return 1;
+    return a.titel.localeCompare(b.titel, 'nl');
+  });
+
+  return productions;
+}
+
+function renderProductionRow(production) {
+  const hasUpcoming = production.soonest != null;
+  const row = document.createElement(hasUpcoming ? 'button' : 'div');
+  row.className = 'show-row' + (hasUpcoming ? '' : ' show-row--inert');
+  if (hasUpcoming) {
+    row.type = 'button';
+    row.addEventListener('click', () => navigate(`#/show/${encodeURIComponent(production.soonest.id)}`));
+  }
+
+  const dot = document.createElement('span');
+  dot.className = 'show-dot';
+  dot.setAttribute('aria-hidden', 'true');
+
+  const info = document.createElement('span');
+  info.className = 'show-info';
+
+  const title = document.createElement('p');
+  title.className = 'show-title';
+  title.textContent = production.titel;
+
+  const metaRow = document.createElement('div');
+  metaRow.className = 'show-meta-row';
+
+  const meta = document.createElement('p');
+  meta.className = 'show-meta';
+  const theaterNaam = THEATER_SHORT_NAMES[production.theaterId] ?? production.theaterNaam;
+  meta.textContent = hasUpcoming ? theaterNaam : `${theaterNaam} · Geen komende voorstellingen`;
+  metaRow.appendChild(meta);
+
+  if (production.podiumpas === true) metaRow.appendChild(makePodiumpasIcon());
+
+  info.append(title, metaRow);
+  row.append(dot, info);
+
+  if (hasUpcoming) {
+    const chevron = svgIcon('<polyline points="9 6 15 12 9 18" />');
+    chevron.classList.add('show-chevron');
+    row.appendChild(chevron);
+  }
+
+  return row;
+}
+
+function renderFavoritesScreen() {
+  const productions = favoriteProductions();
+
+  if (productions.length === 0) {
     els.favoritesList.innerHTML = '';
     els.favoritesEmpty.hidden = false;
     els.favoritesList.appendChild(els.favoritesEmpty);
     return;
   }
   els.favoritesEmpty.hidden = true;
-  renderShowGroups(els.favoritesList, favShows);
+  els.favoritesList.innerHTML = '';
+  for (const production of productions) {
+    els.favoritesList.appendChild(renderProductionRow(production));
+  }
 }
 
 init();
