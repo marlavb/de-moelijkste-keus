@@ -85,7 +85,13 @@ const STORAGE_KEYS = {
   enabledTheaters: 'podiumagenda:enabledTheaters',
   favorites: 'podiumagenda:favorites',
   favoritesMigrated: 'podiumagenda:favoritesMigrated',
+  sidebarSections: 'podiumagenda:sidebarSections',
 };
+
+// Desktop-sidebar accordeon-secties (Stad/Theater/Genre) — standaard allemaal
+// open zodat bestaande bezoekers zonder opgeslagen voorkeur niets zien
+// veranderen totdat ze zelf iets inklappen.
+const SIDEBAR_SECTION_IDS = ['stad', 'theater', 'genre'];
 
 // Standaard tonen we alleen voorstellingen tot 60 dagen vooruit — met 1136+
 // voorstellingen tot in 2028 is "alles in één keer" geen bruikbare lijst.
@@ -107,6 +113,7 @@ const state = {
   searchQueryRaw: '', // ongewijzigde tekst, alleen voor weergave (bv. in de lege-staat-tekst)
   enabledTheaters: loadEnabledTheaters(),
   favorites: loadFavorites(),
+  sidebarSections: loadSidebarSections(),
   dateWindowDays: DEFAULT_WINDOW_DAYS,
   user: null, // Firebase User, of null als niet ingelogd (= lokaal-only, zoals voorheen)
   authError: null,
@@ -125,6 +132,11 @@ const els = {
   sidebarPodiumpasToggle: document.getElementById('sidebarPodiumpasToggle'),
   sidebarFavoritesOnlyToggle: document.getElementById('sidebarFavoritesOnlyToggle'),
   sidebarSearchInput: document.getElementById('sidebarSearchInput'),
+  sidebarAccordionHeaders: {
+    stad: document.getElementById('sidebarStadHeader'),
+    theater: document.getElementById('sidebarTheaterHeader'),
+    genre: document.getElementById('sidebarGenreHeader'),
+  },
   sidebarClearFilters: document.getElementById('sidebarClearFilters'),
   agendaList: document.getElementById('agendaList'),
   emptyState: document.getElementById('emptyState'),
@@ -195,6 +207,7 @@ async function init() {
   renderFilterBadge();
   renderSubtitle();
   renderAgenda();
+  renderSidebarSections();
 
   els.filterToggle.addEventListener('click', openSheet);
   els.sheetClose.addEventListener('click', closeSheet);
@@ -212,6 +225,9 @@ async function init() {
   els.sidebarFavoritesOnlyToggle.addEventListener('click', onFavoritesToggleClick);
   els.clearFilters.addEventListener('click', clearAllFilters);
   els.sidebarClearFilters.addEventListener('click', clearAllFilters);
+  for (const id of SIDEBAR_SECTION_IDS) {
+    els.sidebarAccordionHeaders[id].addEventListener('click', () => toggleSidebarSection(id));
+  }
 
   els.detailBack.addEventListener('click', () => navigate('#/'));
   els.theatersBack.addEventListener('click', () => navigate('#/'));
@@ -310,6 +326,28 @@ function saveEnabledTheaters() {
     return;
   }
   localStorage.setItem(STORAGE_KEYS.enabledTheaters, JSON.stringify(state.enabledTheaters));
+}
+
+// Open/dicht-status van de Stad/Theater/Genre-accordeons in de desktop-
+// sidebar — lokaal-only (geen Firestore-sync nodig voor zoiets kleins).
+// Ontbrekende/onbekende waarden vallen terug op "open", zodat een
+// bezoeker zonder opgeslagen voorkeur niets anders ziet dan voorheen.
+function loadSidebarSections() {
+  let stored = {};
+  try {
+    stored = JSON.parse(localStorage.getItem(STORAGE_KEYS.sidebarSections)) ?? {};
+  } catch {
+    stored = {};
+  }
+  const sections = {};
+  for (const id of SIDEBAR_SECTION_IDS) {
+    sections[id] = stored[id] === 'closed' ? 'closed' : 'open';
+  }
+  return sections;
+}
+
+function saveSidebarSections() {
+  localStorage.setItem(STORAGE_KEYS.sidebarSections, JSON.stringify(state.sidebarSections));
 }
 
 function loadFavorites() {
@@ -766,6 +804,30 @@ function renderFavoritesToggle() {
     btn.classList.toggle('is-on', state.favoritesOnly);
     btn.setAttribute('aria-checked', String(state.favoritesOnly));
   }
+}
+
+const SIDEBAR_SECTION_CONTENT_ELS = {
+  stad: () => els.sidebarCityFilters,
+  theater: () => els.sidebarTheaterFilters,
+  genre: () => els.sidebarGenreFilters,
+};
+
+function applySidebarSectionState(sectionId) {
+  const isOpen = state.sidebarSections[sectionId] === 'open';
+  const header = els.sidebarAccordionHeaders[sectionId];
+  const content = SIDEBAR_SECTION_CONTENT_ELS[sectionId]();
+  header.setAttribute('aria-expanded', String(isOpen));
+  content.hidden = !isOpen;
+}
+
+function renderSidebarSections() {
+  for (const id of SIDEBAR_SECTION_IDS) applySidebarSectionState(id);
+}
+
+function toggleSidebarSection(sectionId) {
+  state.sidebarSections[sectionId] = state.sidebarSections[sectionId] === 'open' ? 'closed' : 'open';
+  applySidebarSectionState(sectionId);
+  saveSidebarSections();
 }
 
 /** Rendert alle filter-UI (sidebar + sheet) in één keer — city eerst,
