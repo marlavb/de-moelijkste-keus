@@ -11,22 +11,10 @@ import {
   serverTimestamp,
 } from './firebase.js';
 
-// Vaste volgorde/labels voor de theater-filterchips en -kaarten. Nieuwe
-// theaters die nog niet in deze lijst staan, worden onderaan toegevoegd met
-// hun volledige naam — zo blijft de UI werken als er later een stad/theater
-// bijkomt.
-const THEATER_ORDER = [
-  'delamar',
-  'bellevue',
-  'meervaart',
-  'ita',
-  'kleinekomedie',
-  'frascati',
-  'carre',
-  'amstelveen',
-  'stadsschouwburgutrecht',
-  'theaterkikker',
-];
+// Labels voor de theater-filterchips en -kaarten. Overal waar theaters in
+// een lijst staan, sorteren we op dit label (Nederlandse locale) — een
+// nieuw theater dat hier nog niet in staat valt terug op de volledige naam
+// uit shows.json, dus de UI blijft werken zonder deze lijst bij te werken.
 const THEATER_SHORT_NAMES = {
   delamar: 'DeLaMar',
   bellevue: 'Bellevue',
@@ -151,8 +139,6 @@ const els = {
   detailAddCalendar: document.getElementById('detailAddCalendar'),
   theatersBack: document.getElementById('theatersBack'),
   theatersList: document.getElementById('theatersList'),
-  theatersCount: document.getElementById('theatersCount'),
-  theatersCities: document.getElementById('theatersCities'),
   favoritesList: document.getElementById('favoritesList'),
   favoritesEmpty: document.getElementById('favoritesEmpty'),
   authBox: document.getElementById('authBox'),
@@ -525,10 +511,17 @@ function renderSubtitle() {
   els.subtitle.textContent = `${stad} · ${theaterCount} theater${theaterCount === 1 ? '' : 's'}`;
 }
 
+function theaterDisplayName(id) {
+  return THEATER_SHORT_NAMES[id] ?? state.shows.find((s) => s.theaterId === id)?.theaterNaam ?? id;
+}
+
+function sortTheaterIdsByName(ids) {
+  return [...ids].sort((a, b) => theaterDisplayName(a).localeCompare(theaterDisplayName(b), 'nl'));
+}
+
 function activeTheaterIds() {
-  const present = THEATER_ORDER.filter((id) => state.shows.some((s) => s.theaterId === id));
-  const extra = [...new Set(state.shows.map((s) => s.theaterId))].filter((id) => !present.includes(id));
-  return [...present, ...extra].filter((id) => state.enabledTheaters[id] !== false);
+  const ids = sortTheaterIdsByName([...new Set(state.shows.map((s) => s.theaterId))]);
+  return ids.filter((id) => state.enabledTheaters[id] !== false);
 }
 
 function renderTheaterFilters() {
@@ -543,8 +536,9 @@ function renderTheaterFilters() {
       makeChip('Alle', state.theaterFilter === 'alle', () => setFilter('theaterFilter', 'alle'))
     );
     for (const id of ids) {
-      const naam = THEATER_SHORT_NAMES[id] ?? state.shows.find((s) => s.theaterId === id)?.theaterNaam ?? id;
-      container.appendChild(makeChip(naam, state.theaterFilter === id, () => setFilter('theaterFilter', id)));
+      container.appendChild(
+        makeChip(theaterDisplayName(id), state.theaterFilter === id, () => setFilter('theaterFilter', id))
+      );
     }
   }
 }
@@ -925,56 +919,76 @@ function downloadIcs(show) {
 
 // ---------- Theaters screen ----------
 
+function buildTheaterCard(id) {
+  const theaterShow = state.shows.find((s) => s.theaterId === id);
+  const naam = theaterShow?.theaterNaam ?? id;
+  const adres = THEATER_INFO[id]?.adres ?? '';
+  const heeftPodiumpas = theaterShow?.podiumpas === true;
+  const isOn = state.enabledTheaters[id] !== false;
+
+  const card = document.createElement('div');
+  card.className = 'theater-card';
+
+  const info = document.createElement('div');
+  const nameEl = document.createElement('p');
+  nameEl.className = 'theater-card-name';
+  nameEl.textContent = naam;
+  const addressEl = document.createElement('p');
+  addressEl.className = 'theater-card-address';
+  addressEl.textContent = adres;
+  const podiumpasEl = document.createElement('span');
+  podiumpasEl.className = 'podiumpas-badge' + (heeftPodiumpas ? '' : ' podiumpas-badge--no');
+  podiumpasEl.textContent = heeftPodiumpas ? 'Podiumpas' : 'Geen Podiumpas';
+  info.append(nameEl, addressEl, podiumpasEl);
+
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'switch' + (isOn ? ' is-on' : '');
+  toggle.setAttribute('role', 'switch');
+  toggle.setAttribute('aria-checked', String(isOn));
+  toggle.setAttribute('aria-label', `${naam} in agenda tonen`);
+  toggle.addEventListener('click', () => {
+    state.enabledTheaters[id] = !isOn;
+    saveEnabledTheaters();
+    renderTheatersScreen();
+    renderTheaterFilters();
+    renderFilterBadge();
+    renderSubtitle();
+    renderAgenda();
+  });
+
+  card.append(info, toggle);
+  return card;
+}
+
 function renderTheatersScreen() {
-  const ids = [...new Set(state.shows.map((s) => s.theaterId))].sort(
-    (a, b) => THEATER_ORDER.indexOf(a) - THEATER_ORDER.indexOf(b)
-  );
-  const enabledCount = ids.filter((id) => state.enabledTheaters[id] !== false).length;
-  els.theatersCount.textContent = `${enabledCount} van ${ids.length}`;
-  const steden = [...new Set(ids.map((id) => state.shows.find((s) => s.theaterId === id)?.stad).filter(Boolean))];
-  els.theatersCities.textContent = steden.join(' & ').toUpperCase();
+  const ids = sortTheaterIdsByName([...new Set(state.shows.map((s) => s.theaterId))]);
+
+  const idsByStad = new Map();
+  for (const id of ids) {
+    const stad = state.shows.find((s) => s.theaterId === id)?.stad ?? '';
+    if (!idsByStad.has(stad)) idsByStad.set(stad, []);
+    idsByStad.get(stad).push(id);
+  }
+  const steden = [...idsByStad.keys()].sort((a, b) => a.localeCompare(b, 'nl'));
 
   els.theatersList.innerHTML = '';
-  for (const id of ids) {
-    const theaterShow = state.shows.find((s) => s.theaterId === id);
-    const naam = theaterShow?.theaterNaam ?? id;
-    const adres = THEATER_INFO[id]?.adres ?? '';
-    const heeftPodiumpas = theaterShow?.podiumpas === true;
-    const isOn = state.enabledTheaters[id] !== false;
+  for (const stad of steden) {
+    const cityIds = idsByStad.get(stad);
+    const enabledCount = cityIds.filter((id) => state.enabledTheaters[id] !== false).length;
 
-    const card = document.createElement('div');
-    card.className = 'theater-card';
+    const heading = document.createElement('div');
+    heading.className = 'theaters-list-heading';
+    const cityLabel = document.createElement('span');
+    cityLabel.textContent = stad.toUpperCase();
+    const countLabel = document.createElement('span');
+    countLabel.textContent = `${enabledCount} van ${cityIds.length}`;
+    heading.append(cityLabel, countLabel);
+    els.theatersList.appendChild(heading);
 
-    const info = document.createElement('div');
-    const nameEl = document.createElement('p');
-    nameEl.className = 'theater-card-name';
-    nameEl.textContent = naam;
-    const addressEl = document.createElement('p');
-    addressEl.className = 'theater-card-address';
-    addressEl.textContent = adres;
-    const podiumpasEl = document.createElement('span');
-    podiumpasEl.className = 'podiumpas-badge' + (heeftPodiumpas ? '' : ' podiumpas-badge--no');
-    podiumpasEl.textContent = heeftPodiumpas ? 'Podiumpas' : 'Geen Podiumpas';
-    info.append(nameEl, addressEl, podiumpasEl);
-
-    const toggle = document.createElement('button');
-    toggle.type = 'button';
-    toggle.className = 'switch' + (isOn ? ' is-on' : '');
-    toggle.setAttribute('role', 'switch');
-    toggle.setAttribute('aria-checked', String(isOn));
-    toggle.setAttribute('aria-label', `${naam} in agenda tonen`);
-    toggle.addEventListener('click', () => {
-      state.enabledTheaters[id] = !isOn;
-      saveEnabledTheaters();
-      renderTheatersScreen();
-      renderTheaterFilters();
-      renderFilterBadge();
-      renderSubtitle();
-      renderAgenda();
-    });
-
-    card.append(info, toggle);
-    els.theatersList.appendChild(card);
+    for (const id of cityIds) {
+      els.theatersList.appendChild(buildTheaterCard(id));
+    }
   }
 }
 
