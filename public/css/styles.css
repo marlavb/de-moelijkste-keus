@@ -639,6 +639,7 @@ a {
 
 .theaters-list-heading {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   font-size: 12px;
   font-weight: 600;
@@ -649,6 +650,25 @@ a {
 
 .theaters-list-heading:first-child {
   margin-top: 0;
+}
+
+.theaters-list-heading-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.city-toggle-btn {
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--accent);
+  background: none;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: normal;
+  text-transform: none;
+  cursor: pointer;
 }
 
 .theater-card {
@@ -721,21 +741,81 @@ a {
   transform: translateX(18px);
 }
 
-.add-city-btn {
-  width: 100%;
+.feedback-box {
+  margin-top: 20px;
   padding: 16px;
   border-radius: var(--radius-md);
   border: 1px dashed var(--border);
-  background: none;
-  color: var(--text-muted);
+}
+
+.feedback-heading {
+  margin: 0 0 10px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
+}
+
+.feedback-form[hidden] {
+  display: none;
+}
+
+.feedback-form {
+  display: flex;
+  gap: 8px;
+}
+
+.feedback-input {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.feedback-input::placeholder {
+  color: var(--text-muted);
+}
+
+.feedback-submit {
+  flex-shrink: 0;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
 }
 
-.add-city-btn:disabled {
+.feedback-submit:disabled {
+  background: var(--border);
+  color: var(--text-muted);
   cursor: not-allowed;
-  opacity: 0.7;
+}
+
+.feedback-status {
+  margin: 10px 0 0;
+  font-size: 13px;
+}
+
+.feedback-status[hidden] {
+  display: none;
+}
+
+.feedback-status--error {
+  color: #9c4a3d;
+}
+
+.feedback-status--success {
+  color: var(--accent);
+  font-weight: 600;
 }
 
 /* Inloggen (optioneel) */
@@ -841,6 +921,30 @@ a {
 .status-badge--wachtlijst {
   background: #f6e9d2;
   color: #8f6a1f;
+}
+
+/* Podiumpas-icoon — eigen, minimalistisch ontwerp (geen officieel
+   Podiumpas-logo): een vinkje in een rondje, zodat het los van tekst
+   herkenbaar blijft als "hier geaccepteerd" zonder de kaart te domineren. */
+.podiumpas-icon[hidden] {
+  display: none;
+}
+
+.podiumpas-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.podiumpas-icon svg {
+  width: 11px;
+  height: 11px;
 }
 
 .show-meta-row {

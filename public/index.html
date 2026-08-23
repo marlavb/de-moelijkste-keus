@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Podiumagenda</title>
-  <meta name="description" content="Gecombineerde theateragenda voor Amsterdam" />
+  <meta name="description" content="Gecombineerde theateragenda voor Podiumpas-theaters" />
   <meta name="theme-color" content="#F7F4EE" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" />
@@ -92,6 +92,11 @@
       <div class="detail-body">
         <div class="detail-tags-row">
           <span class="pill-tag" id="detailTheater"></span>
+          <span class="podiumpas-icon" id="detailPodiumpasBadge" role="img" aria-label="Podiumpas geaccepteerd" title="Dit theater accepteert de Podiumpas" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="4 12 9 17 20 6" />
+            </svg>
+          </span>
           <span class="status-badge" id="detailStatusBadge" hidden></span>
         </div>
         <h1 class="detail-title" id="detailTitle"></h1>
@@ -154,9 +159,22 @@
         <div id="authBox"></div>
 
         <div id="theatersList"></div>
-        <button class="add-city-btn" type="button" disabled>
-          <span aria-hidden="true">+</span> Voeg een stad toe
-        </button>
+
+        <section class="feedback-box">
+          <h3 class="feedback-heading">Mis je een theater? Laat het weten!</h3>
+          <form class="feedback-form" id="feedbackForm">
+            <input
+              type="text"
+              class="feedback-input"
+              id="feedbackInput"
+              placeholder="Bijv. de naam van een theater"
+              maxlength="500"
+              aria-label="Je bericht"
+            />
+            <button class="feedback-submit" type="submit" id="feedbackSubmit" disabled>Versturen</button>
+          </form>
+          <p class="feedback-status" id="feedbackStatus" hidden></p>
+        </section>
       </main>
     </section>
 

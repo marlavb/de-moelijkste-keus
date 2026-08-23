@@ -1,7 +1,7 @@
 {
   "name": "Podiumagenda",
   "short_name": "Podiumagenda",
-  "description": "Gecombineerde theateragenda voor Amsterdamse podia",
+  "description": "Gecombineerde theateragenda voor Podiumpas-theaters",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

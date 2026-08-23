@@ -126,6 +126,7 @@ const els = {
   detailGenre: document.getElementById('detailGenre'),
   detailTheater: document.getElementById('detailTheater'),
   detailStatusBadge: document.getElementById('detailStatusBadge'),
+  detailPodiumpasBadge: document.getElementById('detailPodiumpasBadge'),
   detailTitle: document.getElementById('detailTitle'),
   detailDate: document.getElementById('detailDate'),
   detailTime: document.getElementById('detailTime'),
@@ -142,6 +143,10 @@ const els = {
   favoritesList: document.getElementById('favoritesList'),
   favoritesEmpty: document.getElementById('favoritesEmpty'),
   authBox: document.getElementById('authBox'),
+  feedbackForm: document.getElementById('feedbackForm'),
+  feedbackInput: document.getElementById('feedbackInput'),
+  feedbackSubmit: document.getElementById('feedbackSubmit'),
+  feedbackStatus: document.getElementById('feedbackStatus'),
 };
 
 async function init() {
@@ -203,6 +208,7 @@ async function init() {
   window.addEventListener('hashchange', route);
   route();
 
+  initFeedbackForm();
   renderAuthBox();
   onAuthStateChanged(auth, handleAuthChange);
 
@@ -705,6 +711,8 @@ function renderShowRow(show) {
   meta.textContent = show.tijd ? `${theaterNaam} · ${show.tijd}` : theaterNaam;
   metaRow.appendChild(meta);
 
+  if (show.podiumpas === true) metaRow.appendChild(makePodiumpasIcon());
+
   const badge = makeStatusBadge(show.beschikbaarheid);
   if (badge) metaRow.appendChild(badge);
 
@@ -715,6 +723,17 @@ function renderShowRow(show) {
 
   row.append(dot, info, chevron);
   return row;
+}
+
+/** Klein, eigen vinkje-icoon dat aangeeft dat dit theater de Podiumpas accepteert. */
+function makePodiumpasIcon() {
+  const wrap = document.createElement('span');
+  wrap.className = 'podiumpas-icon';
+  wrap.setAttribute('role', 'img');
+  wrap.setAttribute('aria-label', 'Podiumpas geaccepteerd');
+  wrap.title = 'Dit theater accepteert de Podiumpas';
+  wrap.appendChild(svgIcon('<polyline points="4 12 9 17 20 6" />'));
+  return wrap;
 }
 
 /** Geeft een badge-element terug, of null als er niets te tonen valt. */
@@ -790,6 +809,7 @@ function renderDetail(show) {
   const genreLabel = show.genre ?? show.theaterNaam;
   els.detailGenre.textContent = genreLabel;
   els.detailTheater.textContent = THEATER_SHORT_NAMES[show.theaterId] ?? show.theaterNaam;
+  els.detailPodiumpasBadge.hidden = show.podiumpas !== true;
   els.detailTitle.textContent = show.titel;
   els.detailDate.textContent = formatDateLong(show.datum);
   els.detailTime.textContent = show.tijd ? `${show.tijd} uur` : 'Tijd volgt nog';
@@ -917,6 +937,49 @@ function downloadIcs(show) {
   URL.revokeObjectURL(url);
 }
 
+// ---------- Feedback (theater-suggesties) ----------
+
+const FEEDBACK_ENDPOINT = 'https://formspree.io/f/mjybznqd';
+
+function setFeedbackStatus(text, variant) {
+  els.feedbackStatus.textContent = text;
+  els.feedbackStatus.className = 'feedback-status' + (variant ? ` feedback-status--${variant}` : '');
+  els.feedbackStatus.hidden = !text;
+}
+
+function initFeedbackForm() {
+  els.feedbackInput.addEventListener('input', () => {
+    els.feedbackSubmit.disabled = els.feedbackInput.value.trim() === '';
+  });
+
+  els.feedbackForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const message = els.feedbackInput.value.trim();
+    if (!message) return;
+
+    els.feedbackSubmit.disabled = true;
+    els.feedbackSubmit.textContent = 'Versturen...';
+    setFeedbackStatus('');
+
+    try {
+      const res = await fetch(FEEDBACK_ENDPOINT, {
+        method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message }),
+      });
+
+      if (!res.ok) throw new Error(`Formspree respondeerde met ${res.status}`);
+
+      els.feedbackForm.hidden = true;
+      setFeedbackStatus('Bedankt! We hebben je bericht ontvangen.', 'success');
+    } catch {
+      els.feedbackSubmit.disabled = false;
+      els.feedbackSubmit.textContent = 'Versturen';
+      setFeedbackStatus('Er ging iets mis bij het versturen. Probeer het later opnieuw.', 'error');
+    }
+  });
+}
+
 // ---------- Theaters screen ----------
 
 function buildTheaterCard(id) {
@@ -949,16 +1012,36 @@ function buildTheaterCard(id) {
   toggle.setAttribute('aria-label', `${naam} in agenda tonen`);
   toggle.addEventListener('click', () => {
     state.enabledTheaters[id] = !isOn;
-    saveEnabledTheaters();
-    renderTheatersScreen();
-    renderTheaterFilters();
-    renderFilterBadge();
-    renderSubtitle();
-    renderAgenda();
+    refreshAfterTheaterToggle();
   });
 
   card.append(info, toggle);
   return card;
+}
+
+function refreshAfterTheaterToggle() {
+  saveEnabledTheaters();
+  renderTheatersScreen();
+  renderTheaterFilters();
+  renderFilterBadge();
+  renderSubtitle();
+  renderAgenda();
+}
+
+/** Knop om alle theaters van één stad tegelijk aan/uit te zetten — bewust
+ * een tekst-knop (i.p.v. een switch) zodat 'm duidelijk anders oogt dan de
+ * per-theater switches eronder. */
+function buildCityToggleButton(stad, cityIds, allOn) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'city-toggle-btn';
+  btn.textContent = allOn ? 'Alles uit' : 'Alles aan';
+  btn.setAttribute('aria-label', `Alle theaters in ${stad} ${allOn ? 'verbergen' : 'tonen'}`);
+  btn.addEventListener('click', () => {
+    for (const id of cityIds) state.enabledTheaters[id] = !allOn;
+    refreshAfterTheaterToggle();
+  });
+  return btn;
 }
 
 function renderTheatersScreen() {
@@ -976,14 +1059,18 @@ function renderTheatersScreen() {
   for (const stad of steden) {
     const cityIds = idsByStad.get(stad);
     const enabledCount = cityIds.filter((id) => state.enabledTheaters[id] !== false).length;
+    const allOn = enabledCount === cityIds.length;
 
     const heading = document.createElement('div');
     heading.className = 'theaters-list-heading';
+    const headingLeft = document.createElement('div');
+    headingLeft.className = 'theaters-list-heading-left';
     const cityLabel = document.createElement('span');
     cityLabel.textContent = stad.toUpperCase();
+    headingLeft.append(cityLabel, buildCityToggleButton(stad, cityIds, allOn));
     const countLabel = document.createElement('span');
     countLabel.textContent = `${enabledCount} van ${cityIds.length}`;
-    heading.append(cityLabel, countLabel);
+    heading.append(headingLeft, countLabel);
     els.theatersList.appendChild(heading);
 
     for (const id of cityIds) {
