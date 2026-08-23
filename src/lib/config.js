@@ -13,7 +13,7 @@ export const USER_AGENT = `Mozilla/5.0 (compatible; ${USER_AGENT_TOKEN}/0.1; ${C
 export const THEATERS = [
   {
     id: 'delamar',
-    naam: 'DeLaMar Theater',
+    naam: 'DeLaMar',
     stad: 'Amsterdam',
     baseUrl: 'https://delamar.nl',
     agendaUrl: 'https://delamar.nl/agenda/',
@@ -29,7 +29,7 @@ export const THEATERS = [
   },
   {
     id: 'meervaart',
-    naam: 'De Meervaart',
+    naam: 'Theater de Meervaart',
     stad: 'Amsterdam',
     baseUrl: 'https://meervaart.nl',
     agendaUrl: 'https://meervaart.nl/agenda',
@@ -117,7 +117,7 @@ export const THEATERS = [
   },
   {
     id: 'scala',
-    naam: 'Scala',
+    naam: 'Scala Theater',
     stad: 'Amsterdam',
     baseUrl: 'https://www.scala-amsterdam.nl',
     agendaUrl: 'https://www.scala-amsterdam.nl/voorstellingen',
@@ -125,7 +125,7 @@ export const THEATERS = [
   },
   {
     id: 'omval',
-    naam: 'Theater De Omval',
+    naam: 'Theater de Omval',
     stad: 'Diemen',
     baseUrl: 'https://www.theaterdeomval.nl',
     agendaUrl: 'https://www.theaterdeomval.nl/voorstellingen',
@@ -133,7 +133,7 @@ export const THEATERS = [
   },
   {
     id: 'delanding',
-    naam: 'Theater De Landing',
+    naam: 'De Landing',
     stad: 'Amstelveen',
     baseUrl: 'https://schouwburgamstelveen.nl',
     agendaUrl: 'https://schouwburgamstelveen.nl/nl/delanding/agenda/',
