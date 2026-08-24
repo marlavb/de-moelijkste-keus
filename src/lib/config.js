@@ -235,4 +235,20 @@ export const THEATERS = [
     agendaUrl: 'https://www.aandeslinger.nl/programma',
     podiumpas: true,
   },
+  {
+    id: 'corrosia',
+    naam: 'Corrosia',
+    stad: 'Almere',
+    baseUrl: 'https://www.corrosia.nl',
+    agendaUrl: 'https://www.corrosia.nl/agenda/programma',
+    podiumpas: true,
+  },
+  {
+    id: 'kunstlinie',
+    naam: 'Kunstlinie',
+    stad: 'Almere',
+    baseUrl: 'https://kunstlinie.nl',
+    agendaUrl: 'https://kunstlinie.nl/programma/',
+    podiumpas: true,
+  },
 ];

@@ -141,6 +141,13 @@ const GENRE_MAP = {
   verrassing: 'Overig', // mystery-programmering, geen eigen genre
   bijzonder: 'Overig', // Flint's eigen "bijzonder"-label, staat meestal naast een echt genre in de tag-lijst
   'musical & show': 'Musical',
+
+  // Corrosia / Kunstlinie (Flevoland-batch)
+  'familie & jeugd': 'Familie & Jeugd', // omgekeerde woordvolgorde t.o.v. het al gemapte 'jeugd & familie'
+  show: 'Overig',
+  urban: 'Overig',
+  'zaal x': 'Overig', // Kunstlinie's eigen zaal-/programmastrand-label, geen genre op zich
+  'externe programmering': 'Overig', // gastprogrammering, geen genre op zich
 };
 
 /**

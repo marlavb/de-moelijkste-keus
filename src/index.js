@@ -34,6 +34,8 @@ import { scrapeBostheater } from './sites/bostheater.js';
 import { scrapeHogeWoerd } from './sites/hogewoerd.js';
 import { scrapeFlint } from './sites/flint.js';
 import { scrapeAanDeSlinger } from './sites/aandeslinger.js';
+import { scrapeCorrosia } from './sites/corrosia.js';
+import { scrapeKunstlinie } from './sites/kunstlinie.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -64,6 +66,8 @@ const SCRAPERS = {
   hogewoerd: scrapeHogeWoerd,
   flint: scrapeFlint,
   aandeslinger: scrapeAanDeSlinger,
+  corrosia: scrapeCorrosia,
+  kunstlinie: scrapeKunstlinie,
 };
 
 const OUTPUT_PATH = path.resolve('data/shows.json');

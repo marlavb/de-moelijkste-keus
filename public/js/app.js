@@ -42,6 +42,8 @@ const THEATER_INFO = {
   hogewoerd: { adres: 'Hoge Woerdplein 1' },
   flint: { adres: 'Coninckstraat 60' },
   aandeslinger: { adres: 'De Slinger 40' },
+  corrosia: { adres: 'Markt 43' },
+  kunstlinie: { adres: 'Esplanade 10' },
 };
 
 // Alleen "uitverkocht" en "wachtlijst" krijgen een badge — "beschikbaar" is
