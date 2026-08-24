@@ -1287,7 +1287,11 @@ function buildTheaterCard(id) {
   const theaterShow = state.shows.find((s) => s.theaterId === id);
   const naam = theaterShow?.theaterNaam ?? id;
   const adres = THEATER_INFO[id]?.adres ?? '';
-  const heeftPodiumpas = theaterShow?.podiumpas === true;
+  // .some() i.p.v. de eerste match: bij een gemengd theater (bv.
+  // Bostheater, waar podiumpas per show verschilt) zou "eerste show" hier
+  // willekeurig zijn — zelfde afweging als theaterHasPodiumpas() bij de
+  // sidebar-filterchip.
+  const heeftPodiumpas = theaterHasPodiumpas(id);
   const isOn = state.enabledTheaters[id] !== false;
 
   const card = document.createElement('div');
