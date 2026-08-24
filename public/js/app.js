@@ -96,6 +96,7 @@ const state = {
   selectedGenres: new Set(),
   podiumpasOnly: false,
   favoritesOnly: false,
+  hideFullOnly: false,
   searchQuery: '', // lokaal-only, al lowercased/getrimd — niet in localStorage/Firestore
   searchQueryRaw: '', // ongewijzigde tekst, alleen voor weergave (bv. in de lege-staat-tekst)
   enabledTheaters: loadEnabledTheaters(),
@@ -113,11 +114,13 @@ const els = {
   sheetGenreFilters: document.getElementById('sheetGenreFilters'),
   podiumpasToggle: document.getElementById('podiumpasToggle'),
   favoritesOnlyToggle: document.getElementById('favoritesOnlyToggle'),
+  hideFullToggle: document.getElementById('hideFullToggle'),
   sidebarCityFilters: document.getElementById('sidebarCityFilters'),
   sidebarTheaterFilters: document.getElementById('sidebarTheaterFilters'),
   sidebarGenreFilters: document.getElementById('sidebarGenreFilters'),
   sidebarPodiumpasToggle: document.getElementById('sidebarPodiumpasToggle'),
   sidebarFavoritesOnlyToggle: document.getElementById('sidebarFavoritesOnlyToggle'),
+  sidebarHideFullToggle: document.getElementById('sidebarHideFullToggle'),
   sidebarSearchInput: document.getElementById('sidebarSearchInput'),
   sidebarAccordionHeaders: {
     stad: document.getElementById('sidebarStadHeader'),
@@ -238,6 +241,8 @@ async function init() {
   els.sidebarPodiumpasToggle.addEventListener('click', onPodiumpasToggleClick);
   els.favoritesOnlyToggle.addEventListener('click', onFavoritesToggleClick);
   els.sidebarFavoritesOnlyToggle.addEventListener('click', onFavoritesToggleClick);
+  els.hideFullToggle.addEventListener('click', onHideFullToggleClick);
+  els.sidebarHideFullToggle.addEventListener('click', onHideFullToggleClick);
   els.clearFilters.addEventListener('click', clearAllFilters);
   els.sidebarClearFilters.addEventListener('click', clearAllFilters);
   for (const id of SIDEBAR_SECTION_IDS) {
@@ -756,12 +761,20 @@ function onFavoritesToggleClick() {
   renderAgenda();
 }
 
+function onHideFullToggleClick() {
+  state.hideFullOnly = !state.hideFullOnly;
+  renderHideFullToggle();
+  renderFilterBadge();
+  renderAgenda();
+}
+
 function clearAllFilters() {
   state.selectedCities.clear();
   state.selectedTheaters.clear();
   state.selectedGenres.clear();
   state.podiumpasOnly = false;
   state.favoritesOnly = false;
+  state.hideFullOnly = false;
   renderFilters();
   renderFilterBadge();
   renderAgenda();
@@ -822,6 +835,13 @@ function renderFavoritesToggle() {
   }
 }
 
+function renderHideFullToggle() {
+  for (const btn of [els.hideFullToggle, els.sidebarHideFullToggle]) {
+    btn.classList.toggle('is-on', state.hideFullOnly);
+    btn.setAttribute('aria-checked', String(state.hideFullOnly));
+  }
+}
+
 /** Rendert alle filter-UI (sidebar + sheet) in één keer — city eerst,
  * want theater cascadeert erop. */
 function renderFilters() {
@@ -830,6 +850,7 @@ function renderFilters() {
   renderGenreFilters();
   renderPodiumpasToggle();
   renderFavoritesToggle();
+  renderHideFullToggle();
 }
 
 function renderFilterBadge() {
@@ -838,7 +859,8 @@ function renderFilterBadge() {
     (state.selectedTheaters.size > 0 ? 1 : 0) +
     (state.selectedGenres.size > 0 ? 1 : 0) +
     (state.podiumpasOnly ? 1 : 0) +
-    (state.favoritesOnly ? 1 : 0);
+    (state.favoritesOnly ? 1 : 0) +
+    (state.hideFullOnly ? 1 : 0);
   els.filterBadge.textContent = String(count);
   els.filterBadge.hidden = count === 0;
 }
@@ -867,6 +889,10 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     const genreOk = state.selectedGenres.size === 0 || state.selectedGenres.has(s.genre);
     const podiumpasOk = !state.podiumpasOnly || s.podiumpas === true;
     const favoritesOk = !state.favoritesOnly || state.favorites.has(productionKey(s));
+    // 'onbekend' blijft altijd zichtbaar — we weten domweg niet of die vol
+    // is, en dat is iets anders dan bevestigd vol (uitverkocht/wachtlijst).
+    const fullOk =
+      !state.hideFullOnly || (s.beschikbaarheid !== 'uitverkocht' && s.beschikbaarheid !== 'wachtlijst');
     // Ondergrens geldt altijd, ook met ignoreDateWindow (dat heft alleen de
     // voorwaartse 60-dagen-grens op via "toon meer" — verleden tijd tonen we
     // nooit, dat is geen "meer", dat is gewoon verlopen data).
@@ -875,7 +901,7 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
       !state.searchQuery ||
       s.titel.toLowerCase().includes(state.searchQuery) ||
       s.theaterNaam.toLowerCase().includes(state.searchQuery);
-    return cityOk && theaterOk && genreOk && podiumpasOk && favoritesOk && dateOk && searchOk;
+    return cityOk && theaterOk && genreOk && podiumpasOk && favoritesOk && fullOk && dateOk && searchOk;
   });
 }
 
@@ -890,7 +916,8 @@ function emptyStateMessage() {
     state.selectedTheaters.size > 0 ||
     state.selectedGenres.size > 0 ||
     state.podiumpasOnly ||
-    state.favoritesOnly;
+    state.favoritesOnly ||
+    state.hideFullOnly;
   const query = state.searchQueryRaw;
   if (query && filtersActive) return `Geen voorstellingen gevonden voor "${query}" met deze filters.`;
   if (query) return `Geen voorstellingen gevonden voor "${query}".`;
