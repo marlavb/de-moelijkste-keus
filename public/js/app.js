@@ -11,37 +11,6 @@ import {
   serverTimestamp,
 } from './firebase.js';
 
-// Labels voor de theater-filterchips en -kaarten. Overal waar theaters in
-// een lijst staan, sorteren we op dit label (Nederlandse locale) — een
-// nieuw theater dat hier nog niet in staat valt terug op de volledige naam
-// uit shows.json, dus de UI blijft werken zonder deze lijst bij te werken.
-const THEATER_SHORT_NAMES = {
-  delamar: 'DeLaMar',
-  bellevue: 'Bellevue',
-  meervaart: 'Meervaart',
-  ita: 'ITA',
-  kleinekomedie: 'Kleine Komedie',
-  frascati: 'Frascati',
-  carre: 'Carré',
-  amstelveen: 'Amstelveen',
-  stadsschouwburgutrecht: 'Stadsschouwburg Utrecht',
-  theaterkikker: 'Kikker',
-  krakeling: 'Krakeling',
-  mozaiek: 'Mozaïek',
-  muziekgebouw: 'Muziekgebouw',
-  scala: 'Scala',
-  omval: 'De Omval',
-  delanding: 'De Landing',
-  zaantheater: 'Zaantheater',
-  bijlmerparktheater: 'Bijlmer Parktheater',
-  ccamstel: 'CC Amstel',
-  marionettentheater: 'Marionettentheater',
-  griffioen: 'VU Griffioen',
-  pleintheater: 'Plein Theater',
-  karavaan: 'Karavaan',
-  schuur: 'Schuur',
-  bostheater: 'Bostheater',
-};
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
 const THEATER_INFO = {
@@ -689,7 +658,7 @@ function renderSubtitle() {
 }
 
 function theaterDisplayName(id) {
-  return THEATER_SHORT_NAMES[id] ?? state.shows.find((s) => s.theaterId === id)?.theaterNaam ?? id;
+  return state.shows.find((s) => s.theaterId === id)?.theaterNaam ?? id;
 }
 
 function sortTheaterIdsByName(ids) {
@@ -1003,7 +972,7 @@ function renderShowRow(show) {
 
   const meta = document.createElement('p');
   meta.className = 'show-meta';
-  const theaterNaam = THEATER_SHORT_NAMES[show.theaterId] ?? show.theaterNaam;
+  const theaterNaam = show.theaterNaam;
   meta.textContent = show.tijd ? `${theaterNaam} · ${show.tijd}` : theaterNaam;
   metaRow.appendChild(meta);
 
@@ -1104,7 +1073,7 @@ function formatCheckedAt(isoTimestamp) {
 function renderDetail(show) {
   const genreLabel = show.genre ?? show.theaterNaam;
   els.detailGenre.textContent = genreLabel;
-  els.detailTheater.textContent = THEATER_SHORT_NAMES[show.theaterId] ?? show.theaterNaam;
+  els.detailTheater.textContent = show.theaterNaam;
   els.detailPodiumpasBadge.hidden = show.podiumpas !== true;
   els.detailTitle.textContent = show.titel;
   els.detailDate.textContent = formatDateLong(show.datum);
@@ -1442,7 +1411,7 @@ function renderProductionRow(production) {
 
   const meta = document.createElement('p');
   meta.className = 'show-meta';
-  const theaterNaam = THEATER_SHORT_NAMES[production.theaterId] ?? production.theaterNaam;
+  const theaterNaam = production.theaterNaam;
   meta.textContent = hasUpcoming ? theaterNaam : `${theaterNaam} · Geen komende voorstellingen`;
   metaRow.appendChild(meta);
 
