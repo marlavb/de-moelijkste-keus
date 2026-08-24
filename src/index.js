@@ -29,6 +29,7 @@ import { scrapeGriffioen } from './sites/griffioen.js';
 import { scrapePleinTheater } from './sites/pleintheater.js';
 import { scrapeKaravaan } from './sites/karavaan.js';
 import { scrapeSchuur } from './sites/schuur.js';
+import { scrapeBostheater } from './sites/bostheater.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -55,6 +56,7 @@ const SCRAPERS = {
   pleintheater: scrapePleinTheater,
   karavaan: scrapeKaravaan,
   schuur: scrapeSchuur,
+  bostheater: scrapeBostheater,
 };
 
 const OUTPUT_PATH = path.resolve('data/shows.json');

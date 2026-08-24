@@ -203,4 +203,12 @@ export const THEATERS = [
     agendaUrl: 'https://www.schuur.nl/agenda',
     podiumpas: true,
   },
+  {
+    id: 'bostheater',
+    naam: 'Bostheater',
+    stad: 'Amstelveen',
+    baseUrl: 'https://bostheater.nl',
+    agendaUrl: 'https://bostheater.nl/ons-programma/',
+    podiumpas: true,
+  },
 ];

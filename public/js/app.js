@@ -40,6 +40,7 @@ const THEATER_SHORT_NAMES = {
   pleintheater: 'Plein Theater',
   karavaan: 'Karavaan',
   schuur: 'Schuur',
+  bostheater: 'Bostheater',
 };
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
@@ -68,6 +69,7 @@ const THEATER_INFO = {
   pleintheater: { adres: 'Sajetplein 39' },
   karavaan: { adres: 'Marconistraat 5' },
   schuur: { adres: 'Lange Begijnestraat 9' },
+  bostheater: { adres: 'De Duizendmeterweg 7' },
 };
 
 // Alleen "uitverkocht" en "wachtlijst" krijgen een badge — "beschikbaar" is
