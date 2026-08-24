@@ -83,10 +83,10 @@ const STORAGE_KEYS = {
 // veranderen totdat ze zelf iets inklappen.
 const SIDEBAR_SECTION_IDS = ['stad', 'theater', 'genre'];
 
-// Standaard tonen we alleen voorstellingen tot 60 dagen vooruit — met 1136+
+// Standaard tonen we alleen voorstellingen tot 30 dagen vooruit — met 1136+
 // voorstellingen tot in 2028 is "alles in één keer" geen bruikbare lijst.
 // De gebruiker kan dit met één tik opheffen via de "toon meer"-knop.
-const DEFAULT_WINDOW_DAYS = 60;
+const DEFAULT_WINDOW_DAYS = 30;
 
 const state = {
   shows: [],
@@ -901,7 +901,7 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     const fullOk =
       !state.hideFullOnly || (s.beschikbaarheid !== 'uitverkocht' && s.beschikbaarheid !== 'wachtlijst');
     // Ondergrens geldt altijd, ook met ignoreDateWindow (dat heft alleen de
-    // voorwaartse 60-dagen-grens op via "toon meer" — verleden tijd tonen we
+    // voorwaartse 30-dagen-grens op via "toon meer" — verleden tijd tonen we
     // nooit, dat is geen "meer", dat is gewoon verlopen data).
     const dateOk = s.datum >= minDate && (maxDate == null || s.datum <= maxDate);
     const searchOk =
