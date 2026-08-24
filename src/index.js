@@ -3,6 +3,7 @@ import { writeFile, readFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 
 import { THEATERS, USER_AGENT, USER_AGENT_TOKEN } from './lib/config.js';
+import { todayIsoDate } from './lib/normalize.js';
 import { loadRobotsRules } from './lib/robots.js';
 import { createPoliteWaiter } from './lib/politeness.js';
 import { scrapeDelamar } from './sites/delamar.js';
@@ -117,13 +118,27 @@ async function main() {
   const keptShows = existingShows.filter((s) => !scrapedTheaterIds.has(s.theaterId));
   const mergedShows = [...keptShows, ...allShows];
 
-  const output = JSON.stringify(mergedShows, null, 2) + '\n';
+  // Extra laag bovenop de ondergrens in filteredShows() aan de voorkant: een
+  // theater dat een verlopen voorstelling zelf niet van hun eigen site haalt
+  // (zoals Podium Mozaïek deed voor een tentoonstelling van twee maanden
+  // terug) moet niet voor altijd in onze eigen data blijven staan. Draait
+  // hier in de gedeelde merge-stap, dus geldt voor elke run (dagelijkse
+  // refresh-data.yml, handmatige workflow-trigger, lokale dev-run) zonder
+  // dat dit ergens anders gedupliceerd hoeft te worden.
+  const minDate = todayIsoDate();
+  const freshShows = mergedShows.filter((s) => s.datum >= minDate);
+  const purgedCount = mergedShows.length - freshShows.length;
+  if (purgedCount > 0) {
+    console.log(`${purgedCount} verlopen voorstelling(en) verwijderd (datum vóór ${minDate}).`);
+  }
+
+  const output = JSON.stringify(freshShows, null, 2) + '\n';
   await mkdir(path.dirname(OUTPUT_PATH), { recursive: true });
   await writeFile(OUTPUT_PATH, output, 'utf-8');
   await mkdir(path.dirname(PUBLIC_OUTPUT_PATH), { recursive: true });
   await writeFile(PUBLIC_OUTPUT_PATH, output, 'utf-8');
   console.log(
-    `\n${allShows.length} voorstellingen van dit run + ${keptShows.length} eerder opgehaalde = ${mergedShows.length} totaal weggeschreven naar ${OUTPUT_PATH} (en gekopieerd naar ${PUBLIC_OUTPUT_PATH})`
+    `\n${allShows.length} voorstellingen van dit run + ${keptShows.length} eerder opgehaalde = ${freshShows.length} totaal weggeschreven naar ${OUTPUT_PATH} (en gekopieerd naar ${PUBLIC_OUTPUT_PATH})`
   );
 }
 

@@ -36,6 +36,13 @@ function toIsoDate(year, month, day) {
   return `${year}-${pad2(month)}-${pad2(day)}`;
 }
 
+// Zelfde ISO-datumnotatie (en dus dezelfde string-vergelijkbaarheid met
+// show.datum) als todayIsoDate() aan de voorkant (public/js/app.js).
+export function todayIsoDate() {
+  const now = new Date();
+  return toIsoDate(now.getFullYear(), now.getMonth() + 1, now.getDate());
+}
+
 /**
  * Parseert Nederlandse datum-labels zoals gebruikt in theateragenda's:
  * "Vandaag", "Morgen" of "Zondag 23 augustus" (zonder jaartal).
