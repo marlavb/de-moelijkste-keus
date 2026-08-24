@@ -854,6 +854,7 @@ function makeChip(label, active, onClick) {
 
 function filteredShows({ ignoreDateWindow = false } = {}) {
   const enabled = new Set(activeTheaterIds());
+  const minDate = todayIsoDate();
   const maxDate =
     !ignoreDateWindow && state.dateWindowDays != null
       ? addDaysIso(todayIsoDate(), state.dateWindowDays)
@@ -866,7 +867,10 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     const genreOk = state.selectedGenres.size === 0 || state.selectedGenres.has(s.genre);
     const podiumpasOk = !state.podiumpasOnly || s.podiumpas === true;
     const favoritesOk = !state.favoritesOnly || state.favorites.has(productionKey(s));
-    const dateOk = maxDate == null || s.datum <= maxDate;
+    // Ondergrens geldt altijd, ook met ignoreDateWindow (dat heft alleen de
+    // voorwaartse 60-dagen-grens op via "toon meer" — verleden tijd tonen we
+    // nooit, dat is geen "meer", dat is gewoon verlopen data).
+    const dateOk = s.datum >= minDate && (maxDate == null || s.datum <= maxDate);
     const searchOk =
       !state.searchQuery ||
       s.titel.toLowerCase().includes(state.searchQuery) ||
