@@ -31,6 +31,9 @@ import { scrapePleinTheater } from './sites/pleintheater.js';
 import { scrapeKaravaan } from './sites/karavaan.js';
 import { scrapeSchuur } from './sites/schuur.js';
 import { scrapeBostheater } from './sites/bostheater.js';
+import { scrapeHogeWoerd } from './sites/hogewoerd.js';
+import { scrapeFlint } from './sites/flint.js';
+import { scrapeAanDeSlinger } from './sites/aandeslinger.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -58,6 +61,9 @@ const SCRAPERS = {
   karavaan: scrapeKaravaan,
   schuur: scrapeSchuur,
   bostheater: scrapeBostheater,
+  hogewoerd: scrapeHogeWoerd,
+  flint: scrapeFlint,
+  aandeslinger: scrapeAanDeSlinger,
 };
 
 const OUTPUT_PATH = path.resolve('data/shows.json');
@@ -126,7 +132,13 @@ async function main() {
   // refresh-data.yml, handmatige workflow-trigger, lokale dev-run) zonder
   // dat dit ergens anders gedupliceerd hoeft te worden.
   const minDate = todayIsoDate();
-  const freshShows = mergedShows.filter((s) => s.datum >= minDate);
+  const freshShows = mergedShows
+    .filter((s) => s.datum >= minDate)
+    // `prijs` is een nieuw, optioneel schemaveld (vooralsnog alleen gevuld
+    // door Flint, voor de podiumpas-prijsgrens) — hier centraal op null
+    // gezet voor elke andere show, in plaats van dat elke afzonderlijke
+    // scraper-module het zelf moet opnemen.
+    .map((s) => (s.prijs === undefined ? { ...s, prijs: null } : s));
   const purgedCount = mergedShows.length - freshShows.length;
   if (purgedCount > 0) {
     console.log(`${purgedCount} verlopen voorstelling(en) verwijderd (datum vóór ${minDate}).`);

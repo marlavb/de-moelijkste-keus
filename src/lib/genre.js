@@ -129,6 +129,18 @@ const GENRE_MAP = {
   // "Theater in de middag" is bewust NIET gemapt: dat is een tijdslot-label
   // (net als "verhuur"/"language no problem" bij Kikker), geen genre-poging
   // — staat altijd naast een los genre-label in de tag-lijst.
+
+  // Aan de Slinger / Podium Hoge Woerd / Flint (provincie Utrecht-batch)
+  film: 'Overig', // filmvertoning, geen theatervoorstelling maar wel in dezelfde agenda-feed
+  gastbespeling: 'Overig', // "gastvoorstelling"-label bij Aan de Slinger, geen genre op zich
+  'houten presenteert': 'Overig', // lokale gemeente-programmering, geen genre op zich (zelfde afweging als 'stadsprogrammering')
+  'no dutch? no problem!': 'Overig', // taal-toegankelijkheidslabel bij Hoge Woerd, geen genre
+  talks: 'Overig', // Engelse meervoudsvorm van het al gemapte 'talk'
+  theatertour: 'Overig', // rondleiding, geen voorstelling op zich
+  verhuur: 'Overig', // zaalverhuur-categorie, komt in de praktijk niet als los agenda-item voor
+  verrassing: 'Overig', // mystery-programmering, geen eigen genre
+  bijzonder: 'Overig', // Flint's eigen "bijzonder"-label, staat meestal naast een echt genre in de tag-lijst
+  'musical & show': 'Musical',
 };
 
 /**

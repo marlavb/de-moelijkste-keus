@@ -39,6 +39,9 @@ const THEATER_INFO = {
   karavaan: { adres: 'Marconistraat 5' },
   schuur: { adres: 'Lange Begijnestraat 9' },
   bostheater: { adres: 'De Duizendmeterweg 7' },
+  hogewoerd: { adres: 'Hoge Woerdplein 1' },
+  flint: { adres: 'Coninckstraat 60' },
+  aandeslinger: { adres: 'De Slinger 40' },
 };
 
 // Alleen "uitverkocht" en "wachtlijst" krijgen een badge — "beschikbaar" is

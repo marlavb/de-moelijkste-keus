@@ -211,4 +211,28 @@ export const THEATERS = [
     agendaUrl: 'https://bostheater.nl/ons-programma/',
     podiumpas: true,
   },
+  {
+    id: 'hogewoerd',
+    naam: 'Podium Hoge Woerd',
+    stad: 'Utrecht',
+    baseUrl: 'https://www.podiumhogewoerd.nl',
+    agendaUrl: 'https://www.podiumhogewoerd.nl/agenda',
+    podiumpas: true,
+  },
+  {
+    id: 'flint',
+    naam: 'Flint',
+    stad: 'Amersfoort',
+    baseUrl: 'https://flint.nl',
+    agendaUrl: 'https://flint.nl/agenda/',
+    podiumpas: true,
+  },
+  {
+    id: 'aandeslinger',
+    naam: 'Aan de Slinger',
+    stad: 'Houten',
+    baseUrl: 'https://www.aandeslinger.nl',
+    agendaUrl: 'https://www.aandeslinger.nl/programma',
+    podiumpas: true,
+  },
 ];
