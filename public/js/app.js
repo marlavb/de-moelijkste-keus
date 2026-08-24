@@ -679,8 +679,12 @@ function theaterStad(id) {
   return state.shows.find((s) => s.theaterId === id)?.stad ?? null;
 }
 
+// .some() i.p.v. de eerste match pakken: bij de meeste theaters is
+// podiumpas nog steeds gewoon aan-of-uit voor de hele locatie, maar bij
+// Bostheater (theatervoorstellingen wel, concerten niet) zou "eerste show"
+// willekeurig zijn en verschuiven naarmate de speellijst opschuift.
 function theaterHasPodiumpas(id) {
-  return state.shows.find((s) => s.theaterId === id)?.podiumpas === true;
+  return state.shows.some((s) => s.theaterId === id && s.podiumpas === true);
 }
 
 /** Podiumpas-only cascadeert net als de stad-selectie: als de toggle aan

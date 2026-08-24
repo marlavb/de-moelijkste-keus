@@ -36,7 +36,29 @@ const MAX_LISTING_PAGES = 20;
  *   "Toneel", "Overig") — die liggen al zo dicht bij ons eigen schema dat er
  *   geen aparte genre.js-mapping nodig is (normalizeGenre() valt voor
  *   "overig" toch al terug op "Overig").
+ * - Podiumpas is bij dit theater NIET gewoon aan-of-uit voor de hele
+ *   locatie (zoals overal elders in config.js) — volgens
+ *   bostheater.nl/podiumpas/ is de pas uitsluitend te gebruiken bij
+ *   theatervoorstellingen (en Bosfest-toegangstickets, die al eerder in de
+ *   pipeline weggefilterd worden op titel/type), expliciet NIET bij
+ *   concerten of filmavonden. .event-card-terms__type is hier het
+ *   betrouwbare signaal (bevestigd via de site-eigen filter-taxonomie
+ *   `_sft_event_type`, met als enige huidige waarden concert/theater/
+ *   randprogrammering) — type "theater" is dus podiumpas-geldig, "concert"
+ *   niet. Twee bij naam genoemde uitzonderingen op diezelfde pagina ("De
+ *   laatste minuten", "Maanlicht in Etten-Leur") staan momenteel niet in de
+ *   actieve agenda (geen toekomstige speeldata meer), dus hun eigen
+ *   type-taxonomie kon niet herbevestigd worden — vandaar hardcoded op
+ *   titel, zoals de podiumpas.nl-pagina ze zelf ook expliciet bij naam
+ *   noemt in plaats van onder de algemene "theatervoorstellingen"-regel.
  */
+const PODIUMPAS_TITLE_EXCEPTIONS = new Set(['de laatste minuten', 'maanlicht in etten-leur']);
+
+function isPodiumpasEligible(card) {
+  if (card.type?.trim().toLowerCase() === 'theater') return true;
+  return PODIUMPAS_TITLE_EXCEPTIONS.has(card.titel?.trim().toLowerCase());
+}
+
 export async function scrapeBostheater({ page, theater, robots, waitForTurn, log }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
@@ -126,6 +148,8 @@ export async function scrapeBostheater({ page, theater, robots, waitForTurn, log
       continue;
     }
 
+    const podiumpas = isPodiumpasEligible(card);
+
     for (const item of dateItems) {
       if (!item.iso) continue;
       const datum = item.iso.slice(0, 10);
@@ -137,7 +161,7 @@ export async function scrapeBostheater({ page, theater, robots, waitForTurn, log
         theaterId: theater.id,
         theaterNaam: theater.naam,
         stad: theater.stad,
-        podiumpas: theater.podiumpas,
+        podiumpas,
         datum,
         tijd,
         genre: normalizeGenre(card.genreRuw),
