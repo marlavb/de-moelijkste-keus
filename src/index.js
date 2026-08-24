@@ -21,6 +21,14 @@ import { scrapeMuziekgebouw } from './sites/muziekgebouw.js';
 import { scrapeScala } from './sites/scala.js';
 import { scrapeOmval } from './sites/omval.js';
 import { scrapeDeLanding } from './sites/delanding.js';
+import { scrapeZaantheater } from './sites/zaantheater.js';
+import { scrapeBijlmerParktheater } from './sites/bijlmerparktheater.js';
+import { scrapeCcAmstel } from './sites/ccamstel.js';
+import { scrapeMarionettentheater } from './sites/marionettentheater.js';
+import { scrapeGriffioen } from './sites/griffioen.js';
+import { scrapePleinTheater } from './sites/pleintheater.js';
+import { scrapeKaravaan } from './sites/karavaan.js';
+import { scrapeSchuur } from './sites/schuur.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -39,6 +47,14 @@ const SCRAPERS = {
   scala: scrapeScala,
   omval: scrapeOmval,
   delanding: scrapeDeLanding,
+  zaantheater: scrapeZaantheater,
+  bijlmerparktheater: scrapeBijlmerParktheater,
+  ccamstel: scrapeCcAmstel,
+  marionettentheater: scrapeMarionettentheater,
+  griffioen: scrapeGriffioen,
+  pleintheater: scrapePleinTheater,
+  karavaan: scrapeKaravaan,
+  schuur: scrapeSchuur,
 };
 
 const OUTPUT_PATH = path.resolve('data/shows.json');

@@ -32,6 +32,14 @@ const THEATER_SHORT_NAMES = {
   scala: 'Scala',
   omval: 'De Omval',
   delanding: 'De Landing',
+  zaantheater: 'Zaantheater',
+  bijlmerparktheater: 'Bijlmer Parktheater',
+  ccamstel: 'CC Amstel',
+  marionettentheater: 'Marionettentheater',
+  griffioen: 'VU Griffioen',
+  pleintheater: 'Plein Theater',
+  karavaan: 'Karavaan',
+  schuur: 'Schuur',
 };
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
@@ -52,6 +60,14 @@ const THEATER_INFO = {
   scala: { adres: 'Van Hallstraat 286' },
   omval: { adres: 'Ouddiemerlaan 104' },
   delanding: { adres: 'Uilenstede 106' },
+  zaantheater: { adres: 'Nicolaasstraat 3' },
+  bijlmerparktheater: { adres: 'Anton de Komplein 240' },
+  ccamstel: { adres: 'Dora Tamanaplein 1' },
+  marionettentheater: { adres: 'Nieuwe Jonkerstraat 8' },
+  griffioen: { adres: 'De Boelelaan 1111' },
+  pleintheater: { adres: 'Sajetplein 39' },
+  karavaan: { adres: 'Marconistraat 5' },
+  schuur: { adres: 'Lange Begijnestraat 9' },
 };
 
 // Alleen "uitverkocht" en "wachtlijst" krijgen een badge — "beschikbaar" is

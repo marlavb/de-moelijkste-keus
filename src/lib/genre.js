@@ -89,6 +89,46 @@ const GENRE_MAP = {
   'theatrale escaperoom': 'Overig',
   'sprookjes voor volwassenen': 'Overig',
   sciencefictionkomedie: 'Overig', // theatraal verhaal met sci-fi/komedie-elementen, geen echte match
+
+  // Zaantheater
+  'jeugd & familie': 'Familie & Jeugd',
+  'theater & toneel': 'Toneel',
+  theatershow: 'Toneel',
+  'theatercolleges & salons': 'Overig', // zelfde soort lezing/collegevorm als de al gemapte 'theatercollege'
+  stadsprogrammering: 'Overig', // gemeentelijk/publieksevenement, geen genre op zich
+  'young adult': 'Familie & Jeugd', // Engelse variant van het al gemapte 'jongeren'
+  zaantheaterexpositie: 'Overig', // expositie-opening, geen theatervoorstelling maar wel in dezelfde agenda-feed
+
+  // CC Amstel
+  circus: 'Overig', // zelfde afweging als 'circustheater'/'nouveau cirque' — circus past niet echt in een van de 8 categorieën
+  'muziek(theater)': 'Muziektheater',
+  festival: 'Overig',
+  'sociaal-artistiek': 'Overig', // gemeenschapskunst/participatietheater, geen genre op zich
+  workshop: 'Overig',
+
+  // VU Griffioen
+  // ("cabaret" was al gemapt via DeLaMar hierboven — geen nieuwe entry nodig)
+  podcast: 'Overig',
+  mix: 'Overig', // "gemengd programma"-label, geen genre op zich
+  'live journalistiek': 'Overig',
+
+  // Plein Theater (Engelstalige categorieën — Market/Food, kitchen/
+  // Workshop, class/Film worden al uitgefilterd vóór normalizeGenre())
+  theatre: 'Toneel', // Engelse variant van het al gemapte 'theater'
+  'dance performance': 'Dans',
+  kids: 'Familie & Jeugd',
+  'poetry, reading, literature': 'Overig',
+  talk: 'Overig', // lezing/gesprek, geen genre op zich
+  'electronic music, party': 'Muziek & Concert',
+  'exhibition, art': 'Overig',
+
+  // Schuur
+  jeugdtheater: 'Familie & Jeugd',
+  'live muziek': 'Muziek & Concert',
+  jeugddans: 'Familie & Jeugd', // zelfde afweging als het al gemapte 'dans-familie' (ITA)
+  // "Theater in de middag" is bewust NIET gemapt: dat is een tijdslot-label
+  // (net als "verhuur"/"language no problem" bij Kikker), geen genre-poging
+  // — staat altijd naast een los genre-label in de tag-lijst.
 };
 
 /**
