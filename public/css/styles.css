@@ -692,6 +692,23 @@ a {
   overflow-y: auto;
 }
 
+.theaters-province-heading {
+  margin: 24px 0 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.theaters-province-heading:first-child {
+  margin-top: 0;
+}
+
+.theaters-city-section {
+  margin-left: 4px;
+  border-left: 2px solid var(--border);
+  padding-left: 12px;
+}
+
 .theaters-list-heading {
   display: flex;
   align-items: center;
@@ -705,6 +722,14 @@ a {
 
 .theaters-list-heading:first-child {
   margin-top: 0;
+}
+
+.theaters-city-header {
+  cursor: pointer;
+}
+
+.theaters-city-header[aria-expanded="false"] .filter-accordion-chevron {
+  transform: rotate(-90deg);
 }
 
 .theaters-list-heading-left {

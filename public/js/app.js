@@ -78,6 +78,29 @@ const STORAGE_KEYS = {
   favorites: 'podiumagenda:favorites',
   favoritesMigrated: 'podiumagenda:favoritesMigrated',
   sidebarSections: 'podiumagenda:sidebarSections',
+  theaterCitySections: 'podiumagenda:theaterCitySections',
+};
+
+// Provincie-indeling voor het "Mijn theaters"-scherm, zoals op
+// podiumpas.nl/waar-te-besteden — bewust een kale UI-constante hier (i.p.v.
+// een veld in config.js) omdat dit puur presentatie is, geen deel van het
+// gescrapete databaseschema. PROVINCE_ORDER bepaalt de volgorde van de
+// provincie-koppen; een stad die niet in de map staat belandt in de
+// PROVINCE_FALLBACK-sectie zodat een nieuwe stad nooit stilzwijgend
+// verdwijnt.
+const PROVINCE_ORDER = ['Noord-Holland', 'Utrecht', 'Flevoland'];
+const PROVINCE_FALLBACK = 'Overig';
+const PROVINCE_BY_CITY = {
+  Amsterdam: 'Noord-Holland',
+  Amstelveen: 'Noord-Holland',
+  Diemen: 'Noord-Holland',
+  Alkmaar: 'Noord-Holland',
+  Haarlem: 'Noord-Holland',
+  Zaandam: 'Noord-Holland',
+  Utrecht: 'Utrecht',
+  Houten: 'Utrecht',
+  Amersfoort: 'Utrecht',
+  Almere: 'Flevoland',
 };
 
 // Desktop-sidebar accordeon-secties (Stad/Theater/Genre) — standaard allemaal
@@ -107,6 +130,7 @@ const state = {
   enabledTheaters: loadEnabledTheaters(),
   favorites: loadFavorites(),
   sidebarSections: loadSidebarSections(),
+  theaterCitySections: loadTheaterCitySections(),
   dateWindowDays: DEFAULT_WINDOW_DAYS,
   user: null, // Firebase User, of null als niet ingelogd (= lokaal-only, zoals voorheen)
   authError: null,
@@ -374,6 +398,22 @@ function loadSidebarSections() {
 
 function saveSidebarSections() {
   localStorage.setItem(STORAGE_KEYS.sidebarSections, JSON.stringify(state.sidebarSections));
+}
+
+// Per-stad open/dicht-status van de accordeons in "Mijn theaters" — net als
+// sidebarSections hierboven, maar keyed op stadsnaam i.p.v. een vaste lijst
+// van section-ids, want welke steden er zijn hangt af van de scrapete data.
+// Een stad zonder opgeslagen voorkeur is standaard dicht.
+function loadTheaterCitySections() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.theaterCitySections)) ?? {};
+  } catch {
+    return {};
+  }
+}
+
+function saveTheaterCitySections() {
+  localStorage.setItem(STORAGE_KEYS.theaterCitySections, JSON.stringify(state.theaterCitySections));
 }
 
 function loadFavorites() {
@@ -1340,20 +1380,102 @@ function refreshAfterTheaterToggle() {
 
 /** Knop om alle theaters van één stad tegelijk aan/uit te zetten — bewust
  * een tekst-knop (i.p.v. een switch) zodat 'm duidelijk anders oogt dan de
- * per-theater switches eronder. */
+ * per-theater switches eronder. Zit genest in de klikbare accordeon-header
+ * (zie buildCitySection), dus stopPropagation om te voorkomen dat een klik
+ * hier ook de accordeon dichtklapt. */
 function buildCityToggleButton(stad, cityIds, allOn) {
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'city-toggle-btn';
   btn.textContent = allOn ? 'Alles uit' : 'Alles aan';
   btn.setAttribute('aria-label', `Alle theaters in ${stad} ${allOn ? 'verbergen' : 'tonen'}`);
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
     for (const id of cityIds) state.enabledTheaters[id] = !allOn;
     refreshAfterTheaterToggle();
   });
   return btn;
 }
 
+/** Zelfde chevron-markup als de .filter-accordion-header-knoppen in de
+ * sidebar (zie index.html), maar hier dynamisch opgebouwd omdat elke stad
+ * zijn eigen accordeon-instantie krijgt. */
+function buildChevronSvg() {
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('class', 'filter-accordion-chevron');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('fill', 'none');
+  svg.setAttribute('stroke', 'currentColor');
+  svg.setAttribute('stroke-width', '2');
+  svg.setAttribute('stroke-linecap', 'round');
+  svg.setAttribute('stroke-linejoin', 'round');
+  svg.setAttribute('aria-hidden', 'true');
+  const polyline = document.createElementNS(svgNS, 'polyline');
+  polyline.setAttribute('points', '6 9 12 15 18 9');
+  svg.appendChild(polyline);
+  return svg;
+}
+
+function toggleTheaterCitySection(stad, header, content) {
+  const isOpen = state.theaterCitySections[stad] === 'open';
+  state.theaterCitySections[stad] = isOpen ? 'closed' : 'open';
+  header.setAttribute('aria-expanded', String(!isOpen));
+  content.hidden = isOpen;
+  saveTheaterCitySections();
+}
+
+/** Eén stad-sectie binnen een provincie: een inklapbare header (zelfde
+ * accordeon-mechaniek/opslag-patroon als de sidebar's Stad/Theater/Genre-
+ * secties, maar per stad in plaats van een vaste lijst van section-ids) met
+ * daaronder de theater-kaarten. Standaard dicht, tenzij eerder opengeklapt. */
+function buildCitySection(stad, cityIds) {
+  const enabledCount = cityIds.filter((id) => state.enabledTheaters[id] !== false).length;
+  const allOn = enabledCount === cityIds.length;
+  const isOpen = state.theaterCitySections[stad] === 'open';
+
+  const section = document.createElement('div');
+  section.className = 'theaters-city-section';
+
+  const header = document.createElement('div');
+  header.className = 'theaters-list-heading theaters-city-header';
+  header.setAttribute('role', 'button');
+  header.setAttribute('tabindex', '0');
+  header.setAttribute('aria-expanded', String(isOpen));
+
+  const headingLeft = document.createElement('div');
+  headingLeft.className = 'theaters-list-heading-left';
+  const cityLabel = document.createElement('span');
+  cityLabel.textContent = stad.toUpperCase();
+  headingLeft.append(buildChevronSvg(), cityLabel, buildCityToggleButton(stad, cityIds, allOn));
+
+  const countLabel = document.createElement('span');
+  countLabel.textContent = `${enabledCount} van ${cityIds.length}`;
+  header.append(headingLeft, countLabel);
+
+  const content = document.createElement('div');
+  content.className = 'theaters-city-content';
+  content.hidden = !isOpen;
+  for (const id of cityIds) content.appendChild(buildTheaterCard(id));
+
+  const toggle = () => toggleTheaterCitySection(stad, header, content);
+  header.addEventListener('click', toggle);
+  header.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggle();
+    }
+  });
+
+  section.append(header, content);
+  return section;
+}
+
+/** "Mijn theaters"-scherm, gegroepeerd per provincie (altijd uitgeklapt,
+ * vaste volgorde) en daaronder per stad (inklapbaar, standaard dicht) —
+ * zelfde indeling als podiumpas.nl/waar-te-besteden. Een stad die niet in
+ * PROVINCE_BY_CITY voorkomt belandt zichtbaar in de PROVINCE_FALLBACK-sectie
+ * i.p.v. stilzwijgend te verdwijnen. */
 function renderTheatersScreen() {
   const ids = sortTheaterIdsByName([...new Set(state.shows.map((s) => s.theaterId))]);
 
@@ -1365,26 +1487,23 @@ function renderTheatersScreen() {
   }
   const steden = [...idsByStad.keys()].sort((a, b) => a.localeCompare(b, 'nl'));
 
-  els.theatersList.innerHTML = '';
+  const stedenByProvincie = new Map();
   for (const stad of steden) {
-    const cityIds = idsByStad.get(stad);
-    const enabledCount = cityIds.filter((id) => state.enabledTheaters[id] !== false).length;
-    const allOn = enabledCount === cityIds.length;
+    const provincie = PROVINCE_BY_CITY[stad] ?? PROVINCE_FALLBACK;
+    if (!stedenByProvincie.has(provincie)) stedenByProvincie.set(provincie, []);
+    stedenByProvincie.get(provincie).push(stad);
+  }
+  const provincies = [...PROVINCE_ORDER, PROVINCE_FALLBACK].filter((p) => stedenByProvincie.has(p));
 
-    const heading = document.createElement('div');
-    heading.className = 'theaters-list-heading';
-    const headingLeft = document.createElement('div');
-    headingLeft.className = 'theaters-list-heading-left';
-    const cityLabel = document.createElement('span');
-    cityLabel.textContent = stad.toUpperCase();
-    headingLeft.append(cityLabel, buildCityToggleButton(stad, cityIds, allOn));
-    const countLabel = document.createElement('span');
-    countLabel.textContent = `${enabledCount} van ${cityIds.length}`;
-    heading.append(headingLeft, countLabel);
+  els.theatersList.innerHTML = '';
+  for (const provincie of provincies) {
+    const heading = document.createElement('h2');
+    heading.className = 'theaters-province-heading';
+    heading.textContent = provincie;
     els.theatersList.appendChild(heading);
 
-    for (const id of cityIds) {
-      els.theatersList.appendChild(buildTheaterCard(id));
+    for (const stad of stedenByProvincie.get(provincie)) {
+      els.theatersList.appendChild(buildCitySection(stad, idsByStad.get(stad)));
     }
   }
 }
