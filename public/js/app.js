@@ -930,8 +930,12 @@ function makeChip(label, active, onClick) {
 function filteredShows({ ignoreDateWindow = false } = {}) {
   const enabled = new Set(activeTheaterIds());
   const minDate = todayIsoDate();
+  // Een actieve zoekopdracht heft de 30-dagen-grens op — anders is zoeken
+  // naar een favoriete productie onbruikbaar zodra de eerstvolgende datum
+  // verder in de toekomst ligt dan het venster (zie "Teckel"-voorbeeld:
+  // pas vanaf januari, dus onvindbaar binnen de standaard 30 dagen).
   const maxDate =
-    !ignoreDateWindow && state.dateWindowDays != null
+    !ignoreDateWindow && !state.searchQuery && state.dateWindowDays != null
       ? addDaysIso(todayIsoDate(), state.dateWindowDays)
       : null;
 
@@ -1056,8 +1060,11 @@ function renderShowRow(show) {
 
   const meta = document.createElement('p');
   meta.className = 'show-meta';
+  const genreLabel = getGenreBucket(show);
   const theaterNaam = show.theaterNaam;
-  meta.textContent = show.tijd ? `${theaterNaam} · ${show.tijd}` : theaterNaam;
+  meta.textContent = show.tijd
+    ? `${genreLabel} · ${theaterNaam} · ${show.tijd}`
+    : `${genreLabel} · ${theaterNaam}`;
   metaRow.appendChild(meta);
 
   if (show.podiumpas === true) metaRow.appendChild(makePodiumpasIcon());
