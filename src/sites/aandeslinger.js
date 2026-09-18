@@ -35,6 +35,11 @@ function classifyBeschikbaarheid(soldOut, message) {
  *   presenteert/Gastbespeling/Film/Cursus); een eventueel tweede label
  *   ("try-out / jong talent", "Inleiding", ...) is geen genre en wordt door
  *   normalizeGenreFromList() vanzelf overgeslagen.
+ * - .subtitle is de maker (bv. "Bo Tarenskeen | coproductie Het Nationale
+ *   Theater"), geen aparte beschrijving op deze site — beschrijving blijft
+ *   null. Let op: bij de paar filmvertoningen die hier ook doorheen lopen
+ *   (zie Film-tag) bevat .subtitle een castlijst ("Met: Olivia Wilde, ...")
+ *   in plaats van een theatermaker — we tonen dat gewoon zoals het er staat.
  * - Twee soorten kaarten horen niet in de output:
  *   1. "Cursus"-getagde kaarten (Theaterschool-lessen als "TS - Theaterklas
  *      6-8 (maandag) - 2026") — geen publieksvoorstelling, zelfde soort
@@ -72,13 +77,13 @@ export async function scrapeAanDeSlinger({ page, theater, robots, waitForTurn, l
     return Array.from(document.querySelectorAll('.program-item')).map((el) => {
       const tags = Array.from(el.querySelectorAll('.tags li')).map((li) => li.textContent.trim());
       const titel = el.querySelector('.title')?.textContent.trim() ?? null;
-      const beschrijving = el.querySelector('.subtitle')?.textContent.trim() ?? null;
+      const maker = el.querySelector('.subtitle')?.textContent.trim() || null;
       const detailHref = el.querySelector('a')?.getAttribute('href') ?? null;
       const dagTekst = el.querySelector('.datetime .date')?.textContent.trim() ?? null;
       const tijdTekst = el.querySelector('.datetime .time')?.textContent.trim() ?? null;
       const soldOut = el.classList.contains('sold-out');
       const message = el.querySelector('.message')?.textContent.trim() ?? null;
-      return { tags, titel, beschrijving, detailHref, dagTekst, tijdTekst, soldOut, message };
+      return { tags, titel, maker, detailHref, dagTekst, tijdTekst, soldOut, message };
     });
   });
 
@@ -119,7 +124,8 @@ export async function scrapeAanDeSlinger({ page, theater, robots, waitForTurn, l
       genre: normalizeGenreFromList(item.tags),
       genreRuw: item.tags.join(', ') || null,
       beschikbaarheid: classifyBeschikbaarheid(item.soldOut, item.message),
-      beschrijving: item.beschrijving,
+      beschrijving: null,
+      maker: item.maker,
       reserverenUrl: detailUrl,
       bron: theater.agendaUrl,
       opgehaaldOp,

@@ -101,6 +101,13 @@ function classifyBeschikbaarheid(label) {
  *   uniek in dit project — elders altijd rollover-gevoelig), tijd, locatie
  *   en een lijst tags (".agenda-item__tag[data-value]") die zowel het
  *   genre als bijzondere labels als "Te gast/ externe partij" bevat.
+ *   ".agenda-item__title-sub" is de maker (bv. "Klein Amsterdam Producties"
+ *   bij "De ridder zonder billen") — soms is dat i.p.v. een gezelschapsnaam
+ *   de eigen ondertitel van de voorstelling, als de hoofdtitel al de naam
+ *   van de artiest is (bv. "Lucas van Merwijk & Diederik van Vleuten" /
+ *   "Breekbare Mensen"); geen betrouwbare manier om dat onderscheid te
+ *   maken, dus we tonen gewoon wat er staat. Geen aparte beschrijving op
+ *   deze site — beschrijving blijft null.
  * - Podiumpas is hier NIET gewoon aan-of-uit voor de hele locatie (zelfde
  *   soort geval als Bostheater, maar met een derde voorwaarde): flint.nl
  *   dekt Podiumpas voor "alle voorstellingen en rangen onder de €50,00",
@@ -165,7 +172,7 @@ export async function scrapeFlint({ page, theater, robots, waitForTurn, log }) {
   const rawCards = await page.evaluate(() => {
     return Array.from(document.querySelectorAll('article.agenda-item')).map((card) => {
       const titel = card.querySelector('.agenda-item__title-main')?.textContent.trim() ?? null;
-      const subtitel = card.querySelector('.agenda-item__title-sub')?.textContent.trim() ?? null;
+      const maker = card.querySelector('.agenda-item__title-sub')?.textContent.trim() || null;
       const dagTekst = card.querySelector('.agenda-item__day-date')?.textContent.trim() ?? null;
       const tijdTekst = card.querySelector('.agenda-item__time')?.textContent.trim() ?? null;
       const locatie = card.querySelector('.agenda-item__location')?.textContent.trim() ?? null;
@@ -181,7 +188,7 @@ export async function scrapeFlint({ page, theater, robots, waitForTurn, log }) {
         card.querySelector('a.featured__item_link-hr')?.getAttribute('href') ??
         card.closest('.featured__item_link')?.querySelector('a')?.getAttribute('href') ??
         null;
-      return { titel, subtitel, dagTekst, tijdTekst, locatie, tags, label, detailHref };
+      return { titel, maker, dagTekst, tijdTekst, locatie, tags, label, detailHref };
     });
   });
 
@@ -252,7 +259,8 @@ export async function scrapeFlint({ page, theater, robots, waitForTurn, log }) {
       genre: normalizeGenreFromList(card.tags),
       genreRuw: card.tags.join(', ') || null,
       beschikbaarheid: classifyBeschikbaarheid(card.label),
-      beschrijving: card.subtitel,
+      beschrijving: null,
+      maker: card.maker,
       prijs,
       reserverenUrl: ticketUrl ?? detailUrl,
       bron: detailUrl,

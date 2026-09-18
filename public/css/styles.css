@@ -587,6 +587,7 @@ a {
   margin: 0 0 4px;
   font-size: 14px;
   color: var(--text-muted);
+  white-space: pre-line;
 }
 
 .detail-maker[hidden] {

@@ -24,6 +24,14 @@ const STABLE_CHECKS_NEEDED = 3;
  *   "UITVERKOCHT"-vertaalsleutel in zijn JS, maar geen van de 325
  *   gecontroleerde items had een herkenbare uitverkocht/wachtlijst-class of
  *   -tekst — blijft dus "onbekend".
+ * - De maker/gezelschapsregel (bv. "Theater Utrecht / Nicole Beutler
+ *   Projects / Urland / Naomi Velissariou" bij "SEXODUS") staat NIET op de
+ *   agendapagina zelf, maar wél op elke infopagina, in een ticket-modal die
+ *   standaard verborgen is: <div class="ticket-overlay__info__category">.
+ *   Dat betekent, anders dan de rest van deze scraper, wél een extra
+ *   paginabezoek per productie — we dedupliceren op href (meerdere datums
+ *   van dezelfde productie delen dezelfde infopagina) om dat aantal bezoeken
+ *   te beperken tot het aantal unieke producties, niet het aantal shows.
  */
 export async function scrapeIta({ page, theater, robots, waitForTurn, log }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
@@ -69,6 +77,28 @@ export async function scrapeIta({ page, theater, robots, waitForTurn, log }) {
     return items;
   });
 
+  const uniqueHrefs = [...new Set(rawItems.map((item) => item.href).filter(Boolean))];
+  const makerByHref = new Map();
+  for (const href of uniqueHrefs) {
+    const infoUrl = new URL(href, theater.baseUrl).toString();
+    const infoPath = new URL(infoUrl).pathname;
+    if (!robots.isAllowed(infoPath)) {
+      log(`robots.txt verbiedt ${infoPath} — maker niet opgehaald.`);
+      continue;
+    }
+
+    await waitForTurn();
+    try {
+      await page.goto(infoUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      const maker = await page.evaluate(
+        () => document.querySelector('.ticket-overlay__info__category')?.textContent.trim() || null
+      );
+      if (maker) makerByHref.set(href, maker);
+    } catch (err) {
+      log(`kon infopagina niet laden voor maker (${infoUrl}): ${err.message} — overgeslagen.`);
+    }
+  }
+
   const parseDay = createDutchAbbrevDayParser();
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();
@@ -97,6 +127,7 @@ export async function scrapeIta({ page, theater, robots, waitForTurn, log }) {
       genreRuw: item.genre,
       beschikbaarheid: 'onbekend',
       beschrijving: null,
+      maker: makerByHref.get(item.href) ?? null,
       reserverenUrl: infoUrl,
       bron: theater.agendaUrl,
       opgehaaldOp,

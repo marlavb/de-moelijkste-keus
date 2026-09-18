@@ -69,6 +69,9 @@ function classifyBeschikbaarheid(statusInfoText, btnOrderStatus) {
  * - Eén voorstellingstype (production-type-default) — geen filmvertoningen
  *   die eruit gefilterd moeten worden, in tegenstelling tot Theater De
  *   Omval op hetzelfde platform.
+ * - .subtitle is de maker/artiest (bv. "Jennifer Walshe + Philip Venables"
+ *   bij "The Alonetimes"), los van .tagline (de korte marketingtekst die
+ *   we als beschrijving gebruiken) — kan leeg zijn.
  * - Genre-tags worden client-side nagevuld via een Stimulus-controller
  *   (data-controller="genres") die zelfs na volledige JS-rendering +
  *   networkidle leeg blijft (geverifieerd) — kennelijk pas bij interactie
@@ -107,13 +110,24 @@ export async function scrapeMuziekgebouw({ page, theater, robots, waitForTurn, l
           const titel = el.querySelector('.title')?.textContent.trim() ?? null;
           const detailHref = el.querySelector('a.desc')?.getAttribute('href') ?? null;
           const beschrijving = el.querySelector('.tagline')?.textContent.trim() ?? null;
+          const maker = el.querySelector('.subtitle')?.textContent.trim() || null;
           const dagTekst = el.querySelector('.top-date .start')?.textContent.trim() ?? null;
           const tijdTekst = el.querySelector('.top-date .time')?.textContent.trim() ?? null;
           const statusInfoText = el.querySelector('.status-info .label')?.textContent.trim() ?? null;
           const btnOrderEl = el.querySelector('.btn-order');
           const btnOrderStatus = btnOrderEl?.className ?? null;
           const ticketHref = btnOrderEl?.getAttribute('href') ?? null;
-          return { titel, detailHref, beschrijving, dagTekst, tijdTekst, statusInfoText, btnOrderStatus, ticketHref };
+          return {
+            titel,
+            detailHref,
+            beschrijving,
+            maker,
+            dagTekst,
+            tijdTekst,
+            statusInfoText,
+            btnOrderStatus,
+            ticketHref,
+          };
         });
       });
     } catch (err) {
@@ -154,6 +168,7 @@ export async function scrapeMuziekgebouw({ page, theater, robots, waitForTurn, l
       genreRuw: null,
       beschikbaarheid: classifyBeschikbaarheid(item.statusInfoText, item.btnOrderStatus),
       beschrijving: item.beschrijving,
+      maker: item.maker,
       reserverenUrl: ticketUrl ?? detailUrl,
       bron: theater.agendaUrl,
       opgehaaldOp,

@@ -24,13 +24,17 @@ function classifyBeschikbaarheid(statusTekst) {
  *
  * Structuur (geïnspecteerd op https://meervaart.nl/agenda, aug 2026):
  * - De site is een Phoenix LiveView app. De agendapagina toont kaarten
- *   (<article> binnen <main>) met titel, subtitel/gezelschap, beschrijving,
- *   genre-tags en 1-2 datum-"chips" (bv. "vr 21 aug" / "za 22 aug") — maar
- *   geen tijd en geen directe ticketlink. De knop op de kaart ("Bestel
- *   kaarten" / "Laatste kaarten" / "Uitverkocht" / "Gratis") linkt altijd
- *   naar de detailpagina, nooit rechtstreeks naar een reservering.
- *   Extra kaarten worden bijgeladen via een "Meer voorstellingen"-knop
- *   (phx-click, geen aparte pagina's).
+ *   (<article> binnen <main>) met titel, subtitel/gezelschap (h4.line-clamp-1,
+ *   -> maker), beschrijving, genre-tags en 1-2 datum-"chips" (bv. "vr 21
+ *   aug" / "za 22 aug") — maar geen tijd en geen directe ticketlink. Bij een
+ *   kaart waar de hoofdtitel al de artiestennaam is, bevat die h4 in plaats
+ *   daarvan de eigen ondertitel van de voorstelling (bv. h3 "Glodi Lugungu"
+ *   / h4 "In de Hemel ken ik jullie niet") — geen betrouwbare manier om dat
+ *   onderscheid te maken, dus we tonen gewoon wat er staat. De knop op de
+ *   kaart ("Bestel kaarten" / "Laatste kaarten" / "Uitverkocht" / "Gratis")
+ *   linkt altijd naar de detailpagina, nooit rechtstreeks naar een
+ *   reservering. Extra kaarten worden bijgeladen via een "Meer
+ *   voorstellingen"-knop (phx-click, geen aparte pagina's).
  * - De detailpagina (/agenda/<slug>) bevat een prijs/ticket-box met per
  *   individuele voorstelling een rij: datum+tijd (span.h6) en een knop.
  *   Bij beschikbare kaarten is dat een <a href="/agenda/<slug>/bestel/...">
@@ -85,10 +89,11 @@ export async function scrapeMeervaart({ page, theater, robots, waitForTurn, log 
   const cards = await page.evaluate(() => {
     return Array.from(document.querySelectorAll('main article')).map((card) => {
       const titel = card.querySelector('h3')?.textContent.trim() ?? null;
+      const maker = card.querySelector('h4.line-clamp-1')?.textContent.trim() || null;
       const beschrijving = card.querySelector('.py-xs.leading-6')?.textContent.trim() ?? null;
       const detailHref = card.querySelector('a[href^="/agenda/"]')?.getAttribute('href') ?? null;
       const genre = card.querySelector('.flex.flex-wrap.gap-2xs > div')?.textContent.trim() ?? null;
-      return { titel, beschrijving, detailHref, genre };
+      return { titel, maker, beschrijving, detailHref, genre };
     });
   });
 
@@ -162,6 +167,7 @@ export async function scrapeMeervaart({ page, theater, robots, waitForTurn, log 
         genreRuw: card.genre,
         beschikbaarheid: classifyBeschikbaarheid(row.statusTekst),
         beschrijving: card.beschrijving,
+        maker: card.maker,
         reserverenUrl: ticketUrl,
         bron: detailUrl,
         opgehaaldOp,

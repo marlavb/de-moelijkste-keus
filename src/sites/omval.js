@@ -39,6 +39,9 @@ function classifyBeschikbaarheid(statusInfoText, btnOrderStatus) {
  *   "default" mee, films vallen buiten de scope van een theateragenda.
  * - Genre-tags (.genres__link) zijn hier, anders dan bij Muziekgebouw, wél
  *   gewoon in de initiële HTML aanwezig — geen extra requests nodig.
+ * - .subtitle is de maker/artiest (bv. "Najib Amhali & Roué Verveer" bij
+ *   "Alles is Comedy"), los van .tagline (de korte marketingtekst die we
+ *   als beschrijving gebruiken) — kan leeg zijn.
  * - Datum staat als platte tekst "di 3 nov" (weekdag-afkorting, dag,
  *   maand-afkorting, GEEN jaartal) — zelfde formaat als Theater Bellevue,
  *   dus de bestaande createDutchAbbrevDayParser() volstaat.
@@ -70,6 +73,7 @@ export async function scrapeOmval({ page, theater, robots, waitForTurn, log }) {
             const titel = el.querySelector('.title')?.textContent.trim() ?? null;
             const detailHref = el.querySelector('a.desc')?.getAttribute('href') ?? null;
             const beschrijving = el.querySelector('.tagline')?.textContent.trim() ?? null;
+            const maker = el.querySelector('.subtitle')?.textContent.trim() || null;
             const dagTekst = el.querySelector('.top-date .start')?.textContent.trim() ?? null;
             const tijdTekst = el.querySelector('.top-date .time')?.textContent.trim() ?? null;
             const genres = Array.from(el.querySelectorAll('.genres__link')).map((g) => g.textContent.trim());
@@ -81,6 +85,7 @@ export async function scrapeOmval({ page, theater, robots, waitForTurn, log }) {
               titel,
               detailHref,
               beschrijving,
+              maker,
               dagTekst,
               tijdTekst,
               genres,
@@ -133,6 +138,7 @@ export async function scrapeOmval({ page, theater, robots, waitForTurn, log }) {
       genreRuw: item.genres.join(', ') || null,
       beschikbaarheid: classifyBeschikbaarheid(item.statusInfoText, item.btnOrderStatus),
       beschrijving: item.beschrijving,
+      maker: item.maker,
       reserverenUrl: ticketUrl ?? detailUrl,
       bron: theater.agendaUrl,
       opgehaaldOp,

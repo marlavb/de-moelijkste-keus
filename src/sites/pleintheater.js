@@ -35,7 +35,10 @@ function classifyBeschikbaarheid(ticketUrl, ticketsLabelText) {
  *   "Aanvang:"-label), en een directe externe boekingslink
  *   (.presale[data-url], een Stager.co-ticketshop-URL) — die ontbreekt bij
  *   gratis/geen-losse-kaartverkoop-items (dan staat er "gratis toegang" in
- *   het "Tickets:"-label in plaats daarvan).
+ *   het "Tickets:"-label in plaats daarvan). Het "Line-up:"-label is de
+ *   maker/artiestenlijst (bv. "Michelle Cheyen", soms een volledige
+ *   cast/crew-opsomming) — geen aparte beschrijving op deze site,
+ *   beschrijving blijft null.
  */
 export async function scrapePleinTheater({ page, theater, robots, waitForTurn, log }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
@@ -63,11 +66,11 @@ export async function scrapePleinTheater({ page, theater, robots, waitForTurn, l
           value: div.textContent.replace(div.querySelector('.label')?.textContent ?? '', '').trim(),
         }));
         const tijdTekst = rows.find((r) => r.label === 'Aanvang')?.value ?? null;
-        const beschrijving = rows.find((r) => r.label === 'Line-up')?.value ?? null;
+        const maker = rows.find((r) => r.label === 'Line-up')?.value || null;
         const ticketsLabelText = rows.find((r) => r.label === 'Tickets')?.value ?? null;
         const ticketUrl = child.querySelector('.presale')?.getAttribute('data-url') ?? null;
         const href = child.getAttribute('href');
-        results.push({ dagTekst, categorie, titel, tijdTekst, beschrijving, ticketsLabelText, ticketUrl, href });
+        results.push({ dagTekst, categorie, titel, tijdTekst, maker, ticketsLabelText, ticketUrl, href });
       }
     }
     return results;
@@ -103,7 +106,8 @@ export async function scrapePleinTheater({ page, theater, robots, waitForTurn, l
       genre: normalizeGenre(item.categorie),
       genreRuw: item.categorie,
       beschikbaarheid: classifyBeschikbaarheid(item.ticketUrl, item.ticketsLabelText),
-      beschrijving: item.beschrijving,
+      beschrijving: null,
+      maker: item.maker,
       reserverenUrl: item.ticketUrl ?? detailUrl,
       bron: theater.agendaUrl,
       opgehaaldOp,

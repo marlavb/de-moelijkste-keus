@@ -38,6 +38,10 @@ function classifyBeschikbaarheid(statusInfoText, btnOrderStatus) {
  * - Genre-tags (.genres__link) staan, net als bij Omval, al in de initiële
  *   HTML — geen extra requests nodig. Vaak een hele waslijst thema-tags
  *   naast het echte genre, dus normalizeGenreFromList() net als bij Omval.
+ * - Geen aparte .tagline op dit theater (in tegenstelling tot Muziekgebouw/
+ *   Omval) — .subtitle is hier de enige tekst naast de titel, en dat is de
+ *   maker/artiest (bv. "Gery Mendes/ All things Africa"), geen beschrijving
+ *   — beschrijving blijft dus null.
  * - Tijd (.top-date .time) toont meestal een start-eindtijd-range
  *   ("20:00 - 21:00"), soms "Meerdere tijdstippen" (bv. bij een dagvullend
  *   festival) in plaats van een tijd, en soms ontbreekt het element
@@ -68,7 +72,7 @@ export async function scrapeBijlmerParktheater({ page, theater, robots, waitForT
         return Array.from(document.querySelectorAll('.eventCard')).map((el) => {
           const titel = el.querySelector('.title')?.textContent.trim() ?? null;
           const detailHref = el.querySelector('a.desc')?.getAttribute('href') ?? null;
-          const beschrijving = el.querySelector('.subtitle')?.textContent.trim() ?? null;
+          const maker = el.querySelector('.subtitle')?.textContent.trim() || null;
           const dagTekst = el.querySelector('.top-date .start')?.textContent.trim() ?? null;
           const tijdTekst = el.querySelector('.top-date .time')?.textContent.trim() ?? null;
           const genres = Array.from(el.querySelectorAll('.genres__link')).map((g) => g.textContent.trim());
@@ -79,7 +83,7 @@ export async function scrapeBijlmerParktheater({ page, theater, robots, waitForT
           return {
             titel,
             detailHref,
-            beschrijving,
+            maker,
             dagTekst,
             tijdTekst,
             genres,
@@ -127,7 +131,8 @@ export async function scrapeBijlmerParktheater({ page, theater, robots, waitForT
       genre: normalizeGenreFromList(item.genres),
       genreRuw: item.genres.join(', ') || null,
       beschikbaarheid: classifyBeschikbaarheid(item.statusInfoText, item.btnOrderStatus),
-      beschrijving: item.beschrijving,
+      beschrijving: null,
+      maker: item.maker,
       reserverenUrl: ticketUrl ?? detailUrl,
       bron: theater.agendaUrl,
       opgehaaldOp,
