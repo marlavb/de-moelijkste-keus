@@ -10,6 +10,7 @@ import {
   setDoc,
   serverTimestamp,
 } from './firebase.js';
+import { getGenreBucket } from './genre.js';
 
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
@@ -860,7 +861,7 @@ function renderTheaterFilters() {
 }
 
 function renderGenreFilters() {
-  const present = GENRE_CATEGORIES.filter((g) => state.shows.some((s) => s.genre === g));
+  const present = GENRE_CATEGORIES.filter((g) => state.shows.some((s) => getGenreBucket(s) === g));
 
   for (const container of [els.sidebarGenreFilters, els.sheetGenreFilters]) {
     container.innerHTML = '';
@@ -935,7 +936,7 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     if (!enabled.has(s.theaterId)) return false;
     const cityOk = state.selectedCities.size === 0 || state.selectedCities.has(s.stad);
     const theaterOk = state.selectedTheaters.size === 0 || state.selectedTheaters.has(s.theaterId);
-    const genreOk = state.selectedGenres.size === 0 || state.selectedGenres.has(s.genre);
+    const genreOk = state.selectedGenres.size === 0 || state.selectedGenres.has(getGenreBucket(s));
     const podiumpasOk = !state.podiumpasOnly || s.podiumpas === true;
     const favoritesOk = !state.favoritesOnly || state.favorites.has(productionKey(s));
     // 'onbekend' blijft altijd zichtbaar — we weten domweg niet of die vol
@@ -1151,8 +1152,7 @@ function formatCheckedAt(isoTimestamp) {
 // ---------- Detail screen ----------
 
 function renderDetail(show) {
-  const genreLabel = show.genre ?? show.theaterNaam;
-  els.detailGenre.textContent = genreLabel;
+  els.detailGenre.textContent = getGenreBucket(show);
   els.detailTheater.textContent = show.theaterNaam;
   els.detailPodiumpasBadge.hidden = show.podiumpas !== true;
   els.detailTitle.textContent = show.titel;
