@@ -11,6 +11,7 @@ import {
   serverTimestamp,
 } from './firebase.js';
 import { getGenreBucket } from './genre.js';
+import { getOtherTheaterShows } from './productions.js';
 
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
@@ -193,6 +194,8 @@ const els = {
   detailDescription: document.getElementById('detailDescription'),
   detailOtherDatesWrap: document.getElementById('detailOtherDatesWrap'),
   detailOtherDates: document.getElementById('detailOtherDates'),
+  detailRelatedTheatersWrap: document.getElementById('detailRelatedTheatersWrap'),
+  detailRelatedTheaters: document.getElementById('detailRelatedTheaters'),
   detailCheckedAt: document.getElementById('detailCheckedAt'),
   detailReserveBtn: document.getElementById('detailReserveBtn'),
   detailReserveLabel: document.getElementById('detailReserveLabel'),
@@ -1182,6 +1185,7 @@ function renderDetail(show) {
 
   renderFavoriteButton(show);
   renderOtherDates(show);
+  renderRelatedTheaters(show);
 
   els.detailFavorite.onclick = () => {
     const key = productionKey(show);
@@ -1220,6 +1224,48 @@ function renderOtherDates(show) {
     els.detailOtherDates.appendChild(
       makeChip(label, s.id === show.id, () => navigate(`#/show/${encodeURIComponent(s.id)}`))
     );
+  }
+}
+
+function renderRelatedTheaters(show) {
+  const byTheater = getOtherTheaterShows(show, state.shows);
+
+  if (byTheater.size === 0) {
+    els.detailRelatedTheatersWrap.hidden = true;
+    return;
+  }
+
+  els.detailRelatedTheatersWrap.hidden = false;
+  els.detailRelatedTheaters.innerHTML = '';
+
+  const theaterIds = [...byTheater.keys()].sort((a, b) =>
+    (state.shows.find((s) => s.theaterId === a)?.theaterNaam ?? a).localeCompare(
+      state.shows.find((s) => s.theaterId === b)?.theaterNaam ?? b
+    )
+  );
+
+  for (const theaterId of theaterIds) {
+    const shows = byTheater.get(theaterId);
+
+    const group = document.createElement('div');
+    group.className = 'related-theater-group';
+
+    const name = document.createElement('h4');
+    name.className = 'related-theater-name';
+    name.textContent = shows[0].theaterNaam;
+    group.appendChild(name);
+
+    const row = document.createElement('div');
+    row.className = 'filter-row filter-row--wrap';
+    row.setAttribute('role', 'group');
+    row.setAttribute('aria-label', shows[0].theaterNaam);
+    for (const s of shows) {
+      const label = s.tijd ? `${formatDateShort(s.datum)}, ${s.tijd}` : formatDateShort(s.datum);
+      row.appendChild(makeChip(label, false, () => navigate(`#/show/${encodeURIComponent(s.id)}`)));
+    }
+    group.appendChild(row);
+
+    els.detailRelatedTheaters.appendChild(group);
   }
 }
 
