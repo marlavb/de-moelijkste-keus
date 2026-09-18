@@ -87,8 +87,8 @@ function parseDateList(raw, referenceDate) {
  *   verandert niet).
  * - Wix-componenten hebben geen bruikbare eigen class-namen; per kaart
  *   ([role="listitem"]) lezen we de 5 [data-testid="richTextElement"]
- *   op vaste positie uit: 0=gezelschap, 1=titel, 2=genre(+taal), 3=
- *   datumlijst, 4=beschrijving.
+ *   op vaste positie uit: 0=gezelschap (-> maker), 1=titel, 2=genre(+taal),
+ *   3=datumlijst, 4=beschrijving.
  * - Scala is een "kies zelf wat je ziet"-concept (meerdere losse
  *   20-minuten-voorstellingen per avond, geen vaste starttijd per
  *   voorstelling) — er staat dan ook nergens een tijd bij, dus tijd
@@ -117,8 +117,8 @@ export async function scrapeScala({ page, theater, robots, waitForTurn, log }) {
         );
         const href = card.querySelector('a[href*="/voorstelling/"]')?.getAttribute('href') ?? null;
         if (!href || texts.length < 4) return null;
-        const [, titel, genreLijn, datumLijst, beschrijving] = texts;
-        return { href, titel, genreLijn, datumLijst, beschrijving: beschrijving ?? null };
+        const [gezelschap, titel, genreLijn, datumLijst, beschrijving] = texts;
+        return { href, titel, genreLijn, datumLijst, beschrijving: beschrijving ?? null, maker: gezelschap || null };
       })
       .filter(Boolean);
   });
@@ -155,6 +155,7 @@ export async function scrapeScala({ page, theater, robots, waitForTurn, log }) {
         genreRuw,
         beschikbaarheid: 'onbekend',
         beschrijving: item.beschrijving,
+        maker: item.maker,
         reserverenUrl: detailUrl,
         bron: theater.agendaUrl,
         opgehaaldOp,

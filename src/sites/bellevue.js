@@ -32,6 +32,8 @@ function classifyBeschikbaarheid(statusTekst) {
  *   los datum+tijd is (eenmalige voorstelling, met een directe ticketlink),
  *   óf een datumrange is (bv. "wo 9 sep - za 3 apr") voor een reeks
  *   voorstellingen — in dat geval geeft de kaart zelf geen individuele datums.
+ *   .subtitle is de maker/artiest (bv. "Greg Shapiro" bij "King Me") — kan
+ *   leeg zijn bij een groepsproductie zonder los vermeld hoofdpersoon.
  * - De detailpagina van elke productie (/agenda/<slug>) bevat wél een
  *   volledige lijst van losse voorstellingen als <li class="subshow">, elk
  *   met eigen datum, tijd en ticketknop. Bij sommige voorstellingen is die
@@ -66,7 +68,8 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log }
           const beschrijving = card.querySelector('.tagline')?.textContent.trim() ?? null;
           const detailHref = card.querySelector('a.desc')?.getAttribute('href') ?? null;
           const genre = card.querySelector('.genres__link')?.textContent.trim() ?? null;
-          return { titel, beschrijving, detailHref, genre };
+          const maker = card.querySelector('.subtitle')?.textContent.trim() || null;
+          return { titel, beschrijving, detailHref, genre, maker };
         });
       });
     } catch (err) {
@@ -145,6 +148,7 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log }
         genreRuw: card.genre,
         beschikbaarheid: classifyBeschikbaarheid(sub.statusTekst),
         beschrijving: card.beschrijving,
+        maker: card.maker,
         reserverenUrl: ticketUrl ?? detailUrl,
         bron: detailUrl,
         opgehaaldOp,

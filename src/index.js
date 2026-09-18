@@ -138,11 +138,12 @@ async function main() {
   const minDate = todayIsoDate();
   const freshShows = mergedShows
     .filter((s) => s.datum >= minDate)
-    // `prijs` is een nieuw, optioneel schemaveld (vooralsnog alleen gevuld
-    // door Flint, voor de podiumpas-prijsgrens) — hier centraal op null
-    // gezet voor elke andere show, in plaats van dat elke afzonderlijke
-    // scraper-module het zelf moet opnemen.
-    .map((s) => (s.prijs === undefined ? { ...s, prijs: null } : s));
+    // `prijs` en `maker` zijn optionele schemavelden die maar een deel van de
+    // theaters vult (prijs: alleen Flint, voor de podiumpas-prijsgrens; maker:
+    // alleen theaters met een apart artiest/gezelschap-element) — hier
+    // centraal op null gezet voor elke andere show, in plaats van dat elke
+    // afzonderlijke scraper-module het zelf moet opnemen.
+    .map((s) => ({ ...s, prijs: s.prijs ?? null, maker: s.maker ?? null }));
   const purgedCount = mergedShows.length - freshShows.length;
   if (purgedCount > 0) {
     console.log(`${purgedCount} verlopen voorstelling(en) verwijderd (datum vóór ${minDate}).`);

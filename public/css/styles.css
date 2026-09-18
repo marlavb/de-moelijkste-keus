@@ -583,6 +583,16 @@ a {
   letter-spacing: -0.01em;
 }
 
+.detail-maker {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.detail-maker[hidden] {
+  display: none;
+}
+
 .detail-meta {
   margin-top: 14px;
   display: flex;

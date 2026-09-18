@@ -188,6 +188,7 @@ const els = {
   detailStatusBadge: document.getElementById('detailStatusBadge'),
   detailPodiumpasBadge: document.getElementById('detailPodiumpasBadge'),
   detailTitle: document.getElementById('detailTitle'),
+  detailMaker: document.getElementById('detailMaker'),
   detailDate: document.getElementById('detailDate'),
   detailTime: document.getElementById('detailTime'),
   detailAddress: document.getElementById('detailAddress'),
@@ -1053,7 +1054,7 @@ function renderShowRow(show) {
 
   const title = document.createElement('p');
   title.className = 'show-title';
-  title.textContent = show.titel;
+  title.textContent = show.maker ? `${show.titel} - ${show.maker}` : show.titel;
 
   const metaRow = document.createElement('div');
   metaRow.className = 'show-meta-row';
@@ -1167,6 +1168,8 @@ function renderDetail(show) {
   els.detailTheater.textContent = show.theaterNaam;
   els.detailPodiumpasBadge.hidden = show.podiumpas !== true;
   els.detailTitle.textContent = show.titel;
+  els.detailMaker.textContent = show.maker ?? '';
+  els.detailMaker.hidden = !show.maker;
   els.detailDate.textContent = formatDateLong(show.datum);
   els.detailTime.textContent = show.tijd ? `${show.tijd} uur` : 'Tijd volgt nog';
 

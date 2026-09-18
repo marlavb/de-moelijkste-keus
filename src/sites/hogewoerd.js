@@ -31,9 +31,9 @@ function classifyBeschikbaarheid(bookable, buttonText) {
  * - Titel: de detailpagina toont artiest/gezelschap als <h1 class="title
  *   outline"> en de eigenlijke productienaam als <h2 class="subtitle
  *   heading-4"> (bv. h1 "Kasper van der Laan", h2 "Ruim") — de h2 matcht de
- *   URL-slug en de <title>-meta, dus die gebruiken we als titel. Genre staat
- *   los als kommagescheiden <p class="subtitle"> (bv. "Muziek,
- *   Muziektheater, No Dutch? No Problem!").
+ *   URL-slug en de <title>-meta, dus die gebruiken we als titel; de h1
+ *   gebruiken we als maker. Genre staat los als kommagescheiden <p
+ *   class="subtitle"> (bv. "Muziek, Muziektheater, No Dutch? No Problem!").
  * - Eén detailpagina kan meerdere speeldata hebben (elk een eigen <div
  *   class="ticket-row flex desktop">, met een aparte ".mobile"-variant
  *   ernaast die we bewust overslaan om dubbeltellingen te voorkomen) — MAAR
@@ -100,6 +100,7 @@ export async function scrapeHogeWoerd({ page, theater, robots, waitForTurn, log 
       await page.goto(detailUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
       data = await page.evaluate(() => {
         const titel = document.querySelector('h2.subtitle.heading-4')?.textContent.trim() ?? null;
+        const maker = document.querySelector('h1.title.outline')?.textContent.trim() || null;
         const genreTekst = document.querySelector('p.subtitle')?.textContent.trim() ?? '';
         const genres = genreTekst
           .split(',')
@@ -120,7 +121,7 @@ export async function scrapeHogeWoerd({ page, theater, robots, waitForTurn, log 
           return { dagTekst, tijdTekst, bookable, ticketHref, buttonText };
         });
 
-        return { titel, genres, beschrijving, rows };
+        return { titel, maker, genres, beschrijving, rows };
       });
     } catch (err) {
       log(`kon detailpagina niet laden (${detailUrl}): ${err.message} — overgeslagen.`);
@@ -162,6 +163,7 @@ export async function scrapeHogeWoerd({ page, theater, robots, waitForTurn, log 
         genreRuw: data.genres.join(', ') || null,
         beschikbaarheid: classifyBeschikbaarheid(row.bookable, row.buttonText),
         beschrijving: data.beschrijving,
+        maker: data.maker,
         reserverenUrl: ticketUrl ?? detailUrl,
         bron: detailUrl,
         opgehaaldOp,

@@ -56,6 +56,11 @@ function parseDateTime(raw) {
  *   agendapagina — genre blijft null, beschikbaarheid blijft "onbekend"
  *   (geen van beide is op te halen zonder een extra request per
  *   voorstelling, en dat vermijden we bewust).
+ * - Geen aparte beschrijving op de kaart — het tweede tekstveld (`artiest`)
+ *   is de artiest/gezelschapsnaam (bv. "Theater RAST / Ayşegül Karaca"),
+ *   dus die vult `maker`, niet `beschrijving`. Bevat bij een enkele
+ *   voorstelling nog een "[UITVERKOCHT]"-prefix van de site zelf — dat
+ *   laten we ongemoeid (geen los beschikbaarheidssignaal om op te bouwen).
  */
 export async function scrapeMozaiek({ page, theater, robots, waitForTurn, log }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
@@ -115,7 +120,8 @@ export async function scrapeMozaiek({ page, theater, robots, waitForTurn, log })
       genre: null,
       genreRuw: null,
       beschikbaarheid: 'onbekend',
-      beschrijving: item.artiest,
+      beschrijving: null,
+      maker: item.artiest,
       reserverenUrl: detailUrl,
       bron: theater.agendaUrl,
       opgehaaldOp,
