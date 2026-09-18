@@ -81,6 +81,7 @@ const STORAGE_KEYS = {
   favoritesMigrated: 'podiumagenda:favoritesMigrated',
   sidebarSections: 'podiumagenda:sidebarSections',
   theaterCitySections: 'podiumagenda:theaterCitySections',
+  filters: 'podiumagenda:filters',
 };
 
 // Provincie-indeling voor het "Mijn theaters"-scherm, zoals op
@@ -115,20 +116,39 @@ const SIDEBAR_SECTION_IDS = ['stad', 'theater', 'genre'];
 // De gebruiker kan dit met één tik opheffen via de "toon meer"-knop.
 const DEFAULT_WINDOW_DAYS = 30;
 
+// Herstelde filterstate uit localStorage (zie loadFilters()/saveFilters()
+// verderop) — vóór het state-object opgehaald zodat elk veld hieronder
+// meteen met de juiste startwaarde geïnitialiseerd kan worden, i.p.v. pas
+// na een asynchrone stap. Een opgeslagen stad/theater/genre die niet meer
+// in de data voorkomt wordt vanzelf opgeruimd zodra renderFilters() na het
+// laden van shows.json draait (zie de pruning in renderCityFilters()/
+// renderTheaterFilters()) — hier dus geen aparte validatie nodig.
+const savedFilters = loadFilters();
+
 const state = {
   shows: [],
   // Multi-select filters — een lege Set betekent "geen filter op deze
-  // dimensie" (toon alles), net als de oude 'alle'-waarde. Allemaal
-  // lokaal-only, net als podiumpasOnly hieronder — niet in
-  // localStorage/Firestore.
-  selectedCities: new Set(),
-  selectedTheaters: new Set(),
-  selectedGenres: new Set(),
-  podiumpasOnly: false,
-  favoritesOnly: false,
-  hideFullOnly: false,
-  searchQuery: '', // lokaal-only, al lowercased/getrimd — niet in localStorage/Firestore
-  searchQueryRaw: '', // ongewijzigde tekst, alleen voor weergave (bv. in de lege-staat-tekst)
+  // dimensie" (toon alles), net als de oude 'alle'-waarde. Lokaal-only
+  // (localStorage via loadFilters()/saveFilters()) — geen Firestore-sync,
+  // dit is bewust hetzelfde niveau als de sidebar-accordion-state
+  // (sidebarSections hieronder), niet het cross-device-niveau van
+  // favorites/enabledTheaters.
+  selectedCities: savedFilters.selectedCities,
+  selectedTheaters: savedFilters.selectedTheaters,
+  selectedGenres: savedFilters.selectedGenres,
+  // De 3 toggles hieronder (podiumpasOnly/favoritesOnly/hideFullOnly) waren
+  // vroeger bewust session-only (nooit opgeslagen), zodat ze bij elk bezoek
+  // weer op de standaardstand "uit" stonden — dat is op expliciet verzoek
+  // omgedraaid: ze worden nu net als de multi-select filters hierboven
+  // onthouden in localStorage.
+  podiumpasOnly: savedFilters.podiumpasOnly,
+  favoritesOnly: savedFilters.favoritesOnly,
+  hideFullOnly: savedFilters.hideFullOnly,
+  // Bewaard als de ongewijzigde tekst (searchQueryRaw, ook gebruikt om het
+  // zoekveld bij het laden weer te vullen) plus de al lowercased/getrimde
+  // matchvorm (searchQuery) — lokaal-only, zie loadFilters()/saveFilters().
+  searchQuery: savedFilters.searchQueryRaw.trim().toLowerCase(),
+  searchQueryRaw: savedFilters.searchQueryRaw.trim(),
   enabledTheaters: loadEnabledTheaters(),
   favorites: loadFavorites(),
   sidebarSections: loadSidebarSections(),
@@ -260,6 +280,18 @@ async function init() {
   renderFilterBadge();
   renderSubtitle();
   renderAgenda();
+
+  // Herstelde zoekopdracht (zie savedFilters bij het state-object) in
+  // beide zoekvelden zetten; op mobiel ook meteen de zoekbalk tonen i.p.v.
+  // 'm verborgen te laten terwijl er stilletjes al op gefilterd wordt —
+  // zonder focus() (dat zou ongevraagd het toetsenbord openen).
+  if (state.searchQueryRaw) {
+    els.searchInput.value = state.searchQueryRaw;
+    els.sidebarSearchInput.value = state.searchQueryRaw;
+    els.headerTitleGroup.hidden = true;
+    els.headerActions.hidden = true;
+    els.headerSearch.hidden = false;
+  }
 
   els.filterToggle.addEventListener('click', openSheet);
   els.sheetClose.addEventListener('click', closeSheet);
@@ -419,6 +451,43 @@ function loadTheaterCitySections() {
 
 function saveTheaterCitySections() {
   localStorage.setItem(STORAGE_KEYS.theaterCitySections, JSON.stringify(state.theaterCitySections));
+}
+
+// Agenda-filters (stad/theater/genre-selecties, de 3 toggles, zoekopdracht)
+// — lokaal-only, zie de toelichting bij het state-object hierboven.
+// Ontbrekende/ongeldige velden (eerste bezoek, of een oudere opgeslagen
+// vorm) vallen terug op de lege/uit-stand in plaats van te crashen.
+function loadFilters() {
+  let stored = {};
+  try {
+    stored = JSON.parse(localStorage.getItem(STORAGE_KEYS.filters)) ?? {};
+  } catch {
+    stored = {};
+  }
+  return {
+    selectedCities: new Set(Array.isArray(stored.selectedCities) ? stored.selectedCities : []),
+    selectedTheaters: new Set(Array.isArray(stored.selectedTheaters) ? stored.selectedTheaters : []),
+    selectedGenres: new Set(Array.isArray(stored.selectedGenres) ? stored.selectedGenres : []),
+    podiumpasOnly: stored.podiumpasOnly === true,
+    favoritesOnly: stored.favoritesOnly === true,
+    hideFullOnly: stored.hideFullOnly === true,
+    searchQueryRaw: typeof stored.searchQuery === 'string' ? stored.searchQuery : '',
+  };
+}
+
+function saveFilters() {
+  localStorage.setItem(
+    STORAGE_KEYS.filters,
+    JSON.stringify({
+      selectedCities: [...state.selectedCities],
+      selectedTheaters: [...state.selectedTheaters],
+      selectedGenres: [...state.selectedGenres],
+      podiumpasOnly: state.podiumpasOnly,
+      favoritesOnly: state.favoritesOnly,
+      hideFullOnly: state.hideFullOnly,
+      searchQuery: state.searchQueryRaw,
+    })
+  );
 }
 
 function loadFavorites() {
@@ -666,6 +735,7 @@ function closeSearch() {
   els.headerTitleGroup.hidden = false;
   els.headerActions.hidden = false;
   renderAgenda();
+  saveFilters();
 }
 
 // Zowel het mobiele (uitklap-header) als het sidebar-zoekveld (breed
@@ -683,6 +753,7 @@ function onSearchInput(e) {
     state.searchQuery = trimmed.toLowerCase();
     state.searchQueryRaw = trimmed;
     renderAgenda();
+    saveFilters();
   }, SEARCH_DEBOUNCE_MS);
 }
 
@@ -782,6 +853,7 @@ function onCityToggle(city) {
   renderTheaterFilters();
   renderFilterBadge();
   renderAgenda();
+  saveFilters();
 }
 
 function onTheaterToggle(id) {
@@ -789,6 +861,7 @@ function onTheaterToggle(id) {
   renderTheaterFilters();
   renderFilterBadge();
   renderAgenda();
+  saveFilters();
 }
 
 function onGenreToggle(genre) {
@@ -796,6 +869,7 @@ function onGenreToggle(genre) {
   renderGenreFilters();
   renderFilterBadge();
   renderAgenda();
+  saveFilters();
 }
 
 function onPodiumpasToggleClick() {
@@ -806,6 +880,7 @@ function onPodiumpasToggleClick() {
   renderFilters();
   renderFilterBadge();
   renderAgenda();
+  saveFilters();
 }
 
 function onFavoritesToggleClick() {
@@ -813,6 +888,7 @@ function onFavoritesToggleClick() {
   renderFavoritesToggle();
   renderFilterBadge();
   renderAgenda();
+  saveFilters();
 }
 
 function onHideFullToggleClick() {
@@ -820,6 +896,7 @@ function onHideFullToggleClick() {
   renderHideFullToggle();
   renderFilterBadge();
   renderAgenda();
+  saveFilters();
 }
 
 function clearAllFilters() {
@@ -832,6 +909,7 @@ function clearAllFilters() {
   renderFilters();
   renderFilterBadge();
   renderAgenda();
+  saveFilters();
 }
 
 function renderCityFilters() {

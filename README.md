@@ -210,7 +210,11 @@ Elke voorstelling in `data/shows.json`:
   een specifieke voorstelling gewoon werken.
 - Filters: theater is een quick-filter chip-rij op het agenda-scherm zelf;
   genre zit (samen met dezelfde theater-chips) achter het filter-icoon in
-  een sheet, met een badge die het aantal actieve filters toont.
+  een sheet, met een badge die het aantal actieve filters toont. Alle
+  filters (stad/theater/genre, zoekopdracht, en de 3 toggles) worden
+  onthouden in `localStorage` en blijven staan na het herladen/opnieuw
+  openen van de site — lokaal-only per browser, geen Firestore-sync
+  (zelfde niveau als de sidebar-accordion-state).
 - Het agenda-scherm toont standaard alleen voorstellingen tot 60 dagen
   vooruit (met 1136+ voorstellingen tot in 2028 is "alles" geen bruikbare
   lijst) — een knop onderaan de lijst toont in één tik de rest, voor
