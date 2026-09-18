@@ -315,6 +315,14 @@ a {
   color: var(--text-muted);
 }
 
+.show-genre-tag {
+  display: block;
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: lowercase;
+}
+
 .show-chevron {
   flex-shrink: 0;
   width: 18px;
@@ -541,13 +549,13 @@ a {
   color: #ff6b6b;
 }
 
-.detail-banner-label {
-  position: absolute;
-  left: 16px;
-  bottom: 14px;
-  color: #fff;
-  font-size: 15px;
-  font-weight: 600;
+.detail-genre-tag {
+  display: block;
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: lowercase;
 }
 
 .detail-body {

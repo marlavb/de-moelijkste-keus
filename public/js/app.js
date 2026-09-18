@@ -1060,11 +1060,8 @@ function renderShowRow(show) {
 
   const meta = document.createElement('p');
   meta.className = 'show-meta';
-  const genreLabel = getGenreBucket(show);
   const theaterNaam = show.theaterNaam;
-  meta.textContent = show.tijd
-    ? `${genreLabel} · ${theaterNaam} · ${show.tijd}`
-    : `${genreLabel} · ${theaterNaam}`;
+  meta.textContent = show.tijd ? `${theaterNaam} · ${show.tijd}` : theaterNaam;
   metaRow.appendChild(meta);
 
   if (show.podiumpas === true) metaRow.appendChild(makePodiumpasIcon());
@@ -1072,7 +1069,11 @@ function renderShowRow(show) {
   const badge = makeStatusBadge(show.beschikbaarheid);
   if (badge) metaRow.appendChild(badge);
 
-  info.append(title, metaRow);
+  const genreTag = document.createElement('span');
+  genreTag.className = 'show-genre-tag';
+  genreTag.textContent = getGenreBucket(show);
+
+  info.append(title, metaRow, genreTag);
 
   const chevron = svgIcon('<polyline points="9 6 15 12 9 18" />');
   chevron.classList.add('show-chevron');
