@@ -153,6 +153,10 @@ const GENRE_MAP = {
   'dans/beweging': 'Dans', // Theater Ins Blau
   opera: 'Muziektheater', // zelfde keuze als 'opera/operette'
   tribute: 'Muziek & Concert', // tributebands (Stadsgehoorzaal)
+  'cabaret/kleinkunst': 'Cabaret', // Isala; via de canonieke vorm ook "cabaret & kleinkunst" (Kruispunt)
+  'musical / show / variété': 'Musical', // Isala, zoals 'musical/show'
+  klassiek: 'Muziek & Concert', // Stoep, Isala
+  jazz: 'Muziek & Concert', // Stoep
 };
 
 // Samengestelde labels komen in allerlei varianten voor ("jeugd & familie",

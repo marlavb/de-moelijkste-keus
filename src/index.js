@@ -47,6 +47,9 @@ import { scrapeKoningshof } from './sites/koningshof.js';
 import { scrapeMaas } from './sites/maas.js';
 import { scrapeInsBlau } from './sites/insblau.js';
 import { scrapeStadsgehoorzaal } from './sites/stadsgehoorzaal.js';
+import { scrapeKruispunt } from './sites/kruispunt.js';
+import { scrapeIsala } from './sites/isala.js';
+import { scrapeStoep } from './sites/stoep.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -88,6 +91,9 @@ const SCRAPERS = {
   maas: scrapeMaas,
   insblau: scrapeInsBlau,
   stadsgehoorzaal: scrapeStadsgehoorzaal,
+  kruispunt: scrapeKruispunt,
+  isala: scrapeIsala,
+  stoep: scrapeStoep,
 };
 
 // Welk bestand waarvoor dient:

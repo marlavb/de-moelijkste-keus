@@ -176,7 +176,7 @@ export function classifyPepperedButton(buttonText) {
   if (t.includes('verkoop elders') || t.includes('via theater')) return null;
   if (t.includes('uitverkocht') || t.includes('volgeboekt')) return 'uitverkocht';
   if (t.includes('wachtlijst')) return 'wachtlijst';
-  if (t.includes('kaarten') || t.includes('tickets') || t.includes('bestel') || t.includes('aanmelden')) return 'beschikbaar';
+  if (t.includes('kaarten') || t.includes('tickets') || t.includes('bestel') || t.includes('aanmelden') || t.includes('gratis') || t.includes('losse plekken')) return 'beschikbaar';
   return 'onbekend';
 }
 

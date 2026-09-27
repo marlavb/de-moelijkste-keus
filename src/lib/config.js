@@ -338,4 +338,28 @@ export const THEATERS = [
     agendaUrl: 'https://stadsgehoorzaal.nl/programma',
     podiumpas: true,
   },
+  {
+    id: 'kruispunt',
+    naam: 'Theater het Kruispunt',
+    stad: 'Barendrecht',
+    baseUrl: 'https://www.theaterhetkruispunt.nl',
+    agendaUrl: 'https://www.theaterhetkruispunt.nl/agenda',
+    podiumpas: true,
+  },
+  {
+    id: 'isala',
+    naam: 'Isala theater',
+    stad: 'Capelle aan den IJssel',
+    baseUrl: 'https://www.isalatheater.nl',
+    agendaUrl: 'https://www.isalatheater.nl/agenda',
+    podiumpas: true,
+  },
+  {
+    id: 'stoep',
+    naam: 'Theater de Stoep',
+    stad: 'Spijkenisse',
+    baseUrl: 'https://theaterdestoep.nl',
+    agendaUrl: 'https://theaterdestoep.nl/voorstellingen',
+    podiumpas: true,
+  },
 ];

@@ -115,6 +115,15 @@ async function runWithDeadline({ theater, scraper, deps, budgetMs, log }) {
   const scraperLog = (msg) => {
     if (!signal.aborted) log(msg);
   };
+  // Waarschuwingen die een scraper zelf signaleert (bv. "uitsluitingslijst
+  // van het theater is gewijzigd"): komen in scrape-status.json en als
+  // ::warning in de run-samenvatting, zonder dat de scrape faalt.
+  const warnings = [];
+  const warn = (msg) => {
+    if (signal.aborted) return;
+    warnings.push(msg);
+    log(`WAARSCHUWING: ${msg}`);
+  };
 
   let page;
   try {
@@ -124,14 +133,14 @@ async function runWithDeadline({ theater, scraper, deps, budgetMs, log }) {
       signal.throwIfAborted();
       scraperLog(`robots.txt gelezen (${robots.robotsUrl}), crawl-delay = ${robots.crawlDelayMs}ms`);
       const waitForTurn = deps.createWaiter(robots.crawlDelayMs, scraperLog, signal);
-      const shows = await scraper({ page, theater, robots, waitForTurn, log: scraperLog, signal });
+      const shows = await scraper({ page, theater, robots, waitForTurn, log: scraperLog, warn, signal });
       if (!Array.isArray(shows)) throw new Error('scraper gaf geen array terug');
       return shows;
     })();
     work.catch(() => {});
-    return { shows: await Promise.race([work, aborted]) };
+    return { shows: await Promise.race([work, aborted]), warnings };
   } catch (error) {
-    return { error };
+    return { error, warnings };
   } finally {
     clearTimeout(timer);
     if (!signal.aborted) controller.abort(new Error('scrape afgerond'));
@@ -201,6 +210,8 @@ export async function runRefresh({
       minDate,
     });
     resolvedShows.push(...outcome.shows);
+    for (const msg of result.warnings ?? []) annotate('warning', `Let op ${theater.id}`, msg);
+    const waarschuwing = [outcome.waarschuwing, ...(result.warnings ?? [])].filter(Boolean).join(' | ') || null;
 
     if (outcome.status === 'ok') {
       theaterLog(`${outcome.shows.length} voorstellingen gevonden (${duurSeconden}s)`);
@@ -231,7 +242,7 @@ export async function runRefresh({
         : now().toISOString(),
       terugvalSinds: failed ? (vorige.terugvalSinds ?? now().toISOString()) : null,
       fout: outcome.fout,
-      waarschuwing: outcome.waarschuwing ?? null,
+      waarschuwing,
     };
   }
 

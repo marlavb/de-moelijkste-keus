@@ -31,6 +31,9 @@ test('knopteksten → beschikbaarheid, of overslaan', () => {
   assert.equal(classifyPepperedButton('Kaartverkoop binnenkort'), 'onbekend');
   assert.equal(classifyPepperedButton('Met audiodescriptie'), 'onbekend');
   assert.equal(classifyPepperedButton('Tickets via theater'), null);
+  assert.equal(classifyPepperedButton('toegang gratis'), 'beschikbaar');
+  assert.equal(classifyPepperedButton('zet mij op de wachtlijst'), 'wachtlijst');
+  assert.equal(classifyPepperedButton('laatste kaarten via 010 - 458 6400'), 'beschikbaar');
   assert.equal(classifyPepperedButton(null), 'onbekend');
 });
 

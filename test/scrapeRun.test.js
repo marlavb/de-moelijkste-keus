@@ -304,3 +304,22 @@ test('fout in scrape-status bevat alleen de eerste regel van de melding, ingekor
   assert.ok(status.theaters.b.fout.length <= 'exception: '.length + 200);
   assert.ok(!/\n|at .*\.js/.test(status.theaters.a.fout + status.theaters.b.fout));
 });
+
+test('scraper kan zelf een waarschuwing geven: komt in scrape-status en als annotatie, data blijft', async () => {
+  const paths = await setup({ previousShows: [] });
+  const { written, status, annotations } = await run({
+    paths,
+    theaters: [theater('a')],
+    scrapers: {
+      a: async ({ warn }) => {
+        warn('uitsluitingslijst gewijzigd');
+        return [show('a', '2026-10-05')];
+      },
+    },
+  });
+  assert.equal(written.length, 1);
+  assert.equal(status.theaters.a.status, 'ok');
+  assert.equal(status.theaters.a.waarschuwing, 'uitsluitingslijst gewijzigd');
+  assert.equal(annotations.length, 1);
+  assert.match(annotations[0].message, /uitsluitingslijst/);
+});

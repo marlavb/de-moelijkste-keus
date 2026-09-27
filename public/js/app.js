@@ -110,6 +110,9 @@ const PROVINCE_BY_CITY = {
   Maassluis: 'Zuid-Holland',
   Leiden: 'Zuid-Holland',
   Vlaardingen: 'Zuid-Holland',
+  Spijkenisse: 'Zuid-Holland',
+  'Capelle aan den IJssel': 'Zuid-Holland',
+  Barendrecht: 'Zuid-Holland',
 };
 
 // Desktop-sidebar accordeon-secties (Stad/Theater/Genre) — standaard allemaal
