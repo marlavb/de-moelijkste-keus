@@ -49,12 +49,24 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log }
     return [];
   }
 
+  // Voorbij de laatste pagina toont het platform (sinds sep 2026) geen lege
+  // lijst meer, maar steeds dezelfde kaarten. "0 producties" is dus geen
+  // betrouwbaar stopsignaal: we stoppen zodra een pagina geen enkele nog niet
+  // geziene entry-id oplevert. MAX_LISTING_PAGES blijft als harde bovengrens.
   const cards = [];
+  const seenEntryIds = new Set();
+  let stoppedNormally = false;
+  // De naam van de paginaparameter verschilt per site en is veranderd (eerst
+  // "page", sinds sep 2026 bij Bellevue/Frascati "p54_page", naar het id van
+  // een CMS-paginaonderdeel). Daarom lezen we 'm van pagina 1 af, uit de
+  // pagina-keuzelijst; robots.txt staat beide vormen expliciet toe.
+  let pageParam = 'page';
   for (let pageNum = 1; pageNum <= MAX_LISTING_PAGES; pageNum++) {
-    const url = pageNum === 1 ? theater.agendaUrl : `${theater.agendaUrl}?page=${pageNum}`;
-    const listingPath = pageNum === 1 ? AGENDA_PATH : `${AGENDA_PATH}?page=${pageNum}`;
+    const url = pageNum === 1 ? theater.agendaUrl : `${theater.agendaUrl}?${pageParam}=${pageNum}`;
+    const listingPath = pageNum === 1 ? AGENDA_PATH : `${AGENDA_PATH}?${pageParam}=${pageNum}`;
     if (!robots.isAllowed(listingPath)) {
       log(`robots.txt verbiedt ${listingPath} — stop met pagineren.`);
+      stoppedNormally = true;
       break;
     }
 
@@ -62,14 +74,21 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log }
     let pageCards;
     try {
       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      if (pageNum === 1) {
+        pageParam =
+          (await page.evaluate(() => document.querySelector('select.page-selection')?.getAttribute('name'))) ||
+          pageParam;
+        log(`paginaparameter: ${pageParam}`);
+      }
       pageCards = await page.evaluate(() => {
         return Array.from(document.querySelectorAll('li[data-entry-id]')).map((card) => {
+          const entryId = card.getAttribute('data-entry-id');
           const titel = card.querySelector('h3.title')?.textContent.trim() ?? null;
           const beschrijving = card.querySelector('.tagline')?.textContent.trim() ?? null;
           const detailHref = card.querySelector('a.desc')?.getAttribute('href') ?? null;
           const genre = card.querySelector('.genres__link')?.textContent.trim() ?? null;
           const maker = card.querySelector('.subtitle')?.textContent.trim() || null;
-          return { titel, beschrijving, detailHref, genre, maker };
+          return { entryId, titel, beschrijving, detailHref, genre, maker };
         });
       });
     } catch (err) {
@@ -77,19 +96,37 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log }
       continue;
     }
 
-    log(`pagina ${pageNum}: ${pageCards.length} producties`);
-    if (pageCards.length === 0) break;
-    cards.push(...pageCards);
+    const newCards = pageCards.filter((card) => {
+      if (seenEntryIds.has(card.entryId)) return false;
+      seenEntryIds.add(card.entryId);
+      return true;
+    });
+    log(`pagina ${pageNum}: ${pageCards.length} producties (${newCards.length} nieuw)`);
+    if (newCards.length === 0) {
+      stoppedNormally = true;
+      break;
+    }
+    cards.push(...newCards);
+  }
+  if (!stoppedNormally) {
+    log(
+      `WAARSCHUWING: bovengrens van ${MAX_LISTING_PAGES} listingpagina's bereikt zonder einde van de agenda — paginering is waarschijnlijk stuk.`
+    );
   }
 
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();
   const shows = [];
+  // Twee kaarten met dezelfde detailpagina zouden anders elke voorstelling
+  // dubbel opleveren (met een "-2"-id-suffix van buildId).
+  const visitedDetailUrls = new Set();
 
   for (const card of cards) {
     if (!card.titel || !card.detailHref) continue;
     const detailUrl = new URL(card.detailHref, theater.baseUrl).toString();
     const detailPath = new URL(detailUrl).pathname;
+    if (visitedDetailUrls.has(detailUrl)) continue;
+    visitedDetailUrls.add(detailUrl);
 
     if (!robots.isAllowed(detailPath)) {
       log(`robots.txt verbiedt ${detailPath} — "${card.titel}" overgeslagen.`);
