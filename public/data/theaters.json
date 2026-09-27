@@ -1,0 +1,274 @@
+{
+  "theaters": {
+    "delamar": {
+      "naam": "DeLaMar",
+      "stad": "Amsterdam",
+      "podiumpas": true
+    },
+    "bellevue": {
+      "naam": "Theater Bellevue",
+      "stad": "Amsterdam",
+      "podiumpas": true
+    },
+    "meervaart": {
+      "naam": "Theater de Meervaart",
+      "stad": "Amsterdam",
+      "podiumpas": true
+    },
+    "ita": {
+      "naam": "Internationaal Theater Amsterdam",
+      "stad": "Amsterdam",
+      "podiumpas": false
+    },
+    "kleinekomedie": {
+      "naam": "De Kleine Komedie",
+      "stad": "Amsterdam",
+      "podiumpas": false
+    },
+    "frascati": {
+      "naam": "Frascati",
+      "stad": "Amsterdam",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "020-6266866",
+        "email": "kassa@frascatitheater.nl",
+        "toelichting": "Telefonisch; als bestaande klant ook per mail (naam, postcode, voorstelling met datum en tijd). Vanaf 30 dagen voor de voorstelling."
+      }
+    },
+    "carre": {
+      "naam": "Koninklijk Theater Carré",
+      "stad": "Amsterdam",
+      "podiumpas": false
+    },
+    "amstelveen": {
+      "naam": "Schouwburg Amstelveen",
+      "stad": "Amstelveen",
+      "podiumpas": true
+    },
+    "stadsschouwburgutrecht": {
+      "naam": "Stadsschouwburg Utrecht",
+      "stad": "Utrecht",
+      "podiumpas": true
+    },
+    "theaterkikker": {
+      "naam": "Theater Kikker",
+      "stad": "Utrecht",
+      "podiumpas": true
+    },
+    "krakeling": {
+      "naam": "Theater De Krakeling",
+      "stad": "Amsterdam",
+      "podiumpas": true
+    },
+    "mozaiek": {
+      "naam": "Podium Mozaïek",
+      "stad": "Amsterdam",
+      "podiumpas": true
+    },
+    "muziekgebouw": {
+      "naam": "Muziekgebouw aan 't IJ",
+      "stad": "Amsterdam",
+      "podiumpas": true
+    },
+    "scala": {
+      "naam": "Scala Theater",
+      "stad": "Amsterdam",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "email": "info@scala-amsterdam.nl",
+        "toelichting": "Per mail met datum, shows, aantal gasten en pasnummer(s). Vrijdag en zaterdag alleen in combinatie met het 4-gangenmenu."
+      }
+    },
+    "omval": {
+      "naam": "Theater de Omval",
+      "stad": "Diemen",
+      "podiumpas": true
+    },
+    "delanding": {
+      "naam": "De Landing",
+      "stad": "Amstelveen",
+      "podiumpas": true
+    },
+    "zaantheater": {
+      "naam": "Zaantheater",
+      "stad": "Zaandam",
+      "podiumpas": true
+    },
+    "bijlmerparktheater": {
+      "naam": "Bijlmer Parktheater",
+      "stad": "Amsterdam",
+      "podiumpas": true
+    },
+    "ccamstel": {
+      "naam": "CC Amstel",
+      "stad": "Amsterdam",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "email": "info@ccamstel.nl",
+        "toelichting": "Per mail met onderwerp \"Podiumpas Reservering\" (voorstelling, datum, tijd), vanaf 30 dagen voor de voorstelling."
+      }
+    },
+    "marionettentheater": {
+      "naam": "Amsterdams Marionetten Theater",
+      "stad": "Amsterdam",
+      "podiumpas": true
+    },
+    "griffioen": {
+      "naam": "VU Griffioen",
+      "stad": "Amsterdam",
+      "podiumpas": true
+    },
+    "pleintheater": {
+      "naam": "Plein Theater",
+      "stad": "Amsterdam",
+      "podiumpas": true
+    },
+    "karavaan": {
+      "naam": "Karavaan - Theater de Drukkerij",
+      "stad": "Alkmaar",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "formulier": "https://www.karavaan.nl/bestel-met-podiumpas/",
+        "toelichting": "Via het Podiumpas-formulier, vanaf 30 dagen voor de voorstelling (max. 1 ticket per pas)."
+      }
+    },
+    "schuur": {
+      "naam": "Schuur",
+      "stad": "Haarlem",
+      "podiumpas": true
+    },
+    "bostheater": {
+      "naam": "Bostheater",
+      "stad": "Amstelveen",
+      "podiumpas": true
+    },
+    "hogewoerd": {
+      "naam": "Podium Hoge Woerd",
+      "stad": "Utrecht",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "030-7210933",
+        "email": "kassa@podiumhogewoerd.nl",
+        "toelichting": "Via de kassa, per mail of telefonisch, vanaf 30 dagen voor de voorstelling (weekend: uiterlijk vrijdag 17.00 uur)."
+      }
+    },
+    "flint": {
+      "naam": "Flint",
+      "stad": "Amersfoort",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "033 4 229 229",
+        "toelichting": "Telefonisch via de kassa, vanaf 30 dagen voor de voorstelling."
+      }
+    },
+    "aandeslinger": {
+      "naam": "Aan de Slinger",
+      "stad": "Houten",
+      "podiumpas": true
+    },
+    "corrosia": {
+      "naam": "Corrosia",
+      "stad": "Almere",
+      "podiumpas": true
+    },
+    "kunstlinie": {
+      "naam": "Kunstlinie",
+      "stad": "Almere",
+      "podiumpas": true
+    },
+    "koninklijkeschouwburg": {
+      "naam": "Koninklijke Schouwburg",
+      "stad": "Den Haag",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "088 356 53 56",
+        "email": "service@hnt.nl",
+        "toelichting": "Telefonisch of per mail, vanaf 30 dagen voor de voorstelling."
+      }
+    },
+    "theateraanhetspui": {
+      "naam": "Theater aan het Spui",
+      "stad": "Den Haag",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "088 356 53 56",
+        "email": "service@hnt.nl",
+        "toelichting": "Telefonisch of per mail, vanaf 30 dagen voor de voorstelling."
+      }
+    },
+    "zaal3": {
+      "naam": "Zaal 3",
+      "stad": "Den Haag",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "088 356 53 56",
+        "email": "service@hnt.nl",
+        "toelichting": "Telefonisch of per mail, vanaf 30 dagen voor de voorstelling."
+      }
+    },
+    "tr25": {
+      "naam": "Theater Rotterdam (TR25 Schouwburg)",
+      "stad": "Rotterdam",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "010 - 41 18 110",
+        "email": "kassa@theaterrotterdam.nl",
+        "toelichting": "Via de kassa: telefonisch (ma–vr 14–17 uur), per mail of aan de balie, vanaf 30 dagen voor de voorstelling."
+      }
+    },
+    "tr8": {
+      "naam": "Theater Rotterdam (TR8 William Boothlaan)",
+      "stad": "Rotterdam",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "010 - 41 18 110",
+        "email": "kassa@theaterrotterdam.nl",
+        "toelichting": "Via de kassa: telefonisch (ma–vr 14–17 uur), per mail of aan de balie, vanaf 30 dagen voor de voorstelling."
+      }
+    },
+    "koningshof": {
+      "naam": "Theater Koningshof",
+      "stad": "Maassluis",
+      "podiumpas": true
+    },
+    "maas": {
+      "naam": "Maas theater en dans",
+      "stad": "Rotterdam",
+      "podiumpas": true
+    },
+    "insblau": {
+      "naam": "Theater Ins Blau",
+      "stad": "Leiden",
+      "podiumpas": true
+    },
+    "stadsgehoorzaal": {
+      "naam": "Stadsgehoorzaal",
+      "stad": "Vlaardingen",
+      "podiumpas": true
+    },
+    "kruispunt": {
+      "naam": "Theater het Kruispunt",
+      "stad": "Barendrecht",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "0180-615958",
+        "toelichting": "Uitsluitend telefonisch via de publieksservice, vanaf 30 dagen voor de voorstelling."
+      }
+    },
+    "isala": {
+      "naam": "Isala theater",
+      "stad": "Capelle aan den IJssel",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "010 - 458 6400",
+        "email": "info@isalatheater.nl",
+        "toelichting": "Via het bespreekbureau, aan de balie, telefonisch of per mail, vanaf 30 dagen voor de voorstelling."
+      }
+    },
+    "stoep": {
+      "naam": "Theater de Stoep",
+      "stad": "Spijkenisse",
+      "podiumpas": true
+    }
+  }
+}

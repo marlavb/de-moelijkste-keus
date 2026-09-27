@@ -1,12 +1,12 @@
 {
-  "bijgewerktOp": "2026-09-27T14:05:02.960Z",
+  "bijgewerktOp": "2026-09-27T17:43:17.073Z",
   "theaters": {
     "ita": {
       "status": "ok",
-      "aantal": 270,
+      "aantal": 269,
       "vorigAantal": 270,
-      "duurSeconden": 9,
-      "laatsteSucces": "2026-09-27T13:34:25.589Z",
+      "duurSeconden": 10,
+      "laatsteSucces": "2026-09-27T17:12:39.661Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -16,17 +16,17 @@
       "aantal": 413,
       "vorigAantal": 413,
       "duurSeconden": 18,
-      "laatsteSucces": "2026-09-27T13:15:19.638Z",
+      "laatsteSucces": "2026-09-27T16:53:38.581Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
     },
     "bellevue": {
       "status": "ok",
-      "aantal": 586,
-      "vorigAantal": 587,
-      "duurSeconden": 1068,
-      "laatsteSucces": "2026-09-27T13:33:07.235Z",
+      "aantal": 561,
+      "vorigAantal": 586,
+      "duurSeconden": 1063,
+      "laatsteSucces": "2026-09-27T17:11:21.175Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -36,27 +36,27 @@
       "aantal": 72,
       "vorigAantal": 72,
       "duurSeconden": 69,
-      "laatsteSucces": "2026-09-27T13:34:16.301Z",
+      "laatsteSucces": "2026-09-27T17:12:30.096Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
     },
     "kleinekomedie": {
       "status": "ok",
-      "aantal": 261,
+      "aantal": 253,
       "vorigAantal": 261,
       "duurSeconden": 93,
-      "laatsteSucces": "2026-09-27T13:35:58.807Z",
+      "laatsteSucces": "2026-09-27T17:14:12.910Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
     },
     "frascati": {
       "status": "ok",
-      "aantal": 182,
+      "aantal": 145,
       "vorigAantal": 182,
-      "duurSeconden": 32,
-      "laatsteSucces": "2026-09-27T13:36:30.813Z",
+      "duurSeconden": 33,
+      "laatsteSucces": "2026-09-27T17:14:45.443Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -65,18 +65,18 @@
       "status": "ok",
       "aantal": 69,
       "vorigAantal": 69,
-      "duurSeconden": 10,
-      "laatsteSucces": "2026-09-27T13:36:40.429Z",
+      "duurSeconden": 4,
+      "laatsteSucces": "2026-09-27T17:14:49.791Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
     },
     "amstelveen": {
       "status": "ok",
-      "aantal": 148,
+      "aantal": 147,
       "vorigAantal": 148,
       "duurSeconden": 14,
-      "laatsteSucces": "2026-09-27T13:36:53.982Z",
+      "laatsteSucces": "2026-09-27T17:15:04.244Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -85,18 +85,18 @@
       "status": "ok",
       "aantal": 593,
       "vorigAantal": 593,
-      "duurSeconden": 22,
-      "laatsteSucces": "2026-09-27T13:37:15.974Z",
+      "duurSeconden": 27,
+      "laatsteSucces": "2026-09-27T17:15:31.007Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
     },
     "theaterkikker": {
       "status": "ok",
-      "aantal": 213,
+      "aantal": 212,
       "vorigAantal": 213,
-      "duurSeconden": 4,
-      "laatsteSucces": "2026-09-27T13:37:20.386Z",
+      "duurSeconden": 5,
+      "laatsteSucces": "2026-09-27T17:15:36.219Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -104,9 +104,9 @@
     "krakeling": {
       "status": "ok",
       "aantal": 99,
-      "vorigAantal": 100,
-      "duurSeconden": 3,
-      "laatsteSucces": "2026-09-27T13:37:23.678Z",
+      "vorigAantal": 99,
+      "duurSeconden": 4,
+      "laatsteSucces": "2026-09-27T17:15:40.394Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -116,7 +116,7 @@
       "aantal": 78,
       "vorigAantal": 76,
       "duurSeconden": 2,
-      "laatsteSucces": "2026-09-27T13:37:25.631Z",
+      "laatsteSucces": "2026-09-27T17:15:42.586Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -126,7 +126,7 @@
       "aantal": 600,
       "vorigAantal": 600,
       "duurSeconden": 149,
-      "laatsteSucces": "2026-09-27T13:39:54.330Z",
+      "laatsteSucces": "2026-09-27T17:18:12.066Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -135,8 +135,8 @@
       "status": "ok",
       "aantal": 80,
       "vorigAantal": 71,
-      "duurSeconden": 6,
-      "laatsteSucces": "2026-09-27T13:40:00.410Z",
+      "duurSeconden": 5,
+      "laatsteSucces": "2026-09-27T17:18:16.794Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -145,18 +145,18 @@
       "status": "ok",
       "aantal": 93,
       "vorigAantal": 93,
-      "duurSeconden": 89,
-      "laatsteSucces": "2026-09-27T13:41:29.263Z",
+      "duurSeconden": 88,
+      "laatsteSucces": "2026-09-27T17:19:45.234Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
     },
     "delanding": {
       "status": "ok",
-      "aantal": 148,
+      "aantal": 147,
       "vorigAantal": 148,
-      "duurSeconden": 14,
-      "laatsteSucces": "2026-09-27T13:41:43.236Z",
+      "duurSeconden": 20,
+      "laatsteSucces": "2026-09-27T17:20:05.704Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -165,8 +165,8 @@
       "status": "ok",
       "aantal": 238,
       "vorigAantal": 238,
-      "duurSeconden": 46,
-      "laatsteSucces": "2026-09-27T13:42:28.874Z",
+      "duurSeconden": 57,
+      "laatsteSucces": "2026-09-27T17:21:02.231Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -174,9 +174,9 @@
     "bijlmerparktheater": {
       "status": "ok",
       "aantal": 97,
-      "vorigAantal": 98,
+      "vorigAantal": 97,
       "duurSeconden": 47,
-      "laatsteSucces": "2026-09-27T13:43:15.688Z",
+      "laatsteSucces": "2026-09-27T17:21:49.206Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -186,7 +186,7 @@
       "aantal": 35,
       "vorigAantal": 35,
       "duurSeconden": 2,
-      "laatsteSucces": "2026-09-27T13:43:17.318Z",
+      "laatsteSucces": "2026-09-27T17:21:51.704Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -195,8 +195,8 @@
       "status": "ok",
       "aantal": 13,
       "vorigAantal": 12,
-      "duurSeconden": 4,
-      "laatsteSucces": "2026-09-27T13:43:20.845Z",
+      "duurSeconden": 3,
+      "laatsteSucces": "2026-09-27T17:21:54.559Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -205,8 +205,8 @@
       "status": "ok",
       "aantal": 120,
       "vorigAantal": 120,
-      "duurSeconden": 15,
-      "laatsteSucces": "2026-09-27T13:43:36.049Z",
+      "duurSeconden": 11,
+      "laatsteSucces": "2026-09-27T17:22:05.646Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -215,8 +215,8 @@
       "status": "ok",
       "aantal": 36,
       "vorigAantal": 36,
-      "duurSeconden": 4,
-      "laatsteSucces": "2026-09-27T13:43:40.242Z",
+      "duurSeconden": 5,
+      "laatsteSucces": "2026-09-27T17:22:11.043Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -225,8 +225,8 @@
       "status": "ok",
       "aantal": 10,
       "vorigAantal": 10,
-      "duurSeconden": 5,
-      "laatsteSucces": "2026-09-27T13:43:44.887Z",
+      "duurSeconden": 6,
+      "laatsteSucces": "2026-09-27T17:22:16.554Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -235,8 +235,8 @@
       "status": "ok",
       "aantal": 183,
       "vorigAantal": 183,
-      "duurSeconden": 37,
-      "laatsteSucces": "2026-09-27T13:44:21.620Z",
+      "duurSeconden": 44,
+      "laatsteSucces": "2026-09-27T17:23:00.899Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -245,8 +245,8 @@
       "status": "ok",
       "aantal": 2,
       "vorigAantal": 2,
-      "duurSeconden": 3,
-      "laatsteSucces": "2026-09-27T13:44:25.120Z",
+      "duurSeconden": 6,
+      "laatsteSucces": "2026-09-27T17:23:06.788Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -254,9 +254,9 @@
     "hogewoerd": {
       "status": "ok",
       "aantal": 124,
-      "vorigAantal": 125,
-      "duurSeconden": 167,
-      "laatsteSucces": "2026-09-27T13:47:12.386Z",
+      "vorigAantal": 124,
+      "duurSeconden": 139,
+      "laatsteSucces": "2026-09-27T17:25:25.448Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -265,8 +265,8 @@
       "status": "ok",
       "aantal": 179,
       "vorigAantal": 179,
-      "duurSeconden": 185,
-      "laatsteSucces": "2026-09-27T13:50:17.291Z",
+      "duurSeconden": 193,
+      "laatsteSucces": "2026-09-27T17:28:38.066Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -276,7 +276,7 @@
       "aantal": 176,
       "vorigAantal": 176,
       "duurSeconden": 2,
-      "laatsteSucces": "2026-09-27T13:50:19.111Z",
+      "laatsteSucces": "2026-09-27T17:28:40.255Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -286,7 +286,7 @@
       "aantal": 58,
       "vorigAantal": 58,
       "duurSeconden": 5,
-      "laatsteSucces": "2026-09-27T13:50:24.228Z",
+      "laatsteSucces": "2026-09-27T17:28:44.786Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -295,8 +295,8 @@
       "status": "ok",
       "aantal": 257,
       "vorigAantal": 257,
-      "duurSeconden": 27,
-      "laatsteSucces": "2026-09-27T13:50:51.334Z",
+      "duurSeconden": 20,
+      "laatsteSucces": "2026-09-27T17:29:04.379Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -304,9 +304,9 @@
     "koninklijkeschouwburg": {
       "status": "ok",
       "aantal": 181,
-      "vorigAantal": 0,
+      "vorigAantal": 181,
       "duurSeconden": 52,
-      "laatsteSucces": "2026-09-27T13:51:43.197Z",
+      "laatsteSucces": "2026-09-27T17:29:56.234Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -314,9 +314,9 @@
     "theateraanhetspui": {
       "status": "ok",
       "aantal": 254,
-      "vorigAantal": 0,
+      "vorigAantal": 254,
       "duurSeconden": 1,
-      "laatsteSucces": "2026-09-27T13:51:43.803Z",
+      "laatsteSucces": "2026-09-27T17:29:56.820Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -324,9 +324,9 @@
     "zaal3": {
       "status": "ok",
       "aantal": 57,
-      "vorigAantal": 0,
+      "vorigAantal": 57,
       "duurSeconden": 0,
-      "laatsteSucces": "2026-09-27T13:51:44.181Z",
+      "laatsteSucces": "2026-09-27T17:29:57.190Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -334,9 +334,9 @@
     "tr25": {
       "status": "ok",
       "aantal": 234,
-      "vorigAantal": 0,
+      "vorigAantal": 234,
       "duurSeconden": 92,
-      "laatsteSucces": "2026-09-27T13:53:16.018Z",
+      "laatsteSucces": "2026-09-27T17:31:29.069Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -344,9 +344,9 @@
     "tr8": {
       "status": "ok",
       "aantal": 11,
-      "vorigAantal": 0,
-      "duurSeconden": 1,
-      "laatsteSucces": "2026-09-27T13:53:16.607Z",
+      "vorigAantal": 11,
+      "duurSeconden": 0,
+      "laatsteSucces": "2026-09-27T17:31:29.485Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -354,9 +354,9 @@
     "koningshof": {
       "status": "ok",
       "aantal": 84,
-      "vorigAantal": 0,
+      "vorigAantal": 84,
       "duurSeconden": 52,
-      "laatsteSucces": "2026-09-27T13:54:08.320Z",
+      "laatsteSucces": "2026-09-27T17:32:21.125Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -364,9 +364,9 @@
     "maas": {
       "status": "ok",
       "aantal": 59,
-      "vorigAantal": 0,
-      "duurSeconden": 99,
-      "laatsteSucces": "2026-09-27T13:55:47.655Z",
+      "vorigAantal": 59,
+      "duurSeconden": 112,
+      "laatsteSucces": "2026-09-27T17:34:13.049Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -374,9 +374,9 @@
     "insblau": {
       "status": "ok",
       "aantal": 13,
-      "vorigAantal": 0,
-      "duurSeconden": 27,
-      "laatsteSucces": "2026-09-27T13:56:14.855Z",
+      "vorigAantal": 13,
+      "duurSeconden": 25,
+      "laatsteSucces": "2026-09-27T17:34:38.298Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -384,9 +384,9 @@
     "stadsgehoorzaal": {
       "status": "ok",
       "aantal": 156,
-      "vorigAantal": 0,
-      "duurSeconden": 167,
-      "laatsteSucces": "2026-09-27T13:59:01.736Z",
+      "vorigAantal": 156,
+      "duurSeconden": 161,
+      "laatsteSucces": "2026-09-27T17:37:19.638Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -394,9 +394,9 @@
     "kruispunt": {
       "status": "ok",
       "aantal": 134,
-      "vorigAantal": 0,
+      "vorigAantal": 134,
       "duurSeconden": 74,
-      "laatsteSucces": "2026-09-27T14:00:15.242Z",
+      "laatsteSucces": "2026-09-27T17:38:33.568Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -404,9 +404,9 @@
     "isala": {
       "status": "ok",
       "aantal": 238,
-      "vorigAantal": 0,
+      "vorigAantal": 238,
       "duurSeconden": 44,
-      "laatsteSucces": "2026-09-27T14:00:59.408Z",
+      "laatsteSucces": "2026-09-27T17:39:17.598Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -414,9 +414,9 @@
     "stoep": {
       "status": "ok",
       "aantal": 255,
-      "vorigAantal": 0,
-      "duurSeconden": 244,
-      "laatsteSucces": "2026-09-27T14:05:02.929Z",
+      "vorigAantal": 255,
+      "duurSeconden": 239,
+      "laatsteSucces": "2026-09-27T17:43:17.052Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
