@@ -112,7 +112,11 @@
     "marionettentheater": {
       "naam": "Amsterdams Marionetten Theater",
       "stad": "Amsterdam",
-      "podiumpas": true
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "email": "info@marionettentheater.nl",
+        "toelichting": "Alleen per mail (onderwerp \"Podiumpas\"), vanaf 30 dagen voor de voorstelling. Ticket ophalen 30–45 min. voor aanvang."
+      }
     },
     "griffioen": {
       "naam": "VU Griffioen",
