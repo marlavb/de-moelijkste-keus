@@ -150,6 +150,28 @@ const GENRE_MAP = {
   'externe programmering': 'Overig', // gastprogrammering, geen genre op zich
 };
 
+// Samengestelde labels komen in allerlei varianten voor ("jeugd & familie",
+// "Familie & jeugd", "jeugd/familie", "Jeugd en familie" bij ITA). In plaats
+// van elke variant los op te nemen, zoeken we óók op een canonieke vorm:
+// kleine letters, gesplitst op & / , + en " en ", onderdelen gesorteerd.
+// Een streepje splitst bewust niet ("hip-hop", "dans-familie").
+function canonicalGenreKey(raw) {
+  return raw
+    .trim()
+    .toLowerCase()
+    .split(/\s*(?:&|\/|,|\+|\s+en\s+)\s*/)
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .sort()
+    .join(' & ');
+}
+const CANONICAL_GENRE_MAP = new Map(Object.entries(GENRE_MAP).map(([key, value]) => [canonicalGenreKey(key), value]));
+
+function lookupGenre(raw) {
+  const key = raw.trim().toLowerCase();
+  return GENRE_MAP[key] ?? CANONICAL_GENRE_MAP.get(canonicalGenreKey(raw)) ?? null;
+}
+
 /**
  * Zet een ruwe, site-specifieke genre-string om naar één van de vaste
  * GENRE_CATEGORIES. Onbekende labels vallen terug op "Overig" (in plaats
@@ -157,8 +179,7 @@ const GENRE_MAP = {
  */
 export function normalizeGenre(raw) {
   if (!raw) return null;
-  const key = raw.trim().toLowerCase();
-  return GENRE_MAP[key] ?? 'Overig';
+  return lookupGenre(raw) ?? 'Overig';
 }
 
 /**
@@ -171,8 +192,8 @@ export function normalizeGenre(raw) {
 export function normalizeGenreFromList(rawTags) {
   if (!rawTags || rawTags.length === 0) return null;
   for (const raw of rawTags) {
-    const key = raw.trim().toLowerCase();
-    if (GENRE_MAP[key]) return GENRE_MAP[key];
+    const genre = lookupGenre(raw);
+    if (genre) return genre;
   }
   return null;
 }

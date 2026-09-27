@@ -52,7 +52,7 @@ export const THEATERS = [
     naam: 'Internationaal Theater Amsterdam',
     stad: 'Amsterdam',
     baseUrl: 'https://ita.nl',
-    agendaUrl: 'https://ita.nl/nl/agenda/',
+    agendaUrl: 'https://ita.nl/nl/agenda-stadsschouwburg',
     podiumpas: false,
   },
   {

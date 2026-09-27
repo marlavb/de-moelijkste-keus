@@ -110,6 +110,41 @@ export function createDutchAbbrevDayParser(referenceDate = new Date()) {
   };
 }
 
+const DUTCH_WEEKDAYS_ABBREV = { zo: 0, ma: 1, di: 2, wo: 3, do: 4, vr: 5, za: 6 };
+
+/**
+ * Parseert numerieke datum-labels zonder jaartal zoals op ITA: "Zo 27.09"
+ * of alleen "27.09" (dag.maand). Zelfde jaar-rollover-aanpak als
+ * createDutchDayParser; staat er een weekdag bij, dan controleren we
+ * daarmee het jaar (en kiezen we het volgende jaar als dát wél klopt).
+ */
+export function createNumericDayParser(referenceDate = new Date()) {
+  let year = referenceDate.getFullYear();
+  let lastMonth = referenceDate.getMonth() + 1;
+
+  const weekdayOf = (y, m, d) => new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+
+  return function parseDayLabel(label) {
+    const clean = label.trim().toLowerCase();
+    const match = clean.match(/(?:([a-z]{2})\w*\s+)?(\d{1,2})\.(\d{1,2})/);
+    if (!match) return null;
+    const weekday = match[1] ? DUTCH_WEEKDAYS_ABBREV[match[1]] : undefined;
+    const day = parseInt(match[2], 10);
+    const month = parseInt(match[3], 10);
+    if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+
+    if (month < lastMonth) {
+      year += 1;
+    }
+    if (weekday !== undefined && weekdayOf(year, month, day) !== weekday && weekdayOf(year + 1, month, day) === weekday) {
+      year += 1;
+    }
+    lastMonth = month;
+
+    return toIsoDate(year, month, day);
+  };
+}
+
 export function extractTime(text) {
   if (!text) return null;
   const match = text.match(/(\d{1,2})[:.](\d{2})/);

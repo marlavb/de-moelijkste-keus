@@ -1,37 +1,54 @@
-import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
+import { createNumericDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
 
-const AGENDA_PATH = '/nl/agenda/';
-const MAX_SCROLL_ATTEMPTS = 40;
-const STABLE_CHECKS_NEEDED = 3;
+const AGENDA_PATH = '/nl/agenda-stadsschouwburg';
+const MAX_LISTING_PAGES = 30;
+
+// Knopteksten op de agendapagina (aria-label "button: <tekst>"). "Laatste
+// kaarten" en "Gratis aanmelden" zijn gewoon te boeken, dus beschikbaar.
+function classifyBeschikbaarheid(knopTekst) {
+  const tekst = (knopTekst ?? '').trim().toLowerCase();
+  if (tekst.includes('uitverkocht')) return 'uitverkocht';
+  if (tekst.includes('wachtlijst')) return 'wachtlijst';
+  if (tekst.includes('kaarten') || tekst.includes('aanmelden')) return 'beschikbaar';
+  return 'onbekend';
+}
+const KNOWN_KNOP_TEKSTEN = ['koop kaarten', 'laatste kaarten', 'gratis aanmelden', 'uitverkocht', 'contact educatie'];
+
+// Schoolvoorstellingen (tag "Schoolvoorstelling", knop "Contact Educatie"
+// naar een aanvraagformulier voor scholen, overdag) zijn niet te boeken
+// door een gewone bezoeker — die laten we weg. De publieksvoorstellingen
+// van dezelfde productie staan er gewoon los naast.
+function isSchoolvoorstelling(item) {
+  return item.tags.includes('schoolvoorstelling') || (item.knopTekst ?? '').toLowerCase() === 'contact educatie';
+}
 
 /**
- * Haalt de volledige agenda van ITA (Internationaal Theater Amsterdam) op.
+ * Haalt de agenda van ITA (Internationaal Theater Amsterdam) op.
  *
- * Structuur (geïnspecteerd op https://ita.nl/nl/agenda/, aug 2026):
- * - Server-rendered HTML (geen JS nodig om de eerste 50 items te zien), met
- *   daarna infinite scroll die per keer 50 extra voorstellingen bijlaadt
- *   (herkenbaar aan een .agenda__loader-spinner die verdwijnt zodra alles
- *   geladen is).
- * - Items staan gegroepeerd in .agenda__day-container-blokken (dag-header
- *   ".agenda__day-title", bv. "di 25 aug" — zelfde formaat als Bellevue).
- *   Elke voorstelling is een <a class="agendaItem__item" href="...">
- *   die linkt naar de eigen infopagina op ita.nl (niet rechtstreeks naar de
- *   ticketshop op tix.ita.nl — dat vereist een extra bezoek, dus we laten
- *   reserverenUrl naar de infopagina wijzen).
- * - Genre staat als los stukje tekst in .agendaItem__item-category.meta.
- * - Geen bruikbaar beschikbaarheid-signaal gevonden: de site heeft wel een
- *   "UITVERKOCHT"-vertaalsleutel in zijn JS, maar geen van de 325
- *   gecontroleerde items had een herkenbare uitverkocht/wachtlijst-class of
- *   -tekst — blijft dus "onbekend".
- * - De maker/gezelschapsregel (bv. "Theater Utrecht / Nicole Beutler
- *   Projects / Urland / Naomi Velissariou" bij "SEXODUS") staat NIET op de
- *   agendapagina zelf, maar wél op elke infopagina, in een ticket-modal die
- *   standaard verborgen is: <div class="ticket-overlay__info__category">.
- *   Dat betekent, anders dan de rest van deze scraper, wél een extra
- *   paginabezoek per productie — we dedupliceren op href (meerdere datums
- *   van dezelfde productie delen dezelfde infopagina) om dat aantal bezoeken
- *   te beperken tot het aantal unieke producties, niet het aantal shows.
+ * Structuur (geïnspecteerd op https://ita.nl/nl/agenda-stadsschouwburg,
+ * sep 2026 — de site is toen vernieuwd; /nl/agenda/ redirect hierheen):
+ * - Dit is de agenda van de Stadsschouwburg (alle zalen, ook de Rabozaal).
+ *   ITA op tournee buiten Amsterdam staat op een aparte pagina (/nl/on-tour)
+ *   en hoort bewust niet in onze data.
+ * - Server-rendered (Nuxt), 32 voorstellingen per pagina, gepagineerd via
+ *   ?page=N met een <a rel="next">-link (de "Meer laden"-knop laadt
+ *   dezelfde pagina's). De site noemt het totaal zelf: "Bekijk N resultaten".
+ * - Elke voorstelling is een .OverviewListItem met titel + link naar de
+ *   productiepagina (h3.event-title a), maker/gezelschap (p.subtitle),
+ *   datum ("27.09") en tijd ("15:30 - 16:35") in .info, genre (p.genres),
+ *   zaal (de laatste <p> in .btn-info) en een boekingsknop waarvan het
+ *   aria-label de status geeft ("button: Koop kaarten", "Uitverkocht", …).
+ *   Een dagkop ("Zo 27.09") gaat aan de items van die dag vooraf. Tags
+ *   (.tag) zoals "Try-out", "Nagesprek" en "Schoolvoorstelling" staan bij
+ *   het item; schoolvoorstellingen slaan we over (zie isSchoolvoorstelling).
+ * - Anders dan de oude site staat alles op de agendapagina zelf, dus geen
+ *   detailpagina-bezoeken meer.
+ * - Sanity check: ontbreekt de lijst of de resultatenteller, dan is dit geen
+ *   geldige agendapagina (zoals na de redesign van sep 2026, toen de oude
+ *   scraper stilletjes 0 teruggaf) en gooien we een exception, zodat het
+ *   vangnet in scrapeRun.js terugvalt. Een echt lege agenda heeft wél een
+ *   teller ("0 resultaten").
  */
 export async function scrapeIta({ page, theater, robots, waitForTurn, log }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
@@ -39,80 +56,114 @@ export async function scrapeIta({ page, theater, robots, waitForTurn, log }) {
     return [];
   }
 
-  await waitForTurn();
-  await page.goto(theater.agendaUrl, { waitUntil: 'networkidle', timeout: 30000 });
+  const items = [];
+  const seenKeys = new Set();
+  let expectedTotal = null;
+  let url = theater.agendaUrl;
+  let stoppedNormally = false;
 
-  let previousCount = -1;
-  let stableChecks = 0;
-  for (let i = 0; i < MAX_SCROLL_ATTEMPTS; i++) {
-    const count = await page.locator('.agendaItem__item').count();
-    if (count === previousCount) {
-      stableChecks++;
-      if (stableChecks >= STABLE_CHECKS_NEEDED) break;
-    } else {
-      stableChecks = 0;
+  for (let pageNum = 1; pageNum <= MAX_LISTING_PAGES; pageNum++) {
+    const listingPath = new URL(url).pathname + new URL(url).search;
+    if (!robots.isAllowed(listingPath)) {
+      log(`robots.txt verbiedt ${listingPath} — stop met pagineren.`);
+      stoppedNormally = true;
+      break;
     }
-    previousCount = count;
 
     await waitForTurn();
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForTimeout(2000);
-  }
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    const result = await page.evaluate(() => {
+      const wrapper = document.querySelector('.events-wrapper');
+      const totalLabel = [...document.querySelectorAll('[aria-label]')]
+        .map((el) => el.getAttribute('aria-label'))
+        .find((label) => /Bekijk \d+ resultaten?$/.test(label));
+      const next = document.querySelector('a[rel="next"]')?.getAttribute('href') ?? null;
+      if (!wrapper) return { valid: false, totalLabel, next, items: [] };
 
-  const rawItems = await page.evaluate(() => {
-    const items = [];
-    for (const dayEl of document.querySelectorAll('.agenda__day-container')) {
-      const dayLabel = dayEl.querySelector('.agenda__day-title')?.textContent.trim().replace(/\s+/g, ' ') ?? null;
-      for (const el of dayEl.querySelectorAll('.agendaItem__item')) {
-        const titel = el.querySelector('.agendaItem__item-title > span')?.textContent.trim() ?? null;
-        const href = el.getAttribute('href');
-        const genre =
-          el.querySelector(
-            '.agendaItem__item-category.meta > span:not(.agendaItem__labels):not(.agendaItem__item-extra-content)'
-          )?.textContent.trim() ?? null;
-        const tijdTekst = el.querySelector('.agendaItem__item-date time')?.textContent.trim() ?? null;
-        items.push({ dayLabel, titel, href, genre, tijdTekst });
+      const items = [];
+      let dayLabel = null;
+      for (const el of wrapper.querySelectorAll('.event-day-header, .OverviewListItem')) {
+        if (el.classList.contains('event-day-header')) {
+          dayLabel = el.textContent.trim().replace(/\s+/g, ' ');
+          continue;
+        }
+        const link = el.querySelector('h3.event-title a');
+        const btnInfo = [...el.querySelectorAll('.btn-info p')];
+        const knop = el.querySelector('.btn-col [aria-label^="button:"]');
+        items.push({
+          dayLabel,
+          datumTekst: el.querySelector('.info p.heading-3')?.textContent.trim() ?? null,
+          tijdTekst: el.querySelector('.info p.heading-4')?.textContent.trim() ?? null,
+          titel: link?.textContent.trim().replace(/\s+/g, ' ') ?? null,
+          href: link?.getAttribute('href') ?? null,
+          maker: el.querySelector('p.subtitle')?.textContent.trim() || null,
+          genre: el.querySelector('p.genres')?.textContent.trim() || null,
+          zaal: btnInfo.filter((p) => !p.matches('.show-mobile, .genres')).pop()?.textContent.trim() || null,
+          knopTekst: knop?.getAttribute('aria-label').replace(/^button:\s*/, '').trim() ?? null,
+          knopHref: knop?.getAttribute('href') ?? null,
+          tags: [...el.querySelectorAll('.tag')].map((t) => t.textContent.trim().toLowerCase()),
+        });
       }
-    }
-    return items;
-  });
+      return { valid: true, totalLabel, next, items };
+    });
 
-  const uniqueHrefs = [...new Set(rawItems.map((item) => item.href).filter(Boolean))];
-  const makerByHref = new Map();
-  for (const href of uniqueHrefs) {
-    const infoUrl = new URL(href, theater.baseUrl).toString();
-    const infoPath = new URL(infoUrl).pathname;
-    if (!robots.isAllowed(infoPath)) {
-      log(`robots.txt verbiedt ${infoPath} — maker niet opgehaald.`);
-      continue;
-    }
-
-    await waitForTurn();
-    try {
-      await page.goto(infoUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      const maker = await page.evaluate(
-        () => document.querySelector('.ticket-overlay__info__category')?.textContent.trim() || null
+    if (!result.valid || !result.totalLabel) {
+      throw new Error(
+        `geen geldige agendapagina op ${page.url()} (${!result.valid ? 'lijst' : 'resultatenteller'} niet gevonden) — site veranderd?`
       );
-      if (maker) makerByHref.set(href, maker);
-    } catch (err) {
-      log(`kon infopagina niet laden voor maker (${infoUrl}): ${err.message} — overgeslagen.`);
     }
+    if (pageNum === 1) expectedTotal = parseInt(result.totalLabel.match(/\d+/)[0], 10);
+
+    const newItems = result.items.filter((item) => {
+      const key = `${item.href}|${item.datumTekst}|${item.tijdTekst}`;
+      if (seenKeys.has(key)) return false;
+      seenKeys.add(key);
+      return true;
+    });
+    log(`pagina ${pageNum}: ${result.items.length} voorstellingen (${newItems.length} nieuw)`);
+    items.push(...newItems);
+
+    if (!result.next || newItems.length === 0) {
+      stoppedNormally = true;
+      break;
+    }
+    url = new URL(result.next, url).toString();
+  }
+  if (!stoppedNormally) {
+    log(`WAARSCHUWING: bovengrens van ${MAX_LISTING_PAGES} listingpagina's bereikt — paginering is waarschijnlijk stuk.`);
+  }
+  if (expectedTotal !== null && items.length !== expectedTotal) {
+    log(`WAARSCHUWING: ${items.length} voorstellingen gelezen, maar de site noemt er ${expectedTotal}.`);
   }
 
-  const parseDay = createDutchAbbrevDayParser();
+  const zalen = {};
+  for (const item of items) zalen[item.zaal] = (zalen[item.zaal] ?? 0) + 1;
+  log(`zalen: ${Object.entries(zalen).map(([z, n]) => `${z} (${n})`).join(', ')}`);
+  const unknownKnoppen = [...new Set(items.map((i) => i.knopTekst))].filter(
+    (t) => !KNOWN_KNOP_TEKSTEN.includes((t ?? '').toLowerCase())
+  );
+  if (unknownKnoppen.length > 0) log(`onbekende knopteksten (→ onbekend): ${unknownKnoppen.join(', ')}`);
+
+  const schoolCount = items.filter(isSchoolvoorstelling).length;
+  if (schoolCount > 0) log(`${schoolCount} schoolvoorstelling(en) overgeslagen (niet publiek te boeken).`);
+
+  const parseDay = createNumericDayParser();
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();
   const shows = [];
 
-  for (const item of rawItems) {
-    if (!item.titel || !item.dayLabel || !item.href) continue;
-    const datum = parseDay(item.dayLabel);
+  for (const item of items) {
+    if (!item.titel || !item.href || isSchoolvoorstelling(item)) continue;
+    // De dagkop heeft de weekdag (voor de jaarcontrole); de datum in het
+    // item zelf is de terugval.
+    const datum = parseDay(item.dayLabel ?? item.datumTekst ?? '');
     if (!datum) {
-      log(`kon datum-label niet parsen: "${item.dayLabel}" (${item.titel}) — overgeslagen.`);
+      log(`kon datum niet parsen: "${item.dayLabel ?? item.datumTekst}" (${item.titel}) — overgeslagen.`);
       continue;
     }
     const tijd = extractTime(item.tijdTekst);
     const infoUrl = new URL(item.href, theater.baseUrl).toString();
+    const ticketUrl = item.knopHref && /^https?:/.test(item.knopHref) ? item.knopHref : null;
 
     shows.push({
       id: buildId(theater.id, item.titel, datum, tijd),
@@ -125,11 +176,11 @@ export async function scrapeIta({ page, theater, robots, waitForTurn, log }) {
       tijd,
       genre: normalizeGenre(item.genre),
       genreRuw: item.genre,
-      beschikbaarheid: 'onbekend',
+      beschikbaarheid: classifyBeschikbaarheid(item.knopTekst),
       beschrijving: null,
-      maker: makerByHref.get(item.href) ?? null,
-      reserverenUrl: infoUrl,
-      bron: theater.agendaUrl,
+      maker: item.maker,
+      reserverenUrl: ticketUrl ?? infoUrl,
+      bron: infoUrl,
       opgehaaldOp,
     });
   }
