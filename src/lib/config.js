@@ -222,6 +222,12 @@ export const THEATERS = [
     baseUrl: 'https://www.marionettentheater.nl',
     agendaUrl: 'https://www.marionettentheater.nl/agenda/',
     podiumpas: true,
+    // Bron: https://www.marionettentheater.nl/podiumpas/ (27 sep 2026). Pas
+    // geldt alleen bij marionettenvoorstellingen, zie classifyMarionetItem.
+    podiumpasReserveren: {
+      email: 'info@marionettentheater.nl',
+      toelichting: 'Alleen per mail (onderwerp "Podiumpas"), vanaf 30 dagen voor de voorstelling. Ticket ophalen 30–45 min. voor aanvang.',
+    },
   },
   {
     id: 'griffioen',

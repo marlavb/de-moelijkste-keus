@@ -1,6 +1,47 @@
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 
 const AGENDA_PATH = '/agenda/';
+// Repertoire van marionettenvoorstellingen (menu "Voorstellingen" →
+// "Andere voorstellingen"). Bron voor de Podiumpas-dekking, zie
+// classifyMarionetItem.
+const REPERTOIRE_PATH = '/andere-voorstellingen/';
+const NIET_PRODUCTIE = new Set(['agenda', 'tickets', 'voorstellingen', 'andere-voorstellingen']);
+
+/** "http://marionettentheater.nl/Impresario/" → "impresario" (host, schema, slash en hoofdletters maken niet uit). */
+export function normalizeSlug(href, base = 'https://www.marionettentheater.nl') {
+  if (!href) return null;
+  try {
+    const path = new URL(href, base).pathname.toLowerCase().replace(/\/+$/, '');
+    return path.split('/').filter(Boolean).join('/') || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Podiumpas geldt volgens https://www.marionettentheater.nl/podiumpas/
+ * "alleen bij marionettenvoorstellingen (dus niet bij gastprogrammering,
+ * Comedy etc.)". De agenda zelf heeft geen label; wel linkt elk item via
+ * Info (of een link in de tekst) naar een productiepagina. Staat die op de
+ * repertoirepagina → marionettenvoorstelling → podiumpas true; anders false.
+ * Gastitems staan daar per definitie niet op; alleen een item dat níet op
+ * de lijst staat maar er wél uitziet als een eigen voorstelling (Tickets-
+ * knop naar /tickets) geeft een waarschuwing (en blijft behoudend false).
+ */
+export function classifyMarionetItem(item, repertoire) {
+  const infoBtn = item.buttons.find((b) => (b.text ?? '').trim().toLowerCase() === 'info' && b.href);
+  const slug = normalizeSlug(item.detailHref ?? infoBtn?.href ?? null);
+  if (slug && repertoire.has(slug)) return { podiumpas: true, warn: null };
+  const eigenTickets = item.buttons.some(
+    (b) => /ticket/i.test(b.text ?? '') && normalizeSlug(b.href) === 'tickets'
+  );
+  return {
+    podiumpas: false,
+    warn: eigenTickets
+      ? `"${item.titel}" heeft een eigen Tickets-knop maar staat niet op de repertoirepagina (${slug ?? 'geen info-link'}) — podiumpas behoudend false; staat de repertoirepagina nog goed?`
+      : null,
+  };
+}
 
 function classifyBeschikbaarheid(buttons) {
   const ticketBtn = buttons.find((b) => (b.text ?? '').toLowerCase().includes('ticket') && b.href);
@@ -44,7 +85,7 @@ function classifyBeschikbaarheid(buttons) {
  * opgegeven — standaard-minimum vertraging. Laag volume: doorgaans één
  * herhalende hoofdproductie plus af en toe een los, incidenteel item.
  */
-export async function scrapeMarionettentheater({ page, theater, robots, waitForTurn, log }) {
+export async function scrapeMarionettentheater({ page, theater, robots, waitForTurn, log, warn }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
     return [];
@@ -76,6 +117,29 @@ export async function scrapeMarionettentheater({ page, theater, robots, waitForT
   });
 
   log(`${rawItems.length} datum-paragrafen gevonden op ${AGENDA_PATH}`);
+  // Sanity check: de datumregex op platte tekst is fragiel. Geen enkele
+  // datumparagraaf betekent vrijwel zeker dat de pagina veranderd is, niet
+  // dat de agenda leeg is — dan liever het vangnet dan stil [].
+  if (rawItems.length === 0) {
+    throw new Error(`geen enkele datumparagraaf op ${AGENDA_PATH} — tekststructuur veranderd?`);
+  }
+
+  const repertoire = new Set();
+  if (robots.isAllowed(REPERTOIRE_PATH)) {
+    await waitForTurn();
+    await page.goto(new URL(REPERTOIRE_PATH, theater.baseUrl).toString(), { waitUntil: 'domcontentloaded', timeout: 30000 });
+    const hrefs = await page.evaluate(() =>
+      [...document.querySelectorAll('[data-elementor-type="wp-post"] a[href], [data-elementor-type="wp-page"] a[href]')].map((a) => a.getAttribute('href'))
+    );
+    for (const href of hrefs) {
+      const slug = normalizeSlug(href);
+      if (slug && !NIET_PRODUCTIE.has(slug) && !slug.includes('/')) repertoire.add(slug);
+    }
+  }
+  if (repertoire.size === 0) {
+    throw new Error(`geen productielinks op ${REPERTOIRE_PATH} — kan Podiumpas-dekking niet bepalen`);
+  }
+  log(`repertoire (marionettenvoorstellingen): ${[...repertoire].join(', ')}`);
 
   const parseDay = createDutchAbbrevDayParser();
   const buildId = createIdBuilder();
@@ -96,6 +160,8 @@ export async function scrapeMarionettentheater({ page, theater, robots, waitForT
     const rawDetailHref = item.detailHref ?? infoBtn?.href ?? null;
     const detailUrl = rawDetailHref ? new URL(rawDetailHref, theater.baseUrl).toString() : theater.agendaUrl;
     const ticketUrl = ticketBtn?.href ? new URL(ticketBtn.href, theater.baseUrl).toString() : null;
+    const dekking = classifyMarionetItem(item, repertoire);
+    if (dekking.warn) warn?.(dekking.warn);
 
     shows.push({
       id: buildId(theater.id, item.titel, datum, tijd),
@@ -103,7 +169,7 @@ export async function scrapeMarionettentheater({ page, theater, robots, waitForT
       theaterId: theater.id,
       theaterNaam: theater.naam,
       stad: theater.stad,
-      podiumpas: theater.podiumpas,
+      podiumpas: theater.podiumpas && dekking.podiumpas,
       datum,
       tijd,
       genre: null,
@@ -116,5 +182,6 @@ export async function scrapeMarionettentheater({ page, theater, robots, waitForT
     });
   }
 
+  log(`podiumpas: ${shows.filter((x) => x.podiumpas).length} true, ${shows.filter((x) => !x.podiumpas).length} false`);
   return shows;
 }
