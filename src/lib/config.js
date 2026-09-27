@@ -226,13 +226,18 @@ export const THEATERS = [
     agendaUrl: 'https://griffioen.vu.nl/voorstellingen',
     podiumpas: true,
   },
+  // Podiumpas: false sinds 27 sep 2026. Plein Theater staat niet (meer) op
+  // podiumpas.nl/waar-te-besteden, https://plein-theater.nl/podiumpas geeft
+  // alleen de homepage terug (geen vermelding op de site), en de Stager-shop
+  // (bv. https://plein-theater.stager.co/shop/default/events/111586165) toont
+  // geen Podiumpas-prijstype (alleen Stadspas). Blijft wel in de agenda.
   {
     id: 'pleintheater',
     naam: 'Plein Theater',
     stad: 'Amsterdam',
     baseUrl: 'https://plein-theater.nl',
     agendaUrl: 'https://plein-theater.nl/agenda',
-    podiumpas: true,
+    podiumpas: false,
   },
   {
     id: 'karavaan',
