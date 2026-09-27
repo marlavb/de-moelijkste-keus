@@ -7,10 +7,11 @@ scratch/
 # Geankerd aan de root (/data/), anders matcht dit ook public/data/.
 /data/
 
-# public/data/shows.json en scrape-status.json zijn wél getrackt: de "Refresh
-# data"-workflow commit ze, zodat de deploy-workflow ze zonder opnieuw te
+# public/data/shows.json, scrape-status.json en theaters.json zijn wél
+# getrackt: de "Refresh data"-workflow commit ze, zodat de deploy-workflow ze zonder opnieuw te
 # scrapen kan publiceren (en de volgende run op shows.json kan terugvallen).
 # Eventuele andere bestanden in public/data/ blijven genegeerd.
 public/data/*
 !public/data/shows.json
 !public/data/scrape-status.json
+!public/data/theaters.json

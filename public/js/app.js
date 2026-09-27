@@ -136,6 +136,9 @@ const savedFilters = loadFilters();
 
 const state = {
   shows: [],
+  // Per theater uit data/theaters.json (o.a. podiumpasReserveren). Leeg als
+  // het bestand (nog) niet bestaat — de app werkt dan gewoon zoals voorheen.
+  theaterInfo: {},
   // Multi-select filters — een lege Set betekent "geen filter op deze
   // dimensie" (toon alles), net als de oude 'alle'-waarde. Lokaal-only
   // (localStorage via loadFilters()/saveFilters()) — geen Firestore-sync,
@@ -229,6 +232,7 @@ const els = {
   detailCheckedAt: document.getElementById('detailCheckedAt'),
   detailReserveBtn: document.getElementById('detailReserveBtn'),
   detailReserveLabel: document.getElementById('detailReserveLabel'),
+  detailPodiumpasNotice: document.getElementById('detailPodiumpasNotice'),
   detailAddCalendar: document.getElementById('detailAddCalendar'),
   theatersBack: document.getElementById('theatersBack'),
   theatersList: document.getElementById('theatersList'),
@@ -271,8 +275,10 @@ function toggleSidebarSection(sectionId) {
 renderSidebarSections();
 
 async function init() {
+  const theaterInfoPromise = loadTheaterInfo();
   const res = await fetch('data/shows.json');
   const shows = await res.json();
+  state.theaterInfo = await theaterInfoPromise;
   shows.sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
   state.shows = shows;
 
@@ -1266,6 +1272,63 @@ function formatCheckedAt(isoTimestamp) {
 
 // ---------- Detail screen ----------
 
+async function loadTheaterInfo() {
+  try {
+    const res = await fetch('data/theaters.json');
+    if (!res.ok) return {};
+    return (await res.json()).theaters ?? {};
+  } catch {
+    return {};
+  }
+}
+
+// Melding boven de "Reserveer"-knop bij theaters waar je met de Podiumpas
+// niet online kunt reserveren — alleen bij podiumpas: true, zodat er bij
+// andere voorstellingen niets verandert. Opgebouwd met DOM-elementen (geen
+// innerHTML): de gegevens komen uit config.js, maar zo blijft het veilig.
+function renderPodiumpasNotice(show) {
+  const info = show.podiumpas === true ? state.theaterInfo[show.theaterId]?.podiumpasReserveren : null;
+  const box = els.detailPodiumpasNotice;
+  box.replaceChildren();
+  box.hidden = !info;
+  if (!info) return false;
+
+  const title = document.createElement('strong');
+  title.textContent = 'Met je Podiumpas reserveer je hier niet online';
+  box.append(title);
+
+  const link = (href, label) => {
+    const a = document.createElement('a');
+    a.href = href;
+    a.textContent = label;
+    return a;
+  };
+  const ways = [];
+  if (info.telefoon) ways.push(['bel ', link(`tel:${info.telefoon.replace(/[^\d+]/g, '')}`, info.telefoon)]);
+  if (info.email) ways.push(['mail ', link(`mailto:${info.email}`, info.email)]);
+  if (info.formulier) {
+    const a = link(info.formulier, 'het Podiumpas-formulier');
+    a.target = '_blank';
+    a.rel = 'noopener';
+    ways.push(['gebruik ', a]);
+  }
+  const line = document.createElement('span');
+  ways.forEach(([verb, a], i) => {
+    if (i > 0) line.append(i === ways.length - 1 ? ' of ' : ', ');
+    line.append(i === 0 ? verb[0].toUpperCase() + verb.slice(1) : verb, a);
+  });
+  line.append('.');
+  box.append(line);
+
+  if (info.toelichting) {
+    const extra = document.createElement('span');
+    extra.className = 'podiumpas-notice__toelichting';
+    extra.textContent = info.toelichting;
+    box.append(extra);
+  }
+  return true;
+}
+
 function renderDetail(show) {
   els.detailGenre.textContent = getGenreBucket(show);
   els.detailTheater.textContent = show.theaterNaam;
@@ -1294,7 +1357,10 @@ function renderDetail(show) {
 
   els.detailCheckedAt.textContent = `Laatst gecontroleerd: ${formatCheckedAt(show.opgehaaldOp)}`;
 
-  els.detailReserveLabel.textContent = `Reserveer op ${hostnameOf(show.reserverenUrl)}`;
+  const offlinePodiumpas = renderPodiumpasNotice(show);
+  els.detailReserveLabel.textContent = offlinePodiumpas
+    ? 'Kaarten (zonder Podiumpas)'
+    : `Reserveer op ${hostnameOf(show.reserverenUrl)}`;
   els.detailReserveBtn.href = show.reserverenUrl;
 
   renderFavoriteButton(show);

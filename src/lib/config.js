@@ -17,6 +17,25 @@ export const USER_AGENT = `Mozilla/5.0 (compatible; ${USER_AGENT_TOKEN}/0.1; ${C
 export const DEFAULT_THEATER_BUDGET_MINUTEN = 10;
 export const RUN_BUDGET_MINUTEN = 75;
 
+// Reserveren met de Podiumpas kan bij sommige theaters niet online (de
+// "Reserveer"-knop gaat dan naar de gewone kaartverkoop). Alleen voor die
+// theaters staat hieronder `podiumpasReserveren`; de run schrijft het naar
+// public/data/theaters.json en het detailscherm toont dan een melding. Zonder
+// dit veld (online, of onbekend) verandert er niets. Per theater: bron + datum.
+//
+// Bron: https://www.hnt.nl/nl/kaartverkoop-tgcr (27 sep 2026)
+const HNT_RESERVEREN = {
+  telefoon: '088 356 53 56',
+  email: 'service@hnt.nl',
+  toelichting: 'Telefonisch of per mail, vanaf 30 dagen voor de voorstelling.',
+};
+// Bron: https://www.theaterrotterdam.nl/podiumpas-onbeperkt-naar-voorstellingen-ssx2 (27 sep 2026)
+const TR_RESERVEREN = {
+  telefoon: '010 - 41 18 110',
+  email: 'kassa@theaterrotterdam.nl',
+  toelichting: 'Via de kassa: telefonisch (ma–vr 14–17 uur), per mail of aan de balie, vanaf 30 dagen voor de voorstelling.',
+};
+
 // `podiumpas` loopt mee als veld op elke gescrapete voorstelling (net als
 // `naam`/`stad`), zodat de app kan filteren op Podiumpas-theaters zonder een
 // aparte, makkelijk-te-vergeten lijst in de front-end bij te houden — vul
@@ -70,6 +89,12 @@ export const THEATERS = [
     baseUrl: 'https://www.frascatitheater.nl',
     agendaUrl: 'https://www.frascatitheater.nl/nl/agenda',
     podiumpas: true,
+    // Bron: https://www.frascatitheater.nl/nl/pQ5Zjiw/podiumpas (27 sep 2026)
+    podiumpasReserveren: {
+      telefoon: '020-6266866',
+      email: 'kassa@frascatitheater.nl',
+      toelichting: 'Telefonisch; als bestaande klant ook per mail (naam, postcode, voorstelling met datum en tijd). Vanaf 30 dagen voor de voorstelling.',
+    },
   },
   {
     id: 'carre',
@@ -134,6 +159,11 @@ export const THEATERS = [
     baseUrl: 'https://www.scala-amsterdam.nl',
     agendaUrl: 'https://www.scala-amsterdam.nl/voorstellingen',
     podiumpas: true,
+    // Bron: https://www.scala-amsterdam.nl/podiumpas (27 sep 2026)
+    podiumpasReserveren: {
+      email: 'info@scala-amsterdam.nl',
+      toelichting: 'Per mail met datum, shows, aantal gasten en pasnummer(s). Vrijdag en zaterdag alleen in combinatie met het 4-gangenmenu.',
+    },
   },
   {
     id: 'omval',
@@ -174,6 +204,11 @@ export const THEATERS = [
     baseUrl: 'https://ccamstel.nl',
     agendaUrl: 'https://ccamstel.nl/programma/',
     podiumpas: true,
+    // Bron: https://ccamstel.nl/over-ons/nieuws/podiumpas-bij-cc-amstel/ (27 sep 2026)
+    podiumpasReserveren: {
+      email: 'info@ccamstel.nl',
+      toelichting: 'Per mail met onderwerp "Podiumpas Reservering" (voorstelling, datum, tijd), vanaf 30 dagen voor de voorstelling.',
+    },
   },
   {
     id: 'marionettentheater',
@@ -206,6 +241,11 @@ export const THEATERS = [
     baseUrl: 'https://www.karavaan.nl',
     agendaUrl: 'https://www.karavaan.nl/location/de-drukkerij/',
     podiumpas: true,
+    // Bron: https://www.karavaan.nl/podiumpas-en-alkmaarpas/ (27 sep 2026)
+    podiumpasReserveren: {
+      formulier: 'https://www.karavaan.nl/bestel-met-podiumpas/',
+      toelichting: 'Via het Podiumpas-formulier, vanaf 30 dagen voor de voorstelling (max. 1 ticket per pas).',
+    },
   },
   {
     id: 'schuur',
@@ -230,6 +270,12 @@ export const THEATERS = [
     baseUrl: 'https://www.podiumhogewoerd.nl',
     agendaUrl: 'https://www.podiumhogewoerd.nl/agenda',
     podiumpas: true,
+    // Bron: https://www.podiumhogewoerd.nl/we-are-public-en-podiumpas (27 sep 2026)
+    podiumpasReserveren: {
+      telefoon: '030-7210933',
+      email: 'kassa@podiumhogewoerd.nl',
+      toelichting: 'Via de kassa, per mail of telefonisch, vanaf 30 dagen voor de voorstelling (weekend: uiterlijk vrijdag 17.00 uur).',
+    },
   },
   {
     id: 'flint',
@@ -238,6 +284,11 @@ export const THEATERS = [
     baseUrl: 'https://flint.nl',
     agendaUrl: 'https://flint.nl/agenda/',
     podiumpas: true,
+    // Bron: https://flint.nl/programma/kortingen-acties/podiumpas/ (27 sep 2026)
+    podiumpasReserveren: {
+      telefoon: '033 4 229 229',
+      toelichting: 'Telefonisch via de kassa, vanaf 30 dagen voor de voorstelling.',
+    },
   },
   {
     id: 'aandeslinger',
@@ -273,6 +324,7 @@ export const THEATERS = [
     baseUrl: 'https://www.hnt.nl',
     agendaUrl: 'https://www.hnt.nl/nl/voorstellingen',
     podiumpas: true,
+    podiumpasReserveren: HNT_RESERVEREN,
   },
   {
     id: 'theateraanhetspui',
@@ -281,6 +333,7 @@ export const THEATERS = [
     baseUrl: 'https://www.hnt.nl',
     agendaUrl: 'https://www.hnt.nl/nl/voorstellingen',
     podiumpas: true,
+    podiumpasReserveren: HNT_RESERVEREN,
   },
   {
     id: 'zaal3',
@@ -289,6 +342,7 @@ export const THEATERS = [
     baseUrl: 'https://www.hnt.nl',
     agendaUrl: 'https://www.hnt.nl/nl/voorstellingen',
     podiumpas: true,
+    podiumpasReserveren: HNT_RESERVEREN,
   },
   {
     id: 'tr25',
@@ -297,6 +351,7 @@ export const THEATERS = [
     baseUrl: 'https://www.theaterrotterdam.nl',
     agendaUrl: 'https://www.theaterrotterdam.nl/agenda',
     podiumpas: true,
+    podiumpasReserveren: TR_RESERVEREN,
   },
   {
     id: 'tr8',
@@ -305,6 +360,7 @@ export const THEATERS = [
     baseUrl: 'https://www.theaterrotterdam.nl',
     agendaUrl: 'https://www.theaterrotterdam.nl/agenda',
     podiumpas: true,
+    podiumpasReserveren: TR_RESERVEREN,
   },
   {
     id: 'koningshof',
@@ -345,6 +401,11 @@ export const THEATERS = [
     baseUrl: 'https://www.theaterhetkruispunt.nl',
     agendaUrl: 'https://www.theaterhetkruispunt.nl/agenda',
     podiumpas: true,
+    // Bron: https://www.theaterhetkruispunt.nl/podiumpas-8y4s (27 sep 2026)
+    podiumpasReserveren: {
+      telefoon: '0180-615958',
+      toelichting: 'Uitsluitend telefonisch via de publieksservice, vanaf 30 dagen voor de voorstelling.',
+    },
   },
   {
     id: 'isala',
@@ -353,6 +414,12 @@ export const THEATERS = [
     baseUrl: 'https://www.isalatheater.nl',
     agendaUrl: 'https://www.isalatheater.nl/agenda',
     podiumpas: true,
+    // Bron: https://www.isalatheater.nl/podiumpas-l3lg (27 sep 2026)
+    podiumpasReserveren: {
+      telefoon: '010 - 458 6400',
+      email: 'info@isalatheater.nl',
+      toelichting: 'Via het bespreekbureau, aan de balie, telefonisch of per mail, vanaf 30 dagen voor de voorstelling.',
+    },
   },
   {
     id: 'stoep',

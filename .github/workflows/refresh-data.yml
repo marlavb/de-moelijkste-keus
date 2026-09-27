@@ -51,7 +51,7 @@ jobs:
       - name: Agenda's scrapen
         run: node src/index.js
 
-      - name: public/data/shows.json en scrape-status.json committen en pushen
+      - name: public/data (shows, scrape-status, theaters) committen en pushen
         id: commit
         run: |
           git config user.name "github-actions[bot]"
@@ -61,11 +61,11 @@ jobs:
           # zojuist gegenereerde data opzij, ga naar de nieuwste main en zet
           # hem daarop terug: onze data is de nieuwste, de rest komt van main.
           tmp=$(mktemp -d)
-          cp public/data/shows.json public/data/scrape-status.json "$tmp/"
+          cp public/data/shows.json public/data/scrape-status.json public/data/theaters.json "$tmp/"
           git fetch --quiet origin main
           git reset --quiet --hard origin/main
-          cp "$tmp/shows.json" "$tmp/scrape-status.json" public/data/
-          git add public/data/shows.json public/data/scrape-status.json
+          cp "$tmp/shows.json" "$tmp/scrape-status.json" "$tmp/theaters.json" public/data/
+          git add public/data/shows.json public/data/scrape-status.json public/data/theaters.json
           if git diff --cached --quiet; then
             echo "Geen wijzigingen in de data — niets te committen."
             echo "changed=false" >> "$GITHUB_OUTPUT"

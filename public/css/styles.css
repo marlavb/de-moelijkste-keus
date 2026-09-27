@@ -689,6 +689,37 @@ a {
   color: var(--accent-contrast);
 }
 
+/* Melding in het detailscherm bij theaters waar je met de Podiumpas niet
+   online kunt reserveren (zie podiumpasReserveren in src/lib/config.js). */
+.podiumpas-notice {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.podiumpas-notice strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.podiumpas-notice a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}
+
+.podiumpas-notice__toelichting {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-muted);
+}
+
 .btn-primary svg {
   width: 16px;
   height: 16px;

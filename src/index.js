@@ -1,5 +1,6 @@
 import { chromium } from 'playwright';
 import path from 'node:path';
+import { writeFile } from 'node:fs/promises';
 
 import {
   THEATERS,
@@ -11,6 +12,7 @@ import {
 import { loadRobotsRules } from './lib/robots.js';
 import { createPoliteWaiter } from './lib/politeness.js';
 import { runRefresh } from './lib/scrapeRun.js';
+import { buildTheatersJson } from './lib/theatersJson.js';
 import { scrapeDelamar } from './sites/delamar.js';
 import { scrapeBellevue } from './sites/bellevue.js';
 import { scrapeMeervaart } from './sites/meervaart.js';
@@ -109,6 +111,9 @@ const SCRAPERS = {
 const PUBLIC_SHOWS_PATH = path.resolve('public/data/shows.json');
 const LOCAL_SHOWS_PATH = path.resolve('data/shows.json');
 const STATUS_PATH = path.resolve('public/data/scrape-status.json');
+// - public/data/theaters.json: per theater naam/stad/podiumpas en, waar
+//   nodig, hoe je met de Podiumpas reserveert (uit config.js).
+const THEATERS_PATH = path.resolve('public/data/theaters.json');
 
 function parseArgs(argv) {
   const only = argv.find((a) => a.startsWith('--only='))?.split('=')[1];
@@ -148,6 +153,7 @@ async function main() {
   } finally {
     await browser.close();
   }
+  await writeFile(THEATERS_PATH, JSON.stringify(buildTheatersJson(THEATERS), null, 2) + '\n', 'utf-8');
 }
 
 main().catch((err) => {
