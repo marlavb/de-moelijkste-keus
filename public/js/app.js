@@ -12,6 +12,7 @@ import {
 } from './firebase.js';
 import { getGenreBucket } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
+import { renameFavoritesAndPersist } from './favorites.js';
 
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
@@ -268,6 +269,7 @@ async function init() {
   state.shows = shows;
 
   migrateFavoritesOnceLocally();
+  renameFavoritesLocally();
 
   // Theaters die nog nooit eerder gezien zijn (nieuw in de data) staan
   // standaard aan.
@@ -533,6 +535,15 @@ function migrateFavorites(favorites) {
   return migrated;
 }
 
+// Hernoemde titels (zie favorites.js): bij elke keer laden toepassen, en
+// alleen opslaan als er echt een oude sleutel is vervangen. Bewust los van
+// migrateFavorites() en de favoritesMigrated-vlag.
+function renameFavoritesLocally() {
+  state.favorites = renameFavoritesAndPersist(state.favorites, (renamed) =>
+    localStorage.setItem(STORAGE_KEYS.favorites, JSON.stringify([...renamed]))
+  );
+}
+
 function isFavoritesMigratedLocally() {
   return localStorage.getItem(STORAGE_KEYS.favoritesMigrated) === '1';
 }
@@ -572,6 +583,11 @@ async function handleAuthChange(user) {
           state.favorites = migrateFavorites(state.favorites);
           await setDoc(ref, { favorites: [...state.favorites], favoritesMigrated: true }, { merge: true });
         }
+        state.favorites = renameFavoritesAndPersist(state.favorites, (renamed) =>
+          setDoc(ref, { favorites: [...renamed] }, { merge: true }).catch((err) =>
+            console.error('Kon hernoemde favorieten niet synchroniseren:', err)
+          )
+        );
       } else {
         // Eerste keer inloggen op dit account: neem mee wat er lokaal al
         // stond (migrateFavoritesOnceLocally() heeft dat in init() al naar
@@ -588,6 +604,7 @@ async function handleAuthChange(user) {
     }
   } else {
     state.favorites = loadFavorites();
+    renameFavoritesLocally();
     state.enabledTheaters = loadEnabledTheaters();
   }
 
