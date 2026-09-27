@@ -260,6 +260,9 @@ export const THEATERS = [
     agendaUrl: 'https://www.schuur.nl/agenda',
     podiumpas: true,
   },
+  // Podiumpas gecontroleerd op 27 sep 2026: eigen pagina actief,
+  // https://bostheater.nl/podiumpas/ (alleen theatervoorstellingen en
+  // Bosfest; zie isPodiumpasEligible in sites/bostheater.js).
   {
     id: 'bostheater',
     naam: 'Bostheater',
