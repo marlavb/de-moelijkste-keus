@@ -111,6 +111,11 @@ export const THEATERS = [
     baseUrl: 'https://schouwburgamstelveen.nl',
     agendaUrl: 'https://schouwburgamstelveen.nl/nl/theater/agenda/',
     podiumpas: true,
+    // Getoond in "Mijn theaters" (via theaters.json), ook als het theater
+    // geen voorstellingen heeft. Bron: https://schouwburgamstelveen.nl/nl/theater/over-ons/verbouwing-cultuurstrip/
+    // (27 sep 2026: verbouwing sinds juni 2026, heropening december 2027).
+    // Na de heropening weghalen.
+    melding: 'Tijdelijk gesloten wegens verbouwing (heropening december 2027). De voorstellingen staan bij Theater De Landing.',
   },
   {
     id: 'stadsschouwburgutrecht',

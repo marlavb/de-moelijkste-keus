@@ -36,12 +36,49 @@ export function applyFavoriteRenames(favorites, renames = RENAMED_FAVORITE_KEYS)
   return { favorites: result, changed };
 }
 
+// Verhuisde theaters: favorieten van theater `van` horen bij `naar`.
+//
+// Waarom: Schouwburg Amstelveen is dicht wegens verbouwing (heropening
+// december 2027, zie config.js); alle voorstellingen staan in Theater De
+// Landing. Tot sep 2026 stond elke voorstelling bij allebei, dus favorieten
+// kunnen `amstelveen::…` zijn voor een productie die nu `delanding::…` is.
+//
+// Datagestuurd i.p.v. een einddatum: een sleutel wordt alleen omgezet als
+// de productie in de huidige data níet bij `van` bestaat en wél bij `naar`.
+// Speelt de Schouwburg na de heropening een eigen productie X, dan blijft
+// `amstelveen::X` gewoon staan. Zonder geladen data wordt niets omgezet.
+export const THEATER_MOVES = [{ van: 'amstelveen', naar: 'delanding' }];
+
 /**
- * applyFavoriteRenames + opslaan, maar alléén als er iets veranderd is.
- * `persist` krijgt de nieuwe Set (localStorage of Firestore, aan de caller).
+ * Zet favorieten van verhuisde theaters om. `productionKeys` is de Set van
+ * theaterId::titel uit de huidige shows.json. Idempotent, zonder vlag; staan
+ * oud en nieuw er allebei, dan verdwijnt alleen de oude.
  */
-export function renameFavoritesAndPersist(favorites, persist) {
-  const { favorites: renamed, changed } = applyFavoriteRenames(favorites);
-  if (changed) persist(renamed);
-  return renamed;
+export function applyTheaterMoves(favorites, productionKeys, moves = THEATER_MOVES) {
+  const result = new Set(favorites);
+  let changed = false;
+  if (!productionKeys || productionKeys.size === 0) return { favorites: result, changed };
+  for (const key of favorites) {
+    const move = moves.find((m) => key.startsWith(`${m.van}::`));
+    if (!move) continue;
+    const titel = key.slice(move.van.length + 2);
+    const newKey = `${move.naar}::${titel}`;
+    if (productionKeys.has(key) || !productionKeys.has(newKey)) continue;
+    result.delete(key);
+    result.add(newKey);
+    changed = true;
+  }
+  return { favorites: result, changed };
+}
+
+/**
+ * applyFavoriteRenames + applyTheaterMoves + opslaan, maar alléén als er
+ * iets veranderd is. `persist` krijgt de nieuwe Set (localStorage of
+ * Firestore, aan de caller); `productionKeys` komt uit de geladen data.
+ */
+export function renameFavoritesAndPersist(favorites, persist, productionKeys = new Set()) {
+  const renamed = applyFavoriteRenames(favorites);
+  const moved = applyTheaterMoves(renamed.favorites, productionKeys);
+  if (renamed.changed || moved.changed) persist(moved.favorites);
+  return moved.favorites;
 }

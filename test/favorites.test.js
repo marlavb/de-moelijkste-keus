@@ -4,7 +4,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { RENAMED_FAVORITE_KEYS, renameFavoritesAndPersist } from '../public/js/favorites.js';
+import { RENAMED_FAVORITE_KEYS, renameFavoritesAndPersist, applyTheaterMoves } from '../public/js/favorites.js';
 
 const OLD_GONE = 'ita::GONE -  Inspired by Benjamin Clementine';
 const NEW_GONE = 'ita::GONE';
@@ -54,4 +54,48 @@ test('mapping: 7 ITA-sleutels, oud ≠ nieuw', () => {
     assert.ok(oldKey.startsWith('ita::') && newKey.startsWith('ita::'));
     assert.notEqual(oldKey, newKey);
   }
+});
+
+// --- Verhuisde theaters (Schouwburg Amstelveen → De Landing) ---
+
+const keys = (...k) => new Set(k);
+
+test('verhuizing: amstelveen::X → delanding::X als X alleen nog bij De Landing staat', () => {
+  const { calls, persist } = spy();
+  const data = keys('delanding::Mama is boos', 'delamar::Iets');
+  const result = renameFavoritesAndPersist(new Set(['amstelveen::Mama is boos', OTHER]), persist, data);
+  assert.deepEqual([...result].sort(), ['delanding::Mama is boos', OTHER].sort());
+  assert.equal(calls.length, 1);
+});
+
+test('verhuizing: geen delanding-tegenhanger → blijft staan, niets geschreven', () => {
+  const { calls, persist } = spy();
+  const result = renameFavoritesAndPersist(new Set(['amstelveen::Oude voorstelling']), persist, keys('delanding::Iets anders'));
+  assert.deepEqual([...result], ['amstelveen::Oude voorstelling']);
+  assert.equal(calls.length, 0);
+});
+
+test('verhuizing: beide sleutels bestaan in de data (Schouwburg heropend) → blijft staan', () => {
+  const { calls, persist } = spy();
+  const data = keys('amstelveen::Hamlet', 'delanding::Hamlet');
+  const result = renameFavoritesAndPersist(new Set(['amstelveen::Hamlet']), persist, data);
+  assert.deepEqual([...result], ['amstelveen::Hamlet']);
+  assert.equal(calls.length, 0);
+});
+
+test('verhuizing: oud en nieuw tegelijk → alleen oud weg; tweede keer niets meer', () => {
+  const { calls, persist } = spy();
+  const data = keys('delanding::Mama is boos');
+  const once = renameFavoritesAndPersist(new Set(['amstelveen::Mama is boos', 'delanding::Mama is boos']), persist, data);
+  assert.deepEqual([...once], ['delanding::Mama is boos']);
+  renameFavoritesAndPersist(once, persist, data);
+  assert.equal(calls.length, 1);
+});
+
+test('verhuizing: data nog niet geladen (lege set) → niets omgezet', () => {
+  const { calls, persist } = spy();
+  const result = renameFavoritesAndPersist(new Set(['amstelveen::Mama is boos']), persist, new Set());
+  assert.deepEqual([...result], ['amstelveen::Mama is boos']);
+  assert.equal(calls.length, 0);
+  assert.equal(applyTheaterMoves(new Set(['amstelveen::X']), undefined).changed, false);
 });

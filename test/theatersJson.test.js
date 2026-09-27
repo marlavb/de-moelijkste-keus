@@ -11,6 +11,8 @@ test('theaters.json: alle theaters, podiumpasReserveren alleen waar ingevuld', (
   ]);
   assert.deepEqual(theaters.a, { naam: 'A', stad: 'X', podiumpas: true, podiumpasReserveren: { telefoon: '0180' } });
   assert.deepEqual(theaters.b, { naam: 'B', stad: 'Y', podiumpas: false });
+  const withMelding = buildTheatersJson([{ id: 'c', naam: 'C', stad: 'Z', podiumpas: true, melding: 'Dicht' }]).theaters.c;
+  assert.equal(withMelding.melding, 'Dicht');
 });
 
 test('config: elk podiumpasReserveren heeft een manier om te reserveren', () => {

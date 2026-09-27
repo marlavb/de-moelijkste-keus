@@ -691,6 +691,13 @@ a {
 
 /* Melding in het detailscherm bij theaters waar je met de Podiumpas niet
    online kunt reserveren (zie podiumpasReserveren in src/lib/config.js). */
+.theater-card-melding {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
 .podiumpas-notice {
   background: var(--accent-soft);
   border: 1px solid var(--accent);

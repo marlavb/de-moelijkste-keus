@@ -20,7 +20,7 @@ import { scrapeIta } from './sites/ita.js';
 import { scrapeKleineKomedie } from './sites/kleinekomedie.js';
 import { scrapeFrascati } from './sites/frascati.js';
 import { scrapeCarre } from './sites/carre.js';
-import { scrapeAmstelveen } from './sites/amstelveen.js';
+import { scrapeAmstelveenGroep } from './sites/amstelveen.js';
 import { scrapeStadsschouwburgUtrecht } from './sites/stadsschouwburgutrecht.js';
 import { scrapeTheaterKikker } from './sites/theaterkikker.js';
 import { scrapeKrakeling } from './sites/krakeling.js';
@@ -28,7 +28,6 @@ import { scrapeMozaiek } from './sites/mozaiek.js';
 import { scrapeMuziekgebouw } from './sites/muziekgebouw.js';
 import { scrapeScala } from './sites/scala.js';
 import { scrapeOmval } from './sites/omval.js';
-import { scrapeDeLanding } from './sites/delanding.js';
 import { scrapeZaantheater } from './sites/zaantheater.js';
 import { scrapeBijlmerParktheater } from './sites/bijlmerparktheater.js';
 import { scrapeCcAmstel } from './sites/ccamstel.js';
@@ -61,7 +60,7 @@ const SCRAPERS = {
   kleinekomedie: scrapeKleineKomedie,
   frascati: scrapeFrascati,
   carre: scrapeCarre,
-  amstelveen: scrapeAmstelveen,
+  amstelveen: scrapeAmstelveenGroep,
   stadsschouwburgutrecht: scrapeStadsschouwburgUtrecht,
   theaterkikker: scrapeTheaterKikker,
   krakeling: scrapeKrakeling,
@@ -69,7 +68,7 @@ const SCRAPERS = {
   muziekgebouw: scrapeMuziekgebouw,
   scala: scrapeScala,
   omval: scrapeOmval,
-  delanding: scrapeDeLanding,
+  delanding: scrapeAmstelveenGroep,
   zaantheater: scrapeZaantheater,
   bijlmerparktheater: scrapeBijlmerParktheater,
   ccamstel: scrapeCcAmstel,

@@ -283,7 +283,7 @@ async function init() {
   state.shows = shows;
 
   migrateFavoritesOnceLocally();
-  renameFavoritesLocally();
+  renameFavoritesForCurrentUser();
 
   // Theaters die nog nooit eerder gezien zijn (nieuw in de data) staan
   // standaard aan.
@@ -553,9 +553,36 @@ function migrateFavorites(favorites) {
 // alleen opslaan als er echt een oude sleutel is vervangen. Bewust los van
 // migrateFavorites() en de favoritesMigrated-vlag.
 function renameFavoritesLocally() {
-  state.favorites = renameFavoritesAndPersist(state.favorites, (renamed) =>
-    localStorage.setItem(STORAGE_KEYS.favorites, JSON.stringify([...renamed]))
+  state.favorites = renameFavoritesAndPersist(
+    state.favorites,
+    (renamed) => localStorage.setItem(STORAGE_KEYS.favorites, JSON.stringify([...renamed])),
+    currentProductionKeys()
   );
+}
+
+// theaterId::titel van alle voorstellingen in de geladen data — leeg zolang
+// shows.json nog niet binnen is, en dan verhuist applyTheaterMoves niets.
+function currentProductionKeys() {
+  return new Set(state.shows.map(productionKey));
+}
+
+function renameFavoritesInCloud(ref) {
+  state.favorites = renameFavoritesAndPersist(
+    state.favorites,
+    (renamed) =>
+      setDoc(ref, { favorites: [...renamed] }, { merge: true }).catch((err) =>
+        console.error('Kon hernoemde favorieten niet synchroniseren:', err)
+      ),
+    currentProductionKeys()
+  );
+}
+
+// Na het laden van de data: de hernoemingen die van de data afhangen
+// (verhuisde theaters) opnieuw toepassen, voor wie ingelogd is in de cloud.
+// Nodig als het inloggen al klaar was voordat shows.json binnen was.
+function renameFavoritesForCurrentUser() {
+  if (state.user) renameFavoritesInCloud(userDocRef(state.user.uid));
+  else renameFavoritesLocally();
 }
 
 function isFavoritesMigratedLocally() {
@@ -597,11 +624,7 @@ async function handleAuthChange(user) {
           state.favorites = migrateFavorites(state.favorites);
           await setDoc(ref, { favorites: [...state.favorites], favoritesMigrated: true }, { merge: true });
         }
-        state.favorites = renameFavoritesAndPersist(state.favorites, (renamed) =>
-          setDoc(ref, { favorites: [...renamed] }, { merge: true }).catch((err) =>
-            console.error('Kon hernoemde favorieten niet synchroniseren:', err)
-          )
-        );
+        renameFavoritesInCloud(ref);
       } else {
         // Eerste keer inloggen op dit account: neem mee wat er lokaal al
         // stond (migrateFavoritesOnceLocally() heeft dat in init() al naar
@@ -815,7 +838,7 @@ function renderSubtitle() {
 }
 
 function theaterDisplayName(id) {
-  return state.shows.find((s) => s.theaterId === id)?.theaterNaam ?? id;
+  return state.shows.find((s) => s.theaterId === id)?.theaterNaam ?? state.theaterInfo[id]?.naam ?? id;
 }
 
 function sortTheaterIdsByName(ids) {
@@ -1556,7 +1579,8 @@ function initFeedbackForm() {
 
 function buildTheaterCard(id) {
   const theaterShow = state.shows.find((s) => s.theaterId === id);
-  const naam = theaterShow?.theaterNaam ?? id;
+  const naam = theaterShow?.theaterNaam ?? state.theaterInfo[id]?.naam ?? id;
+  const melding = state.theaterInfo[id]?.melding ?? null;
   const adres = THEATER_INFO[id]?.adres ?? '';
   // .some() i.p.v. de eerste match: bij een gemengd theater (bv.
   // Bostheater, waar podiumpas per show verschilt) zou "eerste show" hier
@@ -1578,7 +1602,16 @@ function buildTheaterCard(id) {
   const podiumpasEl = document.createElement('span');
   podiumpasEl.className = 'podiumpas-badge' + (heeftPodiumpas ? '' : ' podiumpas-badge--no');
   podiumpasEl.textContent = heeftPodiumpas ? 'Podiumpas' : 'Geen Podiumpas';
-  info.append(nameEl, addressEl, podiumpasEl);
+  info.append(nameEl, addressEl);
+  // Zonder voorstellingen valt er niets aan/uit te zetten en zegt het
+  // Podiumpas-label niets — dan alleen naam en melding.
+  if (theaterShow) info.append(podiumpasEl);
+  if (melding) {
+    const meldingEl = document.createElement('p');
+    meldingEl.className = 'theater-card-melding';
+    meldingEl.textContent = melding;
+    info.append(meldingEl);
+  }
 
   const toggle = document.createElement('button');
   toggle.type = 'button';
@@ -1591,7 +1624,8 @@ function buildTheaterCard(id) {
     refreshAfterTheaterToggle();
   });
 
-  card.append(info, toggle);
+  card.append(info);
+  if (theaterShow) card.append(toggle);
   return card;
 }
 
@@ -1656,8 +1690,11 @@ function toggleTheaterCitySection(stad, header, content) {
  * secties, maar per stad in plaats van een vaste lijst van section-ids) met
  * daaronder de theater-kaarten. Standaard dicht, tenzij eerder opengeklapt. */
 function buildCitySection(stad, cityIds) {
-  const enabledCount = cityIds.filter((id) => state.enabledTheaters[id] !== false).length;
-  const allOn = enabledCount === cityIds.length;
+  // Telling en "alles aan/uit" alleen over theaters mét voorstellingen; een
+  // gesloten theater (alleen een melding) staat er wel, maar telt niet mee.
+  const toggleIds = cityIds.filter((id) => state.shows.some((s) => s.theaterId === id));
+  const enabledCount = toggleIds.filter((id) => state.enabledTheaters[id] !== false).length;
+  const allOn = enabledCount === toggleIds.length;
   const isOpen = state.theaterCitySections[stad] === 'open';
 
   const section = document.createElement('div');
@@ -1673,10 +1710,10 @@ function buildCitySection(stad, cityIds) {
   headingLeft.className = 'theaters-list-heading-left';
   const cityLabel = document.createElement('span');
   cityLabel.textContent = stad.toUpperCase();
-  headingLeft.append(buildChevronSvg(), cityLabel, buildCityToggleButton(stad, cityIds, allOn));
+  headingLeft.append(buildChevronSvg(), cityLabel, buildCityToggleButton(stad, toggleIds, allOn));
 
   const countLabel = document.createElement('span');
-  countLabel.textContent = `${enabledCount} van ${cityIds.length}`;
+  countLabel.textContent = `${enabledCount} van ${toggleIds.length}`;
   header.append(headingLeft, countLabel);
 
   const content = document.createElement('div');
@@ -1703,11 +1740,14 @@ function buildCitySection(stad, cityIds) {
  * PROVINCE_BY_CITY voorkomt belandt zichtbaar in de PROVINCE_FALLBACK-sectie
  * i.p.v. stilzwijgend te verdwijnen. */
 function renderTheatersScreen() {
-  const ids = sortTheaterIdsByName([...new Set(state.shows.map((s) => s.theaterId))]);
+  // Ook theaters zonder voorstellingen, als theaters.json er een melding
+  // voor heeft (bv. tijdelijk gesloten) — anders verdwijnen ze stil.
+  const metMelding = Object.keys(state.theaterInfo).filter((id) => state.theaterInfo[id]?.melding);
+  const ids = sortTheaterIdsByName([...new Set([...state.shows.map((s) => s.theaterId), ...metMelding])]);
 
   const idsByStad = new Map();
   for (const id of ids) {
-    const stad = state.shows.find((s) => s.theaterId === id)?.stad ?? '';
+    const stad = state.shows.find((s) => s.theaterId === id)?.stad ?? state.theaterInfo[id]?.stad ?? '';
     if (!idsByStad.has(stad)) idsByStad.set(stad, []);
     idsByStad.get(stad).push(id);
   }

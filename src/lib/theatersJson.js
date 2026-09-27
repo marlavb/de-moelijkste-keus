@@ -10,6 +10,7 @@ export function buildTheatersJson(theaters) {
       stad: t.stad,
       podiumpas: t.podiumpas,
       ...(t.podiumpasReserveren ? { podiumpasReserveren: t.podiumpasReserveren } : {}),
+      ...(t.melding ? { melding: t.melding } : {}),
     };
   }
   return { theaters: out };
