@@ -23,8 +23,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
+      # ref: main in plaats van de commit waarop de run getriggerd werd: een
+      # run die in de concurrency-wachtrij stond, moet de nieuwste main
+      # uitchecken (inclusief de data van de run vóór hem), niet de SHA van
+      # het moment dat hij werd aangemaakt.
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Node.js instellen
         uses: actions/setup-node@v4
@@ -50,6 +56,15 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Is main tijdens het scrapen verder gegaan (code-push, of data van
+          # een andere run), dan zou een gewone push geweigerd worden. Zet de
+          # zojuist gegenereerde data opzij, ga naar de nieuwste main en zet
+          # hem daarop terug: onze data is de nieuwste, de rest komt van main.
+          tmp=$(mktemp -d)
+          cp public/data/shows.json public/data/scrape-status.json "$tmp/"
+          git fetch --quiet origin main
+          git reset --quiet --hard origin/main
+          cp "$tmp/shows.json" "$tmp/scrape-status.json" public/data/
           git add public/data/shows.json public/data/scrape-status.json
           if git diff --cached --quiet; then
             echo "Geen wijzigingen in de data — niets te committen."
