@@ -1,10 +1,12 @@
-const CACHE_NAME = 'podiumagenda-v3';
+const CACHE_NAME = 'podiumagenda-v4';
 const APP_SHELL = [
   './',
   './index.html',
   './css/styles.css',
   './js/app.js',
   './js/firebase.js',
+  './js/genre.js',
+  './js/productions.js',
   './manifest.json',
   './data/shows.json',
 ];
@@ -13,15 +15,11 @@ const APP_SHELL = [
 // altijd network-first — anders blijft een online bezoeker na een deploy
 // vastzitten op oude app-code totdat de cache toevallig verloopt (net
 // gebeurd: een geshipte feature leek te ontbreken door een stale cache).
-const NETWORK_FIRST_PATHS = [
-  '/',
-  '/index.html',
-  '/js/app.js',
-  '/js/firebase.js',
-  '/css/styles.css',
-  '/manifest.json',
-  '/data/shows.json',
-];
+// Alles onder js/ en css/ telt automatisch mee, zodat een nieuwe module
+// (zoals genre.js/productions.js, die hier eerder ontbraken) niet vergeten
+// kan worden.
+const NETWORK_FIRST_PATHS = ['/', '/index.html', '/manifest.json', '/data/shows.json', '/data/scrape-status.json'];
+const NETWORK_FIRST_DIRS = ['/js/', '/css/'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
@@ -37,16 +35,22 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-function isNetworkFirst(pathname) {
-  return NETWORK_FIRST_PATHS.some((path) => pathname.endsWith(path));
+// Alleen eigen bestanden: cross-origin imports (Firebase van gstatic) staan
+// op een versienummer in de URL en mogen gewoon cache-first blijven.
+function isNetworkFirst(url) {
+  if (url.origin !== self.location.origin) return false;
+  return (
+    NETWORK_FIRST_PATHS.some((path) => url.pathname.endsWith(path)) ||
+    NETWORK_FIRST_DIRS.some((dir) => url.pathname.includes(dir))
+  );
 }
 
-// Network-first (met cache-fallback voor offline) voor de app shell +
-// shows.json, cache-first voor de rest (bv. icons), die zelden wijzigen.
+// Network-first (met cache-fallback voor offline) voor de app shell, js/,
+// css/ en de data, cache-first voor de rest (bv. icons), die zelden wijzigen.
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  if (isNetworkFirst(url.pathname)) {
+  if (isNetworkFirst(url)) {
     event.respondWith(
       fetch(event.request)
         .then((res) => {
