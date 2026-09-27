@@ -1,11 +1,16 @@
 import { chromium } from 'playwright';
-import { writeFile, readFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 
-import { THEATERS, USER_AGENT, USER_AGENT_TOKEN } from './lib/config.js';
-import { todayIsoDate } from './lib/normalize.js';
+import {
+  THEATERS,
+  USER_AGENT,
+  USER_AGENT_TOKEN,
+  DEFAULT_THEATER_BUDGET_MINUTEN,
+  RUN_BUDGET_MINUTEN,
+} from './lib/config.js';
 import { loadRobotsRules } from './lib/robots.js';
 import { createPoliteWaiter } from './lib/politeness.js';
+import { runRefresh } from './lib/scrapeRun.js';
 import { scrapeDelamar } from './sites/delamar.js';
 import { scrapeBellevue } from './sites/bellevue.js';
 import { scrapeMeervaart } from './sites/meervaart.js';
@@ -70,10 +75,19 @@ const SCRAPERS = {
   kunstlinie: scrapeKunstlinie,
 };
 
-const OUTPUT_PATH = path.resolve('data/shows.json');
-// De front-end (public/) is een zelfstandig te serveren map, dus krijgt
-// een eigen kopie van de data als static asset.
-const PUBLIC_OUTPUT_PATH = path.resolve('public/data/shows.json');
+// Welk bestand waarvoor dient:
+// - public/data/shows.json is de getrackte, gepubliceerde data. De workflow
+//   commit 'm, dus hij staat na elke checkout klaar — ook in CI. Dit is dus
+//   de "vorige run" waar het vangnet op terugvalt en waar --only-runs de
+//   niet-gescrapete theaters uit halen.
+// - data/shows.json is alleen een lokale, ge-gitignorede kopie van dezelfde
+//   output (handig om te inspecteren zonder public/ aan te raken). Er wordt
+//   nooit meer uit gelezen.
+// - public/data/scrape-status.json: per theater de uitkomst van de laatste
+//   run (ok/leeg/terugval/fout), duur en laatste succesvolle scrape.
+const PUBLIC_SHOWS_PATH = path.resolve('public/data/shows.json');
+const LOCAL_SHOWS_PATH = path.resolve('data/shows.json');
+const STATUS_PATH = path.resolve('public/data/scrape-status.json');
 
 function parseArgs(argv) {
   const only = argv.find((a) => a.startsWith('--only='))?.split('=')[1];
@@ -90,73 +104,29 @@ async function main() {
   }
 
   const browser = await chromium.launch();
-  const allShows = [];
-
   try {
-    for (const theater of theaters) {
-      const log = (msg) => console.log(`[${theater.id}] ${msg}`);
-      log(`start scrape (${theater.agendaUrl})`);
-
-      const robots = await loadRobotsRules(theater.baseUrl, USER_AGENT, USER_AGENT_TOKEN);
-      log(`robots.txt gelezen (${robots.robotsUrl}), crawl-delay = ${robots.crawlDelayMs}ms`);
-
-      const waitForTurn = createPoliteWaiter(robots.crawlDelayMs, log);
-      const page = await browser.newPage({ userAgent: USER_AGENT });
-
-      const scraper = SCRAPERS[theater.id];
-      try {
-        const shows = await scraper({ page, theater, robots, waitForTurn, log });
-        log(`${shows.length} voorstellingen gevonden`);
-        allShows.push(...shows);
-      } catch (err) {
-        log(`FOUT tijdens scrapen: ${err.message}`);
-      } finally {
-        await page.close();
-      }
-    }
+    await runRefresh({
+      theaters,
+      scrapers: SCRAPERS,
+      deps: {
+        openPage: () => browser.newPage({ userAgent: USER_AGENT }),
+        loadRobots: (theater, signal) =>
+          loadRobotsRules(theater.baseUrl, USER_AGENT, USER_AGENT_TOKEN, { signal }),
+        createWaiter: createPoliteWaiter,
+      },
+      paths: {
+        previousShows: PUBLIC_SHOWS_PATH,
+        showsOutputs: [LOCAL_SHOWS_PATH, PUBLIC_SHOWS_PATH],
+        status: STATUS_PATH,
+      },
+      budgets: {
+        theaterMs: (theater) => (theater.budgetMinuten ?? DEFAULT_THEATER_BUDGET_MINUTEN) * 60_000,
+        totalMs: RUN_BUDGET_MINUTEN * 60_000,
+      },
+    });
   } finally {
     await browser.close();
   }
-
-  const scrapedTheaterIds = new Set(theaters.map((t) => t.id));
-  let existingShows = [];
-  try {
-    existingShows = JSON.parse(await readFile(OUTPUT_PATH, 'utf-8'));
-  } catch {
-    // Nog geen bestaand bestand — dat is prima bij de eerste run.
-  }
-  const keptShows = existingShows.filter((s) => !scrapedTheaterIds.has(s.theaterId));
-  const mergedShows = [...keptShows, ...allShows];
-
-  // Extra laag bovenop de ondergrens in filteredShows() aan de voorkant: een
-  // theater dat een verlopen voorstelling zelf niet van hun eigen site haalt
-  // (zoals Podium Mozaïek deed voor een tentoonstelling van twee maanden
-  // terug) moet niet voor altijd in onze eigen data blijven staan. Draait
-  // hier in de gedeelde merge-stap, dus geldt voor elke run (dagelijkse
-  // refresh-data.yml, handmatige workflow-trigger, lokale dev-run) zonder
-  // dat dit ergens anders gedupliceerd hoeft te worden.
-  const minDate = todayIsoDate();
-  const freshShows = mergedShows
-    .filter((s) => s.datum >= minDate)
-    // `prijs` en `maker` zijn optionele schemavelden die maar een deel van de
-    // theaters vult (prijs: alleen Flint, voor de podiumpas-prijsgrens; maker:
-    // alleen theaters met een apart artiest/gezelschap-element) — hier
-    // centraal op null gezet voor elke andere show, in plaats van dat elke
-    // afzonderlijke scraper-module het zelf moet opnemen.
-    .map((s) => ({ ...s, prijs: s.prijs ?? null, maker: s.maker ?? null }));
-  const purgedCount = mergedShows.length - freshShows.length;
-  if (purgedCount > 0) {
-    console.log(`${purgedCount} verlopen voorstelling(en) verwijderd (datum vóór ${minDate}).`);
-  }
-
-  const output = JSON.stringify(freshShows, null, 2) + '\n';
-  await mkdir(path.dirname(OUTPUT_PATH), { recursive: true });
-  await writeFile(OUTPUT_PATH, output, 'utf-8');
-  await mkdir(path.dirname(PUBLIC_OUTPUT_PATH), { recursive: true });
-  await writeFile(PUBLIC_OUTPUT_PATH, output, 'utf-8');
-  console.log(
-    `\n${allShows.length} voorstellingen van dit run + ${keptShows.length} eerder opgehaalde = ${freshShows.length} totaal weggeschreven naar ${OUTPUT_PATH} (en gekopieerd naar ${PUBLIC_OUTPUT_PATH})`
-  );
 }
 
 main().catch((err) => {

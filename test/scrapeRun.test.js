@@ -1,0 +1,288 @@
+// Tests voor het vangnet in src/lib/scrapeRun.js, met nep-scrapers en
+// tijdelijke bestanden — geen browser, geen netwerk. Draaien: npm test
+
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+
+import { runRefresh } from '../src/lib/scrapeRun.js';
+import { createPoliteWaiter, sleep } from '../src/lib/politeness.js';
+
+const MIN_DATE = '2026-10-01';
+const NOW = new Date('2026-10-01T04:30:00.000Z');
+
+function theater(id) {
+  return { id, naam: id, stad: 'Amsterdam', agendaUrl: `https://${id}.test/agenda` };
+}
+
+function show(theaterId, datum, extra = {}) {
+  return {
+    id: `${theaterId}-${datum}`,
+    titel: `Voorstelling ${datum}`,
+    theaterId,
+    datum,
+    tijd: '20:00',
+    opgehaaldOp: '2026-09-30T04:30:00.000Z',
+    ...extra,
+  };
+}
+
+async function setup({ previousShows, previousStatus } = {}) {
+  const dir = await mkdtemp(path.join(tmpdir(), 'scraperun-'));
+  const paths = {
+    previousShows: path.join(dir, 'public/shows.json'),
+    showsOutputs: [path.join(dir, 'data/shows.json'), path.join(dir, 'public/shows.json')],
+    status: path.join(dir, 'public/scrape-status.json'),
+  };
+  await mkdir(path.join(dir, 'public'), { recursive: true });
+  if (previousShows) await writeFile(paths.previousShows, JSON.stringify(previousShows));
+  if (previousStatus) await writeFile(paths.status, JSON.stringify(previousStatus));
+  return paths;
+}
+
+function fakeDeps({ crawlDelayMs = 0 } = {}) {
+  const closedPages = [];
+  return {
+    closedPages,
+    openPage: async () => {
+      const page = { closed: false, close: async () => { page.closed = true; closedPages.push(page); } };
+      return page;
+    },
+    loadRobots: async () => ({ robotsUrl: 'robots', crawlDelayMs, isAllowed: () => true }),
+    createWaiter: (ms, log, signal) => createPoliteWaiter(ms, log, signal),
+  };
+}
+
+async function run({ paths, theaters, scrapers, deps = fakeDeps(), budgets }) {
+  const annotations = [];
+  const result = await runRefresh({
+    theaters,
+    scrapers,
+    deps,
+    paths,
+    budgets: budgets ?? { theaterMs: () => 5000, totalMs: 60000 },
+    minDate: MIN_DATE,
+    now: () => NOW,
+    log: () => {},
+    annotate: (level, title, message) => annotations.push({ level, title, message }),
+  });
+  const written = JSON.parse(await readFile(paths.showsOutputs[1], 'utf-8'));
+  const writtenStatus = JSON.parse(await readFile(paths.status, 'utf-8'));
+  return { ...result, annotations, written, writtenStatus };
+}
+
+const failing = async () => {
+  throw new Error('selector niet gevonden');
+};
+const empty = async () => [];
+
+test('scraper gooit een error → vorige data van dat theater blijft, verlopen shows eruit', async () => {
+  const paths = await setup({
+    previousShows: [show('a', '2026-09-20'), show('a', '2026-10-05'), show('a', '2026-11-01')],
+  });
+  const { written, status, annotations } = await run({ paths, theaters: [theater('a')], scrapers: { a: failing } });
+
+  assert.deepEqual(written.map((s) => s.datum), ['2026-10-05', '2026-11-01']);
+  assert.equal(written[0].opgehaaldOp, '2026-09-30T04:30:00.000Z', 'oorspronkelijke opgehaaldOp blijft staan');
+  assert.equal(status.theaters.a.status, 'terugval');
+  assert.equal(status.theaters.a.aantal, 2);
+  assert.equal(status.theaters.a.fout, 'exception: selector niet gevonden');
+  assert.equal(annotations.length, 1);
+  assert.match(annotations[0].title, /Terugval a/);
+});
+
+test('scraper geeft [] en vorige keer waren er shows → terugval', async () => {
+  const paths = await setup({ previousShows: [show('a', '2026-10-05')] });
+  const { written, status, annotations } = await run({ paths, theaters: [theater('a')], scrapers: { a: empty } });
+
+  assert.equal(written.length, 1);
+  assert.equal(status.theaters.a.status, 'terugval');
+  assert.match(status.theaters.a.fout, /0 resultaten \(vorige keer 1/);
+  assert.equal(annotations.length, 1);
+});
+
+test('scraper geeft [] en vorige keer ook niets (alleen verlopen) → leeg, geen waarschuwing', async () => {
+  const paths = await setup({ previousShows: [show('a', '2026-09-20')] });
+  const { written, status, annotations } = await run({ paths, theaters: [theater('a')], scrapers: { a: empty } });
+
+  assert.deepEqual(written, []);
+  assert.equal(status.theaters.a.status, 'leeg');
+  assert.equal(status.theaters.a.fout, null);
+  assert.equal(status.theaters.a.laatsteSucces, NOW.toISOString());
+  assert.deepEqual(annotations, []);
+});
+
+test('scraper werkt normaal → nieuwe data, geen terugval, prijs/maker genormaliseerd', async () => {
+  const paths = await setup({ previousShows: [show('a', '2026-10-05', { titel: 'oud' })] });
+  const nieuw = [show('a', '2026-10-06', { titel: 'nieuw', opgehaaldOp: NOW.toISOString() })];
+  const { written, status, annotations } = await run({
+    paths,
+    theaters: [theater('a')],
+    scrapers: { a: async () => nieuw },
+  });
+
+  assert.deepEqual(written.map((s) => s.titel), ['nieuw']);
+  assert.equal(written[0].prijs, null);
+  assert.equal(written[0].maker, null);
+  assert.equal(status.theaters.a.status, 'ok');
+  assert.equal(status.theaters.a.terugvalSinds, null);
+  assert.equal(typeof status.theaters.a.duurSeconden, 'number');
+  assert.deepEqual(annotations, []);
+});
+
+test('andere theaters in dezelfde run blijven onaangetast; niet-gescrapete theaters blijven staan', async () => {
+  const paths = await setup({
+    previousShows: [show('a', '2026-10-05'), show('b', '2026-10-05', { titel: 'oud b' }), show('c', '2026-10-07')],
+  });
+  const { written, status } = await run({
+    paths,
+    theaters: [theater('a'), theater('b')],
+    scrapers: { a: failing, b: async () => [show('b', '2026-10-08', { titel: 'nieuw b' })] },
+  });
+
+  assert.deepEqual(written.filter((s) => s.theaterId === 'b').map((s) => s.titel), ['nieuw b']);
+  assert.equal(written.filter((s) => s.theaterId === 'a').length, 1);
+  assert.equal(written.filter((s) => s.theaterId === 'c').length, 1);
+  assert.equal(status.theaters.a.status, 'terugval');
+  assert.equal(status.theaters.b.status, 'ok');
+});
+
+test('geen vorige shows.json en geen status (eerste run) → geen crash', async () => {
+  const paths = await setup();
+  const { written, status } = await run({
+    paths,
+    theaters: [theater('a'), theater('b'), theater('c')],
+    scrapers: { a: failing, b: empty, c: async () => [show('c', '2026-10-05')] },
+  });
+
+  assert.equal(written.length, 1);
+  assert.equal(status.theaters.a.status, 'fout');
+  assert.equal(status.theaters.a.laatsteSucces, null);
+  assert.equal(status.theaters.a.terugvalSinds, NOW.toISOString());
+  assert.equal(status.theaters.b.status, 'leeg');
+  assert.equal(status.theaters.c.status, 'ok');
+});
+
+test('hangende scraper wordt afgebroken, valt terug, en doet ná de timeout geen requests meer', async () => {
+  const paths = await setup({ previousShows: [show('a', '2026-10-05')] });
+  const requests = [];
+  let stoppedWith = null;
+  // Bouwt net als een echte scraper: vóór elke "request" waitForTurn(). Met
+  // 1000ms crawl-delay valt de deadline (300ms) midden in de sleep.
+  const endless = async ({ waitForTurn }) => {
+    try {
+      for (;;) {
+        await waitForTurn();
+        requests.push(Date.now());
+      }
+    } catch (err) {
+      stoppedWith = err;
+      throw err;
+    }
+  };
+  const deps = fakeDeps({ crawlDelayMs: 1000 });
+  const started = Date.now();
+  const { status } = await run({
+    paths,
+    theaters: [theater('a'), theater('b')],
+    scrapers: { a: endless, b: async () => [show('b', '2026-10-05')] },
+    deps,
+    budgets: { theaterMs: () => 300, totalMs: 60000 },
+  });
+  const elapsed = Date.now() - started;
+
+  assert.ok(elapsed < 1000, `run ging na de deadline meteen door (${elapsed}ms)`);
+  assert.equal(status.theaters.a.status, 'terugval');
+  assert.equal(status.theaters.a.fout, 'timeout na 0.3s');
+  assert.equal(status.theaters.b.status, 'ok', 'volgende theater draaide gewoon');
+  assert.equal(deps.closedPages.length, 2, 'page van het gehangen theater is gesloten');
+  assert.equal(stoppedWith?.name, 'ScrapeTimeoutError', 'waitForTurn gooide en stopte de lus');
+
+  await sleep(1500); // ruim voorbij de volgende crawl-delay-beurt
+  assert.equal(requests.length, 1, 'na de timeout geen enkele request meer');
+});
+
+test('scraper die nooit resolvet (zonder waitForTurn) blokkeert de run niet', async () => {
+  const paths = await setup({ previousShows: [show('a', '2026-10-05')] });
+  const { status } = await run({
+    paths,
+    theaters: [theater('a')],
+    scrapers: { a: () => new Promise(() => {}) },
+    budgets: { theaterMs: () => 100, totalMs: 60000 },
+  });
+  assert.equal(status.theaters.a.status, 'terugval');
+  assert.equal(status.theaters.a.fout, 'timeout na 0.1s');
+});
+
+test('totaalbudget op → theaters die nog niet aan de beurt waren vallen terug', async () => {
+  const paths = await setup({ previousShows: [show('a', '2026-10-05'), show('b', '2026-10-05')] });
+  let bStarted = false;
+  const { written, status } = await run({
+    paths,
+    theaters: [theater('a'), theater('b')],
+    scrapers: {
+      a: () => new Promise(() => {}),
+      b: async () => {
+        bStarted = true;
+        return [];
+      },
+    },
+    budgets: { theaterMs: () => 5000, totalMs: 200 },
+  });
+  assert.equal(status.theaters.a.fout, 'timeout na 0.2s', 'theaterbudget wordt afgekapt op wat er van de run over is');
+  assert.equal(status.theaters.b.status, 'terugval');
+  assert.match(status.theaters.b.fout, /niet gestart: totaalbudget/);
+  assert.equal(bStarted, false);
+  assert.equal(written.length, 2);
+});
+
+test('scherpe daling → alleen een waarschuwing, nieuwe data wordt gebruikt', async () => {
+  const previous = Array.from({ length: 30 }, (_, i) => show('a', `2026-10-${String(i + 2).padStart(2, '0')}`));
+  const paths = await setup({ previousShows: previous });
+  const { written, status, annotations } = await run({
+    paths,
+    theaters: [theater('a')],
+    scrapers: { a: async () => [show('a', '2026-10-05', { titel: 'enige' })] },
+  });
+  assert.deepEqual(written.map((s) => s.titel), ['enige']);
+  assert.equal(status.theaters.a.status, 'ok');
+  assert.match(status.theaters.a.waarschuwing, /scherpe daling: 1 .* vorige keer 30/);
+  assert.equal(annotations.length, 1);
+  assert.match(annotations[0].title, /Scherpe daling/);
+});
+
+test('scrape-status: laatsteSucces en terugvalSinds lopen door over runs', async () => {
+  const paths = await setup({
+    previousShows: [show('a', '2026-10-05'), show('b', '2026-10-05')],
+    previousStatus: {
+      bijgewerktOp: '2026-09-30T04:30:00.000Z',
+      theaters: {
+        a: { status: 'terugval', laatsteSucces: '2026-09-28T04:30:00.000Z', terugvalSinds: '2026-09-29T04:30:00.000Z' },
+        b: { status: 'terugval', laatsteSucces: '2026-09-28T04:30:00.000Z', terugvalSinds: '2026-09-29T04:30:00.000Z' },
+        z: { status: 'ok', laatsteSucces: '2026-09-30T04:30:00.000Z' },
+      },
+    },
+  });
+  const { writtenStatus } = await run({
+    paths,
+    theaters: [theater('a'), theater('b')],
+    scrapers: { a: failing, b: async () => [show('b', '2026-10-06')] },
+  });
+  assert.equal(writtenStatus.bijgewerktOp, NOW.toISOString());
+  assert.equal(writtenStatus.theaters.a.laatsteSucces, '2026-09-28T04:30:00.000Z');
+  assert.equal(writtenStatus.theaters.a.terugvalSinds, '2026-09-29T04:30:00.000Z');
+  assert.equal(writtenStatus.theaters.b.status, 'ok');
+  assert.equal(writtenStatus.theaters.b.laatsteSucces, NOW.toISOString());
+  assert.equal(writtenStatus.theaters.b.terugvalSinds, null);
+  assert.equal(writtenStatus.theaters.z.status, 'ok', 'status van niet-gescrapete theaters blijft staan');
+});
+
+test('shows.json blijft een platte array, identiek in beide outputs', async () => {
+  const paths = await setup({ previousShows: [show('a', '2026-10-05')] });
+  await run({ paths, theaters: [theater('a')], scrapers: { a: failing } });
+  const [data, pub] = await Promise.all(paths.showsOutputs.map((f) => readFile(f, 'utf-8')));
+  assert.equal(data, pub);
+  assert.ok(Array.isArray(JSON.parse(pub)));
+});

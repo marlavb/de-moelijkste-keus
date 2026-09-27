@@ -31,15 +31,19 @@ jobs:
       - name: Playwright's Chromium installeren
         run: npx playwright install --with-deps chromium
 
-      - name: Agenda's scrapen (DeLaMar, Bellevue, Meervaart)
+      # Faalt één theater (exception, timeout, of onverwacht 0 resultaten),
+      # dan valt src/index.js terug op de vorige data van dat theater en
+      # schrijft het de uitkomst per theater naar public/data/scrape-status.json.
+      # Deze stap zelf slaagt dan gewoon, zodat de data altijd wordt bijgewerkt.
+      - name: Agenda's scrapen
         run: node src/index.js
 
-      - name: public/data/shows.json committen en pushen
+      - name: public/data/shows.json en scrape-status.json committen en pushen
         id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/data/shows.json
+          git add public/data/shows.json public/data/scrape-status.json
           if git diff --cached --quiet; then
             echo "Geen wijzigingen in de data — niets te committen."
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -58,3 +62,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run deploy.yml
+
+      # Bewust de allerlaatste stap, ná commit en deploy: de data is dan al
+      # bijgewerkt, maar de run wordt rood (en GitHub mailt) als er een theater
+      # is teruggevallen op oude data of zonder vangnet faalde. Een "scherpe
+      # daling"-waarschuwing of een echt lege agenda maakt de run niet rood.
+      - name: Controleren op teruggevallen scrapers
+        run: |
+          failed=$(jq -r '.theaters | to_entries[] | select(.value.status == "terugval" or .value.status == "fout") | "\(.key): \(.value.status) — \(.value.fout)"' public/data/scrape-status.json)
+          if [ -n "$failed" ]; then
+            echo "::error title=Scraper(s) gefaald::$(echo "$failed" | wc -l | tr -d ' ') theater(s) teruggevallen of gefaald, zie hieronder en public/data/scrape-status.json"
+            echo "$failed"
+            exit 1
+          fi
+          echo "Alle theaters ok of leeg."

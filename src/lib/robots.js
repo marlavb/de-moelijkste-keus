@@ -93,7 +93,7 @@ const AMBIGUOUS_REDIRECT_CRAWL_DELAY_MS = 5000;
  * Haalt robots.txt op voor een site en geeft een klein object terug waarmee
  * je paden kunt checken en de opgegeven crawl-delay kunt opvragen.
  */
-export async function loadRobotsRules(baseUrl, userAgent, userAgentToken) {
+export async function loadRobotsRules(baseUrl, userAgent, userAgentToken, { signal } = {}) {
   const robotsUrl = new URL('/robots.txt', baseUrl).toString();
   let groups = [];
   let ambiguousRedirect = false;
@@ -107,7 +107,7 @@ export async function loadRobotsRules(baseUrl, userAgent, userAgentToken) {
   // onrechte de opgegeven crawl-delay laten vallen.
   for (let attempt = 1; attempt <= ROBOTS_FETCH_ATTEMPTS; attempt++) {
     try {
-      const res = await fetch(robotsUrl, { headers: { 'User-Agent': userAgent } });
+      const res = await fetch(robotsUrl, { headers: { 'User-Agent': userAgent }, signal });
       if (res.ok) {
         if (new URL(res.url).pathname === '/robots.txt') {
           groups = parseRobotsText(await res.text());

@@ -58,7 +58,7 @@ function classifyBeschikbaarheid(bookable, buttonText) {
  *   voorstellingen"). Daarom hier gewoon theater.podiumpas, geen per-show
  *   berekening zoals bij Bostheater.
  */
-export async function scrapeHogeWoerd({ page, theater, robots, waitForTurn, log }) {
+export async function scrapeHogeWoerd({ page, theater, robots, waitForTurn, log, signal }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
     return [];
@@ -72,7 +72,7 @@ export async function scrapeHogeWoerd({ page, theater, robots, waitForTurn, log 
   const sitemapUrl = new URL(SITEMAP_PATH, theater.baseUrl).toString();
   let detailUrls = [];
   try {
-    const res = await fetch(sitemapUrl, { headers: { 'User-Agent': USER_AGENT } });
+    const res = await fetch(sitemapUrl, { headers: { 'User-Agent': USER_AGENT }, signal });
     const xml = await res.text();
     const locs = Array.from(xml.matchAll(/<loc>([^<]+)<\/loc>/g)).map((m) => m[1]);
     detailUrls = locs.filter((u) => /\/agenda\/[^/]+$/.test(u) && !u.endsWith('/agenda/koop-ticket'));

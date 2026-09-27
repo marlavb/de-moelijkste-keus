@@ -38,8 +38,35 @@ node src/index.js --only=meervaart
 node src/index.js --only=delamar,meervaart
 ```
 
-Elke run vervangt alleen de entries van de gescrapete theater(s) in
-`data/shows.json` — de rest blijft staan.
+Elke run vervangt alleen de entries van de gescrapete theater(s) — de rest
+wordt overgenomen uit `public/data/shows.json` (de getrackte, laatst
+gepubliceerde data) en blijft dus staan. `data/shows.json` is alleen een
+lokale, ge-gitignorede kopie van de output; daar wordt niet uit gelezen.
+
+### Vangnet bij falende scrapers
+
+Faalt een theater volledig, dan valt de run terug op de vorige
+voorstellingen van alléén dat theater (uit `public/data/shows.json`, na
+dezelfde purge van verlopen voorstellingen), in plaats van het leeg te
+overschrijven. Als falen telt:
+
+- een exception in de scraper;
+- een timeout: elk theater heeft een tijdbudget (standaard 10 min,
+  Bellevue 40 min, per theater aan te passen met `budgetMinuten` in
+  `src/lib/config.js`), en de hele run een totaalbudget van 75 min —
+  theaters die dan nog niet aan de beurt waren vallen ook terug;
+- 0 resultaten terwijl er vorige keer nog komende voorstellingen waren.
+
+Een daling tot onder 30% van het vorige aantal (bij minstens 20) geeft
+alleen een waarschuwing; de nieuwe data wordt dan gewoon gebruikt.
+
+Per theater komt de uitkomst in `public/data/scrape-status.json`
+(`ok` / `leeg` / `terugval` / `fout`, aantal, duur, laatste succesvolle
+scrape, sinds wanneer teruggevallen, foutmelding). In GitHub Actions
+verschijnt elke terugval ook als waarschuwing in de run-samenvatting, en
+wordt de run na commit en deploy rood (met mail) bij `terugval` of `fout`.
+
+Tests (nep-scrapers, geen netwerk): `npm test`.
 
 ### Hoe lang duurt het?
 
@@ -123,9 +150,12 @@ bouwen — gewoon de pagina verversen.
   Elke site heeft een andere structuur (zie de comments bovenaan elk
   bestand voor wat er per site is uitgezocht), maar levert allemaal
   hetzelfde genormaliseerde schema op.
-- `src/index.js` — CLI-orchestratie: leest robots.txt, start een browser,
-  roept de juiste scraper-module(s) aan, en merget het resultaat in
-  `data/shows.json` (en kopieert dat naar `public/data/shows.json`).
+- `src/lib/scrapeRun.js` — de gedeelde run-logica: elk theater binnen zijn
+  tijdbudget draaien (afbreken via een AbortSignal dat `waitForTurn()` vóór
+  elke request controleert), bij falen terugvallen op de vorige data,
+  purgen/normaliseren en `shows.json` + `scrape-status.json` wegschrijven.
+- `src/index.js` — CLI-orchestratie: start een browser en geeft theaters,
+  scrapers, paden en budgetten door aan `scrapeRun.js`.
 
 Alle pagina's worden opgehaald met Playwright (Chromium) en een duidelijke,
 herkenbare User-Agent string, zodat theaters kunnen zien wie/wat er langskomt.
