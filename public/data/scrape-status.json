@@ -1,0 +1,15 @@
+{
+  "bijgewerktOp": "2026-09-27T09:33:13.697Z",
+  "theaters": {
+    "ita": {
+      "status": "terugval",
+      "aantal": 293,
+      "vorigAantal": 0,
+      "duurSeconden": 0,
+      "laatsteSucces": "2026-09-20T09:35:50.161Z",
+      "terugvalSinds": "2026-09-27T09:33:13.697Z",
+      "fout": "handmatig hersteld uit shows.json van 20 sep: scraper gaf op 27 sep stil 0 resultaten",
+      "waarschuwing": null
+    }
+  }
+}
