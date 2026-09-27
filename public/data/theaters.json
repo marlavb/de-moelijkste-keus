@@ -43,7 +43,8 @@
     "amstelveen": {
       "naam": "Schouwburg Amstelveen",
       "stad": "Amstelveen",
-      "podiumpas": true
+      "podiumpas": true,
+      "melding": "Tijdelijk gesloten wegens verbouwing (heropening december 2027). De voorstellingen staan bij Theater De Landing."
     },
     "stadsschouwburgutrecht": {
       "naam": "Stadsschouwburg Utrecht",
@@ -121,7 +122,7 @@
     "pleintheater": {
       "naam": "Plein Theater",
       "stad": "Amsterdam",
-      "podiumpas": true
+      "podiumpas": false
     },
     "karavaan": {
       "naam": "Karavaan - Theater de Drukkerij",
