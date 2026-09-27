@@ -120,6 +120,8 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log }
   // Twee kaarten met dezelfde detailpagina zouden anders elke voorstelling
   // dubbel opleveren (met een "-2"-id-suffix van buildId).
   const visitedDetailUrls = new Set();
+  let andereLocatie = 0;
+  let besloten = 0;
 
   for (const card of cards) {
     if (!card.titel || !card.detailHref) continue;
@@ -146,7 +148,8 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log }
           // <span>/<button> (bv. "Geweest", "binnenkort") — pak gewoon de
           // volledige tekst, ongeacht het element-type.
           const statusTekst = li.querySelector('.buttonBox')?.textContent.trim().replace(/\s+/g, ' ') ?? null;
-          return { dagTekst, tijdTekst, href, statusTekst };
+          const venue = li.querySelector('.locationBox .venue')?.textContent.trim() ?? null;
+          return { dagTekst, tijdTekst, href, statusTekst, venue };
         });
       });
     } catch (err) {
@@ -164,6 +167,23 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log }
       const datum = parseDay(sub.dagTekst);
       if (!datum) {
         log(`kon datum-label niet parsen: "${sub.dagTekst}" (${card.titel}) — overgeslagen.`);
+        continue;
+      }
+      // Tournee: Bellevue markeert ook speeldata elders als "in-own-location",
+      // maar zet dan "op tournee" als zaal (met de echte plek erboven, bv.
+      // "Zaal 3 | Het Nationale Theater | Den Haag", en een "kaarten via"-link
+      // naar dat theater). Besloten voorstellingen zijn niet publiek te
+      // boeken. Pas ná parseDay, voor de jaar-rollover.
+      if (/tournee/i.test(sub.venue ?? '')) {
+        andereLocatie++;
+        continue;
+      }
+      const extern = sub.href && /^https?:/.test(sub.href) && !new URL(sub.href).hostname.endsWith('theaterbellevue.nl');
+      if (extern && /kaarten via/i.test(sub.statusTekst ?? '')) {
+        log(`let op: "kaarten via" naar ${new URL(sub.href).hostname} in zaal "${sub.venue}" (${card.titel}, ${datum}) — meegenomen.`);
+      }
+      if (/^besloten$/i.test(sub.statusTekst?.trim() ?? '')) {
+        besloten++;
         continue;
       }
       const tijd = extractTime(sub.tijdTekst);
@@ -193,5 +213,6 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log }
     }
   }
 
+  log(`${andereLocatie} speeldatum(s) op tournee en ${besloten} besloten voorstelling(en) overgeslagen.`);
   return shows;
 }

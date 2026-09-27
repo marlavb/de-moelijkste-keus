@@ -91,6 +91,16 @@ export async function scrapeKleineKomedie({ page, theater, robots, waitForTurn, 
                 tijdTekst,
                 ctrlText: ctrl?.textContent.trim().replace(/\s+/g, ' ') ?? null,
                 href: ctrl?.getAttribute('href') ?? null,
+                // Tournee/andere zaal: De Kleine Komedie markeert élke rij met
+                // in-other-location (ook eigen voorstellingen), dus die class
+                // zegt hier niets. Speeldata elders herken je aan een
+                // "Kaarten via"-knop naar een andere site (bv. KIEM in Klein
+                // Bellevue → theaterbellevue.nl).
+                andereLocatie: (() => {
+                  const href = ctrl?.getAttribute('href') ?? '';
+                  if (!/^https?:/.test(href)) return false;
+                  return !new URL(href).hostname.endsWith(location.hostname.replace(/^www\./, ''));
+                })(),
               });
             }
           } else {
@@ -137,6 +147,7 @@ export async function scrapeKleineKomedie({ page, theater, robots, waitForTurn, 
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();
   const shows = [];
+  let andereLocatie = 0;
 
   for (const card of cards) {
     if (!card.titel || card.rows.length === 0) continue;
@@ -151,6 +162,12 @@ export async function scrapeKleineKomedie({ page, theater, robots, waitForTurn, 
       const datum = parseDay(row.dagTekst);
       if (!datum) {
         log(`kon datum-label niet parsen: "${row.dagTekst}" (${card.titel}) — overgeslagen.`);
+        continue;
+      }
+      // Pas ná parseDay overslaan, zodat de jaar-rollover dezelfde volgorde
+      // van datums blijft zien.
+      if (row.andereLocatie) {
+        andereLocatie++;
         continue;
       }
       const tijd = extractTime(row.tijdTekst);
@@ -177,5 +194,6 @@ export async function scrapeKleineKomedie({ page, theater, robots, waitForTurn, 
     }
   }
 
+  if (andereLocatie > 0) log(`${andereLocatie} speeldatum(s) op een andere locatie (tournee) overgeslagen.`);
   return shows;
 }

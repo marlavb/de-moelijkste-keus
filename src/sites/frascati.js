@@ -101,6 +101,9 @@ export async function scrapeFrascati({ page, theater, robots, waitForTurn, log }
                 tijdTekst,
                 ctrlText: ctrl?.textContent.trim().replace(/\s+/g, ' ') ?? null,
                 href: ctrl?.getAttribute('href') ?? null,
+                // Tournee/andere zaal ("Verkoop elders", "Kaarten via"): het
+                // platform markeert die rij zelf met in-other-location.
+                andereLocatie: li.classList.contains('in-other-location'),
               });
             }
           } else {
@@ -147,6 +150,7 @@ export async function scrapeFrascati({ page, theater, robots, waitForTurn, log }
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();
   const shows = [];
+  let andereLocatie = 0;
 
   for (const card of cards) {
     if (!card.titel || card.rows.length === 0) continue;
@@ -161,6 +165,12 @@ export async function scrapeFrascati({ page, theater, robots, waitForTurn, log }
       const datum = parseDay(row.dagTekst);
       if (!datum) {
         log(`kon datum-label niet parsen: "${row.dagTekst}" (${card.titel}) — overgeslagen.`);
+        continue;
+      }
+      // Pas ná parseDay overslaan, zodat de jaar-rollover dezelfde volgorde
+      // van datums blijft zien.
+      if (row.andereLocatie) {
+        andereLocatie++;
         continue;
       }
       const tijd = extractTime(row.tijdTekst);
@@ -187,5 +197,6 @@ export async function scrapeFrascati({ page, theater, robots, waitForTurn, log }
     }
   }
 
+  if (andereLocatie > 0) log(`${andereLocatie} speeldatum(s) op een andere locatie (tournee) overgeslagen.`);
   return shows;
 }
