@@ -263,4 +263,55 @@ export const THEATERS = [
     agendaUrl: 'https://kunstlinie.nl/programma/',
     podiumpas: true,
   },
+  // Zuid-Holland. Namen letterlijk zoals op podiumpas.nl/waar-te-besteden.
+  // De drie HNT-zalen en de twee TR-locaties staan daar als losse locaties;
+  // ze delen per groep één scrape (zie createGroupScraper in lib/peppered.js).
+  {
+    id: 'koninklijkeschouwburg',
+    naam: 'Koninklijke Schouwburg',
+    stad: 'Den Haag',
+    baseUrl: 'https://www.hnt.nl',
+    agendaUrl: 'https://www.hnt.nl/nl/voorstellingen',
+    podiumpas: true,
+  },
+  {
+    id: 'theateraanhetspui',
+    naam: 'Theater aan het Spui',
+    stad: 'Den Haag',
+    baseUrl: 'https://www.hnt.nl',
+    agendaUrl: 'https://www.hnt.nl/nl/voorstellingen',
+    podiumpas: true,
+  },
+  {
+    id: 'zaal3',
+    naam: 'Zaal 3',
+    stad: 'Den Haag',
+    baseUrl: 'https://www.hnt.nl',
+    agendaUrl: 'https://www.hnt.nl/nl/voorstellingen',
+    podiumpas: true,
+  },
+  {
+    id: 'tr25',
+    naam: 'Theater Rotterdam (TR25 Schouwburg)',
+    stad: 'Rotterdam',
+    baseUrl: 'https://www.theaterrotterdam.nl',
+    agendaUrl: 'https://www.theaterrotterdam.nl/agenda',
+    podiumpas: true,
+  },
+  {
+    id: 'tr8',
+    naam: 'Theater Rotterdam (TR8 William Boothlaan)',
+    stad: 'Rotterdam',
+    baseUrl: 'https://www.theaterrotterdam.nl',
+    agendaUrl: 'https://www.theaterrotterdam.nl/agenda',
+    podiumpas: true,
+  },
+  {
+    id: 'koningshof',
+    naam: 'Theater Koningshof',
+    stad: 'Maassluis',
+    baseUrl: 'https://www.theaterkoningshof.nl',
+    agendaUrl: 'https://www.theaterkoningshof.nl/agenda',
+    podiumpas: true,
+  },
 ];

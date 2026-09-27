@@ -92,7 +92,7 @@ const STORAGE_KEYS = {
 // provincie-koppen; een stad die niet in de map staat belandt in de
 // PROVINCE_FALLBACK-sectie zodat een nieuwe stad nooit stilzwijgend
 // verdwijnt.
-const PROVINCE_ORDER = ['Noord-Holland', 'Utrecht', 'Flevoland'];
+const PROVINCE_ORDER = ['Noord-Holland', 'Zuid-Holland', 'Utrecht', 'Flevoland'];
 const PROVINCE_FALLBACK = 'Overig';
 const PROVINCE_BY_CITY = {
   Amsterdam: 'Noord-Holland',
@@ -105,6 +105,9 @@ const PROVINCE_BY_CITY = {
   Houten: 'Utrecht',
   Amersfoort: 'Utrecht',
   Almere: 'Flevoland',
+  'Den Haag': 'Zuid-Holland',
+  Rotterdam: 'Zuid-Holland',
+  Maassluis: 'Zuid-Holland',
 };
 
 // Desktop-sidebar accordeon-secties (Stad/Theater/Genre) — standaard allemaal

@@ -73,58 +73,98 @@ function isPathAllowed(group, path) {
 
 const ROBOTS_FETCH_ATTEMPTS = 2;
 const ROBOTS_FETCH_RETRY_DELAY_MS = 1500;
+const MAX_REDIRECTS = 6;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// Voorzichtige default-delay voor het geval /robots.txt wél een 2xx
-// oplevert, maar via een redirect ergens anders landt (bv. een inlogpagina
-// achter een CMS-routeprobleem, geobserveerd bij Theater De Krakeling) —
-// dan hebben we de ECHTE robots.txt-inhoud niet gezien en weten we dus
-// niet of er een Crawl-delay bedoeld was. Dat is een andere situatie dan
-// een bevestigde 404 (zoals bij Amstelveen), waar we wél zeker weten dat
-// er geen regels zijn — die blijft op 0ms staan. Hier nemen we liever het
-// zekere voor het onzekere, in lijn met de crawl-delay die de meeste
-// andere Amsterdamse theaters al hanteren.
-const AMBIGUOUS_REDIRECT_CRAWL_DELAY_MS = 5000;
+// Voorzichtige default-delay voor als we de ECHTE robots.txt-inhoud niet
+// hebben kunnen zien, en dus niet weten of er een Crawl-delay bedoeld was:
+// - /robots.txt geeft wél een 2xx, maar via een redirect ergens anders
+//   (bv. een inlogpagina achter een CMS-routeprobleem, bij De Krakeling);
+// - een netwerkfout of redirectlus, ook na de retry.
+// Dat is iets anders dan een bevestigde 404 (zoals bij Amstelveen), waar we
+// wél zeker weten dat er geen regels zijn — die blijft op 0ms staan. Hier
+// nemen we liever het zekere voor het onzekere, in lijn met de crawl-delay
+// die de meeste theaters op dit platform hanteren.
+const UNKNOWN_ROBOTS_CRAWL_DELAY_MS = 5000;
+
+function cookiePairs(res) {
+  const setCookies = res.headers.getSetCookie?.() ?? [];
+  return setCookies.map((c) => c.split(';')[0]).filter(Boolean);
+}
+
+/**
+ * fetch() met handmatig gevolgde redirects en een cookie-jar voor de duur
+ * van dit ene verzoek. Nodig voor sites achter een BunnyCDN-wachtrij
+ * ("/csq/", bv. De Kleine Komedie, Muziekgebouw, De Omval, Isala): die
+ * sturen je met een cookie naar de wachtrij en daarna met een token-cookie
+ * terug. Node's fetch bewaart geen cookies tussen redirects en blijft dus
+ * rondjes draaien ("redirect count exceeded"); een browser niet.
+ */
+export async function fetchFollowingCookies(url, { headers = {}, signal, fetchImpl = fetch } = {}) {
+  const jar = new Map();
+  let current = url;
+  for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
+    const cookie = [...jar].map(([k, v]) => `${k}=${v}`).join('; ');
+    const res = await fetchImpl(current, {
+      headers: { ...headers, ...(cookie ? { Cookie: cookie } : {}) },
+      redirect: 'manual',
+      signal,
+    });
+    for (const pair of cookiePairs(res)) {
+      const i = pair.indexOf('=');
+      if (i > 0) jar.set(pair.slice(0, i).trim(), pair.slice(i + 1));
+    }
+    const location = res.headers.get('location');
+    if (res.status >= 300 && res.status < 400 && location) {
+      current = new URL(location, current).toString();
+      continue;
+    }
+    return { res, finalUrl: current };
+  }
+  throw new Error(`redirectlus (meer dan ${MAX_REDIRECTS} redirects)`);
+}
 
 /**
  * Haalt robots.txt op voor een site en geeft een klein object terug waarmee
  * je paden kunt checken en de opgegeven crawl-delay kunt opvragen.
+ * `log` (optioneel) meldt wanneer de behoudende terugval gebruikt wordt.
  */
-export async function loadRobotsRules(baseUrl, userAgent, userAgentToken, { signal } = {}) {
+export async function loadRobotsRules(baseUrl, userAgent, userAgentToken, { signal, log, fetchImpl } = {}) {
   const robotsUrl = new URL('/robots.txt', baseUrl).toString();
   let groups = [];
-  let ambiguousRedirect = false;
+  let unknownReason = null;
 
   // Eén retry op een netwerkfout (niet op een 4xx/5xx-statuscode): een
   // ontbrekend robots.txt-bestand interpreteren we als "alles toegestaan",
   // maar een verbindingsfout is geen betrouwbaar signaal daarvoor — die kan
   // net zo goed een voorbijgaande hapering zijn (in de praktijk gezien: een
   // connect-timeout naar één specifieke site die bij een tweede poging
-  // meteen weer normaal verbond). Zonder retry zou zo'n hapering ten
-  // onrechte de opgegeven crawl-delay laten vallen.
+  // meteen weer normaal verbond).
   for (let attempt = 1; attempt <= ROBOTS_FETCH_ATTEMPTS; attempt++) {
     try {
-      const res = await fetch(robotsUrl, { headers: { 'User-Agent': userAgent }, signal });
+      const { res, finalUrl } = await fetchFollowingCookies(robotsUrl, {
+        headers: { 'User-Agent': userAgent },
+        signal,
+        fetchImpl,
+      });
       if (res.ok) {
-        if (new URL(res.url).pathname === '/robots.txt') {
+        if (new URL(finalUrl).pathname === '/robots.txt') {
           groups = parseRobotsText(await res.text());
         } else {
-          // fetch() volgt redirects automatisch; als we na afloop niet meer
-          // op /robots.txt staan, hebben we iets anders binnengekregen (een
-          // inlogpagina, een generieke foutpagina, etc.) — dat NIET als
-          // robots.txt-tekst parsen, en NIET stilzwijgend als "geen
-          // robots.txt" behandelen.
-          ambiguousRedirect = true;
+          // Na de redirects staan we niet meer op /robots.txt: we hebben iets
+          // anders binnengekregen (een inlogpagina, een foutpagina, …) — dat
+          // NIET als robots.txt parsen, en NIET als "geen robots.txt" zien.
+          unknownReason = `redirect naar ${new URL(finalUrl).pathname}`;
         }
       }
       break;
-    } catch {
+    } catch (err) {
+      if (signal?.aborted) throw signal.reason;
       if (attempt === ROBOTS_FETCH_ATTEMPTS) {
-        // Nog steeds onbereikbaar na de retry -> conservatief interpreteren
-        // we dat als "alles toegestaan".
+        unknownReason = err.message;
         break;
       }
       await sleep(ROBOTS_FETCH_RETRY_DELAY_MS);
@@ -134,9 +174,12 @@ export async function loadRobotsRules(baseUrl, userAgent, userAgentToken, { sign
   const group = selectGroup(groups, userAgentToken);
   const crawlDelayMs = group?.crawlDelay
     ? group.crawlDelay * 1000
-    : ambiguousRedirect
-      ? AMBIGUOUS_REDIRECT_CRAWL_DELAY_MS
+    : unknownReason
+      ? UNKNOWN_ROBOTS_CRAWL_DELAY_MS
       : 0;
+  if (unknownReason) {
+    log?.(`robots.txt niet leesbaar (${unknownReason}) — behoudend ${UNKNOWN_ROBOTS_CRAWL_DELAY_MS}ms crawl-delay aangehouden.`);
+  }
 
   return {
     robotsUrl,

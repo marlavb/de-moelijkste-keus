@@ -120,7 +120,7 @@ async function runWithDeadline({ theater, scraper, deps, budgetMs, log }) {
   try {
     page = await deps.openPage();
     const work = (async () => {
-      const robots = await deps.loadRobots(theater, signal);
+      const robots = await deps.loadRobots(theater, signal, scraperLog);
       signal.throwIfAborted();
       scraperLog(`robots.txt gelezen (${robots.robotsUrl}), crawl-delay = ${robots.crawlDelayMs}ms`);
       const waitForTurn = deps.createWaiter(robots.crawlDelayMs, scraperLog, signal);

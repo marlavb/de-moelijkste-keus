@@ -41,6 +41,9 @@ import { scrapeFlint } from './sites/flint.js';
 import { scrapeAanDeSlinger } from './sites/aandeslinger.js';
 import { scrapeCorrosia } from './sites/corrosia.js';
 import { scrapeKunstlinie } from './sites/kunstlinie.js';
+import { scrapeHnt } from './sites/hnt.js';
+import { scrapeTheaterRotterdam } from './sites/theaterrotterdam.js';
+import { scrapeKoningshof } from './sites/koningshof.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -73,6 +76,12 @@ const SCRAPERS = {
   aandeslinger: scrapeAanDeSlinger,
   corrosia: scrapeCorrosia,
   kunstlinie: scrapeKunstlinie,
+  koninklijkeschouwburg: scrapeHnt,
+  theateraanhetspui: scrapeHnt,
+  zaal3: scrapeHnt,
+  tr25: scrapeTheaterRotterdam,
+  tr8: scrapeTheaterRotterdam,
+  koningshof: scrapeKoningshof,
 };
 
 // Welk bestand waarvoor dient:
@@ -110,8 +119,8 @@ async function main() {
       scrapers: SCRAPERS,
       deps: {
         openPage: () => browser.newPage({ userAgent: USER_AGENT }),
-        loadRobots: (theater, signal) =>
-          loadRobotsRules(theater.baseUrl, USER_AGENT, USER_AGENT_TOKEN, { signal }),
+        loadRobots: (theater, signal, log) =>
+          loadRobotsRules(theater.baseUrl, USER_AGENT, USER_AGENT_TOKEN, { signal, log }),
         createWaiter: createPoliteWaiter,
       },
       paths: {
