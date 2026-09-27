@@ -6,6 +6,13 @@ on:
     - cron: '0 4 * * *'
   workflow_dispatch: {}
 
+# Nooit twee refreshes tegelijk (bv. een handmatige run terwijl de geplande
+# nog loopt): de tweede zou anders bij de push falen op een verouderde
+# checkout. Een lopende run wordt niet afgebroken; de nieuwe wacht.
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
 permissions:
   contents: write
   # Nodig om aan het eind de deploy-workflow te triggeren (zie onderaan).

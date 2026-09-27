@@ -36,6 +36,14 @@ async function writeJson(file, value) {
   await writeFile(file, JSON.stringify(value, null, 2) + '\n', 'utf-8');
 }
 
+// scrape-status.json wordt mee gepubliceerd: alleen de eerste regel van de
+// foutmelding, ingekort — geen Playwright-"Call log", geen stacktrace.
+const MAX_FOUT_LENGTH = 200;
+function summarizeError(error) {
+  const firstLine = String(error?.message ?? error).split('\n')[0].trim();
+  return firstLine.length > MAX_FOUT_LENGTH ? `${firstLine.slice(0, MAX_FOUT_LENGTH - 1)}…` : firstLine;
+}
+
 function upcomingShowsOf(shows, theaterId, minDate) {
   return shows.filter((s) => s.theaterId === theaterId && s.datum >= minDate);
 }
@@ -55,7 +63,7 @@ export function evaluateOutcome({ theaterId, shows, error, previousShows, minDat
   const vorigAantal = previous.length;
 
   if (error) {
-    const fout = error instanceof ScrapeTimeoutError ? error.message : `exception: ${error.message}`;
+    const fout = error instanceof ScrapeTimeoutError ? error.message : `exception: ${summarizeError(error)}`;
     if (vorigAantal > 0) return { status: 'terugval', shows: previous, fout, vorigAantal };
     return { status: 'fout', shows: [], fout, vorigAantal };
   }

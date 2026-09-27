@@ -286,3 +286,21 @@ test('shows.json blijft een platte array, identiek in beide outputs', async () =
   assert.equal(data, pub);
   assert.ok(Array.isArray(JSON.parse(pub)));
 });
+
+test('fout in scrape-status bevat alleen de eerste regel van de melding, ingekort', async () => {
+  const paths = await setup({ previousShows: [show('a', '2026-10-05')] });
+  const playwrightLike = async () => {
+    throw new Error(`page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to "https://a.test/", waiting until "load"`);
+  };
+  const long = async () => {
+    throw new Error('x'.repeat(500));
+  };
+  const { status } = await run({
+    paths,
+    theaters: [theater('a'), theater('b')],
+    scrapers: { a: playwrightLike, b: long },
+  });
+  assert.equal(status.theaters.a.fout, 'exception: page.goto: Timeout 30000ms exceeded.');
+  assert.ok(status.theaters.b.fout.length <= 'exception: '.length + 200);
+  assert.ok(!/\n|at .*\.js/.test(status.theaters.a.fout + status.theaters.b.fout));
+});
