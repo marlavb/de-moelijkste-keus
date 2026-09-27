@@ -6,6 +6,7 @@ import {
   createRowDateResolver,
   classifyPepperedButton,
   logUnknownButtons,
+  dedupeShows,
   createGroupScraper,
 } from '../lib/peppered.js';
 
@@ -96,7 +97,7 @@ async function scrapeAllTheaterRotterdam({ page, theater, robots, waitForTurn, l
     log(`overgeslagen (niet TR25/TR8): ${skippedList.length} locaties, o.a. ${skippedList.slice(0, 6).map(([k, n]) => `${k} (${n})`).join(', ')}`);
   }
   logUnknownButtons(log, shows, rowsByShowId);
-  return shows;
+  return dedupeShows(shows);
 }
 
 export const scrapeTheaterRotterdam = createGroupScraper(scrapeAllTheaterRotterdam);

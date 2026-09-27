@@ -44,6 +44,9 @@ import { scrapeKunstlinie } from './sites/kunstlinie.js';
 import { scrapeHnt } from './sites/hnt.js';
 import { scrapeTheaterRotterdam } from './sites/theaterrotterdam.js';
 import { scrapeKoningshof } from './sites/koningshof.js';
+import { scrapeMaas } from './sites/maas.js';
+import { scrapeInsBlau } from './sites/insblau.js';
+import { scrapeStadsgehoorzaal } from './sites/stadsgehoorzaal.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -82,6 +85,9 @@ const SCRAPERS = {
   tr25: scrapeTheaterRotterdam,
   tr8: scrapeTheaterRotterdam,
   koningshof: scrapeKoningshof,
+  maas: scrapeMaas,
+  insblau: scrapeInsBlau,
+  stadsgehoorzaal: scrapeStadsgehoorzaal,
 };
 
 // Welk bestand waarvoor dient:

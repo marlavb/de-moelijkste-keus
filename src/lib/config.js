@@ -314,4 +314,28 @@ export const THEATERS = [
     agendaUrl: 'https://www.theaterkoningshof.nl/agenda',
     podiumpas: true,
   },
+  {
+    id: 'maas',
+    naam: 'Maas theater en dans',
+    stad: 'Rotterdam',
+    baseUrl: 'https://www.maastd.nl',
+    agendaUrl: 'https://www.maastd.nl/nl/agenda/',
+    podiumpas: true,
+  },
+  {
+    id: 'insblau',
+    naam: 'Theater Ins Blau',
+    stad: 'Leiden',
+    baseUrl: 'https://theaterinsblau.nl',
+    agendaUrl: 'https://theaterinsblau.nl/programma',
+    podiumpas: true,
+  },
+  {
+    id: 'stadsgehoorzaal',
+    naam: 'Stadsgehoorzaal',
+    stad: 'Vlaardingen',
+    baseUrl: 'https://stadsgehoorzaal.nl',
+    agendaUrl: 'https://stadsgehoorzaal.nl/programma',
+    podiumpas: true,
+  },
 ];

@@ -1,6 +1,6 @@
 import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList, normalizeGenre } from '../lib/genre.js';
-import { scrapePepperedListing, createRowDateResolver, classifyPepperedButton, logUnknownButtons } from '../lib/peppered.js';
+import { scrapePepperedListing, createRowDateResolver, classifyPepperedButton, logUnknownButtons, dedupeShows } from '../lib/peppered.js';
 
 const AGENDA_PATH = '/agenda';
 
@@ -73,5 +73,5 @@ export async function scrapeKoningshof({ page, theater, robots, waitForTurn, log
   const films = shows.filter((s) => !s.podiumpas).length;
   log(`${shows.length} voorstellingen, waarvan ${films} film (podiumpas: false)`);
   logUnknownButtons(log, shows, rowsByShowId);
-  return shows;
+  return dedupeShows(shows);
 }

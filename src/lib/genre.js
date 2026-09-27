@@ -148,6 +148,11 @@ const GENRE_MAP = {
   urban: 'Overig',
   'zaal x': 'Overig', // Kunstlinie's eigen zaal-/programmastrand-label, geen genre op zich
   'externe programmering': 'Overig', // gastprogrammering, geen genre op zich
+  // Zuid-Holland
+  danstheater: 'Dans', // Maas theater en dans
+  'dans/beweging': 'Dans', // Theater Ins Blau
+  opera: 'Muziektheater', // zelfde keuze als 'opera/operette'
+  tribute: 'Muziek & Concert', // tributebands (Stadsgehoorzaal)
 };
 
 // Samengestelde labels komen in allerlei varianten voor ("jeugd & familie",

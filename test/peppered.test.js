@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createRowDateResolver, classifyPepperedButton, createGroupScraper } from '../src/lib/peppered.js';
+import { createRowDateResolver, classifyPepperedButton, createGroupScraper, dedupeShows } from '../src/lib/peppered.js';
 
 const SEPT_2026 = new Date('2026-09-27T10:00:00');
 
@@ -55,4 +55,18 @@ test('groepsscraper: faalt de scrape, dan faalt elk lid (zodat elk terugvalt)', 
   const log = () => {};
   await assert.rejects(scrape({ theater: { id: 'a' }, log }), /site weg/);
   await assert.rejects(scrape({ theater: { id: 'b' }, log }), /site weg/);
+});
+
+test('dedupeShows: toegankelijke variant van dezelfde voorstelling telt niet dubbel', () => {
+  const base = { theaterId: 'ks', titel: 'Liefdesbrieven', datum: '2026-10-04', tijd: '15:00' };
+  const out = dedupeShows([
+    { ...base, id: 'a', beschikbaarheid: 'onbekend', reserverenUrl: 'livetext' },
+    { ...base, id: 'a-2', beschikbaarheid: 'beschikbaar', reserverenUrl: 'order' },
+    { ...base, tijd: '20:00', id: 'b', beschikbaarheid: 'beschikbaar' },
+  ]);
+  assert.equal(out.length, 2);
+  const first = out.find((s) => s.tijd === '15:00');
+  assert.equal(first.beschikbaarheid, 'beschikbaar');
+  assert.equal(first.reserverenUrl, 'order');
+  assert.equal(first.id, 'a', 'id zonder -2-suffix blijft');
 });

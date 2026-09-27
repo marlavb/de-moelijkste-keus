@@ -6,6 +6,7 @@ import {
   createRowDateResolver,
   classifyPepperedButton,
   logUnknownButtons,
+  dedupeShows,
   createGroupScraper,
 } from '../lib/peppered.js';
 
@@ -96,7 +97,7 @@ async function scrapeAllHnt({ page, theater, robots, waitForTurn, log }) {
     log(`overgeslagen (niet in eigen zalen): ${skippedList.slice(0, 8).map(([k, n]) => `${k} (${n})`).join(', ')}${skippedList.length > 8 ? ', …' : ''}`);
   }
   logUnknownButtons(log, shows, rowsByShowId);
-  return shows;
+  return dedupeShows(shows);
 }
 
 export const scrapeHnt = createGroupScraper(scrapeAllHnt);

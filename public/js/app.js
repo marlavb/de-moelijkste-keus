@@ -108,6 +108,8 @@ const PROVINCE_BY_CITY = {
   'Den Haag': 'Zuid-Holland',
   Rotterdam: 'Zuid-Holland',
   Maassluis: 'Zuid-Holland',
+  Leiden: 'Zuid-Holland',
+  Vlaardingen: 'Zuid-Holland',
 };
 
 // Desktop-sidebar accordeon-secties (Stad/Theater/Genre) — standaard allemaal

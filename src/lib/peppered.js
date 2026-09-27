@@ -180,6 +180,24 @@ export function classifyPepperedButton(buttonText) {
   return 'onbekend';
 }
 
+/**
+ * Eén show per theater + titel + datum + tijd. HNT zet toegankelijke
+ * varianten (LiveText-bril, audiodescriptie, tolk) als aparte rij bij
+ * dezelfde voorstelling; die tellen niet dubbel. Bij twee rijen wint die
+ * met een echte status boven "onbekend".
+ */
+export function dedupeShows(shows) {
+  const byKey = new Map();
+  for (const show of shows) {
+    const key = `${show.theaterId}|${show.titel}|${show.datum}|${show.tijd}`;
+    const existing = byKey.get(key);
+    if (!existing || (existing.beschikbaarheid === 'onbekend' && show.beschikbaarheid !== 'onbekend')) {
+      byKey.set(key, { ...show, id: existing?.id ?? show.id });
+    }
+  }
+  return [...byKey.values()];
+}
+
 /** Logt de knopteksten die op "onbekend" uitkwamen (nieuwe teksten opsporen). */
 export function logUnknownButtons(log, shows, rowsByShowId) {
   const texts = {};
