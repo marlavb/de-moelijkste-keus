@@ -1,14 +1,304 @@
 {
-  "bijgewerktOp": "2026-09-27T09:33:13.697Z",
+  "bijgewerktOp": "2026-09-27T10:21:45.580Z",
   "theaters": {
     "ita": {
+      "status": "ok",
+      "aantal": 270,
+      "vorigAantal": 293,
+      "duurSeconden": 9,
+      "laatsteSucces": "2026-09-27T10:13:21.715Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "delamar": {
+      "status": "ok",
+      "aantal": 413,
+      "vorigAantal": 413,
+      "duurSeconden": 17,
+      "laatsteSucces": "2026-09-27T09:54:17.504Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "bellevue": {
+      "status": "ok",
+      "aantal": 587,
+      "vorigAantal": 587,
+      "duurSeconden": 1067,
+      "laatsteSucces": "2026-09-27T10:12:04.604Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "meervaart": {
+      "status": "ok",
+      "aantal": 72,
+      "vorigAantal": 72,
+      "duurSeconden": 68,
+      "laatsteSucces": "2026-09-27T10:13:13.056Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "kleinekomedie": {
+      "status": "ok",
+      "aantal": 261,
+      "vorigAantal": 261,
+      "duurSeconden": 27,
+      "laatsteSucces": "2026-09-27T10:13:48.798Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "frascati": {
+      "status": "ok",
+      "aantal": 182,
+      "vorigAantal": 182,
+      "duurSeconden": 31,
+      "laatsteSucces": "2026-09-27T10:14:20.291Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "carre": {
+      "status": "ok",
+      "aantal": 69,
+      "vorigAantal": 69,
+      "duurSeconden": 3,
+      "laatsteSucces": "2026-09-27T10:14:23.496Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "amstelveen": {
+      "status": "ok",
+      "aantal": 148,
+      "vorigAantal": 148,
+      "duurSeconden": 13,
+      "laatsteSucces": "2026-09-27T10:14:36.258Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "stadsschouwburgutrecht": {
+      "status": "ok",
+      "aantal": 593,
+      "vorigAantal": 593,
+      "duurSeconden": 21,
+      "laatsteSucces": "2026-09-27T10:14:57.601Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "theaterkikker": {
+      "status": "ok",
+      "aantal": 213,
+      "vorigAantal": 213,
+      "duurSeconden": 3,
+      "laatsteSucces": "2026-09-27T10:15:00.873Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "krakeling": {
+      "status": "ok",
+      "aantal": 100,
+      "vorigAantal": 100,
+      "duurSeconden": 3,
+      "laatsteSucces": "2026-09-27T10:15:03.996Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "mozaiek": {
+      "status": "ok",
+      "aantal": 78,
+      "vorigAantal": 76,
+      "duurSeconden": 2,
+      "laatsteSucces": "2026-09-27T10:15:05.748Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "muziekgebouw": {
+      "status": "ok",
+      "aantal": 600,
+      "vorigAantal": 600,
+      "duurSeconden": 38,
+      "laatsteSucces": "2026-09-27T10:15:43.979Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "scala": {
+      "status": "ok",
+      "aantal": 80,
+      "vorigAantal": 71,
+      "duurSeconden": 6,
+      "laatsteSucces": "2026-09-27T10:15:50.275Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "omval": {
+      "status": "ok",
+      "aantal": 93,
+      "vorigAantal": 93,
+      "duurSeconden": 26,
+      "laatsteSucces": "2026-09-27T10:16:16.122Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "delanding": {
+      "status": "ok",
+      "aantal": 148,
+      "vorigAantal": 148,
+      "duurSeconden": 13,
+      "laatsteSucces": "2026-09-27T10:16:29.089Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "zaantheater": {
+      "status": "ok",
+      "aantal": 238,
+      "vorigAantal": 238,
+      "duurSeconden": 38,
+      "laatsteSucces": "2026-09-27T10:17:07.272Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "bijlmerparktheater": {
+      "status": "ok",
+      "aantal": 98,
+      "vorigAantal": 98,
+      "duurSeconden": 47,
+      "laatsteSucces": "2026-09-27T10:17:53.793Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "ccamstel": {
+      "status": "ok",
+      "aantal": 35,
+      "vorigAantal": 35,
+      "duurSeconden": 1,
+      "laatsteSucces": "2026-09-27T10:17:55.141Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "marionettentheater": {
+      "status": "ok",
+      "aantal": 13,
+      "vorigAantal": 12,
+      "duurSeconden": 3,
+      "laatsteSucces": "2026-09-27T10:17:58.242Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "griffioen": {
+      "status": "ok",
+      "aantal": 120,
+      "vorigAantal": 120,
+      "duurSeconden": 14,
+      "laatsteSucces": "2026-09-27T10:18:12.633Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "pleintheater": {
+      "status": "ok",
+      "aantal": 36,
+      "vorigAantal": 36,
+      "duurSeconden": 5,
+      "laatsteSucces": "2026-09-27T10:18:17.360Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "karavaan": {
+      "status": "ok",
+      "aantal": 10,
+      "vorigAantal": 10,
+      "duurSeconden": 4,
+      "laatsteSucces": "2026-09-27T10:18:21.095Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "schuur": {
+      "status": "ok",
+      "aantal": 183,
+      "vorigAantal": 183,
+      "duurSeconden": 38,
+      "laatsteSucces": "2026-09-27T10:18:59.575Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "bostheater": {
+      "status": "ok",
+      "aantal": 2,
+      "vorigAantal": 2,
+      "duurSeconden": 3,
+      "laatsteSucces": "2026-09-27T10:19:02.781Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "hogewoerd": {
+      "status": "ok",
+      "aantal": 125,
+      "vorigAantal": 126,
+      "duurSeconden": 137,
+      "laatsteSucces": "2026-09-27T10:21:19.467Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "flint": {
       "status": "terugval",
-      "aantal": 293,
-      "vorigAantal": 0,
-      "duurSeconden": 0,
-      "laatsteSucces": "2026-09-20T09:35:50.161Z",
-      "terugvalSinds": "2026-09-27T09:33:13.697Z",
-      "fout": "handmatig hersteld uit shows.json van 20 sep: scraper gaf op 27 sep stil 0 resultaten",
+      "aantal": 179,
+      "vorigAantal": 179,
+      "duurSeconden": 3,
+      "laatsteSucces": "2026-09-27T09:09:22.018Z",
+      "terugvalSinds": "2026-09-27T10:21:22.049Z",
+      "fout": "0 resultaten (vorige keer 179 komende voorstellingen)",
+      "waarschuwing": null
+    },
+    "aandeslinger": {
+      "status": "ok",
+      "aantal": 176,
+      "vorigAantal": 176,
+      "duurSeconden": 1,
+      "laatsteSucces": "2026-09-27T10:21:23.471Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "corrosia": {
+      "status": "ok",
+      "aantal": 58,
+      "vorigAantal": 58,
+      "duurSeconden": 4,
+      "laatsteSucces": "2026-09-27T10:21:26.992Z",
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null
+    },
+    "kunstlinie": {
+      "status": "ok",
+      "aantal": 257,
+      "vorigAantal": 257,
+      "duurSeconden": 19,
+      "laatsteSucces": "2026-09-27T10:21:45.558Z",
+      "terugvalSinds": null,
+      "fout": null,
       "waarschuwing": null
     }
   }
