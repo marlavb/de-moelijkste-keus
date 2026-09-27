@@ -72,11 +72,11 @@
       "waarschuwing": null
     },
     "amstelveen": {
-      "status": "ok",
-      "aantal": 147,
-      "vorigAantal": 148,
-      "duurSeconden": 14,
-      "laatsteSucces": "2026-09-27T17:15:04.244Z",
+      "status": "leeg",
+      "aantal": 0,
+      "vorigAantal": 0,
+      "duurSeconden": 0,
+      "laatsteSucces": "2026-09-27T18:44:12.705Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
