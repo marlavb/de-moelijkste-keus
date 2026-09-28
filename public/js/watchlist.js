@@ -2,7 +2,9 @@
 // theater en speeldatum. Pure functies, gedeeld door de app en de tests.
 //
 // Datamodel (localStorage en Firestore, zelfde vorm):
-//   watchlist:           [{ sleutel, titel, theaterId?, toegevoegdOp, v }]
+//   watchlist:           [{ sleutel, titel, theaterId, toegevoegdOp, v }]
+// theaterId is het theater waar het item vandaan komt; nodig om bij een
+// nieuwe NORMALISATIE_VERSIE een theatergebonden sleutel te kunnen maken.
 //   watchlistVerwijderd: [{ sleutel, verwijderdOp }]      (tombstones)
 // Samenvoegen (migratie, inloggen, tweede apparaat): de laatste actie wint.
 // Een item staat op de watchlist als toegevoegdOp later is dan verwijderdOp
@@ -17,7 +19,10 @@ import { RENAMED_FAVORITE_KEYS } from './favorites.js';
 // uitsluitlijst in productions.js, en laat renormaliseer() de opgeslagen
 // items omzetten (zie CLAUDE.md). Items onthouden met welke versie hun
 // sleutel is gemaakt.
-export const NORMALISATIE_VERSIE = 1;
+//   1 (28 sep 2026): eerste versie.
+//   2 (28 sep 2026): "blind date" op de uitsluitlijst; items onthouden
+//     voortaan altijd het theater waar ze vandaan komen (theaterId).
+export const NORMALISATIE_VERSIE = 2;
 
 /**
  * Titel zonder de varianten die per theater verschillen: leeftijd ("(6+)",
@@ -55,7 +60,10 @@ export function voegSamen(...bronnen) {
   for (const b of bronnen) {
     for (const item of b?.watchlist ?? []) {
       const huidig = toegevoegd.get(item.sleutel);
-      if (!huidig || (item.toegevoegdOp ?? 0) > (huidig.toegevoegdOp ?? 0)) toegevoegd.set(item.sleutel, { ...item });
+      const nieuwer = !huidig || (item.toegevoegdOp ?? 0) > (huidig.toegevoegdOp ?? 0);
+      // Bij gelijke tijd: liever het item dat zijn theater kent (v1 kende dat nog niet altijd).
+      const beter = huidig && (item.toegevoegdOp ?? 0) === (huidig.toegevoegdOp ?? 0) && !huidig.theaterId && item.theaterId;
+      if (nieuwer || beter) toegevoegd.set(item.sleutel, { ...item });
     }
     for (const t of b?.watchlistVerwijderd ?? []) {
       if ((t.verwijderdOp ?? 0) > (verwijderd.get(t.sleutel) ?? -1)) verwijderd.set(t.sleutel, t.verwijderdOp ?? 0);
@@ -82,8 +90,7 @@ export function isGelijk(a, b) {
 
 export function voegToe(profiel, { titel, theaterId }, now = Date.now()) {
   const sleutel = watchlistSleutel(titel, theaterId);
-  const item = { sleutel, titel, toegevoegdOp: now, v: NORMALISATIE_VERSIE };
-  if (sleutel.includes('::')) item.theaterId = theaterId;
+  const item = { sleutel, titel, theaterId, toegevoegdOp: now, v: NORMALISATIE_VERSIE };
   return voegSamen(profiel, { watchlist: [item], watchlistVerwijderd: [] });
 }
 
@@ -91,13 +98,34 @@ export function verwijder(profiel, sleutel, now = Date.now()) {
   return voegSamen(profiel, { watchlist: [], watchlistVerwijderd: [{ sleutel, verwijderdOp: now }] });
 }
 
-/** Zet items met een oudere NORMALISATIE_VERSIE om naar de huidige sleutel. */
+/**
+ * Zet items met een oudere NORMALISATIE_VERSIE om naar de huidige sleutel,
+ * op basis van de opgeslagen weergavetitel en het theater. Idempotent,
+ * zonder vlag. Tombstones op een oude sleutel blijven staan (ze raken dan
+ * niets meer); een verwijderd item blijft dus verwijderd.
+ *
+ * Versie 1 → 2: items zonder theaterId konden alleen uit de migratie van
+ * favorieten komen (toegevoegdOp 0; in v1 bestond nog geen knop). Wordt hun
+ * titel theatergebonden, dan laten we ze vallen: de migratie, die bij elk
+ * laden draait, maakt ze opnieuw aan mét theater. Een item zonder theaterId
+ * met toegevoegdOp > 0 houdt zijn sleutel (theater onbekend).
+ */
 export function renormaliseer(profiel) {
-  const watchlist = (profiel?.watchlist ?? []).map((item) => {
-    if ((item.v ?? 1) >= NORMALISATIE_VERSIE) return item;
-    const sleutel = watchlistSleutel(item.titel, item.theaterId);
-    return { ...item, sleutel, v: NORMALISATIE_VERSIE };
-  });
+  const watchlist = [];
+  for (const item of profiel?.watchlist ?? []) {
+    if ((item.v ?? 1) >= NORMALISATIE_VERSIE) {
+      watchlist.push(item);
+      continue;
+    }
+    const zonderTheater = watchlistSleutel(item.titel);
+    const theatergebonden = EXCLUDED_NORMALIZED_TITLES.has(zonderTheater);
+    if (theatergebonden && !item.theaterId) {
+      if ((item.toegevoegdOp ?? 0) === 0) continue;
+      watchlist.push({ ...item, v: NORMALISATIE_VERSIE });
+      continue;
+    }
+    watchlist.push({ ...item, sleutel: watchlistSleutel(item.titel, item.theaterId), v: NORMALISATIE_VERSIE });
+  }
   return voegSamen({ watchlist, watchlistVerwijderd: profiel?.watchlistVerwijderd ?? [] });
 }
 
@@ -117,9 +145,7 @@ export function favorietNaarItem(waarde, bekend = new Map()) {
     const theaterId = hernoemd.slice(0, i);
     const titel = hernoemd.slice(i + 2);
     const sleutel = watchlistSleutel(titel, theaterId);
-    const item = { sleutel, titel, toegevoegdOp: 0, v: NORMALISATIE_VERSIE };
-    if (sleutel.includes('::')) item.theaterId = theaterId;
-    return { item, bron: 'favoriet' };
+    return { item: { sleutel, titel, theaterId, toegevoegdOp: 0, v: NORMALISATIE_VERSIE }, bron: 'favoriet' };
   }
   const m = hernoemd.match(OUDE_SHOW_ID);
   if (!m) return null;
@@ -137,8 +163,7 @@ export function favorietNaarItem(waarde, bekend = new Map()) {
   const sleutels = varianten.map((v) => watchlistSleutel(v, theaterId));
   const i2 = sleutels.findIndex((k) => bekend.has(k));
   const sleutel = sleutels[Math.max(i2, 0)];
-  const item = { sleutel, titel: bekend.get(sleutel) ?? letterlijk, toegevoegdOp: 0, v: NORMALISATIE_VERSIE };
-  if (sleutel.includes('::')) item.theaterId = theaterId;
+  const item = { sleutel, titel: bekend.get(sleutel) ?? letterlijk, theaterId, toegevoegdOp: 0, v: NORMALISATIE_VERSIE };
   return { item, bron: 'oude-slug', variant: i2 <= 0 ? 'letterlijk' : varianten[i2] };
 }
 

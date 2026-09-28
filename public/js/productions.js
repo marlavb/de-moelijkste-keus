@@ -46,6 +46,11 @@ export const EXCLUDED_NORMALIZED_TITLES = new Set([
   'nora',
   'adem',
   'cabaret',
+  // "Blind Date" is een formule van het Nationaal Theaterweekend (jan 2027):
+  // Griffioen, Karavaan, Aan de Slinger en Kunstlinie programmeren elk een
+  // eigen verrassingsvoorstelling onder die naam (gecontroleerd 28 sep 2026).
+  // Watchlist: NORMALISATIE_VERSIE 2.
+  'blind date',
 ]);
 
 /**

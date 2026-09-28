@@ -34,6 +34,7 @@ test('vaste titeltest: varianten per theater vallen samen', () => {
     controle: ['Controle', 'CONTROLE 12+', 'CONTROLE', 'Controle (12+)', 'CONTROLE (12+)'],
     'jorgen raymann': ['Jörgen Raymann', 'Jorgen Raymann'],
     'sara kroos': ['Sara Kroos'],
+    familiecarrousel: ['Familiecarrousel (4+)', 'Familiecarrousel (6+)', 'Familiecarrousel (8+)'],
   };
   for (const [verwacht, titels] of Object.entries(groepen)) {
     for (const t of titels) assert.equal(watchlistSleutel(t, 'x'), verwacht, t);
@@ -55,7 +56,14 @@ test('vaste titeltest: titels op de uitsluitlijst zijn theatergebonden', () => {
   assert.equal(watchlistSleutel('Cabaret', 'kunstlinie'), 'kunstlinie::cabaret');
   const item = voegToe(legeWatchlist(), { titel: 'Nora', theaterId: 'flint' }, 5).watchlist[0];
   assert.equal(item.theaterId, 'flint');
-  assert.equal(voegToe(legeWatchlist(), { titel: 'Titanique', theaterId: 'flint' }, 5).watchlist[0].theaterId, undefined);
+  assert.equal(watchlistSleutel('Blind Date', 'kunstlinie'), 'kunstlinie::blind date');
+  assert.equal(watchlistSleutel('Blind Date (4+)', 'kunstlinie'), 'kunstlinie::blind date');
+  assert.equal(watchlistSleutel('BLIND DATE', 'karavaan'), 'karavaan::blind date');
+  assert.equal(watchlistSleutel('Blind date DANS', 'aandeslinger'), 'blind date dans');
+  // Een globale sleutel onthoudt ook het theater van herkomst.
+  const t = voegToe(legeWatchlist(), { titel: 'Titanique', theaterId: 'flint' }, 5).watchlist[0];
+  assert.equal(t.sleutel, 'titanique');
+  assert.equal(t.theaterId, 'flint');
 });
 
 test('verwijderen en herladen: item blijft weg', () => {
@@ -157,6 +165,40 @@ test('her-normaliseren: alleen items met een oudere versie, idempotent', () => {
   assert.deepEqual(sleutels(een), ['juf braaksel']);
   assert.equal(een.watchlist[0].v, NORMALISATIE_VERSIE);
   assert.deepEqual(renormaliseer(een), een);
+});
+
+test('versie 1 → 2: "blind date" wordt theatergebonden, via titel en theater', () => {
+  assert.equal(NORMALISATIE_VERSIE, 2);
+  const v1 = {
+    watchlist: [
+      { sleutel: 'blind date', titel: 'Blind Date (4+)', theaterId: 'kunstlinie', toegevoegdOp: 7, v: 1 },
+      { sleutel: 'titanique', titel: 'Titanique', toegevoegdOp: 0, v: 1 },
+    ],
+    watchlistVerwijderd: [],
+  };
+  const v2 = renormaliseer(v1);
+  assert.deepEqual(sleutels(v2), ['kunstlinie::blind date', 'titanique']);
+  assert.ok(v2.watchlist.every((i) => i.v === 2));
+  assert.equal(v2.watchlist[0].toegevoegdOp, 7);
+  assert.deepEqual(renormaliseer(v2), v2);
+});
+
+test('versie 1 → 2: gemigreerde favoriet zonder theater komt terug mét theater', () => {
+  // Zo stond het er in v1 na de migratie: sleutel zonder theater.
+  const v1 = { watchlist: [{ sleutel: 'blind date', titel: 'Blind Date', toegevoegdOp: 0, v: 1 }], watchlistVerwijderd: [] };
+  const favorieten = ['karavaan::BLIND DATE'];
+  const eerste = laadWatchlist({ opgeslagen: v1, favorieten });
+  assert.deepEqual(sleutels(eerste.profiel), ['karavaan::blind date']);
+  assert.equal(eerste.gewijzigd, true);
+  const tweede = laadWatchlist({ opgeslagen: JSON.parse(JSON.stringify(eerste.profiel)), favorieten });
+  assert.equal(tweede.gewijzigd, false);
+});
+
+test('versie 1 → 2: een bij v1 gemigreerd item krijgt alsnog zijn theater', () => {
+  const v1 = { watchlist: [{ sleutel: 'titanique', titel: 'Titanique', toegevoegdOp: 0, v: 1 }], watchlistVerwijderd: [] };
+  const r = laadWatchlist({ opgeslagen: v1, favorieten: ['delamar::Titanique'] });
+  assert.equal(r.profiel.watchlist[0].theaterId, 'delamar');
+  assert.equal(laadWatchlist({ opgeslagen: JSON.parse(JSON.stringify(r.profiel)), favorieten: ['delamar::Titanique'] }).gewijzigd, false);
 });
 
 test('bekendeSleutels uit de shows', () => {
