@@ -362,3 +362,31 @@ test('geblokkeerd: fout zonder "exception:"-voorvoegsel, en terugval', async () 
   assert.equal(status.theaters.a.status, 'terugval');
   assert.equal(status.theaters.a.fout, 'geblokkeerd (Cloudflare-challenge)');
 });
+
+test('dubbelingen: weggehaald vóór het wegschrijven, geteld in de status, warning bij meer dan een handvol', async () => {
+  // b viel terug op vorige data die zelf al dubbel was; a levert 30 kopieën.
+  const vorigB = [show('b', '2026-10-06'), show('b', '2026-10-06', { id: 'b-2026-10-06-2' })];
+  const paths = await setup({ previousShows: vorigB });
+  const kopieen = Array.from({ length: 30 }, (_, i) => show('a', '2026-10-05', { id: i ? `a-2026-10-05-${i + 1}` : 'a-2026-10-05' }));
+  const { written, status, annotations } = await run({
+    paths,
+    theaters: [theater('a'), theater('b'), theater('c')],
+    scrapers: {
+      a: async () => [...kopieen, show('a', '2026-10-07')],
+      b: failing,
+      c: async () => [show('c', '2026-10-05'), show('c', '2026-10-05', { id: 'c-2' })],
+    },
+  });
+  assert.deepEqual(
+    written.map((s) => s.id).sort(),
+    ['a-2026-10-05', 'a-2026-10-07', 'b-2026-10-06', 'c-2026-10-05']
+  );
+  assert.equal(status.theaters.a.dubbelingen, 29);
+  assert.equal(status.theaters.a.aantal, 2);
+  assert.match(status.theaters.a.waarschuwing, /29 dubbele voorstellingen/);
+  assert.equal(status.theaters.b.dubbelingen, 1);
+  assert.equal(status.theaters.c.dubbelingen, 1);
+  assert.equal(status.theaters.c.waarschuwing, null);
+  const dubbelWarnings = annotations.filter((a) => a.title.startsWith('Dubbelingen'));
+  assert.deepEqual(dubbelWarnings.map((a) => a.title), ['Dubbelingen a']);
+});

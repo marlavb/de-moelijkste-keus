@@ -5,6 +5,7 @@
 // het met nep-scrapers te testen is (zie test/scrapeRun.test.js).
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { ontdubbelShows } from './dedupe.js';
 import path from 'node:path';
 
 import { todayIsoDate } from './normalize.js';
@@ -24,6 +25,8 @@ export class ScrapeBlockedError extends Error {
 // alleen melden, de nieuwe data wordt gewoon gebruikt.
 const DROP_WARNING_RATIO = 0.3;
 const DROP_WARNING_MIN_PREVIOUS = 20;
+// Meer weggehaalde dubbelingen dan dit per theater: ::warning:: (zie dedupe.js).
+const DUBBEL_WARNING_MIN = 5;
 
 function formatSeconds(ms) {
   return `${Math.round(ms / 100) / 10}s`;
@@ -286,7 +289,7 @@ export async function runRefresh({
   // terug) moet niet voor altijd in onze eigen data blijven staan. Geldt ook
   // voor teruggevallen data, zodat die vanzelf slinkt als een scraper
   // wekenlang stuk blijft.
-  const freshShows = mergedShows
+  const verseShows = mergedShows
     .filter((s) => s.datum >= minDate)
     // `prijs` en `maker` zijn optionele schemavelden die maar een deel van de
     // theaters vult (prijs: alleen Flint, voor de podiumpas-prijsgrens; maker:
@@ -294,9 +297,28 @@ export async function runRefresh({
     // centraal op null gezet voor elke andere show, in plaats van dat elke
     // afzonderlijke scraper-module het zelf moet opnemen.
     .map((s) => ({ ...s, prijs: s.prijs ?? null, maker: s.maker ?? null }));
-  const purgedCount = mergedShows.length - freshShows.length;
+  const purgedCount = mergedShows.length - verseShows.length;
   if (purgedCount > 0) {
     log(`${purgedCount} verlopen voorstelling(en) verwijderd (datum vóór ${minDate}).`);
+  }
+
+  // Vangnet: dubbelingen (theater, datum, tijd, titel) eruit — ook uit
+  // teruggevallen en behouden data — en per theater tellen. Veel dubbelingen
+  // betekent een kapotte scraper; dat moet opvallen (zie dedupe.js).
+  const { shows: freshShows, verwijderdPerTheater } = ontdubbelShows(verseShows);
+  for (const theater of theaters) {
+    const st = theaterStatus[theater.id];
+    if (!st || theater.gepauzeerd) continue;
+    st.dubbelingen = verwijderdPerTheater[theater.id] ?? 0;
+    st.aantal -= st.dubbelingen;
+  }
+  for (const [theaterId, aantal] of Object.entries(verwijderdPerTheater)) {
+    log(`[${theaterId}] ${aantal} dubbele voorstelling(en) weggehaald.`);
+    if (aantal <= DUBBEL_WARNING_MIN) continue;
+    const msg = `${aantal} dubbele voorstellingen weggehaald — de scraper levert dubbelingen, waarschijnlijk stuk`;
+    annotate('warning', `Dubbelingen ${theaterId}`, msg);
+    const st = theaterStatus[theaterId];
+    if (st) st.waarschuwing = [st.waarschuwing, msg].filter(Boolean).join(' | ');
   }
 
   const status = { bijgewerktOp: now().toISOString(), theaters: theaterStatus };
