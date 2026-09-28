@@ -183,6 +183,26 @@ export async function runRefresh({
 
   for (const theater of theaters) {
     const theaterLog = (msg) => log(`[${theater.id}] ${msg}`);
+    // Gepauzeerd (config.js, bv. omdat de site ons weert): geen enkele
+    // request, geen terugval en geen rode run; de oude voorstellingen
+    // vervallen (ze zouden ongemerkt verouderen). Veld weghalen = weer mee.
+    if (theater.gepauzeerd) {
+      theaterLog(`gepauzeerd sinds ${theater.gepauzeerd.sinds}: ${theater.gepauzeerd.reden} — overgeslagen.`);
+      annotate('notice', `Gepauzeerd ${theater.id}`, `sinds ${theater.gepauzeerd.sinds}: ${theater.gepauzeerd.reden}`);
+      const vorige = previousStatus.theaters?.[theater.id] ?? {};
+      theaterStatus[theater.id] = {
+        status: 'gepauzeerd',
+        aantal: 0,
+        vorigAantal: upcomingShowsOf(previousShows, theater.id, minDate).length,
+        duurSeconden: 0,
+        laatsteSucces: vorige.laatsteSucces ?? null,
+        terugvalSinds: null,
+        fout: null,
+        waarschuwing: null,
+        gepauzeerd: theater.gepauzeerd,
+      };
+      continue;
+    }
     const startedAt = Date.now();
     const remainingMs = runDeadline - startedAt;
 

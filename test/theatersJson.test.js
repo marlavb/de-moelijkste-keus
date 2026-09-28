@@ -15,6 +15,14 @@ test('theaters.json: alle theaters, podiumpasReserveren alleen waar ingevuld', (
   assert.equal(withMelding.melding, 'Dicht');
 });
 
+test('theaters.json: gepauzeerd theater krijgt een melding met link naar de eigen agenda', () => {
+  const { theaters } = buildTheatersJson([
+    { id: 'p', naam: 'P', stad: 'Z', podiumpas: true, agendaUrl: 'https://p.test/agenda', gepauzeerd: { sinds: '2026-09-28', reden: 'x' } },
+  ]);
+  assert.match(theaters.p.melding, /Agenda tijdelijk niet beschikbaar/);
+  assert.equal(theaters.p.meldingLink, 'https://p.test/agenda');
+});
+
 test('config: elk podiumpasReserveren heeft een manier om te reserveren', () => {
   for (const t of THEATERS.filter((x) => x.podiumpasReserveren)) {
     const r = t.podiumpasReserveren;

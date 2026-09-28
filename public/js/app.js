@@ -1610,6 +1610,15 @@ function buildTheaterCard(id) {
     const meldingEl = document.createElement('p');
     meldingEl.className = 'theater-card-melding';
     meldingEl.textContent = melding;
+    const meldingLink = state.theaterInfo[id]?.meldingLink;
+    if (meldingLink) {
+      const a = document.createElement('a');
+      a.href = meldingLink;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = `Naar de agenda van ${naam}`;
+      meldingEl.append(document.createElement('br'), a);
+    }
     info.append(meldingEl);
   }
   const hint = buildMoveHint(id);
@@ -1736,10 +1745,12 @@ function buildCitySection(stad, cityIds) {
   headingLeft.className = 'theaters-list-heading-left';
   const cityLabel = document.createElement('span');
   cityLabel.textContent = stad.toUpperCase();
-  headingLeft.append(buildChevronSvg(), cityLabel, buildCityToggleButton(stad, toggleIds, allOn));
+  headingLeft.append(buildChevronSvg(), cityLabel);
+  // Een stad met alleen gesloten/gepauzeerde theaters: niets aan of uit te zetten.
+  if (toggleIds.length > 0) headingLeft.append(buildCityToggleButton(stad, toggleIds, allOn));
 
   const countLabel = document.createElement('span');
-  countLabel.textContent = `${enabledCount} van ${toggleIds.length}`;
+  countLabel.textContent = toggleIds.length > 0 ? `${enabledCount} van ${toggleIds.length}` : 'geen agenda';
   header.append(headingLeft, countLabel);
 
   const content = document.createElement('div');

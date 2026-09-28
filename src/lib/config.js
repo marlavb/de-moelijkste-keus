@@ -429,6 +429,10 @@ export const THEATERS = [
     baseUrl: 'https://www.theaterhetkruispunt.nl',
     agendaUrl: 'https://www.theaterhetkruispunt.nl/agenda',
     podiumpas: true,
+    // Gepauzeerd: sinds 28 sep 2026 krijgt onze scraper (lokaal én in CI) een
+    // 403 met een BunnyCDN-botcontrole ("Establishing a secure connection").
+    // We omzeilen dat niet. Terugzetten = deze regel weghalen.
+    gepauzeerd: { sinds: '2026-09-28', reden: 'BunnyCDN-botcontrole (403)' },
     // Bron: https://www.theaterhetkruispunt.nl/podiumpas-8y4s (27 sep 2026)
     podiumpasReserveren: {
       telefoon: '0180-615958',
@@ -442,6 +446,10 @@ export const THEATERS = [
     baseUrl: 'https://www.isalatheater.nl',
     agendaUrl: 'https://www.isalatheater.nl/agenda',
     podiumpas: true,
+    // Gepauzeerd: sinds 28 sep 2026 krijgt onze scraper (lokaal én in CI) een
+    // 403 met een BunnyCDN-botcontrole ("Establishing a secure connection").
+    // We omzeilen dat niet. Terugzetten = deze regel weghalen.
+    gepauzeerd: { sinds: '2026-09-28', reden: 'BunnyCDN-botcontrole (403)' },
     // Bron: https://www.isalatheater.nl/podiumpas-l3lg (27 sep 2026)
     podiumpasReserveren: {
       telefoon: '010 - 458 6400',

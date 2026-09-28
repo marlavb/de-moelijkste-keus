@@ -698,6 +698,11 @@ a {
   color: var(--text-muted);
 }
 
+.theater-card-melding a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
 .theater-card-hint {
   margin-top: 8px;
   padding: 8px 12px;

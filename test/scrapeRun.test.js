@@ -323,3 +323,27 @@ test('scraper kan zelf een waarschuwing geven: komt in scrape-status en als anno
   assert.equal(annotations.length, 1);
   assert.match(annotations[0].message, /uitsluitingslijst/);
 });
+
+test('gepauzeerd theater: geen scrape, status gepauzeerd, oude data weg, andere theaters normaal', async () => {
+  const paths = await setup({ previousShows: [show('a', '2026-10-05'), show('b', '2026-10-05')] });
+  let called = false;
+  const { written, status, annotations } = await run({
+    paths,
+    theaters: [{ ...theater('a'), gepauzeerd: { sinds: '2026-09-28', reden: 'botcontrole (403)' } }, theater('b')],
+    scrapers: {
+      a: async () => {
+        called = true;
+        return [];
+      },
+      b: async () => [show('b', '2026-10-06')],
+    },
+  });
+  assert.equal(called, false, 'geen requests naar een gepauzeerd theater');
+  assert.equal(status.theaters.a.status, 'gepauzeerd');
+  assert.equal(status.theaters.a.aantal, 0);
+  assert.equal(status.theaters.a.fout, null);
+  assert.deepEqual(status.theaters.a.gepauzeerd, { sinds: '2026-09-28', reden: 'botcontrole (403)' });
+  assert.equal(written.filter((s) => s.theaterId === 'a').length, 0, 'oude voorstellingen vervallen');
+  assert.equal(status.theaters.b.status, 'ok');
+  assert.deepEqual(annotations.map((x) => x.level), ['notice'], 'alleen een notice, geen warning');
+});
