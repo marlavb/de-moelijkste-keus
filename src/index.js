@@ -129,6 +129,7 @@ async function main() {
     process.exit(1);
   }
 
+  console.log(`user-agent: ${USER_AGENT}`);
   const useDevCache = devCacheEnabled();
   if (process.env.SCRAPE_CACHE === '1' && !useDevCache) {
     console.log('[devcache] SCRAPE_CACHE=1 genegeerd: in CI wordt nooit uit de cache gelezen.');

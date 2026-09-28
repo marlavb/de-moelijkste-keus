@@ -50,6 +50,9 @@ jobs:
       # Deze stap zelf slaagt dan gewoon, zodat de data altijd wordt bijgewerkt.
       - name: Agenda's scrapen
         run: node src/index.js
+        env:
+          # Contact-URL in de user-agent (publiek, dus een variabele, geen secret).
+          SCRAPER_CONTACT: ${{ vars.SCRAPER_CONTACT }}
 
       - name: public/data (shows, scrape-status, theaters) committen en pushen
         id: commit

@@ -984,6 +984,17 @@ a {
   font-size: 13px;
 }
 
+.bot-link {
+  margin: 12px 0 0;
+  font-size: 12px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.bot-link a {
+  text-decoration: underline;
+}
+
 .feedback-status[hidden] {
   display: none;
 }

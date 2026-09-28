@@ -1,7 +1,9 @@
-// Herkenbare, eerlijke User-Agent. Vul CONTACT_URL desgewenst aan via env var
-// SCRAPER_CONTACT (bv. een link naar dit project) — we zetten hier bewust geen
-// persoonlijk e-mailadres in, want dat gaat naar servers van derden.
-const CONTACT = process.env.SCRAPER_CONTACT || 'personal/educational project, no contact url set';
+// Herkenbare, eerlijke User-Agent met een link naar public/bot.html (uitleg +
+// bezwaarformulier). In CI komt die uit de GitHub Actions-variabele
+// SCRAPER_CONTACT; lokaal en als fallback dezelfde URL hieronder. Bewust geen
+// persoonlijk e-mailadres: dat gaat naar servers van derden.
+const BOT_INFO_URL = 'https://marlavb.github.io/de-moelijkste-keus/bot.html';
+const CONTACT = process.env.SCRAPER_CONTACT || `+${BOT_INFO_URL}`;
 
 export const USER_AGENT_TOKEN = 'DeMoeilijksteKeusBot';
 export const USER_AGENT = `Mozilla/5.0 (compatible; ${USER_AGENT_TOKEN}/0.1; ${CONTACT})`;

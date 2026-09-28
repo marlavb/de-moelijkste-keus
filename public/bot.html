@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>DeMoeilijksteKeusBot · Podiumagenda</title>
+  <meta name="description" content="Uitleg over de bot die de agenda's van Podiumpas-theaters ophaalt voor Podiumagenda." />
+  <meta name="theme-color" content="#F7F4EE" />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .bot-page {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 16px;
+      padding-block: 32px 56px;
+      line-height: 1.6;
+    }
+    .bot-page h1 {
+      margin: 0 0 4px;
+      font-size: 26px;
+      color: var(--accent);
+      text-wrap: balance;
+    }
+    .bot-page .bot-lead {
+      margin: 0 0 24px;
+      color: var(--text-muted);
+    }
+    .bot-page h2 {
+      margin: 28px 0 8px;
+      font-size: 16px;
+    }
+    .bot-page p,
+    .bot-page ul {
+      margin: 0 0 12px;
+      max-width: 65ch;
+    }
+    .bot-page ul {
+      padding-left: 20px;
+    }
+    .bot-page a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+    .bot-page code {
+      font-size: 13px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1px 6px;
+      overflow-wrap: anywhere;
+    }
+    .bot-page .bot-en {
+      margin-top: 32px;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .bot-page .bot-en h2 {
+      margin-top: 0;
+    }
+    .bot-page .feedback-form {
+      flex-direction: column;
+    }
+    .bot-page .feedback-input {
+      flex: none;
+    }
+    .bot-page textarea.feedback-input {
+      height: auto;
+      min-height: 96px;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      resize: vertical;
+    }
+    .bot-page .feedback-submit {
+      align-self: flex-start;
+    }
+  </style>
+</head>
+<body>
+  <main class="bot-page">
+    <h1>Over onze bot</h1>
+    <p class="bot-lead">DeMoeilijksteKeusBot haalt de agenda's op voor <a href="./">Podiumagenda</a>.</p>
+
+    <h2>Wat is Podiumagenda?</h2>
+    <p>
+      Een persoonlijk, niet-commercieel project: één overzicht van de voorstellingen bij theaters waar je met de
+      <a href="https://podiumpas.nl" rel="noopener">Podiumpas</a> terechtkunt. We verkopen geen kaarten en tonen geen
+      advertenties. Bij elke voorstelling sturen we bezoekers door naar de eigen kaartverkoop van het theater.
+    </p>
+
+    <h2>Wanneer en hoe vaak?</h2>
+    <ul>
+      <li>Eén keer per nacht, rond 04:00 UTC (soms later, als GitHub de taak uitstelt).</li>
+      <li>We lezen alleen de openbare agendapagina's, en waar nodig de detailpagina van een voorstelling.</li>
+      <li>
+        De meeste theaters krijgen 1 tot 30 verzoeken per nacht. Theaters waarvan we per voorstelling een pagina
+        lezen, tot ongeveer 220. Nooit meer dan één run per nacht, behalve een enkele handmatige controle.
+      </li>
+    </ul>
+
+    <h2>We houden ons aan de regels van jouw site</h2>
+    <ul>
+      <li>We lezen <code>robots.txt</code> en volgen <code>Disallow</code>, <code>Allow</code> en <code>Crawl-delay</code>.</li>
+      <li>Tussen twee verzoeken zit altijd minstens 1 seconde, of de crawl-delay als die langer is. Kunnen we je robots.txt niet lezen, dan houden we 5 seconden aan.</li>
+      <li>
+        Blokkeren via <code>robots.txt</code> of een firewall of botcontrole respecteren we altijd. We proberen dat
+        nooit te omzeilen: geen andere user-agent, geen trucs. Zien we een blokkade, dan stoppen we met je site.
+      </li>
+      <li>We herkennen ons aan de user-agent <code>DeMoeilijksteKeusBot</code>, met een link naar deze pagina.</li>
+    </ul>
+
+    <h2>Bezwaar of een vraag?</h2>
+    <p>
+      Wil je niet dat we je agenda ophalen, of klopt er iets niet? Laat het weten via het formulier. Zet er je
+      e-mailadres bij als je antwoord wilt. Je kunt ons ook blokkeren via <code>robots.txt</code>
+      (<code>User-agent: DeMoeilijksteKeusBot</code> met <code>Disallow: /</code>); dan stoppen we vanzelf.
+    </p>
+    <section class="feedback-box">
+      <form class="feedback-form" id="botForm">
+        <label class="feedback-heading" for="botMessage">Je bericht</label>
+        <textarea class="feedback-input" id="botMessage" name="message" maxlength="2000" required></textarea>
+        <label class="feedback-heading" for="botEmail">Je e-mailadres (optioneel)</label>
+        <input class="feedback-input" id="botEmail" name="email" type="email" autocomplete="email" />
+        <button class="feedback-submit" type="submit" id="botSubmit">Versturen</button>
+      </form>
+      <p class="feedback-status" id="botStatus" hidden></p>
+    </section>
+
+    <section class="bot-en" lang="en">
+      <h2>In English</h2>
+      <p>
+        DeMoeilijksteKeusBot collects the public event listings of Dutch theatres that accept the Podiumpas, for
+        Podiumagenda, a personal, non-commercial project that links visitors to each theatre's own ticket sales.
+        It runs once a night (around 04:00 UTC), follows <code>robots.txt</code> including <code>Crawl-delay</code>,
+        waits at least 1 second between requests (5 seconds if robots.txt can't be read), and always respects blocks
+        via robots.txt or a firewall; it never tries to get around them. Use the form above to object or ask a question.
+      </p>
+    </section>
+  </main>
+  <script>
+    // Zelfde Formspree-endpoint als het feedbackformulier in de app, met
+    // onderwerp "Bot", zodat er geen mailadres publiek hoeft te staan.
+    const form = document.getElementById('botForm');
+    const statusEl = document.getElementById('botStatus');
+    const submit = document.getElementById('botSubmit');
+    function setStatus(text, variant) {
+      statusEl.textContent = text;
+      statusEl.className = 'feedback-status' + (variant ? ' feedback-status--' + variant : '');
+      statusEl.hidden = !text;
+    }
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const message = document.getElementById('botMessage').value.trim();
+      if (!message) return;
+      submit.disabled = true;
+      submit.textContent = 'Versturen...';
+      setStatus('');
+      try {
+        const res = await fetch('https://formspree.io/f/mjybznqd', {
+          method: 'POST',
+          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ _subject: 'Bot', onderwerp: 'Bot', message, email: document.getElementById('botEmail').value.trim() || undefined }),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.hidden = true;
+        setStatus('Bedankt! We hebben je bericht ontvangen.', 'success');
+      } catch {
+        submit.disabled = false;
+        submit.textContent = 'Versturen';
+        setStatus('Er ging iets mis bij het versturen. Probeer het later opnieuw.', 'error');
+      }
+    });
+  </script>
+</body>
+</html>
