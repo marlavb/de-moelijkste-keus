@@ -1,12 +1,12 @@
 {
-  "bijgewerktOp": "2026-09-28T17:27:48.128Z",
+  "bijgewerktOp": "2026-09-28T18:36:12.001Z",
   "theaters": {
     "ita": {
       "status": "ok",
       "aantal": 269,
       "vorigAantal": 269,
-      "duurSeconden": 10,
-      "laatsteSucces": "2026-09-28T16:56:30.727Z",
+      "duurSeconden": 9,
+      "laatsteSucces": "2026-09-28T18:05:23.247Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -16,7 +16,7 @@
       "aantal": 413,
       "vorigAantal": 413,
       "duurSeconden": 18,
-      "laatsteSucces": "2026-09-28T16:37:35.696Z",
+      "laatsteSucces": "2026-09-28T17:46:29.570Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -26,7 +26,7 @@
       "aantal": 561,
       "vorigAantal": 561,
       "duurSeconden": 1063,
-      "laatsteSucces": "2026-09-28T16:55:18.494Z",
+      "laatsteSucces": "2026-09-28T18:04:12.159Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -34,9 +34,9 @@
     "meervaart": {
       "status": "ok",
       "aantal": 70,
-      "vorigAantal": 69,
-      "duurSeconden": 63,
-      "laatsteSucces": "2026-09-28T16:56:21.205Z",
+      "vorigAantal": 70,
+      "duurSeconden": 62,
+      "laatsteSucces": "2026-09-28T18:05:14.095Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -46,7 +46,7 @@
       "aantal": 252,
       "vorigAantal": 252,
       "duurSeconden": 94,
-      "laatsteSucces": "2026-09-28T16:58:04.869Z",
+      "laatsteSucces": "2026-09-28T18:06:57.436Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -56,7 +56,7 @@
       "aantal": 145,
       "vorigAantal": 145,
       "duurSeconden": 32,
-      "laatsteSucces": "2026-09-28T16:58:36.903Z",
+      "laatsteSucces": "2026-09-28T18:07:29.196Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -64,9 +64,9 @@
     "carre": {
       "status": "ok",
       "aantal": 72,
-      "vorigAantal": 70,
-      "duurSeconden": 6,
-      "laatsteSucces": "2026-09-28T16:58:43.299Z",
+      "vorigAantal": 72,
+      "duurSeconden": 4,
+      "laatsteSucces": "2026-09-28T18:07:33.546Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -75,8 +75,8 @@
       "status": "leeg",
       "aantal": 0,
       "vorigAantal": 0,
-      "duurSeconden": 35,
-      "laatsteSucces": "2026-09-28T16:59:18.409Z",
+      "duurSeconden": 32,
+      "laatsteSucces": "2026-09-28T18:08:05.613Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -84,9 +84,9 @@
     "stadsschouwburgutrecht": {
       "status": "ok",
       "aantal": 595,
-      "vorigAantal": 593,
+      "vorigAantal": 595,
       "duurSeconden": 22,
-      "laatsteSucces": "2026-09-28T16:59:40.696Z",
+      "laatsteSucces": "2026-09-28T18:08:27.445Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -96,7 +96,7 @@
       "aantal": 212,
       "vorigAantal": 212,
       "duurSeconden": 5,
-      "laatsteSucces": "2026-09-28T16:59:45.713Z",
+      "laatsteSucces": "2026-09-28T18:08:32.020Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -106,7 +106,7 @@
       "aantal": 100,
       "vorigAantal": 100,
       "duurSeconden": 3,
-      "laatsteSucces": "2026-09-28T16:59:49.008Z",
+      "laatsteSucces": "2026-09-28T18:08:35.322Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -116,7 +116,7 @@
       "aantal": 77,
       "vorigAantal": 76,
       "duurSeconden": 2,
-      "laatsteSucces": "2026-09-28T16:59:51.347Z",
+      "laatsteSucces": "2026-09-28T18:08:37.544Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -126,7 +126,7 @@
       "aantal": 600,
       "vorigAantal": 600,
       "duurSeconden": 149,
-      "laatsteSucces": "2026-09-28T17:02:20.201Z",
+      "laatsteSucces": "2026-09-28T18:11:06.423Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -136,7 +136,7 @@
       "aantal": 68,
       "vorigAantal": 68,
       "duurSeconden": 5,
-      "laatsteSucces": "2026-09-28T17:02:24.967Z",
+      "laatsteSucces": "2026-09-28T18:11:10.962Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -146,7 +146,7 @@
       "aantal": 60,
       "vorigAantal": 60,
       "duurSeconden": 149,
-      "laatsteSucces": "2026-09-28T17:04:54.319Z",
+      "laatsteSucces": "2026-09-28T18:13:40.265Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -156,7 +156,7 @@
       "aantal": 147,
       "vorigAantal": 147,
       "duurSeconden": 1,
-      "laatsteSucces": "2026-09-28T17:04:54.919Z",
+      "laatsteSucces": "2026-09-28T18:13:40.873Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -165,8 +165,8 @@
       "status": "ok",
       "aantal": 238,
       "vorigAantal": 238,
-      "duurSeconden": 51,
-      "laatsteSucces": "2026-09-28T17:05:46.061Z",
+      "duurSeconden": 47,
+      "laatsteSucces": "2026-09-28T18:14:28.222Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -176,7 +176,7 @@
       "aantal": 360,
       "vorigAantal": 360,
       "duurSeconden": 147,
-      "laatsteSucces": "2026-09-28T17:08:13.228Z",
+      "laatsteSucces": "2026-09-28T18:16:55.646Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -186,7 +186,7 @@
       "aantal": 35,
       "vorigAantal": 35,
       "duurSeconden": 2,
-      "laatsteSucces": "2026-09-28T17:08:15.171Z",
+      "laatsteSucces": "2026-09-28T18:16:57.581Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -195,8 +195,8 @@
       "status": "ok",
       "aantal": 13,
       "vorigAantal": 12,
-      "duurSeconden": 4,
-      "laatsteSucces": "2026-09-28T17:08:19.602Z",
+      "duurSeconden": 3,
+      "laatsteSucces": "2026-09-28T18:17:00.824Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -206,7 +206,7 @@
       "aantal": 120,
       "vorigAantal": 120,
       "duurSeconden": 11,
-      "laatsteSucces": "2026-09-28T17:08:30.713Z",
+      "laatsteSucces": "2026-09-28T18:17:11.627Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -215,8 +215,8 @@
       "status": "ok",
       "aantal": 35,
       "vorigAantal": 35,
-      "duurSeconden": 11,
-      "laatsteSucces": "2026-09-28T17:08:41.909Z",
+      "duurSeconden": 6,
+      "laatsteSucces": "2026-09-28T18:17:17.585Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -226,17 +226,17 @@
       "aantal": 10,
       "vorigAantal": 10,
       "duurSeconden": 6,
-      "laatsteSucces": "2026-09-28T17:08:48.223Z",
+      "laatsteSucces": "2026-09-28T18:17:23.483Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
     },
     "schuur": {
       "status": "ok",
-      "aantal": 183,
+      "aantal": 163,
       "vorigAantal": 183,
-      "duurSeconden": 43,
-      "laatsteSucces": "2026-09-28T17:09:31.083Z",
+      "duurSeconden": 41,
+      "laatsteSucces": "2026-09-28T18:18:04.479Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -245,8 +245,8 @@
       "status": "leeg",
       "aantal": 0,
       "vorigAantal": 0,
-      "duurSeconden": 5,
-      "laatsteSucces": "2026-09-28T17:09:35.742Z",
+      "duurSeconden": 4,
+      "laatsteSucces": "2026-09-28T18:18:08.777Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -255,8 +255,8 @@
       "status": "ok",
       "aantal": 124,
       "vorigAantal": 124,
-      "duurSeconden": 138,
-      "laatsteSucces": "2026-09-28T17:11:53.792Z",
+      "duurSeconden": 139,
+      "laatsteSucces": "2026-09-28T18:20:27.567Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -265,8 +265,8 @@
       "status": "ok",
       "aantal": 178,
       "vorigAantal": 178,
-      "duurSeconden": 188,
-      "laatsteSucces": "2026-09-28T17:15:01.543Z",
+      "duurSeconden": 182,
+      "laatsteSucces": "2026-09-28T18:23:29.670Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -276,7 +276,7 @@
       "aantal": 184,
       "vorigAantal": 184,
       "duurSeconden": 2,
-      "laatsteSucces": "2026-09-28T17:15:03.774Z",
+      "laatsteSucces": "2026-09-28T18:23:31.650Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -285,8 +285,8 @@
       "status": "ok",
       "aantal": 57,
       "vorigAantal": 57,
-      "duurSeconden": 5,
-      "laatsteSucces": "2026-09-28T17:15:08.385Z",
+      "duurSeconden": 4,
+      "laatsteSucces": "2026-09-28T18:23:36.109Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -294,9 +294,9 @@
     "kunstlinie": {
       "status": "ok",
       "aantal": 260,
-      "vorigAantal": 258,
-      "duurSeconden": 20,
-      "laatsteSucces": "2026-09-28T17:15:27.972Z",
+      "vorigAantal": 260,
+      "duurSeconden": 19,
+      "laatsteSucces": "2026-09-28T18:23:55.461Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -306,17 +306,17 @@
       "aantal": 182,
       "vorigAantal": 182,
       "duurSeconden": 52,
-      "laatsteSucces": "2026-09-28T17:16:19.773Z",
+      "laatsteSucces": "2026-09-28T18:24:47.291Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
     },
     "theateraanhetspui": {
       "status": "ok",
-      "aantal": 254,
+      "aantal": 253,
       "vorigAantal": 254,
       "duurSeconden": 1,
-      "laatsteSucces": "2026-09-28T17:16:20.336Z",
+      "laatsteSucces": "2026-09-28T18:24:47.887Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -326,7 +326,7 @@
       "aantal": 57,
       "vorigAantal": 57,
       "duurSeconden": 0,
-      "laatsteSucces": "2026-09-28T17:16:20.717Z",
+      "laatsteSucces": "2026-09-28T18:24:48.252Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -336,7 +336,7 @@
       "aantal": 244,
       "vorigAantal": 244,
       "duurSeconden": 92,
-      "laatsteSucces": "2026-09-28T17:17:52.578Z",
+      "laatsteSucces": "2026-09-28T18:26:20.203Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -346,7 +346,7 @@
       "aantal": 11,
       "vorigAantal": 11,
       "duurSeconden": 0,
-      "laatsteSucces": "2026-09-28T17:17:53.022Z",
+      "laatsteSucces": "2026-09-28T18:26:20.652Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -354,9 +354,9 @@
     "koningshof": {
       "status": "ok",
       "aantal": 104,
-      "vorigAantal": 92,
+      "vorigAantal": 104,
       "duurSeconden": 57,
-      "laatsteSucces": "2026-09-28T17:18:49.750Z",
+      "laatsteSucces": "2026-09-28T18:27:17.303Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -365,8 +365,8 @@
       "status": "ok",
       "aantal": 57,
       "vorigAantal": 57,
-      "duurSeconden": 99,
-      "laatsteSucces": "2026-09-28T17:20:28.488Z",
+      "duurSeconden": 116,
+      "laatsteSucces": "2026-09-28T18:29:12.955Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -375,8 +375,8 @@
       "status": "ok",
       "aantal": 13,
       "vorigAantal": 13,
-      "duurSeconden": 23,
-      "laatsteSucces": "2026-09-28T17:20:51.492Z",
+      "duurSeconden": 24,
+      "laatsteSucces": "2026-09-28T18:29:36.591Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -385,8 +385,8 @@
       "status": "ok",
       "aantal": 156,
       "vorigAantal": 156,
-      "duurSeconden": 166,
-      "laatsteSucces": "2026-09-28T17:23:37.706Z",
+      "duurSeconden": 161,
+      "laatsteSucces": "2026-09-28T18:32:17.349Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
@@ -394,7 +394,7 @@
     "kruispunt": {
       "status": "gepauzeerd",
       "aantal": 0,
-      "vorigAantal": 134,
+      "vorigAantal": 0,
       "duurSeconden": 0,
       "laatsteSucces": "2026-09-27T20:17:17.593Z",
       "terugvalSinds": null,
@@ -408,7 +408,7 @@
     "isala": {
       "status": "gepauzeerd",
       "aantal": 0,
-      "vorigAantal": 238,
+      "vorigAantal": 0,
       "duurSeconden": 0,
       "laatsteSucces": "2026-09-27T20:18:00.299Z",
       "terugvalSinds": null,
@@ -423,8 +423,8 @@
       "status": "ok",
       "aantal": 256,
       "vorigAantal": 256,
-      "duurSeconden": 245,
-      "laatsteSucces": "2026-09-28T17:27:48.108Z",
+      "duurSeconden": 235,
+      "laatsteSucces": "2026-09-28T18:36:11.980Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null
