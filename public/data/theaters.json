@@ -258,7 +258,9 @@
       "podiumpasReserveren": {
         "telefoon": "0180-615958",
         "toelichting": "Uitsluitend telefonisch via de publieksservice, vanaf 30 dagen voor de voorstelling."
-      }
+      },
+      "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
+      "meldingLink": "https://www.theaterhetkruispunt.nl/agenda"
     },
     "isala": {
       "naam": "Isala theater",
@@ -268,7 +270,9 @@
         "telefoon": "010 - 458 6400",
         "email": "info@isalatheater.nl",
         "toelichting": "Via het bespreekbureau, aan de balie, telefonisch of per mail, vanaf 30 dagen voor de voorstelling."
-      }
+      },
+      "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
+      "meldingLink": "https://www.isalatheater.nl/agenda"
     },
     "stoep": {
       "naam": "Theater de Stoep",

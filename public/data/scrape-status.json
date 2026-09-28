@@ -392,24 +392,32 @@
       "waarschuwing": null
     },
     "kruispunt": {
-      "status": "terugval",
-      "aantal": 134,
+      "status": "gepauzeerd",
+      "aantal": 0,
       "vorigAantal": 134,
-      "duurSeconden": 3,
+      "duurSeconden": 0,
       "laatsteSucces": "2026-09-27T20:17:17.593Z",
-      "terugvalSinds": "2026-09-28T11:28:32.998Z",
-      "fout": "exception: geen agendakaarten op https://www.theaterhetkruispunt.nl/agenda — site veranderd of geblokkeerd?",
-      "waarschuwing": null
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null,
+      "gepauzeerd": {
+        "sinds": "2026-09-28",
+        "reden": "BunnyCDN-botcontrole (403)"
+      }
     },
     "isala": {
-      "status": "terugval",
-      "aantal": 238,
+      "status": "gepauzeerd",
+      "aantal": 0,
       "vorigAantal": 238,
-      "duurSeconden": 3,
+      "duurSeconden": 0,
       "laatsteSucces": "2026-09-27T20:18:00.299Z",
-      "terugvalSinds": "2026-09-28T11:28:34.979Z",
-      "fout": "exception: geen agendakaarten op https://www.isalatheater.nl/agenda — site veranderd of geblokkeerd?",
-      "waarschuwing": null
+      "terugvalSinds": null,
+      "fout": null,
+      "waarschuwing": null,
+      "gepauzeerd": {
+        "sinds": "2026-09-28",
+        "reden": "BunnyCDN-botcontrole (403)"
+      }
     },
     "stoep": {
       "status": "ok",
