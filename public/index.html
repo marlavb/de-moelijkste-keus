@@ -125,8 +125,8 @@
           </section>
           <section class="sheet-section">
             <div class="toggle-row">
-              <span class="toggle-row-label">Toon alleen favorieten</span>
-              <button class="switch" type="button" id="sidebarFavoritesOnlyToggle" role="switch" aria-checked="false"></button>
+              <span class="toggle-row-label">Toon alleen watchlist</span>
+              <button class="switch" type="button" id="sidebarWatchlistOnlyToggle" role="switch" aria-checked="false"></button>
             </div>
           </section>
           <button class="text-btn" type="button" id="sidebarClearFilters">Filters wissen</button>
@@ -146,9 +146,9 @@
             <polyline points="15 6 9 12 15 18" />
           </svg>
         </button>
-        <button class="icon-btn icon-btn--floating" type="button" id="detailFavorite" aria-label="Favoriet">
+        <button class="icon-btn icon-btn--floating" type="button" id="detailWatchIcon" aria-label="Op watchlist zetten" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 20s-7-4.35-9.5-8.5C0.86 8.1 2.2 5 5.4 5c1.9 0 3.3 1 4.6 2.6C11.3 6 12.7 5 14.6 5c3.2 0 4.54 3.1 2.9 6.5C19 15.65 12 20 12 20z" />
+            <path d="M6 3h12v18l-6-4-6 4z" />
           </svg>
         </button>
       </div>
@@ -179,6 +179,13 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
             <span id="detailAddress"></span>
           </div>
+        </div>
+
+        <div class="detail-actions">
+          <button class="watch-btn" type="button" id="detailWatchBtn" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z" /></svg>
+            <span id="detailWatchLabel">Op watchlist</span>
+          </button>
         </div>
 
         <hr class="detail-divider" />
@@ -256,15 +263,15 @@
       <header class="app-header">
         <div class="header-top">
           <div>
-            <h1 class="app-title">Favorieten</h1>
-            <p class="app-subtitle">Voorstellingen die je hebt bewaard</p>
+            <h1 class="app-title">Watchlist</h1>
+            <p class="app-subtitle">Voorstellingen die je wilt zien, bij alle theaters</p>
           </div>
         </div>
       </header>
 
       <main class="agenda-list" id="favoritesList" aria-live="polite">
         <p class="empty-state" id="favoritesEmpty" hidden>
-          Nog geen favorieten. Tik op het hartje bij een voorstelling om 'm hier te bewaren.
+          Je watchlist is nog leeg. Tik op de bladwijzer bij een voorstelling om hem hier te bewaren.
         </p>
       </main>
     </section>
@@ -308,8 +315,8 @@
         </section>
         <section class="sheet-section">
           <div class="toggle-row">
-            <span class="toggle-row-label">Toon alleen favorieten</span>
-            <button class="switch" type="button" id="favoritesOnlyToggle" role="switch" aria-checked="false"></button>
+            <span class="toggle-row-label">Toon alleen watchlist</span>
+            <button class="switch" type="button" id="watchlistOnlyToggle" role="switch" aria-checked="false"></button>
           </div>
         </section>
       </div>
@@ -339,9 +346,9 @@
       </button>
       <button class="nav-item" type="button" data-tab="favorieten">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 20s-7-4.35-9.5-8.5C0.86 8.1 2.2 5 5.4 5c1.9 0 3.3 1 4.6 2.6C11.3 6 12.7 5 14.6 5c3.2 0 4.54 3.1 2.9 6.5C19 15.65 12 20 12 20z" />
+          <path d="M6 3h12v18l-6-4-6 4z" />
         </svg>
-        <span>Favorieten</span>
+        <span>Watchlist</span>
       </button>
     </nav>
   </div>

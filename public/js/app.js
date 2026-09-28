@@ -13,7 +13,7 @@ import {
 import { getGenreBucket } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
 import { renameFavoritesAndPersist, THEATER_MOVES } from './favorites.js';
-import { laadWatchlist, bekendeSleutels, legeWatchlist } from './watchlist.js';
+import { laadWatchlist, bekendeSleutels, legeWatchlist, watchlistSleutel, voegToe, verwijder } from './watchlist.js';
 
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
@@ -150,13 +150,13 @@ const state = {
   selectedCities: savedFilters.selectedCities,
   selectedTheaters: savedFilters.selectedTheaters,
   selectedGenres: savedFilters.selectedGenres,
-  // De 3 toggles hieronder (podiumpasOnly/favoritesOnly/hideFullOnly) waren
+  // De 3 toggles hieronder (podiumpasOnly/watchlistOnly/hideFullOnly) waren
   // vroeger bewust session-only (nooit opgeslagen), zodat ze bij elk bezoek
   // weer op de standaardstand "uit" stonden — dat is op expliciet verzoek
   // omgedraaid: ze worden nu net als de multi-select filters hierboven
   // onthouden in localStorage.
   podiumpasOnly: savedFilters.podiumpasOnly,
-  favoritesOnly: savedFilters.favoritesOnly,
+  watchlistOnly: savedFilters.watchlistOnly,
   hideFullOnly: savedFilters.hideFullOnly,
   // Bewaard als de ongewijzigde tekst (searchQueryRaw, ook gebruikt om het
   // zoekveld bij het laden weer te vullen) plus de al lowercased/getrimde
@@ -184,13 +184,13 @@ const els = {
   sheetTheaterFilters: document.getElementById('sheetTheaterFilters'),
   sheetGenreFilters: document.getElementById('sheetGenreFilters'),
   podiumpasToggle: document.getElementById('podiumpasToggle'),
-  favoritesOnlyToggle: document.getElementById('favoritesOnlyToggle'),
+  watchlistOnlyToggle: document.getElementById('watchlistOnlyToggle'),
   hideFullToggle: document.getElementById('hideFullToggle'),
   sidebarCityFilters: document.getElementById('sidebarCityFilters'),
   sidebarTheaterFilters: document.getElementById('sidebarTheaterFilters'),
   sidebarGenreFilters: document.getElementById('sidebarGenreFilters'),
   sidebarPodiumpasToggle: document.getElementById('sidebarPodiumpasToggle'),
-  sidebarFavoritesOnlyToggle: document.getElementById('sidebarFavoritesOnlyToggle'),
+  sidebarWatchlistOnlyToggle: document.getElementById('sidebarWatchlistOnlyToggle'),
   sidebarHideFullToggle: document.getElementById('sidebarHideFullToggle'),
   sidebarSearchInput: document.getElementById('sidebarSearchInput'),
   sidebarAccordionHeaders: {
@@ -221,7 +221,9 @@ const els = {
     favorieten: document.getElementById('screen-favorieten'),
   },
   detailBack: document.getElementById('detailBack'),
-  detailFavorite: document.getElementById('detailFavorite'),
+  detailWatchIcon: document.getElementById('detailWatchIcon'),
+  detailWatchBtn: document.getElementById('detailWatchBtn'),
+  detailWatchLabel: document.getElementById('detailWatchLabel'),
   detailBanner: document.getElementById('detailBanner'),
   detailGenre: document.getElementById('detailGenre'),
   detailTheater: document.getElementById('detailTheater'),
@@ -330,8 +332,8 @@ async function init() {
   });
   els.podiumpasToggle.addEventListener('click', onPodiumpasToggleClick);
   els.sidebarPodiumpasToggle.addEventListener('click', onPodiumpasToggleClick);
-  els.favoritesOnlyToggle.addEventListener('click', onFavoritesToggleClick);
-  els.sidebarFavoritesOnlyToggle.addEventListener('click', onFavoritesToggleClick);
+  els.watchlistOnlyToggle.addEventListener('click', onWatchlistToggleClick);
+  els.sidebarWatchlistOnlyToggle.addEventListener('click', onWatchlistToggleClick);
   els.hideFullToggle.addEventListener('click', onHideFullToggleClick);
   els.sidebarHideFullToggle.addEventListener('click', onHideFullToggleClick);
   els.clearFilters.addEventListener('click', clearAllFilters);
@@ -494,7 +496,8 @@ function loadFilters() {
     selectedTheaters: new Set(Array.isArray(stored.selectedTheaters) ? stored.selectedTheaters : []),
     selectedGenres: new Set(Array.isArray(stored.selectedGenres) ? stored.selectedGenres : []),
     podiumpasOnly: stored.podiumpasOnly === true,
-    favoritesOnly: stored.favoritesOnly === true,
+    // Heette tot okt 2026 watchlistOnly.
+    watchlistOnly: (stored.watchlistOnly ?? stored.watchlistOnly) === true,
     hideFullOnly: stored.hideFullOnly === true,
     searchQueryRaw: typeof stored.searchQuery === 'string' ? stored.searchQuery : '',
   };
@@ -508,7 +511,7 @@ function saveFilters() {
       selectedTheaters: [...state.selectedTheaters],
       selectedGenres: [...state.selectedGenres],
       podiumpasOnly: state.podiumpasOnly,
-      favoritesOnly: state.favoritesOnly,
+      watchlistOnly: state.watchlistOnly,
       hideFullOnly: state.hideFullOnly,
       searchQuery: state.searchQueryRaw,
     })
@@ -663,6 +666,61 @@ function logOudeSlugs({ log, gewijzigd }) {
   );
 }
 
+const BLADWIJZER = '<path d="M6 3h12v18l-6-4-6 4z" />';
+
+// Sleutels van wat nu op de watchlist staat; opnieuw opgebouwd als
+// state.watchlist een ander object wordt (elke wijziging maakt een nieuw).
+let watchlistSleutelsVoor = null;
+let watchlistSleutelsCache = new Set();
+function watchlistSleutels() {
+  if (watchlistSleutelsVoor !== state.watchlist) {
+    watchlistSleutelsVoor = state.watchlist;
+    watchlistSleutelsCache = new Set((state.watchlist?.watchlist ?? []).map((i) => i.sleutel));
+  }
+  return watchlistSleutelsCache;
+}
+
+// De sleutel per voorstelling onthouden: het filter vraagt hem bij elke
+// render voor alle ~7000 voorstellingen op.
+const showSleutels = new WeakMap();
+function showSleutel(show) {
+  let k = showSleutels.get(show);
+  if (k === undefined) {
+    k = watchlistSleutel(show.titel, show.theaterId);
+    showSleutels.set(show, k);
+  }
+  return k;
+}
+
+function isOpWatchlist(show) {
+  return watchlistSleutels().has(showSleutel(show));
+}
+
+// Aan/uit via voegToe/verwijder: met tijdstempel, zodat bij samenvoegen
+// met een ander apparaat de laatste actie wint (zie watchlist.js).
+function toggleWatchlist(show) {
+  const sleutel = showSleutel(show);
+  state.watchlist = isOpWatchlist(show)
+    ? verwijder(state.watchlist, sleutel)
+    : voegToe(state.watchlist, { titel: show.titel, theaterId: show.theaterId });
+  saveWatchlist();
+  renderWatchButtons(show);
+  renderAgenda();
+}
+
+function saveWatchlist() {
+  // Ingelogd maar het Firestore-document nog niet binnen: lokaal bewaren;
+  // syncWatchlistForCurrentUser() voegt het straks samen met de cloud.
+  if (state.user && state.cloudWatchlist) {
+    state.cloudWatchlist = state.watchlist;
+    setDoc(userDocRef(state.user.uid), state.watchlist, { merge: true }).catch((err) =>
+      console.error('Kon de watchlist niet synchroniseren:', err)
+    );
+    return;
+  }
+  saveWatchlistLocal(state.watchlist);
+}
+
 // ---------- Inloggen (optioneel) ----------
 
 function userDocRef(uid) {
@@ -725,7 +783,7 @@ async function handleAuthChange(user) {
   if (hash.startsWith('#/show/')) {
     const id = decodeURIComponent(hash.slice('#/show/'.length));
     const show = state.shows.find((s) => s.id === id);
-    if (show) renderFavoriteButton(show);
+    if (show) renderWatchButtons(show);
   }
 }
 
@@ -798,7 +856,7 @@ function renderAuthBox() {
     title.textContent = 'Synchroniseer op al je apparaten';
     const desc = document.createElement('p');
     desc.className = 'auth-box-desc';
-    desc.textContent = 'Log in om je favorieten en theaterkeuze te bewaren.';
+    desc.textContent = 'Log in om je watchlist en theaterkeuze te bewaren.';
     text.append(title, desc);
     box.appendChild(text);
 
@@ -1005,9 +1063,9 @@ function onPodiumpasToggleClick() {
   saveFilters();
 }
 
-function onFavoritesToggleClick() {
-  state.favoritesOnly = !state.favoritesOnly;
-  renderFavoritesToggle();
+function onWatchlistToggleClick() {
+  state.watchlistOnly = !state.watchlistOnly;
+  renderWatchlistToggle();
   renderFilterBadge();
   renderAgenda();
   saveFilters();
@@ -1026,7 +1084,7 @@ function clearAllFilters() {
   state.selectedTheaters.clear();
   state.selectedGenres.clear();
   state.podiumpasOnly = false;
-  state.favoritesOnly = false;
+  state.watchlistOnly = false;
   state.hideFullOnly = false;
   renderFilters();
   renderFilterBadge();
@@ -1082,10 +1140,10 @@ function renderPodiumpasToggle() {
   }
 }
 
-function renderFavoritesToggle() {
-  for (const btn of [els.favoritesOnlyToggle, els.sidebarFavoritesOnlyToggle]) {
-    btn.classList.toggle('is-on', state.favoritesOnly);
-    btn.setAttribute('aria-checked', String(state.favoritesOnly));
+function renderWatchlistToggle() {
+  for (const btn of [els.watchlistOnlyToggle, els.sidebarWatchlistOnlyToggle]) {
+    btn.classList.toggle('is-on', state.watchlistOnly);
+    btn.setAttribute('aria-checked', String(state.watchlistOnly));
   }
 }
 
@@ -1103,7 +1161,7 @@ function renderFilters() {
   renderTheaterFilters();
   renderGenreFilters();
   renderPodiumpasToggle();
-  renderFavoritesToggle();
+  renderWatchlistToggle();
   renderHideFullToggle();
 }
 
@@ -1113,7 +1171,7 @@ function renderFilterBadge() {
     (state.selectedTheaters.size > 0 ? 1 : 0) +
     (state.selectedGenres.size > 0 ? 1 : 0) +
     (state.podiumpasOnly ? 1 : 0) +
-    (state.favoritesOnly ? 1 : 0) +
+    (state.watchlistOnly ? 1 : 0) +
     (state.hideFullOnly ? 1 : 0);
   els.filterBadge.textContent = String(count);
   els.filterBadge.hidden = count === 0;
@@ -1146,7 +1204,7 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     const theaterOk = state.selectedTheaters.size === 0 || state.selectedTheaters.has(s.theaterId);
     const genreOk = state.selectedGenres.size === 0 || state.selectedGenres.has(getGenreBucket(s));
     const podiumpasOk = !state.podiumpasOnly || s.podiumpas === true;
-    const favoritesOk = !state.favoritesOnly || state.favorites.has(productionKey(s));
+    const watchlistOk = !state.watchlistOnly || isOpWatchlist(s);
     // 'onbekend' blijft altijd zichtbaar — we weten domweg niet of die vol
     // is, en dat is iets anders dan bevestigd vol (uitverkocht/wachtlijst).
     const fullOk =
@@ -1159,7 +1217,7 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
       !state.searchQuery ||
       s.titel.toLowerCase().includes(state.searchQuery) ||
       s.theaterNaam.toLowerCase().includes(state.searchQuery);
-    return cityOk && theaterOk && genreOk && podiumpasOk && favoritesOk && fullOk && dateOk && searchOk;
+    return cityOk && theaterOk && genreOk && podiumpasOk && watchlistOk && fullOk && dateOk && searchOk;
   });
 }
 
@@ -1174,7 +1232,7 @@ function emptyStateMessage() {
     state.selectedTheaters.size > 0 ||
     state.selectedGenres.size > 0 ||
     state.podiumpasOnly ||
-    state.favoritesOnly ||
+    state.watchlistOnly ||
     state.hideFullOnly;
   const query = state.searchQueryRaw;
   if (query && filtersActive) return `Geen voorstellingen gevonden voor "${query}" met deze filters.`;
@@ -1185,19 +1243,25 @@ function emptyStateMessage() {
 
 function renderAgenda() {
   const shows = filteredShows();
+  const totalWithoutWindow = filteredShows({ ignoreDateWindow: true }).length;
+  const hiddenCount = totalWithoutWindow - shows.length;
 
   if (shows.length === 0) {
     els.agendaList.innerHTML = '';
-    els.emptyState.textContent = emptyStateMessage();
+    // Niets binnen het datumvenster, maar wel later (vaak bij "Toon alleen
+    // watchlist"): zeg dat, en laat de knop naar verder in de toekomst staan.
+    els.emptyState.textContent =
+      state.dateWindowDays != null && hiddenCount > 0
+        ? `Geen voorstellingen in de komende ${state.dateWindowDays} dagen.`
+        : emptyStateMessage();
     els.emptyState.hidden = false;
     els.agendaList.appendChild(els.emptyState);
+    if (state.dateWindowDays != null && hiddenCount > 0) els.agendaList.appendChild(makeShowMoreButton(hiddenCount));
     return;
   }
   els.emptyState.hidden = true;
   renderShowGroups(els.agendaList, shows);
 
-  const totalWithoutWindow = filteredShows({ ignoreDateWindow: true }).length;
-  const hiddenCount = totalWithoutWindow - shows.length;
   if (state.dateWindowDays != null && hiddenCount > 0) {
     els.agendaList.appendChild(makeShowMoreButton(hiddenCount));
   }
@@ -1254,7 +1318,11 @@ function renderShowRow(show) {
 
   const title = document.createElement('p');
   title.className = 'show-title';
-  title.textContent = show.maker ? `${show.titel} - ${show.maker}` : show.titel;
+  const titleText = document.createElement('span');
+  titleText.className = 'show-title-text';
+  titleText.textContent = show.maker ? `${show.titel} - ${show.maker}` : show.titel;
+  title.appendChild(titleText);
+  if (isOpWatchlist(show)) title.appendChild(makeWatchlistIcon());
 
   const metaRow = document.createElement('div');
   metaRow.className = 'show-meta-row';
@@ -1281,6 +1349,19 @@ function renderShowRow(show) {
 
   row.append(dot, info, chevron);
   return row;
+}
+
+/** Gevulde bladwijzer achter de titel van een voorstelling op je watchlist. */
+function makeWatchlistIcon() {
+  const wrap = document.createElement('span');
+  wrap.className = 'watchlist-icon';
+  wrap.setAttribute('role', 'img');
+  wrap.setAttribute('aria-label', 'Op je watchlist');
+  wrap.title = 'Op je watchlist';
+  const svg = svgIcon(BLADWIJZER);
+  svg.setAttribute('fill', 'currentColor');
+  wrap.appendChild(svg);
+  return wrap;
 }
 
 /** Klein, eigen vinkje-icoon dat aangeeft dat dit theater de Podiumpas accepteert. */
@@ -1454,28 +1535,27 @@ function renderDetail(show) {
     : `Reserveer op ${hostnameOf(show.reserverenUrl)}`;
   els.detailReserveBtn.href = show.reserverenUrl;
 
-  renderFavoriteButton(show);
+  renderWatchButtons(show);
   renderOtherDates(show);
   renderRelatedTheaters(show);
 
-  els.detailFavorite.onclick = () => {
-    const key = productionKey(show);
-    if (state.favorites.has(key)) {
-      state.favorites.delete(key);
-    } else {
-      state.favorites.add(key);
-    }
-    saveFavorites();
-    renderFavoriteButton(show);
-  };
+  els.detailWatchIcon.onclick = () => toggleWatchlist(show);
+  els.detailWatchBtn.onclick = () => toggleWatchlist(show);
 
   els.detailAddCalendar.onclick = () => downloadIcs(show);
 }
 
-function renderFavoriteButton(show) {
-  const isFavorite = state.favorites.has(productionKey(show));
-  els.detailFavorite.classList.toggle('is-favorite', isFavorite);
-  els.detailFavorite.querySelector('svg').setAttribute('fill', isFavorite ? 'currentColor' : 'none');
+function renderWatchButtons(show) {
+  const op = isOpWatchlist(show);
+  const label = op ? 'Van watchlist halen' : 'Op watchlist zetten';
+  for (const btn of [els.detailWatchIcon, els.detailWatchBtn]) {
+    btn.classList.toggle('is-on', op);
+    btn.setAttribute('aria-pressed', String(op));
+    btn.querySelector('svg').setAttribute('fill', op ? 'currentColor' : 'none');
+  }
+  els.detailWatchIcon.setAttribute('aria-label', label);
+  els.detailWatchIcon.title = label;
+  els.detailWatchLabel.textContent = op ? 'Op je watchlist' : 'Op watchlist';
 }
 
 function renderOtherDates(show) {
@@ -1879,32 +1959,37 @@ function renderTheatersScreen() {
   }
 }
 
-// ---------- Favorieten-scherm ----------
+// ---------- Watchlist-scherm (tot stap 4 onder de tab Watchlist) ----------
 
-/** Eén rij per favoriete productie i.p.v. per voorstelling-datum. Een
- * productie zonder aankomende voorstelling wordt nog wel getoond (niet
- * stilzwijgend weggelaten), maar dan niet-klikbaar met een duidelijke
- * "geen komende voorstellingen"-tekst — een productie waar zelfs geen
- * enkele match meer voor bestaat in de data laten we wél weg, want daar is
- * geen titel/theater meer voor te tonen. */
-function favoriteProductions() {
+/** Eén rij per watchlist-item, met de eerstvolgende voorstelling over alle
+ * theaters heen. Staat een item niet (meer) in de agenda, dan tonen we het
+ * niet-klikbaar met "Geen komende voorstellingen" — nooit stil weglaten. */
+function watchlistProductions() {
+  const vandaag = todayIsoDate();
+  const perSleutel = new Map();
+  for (const s of state.shows) {
+    const k = showSleutel(s);
+    if (!watchlistSleutels().has(k)) continue;
+    if (!perSleutel.has(k)) perSleutel.set(k, []);
+    perSleutel.get(k).push(s);
+  }
   const productions = [];
-  for (const key of state.favorites) {
-    const matches = state.shows.filter((s) => productionKey(s) === key);
-    if (matches.length === 0) continue;
-
-    const soonest = matches
-      .filter((s) => s.datum >= todayIsoDate())
-      .sort((a, b) => sortKey(a).localeCompare(sortKey(b)))[0];
-    const sample = matches[0];
-
+  for (const item of state.watchlist?.watchlist ?? []) {
+    const komend = (perSleutel.get(item.sleutel) ?? [])
+      .filter((s) => s.datum >= vandaag)
+      .sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
+    const soonest = komend[0] ?? null;
+    const theaters = new Set(komend.map((s) => s.theaterId));
     productions.push({
-      key,
-      titel: sample.titel,
-      theaterId: sample.theaterId,
-      theaterNaam: sample.theaterNaam,
-      podiumpas: sample.podiumpas,
-      soonest: soonest ?? null,
+      key: item.sleutel,
+      titel: soonest?.titel ?? item.titel,
+      theaterNaam: soonest
+        ? theaters.size > 1
+          ? `${soonest.theaterNaam} en ${theaters.size - 1} ander${theaters.size === 2 ? '' : 'e'} theater${theaters.size === 2 ? '' : 's'}`
+          : soonest.theaterNaam
+        : item.theaterId ? theaterDisplayName(item.theaterId) : '',
+      podiumpas: soonest?.podiumpas,
+      soonest,
     });
   }
 
@@ -1946,7 +2031,10 @@ function renderProductionRow(production) {
   const meta = document.createElement('p');
   meta.className = 'show-meta';
   const theaterNaam = production.theaterNaam;
-  meta.textContent = hasUpcoming ? theaterNaam : `${theaterNaam} · Geen komende voorstellingen`;
+  const wanneer = hasUpcoming ? `${formatDateShort(production.soonest.datum)} · ` : '';
+  meta.textContent = hasUpcoming
+    ? `${wanneer}${theaterNaam}`
+    : [theaterNaam, 'Geen komende voorstellingen'].filter(Boolean).join(' · ');
   metaRow.appendChild(meta);
 
   if (production.podiumpas === true) metaRow.appendChild(makePodiumpasIcon());
@@ -1964,7 +2052,7 @@ function renderProductionRow(production) {
 }
 
 function renderFavoritesScreen() {
-  const productions = favoriteProductions();
+  const productions = watchlistProductions();
 
   if (productions.length === 0) {
     els.favoritesList.innerHTML = '';

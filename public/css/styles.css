@@ -301,12 +301,31 @@ a {
 }
 
 .show-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin: 0;
   font-size: 15px;
   font-weight: 600;
+}
+
+.show-title-text {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Gevulde bladwijzer achter de titel van een voorstelling op je watchlist. */
+.watchlist-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.watchlist-icon svg {
+  width: 14px;
+  height: 14px;
 }
 
 .show-meta {
@@ -545,8 +564,43 @@ a {
   backdrop-filter: blur(6px);
 }
 
-.icon-btn--floating.is-favorite {
-  color: #ff6b6b;
+.icon-btn--floating.is-on {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Knoppen onder de gegevens in het detailscherm (watchlist, later plannen). */
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 0;
+}
+
+.watch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.watch-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.watch-btn.is-on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .detail-genre-tag {
