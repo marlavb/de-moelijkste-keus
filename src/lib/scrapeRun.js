@@ -13,6 +13,12 @@ export class ScrapeTimeoutError extends Error {
   name = 'ScrapeTimeoutError';
 }
 
+// De site weert ons (bv. een Cloudflare-challenge): de melding gaat zonder
+// "exception:"-voorvoegsel naar scrape-status.json.
+export class ScrapeBlockedError extends Error {
+  name = 'ScrapeBlockedError';
+}
+
 // (c)-waarschuwing: een scherpe daling is verdacht (bv. een parser die nog
 // maar een deel matcht), maar komt ook legitiem voor (einde seizoen). Dus
 // alleen melden, de nieuwe data wordt gewoon gebruikt.
@@ -63,7 +69,10 @@ export function evaluateOutcome({ theaterId, shows, error, previousShows, minDat
   const vorigAantal = previous.length;
 
   if (error) {
-    const fout = error instanceof ScrapeTimeoutError ? error.message : `exception: ${summarizeError(error)}`;
+    const fout =
+      error instanceof ScrapeTimeoutError || error?.name === 'ScrapeBlockedError'
+        ? summarizeError(error)
+        : `exception: ${summarizeError(error)}`;
     if (vorigAantal > 0) return { status: 'terugval', shows: previous, fout, vorigAantal };
     return { status: 'fout', shows: [], fout, vorigAantal };
   }

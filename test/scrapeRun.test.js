@@ -7,7 +7,7 @@ import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import { runRefresh } from '../src/lib/scrapeRun.js';
+import { runRefresh, ScrapeBlockedError } from '../src/lib/scrapeRun.js';
 import { createPoliteWaiter, sleep } from '../src/lib/politeness.js';
 
 const MIN_DATE = '2026-10-01';
@@ -346,4 +346,19 @@ test('gepauzeerd theater: geen scrape, status gepauzeerd, oude data weg, andere 
   assert.equal(written.filter((s) => s.theaterId === 'a').length, 0, 'oude voorstellingen vervallen');
   assert.equal(status.theaters.b.status, 'ok');
   assert.deepEqual(annotations.map((x) => x.level), ['notice'], 'alleen een notice, geen warning');
+});
+
+test('geblokkeerd: fout zonder "exception:"-voorvoegsel, en terugval', async () => {
+  const paths = await setup({ previousShows: [show('a', '2026-10-05')] });
+  const { status } = await run({
+    paths,
+    theaters: [theater('a')],
+    scrapers: {
+      a: async () => {
+        throw new ScrapeBlockedError('geblokkeerd (Cloudflare-challenge)');
+      },
+    },
+  });
+  assert.equal(status.theaters.a.status, 'terugval');
+  assert.equal(status.theaters.a.fout, 'geblokkeerd (Cloudflare-challenge)');
 });

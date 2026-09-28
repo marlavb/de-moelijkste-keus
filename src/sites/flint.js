@@ -1,8 +1,23 @@
 import { extractTime, createIdBuilder } from '../lib/normalize.js';
+import { sleep } from '../lib/politeness.js';
+import { ScrapeBlockedError } from '../lib/scrapeRun.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
 
 const AGENDA_PATH = '/agenda/';
 const PODIUMPAS_PRICE_CEILING = 50;
+// Flint gaf in CI soms 0 kaarten terwijl het lokaal altijd werkte: de
+// GitHub-runner krijgt dan vermoedelijk een Cloudflare-challenge. Eén gewone
+// herpoging na een pauze (geen andere user-agent of andere trucs); lukt ook
+// die niet, dan faalt het theater en valt het vangnet terug.
+const RETRY_PAUSE_MS = 60_000;
+
+/** Is dit antwoord een Cloudflare-challenge i.p.v. de agenda? */
+export function isCloudflareChallenge({ status, headers = {}, title = '', hasChallengeMarkup = false }) {
+  if ((headers['cf-mitigated'] ?? '').toLowerCase() === 'challenge') return true;
+  if (hasChallengeMarkup) return true;
+  if (/just a moment|attention required|een moment geduld/i.test(title)) return true;
+  return [403, 503].includes(status) && /cloudflare/i.test(headers.server ?? '');
+}
 
 const MONTHS_ABBR = {
   jan: 1,
@@ -160,16 +175,13 @@ function classifyBeschikbaarheid(label) {
  *   detailpagina bezoeken) valt reserverenUrl terug op de detailpagina-URL
  *   zelf, net als bij Karavaan.
  */
-export async function scrapeFlint({ page, theater, robots, waitForTurn, log }) {
+export async function scrapeFlint({ page, theater, robots, waitForTurn, log, signal }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
     return [];
   }
 
-  await waitForTurn();
-  await page.goto(theater.agendaUrl, { waitUntil: 'networkidle', timeout: 45000 });
-
-  const rawCards = await page.evaluate(() => {
+  const extractCards = () => {
     return Array.from(document.querySelectorAll('article.agenda-item')).map((card) => {
       const titel = card.querySelector('.agenda-item__title-main')?.textContent.trim() ?? null;
       const maker = card.querySelector('.agenda-item__title-sub')?.textContent.trim() || null;
@@ -190,7 +202,34 @@ export async function scrapeFlint({ page, theater, robots, waitForTurn, log }) {
         null;
       return { titel, maker, dagTekst, tijdTekst, locatie, tags, label, detailHref };
     });
-  });
+  };
+
+  let rawCards = [];
+  let geblokkeerd = false;
+  for (let poging = 1; poging <= 2; poging++) {
+    await waitForTurn();
+    const response = await page.goto(theater.agendaUrl, { waitUntil: 'networkidle', timeout: 45000 });
+    geblokkeerd = isCloudflareChallenge({
+      status: response?.status(),
+      headers: response?.headers() ?? {},
+      title: await page.title().catch(() => ''),
+      hasChallengeMarkup: await page
+        .evaluate(() => !!document.querySelector('#challenge-form, #challenge-running, script[src*="challenges.cloudflare.com"]'))
+        .catch(() => false),
+    });
+    rawCards = geblokkeerd ? [] : await page.evaluate(extractCards);
+    if (rawCards.length > 0) {
+      if (poging > 1) log('herpoging was nodig en is gelukt.');
+      break;
+    }
+    if (poging === 1) {
+      log(`${geblokkeerd ? 'Cloudflare-challenge' : '0 kaarten'} bij poging 1 — herpoging over ${RETRY_PAUSE_MS / 1000} s.`);
+      await sleep(RETRY_PAUSE_MS, signal);
+    }
+  }
+  if (rawCards.length === 0 && geblokkeerd) {
+    throw new ScrapeBlockedError('geblokkeerd (Cloudflare-challenge)');
+  }
 
   log(`${rawCards.length} kaarten gevonden op de agendapagina`);
 
