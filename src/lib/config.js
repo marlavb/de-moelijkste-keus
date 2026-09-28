@@ -178,6 +178,15 @@ export const THEATERS = [
     agendaUrl: 'https://www.theaterdeomval.nl/voorstellingen',
     podiumpas: true,
   },
+  // Podiumpas bij De Landing: gemengd. Bron:
+  // https://schouwburgamstelveen.nl/nl/theater/je-bezoek/kaartverkoop/podiumpas/
+  // (27 sep 2026): uitgesloten zijn verhuringen, eigen producties, films,
+  // gastvoorstellingen en voorstellingen boven €50. Per voorstelling bepaald
+  // in sites/amstelveen.js (bepaalLandingPodiumpas: bestellink van derden,
+  // en binnen 30 dagen het Podiumpas-prijstype in het Ticketmatic-widget).
+  // Na de heropening van de Schouwburg (december 2027) gelden deze regels
+  // ook voor de Schouwburg. Online reserveren met de pas kan via het widget,
+  // dus geen podiumpasReserveren.
   {
     id: 'delanding',
     naam: 'De Landing',

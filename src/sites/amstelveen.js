@@ -13,6 +13,61 @@ const THEATER_ID_BY_SECTION = { theater: 'amstelveen', delanding: 'delanding' };
 // Logo/label in de bestelknop, als controle op het linkpad.
 const LOCATION_LABEL = { amstelveen: /schouwburg/i, delanding: /landing/i };
 
+// Podiumpas bij De Landing. Bron: https://schouwburgamstelveen.nl/nl/theater/je-bezoek/kaartverkoop/podiumpas/
+// (27 sep 2026): "Verhuringen, eigen producties, films, voorstellingen die te
+// gast zijn of voorstellingen die duurder zijn dan 50 euro, zijn uitgesloten.
+// Bij deze voorstellingen vind je het prijstype Podiumpas dan ook niet terug."
+// Dat prijstype staat pas in het Ticketmatic-widget vanaf 30 dagen voor de
+// voorstelling (reserveren kan vanaf dan), en verdwijnt bij wachtlijst/
+// uitverkocht. Daarom:
+// - bestellink naar een derde partij (bv. patronstage.com) → false, altijd;
+// - binnen 29 dagen (zie WIDGET_WINDOW_DAYS), beschikbaar, widget goed geladen: geen Podiumpas-
+//   prijstype of laagste reguliere prijs > €50 → false, anders true;
+// - wachtlijst/uitverkocht, verder dan 30 dagen, of widget niet te laden →
+//   true (een mislukte check maakt nooit false; wordt gelogd).
+// Omslaan is dus normaal: een voorstelling kan binnen 30 dagen van true naar
+// false gaan zodra het widget laat zien dat de pas er niet geldt. Dat is geen
+// bug. Na de heropening van de Schouwburg gelden deze regels ook daar.
+const PODIUMPAS_PRICE_CEILING = 50;
+// 29 i.p.v. 30: het prijstype verschijnt precies 30 dagen vóór het
+// aanvangstijdstip, dus op de randdag (bv. 's middags voor een voorstelling
+// om 20:15 over 30 dagen) ontbreekt het nog terwijl dat niets zegt.
+const WIDGET_WINDOW_DAYS = 29;
+const EIGEN_HOSTS = [/(^|\.)ticketmatic\.com$/, /(^|\.)schouwburgamstelveen\.nl$/];
+
+/** Leest de tekst van het Ticketmatic-widget. */
+export function parseLandingWidget(text) {
+  const lines = (text ?? '').split('\n').map((l) => l.trim()).filter(Boolean);
+  const leesbaar = lines.some((l) => /kies aantal tickets|voeg ticket toe/i.test(l));
+  const heeftPodiumpas = lines.some((l) => /^podium ?pas$/i.test(l));
+  const regulier = [];
+  lines.forEach((line, i) => {
+    if (!/^(rang\s*\d+\s*[-–]?\s*)?(normaal|regulier|standaard)\b/i.test(line)) return;
+    const m = (lines[i + 1] ?? '').match(/€\s*(\d+(?:\.\d{3})*),(\d{2})/);
+    if (m) regulier.push(parseFloat(`${m[1].replace(/\./g, '')}.${m[2]}`));
+  });
+  return { leesbaar, heeftPodiumpas, laagsteRegulier: regulier.length ? Math.min(...regulier) : null };
+}
+
+/**
+ * Podiumpas voor één De Landing-voorstelling. `widget` is null als het niet
+ * bezocht is, { fout } als laden mislukte, anders parseLandingWidget(...).
+ * Geeft { podiumpas, reden } terug.
+ */
+export function bepaalLandingPodiumpas({ orderHref, beschikbaarheid, widget }) {
+  if (orderHref && /^https?:/.test(orderHref)) {
+    const host = new URL(orderHref).hostname;
+    if (!EIGEN_HOSTS.some((re) => re.test(host))) return { podiumpas: false, reden: `verkoop via ${host}` };
+  }
+  if (!widget || beschikbaarheid !== 'beschikbaar') return { podiumpas: true, reden: null };
+  if (widget.fout || !widget.leesbaar) return { podiumpas: true, reden: null };
+  if (widget.laagsteRegulier != null && widget.laagsteRegulier > PODIUMPAS_PRICE_CEILING) {
+    return { podiumpas: false, reden: `prijs €${widget.laagsteRegulier}` };
+  }
+  if (!widget.heeftPodiumpas) return { podiumpas: false, reden: 'geen Podiumpas-prijstype' };
+  return { podiumpas: true, reden: null };
+}
+
 function classifyBeschikbaarheid(orderText) {
   const tekst = (orderText ?? '').trim().toLowerCase();
   if (tekst.includes('wachtlijst')) return 'wachtlijst';
@@ -131,8 +186,51 @@ async function scrapeAllAmstelveen({ page, robots, waitForTurn, log }) {
       reserverenUrl: ticketUrl ?? detailUrl,
       bron: target.agendaUrl,
       opgehaaldOp,
+      _orderHref: ticketUrl,
     });
   }
+
+  // Podiumpas per De Landing-voorstelling (zie bepaalLandingPodiumpas).
+  const grens = new Date(Date.now() + WIDGET_WINDOW_DAYS * 864e5).toISOString().slice(0, 10);
+  const widgets = new Map();
+  const redenen = {};
+  let bezocht = 0;
+  for (const show of shows) {
+    if (show.theaterId !== 'delanding') continue;
+    const orderHref = show._orderHref;
+    let widget = null;
+    const visit =
+      show.datum <= grens && show.beschikbaarheid === 'beschikbaar' && orderHref && /ticketmatic\.com/.test(new URL(orderHref).hostname);
+    if (visit) {
+      if (!widgets.has(orderHref)) {
+        let result;
+        try {
+          await waitForTurn();
+          await page.goto(orderHref, { waitUntil: 'networkidle', timeout: 30000 });
+          await page.waitForSelector('text=/Voeg ticket toe|Kies aantal tickets/i', { timeout: 10000 }).catch(() => {});
+          const texts = [];
+          for (const frame of page.frames()) {
+            texts.push(await frame.evaluate(() => document.body?.innerText ?? '').catch(() => ''));
+          }
+          result = parseLandingWidget(texts.join('\n'));
+          bezocht++;
+          if (!result.leesbaar) log(`widget onleesbaar voor "${show.titel}" (${show.datum}) — podiumpas blijft true.`);
+        } catch (err) {
+          if (err?.name === 'ScrapeTimeoutError') throw err;
+          result = { fout: err.message.split('\n')[0] };
+          log(`widget niet te laden voor "${show.titel}" (${show.datum}): ${result.fout} — podiumpas blijft true.`);
+        }
+        widgets.set(orderHref, result);
+      }
+      widget = widgets.get(orderHref);
+    }
+    const { podiumpas, reden } = bepaalLandingPodiumpas({ orderHref, beschikbaarheid: show.beschikbaarheid, widget });
+    show.podiumpas = show.podiumpas && podiumpas;
+    if (reden) redenen[reden] = (redenen[reden] ?? 0) + 1;
+  }
+  for (const show of shows) delete show._orderHref;
+  const landing = shows.filter((s) => s.theaterId === 'delanding');
+  log(`De Landing podiumpas: ${landing.filter((s) => s.podiumpas).length} true, ${landing.filter((s) => !s.podiumpas).length} false (${Object.entries(redenen).map(([r, n]) => `${r}: ${n}`).join(', ') || 'geen uitsluitingen'}); ${bezocht} widgets bekeken`);
 
   const skippedList = Object.entries(skipped);
   if (skippedList.length > 0) log(`overgeslagen (geen Schouwburg/De Landing): ${skippedList.map(([k, n]) => `${k} (${n})`).join(', ')}`);
