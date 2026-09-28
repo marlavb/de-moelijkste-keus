@@ -12,7 +12,7 @@ import {
 } from './firebase.js';
 import { getGenreBucket } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
-import { renameFavoritesAndPersist } from './favorites.js';
+import { renameFavoritesAndPersist, THEATER_MOVES } from './favorites.js';
 
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
@@ -1612,6 +1612,8 @@ function buildTheaterCard(id) {
     meldingEl.textContent = melding;
     info.append(meldingEl);
   }
+  const hint = buildMoveHint(id);
+  if (hint) info.append(hint);
 
   const toggle = document.createElement('button');
   toggle.type = 'button';
@@ -1627,6 +1629,30 @@ function buildTheaterCard(id) {
   card.append(info);
   if (theaterShow) card.append(toggle);
   return card;
+}
+
+// Verhuisd theater (THEATER_MOVES, bv. Schouwburg Amstelveen → De Landing):
+// wie het oude theater aan heeft maar het nieuwe uit, ziet de voorstellingen
+// niet meer. Geen automatische wijziging (die zou zich bij elk bezoek
+// herhalen), maar een knop die precies doet wat de schakelaar van het nieuwe
+// theater doet. Datagestuurd: alleen zolang het oude theater geen
+// voorstellingen heeft en het nieuwe wel; na de klik verdwijnt de hint.
+function buildMoveHint(id) {
+  const move = THEATER_MOVES.find((m) => m.van === id);
+  if (!move) return null;
+  const heeftShows = (tid) => state.shows.some((s) => s.theaterId === tid);
+  const aan = (tid) => state.enabledTheaters[tid] !== false;
+  if (!aan(move.van) || aan(move.naar) || heeftShows(move.van) || !heeftShows(move.naar)) return null;
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'theater-card-hint';
+  btn.textContent = `Zet ${theaterDisplayName(move.naar)} aan`;
+  btn.addEventListener('click', () => {
+    state.enabledTheaters[move.naar] = true;
+    refreshAfterTheaterToggle();
+  });
+  return btn;
 }
 
 function refreshAfterTheaterToggle() {
