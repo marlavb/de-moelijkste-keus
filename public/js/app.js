@@ -13,6 +13,7 @@ import {
 import { getGenreBucket } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
 import { renameFavoritesAndPersist, THEATER_MOVES } from './favorites.js';
+import { laadWatchlist, bekendeSleutels, legeWatchlist } from './watchlist.js';
 
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
@@ -80,6 +81,7 @@ const STORAGE_KEYS = {
   enabledTheaters: 'podiumagenda:enabledTheaters',
   favorites: 'podiumagenda:favorites',
   favoritesMigrated: 'podiumagenda:favoritesMigrated',
+  watchlist: 'podiumagenda:watchlist',
   sidebarSections: 'podiumagenda:sidebarSections',
   theaterCitySections: 'podiumagenda:theaterCitySections',
   filters: 'podiumagenda:filters',
@@ -163,6 +165,12 @@ const state = {
   searchQueryRaw: savedFilters.searchQueryRaw.trim(),
   enabledTheaters: loadEnabledTheaters(),
   favorites: loadFavorites(),
+  // { watchlist, watchlistVerwijderd }, zie watchlist.js. Lokaal uit
+  // localStorage, ingelogd uit Firestore (samengevoegd met de lokale).
+  watchlist: loadWatchlistLocal(),
+  // Watchlist-velden uit het Firestore-document zoals laatst gelezen; null
+  // zolang die nog niet binnen zijn (dan schrijven we niets naar de cloud).
+  cloudWatchlist: null,
   sidebarSections: loadSidebarSections(),
   theaterCitySections: loadTheaterCitySections(),
   dateWindowDays: DEFAULT_WINDOW_DAYS,
@@ -284,6 +292,7 @@ async function init() {
 
   migrateFavoritesOnceLocally();
   renameFavoritesForCurrentUser();
+  syncWatchlistForCurrentUser();
 
   // Theaters die nog nooit eerder gezien zijn (nieuw in de data) staan
   // standaard aan.
@@ -600,6 +609,60 @@ function migrateFavoritesOnceLocally() {
   localStorage.setItem(STORAGE_KEYS.favoritesMigrated, '1');
 }
 
+// ---------- Watchlist (zie watchlist.js) ----------
+
+function loadWatchlistLocal() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.watchlist)) ?? legeWatchlist();
+  } catch {
+    return legeWatchlist();
+  }
+}
+
+function saveWatchlistLocal(profiel) {
+  localStorage.setItem(STORAGE_KEYS.watchlist, JSON.stringify(profiel));
+}
+
+// Bij elke keer laden (zonder vlag, idempotent): oude favorieten omzetten
+// en samenvoegen, en alleen schrijven als er iets veranderd is. Wacht op de
+// data (om oude slugs aan een bestaande titel te koppelen) en, ingelogd, op
+// het Firestore-document. Het favorites-veld zelf blijft onaangeroerd.
+function syncWatchlistForCurrentUser() {
+  if (state.shows.length === 0) return;
+  const bekend = bekendeSleutels(state.shows);
+  const lokaal = laadWatchlist({ opgeslagen: loadWatchlistLocal(), favorieten: [...loadFavorites()], bekend });
+  if (lokaal.gewijzigd) saveWatchlistLocal(lokaal.profiel);
+  if (!state.user) {
+    state.watchlist = lokaal.profiel;
+    logOudeSlugs(lokaal);
+    return;
+  }
+  if (!state.cloudWatchlist) return;
+  // Ingelogd: cloud + cloud-favorieten + wat er lokaal (uitgelogd) bij kwam.
+  const cloud = laadWatchlist({
+    opgeslagen: state.cloudWatchlist,
+    favorieten: [...state.favorites],
+    extra: lokaal.profiel,
+    bekend,
+  });
+  state.watchlist = cloud.profiel;
+  logOudeSlugs(cloud);
+  if (!cloud.gewijzigd) return;
+  state.cloudWatchlist = cloud.profiel;
+  setDoc(userDocRef(state.user.uid), cloud.profiel, { merge: true }).catch((err) =>
+    console.error('Kon de watchlist niet synchroniseren:', err)
+  );
+}
+
+function logOudeSlugs({ log, gewijzigd }) {
+  if (!gewijzigd || log.oudeSlugs.length === 0) return;
+  const inData = log.oudeSlugs.filter((s) => s.inData).length;
+  console.info(
+    `[watchlist] ${log.oudeSlugs.length} oude slug(s) omgezet, ${inData} gekoppeld aan een titel in de agenda:`,
+    log.oudeSlugs.map((s) => `${s.van} → ${s.naar} (${s.variant})`)
+  );
+}
+
 // ---------- Inloggen (optioneel) ----------
 
 function userDocRef(uid) {
@@ -609,6 +672,7 @@ function userDocRef(uid) {
 async function handleAuthChange(user) {
   state.user = user;
   state.authError = null;
+  state.cloudWatchlist = null;
 
   if (user) {
     const ref = userDocRef(user.uid);
@@ -625,6 +689,7 @@ async function handleAuthChange(user) {
           await setDoc(ref, { favorites: [...state.favorites], favoritesMigrated: true }, { merge: true });
         }
         renameFavoritesInCloud(ref);
+        state.cloudWatchlist = { watchlist: data.watchlist ?? [], watchlistVerwijderd: data.watchlistVerwijderd ?? [] };
       } else {
         // Eerste keer inloggen op dit account: neem mee wat er lokaal al
         // stond (migrateFavoritesOnceLocally() heeft dat in init() al naar
@@ -635,7 +700,9 @@ async function handleAuthChange(user) {
           favoritesMigrated: true,
           updatedAt: serverTimestamp(),
         });
+        state.cloudWatchlist = legeWatchlist();
       }
+      syncWatchlistForCurrentUser();
     } catch (err) {
       console.error('Kon cloudgegevens niet laden:', err);
     }
@@ -643,6 +710,7 @@ async function handleAuthChange(user) {
     state.favorites = loadFavorites();
     renameFavoritesLocally();
     state.enabledTheaters = loadEnabledTheaters();
+    syncWatchlistForCurrentUser();
   }
 
   renderAuthBox();

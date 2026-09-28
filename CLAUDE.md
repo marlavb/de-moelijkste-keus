@@ -62,3 +62,18 @@ Houd het testverkeer daarom zo klein mogelijk:
   ontbreekt, in plaats van stil `[]` terug te geven.
 - Test met `npm test` (unit tests, geen netwerk) en `--only=<id>` plus een
   steekproef van 5 voorstellingen tegen de site.
+
+## Watchlist-sleutels
+
+- Watchlist-items hangen aan een genormaliseerde titel (`watchlistSleutel`
+  in `public/js/watchlist.js`, gebouwd op `normalizeTitle` en
+  `EXCLUDED_NORMALIZED_TITLES` in `public/js/productions.js`).
+- Elke wijziging aan die normalisatie of aan de uitsluitlijst vraagt:
+  1. `NORMALISATIE_VERSIE` ophogen;
+  2. `renormaliseer()` zo aanpassen dat opgeslagen items met een oudere
+     versie idempotent naar de nieuwe sleutel gaan (zonder "gedaan"-vlag);
+  3. een test daarvoor, en de vaste titeltest in `test/watchlist.test.js`
+     bijwerken (Juf Braaksel, Titanique, Controle, Jörgen/Jorgen, Nora,
+     Adem, Cabaret, Sara Kroos).
+- Het oude `favorites`-veld (localStorage en Firestore) blijft onaangeroerd
+  als back-up.

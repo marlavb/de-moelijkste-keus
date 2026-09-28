@@ -9,7 +9,7 @@
 // (theaterId + titel, gebruikt voor favorieten en de "andere data"-chips
 // BINNEN één theater) — die blijft ongemoeid. Deze module groepeert alleen
 // voor de "Ook te zien bij"-sectie op het detailscherm, over theaters heen.
-function normalizeTitle(titel) {
+export function normalizeTitle(titel) {
   return titel
     .toLowerCase()
     .normalize('NFD')
@@ -23,7 +23,7 @@ function normalizeTitle(titel) {
 // "Ook te zien bij") bleken te gaan om twee of meer duidelijk verschillende
 // producties met toevallig dezelfde naam — nooit cross-theater koppelen, ook
 // niet als ze verder aan de matchcriteria voldoen.
-const EXCLUDED_NORMALIZED_TITLES = new Set([
+export const EXCLUDED_NORMALIZED_TITLES = new Set([
   // theaterkikker: eigentijdse bewerking van de Griekse mythe. aandeslinger
   // en hogewoerd: Ellen ten Damme & Magpie Orchestra-productie. Twee
   // volledig verschillende stukken.
@@ -38,6 +38,14 @@ const EXCLUDED_NORMALIZED_TITLES = new Set([
   // bewerking met duidelijk verschillende tekst/invalshoek — geen
   // touring-productie, toevallig dezelfde naam.
   'pan',
+  // Bij de titelanalyse voor de watchlist (sep 2026): verschillende
+  // producties met dezelfde titel. Nora: Judith Noyons/Waldemar Torenstra
+  // (Flint) vs KOBRA (Koninklijke Schouwburg). Adem: Theaterbolwerk Punch
+  // (Aan de Slinger) vs Cézanne Tegelberg & Company (Spui). "Cabaret" is bij
+  // DeLaMar en Kunstlinie een algemene titel, geen productie.
+  'nora',
+  'adem',
+  'cabaret',
 ]);
 
 /**
