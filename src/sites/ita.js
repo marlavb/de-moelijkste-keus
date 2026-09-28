@@ -70,8 +70,19 @@ export async function scrapeIta({ page, theater, robots, waitForTurn, log }) {
       break;
     }
 
-    await waitForTurn();
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    // Eén herpoging per pagina: op 27 sep liep één keer pagina 2 tegen de
+    // time-out van 30 s (pagina 1 laadde in 1 s), waardoor de hele scrape
+    // faalde. Een tweede mislukte poging gooit gewoon door (vangnet).
+    for (let poging = 1; ; poging++) {
+      await waitForTurn();
+      try {
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        break;
+      } catch (err) {
+        if (poging >= 2 || err?.name === 'ScrapeTimeoutError') throw err;
+        log(`pagina ${pageNum} laden mislukt (${err.message.split('\n')[0]}) — nog één poging.`);
+      }
+    }
     const result = await page.evaluate(() => {
       const wrapper = document.querySelector('.events-wrapper');
       const totalLabel = [...document.querySelectorAll('[aria-label]')]
