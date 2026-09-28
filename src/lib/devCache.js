@@ -32,7 +32,11 @@ export async function installDevCache(page, { dir = path.resolve('debug/cache'),
   let misses = 0;
   await page.route('**/*', async (route) => {
     const request = route.request();
-    if (request.resourceType() !== 'document' || request.method() !== 'GET') return route.continue();
+    // Alleen navigaties van de pagina zelf; iframes (bv. een YouTube-embed)
+    // en al het andere gaan gewoon door.
+    const hoofdpagina =
+      request.resourceType() === 'document' && request.isNavigationRequest() && request.frame() === page.mainFrame();
+    if (!hoofdpagina || request.method() !== 'GET') return route.continue().catch(() => {});
     const file = cacheFileFor(dir, request.url());
     try {
       const info = await stat(file);
@@ -44,13 +48,18 @@ export async function installDevCache(page, { dir = path.resolve('debug/cache'),
       // niet in de cache
     }
     misses++;
-    const response = await route.fetch();
-    const body = await response.text();
-    if (response.ok()) {
-      await mkdir(path.dirname(file), { recursive: true });
-      await writeFile(file, body, 'utf-8');
+    try {
+      const response = await route.fetch();
+      const body = await response.text();
+      if (response.ok()) {
+        await mkdir(path.dirname(file), { recursive: true });
+        await writeFile(file, body, 'utf-8');
+      }
+      return await route.fulfill({ response, body });
+    } catch {
+      // Pagina of browser al dicht (einde van een run): niets meer te doen.
+      return route.abort().catch(() => {});
     }
-    return route.fulfill({ response, body });
   });
   log(`[devcache] aan (${dir}); pagina's uit de cache worden niet opnieuw opgehaald`);
   return { stats: () => ({ hits, misses }) };

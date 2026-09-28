@@ -127,8 +127,15 @@ export async function scrapeStoep({ page, theater, robots, waitForTurn, log }) {
         const tagBox = [...document.querySelectorAll('div.flex.flex-wrap')].find((el) => !el.closest('header, nav, footer') && el.querySelector(':scope > span > span'));
         const main = document.querySelector('main') ?? document.body;
         return {
-          titel: text(document.querySelector('main h2, h2')),
-          maker: text(document.querySelector('main h3, h3')),
+          // Titel (h2) en ondertitel/maker (h3) staan samen in één blok. Zonder
+          // eigen h3 géén maker: de eerste h3 op de pagina hoort anders bij de
+          // carrousel "Andere bezoekers gaan ook naar" (gaf o.a. "Naar het boek
+          // van Saskia Noort" en "Persbericht" als maker).
+          ...(() => {
+            const h2 = document.querySelector('main h2, h2');
+            const h3 = h2?.parentElement?.querySelector(':scope > h3') ?? null;
+            return { titel: text(h2), maker: text(h3) };
+          })(),
           tags: tagBox ? [...tagBox.querySelectorAll(':scope > span')].map((s) => text(s)) : [],
           events,
           rows,
