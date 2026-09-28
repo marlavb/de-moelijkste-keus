@@ -13,6 +13,7 @@ import { loadRobotsRules } from './lib/robots.js';
 import { createPoliteWaiter } from './lib/politeness.js';
 import { runRefresh } from './lib/scrapeRun.js';
 import { buildTheatersJson } from './lib/theatersJson.js';
+import { devCacheEnabled, installDevCache } from './lib/devCache.js';
 import { scrapeDelamar } from './sites/delamar.js';
 import { scrapeBellevue } from './sites/bellevue.js';
 import { scrapeMeervaart } from './sites/meervaart.js';
@@ -128,13 +129,21 @@ async function main() {
     process.exit(1);
   }
 
+  const useDevCache = devCacheEnabled();
+  if (process.env.SCRAPE_CACHE === '1' && !useDevCache) {
+    console.log('[devcache] SCRAPE_CACHE=1 genegeerd: in CI wordt nooit uit de cache gelezen.');
+  }
   const browser = await chromium.launch();
   try {
     await runRefresh({
       theaters,
       scrapers: SCRAPERS,
       deps: {
-        openPage: () => browser.newPage({ userAgent: USER_AGENT }),
+        openPage: async () => {
+          const page = await browser.newPage({ userAgent: USER_AGENT });
+          if (useDevCache) await installDevCache(page, { log: () => {} });
+          return page;
+        },
         loadRobots: (theater, signal, log) =>
           loadRobotsRules(theater.baseUrl, USER_AGENT, USER_AGENT_TOKEN, { signal, log }),
         createWaiter: createPoliteWaiter,
