@@ -568,6 +568,80 @@ a {
   background: rgba(255, 255, 255, 0.3);
 }
 
+[hidden].watch-btn,
+.plan-bar[hidden],
+.plan-note[hidden] {
+  display: none;
+}
+
+/* Status van een plan in het detailscherm. */
+.plan-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0 0;
+}
+
+.plan-bar-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+}
+
+.segmented {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.segmented button {
+  min-height: 34px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.segmented button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.link-btn {
+  min-height: 34px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.plan-note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.plan-note--warn {
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #f6e9d2;
+  color: #6f5217;
+}
+
 /* Knoppen onder de gegevens in het detailscherm (watchlist, later plannen). */
 .detail-actions {
   display: flex;
@@ -1167,6 +1241,17 @@ a {
   color: #8f6a1f;
 }
 
+/* Eigen planning in een agendaregel: "Gepland" of "Kaarten ✓". */
+.status-badge--gepland {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.status-badge--kaarten {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
 /* Podiumpas-icoon — eigen, minimalistisch ontwerp (geen officieel
    Podiumpas-logo): een vinkje in een rondje, zodat het los van tekst
    herkenbaar blijft als "hier geaccepteerd" zonder de kaart te domineren. */
@@ -1263,4 +1348,153 @@ a {
   .filter-sidebar .text-btn {
     margin-top: 4px;
   }
+}
+
+/* Watchlist-tab (vanaf stap 4 Profiel): secties Gepland en Watchlist. */
+.profile-lists {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 8px 20px 32px;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 4px;
+}
+
+.section-head h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.section-head span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.agenda-list--flush {
+  padding: 0;
+}
+
+.empty-state--compact {
+  margin: 12px 0;
+  padding: 0;
+  text-align: left;
+}
+
+.profile-note {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.plan-row {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.plan-when {
+  text-align: center;
+  line-height: 1.1;
+}
+
+.plan-when b {
+  display: block;
+  font-size: 19px;
+  font-variant-numeric: tabular-nums;
+}
+
+.plan-when small {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.plan-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+button.plan-info {
+  cursor: pointer;
+}
+
+.plan-title {
+  font-size: 15px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.plan-row--weg .plan-title {
+  color: var(--text-muted);
+}
+
+.plan-meta {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.plan-flag {
+  font-size: 12px;
+  font-weight: 600;
+  color: #8f6a1f;
+}
+
+.plan-actions {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+}
+
+.plan-status,
+.plan-ics {
+  min-height: 30px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.plan-status--gepland {
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.plan-status--kaarten {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.plan-ics {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
 }

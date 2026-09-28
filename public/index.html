@@ -186,6 +186,21 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z" /></svg>
             <span id="detailWatchLabel">Op watchlist</span>
           </button>
+          <button class="watch-btn" type="button" id="detailPlanBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M3 10h18M9 16l2 2 4-4" /></svg>
+            <span>Plan deze voorstelling</span>
+          </button>
+        </div>
+        <div class="plan-bar" id="detailPlanBar" hidden>
+          <div class="plan-bar-top">
+            <div class="segmented" role="group" aria-label="Status van je plan">
+              <button type="button" id="detailStatusGepland" aria-pressed="true">Gepland</button>
+              <button type="button" id="detailStatusKaarten" aria-pressed="false">Kaarten geregeld</button>
+            </div>
+            <button class="link-btn" type="button" id="detailUnplan">Uit je planning halen</button>
+          </div>
+          <p class="plan-note" id="detailPlanChange" hidden></p>
+          <p class="plan-note plan-note--warn" id="detailPlanConflict" role="note" hidden></p>
         </div>
 
         <hr class="detail-divider" />
@@ -264,15 +279,34 @@
         <div class="header-top">
           <div>
             <h1 class="app-title">Watchlist</h1>
-            <p class="app-subtitle">Voorstellingen die je wilt zien, bij alle theaters</p>
+            <p class="app-subtitle">Je planning en de voorstellingen die je wilt zien</p>
           </div>
         </div>
       </header>
 
-      <main class="agenda-list" id="favoritesList" aria-live="polite">
-        <p class="empty-state" id="favoritesEmpty" hidden>
-          Je watchlist is nog leeg. Tik op de bladwijzer bij een voorstelling om hem hier te bewaren.
-        </p>
+      <main class="profile-lists">
+        <section class="profile-section" aria-labelledby="geplandHeading">
+          <div class="section-head">
+            <h2 id="geplandHeading">Gepland</h2>
+            <span id="geplandCount"></span>
+          </div>
+          <div id="geplandList" aria-live="polite"></div>
+          <p class="empty-state empty-state--compact" id="geplandEmpty" hidden>
+            Nog niets gepland. Kies "Plan deze voorstelling" bij een speeldatum.
+          </p>
+          <p class="profile-note">Voorbije plannen blijven bewaard, maar staan hier niet.</p>
+        </section>
+        <section class="profile-section" aria-labelledby="watchlistHeading">
+          <div class="section-head">
+            <h2 id="watchlistHeading">Watchlist</h2>
+            <span>op eerstvolgende datum</span>
+          </div>
+          <div class="agenda-list agenda-list--flush" id="favoritesList" aria-live="polite">
+            <p class="empty-state empty-state--compact" id="favoritesEmpty" hidden>
+              Je watchlist is nog leeg. Tik op de bladwijzer bij een voorstelling om hem hier te bewaren.
+            </p>
+          </div>
+        </section>
       </main>
     </section>
 
