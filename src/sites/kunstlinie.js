@@ -120,6 +120,11 @@ export async function scrapeKunstlinie({ page, theater, robots, waitForTurn, log
   await page.waitForSelector('.card-programma', { timeout: 15000 }).catch(() => {});
 
   const rawItems = [];
+  // Dezelfde kaart (zelfde info- en ticketlink, datum en tijd) maar één keer
+  // meenemen: bleef de pagina na "Volgende" hangen, dan lazen we dezelfde
+  // kaarten opnieuw (19 dubbelingen, sep 2026). Levert een pagina niets
+  // nieuws op, dan stoppen we.
+  const seen = new Set();
   for (let pageNum = 1; pageNum <= MAX_PAGES; pageNum++) {
     const pageCards = await page.evaluate(() => {
       return Array.from(document.querySelectorAll('.card-programma')).map((card) => {
@@ -161,25 +166,35 @@ export async function scrapeKunstlinie({ page, theater, robots, waitForTurn, log
         return { categories, titel, beschrijving, dateTimeTekst, ticketHref, ticketText, detailHref };
       });
     });
-    log(`pagina ${pageNum}: ${pageCards.length} kaarten`);
-    rawItems.push(...pageCards);
+    const newCards = pageCards.filter((card) => {
+      const sleutel = [card.detailHref, card.ticketHref, card.dateTimeTekst, card.titel].join('|');
+      if (seen.has(sleutel)) return false;
+      seen.add(sleutel);
+      return true;
+    });
+    log(`pagina ${pageNum}: ${pageCards.length} kaarten (${newCards.length} nieuw)`);
+    if (pageNum > 1 && newCards.length === 0) break;
+    rawItems.push(...newCards);
 
     const nextBtn = page.locator('.facetwp-page.next');
     if ((await nextBtn.count()) === 0) break;
 
-    const firstTitleBefore = await page.locator('.card-programma h3').first().textContent().catch(() => null);
+    // Wachten tot de hele lijst anders is, niet alleen de eerste titel:
+    // generieke titels ("Show", "Cabaret") kunnen op twee pagina's bovenaan staan.
+    const vorige = await page.evaluate(() =>
+      Array.from(document.querySelectorAll('.card-programma')).map((c) => c.textContent.trim().replace(/\s+/g, ' ')).join('\n')
+    );
     await waitForTurn();
     await nextBtn.click();
     await page
       .waitForFunction(
-        (prevTitle) => {
-          const h3 = document.querySelector('.card-programma h3');
-          return h3 && h3.textContent.trim() !== prevTitle;
-        },
-        firstTitleBefore,
+        (vorige) =>
+          Array.from(document.querySelectorAll('.card-programma')).map((c) => c.textContent.trim().replace(/\s+/g, ' ')).join('\n') !==
+          vorige,
+        vorige,
         { timeout: 10000 }
       )
-      .catch(() => {});
+      .catch(() => log(`pagina ${pageNum + 1}: inhoud veranderde niet na "Volgende".`));
     await page.waitForTimeout(300);
   }
 

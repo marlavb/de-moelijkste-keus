@@ -84,12 +84,32 @@ export async function scrapeGriffioen({ page, theater, robots, waitForTurn, log 
     .catch(() => []);
   const totalPages = Math.min(pageNumbers.length > 0 ? Math.max(...pageNumbers) : 1, MAX_PAGES);
 
+  // Handtekening van de kaarten op het scherm, om te zien dat een klik op
+  // het paginanummer echt een nieuwe pagina heeft geladen. Eerder wachtten we
+  // alleen tot er een kaart was — die stond er nog van de vorige pagina, dus
+  // soms werd dezelfde pagina twee keer gelezen (24 dubbelingen, sep 2026).
+  const handtekening = () =>
+    page.evaluate(
+      (selector) => Array.from(document.querySelectorAll(selector)).map((el) => el.getAttribute('onclick') ?? '').join('\n'),
+      CARD_SELECTOR
+    );
+
   const rawItems = [];
+  const seen = new Set();
   for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
     if (pageNum > 1) {
+      const vorige = await handtekening();
       await waitForTurn();
       await page.click(`a.pagination__link[data-page="${pageNum}"]:not(.pagination__link--next)`);
       await page.locator(CARD_SELECTOR).first().waitFor({ state: 'attached', timeout: 10000 });
+      await page
+        .waitForFunction(
+          ({ selector, vorige }) =>
+            Array.from(document.querySelectorAll(selector)).map((el) => el.getAttribute('onclick') ?? '').join('\n') !== vorige,
+          { selector: CARD_SELECTOR, vorige },
+          { timeout: 10000 }
+        )
+        .catch(() => log(`pagina ${pageNum}: inhoud veranderde niet na de klik — dubbele kaarten worden overgeslagen.`));
     }
 
     const items = await page.evaluate((selector) => {
@@ -107,8 +127,14 @@ export async function scrapeGriffioen({ page, theater, robots, waitForTurn, log 
       });
     }, CARD_SELECTOR);
 
-    log(`pagina ${pageNum}: ${items.length} items`);
-    rawItems.push(...items);
+    const newItems = items.filter((item) => {
+      const sleutel = `${item.detailPath}|${item.tijdTekst}`;
+      if (seen.has(sleutel)) return false;
+      seen.add(sleutel);
+      return true;
+    });
+    log(`pagina ${pageNum}: ${items.length} items (${newItems.length} nieuw)`);
+    rawItems.push(...newItems);
   }
 
   const buildId = createIdBuilder();

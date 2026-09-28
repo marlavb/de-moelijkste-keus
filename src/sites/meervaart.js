@@ -97,13 +97,21 @@ export async function scrapeMeervaart({ page, theater, robots, waitForTurn, log 
     });
   });
 
-  log(`${cards.length} producties gevonden op de agendapagina`);
+  // Een productie kan twee keer in de lijst staan; dan zouden we de
+  // detailpagina twee keer lezen en elke speeldatum dubbel opnemen (sep 2026).
+  const gezien = new Set();
+  const uniekeKaarten = cards.filter((card) => {
+    if (!card.detailHref || gezien.has(card.detailHref)) return false;
+    gezien.add(card.detailHref);
+    return true;
+  });
+  log(`${cards.length} producties gevonden op de agendapagina (${uniekeKaarten.length} uniek)`);
 
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();
   const shows = [];
 
-  for (const card of cards) {
+  for (const card of uniekeKaarten) {
     if (!card.titel || !card.detailHref) continue;
     const detailUrl = new URL(card.detailHref, theater.baseUrl).toString();
     const detailPath = new URL(detailUrl).pathname;

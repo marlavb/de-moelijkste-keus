@@ -64,8 +64,9 @@ function classifyBeschikbaarheid(statusInfoText, btnOrderStatus) {
  *   Allow: /*?page=* erboven — paginering via ?page=N is dus toegestaan
  *   (de meer specifieke Allow wint), maar een query-param-filter als
  *   ?production_type=... zou dat NIET zijn, dus die vermijden we.
- * - Server-rendered, gepagineerd via ?page=N (~20 kaarten/pagina, ~20
- *   pagina's in totaal — we stoppen zodra een pagina leeg is).
+ * - Server-rendered, gepagineerd (~20 kaarten/pagina, ~20 pagina's in
+ *   totaal). De paginaparameter lezen we van pagina 1 af (zie hieronder);
+ *   we stoppen zodra een pagina geen nieuwe kaarten meer oplevert.
  * - Eén voorstellingstype (production-type-default) — geen filmvertoningen
  *   die eruit gefilterd moeten worden, in tegenstelling tot Theater De
  *   Omval op hetzelfde platform.
@@ -93,11 +94,21 @@ export async function scrapeMuziekgebouw({ page, theater, robots, waitForTurn, l
   }
 
   const rawItems = [];
+  // De naam van de paginaparameter is veranderd (eerst "page", sinds sep
+  // 2026 "p54_page", naar een CMS-paginaonderdeel). Met ?page=N kwam daarna
+  // steeds pagina 1 terug: 30 keer dezelfde voorstellingen in de data (28 sep
+  // 2026). Daarom lezen we de naam van pagina 1 af uit de keuzelijst (zoals
+  // Bellevue en peppered.js) en stoppen we zodra een pagina niets nieuws
+  // oplevert; robots.txt staat beide vormen toe.
+  let pageParam = 'page';
+  const seen = new Set();
+  let stoppedNormally = false;
   for (let pageNum = 1; pageNum <= MAX_LISTING_PAGES; pageNum++) {
-    const url = pageNum === 1 ? theater.agendaUrl : `${theater.agendaUrl}?page=${pageNum}`;
-    const listingPath = pageNum === 1 ? AGENDA_PATH : `${AGENDA_PATH}?page=${pageNum}`;
+    const url = pageNum === 1 ? theater.agendaUrl : `${theater.agendaUrl}?${pageParam}=${pageNum}`;
+    const listingPath = pageNum === 1 ? AGENDA_PATH : `${AGENDA_PATH}?${pageParam}=${pageNum}`;
     if (!robots.isAllowed(listingPath)) {
       log(`robots.txt verbiedt ${listingPath} — stop met pagineren.`);
+      stoppedNormally = true;
       break;
     }
 
@@ -105,6 +116,12 @@ export async function scrapeMuziekgebouw({ page, theater, robots, waitForTurn, l
     let pageItems;
     try {
       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      if (pageNum === 1) {
+        pageParam =
+          (await page.evaluate(() => document.querySelector('select.page-selection')?.getAttribute('name'))) ||
+          pageParam;
+        log(`paginaparameter: ${pageParam}`);
+      }
       pageItems = await page.evaluate(() => {
         return Array.from(document.querySelectorAll('.eventCard')).map((el) => {
           const titel = el.querySelector('.title')?.textContent.trim() ?? null;
@@ -117,7 +134,10 @@ export async function scrapeMuziekgebouw({ page, theater, robots, waitForTurn, l
           const btnOrderEl = el.querySelector('.btn-order');
           const btnOrderStatus = btnOrderEl?.className ?? null;
           const ticketHref = btnOrderEl?.getAttribute('href') ?? null;
+          // Eén kaart per speeldatum; entry-id + datum + tijd is uniek.
+          const sleutel = [el.getAttribute('data-entry-id'), dagTekst, tijdTekst].join('|');
           return {
+            sleutel,
             titel,
             detailHref,
             beschrijving,
@@ -135,9 +155,20 @@ export async function scrapeMuziekgebouw({ page, theater, robots, waitForTurn, l
       continue;
     }
 
-    log(`pagina ${pageNum}: ${pageItems.length} items`);
-    if (pageItems.length === 0) break;
-    rawItems.push(...pageItems);
+    const newItems = pageItems.filter((item) => {
+      if (seen.has(item.sleutel)) return false;
+      seen.add(item.sleutel);
+      return true;
+    });
+    log(`pagina ${pageNum}: ${pageItems.length} items (${newItems.length} nieuw)`);
+    if (newItems.length === 0) {
+      stoppedNormally = true;
+      break;
+    }
+    rawItems.push(...newItems);
+  }
+  if (!stoppedNormally) {
+    log(`WAARSCHUWING: bovengrens van ${MAX_LISTING_PAGES} listingpagina's bereikt — paginering is waarschijnlijk stuk.`);
   }
 
   const buildId = createIdBuilder();
