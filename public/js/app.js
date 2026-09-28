@@ -233,7 +233,7 @@ const els = {
     agenda: document.getElementById('screen-agenda'),
     detail: document.getElementById('screen-detail'),
     theaters: document.getElementById('screen-theaters'),
-    favorieten: document.getElementById('screen-favorieten'),
+    profiel: document.getElementById('screen-profiel'),
   },
   detailBack: document.getElementById('detailBack'),
   detailWatchIcon: document.getElementById('detailWatchIcon'),
@@ -374,7 +374,7 @@ async function init() {
     if (!btn) return;
     if (btn.dataset.tab === 'agenda') navigate('#/');
     if (btn.dataset.tab === 'theaters') navigate('#/theaters');
-    if (btn.dataset.tab === 'favorieten') navigate('#/favorieten');
+    if (btn.dataset.tab === 'profiel') navigate('#/profiel');
   });
 
   window.addEventListener('hashchange', route);
@@ -424,9 +424,15 @@ function route() {
     return;
   }
 
+  // #/favorieten was tot 28 sep 2026 de tab met favorieten (oude links/bladwijzers).
   if (hash === '#/favorieten') {
-    showScreen('favorieten');
-    renderFavoritesScreen();
+    location.replace('#/profiel');
+    return;
+  }
+
+  if (hash === '#/profiel') {
+    showScreen('profiel');
+    renderProfielScreen();
     return;
   }
 
@@ -521,8 +527,8 @@ function loadFilters() {
     selectedTheaters: new Set(Array.isArray(stored.selectedTheaters) ? stored.selectedTheaters : []),
     selectedGenres: new Set(Array.isArray(stored.selectedGenres) ? stored.selectedGenres : []),
     podiumpasOnly: stored.podiumpasOnly === true,
-    // Heette tot okt 2026 watchlistOnly.
-    watchlistOnly: (stored.watchlistOnly ?? stored.watchlistOnly) === true,
+    // Heette tot 28 sep 2026 favoritesOnly.
+    watchlistOnly: (stored.watchlistOnly ?? stored.favoritesOnly) === true,
     hideFullOnly: stored.hideFullOnly === true,
     searchQueryRaw: typeof stored.searchQuery === 'string' ? stored.searchQuery : '',
   };
@@ -996,7 +1002,7 @@ async function handleAuthChange(user) {
 
   const hash = location.hash || '#/';
   if (hash === '#/theaters') renderTheatersScreen();
-  if (hash === '#/favorieten') renderFavoritesScreen();
+  if (hash === '#/profiel') renderProfielScreen();
   if (hash.startsWith('#/show/')) {
     const id = decodeURIComponent(hash.slice('#/show/'.length));
     const show = state.shows.find((s) => s.id === id);
@@ -1058,7 +1064,7 @@ function renderAuthBox() {
     name.textContent = state.user.displayName || state.user.email || 'Ingelogd';
     const sub = document.createElement('p');
     sub.className = 'auth-box-desc';
-    sub.textContent = 'Gesynchroniseerd op al je apparaten.';
+    sub.textContent = 'Je watchlist, planning en theaterkeuze staan op al je apparaten.';
     text.append(name, sub);
     box.appendChild(text);
 
@@ -1073,10 +1079,10 @@ function renderAuthBox() {
     text.className = 'auth-box-text';
     const title = document.createElement('p');
     title.className = 'auth-box-title';
-    title.textContent = 'Synchroniseer op al je apparaten';
+    title.textContent = 'Niet ingelogd';
     const desc = document.createElement('p');
     desc.className = 'auth-box-desc';
-    desc.textContent = 'Log in om je watchlist en theaterkeuze te bewaren.';
+    desc.textContent = 'Je watchlist en planning staan nu alleen op dit apparaat. Log in om ze overal te hebben.';
     text.append(title, desc);
     box.appendChild(text);
 
@@ -2183,7 +2189,7 @@ function renderTheatersScreen() {
   }
 }
 
-// ---------- Watchlist-scherm (tot stap 4 onder de tab Watchlist) ----------
+// ---------- Profiel: watchlist ----------
 
 /** Eén rij per watchlist-item, met de eerstvolgende voorstelling over alle
  * theaters heen. Staat een item niet (meer) in de agenda, dan tonen we het
@@ -2275,7 +2281,7 @@ function renderProductionRow(production) {
   return row;
 }
 
-function renderFavoritesScreen() {
+function renderProfielScreen() {
   renderGeplandList();
   const productions = watchlistProductions();
 

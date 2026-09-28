@@ -1306,7 +1306,7 @@ a {
 
 /* Breed scherm: Cineville-achtige vaste filter-sidebar i.p.v. het
    filter-icoon + bottom-sheet patroon. Alleen het agenda-scherm wordt
-   breder — de andere schermen (detail/theaters/favorieten) blijven op
+   breder — de andere schermen (detail/theaters) blijven op
    hun mobiele breedte gecentreerd, zodat die niet ongewenst uitrekken. */
 @media (min-width: 900px) {
   .app {
@@ -1314,12 +1314,19 @@ a {
   }
 
   #screen-detail,
-  #screen-theaters,
-  #screen-favorieten {
+  #screen-theaters {
     max-width: 480px;
     width: 100%;
     margin: 0 auto;
   }
+
+  /* Profiel: Gepland en Watchlist naast elkaar. */
+  #screen-profiel {
+    max-width: 960px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
 
   #headerActions {
     display: none;
@@ -1350,7 +1357,15 @@ a {
   }
 }
 
-/* Watchlist-tab (vanaf stap 4 Profiel): secties Gepland en Watchlist. */
+/* Profiel: account bovenaan, daaronder Gepland en Watchlist. */
+.profile-account {
+  padding: 8px 20px 12px;
+}
+
+.profile-account .auth-box {
+  margin-bottom: 0;
+}
+
 .profile-lists {
   display: flex;
   flex-direction: column;
@@ -1497,4 +1512,21 @@ button.plan-info {
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text-muted);
+}
+
+/* Profiel op een breed scherm: Gepland | Watchlist naast elkaar. Staat
+   onderaan zodat hij de basisregels hierboven overschrijft. */
+@media (min-width: 900px) {
+  .profile-lists {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 48px;
+  }
+
+  .profile-account .google-btn {
+    align-self: flex-start;
+    width: auto;
+    padding-inline: 24px;
+  }
 }

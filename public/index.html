@@ -250,8 +250,6 @@
       </header>
 
       <main class="theaters-list">
-        <div id="authBox"></div>
-
         <div id="theatersList"></div>
 
         <section class="feedback-box">
@@ -273,16 +271,18 @@
       </main>
     </section>
 
-    <!-- SCHERM: favorieten -->
-    <section class="screen" id="screen-favorieten" hidden>
+    <!-- SCHERM: profiel (inloggen, gepland, watchlist) -->
+    <section class="screen" id="screen-profiel" hidden>
       <header class="app-header">
         <div class="header-top">
           <div>
-            <h1 class="app-title">Watchlist</h1>
+            <h1 class="app-title">Profiel</h1>
             <p class="app-subtitle">Je planning en de voorstellingen die je wilt zien</p>
           </div>
         </div>
       </header>
+
+      <div class="profile-account" id="authBox"></div>
 
       <main class="profile-lists">
         <section class="profile-section" aria-labelledby="geplandHeading">
@@ -378,11 +378,12 @@
         </svg>
         <span>Theaters</span>
       </button>
-      <button class="nav-item" type="button" data-tab="favorieten">
+      <button class="nav-item" type="button" data-tab="profiel">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6 3h12v18l-6-4-6 4z" />
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" />
         </svg>
-        <span>Watchlist</span>
+        <span>Profiel</span>
       </button>
     </nav>
   </div>
