@@ -1584,17 +1584,27 @@ button.plan-info {
     max-width: 1100px;
   }
 
-  #screen-detail,
-  #screen-theaters {
+  /* Het detailscherm (geen tab) blijft een smalle, gecentreerde kolom. De
+     tab-schermen (Agenda, Mijn theaters, Profiel) gebruiken allemaal de
+     volle breedte van .app, zodat hun kop overal op dezelfde plek staat. */
+  #screen-detail {
     max-width: 520px;
     width: 100%;
     margin: 0 auto;
   }
 
-  #screen-profiel {
-    max-width: 960px;
-    width: 100%;
-    margin: 0 auto;
+  /* Mijn theaters: raster met de lijst links en ruimte voor een tweede
+     kolom (later bv. een kaart: .theaters-kaart { grid-column: 2; grid-row:
+     1 / -1 }). Nu staat alles in kolom 1. */
+  .theaters-list {
+    display: grid;
+    grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
+    column-gap: 40px;
+    align-content: start;
+  }
+
+  .theaters-list > * {
+    grid-column: 1;
   }
 
   #headerActions {
