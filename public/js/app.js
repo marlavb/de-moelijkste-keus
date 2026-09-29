@@ -275,7 +275,6 @@ const els = {
   detailReserveLabel: document.getElementById('detailReserveLabel'),
   detailPodiumpasNotice: document.getElementById('detailPodiumpasNotice'),
   detailAddCalendar: document.getElementById('detailAddCalendar'),
-  theatersBack: document.getElementById('theatersBack'),
   theatersList: document.getElementById('theatersList'),
   favoritesList: document.getElementById('favoritesList'),
   favoritesEmpty: document.getElementById('favoritesEmpty'),
@@ -374,7 +373,6 @@ async function init() {
   }
 
   els.detailBack.addEventListener('click', () => navigate('#/'));
-  els.theatersBack.addEventListener('click', () => navigate('#/'));
   els.bottomNav.addEventListener('click', (e) => {
     const btn = e.target.closest('.nav-item');
     if (!btn) return;

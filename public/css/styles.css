@@ -997,22 +997,6 @@ a {
 
 /* Theaters screen */
 
-.app-title--center {
-  flex: 1;
-  text-align: center;
-  font-size: 24px;
-}
-
-.header-spacer {
-  width: var(--touch);
-  flex-shrink: 0;
-}
-
-.screen-intro {
-  margin: 4px 0 8px;
-  font-size: 14px;
-  color: var(--text-2);
-}
 
 .theaters-list {
   padding: 0 20px 24px;
