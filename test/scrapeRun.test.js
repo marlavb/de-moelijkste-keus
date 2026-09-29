@@ -420,3 +420,14 @@ test('vorige data met dubbelingen telt als het aantal unieke voorstellingen', as
   assert.equal(status.theaters.a.vorigAantal, 20);
   assert.equal(status.theaters.a.waarschuwing, null);
 });
+
+test('speeldata meer dan twee jaar vooruit: weggehaald, geteld en een warning', async () => {
+  const paths = await setup({ previousShows: [] });
+  // Zoals Bijlmer Parktheater in sep 2026: dezelfde pagina, elk jaar opnieuw.
+  const records = Array.from({ length: 10 }, (_, i) => show('a', `${2026 + i}-10-12`, { id: `a-${i}` }));
+  const { written, status, annotations } = await run({ paths, theaters: [theater('a')], scrapers: { a: async () => records } });
+  assert.deepEqual(written.map((s) => s.datum), ['2026-10-12', '2027-10-12']);
+  assert.equal(status.theaters.a.aantal, 2);
+  assert.match(status.theaters.a.waarschuwing, /8 voorstelling\(en\) na 2028-10-01 weggehaald/);
+  assert.ok(annotations.some((a) => a.title === 'Onwaarschijnlijke data a'));
+});

@@ -27,6 +27,11 @@ const DROP_WARNING_RATIO = 0.3;
 const DROP_WARNING_MIN_PREVIOUS = 20;
 // Meer weggehaalde dubbelingen dan dit per theater: ::warning:: (zie dedupe.js).
 const DUBBEL_WARNING_MIN = 5;
+// Theaters programmeren hooguit ~1,5 jaar vooruit. Een speeldatum verder dan
+// dit is vrijwel zeker een parseerfout: Bijlmer Parktheater las in sep 2026
+// 30 keer pagina 1, en de jaar-rollover van de datumparser maakte daar
+// speeldata tot 2085 van — zonder dat het vangnet voor dubbelingen het zag.
+const MAX_JAREN_VOORUIT = 2;
 
 function formatSeconds(ms) {
   return `${Math.round(ms / 100) / 10}s`;
@@ -297,8 +302,15 @@ export async function runRefresh({
   // terug) moet niet voor altijd in onze eigen data blijven staan. Geldt ook
   // voor teruggevallen data, zodat die vanzelf slinkt als een scraper
   // wekenlang stuk blijft.
+  const uitersteDatum = `${Number(minDate.slice(0, 4)) + MAX_JAREN_VOORUIT}${minDate.slice(4)}`;
+  const teVerPerTheater = {};
   const verseShows = mergedShows
     .filter((s) => s.datum >= minDate)
+    .filter((s) => {
+      if (s.datum <= uitersteDatum) return true;
+      teVerPerTheater[s.theaterId] = (teVerPerTheater[s.theaterId] ?? 0) + 1;
+      return false;
+    })
     // `prijs` en `maker` zijn optionele schemavelden die maar een deel van de
     // theaters vult (prijs: alleen Flint, voor de podiumpas-prijsgrens; maker:
     // alleen theaters met een apart artiest/gezelschap-element) — hier
@@ -327,6 +339,17 @@ export async function runRefresh({
     annotate('warning', `Dubbelingen ${theaterId}`, msg);
     const st = theaterStatus[theaterId];
     if (st) st.waarschuwing = [st.waarschuwing, msg].filter(Boolean).join(' | ');
+  }
+
+  for (const [theaterId, aantal] of Object.entries(teVerPerTheater)) {
+    const msg = `${aantal} voorstelling(en) na ${uitersteDatum} weggehaald — onwaarschijnlijke datum, scraper waarschijnlijk stuk`;
+    log(`[${theaterId}] ${msg}`);
+    annotate('warning', `Onwaarschijnlijke data ${theaterId}`, msg);
+    const st = theaterStatus[theaterId];
+    if (st) {
+      st.aantal -= aantal;
+      st.waarschuwing = [st.waarschuwing, msg].filter(Boolean).join(' | ');
+    }
   }
 
   const status = { bijgewerktOp: now().toISOString(), theaters: theaterStatus };
