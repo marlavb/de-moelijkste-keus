@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Podiumagenda</title>
   <meta name="description" content="Gecombineerde theateragenda voor Podiumpas-theaters" />
-  <meta name="theme-color" content="#F7F4EE" />
+  <meta name="theme-color" content="#5B0550" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Work+Sans:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   />
   <link rel="stylesheet" href="css/styles.css" />
@@ -140,31 +140,33 @@
 
     <!-- SCHERM: voorstelling-detail -->
     <section class="screen" id="screen-detail" hidden>
-      <div class="detail-banner" id="detailBanner">
-        <button class="icon-btn icon-btn--floating" type="button" id="detailBack" aria-label="Terug">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 6 9 12 15 18" />
-          </svg>
-        </button>
-        <button class="icon-btn icon-btn--floating" type="button" id="detailWatchIcon" aria-label="Op watchlist zetten" aria-pressed="false">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 3h12v18l-6-4-6 4z" />
-          </svg>
-        </button>
-      </div>
-
       <div class="detail-body">
-        <div class="detail-tags-row">
-          <span class="pill-tag" id="detailTheater"></span>
-          <span class="podiumpas-icon" id="detailPodiumpasBadge" role="img" aria-label="Podiumpas geaccepteerd" title="Dit theater accepteert de Podiumpas" hidden>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="4 12 9 17 20 6" />
-            </svg>
-          </span>
-          <span class="status-badge" id="detailStatusBadge" hidden></span>
+        <div class="detail-banner" id="detailBanner">
+          <div class="detail-banner-top">
+            <button class="icon-btn icon-btn--floating" type="button" id="detailBack" aria-label="Terug">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 6 9 12 15 18" />
+              </svg>
+            </button>
+            <button class="icon-btn icon-btn--floating" type="button" id="detailWatchIcon" aria-label="Op watchlist zetten" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3h12v18l-6-4-6 4z" />
+              </svg>
+            </button>
+          </div>
+          <span class="detail-genre-tag" id="detailGenre"></span>
+          <h1 class="detail-title" id="detailTitle"></h1>
+          <p class="detail-maker" id="detailMaker" hidden></p>
+          <div class="detail-tags-row">
+            <span class="pill-tag" id="detailTheater"></span>
+            <span class="podiumpas-icon" id="detailPodiumpasBadge" role="img" aria-label="Podiumpas geaccepteerd" title="Dit theater accepteert de Podiumpas" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 12 9 17 20 6" />
+              </svg>
+            </span>
+            <span class="status-badge" id="detailStatusBadge" hidden></span>
+          </div>
         </div>
-        <h1 class="detail-title" id="detailTitle"></h1>
-        <p class="detail-maker" id="detailMaker" hidden></p>
 
         <div class="detail-meta">
           <div class="meta-row">
@@ -205,7 +207,6 @@
 
         <hr class="detail-divider" />
 
-        <span class="detail-genre-tag" id="detailGenre"></span>
         <h3 class="detail-heading">Over deze voorstelling</h3>
         <p class="detail-description" id="detailDescription"></p>
 

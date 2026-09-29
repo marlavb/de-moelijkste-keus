@@ -1449,7 +1449,9 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
 
 function formatDateHeading(isoDate) {
   const { day, month } = parseIsoDate(isoDate);
-  return `${WEEKDAYS[dateFromIso(isoDate).getDay()]} ${day} ${MONTHS[month - 1]}`.toUpperCase();
+  const weekdag = WEEKDAYS[dateFromIso(isoDate).getDay()];
+  // "Di 29 sep": in Fraunces rustiger dan hoofdletters.
+  return `${weekdag.charAt(0).toUpperCase()}${weekdag.slice(1)} ${day} ${MONTHS[month - 1]}`;
 }
 
 function emptyStateMessage() {
@@ -1535,9 +1537,10 @@ function renderShowRow(show) {
   row.className = 'show-row';
   row.addEventListener('click', () => navigate(`#/show/${encodeURIComponent(show.id)}`));
 
-  const dot = document.createElement('span');
-  dot.className = 'show-dot';
-  dot.setAttribute('aria-hidden', 'true');
+  // Tijd links in een vaste kolom; zonder tijd een streepje.
+  const time = document.createElement('span');
+  time.className = 'show-time';
+  time.textContent = show.tijd ?? '–';
 
   const info = document.createElement('span');
   info.className = 'show-info';
@@ -1548,35 +1551,33 @@ function renderShowRow(show) {
   titleText.className = 'show-title-text';
   titleText.textContent = show.maker ? `${show.titel} - ${show.maker}` : show.titel;
   title.appendChild(titleText);
-  if (isOpWatchlist(show)) title.appendChild(makeWatchlistIcon());
-
-  const metaRow = document.createElement('div');
-  metaRow.className = 'show-meta-row';
 
   const meta = document.createElement('p');
   meta.className = 'show-meta';
-  const theaterNaam = show.theaterNaam;
-  meta.textContent = show.tijd ? `${theaterNaam} · ${show.tijd}` : theaterNaam;
-  metaRow.appendChild(meta);
+  meta.textContent = show.stad ? `${show.theaterNaam} · ${show.stad}` : show.theaterNaam;
 
-  if (show.podiumpas === true) metaRow.appendChild(makePodiumpasIcon());
-
-  const badge = makeStatusBadge(show.beschikbaarheid);
-  if (badge) metaRow.appendChild(badge);
-
-  const plan = planVoor(show);
-  if (plan) metaRow.appendChild(makePlanTag(plan.item.status));
+  // Genre en badges op één regel.
+  const tagsRow = document.createElement('div');
+  tagsRow.className = 'show-meta-row';
 
   const genreTag = document.createElement('span');
   genreTag.className = 'show-genre-tag';
   genreTag.textContent = getGenreBucket(show);
+  tagsRow.appendChild(genreTag);
 
-  info.append(title, metaRow, genreTag);
+  if (show.podiumpas === true) tagsRow.appendChild(makePodiumpasIcon());
 
-  const chevron = svgIcon('<polyline points="9 6 15 12 9 18" />');
-  chevron.classList.add('show-chevron');
+  const badge = makeStatusBadge(show.beschikbaarheid);
+  if (badge) tagsRow.appendChild(badge);
 
-  row.append(dot, info, chevron);
+  const plan = planVoor(show);
+  if (plan) tagsRow.appendChild(makePlanTag(plan.item.status));
+
+  info.append(title, meta, tagsRow);
+
+  row.append(time, info);
+  // Alleen watchlist-items krijgen rechts een (gevulde) bladwijzer.
+  if (isOpWatchlist(show)) row.appendChild(makeWatchlistIcon());
   return row;
 }
 

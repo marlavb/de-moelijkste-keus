@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>DeMoeilijksteKeusBot · Podiumagenda</title>
   <meta name="description" content="Uitleg over de bot die de agenda's van Podiumpas-theaters ophaalt voor Podiumagenda." />
-  <meta name="theme-color" content="#F7F4EE" />
+  <meta name="theme-color" content="#5B0550" />
   <meta name="robots" content="noindex" />
   <link rel="icon" href="icons/icon-192.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
   <style>
     .bot-page {
@@ -21,18 +21,24 @@
       line-height: 1.6;
     }
     .bot-page h1 {
-      margin: 0 0 4px;
-      font-size: 26px;
-      color: var(--accent);
+      margin: 0 0 6px;
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 600;
+      line-height: 1.05;
+      color: var(--primary);
       text-wrap: balance;
     }
     .bot-page .bot-lead {
       margin: 0 0 24px;
-      color: var(--text-muted);
+      color: var(--text-2);
     }
     .bot-page h2 {
       margin: 28px 0 8px;
-      font-size: 16px;
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary);
     }
     .bot-page p,
     .bot-page ul {
@@ -43,7 +49,7 @@
       padding-left: 20px;
     }
     .bot-page a {
-      color: var(--accent);
+      color: var(--primary);
       font-weight: 600;
       text-decoration: underline;
     }
@@ -58,7 +64,7 @@
     .bot-page .bot-en {
       margin-top: 32px;
       padding: 16px;
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-card);
       background: var(--surface);
       border: 1px solid var(--border);
       font-size: 14px;
@@ -76,7 +82,7 @@
       height: auto;
       min-height: 96px;
       padding: 10px 12px;
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-card);
       resize: vertical;
     }
     .bot-page .feedback-submit {
