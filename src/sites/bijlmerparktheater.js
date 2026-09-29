@@ -1,3 +1,4 @@
+import { pagineerListing } from '../lib/peppered.js';
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
 
@@ -31,8 +32,10 @@ function classifyBeschikbaarheid(statusInfoText, btnOrderStatus) {
  * - robots.txt: crawl-delay 5s voor "*", met dezelfde Disallow: /*?* +
  *   Allow: /*?page=*-combinatie als Muziekgebouw/Omval — paginering via
  *   ?page=N is dus toegestaan.
- * - Server-rendered, gepagineerd via ?page=N (12 kaarten/pagina) — we
- *   stoppen zodra een pagina leeg is.
+ * - Server-rendered, gepagineerd (12 kaarten/pagina). Sinds sep 2026 heet
+ *   de parameter p54_page; ?page=N gaf steeds pagina 1, en door de
+ *   jaar-rollover van de datumparser werden dat speeldata tot 2085.
+ *   Paginering via pagineerListing (lib/peppered.js).
  * - Eén productietype (production-type-default) — geen film/andere types
  *   om uit te filteren, in tegenstelling tot Omval.
  * - Genre-tags (.genres__link) staan, net als bij Omval, al in de initiële
@@ -49,59 +52,52 @@ function classifyBeschikbaarheid(statusInfoText, btnOrderStatus) {
  *   gevallen vanzelf correct (respectievelijk: de starttijd, null, null) —
  *   geen speciale code nodig.
  */
-export async function scrapeBijlmerParktheater({ page, theater, robots, waitForTurn, log }) {
+export async function scrapeBijlmerParktheater({ page, theater, robots, waitForTurn, log, warn }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
     return [];
   }
 
-  const rawItems = [];
-  for (let pageNum = 1; pageNum <= MAX_LISTING_PAGES; pageNum++) {
-    const url = pageNum === 1 ? theater.agendaUrl : `${theater.agendaUrl}?page=${pageNum}`;
-    const listingPath = pageNum === 1 ? AGENDA_PATH : `${AGENDA_PATH}?page=${pageNum}`;
-    if (!robots.isAllowed(listingPath)) {
-      log(`robots.txt verbiedt ${listingPath} — stop met pagineren.`);
-      break;
-    }
-
-    await waitForTurn();
-    let pageItems;
-    try {
-      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      pageItems = await page.evaluate(() => {
-        return Array.from(document.querySelectorAll('.eventCard')).map((el) => {
-          const titel = el.querySelector('.title')?.textContent.trim() ?? null;
-          const detailHref = el.querySelector('a.desc')?.getAttribute('href') ?? null;
-          const maker = el.querySelector('.subtitle')?.textContent.trim() || null;
-          const dagTekst = el.querySelector('.top-date .start')?.textContent.trim() ?? null;
-          const tijdTekst = el.querySelector('.top-date .time')?.textContent.trim() ?? null;
-          const genres = Array.from(el.querySelectorAll('.genres__link')).map((g) => g.textContent.trim());
-          const statusInfoText = el.querySelector('.status-info .label')?.textContent.trim() ?? null;
-          const btnOrderEl = el.querySelector('.btn-order');
-          const btnOrderStatus = btnOrderEl?.className ?? null;
-          const ticketHref = btnOrderEl?.getAttribute('href') ?? null;
-          return {
-            titel,
-            detailHref,
-            maker,
-            dagTekst,
-            tijdTekst,
-            genres,
-            statusInfoText,
-            btnOrderStatus,
-            ticketHref,
-          };
-        });
+  const rawItems = await pagineerListing({
+    page,
+    theater,
+    robots,
+    waitForTurn,
+    log,
+    warn,
+    agendaPath: AGENDA_PATH,
+    maxPages: MAX_LISTING_PAGES,
+    label: 'items',
+    sleutelVan: (item) => item.sleutel,
+    extract: () => {
+      return Array.from(document.querySelectorAll('.eventCard')).map((el) => {
+        const titel = el.querySelector('.title')?.textContent.trim() ?? null;
+        const detailHref = el.querySelector('a.desc')?.getAttribute('href') ?? null;
+        const maker = el.querySelector('.subtitle')?.textContent.trim() || null;
+        const dagTekst = el.querySelector('.top-date .start')?.textContent.trim() ?? null;
+        const tijdTekst = el.querySelector('.top-date .time')?.textContent.trim() ?? null;
+        const genres = Array.from(el.querySelectorAll('.genres__link')).map((g) => g.textContent.trim());
+        const statusInfoText = el.querySelector('.status-info .label')?.textContent.trim() ?? null;
+        const btnOrderEl = el.querySelector('.btn-order');
+        const btnOrderStatus = btnOrderEl?.className ?? null;
+        const ticketHref = btnOrderEl?.getAttribute('href') ?? null;
+        // Eén kaart per speeldatum; entry-id + datum + tijd is uniek.
+        const sleutel = [el.getAttribute('data-entry-id'), dagTekst, tijdTekst].join('|');
+        return {
+          sleutel,
+          titel,
+          detailHref,
+          maker,
+          dagTekst,
+          tijdTekst,
+          genres,
+          statusInfoText,
+          btnOrderStatus,
+          ticketHref,
+        };
       });
-    } catch (err) {
-      log(`kon listingpagina ${pageNum} niet laden: ${err.message} — probeer volgende pagina.`);
-      continue;
-    }
-
-    log(`pagina ${pageNum}: ${pageItems.length} items`);
-    if (pageItems.length === 0) break;
-    rawItems.push(...pageItems);
-  }
+    },
+  });
 
   const parseDay = createDutchAbbrevDayParser();
   const buildId = createIdBuilder();

@@ -1,3 +1,4 @@
+import { pagineerListing } from '../lib/peppered.js';
 import { extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
 
@@ -59,47 +60,39 @@ function isPodiumpasEligible(card) {
   return PODIUMPAS_TITLE_EXCEPTIONS.has(card.titel?.trim().toLowerCase());
 }
 
-export async function scrapeBostheater({ page, theater, robots, waitForTurn, log }) {
+export async function scrapeBostheater({ page, theater, robots, waitForTurn, log, warn }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
     return [];
   }
 
-  const cards = [];
-  for (let pageNum = 1; pageNum <= MAX_LISTING_PAGES; pageNum++) {
-    const url = pageNum === 1 ? theater.agendaUrl : `${theater.agendaUrl}?sf_paged=${pageNum}`;
-    const listingPath = pageNum === 1 ? AGENDA_PATH : `${AGENDA_PATH}?sf_paged=${pageNum}`;
-    if (!robots.isAllowed(listingPath)) {
-      log(`robots.txt verbiedt ${listingPath} — stop met pagineren.`);
-      break;
-    }
-
-    await waitForTurn();
-    let pageCards;
-    try {
-      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      pageCards = await page.evaluate(() => {
-        return Array.from(document.querySelectorAll('article.event-card')).map((card) => {
-          const type = card.querySelector('.event-card-terms__type')?.textContent.trim() ?? null;
-          const genreRuw = card.querySelector('.event-card-terms__genre-name')?.textContent.trim() ?? null;
-          const titel = card.querySelector('.event-card-title')?.textContent.trim() ?? null;
-          const beschrijving = card.querySelector('.event-card-description p')?.textContent.trim() ?? null;
-          const detailHref =
-            Array.from(card.querySelectorAll('.event-card__actions a')).find((a) =>
-              a.getAttribute('href')?.includes('/events/')
-            )?.getAttribute('href') ?? null;
-          return { type, genreRuw, titel, beschrijving, detailHref };
-        });
+  const cards = await pagineerListing({
+    page,
+    theater,
+    robots,
+    waitForTurn,
+    log,
+    warn,
+    agendaPath: AGENDA_PATH,
+    maxPages: MAX_LISTING_PAGES,
+    parameter: 'sf_paged',
+    leesParameter: false,
+    label: 'producties',
+    sleutelVan: (card) => `${card.detailHref}|${card.titel}`,
+    extract: () => {
+      return Array.from(document.querySelectorAll('article.event-card')).map((card) => {
+        const type = card.querySelector('.event-card-terms__type')?.textContent.trim() ?? null;
+        const genreRuw = card.querySelector('.event-card-terms__genre-name')?.textContent.trim() ?? null;
+        const titel = card.querySelector('.event-card-title')?.textContent.trim() ?? null;
+        const beschrijving = card.querySelector('.event-card-description p')?.textContent.trim() ?? null;
+        const detailHref =
+          Array.from(card.querySelectorAll('.event-card__actions a')).find((a) =>
+            a.getAttribute('href')?.includes('/events/')
+          )?.getAttribute('href') ?? null;
+        return { type, genreRuw, titel, beschrijving, detailHref };
       });
-    } catch (err) {
-      log(`kon listingpagina ${pageNum} niet laden: ${err.message} — probeer volgende pagina.`);
-      continue;
-    }
-
-    log(`pagina ${pageNum}: ${pageCards.length} producties`);
-    if (pageCards.length === 0) break;
-    cards.push(...pageCards);
-  }
+    },
+  });
 
   const seenHrefs = new Set();
   const relevantCards = cards.filter((card) => {

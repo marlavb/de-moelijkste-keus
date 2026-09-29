@@ -1,3 +1,4 @@
+import { pagineerListing } from '../lib/peppered.js';
 import { extractTime, createIdBuilder } from '../lib/normalize.js';
 
 const AGENDA_PATH = '/nl/agenda';
@@ -87,89 +88,52 @@ function classifyBeschikbaarheid(statusInfoText, btnOrderStatus) {
  *   "toevoegen aan winkelwagen"-link in href — die link gebruiken we als
  *   reserverenUrl in plaats van de detailpagina.
  */
-export async function scrapeMuziekgebouw({ page, theater, robots, waitForTurn, log }) {
+export async function scrapeMuziekgebouw({ page, theater, robots, waitForTurn, log, warn }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
     return [];
   }
 
-  const rawItems = [];
-  // De naam van de paginaparameter is veranderd (eerst "page", sinds sep
-  // 2026 "p54_page", naar een CMS-paginaonderdeel). Met ?page=N kwam daarna
-  // steeds pagina 1 terug: 30 keer dezelfde voorstellingen in de data (28 sep
-  // 2026). Daarom lezen we de naam van pagina 1 af uit de keuzelijst (zoals
-  // Bellevue en peppered.js) en stoppen we zodra een pagina niets nieuws
-  // oplevert; robots.txt staat beide vormen toe.
-  let pageParam = 'page';
-  const seen = new Set();
-  let stoppedNormally = false;
-  for (let pageNum = 1; pageNum <= MAX_LISTING_PAGES; pageNum++) {
-    const url = pageNum === 1 ? theater.agendaUrl : `${theater.agendaUrl}?${pageParam}=${pageNum}`;
-    const listingPath = pageNum === 1 ? AGENDA_PATH : `${AGENDA_PATH}?${pageParam}=${pageNum}`;
-    if (!robots.isAllowed(listingPath)) {
-      log(`robots.txt verbiedt ${listingPath} — stop met pagineren.`);
-      stoppedNormally = true;
-      break;
-    }
-
-    await waitForTurn();
-    let pageItems;
-    try {
-      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      if (pageNum === 1) {
-        pageParam =
-          (await page.evaluate(() => document.querySelector('select.page-selection')?.getAttribute('name'))) ||
-          pageParam;
-        log(`paginaparameter: ${pageParam}`);
-      }
-      pageItems = await page.evaluate(() => {
-        return Array.from(document.querySelectorAll('.eventCard')).map((el) => {
-          const titel = el.querySelector('.title')?.textContent.trim() ?? null;
-          const detailHref = el.querySelector('a.desc')?.getAttribute('href') ?? null;
-          const beschrijving = el.querySelector('.tagline')?.textContent.trim() ?? null;
-          const maker = el.querySelector('.subtitle')?.textContent.trim() || null;
-          const dagTekst = el.querySelector('.top-date .start')?.textContent.trim() ?? null;
-          const tijdTekst = el.querySelector('.top-date .time')?.textContent.trim() ?? null;
-          const statusInfoText = el.querySelector('.status-info .label')?.textContent.trim() ?? null;
-          const btnOrderEl = el.querySelector('.btn-order');
-          const btnOrderStatus = btnOrderEl?.className ?? null;
-          const ticketHref = btnOrderEl?.getAttribute('href') ?? null;
-          // Eén kaart per speeldatum; entry-id + datum + tijd is uniek.
-          const sleutel = [el.getAttribute('data-entry-id'), dagTekst, tijdTekst].join('|');
-          return {
-            sleutel,
-            titel,
-            detailHref,
-            beschrijving,
-            maker,
-            dagTekst,
-            tijdTekst,
-            statusInfoText,
-            btnOrderStatus,
-            ticketHref,
-          };
-        });
+  const rawItems = await pagineerListing({
+    page,
+    theater,
+    robots,
+    waitForTurn,
+    log,
+    warn,
+    agendaPath: AGENDA_PATH,
+    maxPages: MAX_LISTING_PAGES,
+    label: 'items',
+    sleutelVan: (item) => item.sleutel,
+    extract: () => {
+      return Array.from(document.querySelectorAll('.eventCard')).map((el) => {
+        const titel = el.querySelector('.title')?.textContent.trim() ?? null;
+        const detailHref = el.querySelector('a.desc')?.getAttribute('href') ?? null;
+        const beschrijving = el.querySelector('.tagline')?.textContent.trim() ?? null;
+        const maker = el.querySelector('.subtitle')?.textContent.trim() || null;
+        const dagTekst = el.querySelector('.top-date .start')?.textContent.trim() ?? null;
+        const tijdTekst = el.querySelector('.top-date .time')?.textContent.trim() ?? null;
+        const statusInfoText = el.querySelector('.status-info .label')?.textContent.trim() ?? null;
+        const btnOrderEl = el.querySelector('.btn-order');
+        const btnOrderStatus = btnOrderEl?.className ?? null;
+        const ticketHref = btnOrderEl?.getAttribute('href') ?? null;
+        // Eén kaart per speeldatum; entry-id + datum + tijd is uniek.
+        const sleutel = [el.getAttribute('data-entry-id'), dagTekst, tijdTekst].join('|');
+        return {
+          sleutel,
+          titel,
+          detailHref,
+          beschrijving,
+          maker,
+          dagTekst,
+          tijdTekst,
+          statusInfoText,
+          btnOrderStatus,
+          ticketHref,
+        };
       });
-    } catch (err) {
-      log(`kon listingpagina ${pageNum} niet laden: ${err.message} — probeer volgende pagina.`);
-      continue;
-    }
-
-    const newItems = pageItems.filter((item) => {
-      if (seen.has(item.sleutel)) return false;
-      seen.add(item.sleutel);
-      return true;
-    });
-    log(`pagina ${pageNum}: ${pageItems.length} items (${newItems.length} nieuw)`);
-    if (newItems.length === 0) {
-      stoppedNormally = true;
-      break;
-    }
-    rawItems.push(...newItems);
-  }
-  if (!stoppedNormally) {
-    log(`WAARSCHUWING: bovengrens van ${MAX_LISTING_PAGES} listingpagina's bereikt — paginering is waarschijnlijk stuk.`);
-  }
+    },
+  });
 
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();

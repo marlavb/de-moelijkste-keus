@@ -1,3 +1,4 @@
+import { pagineerListing } from '../lib/peppered.js';
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
 
@@ -47,101 +48,57 @@ function classifyBeschikbaarheid(statusInfoText, btnOrderStatus) {
  *   maand-afkorting, GEEN jaartal) — zelfde formaat als Theater Bellevue,
  *   dus de bestaande createDutchAbbrevDayParser() volstaat.
  */
-export async function scrapeOmval({ page, theater, robots, waitForTurn, log }) {
+export async function scrapeOmval({ page, theater, robots, waitForTurn, log, warn }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
     return [];
   }
 
-  const rawItems = [];
-  // De naam van de paginaparameter is veranderd (eerst "page", sinds sep
-  // 2026 "p54_page", naar een CMS-paginaonderdeel). Met ?page=N kwam daarna
-  // steeds pagina 1 terug: 30 keer dezelfde voorstellingen in de data (28 sep
-  // 2026). Daarom lezen we de naam van pagina 1 af uit de keuzelijst (zoals
-  // Bellevue en peppered.js) en stoppen we zodra een pagina niets nieuws
-  // oplevert; robots.txt staat beide vormen toe.
-  let pageParam = 'page';
-  const seen = new Set();
-  let stoppedNormally = false;
-  for (let pageNum = 1; pageNum <= MAX_LISTING_PAGES; pageNum++) {
-    const url = pageNum === 1 ? theater.agendaUrl : `${theater.agendaUrl}?${pageParam}=${pageNum}`;
-    const listingPath = pageNum === 1 ? AGENDA_PATH : `${AGENDA_PATH}?${pageParam}=${pageNum}`;
-    if (!robots.isAllowed(listingPath)) {
-      log(`robots.txt verbiedt ${listingPath} — stop met pagineren.`);
-      stoppedNormally = true;
-      break;
-    }
-
-    await waitForTurn();
-    let pageResult;
-    try {
-      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      if (pageNum === 1) {
-        pageParam =
-          (await page.evaluate(() => document.querySelector('select.page-selection')?.getAttribute('name'))) ||
-          pageParam;
-        log(`paginaparameter: ${pageParam}`);
-      }
-      pageResult = await page.evaluate(() => {
-        const cards = Array.from(document.querySelectorAll('.eventCard'));
-        // Eén kaart per speeldatum; entry-id + datum + tijd is uniek.
-        const sleutelVan = (el) =>
-          [
-            el.getAttribute('data-entry-id'),
-            el.querySelector('.top-date .start')?.textContent.trim(),
-            el.querySelector('.top-date .time')?.textContent.trim(),
-          ].join('|');
-        const items = cards
-          .filter((el) => !el.className.includes('production-type-movie'))
-          .map((el) => {
-            const titel = el.querySelector('.title')?.textContent.trim() ?? null;
-            const detailHref = el.querySelector('a.desc')?.getAttribute('href') ?? null;
-            const beschrijving = el.querySelector('.tagline')?.textContent.trim() ?? null;
-            const maker = el.querySelector('.subtitle')?.textContent.trim() || null;
-            const dagTekst = el.querySelector('.top-date .start')?.textContent.trim() ?? null;
-            const tijdTekst = el.querySelector('.top-date .time')?.textContent.trim() ?? null;
-            const genres = Array.from(el.querySelectorAll('.genres__link')).map((g) => g.textContent.trim());
-            const statusInfoText = el.querySelector('.status-info .label')?.textContent.trim() ?? null;
-            const btnOrderEl = el.querySelector('.btn-order');
-            const btnOrderStatus = btnOrderEl?.className ?? null;
-            const ticketHref = btnOrderEl?.getAttribute('href') ?? null;
-            return {
-              sleutel: sleutelVan(el),
-              titel,
-              detailHref,
-              beschrijving,
-              maker,
-              dagTekst,
-              tijdTekst,
-              genres,
-              statusInfoText,
-              btnOrderStatus,
-              ticketHref,
-            };
-          });
-        return { sleutels: cards.map(sleutelVan), items };
+  // "Nieuw" telt over ALLE kaarten, films inbegrepen: een pagina die
+  // toevallig alléén films bevat (zoals hier pagina 1) is geen teken dat de
+  // paginering voorbij is. De films halen we er daarna pas uit.
+  const kaarten = await pagineerListing({
+    page,
+    theater,
+    robots,
+    waitForTurn,
+    log,
+    warn,
+    agendaPath: AGENDA_PATH,
+    maxPages: MAX_LISTING_PAGES,
+    label: 'kaarten',
+    sleutelVan: (item) => item.sleutel,
+    extract: () => {
+      const cards = Array.from(document.querySelectorAll('.eventCard'));
+      // Eén kaart per speeldatum; entry-id + datum + tijd is uniek.
+      const sleutelVan = (el) =>
+        [
+          el.getAttribute('data-entry-id'),
+          el.querySelector('.top-date .start')?.textContent.trim(),
+          el.querySelector('.top-date .time')?.textContent.trim(),
+        ].join('|');
+      return cards.map((el) => {
+        const btnOrderEl = el.querySelector('.btn-order');
+        return {
+          sleutel: sleutelVan(el),
+          isFilm: el.className.includes('production-type-movie'),
+          titel: el.querySelector('.title')?.textContent.trim() ?? null,
+          detailHref: el.querySelector('a.desc')?.getAttribute('href') ?? null,
+          beschrijving: el.querySelector('.tagline')?.textContent.trim() ?? null,
+          maker: el.querySelector('.subtitle')?.textContent.trim() || null,
+          dagTekst: el.querySelector('.top-date .start')?.textContent.trim() ?? null,
+          tijdTekst: el.querySelector('.top-date .time')?.textContent.trim() ?? null,
+          genres: Array.from(el.querySelectorAll('.genres__link')).map((g) => g.textContent.trim()),
+          statusInfoText: el.querySelector('.status-info .label')?.textContent.trim() ?? null,
+          btnOrderStatus: btnOrderEl?.className ?? null,
+          ticketHref: btnOrderEl?.getAttribute('href') ?? null,
+        };
       });
-    } catch (err) {
-      log(`kon listingpagina ${pageNum} niet laden: ${err.message} — probeer volgende pagina.`);
-      continue;
-    }
+    },
+  });
 
-    // "Nieuw" telt over ALLE kaarten, films inbegrepen: een pagina die
-    // toevallig alléén films bevat (zoals hier pagina 1) is geen signaal dat
-    // de paginering voorbij is.
-    const nieuw = new Set(pageResult.sleutels.filter((k) => !seen.has(k)));
-    for (const k of nieuw) seen.add(k);
-    const newItems = pageResult.items.filter((item) => nieuw.has(item.sleutel));
-    log(`pagina ${pageNum}: ${pageResult.sleutels.length} kaarten (${nieuw.size} nieuw), ${newItems.length} nieuw na uitfilteren films`);
-    if (nieuw.size === 0) {
-      stoppedNormally = true;
-      break;
-    }
-    rawItems.push(...newItems);
-  }
-  if (!stoppedNormally) {
-    log(`WAARSCHUWING: bovengrens van ${MAX_LISTING_PAGES} listingpagina's bereikt — paginering is waarschijnlijk stuk.`);
-  }
+  const rawItems = kaarten.filter((item) => !item.isFilm);
+  log(`${kaarten.length} kaarten, ${rawItems.length} na uitfilteren films`);
 
   const parseDay = createDutchAbbrevDayParser();
   const buildId = createIdBuilder();

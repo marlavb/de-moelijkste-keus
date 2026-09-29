@@ -56,7 +56,7 @@ const MET_ETEN = /\b(diner|dinershow|high tea|brunch|met eten)\b/i;
  *   Isala alleen offline (balie/telefoon/mail).
  */
 export async function scrapeIsala({ page, theater, robots, waitForTurn, log, warn }) {
-  const cards = await scrapePepperedListing({ page, theater, robots, waitForTurn, log, agendaPath: AGENDA_PATH });
+  const cards = await scrapePepperedListing({ page, theater, robots, waitForTurn, log, warn, agendaPath: AGENDA_PATH });
   const resolveDate = createRowDateResolver();
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();

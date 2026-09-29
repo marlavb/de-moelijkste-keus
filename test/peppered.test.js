@@ -1,7 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createRowDateResolver, classifyPepperedButton, createGroupScraper, dedupeShows } from '../src/lib/peppered.js';
+import {
+  createRowDateResolver,
+  classifyPepperedButton,
+  createGroupScraper,
+  dedupeShows,
+  pagineerListing,
+} from '../src/lib/peppered.js';
 
 const SEPT_2026 = new Date('2026-09-27T10:00:00');
 
@@ -72,4 +78,93 @@ test('dedupeShows: toegankelijke variant van dezelfde voorstelling telt niet dub
   assert.equal(first.beschikbaarheid, 'beschikbaar');
   assert.equal(first.reserverenUrl, 'order');
   assert.equal(first.id, 'a', 'id zonder -2-suffix blijft');
+});
+
+// ---------- pagineerListing ----------
+
+
+// Nep-Playwright-pagina: `paginas(url)` geeft de items voor die URL; de eerste
+// evaluate na een goto is (bij leesParameter) de keuzelijst-naam.
+function nepPagina({ paginas, parameterNaam = null }) {
+  let huidige = null;
+  const bezocht = [];
+  return {
+    bezocht,
+    url: () => huidige,
+    goto: async (url) => {
+      bezocht.push(url);
+      huidige = url;
+    },
+    evaluate: async (fn) => {
+      if (/page-selection/.test(String(fn))) return parameterNaam;
+      return paginas(huidige);
+    },
+  };
+}
+
+const nepTheater = { baseUrl: 'https://t.test', agendaUrl: 'https://t.test/agenda' };
+const alles = { isAllowed: () => true };
+const kaarten = (n, van = 0) => Array.from({ length: n }, (_, i) => ({ id: String(van + i) }));
+
+async function pagineer(page, extra = {}) {
+  const logs = [];
+  const warns = [];
+  const items = await pagineerListing({
+    page,
+    theater: nepTheater,
+    robots: alles,
+    waitForTurn: async () => {},
+    log: (m) => logs.push(m),
+    warn: (m) => warns.push(m),
+    agendaPath: '/agenda',
+    extract: () => {},
+    sleutelVan: (k) => k.id,
+    maxPages: 10,
+    ...extra,
+  });
+  return { items, logs, warns };
+}
+
+test('pagineerListing: parameter uit de keuzelijst, stopt bij niets nieuws', async () => {
+  // Zoals sinds sep 2026: ?page=N geeft pagina 1, alleen p54_page werkt.
+  const page = nepPagina({
+    parameterNaam: 'p54_page',
+    paginas: (url) => {
+      const n = Number(new URL(url).searchParams.get('p54_page') ?? 1);
+      return n <= 3 ? kaarten(20, (n - 1) * 20) : kaarten(20, 0); // voorbij het einde: weer pagina 1
+    },
+  });
+  const { items, warns } = await pagineer(page);
+  assert.equal(items.length, 60);
+  assert.deepEqual(page.bezocht, [
+    'https://t.test/agenda',
+    'https://t.test/agenda?p54_page=2',
+    'https://t.test/agenda?p54_page=3',
+    'https://t.test/agenda?p54_page=4',
+  ]);
+  assert.deepEqual(warns, []);
+});
+
+test('pagineerListing: site die altijd pagina 1 geeft levert geen kopieën op', async () => {
+  const page = nepPagina({ paginas: () => kaarten(20) });
+  const { items } = await pagineer(page, { leesParameter: false });
+  assert.equal(items.length, 20);
+  assert.equal(page.bezocht.length, 2);
+});
+
+test('pagineerListing: bovengrens bereikt → waarschuwing', async () => {
+  let teller = 0;
+  const page = nepPagina({ paginas: () => kaarten(5, (teller += 5)) });
+  const { items, warns } = await pagineer(page, { maxPages: 4, leesParameter: false });
+  assert.equal(items.length, 20);
+  assert.equal(warns.length, 1);
+  assert.match(warns[0], /bovengrens van 4/);
+});
+
+test('pagineerListing: lege pagina 1 met leegIsFout → exception; eigen parameter (sf_paged)', async () => {
+  await assert.rejects(pagineer(nepPagina({ paginas: () => [] }), { leegIsFout: true }), /geen agendakaarten/);
+  const page = nepPagina({ paginas: (url) => (url.includes('sf_paged=2') ? kaarten(3, 10) : url.includes('sf_paged') ? [] : kaarten(3)) });
+  const { items } = await pagineer(page, { parameter: 'sf_paged', leesParameter: false });
+  assert.equal(items.length, 6);
+  assert.equal(page.bezocht[1], 'https://t.test/agenda?sf_paged=2');
 });

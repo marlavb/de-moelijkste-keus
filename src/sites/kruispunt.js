@@ -38,7 +38,7 @@ const SKIPPED_GENRES = new Set(['cursus']);
  * - Geen prijsgrens bij Kruispunt. Reserveren met de pas alleen telefonisch.
  */
 export async function scrapeKruispunt({ page, theater, robots, waitForTurn, log, warn }) {
-  const cards = await scrapePepperedListing({ page, theater, robots, waitForTurn, log, agendaPath: AGENDA_PATH });
+  const cards = await scrapePepperedListing({ page, theater, robots, waitForTurn, log, warn, agendaPath: AGENDA_PATH });
   const resolveDate = createRowDateResolver();
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();

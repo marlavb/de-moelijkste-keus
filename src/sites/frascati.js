@@ -1,3 +1,4 @@
+import { pagineerListing } from '../lib/peppered.js';
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
 
@@ -43,109 +44,68 @@ function classifyBeschikbaarheid(ctrlText) {
  *   Bellevue aangetroffen, maar dezelfde CSS-class bestaat duidelijk site-
  *   breed) — zie classifyBeschikbaarheid hierboven.
  */
-export async function scrapeFrascati({ page, theater, robots, waitForTurn, log }) {
+export async function scrapeFrascati({ page, theater, robots, waitForTurn, log, warn }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
     return [];
   }
 
-  // Voorbij de laatste pagina toont het platform (sinds sep 2026) geen lege
-  // lijst meer, maar steeds dezelfde kaarten. "0 producties" is dus geen
-  // betrouwbaar stopsignaal: we stoppen zodra een pagina geen enkele nog niet
-  // geziene entry-id oplevert. MAX_LISTING_PAGES blijft als harde bovengrens.
-  const cards = [];
-  const seenEntryIds = new Set();
-  let stoppedNormally = false;
-  // De naam van de paginaparameter verschilt per site en is veranderd (eerst
-  // "page", sinds sep 2026 bij Bellevue/Frascati "p54_page", naar het id van
-  // een CMS-paginaonderdeel). Daarom lezen we 'm van pagina 1 af, uit de
-  // pagina-keuzelijst; robots.txt staat beide vormen expliciet toe.
-  let pageParam = 'page';
-  for (let pageNum = 1; pageNum <= MAX_LISTING_PAGES; pageNum++) {
-    const url = pageNum === 1 ? theater.agendaUrl : `${theater.agendaUrl}?${pageParam}=${pageNum}`;
-    const listingPath = pageNum === 1 ? AGENDA_PATH : `${AGENDA_PATH}?${pageParam}=${pageNum}`;
-    if (!robots.isAllowed(listingPath)) {
-      log(`robots.txt verbiedt ${listingPath} — stop met pagineren.`);
-      stoppedNormally = true;
-      break;
-    }
+  const cards = await pagineerListing({
+    page,
+    theater,
+    robots,
+    waitForTurn,
+    log,
+    warn,
+    agendaPath: AGENDA_PATH,
+    maxPages: MAX_LISTING_PAGES,
+    label: 'producties',
+    sleutelVan: (card) => card.entryId,
+    extract: () => {
+      return Array.from(document.querySelectorAll('li[data-entry-id]')).map((card) => {
+        const entryId = card.getAttribute('data-entry-id');
+        const titel = card.querySelector('h3.title')?.textContent.trim() ?? null;
+        const beschrijving = card.querySelector('.tagline')?.textContent.trim() ?? null;
+        const detailHref = card.querySelector('a.desc')?.getAttribute('href') ?? null;
+        const genres = Array.from(card.querySelectorAll('.genres__link')).map((a) => a.textContent.trim());
 
-    await waitForTurn();
-    let pageCards;
-    try {
-      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      if (pageNum === 1) {
-        pageParam =
-          (await page.evaluate(() => document.querySelector('select.page-selection')?.getAttribute('name'))) ||
-          pageParam;
-        log(`paginaparameter: ${pageParam}`);
-      }
-      pageCards = await page.evaluate(() => {
-        return Array.from(document.querySelectorAll('li[data-entry-id]')).map((card) => {
-          const entryId = card.getAttribute('data-entry-id');
-          const titel = card.querySelector('h3.title')?.textContent.trim() ?? null;
-          const beschrijving = card.querySelector('.tagline')?.textContent.trim() ?? null;
-          const detailHref = card.querySelector('a.desc')?.getAttribute('href') ?? null;
-          const genres = Array.from(card.querySelectorAll('.genres__link')).map((a) => a.textContent.trim());
-
-          const rows = [];
-          const panel = document.getElementById(`show${entryId}Dates`);
-          if (panel) {
-            for (const li of panel.querySelectorAll('li.subshow')) {
-              const dagTekst = li.querySelector('.date .start')?.textContent.trim() ?? null;
-              if (!dagTekst) continue;
-              const tijdTekst = li.querySelector('.time .start')?.textContent.trim() ?? null;
-              const ctrl = li.querySelector('.buttonBox a, .buttonBox button, .buttonBox span');
-              rows.push({
-                dagTekst,
-                tijdTekst,
-                ctrlText: ctrl?.textContent.trim().replace(/\s+/g, ' ') ?? null,
-                href: ctrl?.getAttribute('href') ?? null,
-                // Tournee/andere zaal ("Verkoop elders", "Kaarten via"): het
-                // platform markeert die rij zelf met in-other-location.
-                andereLocatie: li.classList.contains('in-other-location'),
-              });
-            }
-          } else {
-            const dtInner = card.querySelector('.dateTimeContainer .dateTimeInner');
-            const dagTekst = dtInner?.querySelector('.datetime .date .start')?.textContent.trim() ?? null;
-            if (dagTekst) {
-              const tijdTekst = dtInner?.querySelector('.datetime .time .start')?.textContent.trim() ?? null;
-              const ctrl = dtInner?.querySelector('a.btn, button.btn, span.btn');
-              rows.push({
-                dagTekst,
-                tijdTekst,
-                ctrlText: ctrl?.textContent.trim().replace(/\s+/g, ' ') ?? null,
-                href: ctrl?.getAttribute('href') ?? null,
-              });
-            }
+        const rows = [];
+        const panel = document.getElementById(`show${entryId}Dates`);
+        if (panel) {
+          for (const li of panel.querySelectorAll('li.subshow')) {
+            const dagTekst = li.querySelector('.date .start')?.textContent.trim() ?? null;
+            if (!dagTekst) continue;
+            const tijdTekst = li.querySelector('.time .start')?.textContent.trim() ?? null;
+            const ctrl = li.querySelector('.buttonBox a, .buttonBox button, .buttonBox span');
+            rows.push({
+              dagTekst,
+              tijdTekst,
+              ctrlText: ctrl?.textContent.trim().replace(/\s+/g, ' ') ?? null,
+              href: ctrl?.getAttribute('href') ?? null,
+              // Tournee/andere zaal ("Verkoop elders", "Kaarten via"): het
+              // platform markeert die rij zelf met in-other-location.
+              andereLocatie: li.classList.contains('in-other-location'),
+            });
           }
+        } else {
+          const dtInner = card.querySelector('.dateTimeContainer .dateTimeInner');
+          const dagTekst = dtInner?.querySelector('.datetime .date .start')?.textContent.trim() ?? null;
+          if (dagTekst) {
+            const tijdTekst = dtInner?.querySelector('.datetime .time .start')?.textContent.trim() ?? null;
+            const ctrl = dtInner?.querySelector('a.btn, button.btn, span.btn');
+            rows.push({
+              dagTekst,
+              tijdTekst,
+              ctrlText: ctrl?.textContent.trim().replace(/\s+/g, ' ') ?? null,
+              href: ctrl?.getAttribute('href') ?? null,
+            });
+          }
+        }
 
-          return { entryId, titel, beschrijving, detailHref, genres, rows };
-        });
+        return { entryId, titel, beschrijving, detailHref, genres, rows };
       });
-    } catch (err) {
-      log(`kon listingpagina ${pageNum} niet laden: ${err.message} — probeer volgende pagina.`);
-      continue;
-    }
-
-    const newCards = pageCards.filter((card) => {
-      if (seenEntryIds.has(card.entryId)) return false;
-      seenEntryIds.add(card.entryId);
-      return true;
-    });
-    log(`pagina ${pageNum}: ${pageCards.length} producties (${newCards.length} nieuw)`);
-    if (newCards.length === 0) {
-      stoppedNormally = true;
-      break;
-    }
-    cards.push(...newCards);
-  }
-  if (!stoppedNormally) {
-    log(
-      `WAARSCHUWING: bovengrens van ${MAX_LISTING_PAGES} listingpagina's bereikt zonder einde van de agenda — paginering is waarschijnlijk stuk.`
-    );
-  }
+    },
+  });
 
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();

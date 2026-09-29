@@ -12,6 +12,96 @@ const DEFAULT_MAX_LISTING_PAGES = 40;
 const MONTHS = { jan: 1, feb: 2, mrt: 3, maa: 3, apr: 4, mei: 5, jun: 6, jul: 7, aug: 8, sep: 9, okt: 10, nov: 11, dec: 12 };
 
 /**
+ * Gedeelde paginering voor agenda's met ?<parameter>=N — het Peppered-
+ * platform (Bellevue, Frascati, Kleine Komedie, Muziekgebouw, De Omval,
+ * Bijlmer Parktheater, HNT, …) en een paar sites met hetzelfde patroon.
+ *
+ * Waarom één plek: het platform veranderde in sep 2026 de parameter van
+ * "page" naar "p54_page" (naar een CMS-paginaonderdeel). ?page=N gaf daarna
+ * steeds pagina 1; bij Muziekgebouw en Omval gaf dat 30 kopieën, bij
+ * Bijlmer Parktheater speeldata tot 2085. Daarom:
+ * - de parameternaam wordt van pagina 1 afgelezen (select.page-selection),
+ *   tenzij `leesParameter` false is; robots.txt wordt per URL gecheckt;
+ * - we stoppen zodra een pagina geen enkel nieuw item oplevert (volgens
+ *   `sleutelVan`), niet pas bij een lege pagina — voorbij de laatste pagina
+ *   toont het platform soms gewoon weer dezelfde kaarten;
+ * - de bovengrens `maxPages` geeft een WAARSCHUWING (via warn, dus ook als
+ *   ::warning:: in de run): dan is de paginering vrijwel zeker stuk.
+ *
+ * `extract` draait in de browser (page.evaluate) en geeft de items van één
+ * pagina. Pagina 1 niet te laden → exception (het vangnet valt terug);
+ * een latere pagina → loggen en door. `leegIsFout`: gooi als pagina 1 geen
+ * items heeft (site veranderd of geblokkeerd). Geeft alleen nieuwe items.
+ */
+export async function pagineerListing({
+  page,
+  theater,
+  robots,
+  waitForTurn,
+  log,
+  warn = log,
+  agendaPath,
+  extract,
+  sleutelVan,
+  maxPages = DEFAULT_MAX_LISTING_PAGES,
+  parameter = 'page',
+  leesParameter = true,
+  leegIsFout = false,
+  label = 'items',
+}) {
+  const items = [];
+  const gezien = new Set();
+  let pageParam = parameter;
+  let normaalGestopt = false;
+
+  for (let pageNum = 1; pageNum <= maxPages; pageNum++) {
+    const url = pageNum === 1 ? theater.agendaUrl : `${theater.agendaUrl}?${pageParam}=${pageNum}`;
+    const listingPath = pageNum === 1 ? agendaPath : `${agendaPath}?${pageParam}=${pageNum}`;
+    if (!robots.isAllowed(listingPath)) {
+      log(`robots.txt verbiedt ${listingPath} — stop met pagineren.`);
+      normaalGestopt = true;
+      break;
+    }
+
+    await waitForTurn();
+    let pageItems;
+    try {
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      if (pageNum === 1 && leesParameter) {
+        pageParam =
+          (await page.evaluate(() => document.querySelector('select.page-selection')?.getAttribute('name'))) || pageParam;
+        log(`paginaparameter: ${pageParam}`);
+      }
+      pageItems = await page.evaluate(extract);
+    } catch (err) {
+      if (pageNum === 1) throw err;
+      log(`kon listingpagina ${pageNum} niet laden: ${err.message} — probeer volgende pagina.`);
+      continue;
+    }
+
+    if (pageNum === 1 && leegIsFout && pageItems.length === 0) {
+      throw new Error(`geen agendakaarten op ${page.url()} — site veranderd of geblokkeerd?`);
+    }
+    const nieuw = pageItems.filter((item) => {
+      const sleutel = sleutelVan(item);
+      if (gezien.has(sleutel)) return false;
+      gezien.add(sleutel);
+      return true;
+    });
+    log(`pagina ${pageNum}: ${pageItems.length} ${label} (${nieuw.length} nieuw)`);
+    if (nieuw.length === 0) {
+      normaalGestopt = true;
+      break;
+    }
+    items.push(...nieuw);
+  }
+  if (!normaalGestopt) {
+    warn(`bovengrens van ${maxPages} listingpagina's bereikt zonder einde van de agenda — paginering is waarschijnlijk stuk.`);
+  }
+  return items;
+}
+
+/**
  * Haalt alle kaarten van een agenda op, pagina voor pagina. Per kaart één
  * of meer "rijen" (speeldata): uit het datumpaneel (#show<id>Dates, met
  * locatie/zaal/knop per datum) of, zonder paneel, uit de kaart zelf.
@@ -20,53 +110,25 @@ const MONTHS = { jan: 1, feb: 2, mrt: 3, maa: 3, apr: 4, mei: 5, jun: 6, jul: 7,
  * dit geen geldige agendapagina (site veranderd, blokkade), en moet het
  * vangnet terugvallen in plaats van stil [] op te leveren.
  */
-export async function scrapePepperedListing({ page, theater, robots, waitForTurn, log, agendaPath, maxPages = DEFAULT_MAX_LISTING_PAGES }) {
+export async function scrapePepperedListing({ page, theater, robots, waitForTurn, log, warn, agendaPath, maxPages = DEFAULT_MAX_LISTING_PAGES }) {
   if (!robots.isAllowed(agendaPath)) {
     log(`robots.txt verbiedt ${agendaPath} op ${theater.baseUrl} — sla over.`);
     return [];
   }
-
-  const cards = [];
-  const seenEntryIds = new Set();
-  let pageParam = 'page';
-  let stoppedNormally = false;
-
-  for (let pageNum = 1; pageNum <= maxPages; pageNum++) {
-    const url = pageNum === 1 ? theater.agendaUrl : `${theater.agendaUrl}?${pageParam}=${pageNum}`;
-    const listingPath = pageNum === 1 ? agendaPath : `${agendaPath}?${pageParam}=${pageNum}`;
-    if (!robots.isAllowed(listingPath)) {
-      log(`robots.txt verbiedt ${listingPath} — stop met pagineren.`);
-      stoppedNormally = true;
-      break;
-    }
-
-    await waitForTurn();
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    if (pageNum === 1) {
-      pageParam = (await page.evaluate(() => document.querySelector('select.page-selection')?.getAttribute('name'))) || pageParam;
-      log(`paginaparameter: ${pageParam}`);
-    }
-    const pageCards = await page.evaluate(extractCards);
-
-    if (pageNum === 1 && pageCards.length === 0) {
-      throw new Error(`geen agendakaarten op ${page.url()} — site veranderd of geblokkeerd?`);
-    }
-    const newCards = pageCards.filter((card) => {
-      if (seenEntryIds.has(card.entryId)) return false;
-      seenEntryIds.add(card.entryId);
-      return true;
-    });
-    log(`pagina ${pageNum}: ${pageCards.length} kaarten (${newCards.length} nieuw)`);
-    if (newCards.length === 0) {
-      stoppedNormally = true;
-      break;
-    }
-    cards.push(...newCards);
-  }
-  if (!stoppedNormally) {
-    log(`WAARSCHUWING: bovengrens van ${maxPages} listingpagina's bereikt — paginering is waarschijnlijk stuk.`);
-  }
-  return cards;
+  return pagineerListing({
+    page,
+    theater,
+    robots,
+    waitForTurn,
+    log,
+    warn,
+    agendaPath,
+    maxPages,
+    extract: extractCards,
+    sleutelVan: (card) => card.entryId,
+    leegIsFout: true,
+    label: 'kaarten',
+  });
 }
 
 // Draait in de browser (page.evaluate) — geen verwijzingen naar Node-scope.

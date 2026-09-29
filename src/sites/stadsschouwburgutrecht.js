@@ -1,3 +1,4 @@
+import { pagineerListing } from '../lib/peppered.js';
 import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
 
@@ -32,7 +33,9 @@ function classifyBeschikbaarheid(ticketText) {
  * Structuur (geïnspecteerd op https://stadsschouwburg-utrecht.nl/agenda,
  * aug 2026):
  * - Server-rendered, gepagineerd via ?page=N (20 pagina's, 30 items per
- *   pagina). robots.txt geeft geen crawl-delay op.
+ *   pagina; eigen platform, geen page-selection). Via pagineerListing
+ *   (lib/peppered.js): stoppen zodra een pagina niets nieuws oplevert.
+ *   robots.txt geeft geen crawl-delay op.
  * - Elk item (.event) heeft titel+link (.title a), beschrijving
  *   (.subtitle.oneliner), genre (.tag-wrapper .tag) en een verborgen
  *   <time datetime="D-M-JJJJ UU:MM:SS"> met de exacte datum/tijd.
@@ -43,47 +46,38 @@ function classifyBeschikbaarheid(ticketText) {
  *   de eerste .btn-ticket te gebruiken. Dezelfde Ticketmatic-vendor als
  *   Amstelveen/Frascati/Bellevue.
  */
-export async function scrapeStadsschouwburgUtrecht({ page, theater, robots, waitForTurn, log }) {
+export async function scrapeStadsschouwburgUtrecht({ page, theater, robots, waitForTurn, log, warn }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
     return [];
   }
 
-  const rawItems = [];
-  for (let pageNum = 1; pageNum <= MAX_LISTING_PAGES; pageNum++) {
-    const url = pageNum === 1 ? theater.agendaUrl : `${theater.agendaUrl}?page=${pageNum}`;
-    const listingPath = pageNum === 1 ? AGENDA_PATH : `${AGENDA_PATH}?page=${pageNum}`;
-    if (!robots.isAllowed(listingPath)) {
-      log(`robots.txt verbiedt ${listingPath} — stop met pagineren.`);
-      break;
-    }
-
-    await waitForTurn();
-    let pageItems;
-    try {
-      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      pageItems = await page.evaluate(() => {
-        return Array.from(document.querySelectorAll('.event')).map((el) => {
-          const titel = el.querySelector('.title a')?.textContent.trim() ?? null;
-          const detailHref = el.querySelector('.title a')?.getAttribute('href') ?? null;
-          const beschrijving = el.querySelector('.subtitle.oneliner')?.textContent.trim() ?? null;
-          const genre = el.querySelector('.tag-wrapper .tag')?.textContent.trim() ?? null;
-          const iso = el.querySelector('time')?.getAttribute('datetime') ?? null;
-          const ticketEl = el.querySelector('.btn-wrapper .btn-ticket');
-          const ticketHref = ticketEl?.getAttribute('href') ?? null;
-          const ticketText = ticketEl?.querySelector('span')?.textContent.trim() ?? ticketEl?.textContent.trim() ?? null;
-          return { titel, detailHref, beschrijving, genre, iso, ticketHref, ticketText };
-        });
+  const rawItems = await pagineerListing({
+    page,
+    theater,
+    robots,
+    waitForTurn,
+    log,
+    warn,
+    agendaPath: AGENDA_PATH,
+    maxPages: MAX_LISTING_PAGES,
+    leesParameter: false,
+    label: 'items',
+    sleutelVan: (item) => `${item.detailHref}|${item.iso}`,
+    extract: () => {
+      return Array.from(document.querySelectorAll('.event')).map((el) => {
+        const titel = el.querySelector('.title a')?.textContent.trim() ?? null;
+        const detailHref = el.querySelector('.title a')?.getAttribute('href') ?? null;
+        const beschrijving = el.querySelector('.subtitle.oneliner')?.textContent.trim() ?? null;
+        const genre = el.querySelector('.tag-wrapper .tag')?.textContent.trim() ?? null;
+        const iso = el.querySelector('time')?.getAttribute('datetime') ?? null;
+        const ticketEl = el.querySelector('.btn-wrapper .btn-ticket');
+        const ticketHref = ticketEl?.getAttribute('href') ?? null;
+        const ticketText = ticketEl?.querySelector('span')?.textContent.trim() ?? ticketEl?.textContent.trim() ?? null;
+        return { titel, detailHref, beschrijving, genre, iso, ticketHref, ticketText };
       });
-    } catch (err) {
-      log(`kon listingpagina ${pageNum} niet laden: ${err.message} — probeer volgende pagina.`);
-      continue;
-    }
-
-    log(`pagina ${pageNum}: ${pageItems.length} items`);
-    if (pageItems.length === 0) break;
-    rawItems.push(...pageItems);
-  }
+    },
+  });
 
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();

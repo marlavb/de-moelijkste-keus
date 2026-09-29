@@ -39,8 +39,8 @@ const THEATER_ID_BY_LOCATION = {
  *   telefonisch/per mail) — geen uitsluitingen genoemd, dus de boolean per
  *   config-entry.
  */
-async function scrapeAllHnt({ page, theater, robots, waitForTurn, log }) {
-  const cards = await scrapePepperedListing({ page, theater, robots, waitForTurn, log, agendaPath: AGENDA_PATH });
+async function scrapeAllHnt({ page, theater, robots, waitForTurn, log, warn }) {
+  const cards = await scrapePepperedListing({ page, theater, robots, waitForTurn, log, warn, agendaPath: AGENDA_PATH });
   const theatersById = Object.fromEntries(THEATERS.map((t) => [t.id, t]));
   const resolveDate = createRowDateResolver();
   const buildId = createIdBuilder();

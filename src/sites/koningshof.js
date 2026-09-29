@@ -26,8 +26,8 @@ function isFilm(card) {
  *   vertoning alleen een data-event-start) — zie isFilm().
  * - Boekingen via Ticketmatic; knopteksten "Tickets" en "Wachtlijst".
  */
-export async function scrapeKoningshof({ page, theater, robots, waitForTurn, log }) {
-  const cards = await scrapePepperedListing({ page, theater, robots, waitForTurn, log, agendaPath: AGENDA_PATH });
+export async function scrapeKoningshof({ page, theater, robots, waitForTurn, log, warn }) {
+  const cards = await scrapePepperedListing({ page, theater, robots, waitForTurn, log, warn, agendaPath: AGENDA_PATH });
   const resolveDate = createRowDateResolver();
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();
