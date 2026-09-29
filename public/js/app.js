@@ -12,6 +12,7 @@ import {
 } from './firebase.js';
 import { getGenreBucket } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
+import { weergaveTitel, makerStaatInTitel } from './weergave.js';
 import { renameFavoritesAndPersist, THEATER_MOVES } from './favorites.js';
 import { laadWatchlist, bekendeSleutels, legeWatchlist, watchlistSleutel, voegToe, verwijder } from './watchlist.js';
 import {
@@ -931,7 +932,9 @@ function renderPlanRow(item, { show, soort }) {
   }
   const title = document.createElement('span');
   title.className = 'plan-title';
-  title.textContent = item.titel;
+  // De actuele weergave van de gekoppelde voorstelling; anders de titel uit
+  // de momentopname.
+  title.textContent = show ? weergaveTitel(show) : item.titel;
   const meta = document.createElement('span');
   meta.className = 'plan-meta';
   const tijd = show?.tijd ?? item.tijd;
@@ -1590,7 +1593,7 @@ function renderShowRow(show) {
   title.className = 'show-title';
   const titleText = document.createElement('span');
   titleText.className = 'show-title-text';
-  titleText.textContent = show.maker ? `${show.titel} - ${show.maker}` : show.titel;
+  titleText.textContent = weergaveTitel(show);
   title.appendChild(titleText);
 
   const meta = document.createElement('p');
@@ -1777,8 +1780,9 @@ function renderDetail(show) {
   els.detailTheater.textContent = show.theaterNaam;
   els.detailPodiumpasBadge.hidden = show.podiumpas !== true;
   els.detailTitle.textContent = show.titel;
+  // De maker niet nog eens tonen als hij al in de titel staat.
   els.detailMaker.textContent = show.maker ?? '';
-  els.detailMaker.hidden = !show.maker;
+  els.detailMaker.hidden = !show.maker || makerStaatInTitel(show.titel, show.maker);
   els.detailDate.textContent = formatDateLong(show.datum);
   els.detailTime.textContent = show.tijd ? `${show.tijd} uur` : 'Tijd volgt nog';
 
@@ -2254,7 +2258,7 @@ function watchlistProductions() {
     const theaters = new Set(komend.map((s) => s.theaterId));
     productions.push({
       key: item.sleutel,
-      titel: soonest?.titel ?? item.titel,
+      titel: soonest ? weergaveTitel(soonest) : item.titel,
       theaterNaam: soonest
         ? theaters.size > 1
           ? `${soonest.theaterNaam} en ${theaters.size - 1} ander${theaters.size === 2 ? '' : 'e'} theater${theaters.size === 2 ? '' : 's'}`

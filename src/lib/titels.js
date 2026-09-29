@@ -1,4 +1,4 @@
-// Titelconventie voor cabaretiers (sep 2026): titel = "Artiest – Voorstelling"
+// Titelconventie voor cabaretiers (sep 2026): titel = "Voorstelling – Artiest"
 // als de bron beide geeft, zodat dezelfde voorstelling bij elk theater
 // dezelfde titel (en dus dezelfde watchlist-sleutel) krijgt. Voorbeeld: Carré
 // had "Sara Kroos - Prikkelarme kermis", DeLaMar alleen "Sara Kroos" (met de
@@ -8,6 +8,10 @@
 // Alleen voor cabaret, kleinkunst en comedy: bij toneel en dans is de tweede
 // regel meestal het gezelschap, niet de voorstelling. Elk theater geeft aan
 // waar artiest en voorstelling in zijn bron staan; deze helper voegt ze samen.
+//
+// Tot 30 sep 2026 was de volgorde "Artiest – Voorstelling". De watchlist-
+// sleutel is volgorde-onafhankelijk (NORMALISATIE_VERSIE 3), dus sleutels,
+// bladwijzers en plannen veranderden daardoor niet.
 
 export const SCHEIDER = ' – ';
 
@@ -60,6 +64,15 @@ export function pasTitelConventieToe(show, { artiest, voorstelling, makerWordtLe
   const kv = kaal(v);
   if (ka === kv) return { ...show, titel: a, maker: makerWordtLeeg ? null : show.maker };
   // Staat de artiest al vooraan in de voorstellingsnaam, dan niet dubbel.
-  const titel = kv.startsWith(`${ka} `) ? v : `${a}${SCHEIDER}${v}`;
+  const titel = kv.startsWith(`${ka} `) ? v : `${v}${SCHEIDER}${a}`;
   return { ...show, titel, maker: makerWordtLeeg ? null : show.maker };
+}
+
+/**
+ * Eén scheidingsteken overal: een streepje met spaties eromheen (" - ") wordt
+ * een en-dash (" – "). Streepjes in een woord ("Try-(H)outen") blijven. De
+ * watchlist-sleutel en de ontdubbeling zien beide als hetzelfde.
+ */
+export function metEnDash(tekst) {
+  return typeof tekst === 'string' ? tekst.replace(/\s+-\s+/g, ' – ') : tekst;
 }

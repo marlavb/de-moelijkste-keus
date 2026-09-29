@@ -6,6 +6,7 @@
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { ontdubbelShows, dubbelSleutel } from './dedupe.js';
+import { metEnDash } from './titels.js';
 import path from 'node:path';
 
 import { todayIsoDate } from './normalize.js';
@@ -323,7 +324,8 @@ export async function runRefresh({
     // alleen theaters met een apart artiest/gezelschap-element) — hier
     // centraal op null gezet voor elke andere show, in plaats van dat elke
     // afzonderlijke scraper-module het zelf moet opnemen.
-    .map((s) => ({ ...s, prijs: s.prijs ?? null, maker: s.maker ?? null }));
+    // Eén scheidingsteken in titels en makers (" - " → " – ", zie titels.js).
+    .map((s) => ({ ...s, titel: metEnDash(s.titel), prijs: s.prijs ?? null, maker: metEnDash(s.maker ?? null) }));
   const purgedCount = mergedShows.length - verseShows.length;
   if (purgedCount > 0) {
     log(`${purgedCount} verlopen voorstelling(en) verwijderd (datum vóór ${minDate}).`);

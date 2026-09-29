@@ -1,4 +1,4 @@
-const CACHE_NAME = 'podiumagenda-v16';
+const CACHE_NAME = 'podiumagenda-v17';
 const APP_SHELL = [
   './',
   './index.html',
@@ -11,6 +11,7 @@ const APP_SHELL = [
   './js/watchlist.js',
   './js/gepland.js',
   './js/titelMapping.js',
+  './js/weergave.js',
   './manifest.json',
   './data/shows.json',
 ];
