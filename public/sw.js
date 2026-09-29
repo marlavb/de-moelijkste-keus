@@ -1,4 +1,4 @@
-const CACHE_NAME = 'podiumagenda-v12';
+const CACHE_NAME = 'podiumagenda-v13';
 const APP_SHELL = [
   './',
   './index.html',
@@ -56,7 +56,13 @@ self.addEventListener('fetch', (event) => {
 
   if (isNetworkFirst(url)) {
     event.respondWith(
-      fetch(event.request)
+      // cache: 'no-cache' = altijd bij de server navragen (goedkoop, via de
+      // ETag). Een gewone fetch() gebruikt de HTTP-cache van de browser, en
+      // GitHub Pages geeft max-age=600: tot 10 minuten na een deploy kon zo
+      // een nieuwe index.html met een oude app.js samenkomen (30 sep 2026:
+      // tabs Theaters en Profiel werkten niet). Een navigatie-request mag
+      // niet met extra opties worden nagemaakt, dus die halen we op URL op.
+      fetch(event.request.mode === 'navigate' ? event.request.url : event.request, { cache: 'no-cache', credentials: 'same-origin' })
         .then((res) => {
           const clone = res.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));

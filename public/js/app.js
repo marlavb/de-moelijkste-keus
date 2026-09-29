@@ -315,6 +315,19 @@ function toggleSidebarSection(sectionId) {
 renderSidebarSections();
 
 async function init() {
+  // De navigatie als allereerste koppelen: gaat verderop iets mis (bv. een
+  // element dat in een nieuwere index.html niet meer bestaat, terwijl de
+  // browser nog een oudere app.js heeft — 30 sep 2026 werkten Theaters en
+  // Profiel daardoor niet), dan blijven de tabs het toch doen.
+  els.bottomNav.addEventListener('click', (e) => {
+    const btn = e.target.closest('.nav-item');
+    if (!btn) return;
+    if (btn.dataset.tab === 'agenda') navigate('#/');
+    if (btn.dataset.tab === 'theaters') navigate('#/theaters');
+    if (btn.dataset.tab === 'profiel') navigate('#/profiel');
+  });
+  window.addEventListener('hashchange', route);
+
   const theaterInfoPromise = loadTheaterInfo();
   const res = await fetch('data/shows.json');
   const shows = await res.json();
@@ -373,15 +386,6 @@ async function init() {
   }
 
   els.detailBack.addEventListener('click', () => navigate('#/'));
-  els.bottomNav.addEventListener('click', (e) => {
-    const btn = e.target.closest('.nav-item');
-    if (!btn) return;
-    if (btn.dataset.tab === 'agenda') navigate('#/');
-    if (btn.dataset.tab === 'theaters') navigate('#/theaters');
-    if (btn.dataset.tab === 'profiel') navigate('#/profiel');
-  });
-
-  window.addEventListener('hashchange', route);
   route();
 
   initFeedbackForm();
