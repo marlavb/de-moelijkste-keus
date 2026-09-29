@@ -44,8 +44,39 @@ test('vaste titeltest: varianten per theater vallen samen', () => {
 test('vaste titeltest: wat níet mag samenvallen', () => {
   assert.equal(watchlistSleutel('Alles onder controle', 'x'), 'alles onder controle');
   assert.equal(watchlistSleutel('Adem van het Woud', 'x'), 'adem van het woud');
-  assert.equal(watchlistSleutel('Sara Kroos - Prikkelarme kermis', 'x'), 'sara kroos prikkelarme kermis');
+  assert.equal(watchlistSleutel('Sara Kroos - Prikkelarme kermis', 'x'), 'prikkelarme kermis | sara kroos');
+  assert.notEqual(watchlistSleutel('Sara Kroos – Gelukskoekje', 'x'), watchlistSleutel('Sara Kroos – Prikkelarme kermis', 'x'));
+  assert.notEqual(watchlistSleutel('Sara Kroos', 'x'), watchlistSleutel('Sara Kroos – Prikkelarme kermis', 'x'));
   assert.equal(watchlistSleutel('CABARETDUBBEL', 'x'), 'cabaretdubbel');
+});
+
+test('vaste titeltest: artiest – voorstelling, scheidingstekens en volgorde (v3)', () => {
+  const k = (t) => watchlistSleutel(t, 'x');
+  // Scheidingsteken maakt niet uit.
+  for (const t of ['Sara Kroos – Prikkelarme kermis', 'Sara Kroos - Prikkelarme kermis', 'Sara Kroos | Prikkelarme kermis', 'Sara Kroos: Prikkelarme kermis', 'SARA KROOS - Prikkelarme Kermis (reprise)']) {
+    assert.equal(k(t), 'prikkelarme kermis | sara kroos', t);
+  }
+  // Volgorde van de delen maakt niet uit; woorden binnen een deel wel.
+  assert.equal(k('Grijs – Timzingt'), k('Timzingt – Grijs'));
+  assert.notEqual(k('Kermis Prikkelarme – Sara Kroos'), k('Prikkelarme kermis – Sara Kroos'));
+  // Ruis gaat over de hele titel, vóór het splitsen.
+  assert.equal(k('Juf Braaksel – De Musical (6+)'), 'juf braaksel');
+  assert.equal(k('Merijn Scholten – Lemming - reprise'), k('Merijn Scholten – LEMMING'));
+  // "&" = "en".
+  assert.equal(k('Maartje & Kine – De Bingo Show'), k('Maartje en Kine - De Bingo Show'));
+  assert.equal(k('Spruijt & Opperman'), 'spruijt en opperman');
+  // Streepjes in een woord splitsen niet.
+  assert.equal(k('Try-(H)outen'), 'try h outen');
+});
+
+test('vaste titeltest: uitsluitlijst werkt nog; "Cabaret" als titel ≠ genre', () => {
+  assert.equal(watchlistSleutel('Nora', 'flint'), 'flint::nora');
+  assert.equal(watchlistSleutel('ADEM', 'schuur'), 'schuur::adem');
+  assert.equal(watchlistSleutel('Blind Date (4+)', 'kunstlinie'), 'kunstlinie::blind date');
+  assert.equal(watchlistSleutel('Cabaret', 'delamar'), 'delamar::cabaret');
+  // Een titel met meerdere delen is niet de kale uitgesloten titel.
+  assert.equal(watchlistSleutel('Cabaret – De Cabaret Club', 'stoep'), 'cabaret | de cabaret club');
+  assert.equal(watchlistSleutel('Nora – Judith Noyons', 'flint'), 'judith noyons | nora');
 });
 
 test('vaste titeltest: titels op de uitsluitlijst zijn theatergebonden', () => {
@@ -168,7 +199,7 @@ test('her-normaliseren: alleen items met een oudere versie, idempotent', () => {
 });
 
 test('versie 1 → 2: "blind date" wordt theatergebonden, via titel en theater', () => {
-  assert.equal(NORMALISATIE_VERSIE, 2);
+  assert.ok(NORMALISATIE_VERSIE >= 2);
   const v1 = {
     watchlist: [
       { sleutel: 'blind date', titel: 'Blind Date (4+)', theaterId: 'kunstlinie', toegevoegdOp: 7, v: 1 },
@@ -178,7 +209,7 @@ test('versie 1 → 2: "blind date" wordt theatergebonden, via titel en theater',
   };
   const v2 = renormaliseer(v1);
   assert.deepEqual(sleutels(v2), ['kunstlinie::blind date', 'titanique']);
-  assert.ok(v2.watchlist.every((i) => i.v === 2));
+  assert.ok(v2.watchlist.every((i) => i.v === NORMALISATIE_VERSIE));
   assert.equal(v2.watchlist[0].toegevoegdOp, 7);
   assert.deepEqual(renormaliseer(v2), v2);
 });
@@ -207,4 +238,80 @@ test('bekendeSleutels uit de shows', () => {
     { titel: 'TiTANiQUE de musical', theaterId: 'kunstlinie' },
   ]);
   assert.deepEqual([...bekend.keys()].sort(), ['flint::nora', 'titanique']);
+});
+
+// ---------- Titelconventie (v3): mapping oude sleutel → nieuwe ----------
+
+const MAPPING = new Map([
+  [
+    'sara kroos',
+    [
+      { sleutel: 'prikkelarme kermis | sara kroos', titel: 'Sara Kroos – Prikkelarme kermis' },
+      { sleutel: 'gelukskoekje | sara kroos', titel: 'Sara Kroos – Gelukskoekje' },
+    ],
+  ],
+]);
+// Na de omzetting: "Sara Kroos" als losse titel bestaat nergens meer.
+const BEKEND_NA = new Map([
+  ['prikkelarme kermis | sara kroos', 'Sara Kroos – Prikkelarme kermis'],
+  ['gelukskoekje | sara kroos', 'Sara Kroos – Gelukskoekje'],
+  ['titanique', 'Titanique'],
+]);
+
+test('titelmapping: bladwijzer "sara kroos" (DeLaMar) → beide voorstellingen', () => {
+  const opgeslagen = {
+    watchlist: [
+      { sleutel: 'sara kroos', titel: 'Sara Kroos', theaterId: 'delamar', toegevoegdOp: 100, v: 2 },
+      { sleutel: 'titanique', titel: 'Titanique', theaterId: 'flint', toegevoegdOp: 50, v: 2 },
+    ],
+    watchlistVerwijderd: [],
+  };
+  const r = laadWatchlist({ opgeslagen, bekend: BEKEND_NA, mapping: MAPPING });
+  assert.deepEqual(sleutels(r.profiel), ['gelukskoekje | sara kroos', 'prikkelarme kermis | sara kroos', 'titanique']);
+  const pk = r.profiel.watchlist.find((i) => i.sleutel === 'prikkelarme kermis | sara kroos');
+  assert.equal(pk.toegevoegdOp, 100);
+  assert.equal(pk.titel, 'Sara Kroos – Prikkelarme kermis');
+  assert.equal(r.gewijzigd, true);
+  // "prikkelarme kermis | sara kroos" is ook de sleutel van Carré, KS en De Stoep na de omzetting.
+  for (const t of ['Sara Kroos - Prikkelarme kermis', 'Sara Kroos – Prikkelarme kermis', 'Sara Kroos – Prikkelarme Kermis (reprise)']) {
+    assert.equal(watchlistSleutel(t, 'carre'), 'prikkelarme kermis | sara kroos');
+  }
+  // Twee keer laden schrijft niets.
+  const tweede = laadWatchlist({ opgeslagen: JSON.parse(JSON.stringify(r.profiel)), bekend: BEKEND_NA, mapping: MAPPING });
+  assert.equal(tweede.gewijzigd, false);
+});
+
+test('titelmapping: ook via het oude favorites-veld, en idempotent', () => {
+  const r = laadWatchlist({ opgeslagen: null, favorieten: ['delamar::Sara Kroos'], bekend: BEKEND_NA, mapping: MAPPING });
+  assert.deepEqual(sleutels(r.profiel), ['gelukskoekje | sara kroos', 'prikkelarme kermis | sara kroos']);
+  const tweede = laadWatchlist({ opgeslagen: JSON.parse(JSON.stringify(r.profiel)), favorieten: ['delamar::Sara Kroos'], bekend: BEKEND_NA, mapping: MAPPING });
+  assert.equal(tweede.gewijzigd, false);
+});
+
+test('titelmapping: item zonder mapping blijft; verwijderd blijft weg', () => {
+  // Verwijderd vóór de omzetting (tombstone op de oude sleutel), en de oude favoriet bestaat nog.
+  const weg = laadWatchlist({
+    opgeslagen: { watchlist: [], watchlistVerwijderd: [{ sleutel: 'sara kroos', verwijderdOp: 200 }] },
+    favorieten: ['delamar::Sara Kroos'],
+    bekend: BEKEND_NA,
+    mapping: MAPPING,
+  });
+  assert.deepEqual(sleutels(weg.profiel), []);
+  // Na de omzetting één van de twee verwijderd: blijft weg, ook met de oude favoriet erbij.
+  const eerst = laadWatchlist({ opgeslagen: null, favorieten: ['delamar::Sara Kroos'], bekend: BEKEND_NA, mapping: MAPPING }).profiel;
+  const zonder = verwijder(eerst, 'gelukskoekje | sara kroos', 300);
+  const daarna = laadWatchlist({ opgeslagen: zonder, favorieten: ['delamar::Sara Kroos'], bekend: BEKEND_NA, mapping: MAPPING });
+  assert.deepEqual(sleutels(daarna.profiel), ['prikkelarme kermis | sara kroos']);
+  assert.equal(daarna.gewijzigd, false);
+});
+
+test('titelmapping: bestaat de oude sleutel nog in de data, dan blijft het oude item ook', () => {
+  const bekend = new Map([...BEKEND_NA, ['sara kroos', 'Sara Kroos']]);
+  const r = laadWatchlist({
+    opgeslagen: { watchlist: [{ sleutel: 'sara kroos', titel: 'Sara Kroos', theaterId: 'delamar', toegevoegdOp: 100, v: 2 }], watchlistVerwijderd: [] },
+    bekend,
+    mapping: MAPPING,
+  });
+  assert.deepEqual(sleutels(r.profiel), ['gelukskoekje | sara kroos', 'prikkelarme kermis | sara kroos', 'sara kroos']);
+  assert.equal(laadWatchlist({ opgeslagen: JSON.parse(JSON.stringify(r.profiel)), bekend, mapping: MAPPING }).gewijzigd, false);
 });

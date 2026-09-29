@@ -668,7 +668,8 @@ function syncProfielForCurrentUser() {
   const bekend = bekendeSleutels(state.shows);
   const lokaal = laadWatchlist({ opgeslagen: loadWatchlistLocal(), favorieten: [...loadFavorites()], bekend });
   if (lokaal.gewijzigd) saveWatchlistLocal(lokaal.profiel);
-  const lokaalGepland = laadGepland({ opgeslagen: loadGeplandLocal() });
+  const showIndex = indexeerShows(state.shows);
+  const lokaalGepland = laadGepland({ opgeslagen: loadGeplandLocal(), index: showIndex });
   if (lokaalGepland.gewijzigd) saveGeplandLocal(lokaalGepland.profiel);
 
   if (!state.user) {
@@ -693,7 +694,7 @@ function syncProfielForCurrentUser() {
     setDoc(ref, cloud.profiel, { merge: true }).catch((err) => console.error('Kon de watchlist niet synchroniseren:', err));
   }
 
-  const cloudGepland = laadGepland({ opgeslagen: state.cloudGepland, extra: lokaalGepland.profiel });
+  const cloudGepland = laadGepland({ opgeslagen: state.cloudGepland, extra: lokaalGepland.profiel, index: showIndex });
   state.gepland = cloudGepland.profiel;
   if (cloudGepland.gewijzigd) {
     state.cloudGepland = cloudGepland.profiel;

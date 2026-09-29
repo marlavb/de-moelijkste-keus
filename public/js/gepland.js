@@ -11,7 +11,7 @@
 // of uit de planning halen). Voorbije plannen worden nooit verwijderd,
 // alleen niet getoond.
 
-import { ruimeTitel } from './watchlist.js';
+import { ruimeTitel, titelDelen } from './watchlist.js';
 
 export const STATUSSEN = ['gepland', 'kaarten'];
 
@@ -91,11 +91,36 @@ export function koppel(item, index) {
   const tijd = item.tijd ?? '';
   const exact = opDag.find((s) => (s.tijd ?? '') === tijd && ruimeTitel(s.titel) === titel);
   if (exact) return { show: exact, soort: 'exact' };
+  // Titel uitgebreid (titelconventie sep 2026: "Sara Kroos" werd "Sara Kroos –
+  // Prikkelarme kermis"): zelfde tijd en alle oude delen zitten in de nieuwe.
+  const oudeDelen = titelDelen(item.titel);
+  const uitgebreid = opDag.filter(
+    (s) => (s.tijd ?? '') === tijd && oudeDelen.every((d) => titelDelen(s.titel).includes(d))
+  );
+  if (uitgebreid.length === 1) return { show: uitgebreid[0], soort: 'exact', uitgebreid: true };
   const zelfdeTitel = opDag.filter((s) => ruimeTitel(s.titel) === titel);
   if (zelfdeTitel.length === 1) return { show: zelfdeTitel[0], soort: 'tijd' };
   const zelfdeTijd = opDag.filter((s) => (s.tijd ?? '') === tijd);
   if (tijd && zelfdeTijd.length === 1) return { show: zelfdeTijd[0], soort: 'titel' };
   return { show: null, soort: 'weg' };
+}
+
+/**
+ * Plannen waarvan de titel alleen is uitgebreid (zie koppel): sleutel en
+ * titel in de momentopname bijwerken naar de nieuwe titel, zodat de koppeling
+ * vanaf dan gewoon exact is. Tijdstempels blijven gelijk (het is geen
+ * handeling van de gebruiker); idempotent. Geeft { profiel, gewijzigd }.
+ */
+export function werkPlannenBij(profiel, index) {
+  let gewijzigd = false;
+  const gepland = (profiel?.gepland ?? []).map((item) => {
+    const r = koppel(item, index);
+    if (!r.uitgebreid) return item;
+    gewijzigd = true;
+    return { ...item, sleutel: geplandSleutel(r.show), titel: r.show.titel };
+  });
+  if (!gewijzigd) return { profiel, gewijzigd };
+  return { profiel: voegGeplandSamen({ gepland, geplandVerwijderd: profiel.geplandVerwijderd ?? [] }), gewijzigd };
 }
 
 /** Map theaterId|datum → voorstellingen, voor koppel(). */
@@ -125,9 +150,11 @@ export function komendePlannen(gepland, vandaag) {
  * Eén laadronde (localStorage of Firestore, eventueel samen met de lokale
  * planning bij inloggen). `gewijzigd` zegt of er geschreven moet worden.
  */
-export function laadGepland({ opgeslagen, extra = null }) {
+export function laadGepland({ opgeslagen, extra = null, index = null }) {
   const basis = { gepland: opgeslagen?.gepland ?? [], geplandVerwijderd: opgeslagen?.geplandVerwijderd ?? [] };
-  const profiel = voegGeplandSamen(basis, extra ?? leeg());
+  const samen = voegGeplandSamen(basis, extra ?? leeg());
+  // Met de agenda erbij: plannen met een uitgebreide titel bijwerken.
+  const profiel = index ? werkPlannenBij(samen, index).profiel : samen;
   return { profiel, gewijzigd: JSON.stringify(profiel) !== JSON.stringify(basis) };
 }
 

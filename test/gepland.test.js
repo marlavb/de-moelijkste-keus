@@ -122,3 +122,24 @@ test('voorbije plannen blijven bewaard, maar zijn niet komend', () => {
   assert.equal(p.gepland.length, 2);
   assert.deepEqual(komendePlannen(p.gepland, '2026-09-28').map((i) => i.datum), ['2027-01-08']);
 });
+
+test('titel uitgebreid met de voorstellingsnaam: exact gekoppeld, plan bijgewerkt, idempotent', () => {
+  const oud = { ...show, theaterId: 'delamar', theaterNaam: 'DeLaMar', titel: 'Sara Kroos', datum: '2026-12-07', tijd: '20:15' };
+  const nieuw = { ...oud, id: 'n', titel: 'Sara Kroos – Prikkelarme Kermis' };
+  const plan = planIn(legeGepland(), oud, 10);
+  const index = indexeerShows([nieuw, { ...nieuw, id: 'ander', titel: 'Iets anders', tijd: '14:00' }]);
+  const r = koppel(plan.gepland[0], index);
+  assert.equal(r.soort, 'exact');
+  assert.equal(r.show.id, 'n');
+  const eerste = laadGepland({ opgeslagen: plan, index });
+  assert.equal(eerste.gewijzigd, true);
+  assert.equal(eerste.profiel.gepland[0].titel, 'Sara Kroos – Prikkelarme Kermis');
+  assert.equal(eerste.profiel.gepland[0].sleutel, 'delamar|2026-12-07|20:15|prikkelarme kermis | sara kroos');
+  assert.equal(eerste.profiel.gepland[0].gewijzigdOp, 10);
+  const tweede = laadGepland({ opgeslagen: JSON.parse(JSON.stringify(eerste.profiel)), index });
+  assert.equal(tweede.gewijzigd, false);
+  assert.equal(koppel(tweede.profiel.gepland[0], index).soort, 'exact');
+  // Twee kandidaten die allebei de oude delen bevatten: niet gokken.
+  const twee = indexeerShows([nieuw, { ...nieuw, id: 'x', titel: 'Sara Kroos – Gelukskoekje' }]);
+  assert.equal(koppel(plan.gepland[0], twee).soort, 'weg');
+});

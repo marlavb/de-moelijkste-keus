@@ -14,6 +14,7 @@
 
 import { normalizeTitle, EXCLUDED_NORMALIZED_TITLES } from './productions.js';
 import { RENAMED_FAVORITE_KEYS } from './favorites.js';
+import { TITEL_MAPPING } from './titelMapping.js';
 
 // Verhoog dit bij ELKE wijziging aan watchlistSleutel/ruimeTitel of de
 // uitsluitlijst in productions.js, en laat renormaliseer() de opgeslagen
@@ -22,22 +23,48 @@ import { RENAMED_FAVORITE_KEYS } from './favorites.js';
 //   1 (28 sep 2026): eerste versie.
 //   2 (28 sep 2026): "blind date" op de uitsluitlijst; items onthouden
 //     voortaan altijd het theater waar ze vandaan komen (theaterId).
-export const NORMALISATIE_VERSIE = 2;
+//   3 (29 sep 2026): titels van cabaretiers worden "Artiest – Voorstelling";
+//     de sleutel bestaat uit de delen rond het scheidingsteken, gesorteerd
+//     ("sara kroos | prikkelarme kermis"), zodat de volgorde niet uitmaakt;
+//     "&" telt als "en".
+export const NORMALISATIE_VERSIE = 3;
+
+// Scheidingstekens tussen delen van een titel ("Artiest – Voorstelling"):
+// een streepje of pijp mét spaties eromheen, of een dubbele punt met een
+// spatie erna. Streepjes in een woord ("Try-(H)outen") splitsen niet.
+const SCHEIDING = /\s+[–—-]\s+|\s+\|\s+|:\s+/;
 
 /**
  * Titel zonder de varianten die per theater verschillen: leeftijd ("(6+)",
  * "(3-7 jaar)", "/ 8+", "12+" aan het eind), "(try-out)", "(reprise)", "(première)",
- * "– de musical". Daarna de gewone normalisatie (kleine letters, geen
- * accenten of leestekens).
+ * "– de musical". Dit gaat over de hele titel, vóór het splitsen, zodat
+ * "Juf Braaksel – De Musical (6+)" gewoon "juf braaksel" blijft.
  */
-export function ruimeTitel(titel) {
-  const zonder = String(titel ?? '')
+export function zonderRuis(titel) {
+  return String(titel ?? '')
+    // "Maartje & Kine" = "Maartje en Kine" (v3; normalizeTitle gooit & weg).
+    .replace(/\s*&\s*/g, ' en ')
     .replace(/\((\s*\d+(?:[.,]\d+)?\s*\+|\s*\d+\s*(?:-|t\/m|tot)\s*\d+\s*(?:jaar|maanden)?|\s*try-?out|\s*reprise|\s*premi[eè]re|\s*nieuw)\s*\)/gi, ' ')
     .replace(/\/\s*\d+\s*\+/g, ' ')
     .replace(/\s\d+\s*\+\s*$/, ' ')
     .replace(/[\s,:–-]+(?:de|the)\s+musical\b/gi, ' ')
     .replace(/[\s–-]+(?:reprise|try-?out)\s*$/gi, ' ');
-  return normalizeTitle(zonder);
+}
+
+/** De genormaliseerde delen van een titel, zonder dubbele, gesorteerd. */
+export function titelDelen(titel) {
+  const delen = zonderRuis(titel).split(SCHEIDING).map(normalizeTitle).filter(Boolean);
+  return [...new Set(delen)].sort();
+}
+
+/**
+ * Ruim genormaliseerde titel: de delen gesorteerd en met " | " verbonden.
+ * Een titel uit één deel geeft gewoon de genormaliseerde titel ("sara kroos");
+ * "Sara Kroos – Prikkelarme kermis" en "Prikkelarme kermis - Sara Kroos"
+ * geven allebei "prikkelarme kermis | sara kroos".
+ */
+export function ruimeTitel(titel) {
+  return titelDelen(titel).join(' | ');
 }
 
 /** De watchlist-sleutel; theatergebonden voor titels op de uitsluitlijst. */
@@ -129,6 +156,43 @@ export function renormaliseer(profiel) {
   return voegSamen({ watchlist, watchlistVerwijderd: profiel?.watchlistVerwijderd ?? [] });
 }
 
+/**
+ * Titelconventie cabaretiers (sep 2026, NORMALISATIE_VERSIE 3): titels
+ * werden "Artiest – Voorstelling". TITEL_MAPPING (titelMapping.js) zet de
+ * oude sleutel om naar de nieuwe, afgeleid uit de data van vóór en na de
+ * omzetting. Een oude sleutel met meerdere nieuwe (een artiest met twee
+ * voorstellingen) levert ze allemaal op: een bladwijzer te veel is beter dan
+ * een stil verdwenen favoriet. Het nieuwe item erft toegevoegdOp, dus een
+ * latere verwijdering (tombstone) blijft winnen. Bestaat de oude sleutel nog
+ * in de data (een theater zonder voorstellingsnaam), dan blijft het oude item
+ * ook staan. Idempotent, zonder vlag.
+ */
+export function pasTitelMappingToe(profiel, bekend = new Map(), mapping = TITEL_MAPPING) {
+  const houden = [];
+  const nieuw = [];
+  for (const item of profiel?.watchlist ?? []) {
+    const doelen = mapping.get(item.sleutel);
+    if (!doelen) {
+      houden.push(item);
+      continue;
+    }
+    for (const doel of doelen) {
+      nieuw.push({
+        sleutel: doel.sleutel,
+        titel: doel.titel,
+        theaterId: doel.theaterId ?? item.theaterId,
+        toegevoegdOp: item.toegevoegdOp,
+        v: NORMALISATIE_VERSIE,
+      });
+    }
+    if (bekend.has(item.sleutel)) houden.push(item);
+  }
+  return voegSamen(
+    { watchlist: houden, watchlistVerwijderd: profiel?.watchlistVerwijderd ?? [] },
+    { watchlist: nieuw, watchlistVerwijderd: [] }
+  );
+}
+
 // Oude show.id's van vóór 23 aug 2026: theaterId-titelslug-JJJJ-MM-DD-UUMM
 // (of -tbd), soms met -2 erachter. Theater-id's bevatten geen streepjes.
 const OUDE_SHOW_ID = /^([a-z0-9]+)-(.+)-(\d{4}-\d{2}-\d{2})-(\d{4}|tbd)(?:-\d+)?$/;
@@ -201,10 +265,12 @@ export function bekendeSleutels(shows) {
  * resultaat afwijkt van `opgeslagen`; alleen dan hoeft er geschreven.
  * Idempotent en zonder vlag: een tweede keer laden levert niets nieuws op.
  */
-export function laadWatchlist({ opgeslagen, favorieten = [], extra = null, bekend = new Map() }) {
+export function laadWatchlist({ opgeslagen, favorieten = [], extra = null, bekend = new Map(), mapping = TITEL_MAPPING }) {
   const basis = { watchlist: opgeslagen?.watchlist ?? [], watchlistVerwijderd: opgeslagen?.watchlistVerwijderd ?? [] };
   const { profiel: uitFavorieten, log } = migreerFavorieten(favorieten, bekend);
-  const profiel = renormaliseer(voegSamen(basis, uitFavorieten, extra ?? leeg()));
+  // Eerst de titelmapping (die werkt op de oude, v2-sleutels), dan de
+  // her-normalisatie van wat overblijft.
+  const profiel = renormaliseer(pasTitelMappingToe(voegSamen(basis, uitFavorieten, extra ?? leeg()), bekend, mapping));
   return { profiel, log, gewijzigd: !isGelijk(profiel, basis) };
 }
 
