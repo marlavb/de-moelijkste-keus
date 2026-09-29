@@ -1,4 +1,4 @@
-import { pagineerListing } from '../lib/peppered.js';
+import { pagineerListing, leesSpeeldataVanDetail } from '../lib/peppered.js';
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
 
@@ -105,6 +105,21 @@ export async function scrapeOmval({ page, theater, robots, waitForTurn, log, war
   const opgehaaldOp = new Date().toISOString();
   const shows = [];
 
+  let detailBezocht = 0;
+  const basisVan = (item) => ({
+    titel: item.titel,
+    theaterId: theater.id,
+    theaterNaam: theater.naam,
+    stad: theater.stad,
+    podiumpas: theater.podiumpas,
+    genre: normalizeGenreFromList(item.genres),
+    genreRuw: item.genres.join(', ') || null,
+    beschrijving: item.beschrijving,
+    maker: item.maker,
+    bron: theater.agendaUrl,
+    opgehaaldOp,
+  });
+
   for (const item of rawItems) {
     if (!item.titel || !item.dagTekst) continue;
     const datum = parseDay(item.dagTekst);
@@ -116,7 +131,29 @@ export async function scrapeOmval({ page, theater, robots, waitForTurn, log, war
     const detailUrl = item.detailHref ? new URL(item.detailHref, theater.baseUrl).toString() : theater.agendaUrl;
     const ticketUrl = item.ticketHref ? new URL(item.ticketHref, theater.baseUrl).toString() : null;
 
+    // Kaart zonder tijd: vaak een samengevatte reeks ("wo 7 okt en do 8 okt").
+    // De losse speeldata en tijden staan op de productiepagina.
+    if (!tijd && item.detailHref) {
+      const rijen = await leesSpeeldataVanDetail({ page, url: detailUrl, robots, waitForTurn, log });
+      if (rijen?.length) {
+        detailBezocht++;
+        for (const r of rijen) {
+          const href = r.href && !r.href.startsWith('javascript:') ? new URL(r.href, theater.baseUrl).toString() : null;
+          shows.push({
+            ...basisVan(item),
+            id: buildId(theater.id, item.titel, r.datum, r.tijd),
+            datum: r.datum,
+            tijd: r.tijd,
+            beschikbaarheid: classifyBeschikbaarheid(r.knopTekst, r.knopClass),
+            reserverenUrl: href ?? detailUrl,
+          });
+        }
+        continue;
+      }
+    }
+
     shows.push({
+      ...basisVan(item),
       id: buildId(theater.id, item.titel, datum, tijd),
       titel: item.titel,
       theaterId: theater.id,
@@ -136,5 +173,6 @@ export async function scrapeOmval({ page, theater, robots, waitForTurn, log, war
     });
   }
 
+  if (detailBezocht > 0) log(`${detailBezocht} productiepagina('s) gelezen voor reeksen zonder tijd op de kaart.`);
   return shows;
 }

@@ -131,6 +131,52 @@ export async function scrapePepperedListing({ page, theater, robots, waitForTurn
   });
 }
 
+/**
+ * Speeldata van een productiepagina: elke li.subshow met data-event-start
+ * ("2026-10-08 20:00:00", met jaartal). Voor kaarten die op de lijstpagina
+ * een reeks samenvatten zonder tijd ("wo 7 okt en do 8 okt"): daar staat
+ * alleen de eerste datum op de kaart (Bijlmer Parktheater en De Omval, sep
+ * 2026). Geeft [{ datum, tijd, knopTekst, knopClass, href }] of null als de
+ * pagina niet mag of niet laadt; "Geweest"-rijen vallen weg.
+ */
+export async function leesSpeeldataVanDetail({ page, url, robots, waitForTurn, log }) {
+  if (!robots.isAllowed(new URL(url).pathname)) return null;
+  await waitForTurn();
+  let rijen;
+  try {
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    rijen = await page.evaluate(() =>
+      [...document.querySelectorAll('li.subshow')]
+        .map((li) => {
+          const start = li.querySelector('[data-event-start]')?.getAttribute('data-event-start');
+          if (!start) return null;
+          const box = li.querySelector('.buttonBox');
+          const knop = box?.querySelector('a, button, span');
+          return {
+            start,
+            knopTekst: box?.textContent.replace(/\s+/g, ' ').trim() || null,
+            knopClass: knop?.className ?? null,
+            href: knop?.getAttribute('href') ?? null,
+          };
+        })
+        .filter(Boolean)
+    );
+  } catch (err) {
+    log(`kon productiepagina niet laden (${url}): ${err.message}`);
+    return null;
+  }
+  const gezien = new Set();
+  const uit = [];
+  for (const r of rijen) {
+    if (!/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(r.start) || gezien.has(r.start)) continue;
+    gezien.add(r.start);
+    if (/geweest/i.test(r.knopTekst ?? '')) continue;
+    const tijd = r.start.slice(11, 16);
+    uit.push({ datum: r.start.slice(0, 10), tijd: tijd === '00:00' ? null : tijd, knopTekst: r.knopTekst, knopClass: r.knopClass, href: r.href });
+  }
+  return uit;
+}
+
 // Draait in de browser (page.evaluate) — geen verwijzingen naar Node-scope.
 function extractCards() {
   const text = (el) => el?.textContent.trim().replace(/\s+/g, ' ') || null;
