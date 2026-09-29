@@ -431,3 +431,22 @@ test('speeldata meer dan twee jaar vooruit: weggehaald, geteld en een warning', 
   assert.match(status.theaters.a.waarschuwing, /8 voorstelling\(en\) na 2028-10-01 weggehaald/);
   assert.ok(annotations.some((a) => a.title === 'Onwaarschijnlijke data a'));
 });
+
+test('zonder tijd: geteld per theater; warning alleen bij een flinke stijging, niet bij structureel 100%', async () => {
+  const reeks = (id, n, tijd) => Array.from({ length: n }, (_, i) => show(id, `2026-10-${String(i + 2).padStart(2, '0')}`, { id: `${id}-${i}`, titel: `T${i}`, tijd }));
+  // a: had tijden, nu 15 van 20 zonder → warning. c (zoals Carré): altijd zonder → geen warning.
+  const paths = await setup({ previousShows: [...reeks('a', 20, '20:00'), ...reeks('c', 20, null)] });
+  const { status, annotations } = await run({
+    paths,
+    theaters: [theater('a'), theater('c')],
+    scrapers: {
+      a: async () => [...reeks('a', 15, null), ...reeks('a', 20, '20:00').slice(15)],
+      c: async () => reeks('c', 20, null),
+    },
+  });
+  assert.equal(status.theaters.a.zonderTijd, 15);
+  assert.match(status.theaters.a.waarschuwing, /15 van 20 voorstellingen zonder tijd \(75%, vorige keer 0%\)/);
+  assert.equal(status.theaters.c.zonderTijd, 20);
+  assert.equal(status.theaters.c.waarschuwing, null);
+  assert.deepEqual(annotations.filter((x) => x.title.startsWith('Tijden')).map((x) => x.title), ['Tijden ontbreken a']);
+});

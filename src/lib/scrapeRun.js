@@ -32,6 +32,13 @@ const DUBBEL_WARNING_MIN = 5;
 // 30 keer pagina 1, en de jaar-rollover van de datumparser maakte daar
 // speeldata tot 2085 van — zonder dat het vangnet voor dubbelingen het zag.
 const MAX_JAREN_VOORUIT = 2;
+// Aandeel voorstellingen zonder tijd: waarschuwen als dat met minstens 20
+// procentpunt stijgt t.o.v. de vorige run (en er genoeg voorstellingen zijn).
+// Een theater dat structureel geen tijden geeft (Carré, Karavaan: 100%)
+// stijgt niet en waarschuwt dus niet. De Kleine Komedie gaf in sep 2026
+// bij 28% van de voorstellingen geen tijd, en dat viel niemand op.
+const ZONDER_TIJD_STIJGING = 0.2;
+const ZONDER_TIJD_MIN_AANTAL = 10;
 
 function formatSeconds(ms) {
   return `${Math.round(ms / 100) / 10}s`;
@@ -350,6 +357,23 @@ export async function runRefresh({
       st.aantal -= aantal;
       st.waarschuwing = [st.waarschuwing, msg].filter(Boolean).join(' | ');
     }
+  }
+
+  const vorigeKomend = previousShows.filter((s) => s.datum >= minDate);
+  for (const theater of theaters) {
+    const st = theaterStatus[theater.id];
+    if (!st || theater.gepauzeerd) continue;
+    const nu = freshShows.filter((s) => s.theaterId === theater.id);
+    const vorig = vorigeKomend.filter((s) => s.theaterId === theater.id);
+    st.zonderTijd = nu.filter((s) => !s.tijd).length;
+    if (nu.length < ZONDER_TIJD_MIN_AANTAL || vorig.length === 0) continue;
+    const aandeelNu = st.zonderTijd / nu.length;
+    const aandeelVorig = vorig.filter((s) => !s.tijd).length / vorig.length;
+    if (aandeelNu - aandeelVorig < ZONDER_TIJD_STIJGING) continue;
+    const pct = (x) => `${Math.round(x * 100)}%`;
+    const msg = `${st.zonderTijd} van ${nu.length} voorstellingen zonder tijd (${pct(aandeelNu)}, vorige keer ${pct(aandeelVorig)})`;
+    annotate('warning', `Tijden ontbreken ${theater.id}`, msg);
+    st.waarschuwing = [st.waarschuwing, msg].filter(Boolean).join(' | ');
   }
 
   const status = { bijgewerktOp: now().toISOString(), theaters: theaterStatus };
