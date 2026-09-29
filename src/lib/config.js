@@ -70,7 +70,10 @@ export const THEATERS = [
   },
   {
     id: 'ita',
-    naam: 'Internationaal Theater Amsterdam',
+    // Weergavenaam sinds 30 sep 2026 (was "Internationaal Theater Amsterdam");
+    // de id blijft 'ita' (keuzes, plannen, sleutels en links hangen eraan).
+    // Zoeken op "ITA" werkt via THEATER_ZOEKALIASSEN in public/js/app.js.
+    naam: 'Stadsschouwburg Amsterdam',
     stad: 'Amsterdam',
     baseUrl: 'https://ita.nl',
     agendaUrl: 'https://ita.nl/nl/agenda-stadsschouwburg',

@@ -64,6 +64,12 @@ const THEATER_INFO = {
 // Alleen "uitverkocht" en "wachtlijst" krijgen een badge — "beschikbaar" is
 // de default en verdient geen visuele ruis, en "onbekend" laten we bewust
 // leeg in plaats van een misleidende "beschikbaar"-badge te tonen.
+// Oude of andere namen waarop een theater gevonden moet blijven (kleine
+// letters). ITA heet sinds 30 sep 2026 "Stadsschouwburg Amsterdam".
+const THEATER_ZOEKALIASSEN = {
+  ita: ['ita', 'internationaal theater amsterdam'],
+};
+
 const BESCHIKBAARHEID_LABELS = {
   uitverkocht: 'Uitverkocht',
   wachtlijst: 'Wachtlijst',
@@ -782,6 +788,17 @@ function saveGeplandLocal(profiel) {
   localStorage.setItem(STORAGE_KEYS.gepland, JSON.stringify(profiel));
 }
 
+// Theaternaam voor een plan: de actuele naam (config via theaters.json, dan
+// de agenda), en alleen als het theater niet meer bestaat de naam uit de
+// momentopname. Zo tonen oude plannen ook een nieuwe naam.
+function planTheaterNaam(item) {
+  return (
+    state.theaterInfo[item.theaterId]?.naam ??
+    state.shows.find((s) => s.theaterId === item.theaterId)?.theaterNaam ??
+    item.theaterNaam
+  );
+}
+
 function saveGepland() {
   if (state.user && state.cloudGepland) {
     state.cloudGepland = state.gepland;
@@ -857,7 +874,7 @@ function renderPlanControls(show) {
 
   const anderen = zelfdeAvond(item, state.gepland.gepland);
   els.detailPlanConflict.textContent = anderen.length
-    ? `Die dag heb je ook ${anderen.map((o) => `${o.titel} gepland (${o.tijd ?? 'tijd volgt'}, ${o.theaterNaam})`).join(' en ')}.`
+    ? `Die dag heb je ook ${anderen.map((o) => `${o.titel} gepland (${o.tijd ?? 'tijd volgt'}, ${planTheaterNaam(o)})`).join(' en ')}.`
     : '';
   els.detailPlanConflict.hidden = anderen.length === 0;
 }
@@ -897,7 +914,8 @@ function renderPlanRow(item, { show, soort }) {
   const meta = document.createElement('span');
   meta.className = 'plan-meta';
   const tijd = show?.tijd ?? item.tijd;
-  meta.textContent = tijd ? `${item.theaterNaam} · ${tijd}` : item.theaterNaam;
+  const theaterNaam = planTheaterNaam(item);
+  meta.textContent = tijd ? `${theaterNaam} · ${tijd}` : theaterNaam;
   info.append(title, meta);
   const notes = [];
   if (soort === 'tijd') notes.push(`${SOORT_LABELS.tijd} (was ${item.tijd ?? 'onbekend'})`);
@@ -934,7 +952,7 @@ function renderPlanRow(item, { show, soort }) {
   ics.textContent = '.ics';
   ics.setAttribute('aria-label', `${item.titel} in je eigen agenda zetten (.ics)`);
   ics.addEventListener('click', () =>
-    downloadIcs(show ?? { ...item, id: item.sleutel, beschrijving: '' }, item.sleutel)
+    downloadIcs(show ?? { ...item, theaterNaam: planTheaterNaam(item), id: item.sleutel, beschrijving: '' }, item.sleutel)
   );
   actions.append(status, ics);
 
@@ -1443,7 +1461,8 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     const searchOk =
       !state.searchQuery ||
       s.titel.toLowerCase().includes(state.searchQuery) ||
-      s.theaterNaam.toLowerCase().includes(state.searchQuery);
+      s.theaterNaam.toLowerCase().includes(state.searchQuery) ||
+      (THEATER_ZOEKALIASSEN[s.theaterId] ?? []).some((alias) => alias.includes(state.searchQuery));
     return cityOk && theaterOk && genreOk && podiumpasOk && watchlistOk && fullOk && dateOk && searchOk;
   });
 }
