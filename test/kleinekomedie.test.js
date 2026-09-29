@@ -35,7 +35,7 @@ test('Kleine Komedie: speeldata uit het datumpaneel krijgen hun tijd; Jenny Area
       log: () => {},
       warn: (m) => assert.fail(`onverwachte waarschuwing: ${m}`),
     });
-    const merijn = shows.filter((s) => s.titel === 'Merijn Scholten').map((s) => `${s.datum} ${s.tijd} ${s.beschikbaarheid}`);
+    const merijn = shows.filter((s) => s.titel === 'Merijn Scholten – Lemming - reprise').map((s) => `${s.datum} ${s.tijd} ${s.beschikbaarheid}`);
     assert.deepEqual(merijn, [
       '2026-09-29 20:15 wachtlijst',
       '2026-09-30 20:15 wachtlijst',
@@ -44,6 +44,8 @@ test('Kleine Komedie: speeldata uit het datumpaneel krijgen hun tijd; Jenny Area
       '2026-10-03 20:15 beschikbaar', // "laatste kaarten"
     ]);
     const jenny = shows.filter((s) => s.titel === 'Jenny Arean zingt');
+    // Titelconventie: artiest – voorstelling (de voorstellingsnaam uit
+    // data-production-subtitle); Jenny Arean heeft er geen, dus blijft zo.
     assert.equal(jenny.length, 1);
     assert.equal(jenny[0].datum, '2026-10-10');
     assert.equal(jenny[0].tijd, '14:00');

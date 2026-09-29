@@ -1,6 +1,7 @@
 import { pagineerListing, leesSpeeldataVanDetail } from '../lib/peppered.js';
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/voorstellingen';
 const MAX_LISTING_PAGES = 30;
@@ -174,5 +175,6 @@ export async function scrapeOmval({ page, theater, robots, waitForTurn, log, war
   }
 
   if (detailBezocht > 0) log(`${detailBezocht} productiepagina('s) gelezen voor reeksen zonder tijd op de kaart.`);
-  return shows;
+  // Titelconventie cabaret (lib/titels.js): bij dit theater staat de voorstelling in de titel, artiest in het makerveld.
+  return shows.map((s) => pasTitelConventieToe(s, { artiest: s.maker, voorstelling: s.titel, makerWordtLeeg: true }));
 }

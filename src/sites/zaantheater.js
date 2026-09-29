@@ -1,5 +1,6 @@
 import { extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/nl/theater/agenda/';
 const MAX_LOAD_MORE_CLICKS = 40;
@@ -71,6 +72,8 @@ export async function scrapeZaantheater({ page, theater, robots, waitForTurn, lo
     return Array.from(document.querySelectorAll('.eventList-events > li.theatre')).map((li) => {
       const iso = li.querySelector('time.eventList-dateTime')?.getAttribute('datetime') ?? null;
       const titel = li.querySelector('.eventList-title')?.textContent.trim() ?? null;
+      // Voorstellingsnaam: h4.eventList-subTitle onder de titel.
+      const voorstelling = li.querySelector('.eventList-subTitle')?.textContent.trim() || null;
       const beschrijving = li.querySelector('.eventList-slogan')?.textContent.trim() ?? null;
       const genres = Array.from(li.querySelectorAll('.eventList-tags li'))
         .map((t) => t.textContent.trim())
@@ -79,7 +82,7 @@ export async function scrapeZaantheater({ page, theater, robots, waitForTurn, lo
       const mainBtn = li.querySelector('.eventOrder--main');
       const orderHref = mainBtn?.getAttribute('href') ?? null;
       const orderText = mainBtn?.textContent.trim() ?? null;
-      return { iso, titel, beschrijving, genres, detailHref, orderHref, orderText };
+      return { iso, titel, voorstelling, beschrijving, genres, detailHref, orderHref, orderText };
     });
   });
 
@@ -94,7 +97,7 @@ export async function scrapeZaantheater({ page, theater, robots, waitForTurn, lo
     const detailUrl = item.detailHref ? new URL(item.detailHref, theater.baseUrl).toString() : theater.agendaUrl;
     const ticketUrl = item.orderHref && item.orderHref.trim() !== '' ? item.orderHref : null;
 
-    shows.push({
+    shows.push(pasTitelConventieToe({
       id: buildId(theater.id, item.titel, datum, tijd),
       titel: item.titel,
       theaterId: theater.id,
@@ -110,7 +113,7 @@ export async function scrapeZaantheater({ page, theater, robots, waitForTurn, lo
       reserverenUrl: ticketUrl ?? detailUrl,
       bron: theater.agendaUrl,
       opgehaaldOp,
-    });
+    }, { artiest: item.titel, voorstelling: item.voorstelling }));
   }
 
   return shows;

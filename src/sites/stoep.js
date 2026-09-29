@@ -1,6 +1,7 @@
 import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
 import { dedupeShows } from '../lib/peppered.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/voorstellingen';
 const MONTHS_AHEAD = 14;
@@ -204,5 +205,6 @@ export async function scrapeStoep({ page, theater, robots, waitForTurn, log }) {
 
   const reasonList = Object.entries(reasons);
   log(`podiumpas: false bij ${reasonList.reduce((n, [, c]) => n + c, 0)} voorstellingen (${reasonList.map(([r, c]) => `${r}: ${c}`).join(', ')})`);
-  return dedupeShows(shows);
+  // Titelconventie cabaret (lib/titels.js): bij dit theater staat de artiest in de titel, voorstelling in het makerveld.
+  return dedupeShows(shows).map((s) => pasTitelConventieToe(s, { artiest: s.titel, voorstelling: s.maker, makerWordtLeeg: true }));
 }

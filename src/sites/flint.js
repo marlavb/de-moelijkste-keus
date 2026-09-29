@@ -2,6 +2,7 @@ import { extractTime, createIdBuilder } from '../lib/normalize.js';
 import { sleep } from '../lib/politeness.js';
 import { ScrapeBlockedError } from '../lib/scrapeRun.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/agenda/';
 const PODIUMPAS_PRICE_CEILING = 50;
@@ -307,5 +308,6 @@ export async function scrapeFlint({ page, theater, robots, waitForTurn, log, sig
     });
   }
 
-  return shows;
+  // Titelconventie cabaret (lib/titels.js): bij dit theater staat de artiest in de titel, voorstelling in het makerveld.
+  return shows.map((s) => pasTitelConventieToe(s, { artiest: s.titel, voorstelling: s.maker, makerWordtLeeg: true }));
 }

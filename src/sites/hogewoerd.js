@@ -1,6 +1,7 @@
 import { createDutchDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
 import { USER_AGENT } from '../lib/config.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/agenda';
 const SITEMAP_PATH = '/sitemap.xml';
@@ -171,5 +172,6 @@ export async function scrapeHogeWoerd({ page, theater, robots, waitForTurn, log,
     }
   }
 
-  return shows;
+  // Titelconventie cabaret (lib/titels.js): bij dit theater staat de voorstelling in de titel, artiest in het makerveld.
+  return shows.map((s) => pasTitelConventieToe(s, { artiest: s.maker, voorstelling: s.titel, makerWordtLeeg: true }));
 }

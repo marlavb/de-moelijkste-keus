@@ -2,6 +2,7 @@ import { extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
 import { THEATERS } from '../lib/config.js';
 import { createGroupScraper } from '../lib/peppered.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/nl/theater/agenda/';
 const MAX_LOAD_MORE_CLICKS = 40;
@@ -137,6 +138,8 @@ async function scrapeAllAmstelveen({ page, robots, waitForTurn, log }) {
       return {
         iso: li.querySelector('time.eventList-dateTime')?.getAttribute('datetime') ?? null,
         titel: li.querySelector('.eventList-title')?.textContent.trim() ?? null,
+        // Voorstellingsnaam: h4.eventList-subTitle onder de titel.
+        voorstelling: li.querySelector('.eventList-subTitle')?.textContent.trim() || null,
         beschrijving: li.querySelector('.eventList-slogan')?.textContent.trim() ?? null,
         genres: Array.from(li.querySelectorAll('.eventList-tags li')).map((t) => t.textContent.trim()),
         detailHref: li.querySelector('a.eventList-detailLink')?.getAttribute('href') ?? null,
@@ -170,7 +173,7 @@ async function scrapeAllAmstelveen({ page, robots, waitForTurn, log }) {
     const tijd = extractTime(item.iso.slice(11, 16));
     const detailUrl = new URL(item.detailHref, base.baseUrl).toString();
     const ticketUrl = item.orderHref && item.orderHref.trim() !== '' ? item.orderHref : null;
-    shows.push({
+    shows.push(pasTitelConventieToe({
       id: buildIds[theaterId](theaterId, item.titel, datum, tijd),
       titel: item.titel,
       theaterId,
@@ -187,7 +190,7 @@ async function scrapeAllAmstelveen({ page, robots, waitForTurn, log }) {
       bron: target.agendaUrl,
       opgehaaldOp,
       _orderHref: ticketUrl,
-    });
+    }, { artiest: item.titel, voorstelling: item.voorstelling }));
   }
 
   // Podiumpas per De Landing-voorstelling (zie bepaalLandingPodiumpas).

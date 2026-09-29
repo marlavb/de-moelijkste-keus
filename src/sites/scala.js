@@ -1,5 +1,6 @@
 import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/voorstellingen';
 
@@ -163,5 +164,6 @@ export async function scrapeScala({ page, theater, robots, waitForTurn, log }) {
     }
   }
 
-  return shows;
+  // Titelconventie cabaret (lib/titels.js): bij dit theater staat de voorstelling in de titel, artiest in het makerveld.
+  return shows.map((s) => pasTitelConventieToe(s, { artiest: s.maker, voorstelling: s.titel, makerWordtLeeg: true }));
 }

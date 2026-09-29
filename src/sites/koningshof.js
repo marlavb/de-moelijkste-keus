@@ -1,6 +1,7 @@
 import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList, normalizeGenre } from '../lib/genre.js';
 import { scrapePepperedListing, createRowDateResolver, classifyPepperedButton, logUnknownButtons, dedupeShows } from '../lib/peppered.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/agenda';
 
@@ -73,5 +74,6 @@ export async function scrapeKoningshof({ page, theater, robots, waitForTurn, log
   const films = shows.filter((s) => !s.podiumpas).length;
   log(`${shows.length} voorstellingen, waarvan ${films} film (podiumpas: false)`);
   logUnknownButtons(log, shows, rowsByShowId);
-  return dedupeShows(shows);
+  // Titelconventie cabaret (lib/titels.js): bij dit theater staat de artiest in de titel, voorstelling in het makerveld.
+  return dedupeShows(shows).map((s) => pasTitelConventieToe(s, { artiest: s.titel, voorstelling: s.maker, makerWordtLeeg: true }));
 }

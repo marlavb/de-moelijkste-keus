@@ -1,6 +1,7 @@
 import { pagineerListing } from '../lib/peppered.js';
 import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/agenda';
 const MAX_LISTING_PAGES = 60;
@@ -67,6 +68,9 @@ export async function scrapeStadsschouwburgUtrecht({ page, theater, robots, wait
     extract: () => {
       return Array.from(document.querySelectorAll('.event')).map((el) => {
         const titel = el.querySelector('.title a')?.textContent.trim() ?? null;
+        // Hier is de titel de voorstelling; de artiest staat in de eerste
+        // ondertitel (p.subtitle.notranslate, niet de .oneliner).
+        const artiest = el.querySelector('p.subtitle.notranslate:not(.oneliner)')?.textContent.trim() || null;
         const detailHref = el.querySelector('.title a')?.getAttribute('href') ?? null;
         const beschrijving = el.querySelector('.subtitle.oneliner')?.textContent.trim() ?? null;
         const genre = el.querySelector('.tag-wrapper .tag')?.textContent.trim() ?? null;
@@ -74,7 +78,7 @@ export async function scrapeStadsschouwburgUtrecht({ page, theater, robots, wait
         const ticketEl = el.querySelector('.btn-wrapper .btn-ticket');
         const ticketHref = ticketEl?.getAttribute('href') ?? null;
         const ticketText = ticketEl?.querySelector('span')?.textContent.trim() ?? ticketEl?.textContent.trim() ?? null;
-        return { titel, detailHref, beschrijving, genre, iso, ticketHref, ticketText };
+        return { titel, artiest, detailHref, beschrijving, genre, iso, ticketHref, ticketText };
       });
     },
   });
@@ -93,7 +97,7 @@ export async function scrapeStadsschouwburgUtrecht({ page, theater, robots, wait
     const detailUrl = item.detailHref ? new URL(item.detailHref, theater.baseUrl).toString() : theater.agendaUrl;
     const ticketUrl = item.ticketHref && item.ticketHref.trim() !== '' ? item.ticketHref : null;
 
-    shows.push({
+    shows.push(pasTitelConventieToe({
       id: buildId(theater.id, item.titel, parsed.datum, parsed.tijd),
       titel: item.titel,
       theaterId: theater.id,
@@ -109,7 +113,7 @@ export async function scrapeStadsschouwburgUtrecht({ page, theater, robots, wait
       reserverenUrl: ticketUrl ?? detailUrl,
       bron: theater.agendaUrl,
       opgehaaldOp,
-    });
+    }, { artiest: item.artiest, voorstelling: item.titel }));
   }
 
   return shows;

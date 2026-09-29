@@ -1,5 +1,6 @@
 import { createDutchDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/agenda/';
 const MAX_LOAD_MORE_CLICKS = 40;
@@ -117,5 +118,6 @@ export async function scrapeDelamar({ page, theater, robots, waitForTurn, log })
     });
   }
 
-  return shows;
+  // Titelconventie cabaret (lib/titels.js): bij dit theater staat de artiest in de titel, voorstelling in de beschrijvingsregel.
+  return shows.map((s) => pasTitelConventieToe(s, { artiest: s.titel, voorstelling: s.beschrijving }));
 }

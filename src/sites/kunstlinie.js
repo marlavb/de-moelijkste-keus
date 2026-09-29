@@ -1,5 +1,6 @@
 import { extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/programma/';
 const MAX_PAGES = 15;
@@ -135,6 +136,8 @@ export async function scrapeKunstlinie({ page, theater, robots, waitForTurn, log
           ...new Set(Array.from(card.querySelectorAll('.categories .cat')).map((c) => c.textContent.trim())),
         ];
         const titel = card.querySelector('h3')?.textContent.trim() ?? null;
+        // Voorstellingsnaam: de regel direct onder de titel.
+        const voorstelling = card.querySelector('h3 + p.lead')?.textContent.trim() || null;
         const beschrijving = card.querySelector('p.nbm.stm.small')?.textContent.trim() ?? null;
         const dateTimeTekst = card.querySelector('.uppercase.display-inline-block')?.textContent.trim() ?? null;
         // Niet elke kaart gebruikt dezelfde button-modifier-klasse voor de
@@ -163,7 +166,7 @@ export async function scrapeKunstlinie({ page, theater, robots, waitForTurn, log
         const ticketHref = ticketBtn?.getAttribute('href') ?? null;
         const ticketText = ticketBtn?.textContent.trim() ?? null;
         const detailHref = infoBtn?.getAttribute('href') ?? null;
-        return { categories, titel, beschrijving, dateTimeTekst, ticketHref, ticketText, detailHref };
+        return { categories, titel, voorstelling, beschrijving, dateTimeTekst, ticketHref, ticketText, detailHref };
       });
     });
     const newCards = pageCards.filter((card) => {
@@ -219,7 +222,7 @@ export async function scrapeKunstlinie({ page, theater, robots, waitForTurn, log
     const detailUrl = new URL(item.detailHref, theater.baseUrl).toString();
     const ticketUrl = item.ticketHref ? new URL(item.ticketHref, theater.baseUrl).toString() : null;
 
-    shows.push({
+    shows.push(pasTitelConventieToe({
       id: buildId(theater.id, item.titel, parsed.datum, parsed.tijd),
       titel: item.titel,
       theaterId: theater.id,
@@ -235,7 +238,7 @@ export async function scrapeKunstlinie({ page, theater, robots, waitForTurn, log
       reserverenUrl: ticketUrl ?? detailUrl,
       bron: detailUrl,
       opgehaaldOp,
-    });
+    }, { artiest: item.titel, voorstelling: item.voorstelling }));
   }
 
   return shows;

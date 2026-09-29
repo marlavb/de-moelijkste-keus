@@ -1,6 +1,7 @@
 import { pagineerListing } from '../lib/peppered.js';
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/agenda';
 const MAX_LISTING_PAGES = 60;
@@ -58,6 +59,12 @@ export async function scrapeKleineKomedie({ page, theater, robots, waitForTurn, 
         const beschrijving = card.querySelector('.tagline')?.textContent.trim() ?? null;
         const detailHref = card.querySelector('a.desc')?.getAttribute('href') ?? null;
         const genres = Array.from(card.querySelectorAll('.genres__link')).map((a) => a.textContent.trim());
+        // Voorstellingsnaam: .subtitle is vaak leeg, maar het wenslijst-
+        // attribuut data-production-subtitle heeft hem bijna altijd.
+        const ondertitel =
+          card.querySelector('.subtitle')?.textContent.trim() ||
+          card.querySelector('[data-production-subtitle]')?.getAttribute('data-production-subtitle')?.trim() ||
+          null;
 
         const rows = [];
         const panel = document.getElementById(`show${entryId}Dates`);
@@ -108,7 +115,7 @@ export async function scrapeKleineKomedie({ page, theater, robots, waitForTurn, 
           }
         }
 
-        return { entryId, titel, beschrijving, detailHref, genres, rows };
+        return { entryId, titel, ondertitel, beschrijving, detailHref, genres, rows };
       });
     },
   });
@@ -148,7 +155,7 @@ export async function scrapeKleineKomedie({ page, theater, robots, waitForTurn, 
       const ticketUrl =
         row.href && !row.href.startsWith('javascript:') ? new URL(row.href, theater.baseUrl).toString() : null;
 
-      shows.push({
+      shows.push(pasTitelConventieToe({
         id: buildId(theater.id, card.titel, datum, tijd),
         titel: card.titel,
         theaterId: theater.id,
@@ -164,7 +171,7 @@ export async function scrapeKleineKomedie({ page, theater, robots, waitForTurn, 
         reserverenUrl: ticketUrl ?? detailUrl,
         bron: theater.agendaUrl,
         opgehaaldOp,
-      });
+      }, { artiest: card.titel, voorstelling: card.ondertitel }));
     }
   }
 

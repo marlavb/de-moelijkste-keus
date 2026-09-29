@@ -1,5 +1,6 @@
 import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList, normalizeGenre } from '../lib/genre.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/programma';
 const MONTHS_AHEAD = 14;
@@ -190,5 +191,6 @@ export async function scrapeStadsgehoorzaal({ page, theater, robots, waitForTurn
 
   log(`knop/status-teksten: ${Object.entries(statusTexts).map(([t, n]) => `"${t}" (${n})`).join(', ')}`);
   if (skippedNoTag > 0) log(`${skippedNoTag} productie(s) zonder genre-tag overgeslagen (geen voorstelling).`);
-  return shows;
+  // Titelconventie cabaret (lib/titels.js): bij dit theater staat de artiest in de titel, voorstelling in de beschrijvingsregel.
+  return shows.map((s) => pasTitelConventieToe(s, { artiest: s.titel, voorstelling: s.beschrijving }));
 }

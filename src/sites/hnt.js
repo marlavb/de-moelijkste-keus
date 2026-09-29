@@ -9,6 +9,7 @@ import {
   dedupeShows,
   createGroupScraper,
 } from '../lib/peppered.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/nl/voorstellingen';
 
@@ -97,7 +98,8 @@ async function scrapeAllHnt({ page, theater, robots, waitForTurn, log, warn }) {
     log(`overgeslagen (niet in eigen zalen): ${skippedList.slice(0, 8).map(([k, n]) => `${k} (${n})`).join(', ')}${skippedList.length > 8 ? ', …' : ''}`);
   }
   logUnknownButtons(log, shows, rowsByShowId);
-  return dedupeShows(shows);
+  // Titelconventie cabaret (lib/titels.js): bij dit theater staat de artiest in de titel, voorstelling in het makerveld.
+  return dedupeShows(shows).map((s) => pasTitelConventieToe(s, { artiest: s.titel, voorstelling: s.maker, makerWordtLeeg: true }));
 }
 
 export const scrapeHnt = createGroupScraper(scrapeAllHnt);

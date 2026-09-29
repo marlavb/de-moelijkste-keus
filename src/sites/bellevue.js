@@ -1,6 +1,7 @@
 import { pagineerListing } from '../lib/peppered.js';
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/agenda';
 const MAX_LISTING_PAGES = 60;
@@ -174,5 +175,6 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log, 
   }
 
   log(`${andereLocatie} speeldatum(s) op tournee en ${besloten} besloten voorstelling(en) overgeslagen.`);
-  return shows;
+  // Titelconventie cabaret (lib/titels.js): bij dit theater staat de voorstelling in de titel, artiest in het makerveld.
+  return shows.map((s) => pasTitelConventieToe(s, { artiest: s.maker, voorstelling: s.titel, makerWordtLeeg: true }));
 }

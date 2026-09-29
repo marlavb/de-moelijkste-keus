@@ -1,5 +1,6 @@
 import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
+import { pasTitelConventieToe } from '../lib/titels.js';
 
 const AGENDA_PATH = '/voorstellingen';
 const CARD_SELECTOR = '.program-item--performance-theatre';
@@ -169,5 +170,6 @@ export async function scrapeGriffioen({ page, theater, robots, waitForTurn, log 
     });
   }
 
-  return shows;
+  // Titelconventie cabaret (lib/titels.js): bij dit theater staat de artiest in de titel, voorstelling in de beschrijvingsregel.
+  return shows.map((s) => pasTitelConventieToe(s, { artiest: s.titel, voorstelling: s.beschrijving }));
 }
