@@ -314,6 +314,25 @@ function toggleSidebarSection(sectionId) {
 // HTML-)stand laten zien voordat het netwerkverzoek klaar is.
 renderSidebarSections();
 
+// Hoogtes van de vaste agendakop en de onderste navigatie als CSS-variabelen,
+// voor de sticky filtersidebar op desktop (styles.css: .filter-sidebar). Met
+// een ResizeObserver, zodat het klopt als het lettertype laadt of de kop
+// verandert (zoekveld open).
+volgHoogtes();
+function volgHoogtes() {
+  const kop = document.querySelector('#screen-agenda .app-header');
+  const nav = els.bottomNav;
+  if (!kop || !nav || typeof ResizeObserver === 'undefined') return;
+  const zet = () => {
+    if (kop.offsetHeight) document.documentElement.style.setProperty('--agenda-kop', `${kop.offsetHeight}px`);
+    if (nav.offsetHeight) document.documentElement.style.setProperty('--nav-hoogte', `${nav.offsetHeight}px`);
+  };
+  const obs = new ResizeObserver(zet);
+  obs.observe(kop);
+  obs.observe(nav);
+  zet();
+}
+
 async function init() {
   // De navigatie als allereerste koppelen: gaat verderop iets mis (bv. een
   // element dat in een nieuwere index.html niet meer bestaat, terwijl de

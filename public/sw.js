@@ -1,4 +1,4 @@
-const CACHE_NAME = 'podiumagenda-v14';
+const CACHE_NAME = 'podiumagenda-v15';
 const APP_SHELL = [
   './',
   './index.html',

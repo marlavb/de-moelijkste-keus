@@ -1621,17 +1621,43 @@ button.plan-info {
     padding-right: 0;
   }
 
+  /* Blijft in beeld tijdens het scrollen, direct onder de vaste kop van de
+     agenda, en scrolt zelf als de filters langer zijn dan het scherm.
+     --agenda-kop en --nav-hoogte zet app.js (volgHoogtes) met de gemeten
+     hoogtes; de waarden hier zijn alleen een terugval. Breedte 300–360 px:
+     lange theaternamen passen (of breken af), en de agenda houdt 532 px
+     (bij 900 px) tot 672 px (vanaf 1200 px, binnen 1100 px) over. */
   .filter-sidebar {
     display: flex;
     flex-direction: column;
     align-self: flex-start;
-    width: 280px;
+    position: sticky;
+    top: calc(var(--agenda-kop, 108px) + 4px);
+    max-height: calc(100dvh - var(--agenda-kop, 108px) - var(--nav-hoogte, 72px) - 16px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    width: clamp(300px, 30vw, 360px);
     flex-shrink: 0;
     margin-top: 4px;
     padding: 20px;
     border-radius: var(--radius-hero);
     border: 1px solid var(--border);
     background: var(--surface);
+  }
+
+  /* Niet laten krimpen tot het in de maximale hoogte past: scrollen. */
+  .filter-sidebar > * {
+    flex-shrink: 0;
+  }
+
+  /* Een chip komt nooit buiten de sidebar: een lange naam breekt af op een
+     tweede regel (volledig leesbaar, ook zonder tooltip op een touchscreen). */
+  .filter-sidebar .chip {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: left;
+    line-height: 1.25;
   }
 
   .filter-sidebar-search {
