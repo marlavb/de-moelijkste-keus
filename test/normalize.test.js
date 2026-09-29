@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createNumericDayParser } from '../src/lib/normalize.js';
+import { createNumericDayParser, createDutchAbbrevDayParser } from '../src/lib/normalize.js';
 
 const SEPT_2026 = new Date('2026-09-27T10:00:00');
 
@@ -33,4 +33,21 @@ test('genre: varianten van samengestelde labels (en/&, /, volgorde) mappen hetze
   assert.equal(normalizeGenre('Theater'), 'Toneel');
   assert.equal(normalizeGenre('iets heel nieuws'), 'Overig');
   assert.equal(normalizeGenreFromList(['PREMIÈRE', 'Jeugd en familie']), 'Familie & Jeugd');
+});
+
+test('createDutchAbbrevDayParser: weekdag beslist over het jaar (lopende reeks tussendoor)', () => {
+  // Bijlmer Parktheater, sep 2026: "do 24 sep" (reeks t/m 17 dec) na "za 3 okt".
+  const parse = createDutchAbbrevDayParser(new Date('2026-09-29T10:00:00'));
+  assert.equal(parse('wo 30 sep'), '2026-09-30');
+  assert.equal(parse('za 3 okt'), '2026-10-03');
+  assert.equal(parse('do 24 sep'), '2026-09-24');
+  assert.equal(parse('zo 4 okt'), '2026-10-04');
+  assert.equal(parse('di 5 jan'), '2027-01-05');
+  assert.equal(parse('vr 24 sep'), '2027-09-24');
+});
+
+test('createDutchAbbrevDayParser: zonder weekdag de gewone rollover', () => {
+  const parse = createDutchAbbrevDayParser(new Date('2026-09-29T10:00:00'));
+  assert.equal(parse('3 okt'), '2026-10-03');
+  assert.equal(parse('24 sep'), '2027-09-24');
 });

@@ -88,6 +88,13 @@ export function createDutchDayParser(referenceDate = new Date()) {
  * Parseert datum-labels met afgekorte Nederlandse maandnamen zoals gebruikt
  * op Theater Bellevue: "wo 9 sep" (weekdag-afkorting, dag, maand-afkorting,
  * zonder jaartal). Zelfde jaar-rollover-aanpak als createDutchDayParser.
+ *
+ * Staat er een weekdag bij, dan beslist die over het jaar. Waarom: een reeks
+ * die al loopt ("do 24 sep – do 17 dec") staat met zijn begindatum tussen
+ * latere voorstellingen; zonder weekdag-check rolde het jaar daar door en
+ * kwam de hele rest van de agenda een jaar te laat uit (Bijlmer
+ * Parktheater, sep 2026). Twee opeenvolgende jaren hebben voor dezelfde
+ * datum nooit dezelfde weekdag, dus de weekdag is eenduidig.
  */
 export function createDutchAbbrevDayParser(referenceDate = new Date()) {
   let year = referenceDate.getFullYear();
@@ -101,12 +108,25 @@ export function createDutchAbbrevDayParser(referenceDate = new Date()) {
     const month = DUTCH_MONTHS_ABBREV[match[2]];
     if (!month) return null;
 
-    if (month < lastMonth) {
-      year += 1;
+    let y = month < lastMonth ? year + 1 : year;
+    const weekday = clean.match(/^(zo|ma|di|wo|do|vr|za)\b/);
+    if (weekday) {
+      const klopt = (yy) => new Date(Date.UTC(yy, month - 1, day)).getUTCDay() === DUTCH_WEEKDAYS_ABBREV[weekday[1]];
+      if (!klopt(y)) {
+        const ander = y === year ? year + 1 : year;
+        if (klopt(ander)) y = ander;
+      }
     }
-    lastMonth = month;
+    // Een datum die (volgens de weekdag) vóór de vorige ligt, is een
+    // uitschieter: die verzet de rollover niet.
+    if (y > year) {
+      year = y;
+      lastMonth = month;
+    } else if (month >= lastMonth) {
+      lastMonth = month;
+    }
 
-    return toIsoDate(year, month, day);
+    return toIsoDate(y, month, day);
   };
 }
 
