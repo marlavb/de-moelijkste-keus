@@ -359,7 +359,9 @@ a {
 .show-time {
   flex-shrink: 0;
   width: 48px;
-  padding-top: 1px;
+  /* Zelfde regelhoogte als de eerste regel van de titel (16px × 1,3), zodat
+     de tijd daarnaast staat, ook als de titel over meerdere regels loopt. */
+  line-height: calc(16px * 1.3);
   font-size: 15px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -392,9 +394,9 @@ a {
 
 .show-title-text {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* Nooit afkappen: de volledige titel loopt door op de volgende regel(s);
+     heel lange woorden breken ook af. */
+  overflow-wrap: anywhere;
 }
 
 /* Gevulde bladwijzer rechts in de agendaregel van een watchlist-item. */
@@ -413,7 +415,9 @@ a {
 .show-meta {
   margin: 2px 0 0;
   font-size: 13px;
+  line-height: 1.35;
   color: var(--text-2);
+  overflow-wrap: anywhere;
 }
 
 .show-meta-row {
@@ -426,9 +430,6 @@ a {
 
 .show-meta-row .show-meta {
   margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .show-genre-tag {
@@ -688,6 +689,7 @@ a {
 
 .detail-title {
   margin: 0;
+  overflow-wrap: anywhere;
   font-family: var(--font-display);
   font-size: 32px;
   font-weight: 600;
@@ -697,6 +699,7 @@ a {
 
 .detail-maker {
   margin: 0;
+  overflow-wrap: anywhere;
   font-size: 15px;
   color: var(--hero-maker);
   white-space: pre-line;
@@ -1510,9 +1513,8 @@ button.plan-info {
 .plan-title {
   font-size: 16px;
   font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 .plan-row--weg .plan-title {
@@ -1521,12 +1523,14 @@ button.plan-info {
 
 .plan-meta {
   font-size: 13px;
+  overflow-wrap: anywhere;
   color: var(--text-2);
 }
 
 /* "Niet meer in de agenda", "Tijd gewijzigd", "Zelfde dag als …". */
 .plan-flag {
   font-size: 12px;
+  overflow-wrap: anywhere;
   font-weight: 600;
   color: var(--flag-text);
 }
