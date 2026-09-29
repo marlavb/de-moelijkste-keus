@@ -65,9 +65,17 @@ export async function scrapeKleineKomedie({ page, theater, robots, waitForTurn, 
           for (const li of panel.querySelectorAll('li.subshow')) {
             const dagTekst = li.querySelector('.date .start')?.textContent.trim() ?? null;
             if (!dagTekst) continue;
-            const tijdTekst = li.querySelector('.time .start')?.textContent.trim() ?? null;
+            // In het datumpaneel staat de tijd niet in .time .start maar in
+            // <dl class="intermission"> ("Start 20.15 uur"); betrouwbaarder is
+            // data-event-start ("2026-09-29 20:15:00", met jaartal) op de
+            // wenslijstknop van de rij. Tot sep 2026 kwam hier geen tijd mee.
+            const start = li.querySelector('[data-event-start]')?.getAttribute('data-event-start') ?? null;
+            const startDt = [...li.querySelectorAll('dl.intermission dt')].find((dt) => /start/i.test(dt.textContent));
+            const tijdTekst =
+              li.querySelector('.time .start')?.textContent.trim() ?? startDt?.nextElementSibling?.textContent.trim() ?? null;
             const ctrl = li.querySelector('.buttonBox a, .buttonBox button, .buttonBox span');
             rows.push({
+              start,
               dagTekst,
               tijdTekst,
               ctrlText: ctrl?.textContent.trim().replace(/\s+/g, ' ') ?? null,
@@ -91,6 +99,7 @@ export async function scrapeKleineKomedie({ page, theater, robots, waitForTurn, 
             const tijdTekst = dtInner?.querySelector('.datetime .time .start')?.textContent.trim() ?? null;
             const ctrl = dtInner?.querySelector('a.btn, button.btn, span.btn');
             rows.push({
+              start: card.querySelector('[data-event-start]')?.getAttribute('data-event-start') ?? null,
               dagTekst,
               tijdTekst,
               ctrlText: ctrl?.textContent.trim().replace(/\s+/g, ' ') ?? null,
@@ -119,7 +128,11 @@ export async function scrapeKleineKomedie({ page, theater, robots, waitForTurn, 
       // ("Geweest") in hetzelfde paneel — die horen niet in een
       // toekomstgerichte agenda.
       if (row.ctrlText?.trim().toLowerCase() === 'geweest') continue;
-      const datum = parseDay(row.dagTekst);
+      // data-event-start heeft voorrang (met jaartal); parseDay blijft lopen
+      // zodat de jaar-rollover dezelfde volgorde van datums blijft zien.
+      const uitTekst = parseDay(row.dagTekst);
+      const vanStart = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(row.start ?? '') ? row.start : null;
+      const datum = vanStart ? vanStart.slice(0, 10) : uitTekst;
       if (!datum) {
         log(`kon datum-label niet parsen: "${row.dagTekst}" (${card.titel}) — overgeslagen.`);
         continue;
@@ -130,7 +143,8 @@ export async function scrapeKleineKomedie({ page, theater, robots, waitForTurn, 
         andereLocatie++;
         continue;
       }
-      const tijd = extractTime(row.tijdTekst);
+      const startTijd = vanStart?.slice(11, 16);
+      const tijd = startTijd && startTijd !== '00:00' ? startTijd : extractTime(row.tijdTekst);
       const ticketUrl =
         row.href && !row.href.startsWith('javascript:') ? new URL(row.href, theater.baseUrl).toString() : null;
 
