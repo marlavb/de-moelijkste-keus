@@ -27,7 +27,13 @@ import { TITEL_MAPPING } from './titelMapping.js';
 //     de sleutel bestaat uit de delen rond het scheidingsteken, gesorteerd
 //     ("sara kroos | prikkelarme kermis"), zodat de volgorde niet uitmaakt;
 //     "&" telt als "en".
-export const NORMALISATIE_VERSIE = 3;
+//   4 (30 sep 2026): titels werden "Voorstelling – Artiest". De ruisregels
+//     die alleen aan het eind van de titel werkten ("- reprise", "try-out",
+//     een losse leeftijd "12+") werken nu per deel, zodat "Lemming - reprise
+//     – Merijn Scholten" dezelfde sleutel heeft als "Merijn Scholten –
+//     Lemming - reprise". Voor alle toenmalige titels veranderde de sleutel
+//     niet; wel voor titels met zo'n toevoeging midden in de titel.
+export const NORMALISATIE_VERSIE = 4;
 
 // Scheidingstekens tussen delen van een titel ("Artiest – Voorstelling"):
 // een streepje of pijp mét spaties eromheen, of een dubbele punt met een
@@ -51,9 +57,26 @@ export function zonderRuis(titel) {
     .replace(/[\s–-]+(?:reprise|try-?out)\s*$/gi, ' ');
 }
 
+// Ruis over de hele titel, vóór het splitsen ("– De Musical", leeftijden
+// tussen haakjes, "&" = "en").
+function zonderRuisHeleTitel(titel) {
+  return String(titel ?? '')
+    .replace(/\s*&\s*/g, ' en ')
+    .replace(/\((\s*\d+(?:[.,]\d+)?\s*\+|\s*\d+\s*(?:-|t\/m|tot)\s*\d+\s*(?:jaar|maanden)?|\s*try-?out|\s*reprise|\s*premi[eè]re|\s*nieuw)\s*\)/gi, ' ')
+    .replace(/\/\s*\d+\s*\+/g, ' ')
+    .replace(/[\s,:–-]+(?:de|the)\s+musical\b/gi, ' ');
+}
+
+// Ruis aan het eind van een deel (v4: per deel, niet alleen aan het eind van
+// de hele titel): "Keanu Reprise", "Lemming - reprise", "CONTROLE 12+". Een
+// deel dat alleen uit zo'n toevoeging bestaat, valt helemaal weg.
+function zonderEindRuis(deel) {
+  return deel.replace(/(?:^|[\s–-]+)(?:reprise|try-?out)\s*$/i, ' ').replace(/(?:^|\s)\d+\s*\+\s*$/, ' ');
+}
+
 /** De genormaliseerde delen van een titel, zonder dubbele, gesorteerd. */
 export function titelDelen(titel) {
-  const delen = zonderRuis(titel).split(SCHEIDING).map(normalizeTitle).filter(Boolean);
+  const delen = zonderRuisHeleTitel(titel).split(SCHEIDING).map(zonderEindRuis).map(normalizeTitle).filter(Boolean);
   return [...new Set(delen)].sort();
 }
 

@@ -315,3 +315,20 @@ test('titelmapping: bestaat de oude sleutel nog in de data, dan blijft het oude 
   assert.deepEqual(sleutels(r.profiel), ['gelukskoekje | sara kroos', 'prikkelarme kermis | sara kroos', 'sara kroos']);
   assert.equal(laadWatchlist({ opgeslagen: JSON.parse(JSON.stringify(r.profiel)), bekend, mapping: MAPPING }).gewijzigd, false);
 });
+
+test('vaste titeltest v4: ruis per deel, ook midden in de titel ("Voorstelling – Artiest")', () => {
+  const k = (t) => watchlistSleutel(t, 'x');
+  assert.equal(k('Keanu Reprise – Henry van Loon'), k('Henry van Loon – Keanu'));
+  assert.equal(k('Lemming - reprise – Merijn Scholten'), k('Merijn Scholten – Lemming - reprise'));
+  assert.equal(k('CONTROLE 12+ – 155'), k('155 – Controle'));
+  assert.equal(k('Try-out: Nothing Beats Reality'), 'nothing beats reality');
+  assert.equal(k('Juf Braaksel – De Musical (6+)'), 'juf braaksel');
+});
+
+test('her-normaliseren v3 → v4 via de opgeslagen titel, idempotent', () => {
+  const v3 = { watchlist: [{ sleutel: 'nothing beats reality | try out', titel: 'Try-out: Nothing Beats Reality', theaterId: 'kunstlinie', toegevoegdOp: 5, v: 3 }], watchlistVerwijderd: [] };
+  const v4 = renormaliseer(v3);
+  assert.deepEqual(sleutels(v4), ['nothing beats reality']);
+  assert.equal(v4.watchlist[0].v, NORMALISATIE_VERSIE);
+  assert.deepEqual(renormaliseer(v4), v4);
+});
