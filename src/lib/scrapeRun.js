@@ -5,7 +5,7 @@
 // het met nep-scrapers te testen is (zie test/scrapeRun.test.js).
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { ontdubbelShows } from './dedupe.js';
+import { ontdubbelShows, dubbelSleutel } from './dedupe.js';
 import path from 'node:path';
 
 import { todayIsoDate } from './normalize.js';
@@ -57,6 +57,14 @@ function upcomingShowsOf(shows, theaterId, minDate) {
   return shows.filter((s) => s.theaterId === theaterId && s.datum >= minDate);
 }
 
+// Aantal unieke voorstellingen (zie dedupe.js). De daling-check kijkt
+// hiernaar, niet naar het aantal records: Muziekgebouw leverde twee weken
+// 600 records met maar 20 unieke voorstellingen (vorige keer ~360), en
+// dat viel niet op omdat het aantal records gelijk bleef (sep 2026).
+function uniekAantal(shows) {
+  return new Set(shows.map(dubbelSleutel)).size;
+}
+
 /**
  * Beslist per theater wat er in de output komt, op basis van wat de scraper
  * deed en wat er vorige keer (na purge) nog aan komende voorstellingen stond.
@@ -69,7 +77,7 @@ function upcomingShowsOf(shows, theaterId, minDate) {
  */
 export function evaluateOutcome({ theaterId, shows, error, previousShows, minDate }) {
   const previous = upcomingShowsOf(previousShows, theaterId, minDate);
-  const vorigAantal = previous.length;
+  const vorigAantal = uniekAantal(previous);
 
   if (error) {
     const fout =
@@ -92,10 +100,10 @@ export function evaluateOutcome({ theaterId, shows, error, previousShows, minDat
     return { status: 'leeg', shows: [], fout: null, vorigAantal };
   }
 
-  const nieuwAantal = upcomingShowsOf(shows, theaterId, minDate).length;
+  const nieuwAantal = uniekAantal(upcomingShowsOf(shows, theaterId, minDate));
   const waarschuwing =
     vorigAantal >= DROP_WARNING_MIN_PREVIOUS && nieuwAantal < vorigAantal * DROP_WARNING_RATIO
-      ? `scherpe daling: ${nieuwAantal} komende voorstellingen, vorige keer ${vorigAantal}`
+      ? `scherpe daling: ${nieuwAantal} unieke komende voorstellingen, vorige keer ${vorigAantal}`
       : null;
   return { status: 'ok', shows, fout: null, waarschuwing, vorigAantal };
 }
@@ -205,7 +213,7 @@ export async function runRefresh({
       theaterStatus[theater.id] = {
         status: 'gepauzeerd',
         aantal: 0,
-        vorigAantal: upcomingShowsOf(previousShows, theater.id, minDate).length,
+        vorigAantal: uniekAantal(upcomingShowsOf(previousShows, theater.id, minDate)),
         duurSeconden: 0,
         laatsteSucces: vorige.laatsteSucces ?? null,
         terugvalSinds: null,

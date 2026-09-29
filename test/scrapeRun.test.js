@@ -248,7 +248,7 @@ test('scherpe daling → alleen een waarschuwing, nieuwe data wordt gebruikt', a
   });
   assert.deepEqual(written.map((s) => s.titel), ['enige']);
   assert.equal(status.theaters.a.status, 'ok');
-  assert.match(status.theaters.a.waarschuwing, /scherpe daling: 1 .* vorige keer 30/);
+  assert.match(status.theaters.a.waarschuwing, /scherpe daling: 1 unieke .* vorige keer 30/);
   assert.equal(annotations.length, 1);
   assert.match(annotations[0].title, /Scherpe daling/);
 });
@@ -389,4 +389,34 @@ test('dubbelingen: weggehaald vóór het wegschrijven, geteld in de status, warn
   assert.equal(status.theaters.c.waarschuwing, null);
   const dubbelWarnings = annotations.filter((a) => a.title.startsWith('Dubbelingen'));
   assert.deepEqual(dubbelWarnings.map((a) => a.title), ['Dubbelingen a']);
+});
+
+test('scherpe daling telt unieke voorstellingen: 600 records waarvan 20 uniek, vorige keer 360 → warning', async () => {
+  const datum = (i) => `2026-${String(10 + Math.floor(i / 28)).padStart(2, '0')}-${String((i % 28) + 1).padStart(2, '0')}`;
+  const previous = Array.from({ length: 360 }, (_, i) => show('a', datum(i), { id: `a-${i}`, titel: `Voorstelling ${i}` }));
+  const paths = await setup({ previousShows: previous });
+  // Zoals Muziekgebouw in sep 2026: 30 keer dezelfde eerste pagina van 20.
+  const pagina = Array.from({ length: 20 }, (_, i) => show('a', datum(i), { titel: `Voorstelling ${i}` }));
+  const records = Array.from({ length: 30 }, (_, p) => pagina.map((s, i) => ({ ...s, id: `a-${i}-${p}` }))).flat();
+  assert.equal(records.length, 600);
+  const { written, status, annotations } = await run({
+    paths,
+    theaters: [theater('a')],
+    scrapers: { a: async () => records },
+  });
+  assert.equal(written.length, 20);
+  assert.equal(status.theaters.a.vorigAantal, 360);
+  assert.match(status.theaters.a.waarschuwing, /scherpe daling: 20 unieke komende voorstellingen, vorige keer 360/);
+  assert.ok(annotations.some((a) => a.level === 'warning' && /Scherpe daling a/.test(a.title)));
+  assert.ok(annotations.some((a) => a.level === 'warning' && /Dubbelingen a/.test(a.title)));
+});
+
+test('vorige data met dubbelingen telt als het aantal unieke voorstellingen', async () => {
+  // Vorige keer 600 records, 20 uniek; nu 20 unieke → geen daling.
+  const pagina = Array.from({ length: 20 }, (_, i) => show('a', '2026-10-05', { titel: `Voorstelling ${i}` }));
+  const previous = Array.from({ length: 30 }, (_, p) => pagina.map((s, i) => ({ ...s, id: `a-${i}-${p}` }))).flat();
+  const paths = await setup({ previousShows: previous });
+  const { status } = await run({ paths, theaters: [theater('a')], scrapers: { a: async () => pagina.map((s, i) => ({ ...s, id: `n-${i}` })) } });
+  assert.equal(status.theaters.a.vorigAantal, 20);
+  assert.equal(status.theaters.a.waarschuwing, null);
 });
