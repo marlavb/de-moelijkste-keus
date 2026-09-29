@@ -3,7 +3,7 @@
 Podiumagenda (repo `de-moelijkste-keus`) scrapet elke nacht de agenda's van
 Podiumpas-theaters (`src/`), schrijft `public/data/*.json` en publiceert de
 app in `public/` via GitHub Pages. De workflow `refresh-data.yml` draait om
-04:00 UTC (in de praktijk vaak later) en commit de data zelf.
+03:17 UTC (een scheve minuut, zie de workflow; soms later) en commit de data zelf.
 
 ## Git
 

@@ -2,8 +2,12 @@ name: Refresh data
 
 on:
   schedule:
-    # 04:00 UTC = 05:00 (winter) / 06:00 (zomer) tijd in Amsterdam.
-    - cron: '0 4 * * *'
+    # 03:17 UTC = 04:17 (winter) / 05:17 (zomer) tijd in Amsterdam.
+    # Bewust een scheve minuut: GitHub stelt geplande runs op het hele uur
+    # vaak uren uit (de run van 04:00 begon op 29 sep 2026 pas om 10:33),
+    # omdat daar de meeste workflows tegelijk starten. Niets in deze of de
+    # deploy-workflow rekent op dit tijdstip.
+    - cron: '17 3 * * *'
   workflow_dispatch: {}
 
 # Nooit twee refreshes tegelijk (bv. een handmatige run terwijl de geplande
