@@ -1,0 +1,4 @@
+#!/bin/sh
+# Weigert elke push zolang refresh-data loopt of wacht (zie CLAUDE.md).
+# Actief via: git config core.hooksPath .githooks
+exec node "$(git rev-parse --show-toplevel)/scripts/refresh-check.js"

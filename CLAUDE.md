@@ -11,10 +11,16 @@ app in `public/` via GitHub Pages. De workflow `refresh-data.yml` draait om
   als een lokale testrun die heeft overschreven. Commit lokaal gegenereerde
   data alleen in een bewust, apart datacommit (en zeg dat in de message).
 - Altijd `git diff --stat` (of `git diff --cached --stat`) vóór het committen.
-- `git pull --ff-only` vóór elke push.
-- Niet pushen terwijl `refresh-data` draait (`gh run list --workflow=refresh-data.yml --limit 1`).
-  De workflow zet vlak voor zijn eigen push de data op de nieuwste `main`,
-  maar een push midden in een run blijft onnodig risico.
+- Pushen altijd via `npm run safe-push` (eventueel `-- <git push-argumenten>`):
+  dat weigert zolang een `refresh-data`-run loopt of in de wachtrij staat
+  (ook als `gh` het niet kan vaststellen), en doet daarna `git pull --ff-only`
+  en `git push`. `npm run safe-push -- --dry-run` doet alleen de controle.
+  Nooit omheen werken; bij een weigering wachten tot de run klaar is.
+- Dezelfde controle zit in de pre-push-hook `.githooks/pre-push`; activeer die
+  in een nieuwe clone met `git config core.hooksPath .githooks`.
+  Waarom: op 29 sep 2026 is er gepusht terwijl een (uitgestelde) nachtelijke
+  run liep, ondanks de afspraak. De workflow zet vlak voor zijn eigen push de
+  data op de nieuwste `main`, maar een push midden in een run blijft risico.
 - Eén commit per stap of onderwerp; stage expliciete bestanden, geen `git add -A`.
 
 ## Testverkeer naar theatersites
