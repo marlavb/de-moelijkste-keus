@@ -83,3 +83,14 @@ Houd het testverkeer daarom zo klein mogelijk:
      Adem, Cabaret, Sara Kroos).
 - Het oude `favorites`-veld (localStorage en Firestore) blijft onaangeroerd
   als back-up.
+
+## Aliaslijst voor spellingsverschillen (geparkeerd, 29 sep 2026)
+
+- Stap A staat erin: `npm run alias-kandidaten` (`scripts/alias-kandidaten.js`,
+  logica in `src/lib/aliasKandidaten.js`) schrijft kandidaat-paren van
+  watchlist-sleutels naar `debug/alias-kandidaten.md` (niet committen), als
+  afvinklijst met voorstel en ⚠ bij twijfel. Er wordt niets samengevoegd.
+- Stap B (aangevinkte paren als vaste aliaslijst in de normalisatie,
+  `NORMALISATIE_VERSIE` 4, telling van nieuwe kandidaten per nachtelijke run
+  als notice) en stap C (weergavetitel op meerderheid, met `titelBron`)
+  wachten op de afvinklijst van de gebruiker. Niet zelf beginnen.
