@@ -1,434 +1,473 @@
 {
-  "bijgewerktOp": "2026-09-29T11:21:26.532Z",
+  "bijgewerktOp": "2026-09-29T12:11:15.986Z",
   "theaters": {
     "ita": {
-      "status": "terugval",
+      "status": "ok",
       "aantal": 269,
       "vorigAantal": 269,
-      "duurSeconden": 62,
-      "laatsteSucces": "2026-09-29T08:52:54.242Z",
-      "terugvalSinds": "2026-09-29T10:54:03.234Z",
-      "fout": "exception: page.goto: Timeout 30000ms exceeded.",
+      "duurSeconden": 12,
+      "laatsteSucces": "2026-09-29T11:41:23.792Z",
+      "terugvalSinds": null,
+      "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "delamar": {
       "status": "ok",
       "aantal": 413,
       "vorigAantal": 413,
       "duurSeconden": 18,
-      "laatsteSucces": "2026-09-29T10:34:23.008Z",
+      "laatsteSucces": "2026-09-29T11:22:34.145Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "bellevue": {
       "status": "ok",
       "aantal": 559,
-      "vorigAantal": 560,
+      "vorigAantal": 559,
       "duurSeconden": 1057,
-      "laatsteSucces": "2026-09-29T10:52:00.298Z",
+      "laatsteSucces": "2026-09-29T11:40:11.615Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 1
+      "dubbelingen": 1,
+      "zonderTijd": 0
     },
     "meervaart": {
       "status": "ok",
       "aantal": 69,
-      "vorigAantal": 68,
-      "duurSeconden": 61,
-      "laatsteSucces": "2026-09-29T10:53:01.626Z",
+      "vorigAantal": 69,
+      "duurSeconden": 60,
+      "laatsteSucces": "2026-09-29T11:41:12.001Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "kleinekomedie": {
       "status": "ok",
       "aantal": 252,
       "vorigAantal": 252,
       "duurSeconden": 93,
-      "laatsteSucces": "2026-09-29T10:55:36.565Z",
+      "laatsteSucces": "2026-09-29T11:42:57.017Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "frascati": {
       "status": "ok",
       "aantal": 145,
       "vorigAantal": 145,
       "duurSeconden": 32,
-      "laatsteSucces": "2026-09-29T10:56:08.247Z",
+      "laatsteSucces": "2026-09-29T11:43:28.918Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "carre": {
       "status": "ok",
       "aantal": 71,
       "vorigAantal": 71,
-      "duurSeconden": 8,
-      "laatsteSucces": "2026-09-29T10:56:16.327Z",
+      "duurSeconden": 4,
+      "laatsteSucces": "2026-09-29T11:43:33.227Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 71
     },
     "amstelveen": {
       "status": "leeg",
       "aantal": 0,
       "vorigAantal": 0,
-      "duurSeconden": 37,
-      "laatsteSucces": "2026-09-29T10:56:52.921Z",
+      "duurSeconden": 40,
+      "laatsteSucces": "2026-09-29T11:44:13.546Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "stadsschouwburgutrecht": {
       "status": "ok",
       "aantal": 595,
       "vorigAantal": 595,
-      "duurSeconden": 22,
-      "laatsteSucces": "2026-09-29T10:57:14.702Z",
+      "duurSeconden": 26,
+      "laatsteSucces": "2026-09-29T11:44:39.564Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "theaterkikker": {
       "status": "ok",
       "aantal": 212,
       "vorigAantal": 212,
-      "duurSeconden": 4,
-      "laatsteSucces": "2026-09-29T10:57:18.691Z",
+      "duurSeconden": 5,
+      "laatsteSucces": "2026-09-29T11:44:44.858Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "krakeling": {
       "status": "ok",
       "aantal": 100,
       "vorigAantal": 100,
-      "duurSeconden": 3,
-      "laatsteSucces": "2026-09-29T10:57:21.906Z",
+      "duurSeconden": 4,
+      "laatsteSucces": "2026-09-29T11:44:49.019Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "mozaiek": {
       "status": "ok",
       "aantal": 77,
       "vorigAantal": 76,
       "duurSeconden": 2,
-      "laatsteSucces": "2026-09-29T10:57:23.858Z",
+      "laatsteSucces": "2026-09-29T11:44:51.164Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "muziekgebouw": {
       "status": "ok",
       "aantal": 360,
       "vorigAantal": 360,
-      "duurSeconden": 98,
-      "laatsteSucces": "2026-09-29T10:59:02.283Z",
+      "duurSeconden": 99,
+      "laatsteSucces": "2026-09-29T11:46:30.079Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 3
+      "dubbelingen": 3,
+      "zonderTijd": 0
     },
     "scala": {
       "status": "ok",
       "aantal": 68,
       "vorigAantal": 68,
       "duurSeconden": 5,
-      "laatsteSucces": "2026-09-29T10:59:07.051Z",
+      "laatsteSucces": "2026-09-29T11:46:34.685Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 68
     },
     "omval": {
       "status": "ok",
-      "aantal": 93,
+      "aantal": 95,
       "vorigAantal": 93,
-      "duurSeconden": 88,
-      "laatsteSucces": "2026-09-29T11:00:35.441Z",
+      "duurSeconden": 99,
+      "laatsteSucces": "2026-09-29T11:48:13.300Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "delanding": {
       "status": "ok",
       "aantal": 147,
       "vorigAantal": 147,
-      "duurSeconden": 0,
-      "laatsteSucces": "2026-09-29T11:00:35.939Z",
+      "duurSeconden": 1,
+      "laatsteSucces": "2026-09-29T11:48:14.112Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "zaantheater": {
       "status": "ok",
       "aantal": 238,
       "vorigAantal": 238,
-      "duurSeconden": 49,
-      "laatsteSucces": "2026-09-29T11:01:24.820Z",
+      "duurSeconden": 47,
+      "laatsteSucces": "2026-09-29T11:49:01.349Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "bijlmerparktheater": {
       "status": "ok",
-      "aantal": 97,
+      "aantal": 142,
       "vorigAantal": 96,
-      "duurSeconden": 47,
-      "laatsteSucces": "2026-09-29T11:02:11.510Z",
+      "duurSeconden": 127,
+      "laatsteSucces": "2026-09-29T11:51:08.727Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "ccamstel": {
       "status": "ok",
       "aantal": 35,
       "vorigAantal": 35,
       "duurSeconden": 2,
-      "laatsteSucces": "2026-09-29T11:02:13.187Z",
+      "laatsteSucces": "2026-09-29T11:51:10.760Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 4
     },
     "marionettentheater": {
       "status": "ok",
       "aantal": 13,
       "vorigAantal": 12,
-      "duurSeconden": 5,
-      "laatsteSucces": "2026-09-29T11:02:18.498Z",
+      "duurSeconden": 4,
+      "laatsteSucces": "2026-09-29T11:51:15.246Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "griffioen": {
       "status": "ok",
       "aantal": 112,
       "vorigAantal": 112,
-      "duurSeconden": 9,
-      "laatsteSucces": "2026-09-29T11:02:27.651Z",
+      "duurSeconden": 10,
+      "laatsteSucces": "2026-09-29T11:51:25.460Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "pleintheater": {
       "status": "ok",
       "aantal": 35,
       "vorigAantal": 35,
       "duurSeconden": 4,
-      "laatsteSucces": "2026-09-29T11:02:32.015Z",
+      "laatsteSucces": "2026-09-29T11:51:29.836Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "karavaan": {
       "status": "ok",
       "aantal": 10,
       "vorigAantal": 10,
       "duurSeconden": 6,
-      "laatsteSucces": "2026-09-29T11:02:37.990Z",
+      "laatsteSucces": "2026-09-29T11:51:36.035Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 10
     },
     "schuur": {
       "status": "ok",
       "aantal": 183,
       "vorigAantal": 183,
-      "duurSeconden": 50,
-      "laatsteSucces": "2026-09-29T11:03:27.574Z",
+      "duurSeconden": 40,
+      "laatsteSucces": "2026-09-29T11:52:15.924Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "bostheater": {
       "status": "leeg",
       "aantal": 0,
       "vorigAantal": 0,
-      "duurSeconden": 3,
-      "laatsteSucces": "2026-09-29T11:03:30.317Z",
+      "duurSeconden": 4,
+      "laatsteSucces": "2026-09-29T11:52:19.879Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "hogewoerd": {
       "status": "ok",
       "aantal": 124,
       "vorigAantal": 124,
-      "duurSeconden": 140,
-      "laatsteSucces": "2026-09-29T11:05:50.101Z",
+      "duurSeconden": 137,
+      "laatsteSucces": "2026-09-29T11:54:36.914Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "flint": {
       "status": "ok",
       "aantal": 178,
       "vorigAantal": 178,
-      "duurSeconden": 176,
-      "laatsteSucces": "2026-09-29T11:08:46.421Z",
+      "duurSeconden": 196,
+      "laatsteSucces": "2026-09-29T11:57:52.950Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "aandeslinger": {
       "status": "ok",
       "aantal": 184,
       "vorigAantal": 184,
       "duurSeconden": 2,
-      "laatsteSucces": "2026-09-29T11:08:48.140Z",
+      "laatsteSucces": "2026-09-29T11:57:55.191Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "corrosia": {
       "status": "ok",
       "aantal": 57,
       "vorigAantal": 57,
       "duurSeconden": 4,
-      "laatsteSucces": "2026-09-29T11:08:52.296Z",
+      "laatsteSucces": "2026-09-29T11:57:59.477Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "kunstlinie": {
       "status": "ok",
       "aantal": 241,
       "vorigAantal": 241,
       "duurSeconden": 20,
-      "laatsteSucces": "2026-09-29T11:09:11.998Z",
+      "laatsteSucces": "2026-09-29T11:58:19.070Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 3
+      "dubbelingen": 3,
+      "zonderTijd": 0
     },
     "koninklijkeschouwburg": {
       "status": "ok",
       "aantal": 182,
       "vorigAantal": 182,
       "duurSeconden": 52,
-      "laatsteSucces": "2026-09-29T11:10:03.660Z",
+      "laatsteSucces": "2026-09-29T11:59:10.612Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "theateraanhetspui": {
       "status": "ok",
       "aantal": 253,
       "vorigAantal": 253,
       "duurSeconden": 1,
-      "laatsteSucces": "2026-09-29T11:10:04.427Z",
+      "laatsteSucces": "2026-09-29T11:59:11.217Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "zaal3": {
       "status": "ok",
       "aantal": 56,
       "vorigAantal": 56,
       "duurSeconden": 0,
-      "laatsteSucces": "2026-09-29T11:10:04.783Z",
+      "laatsteSucces": "2026-09-29T11:59:11.626Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "tr25": {
       "status": "ok",
-      "aantal": 244,
+      "aantal": 245,
       "vorigAantal": 244,
       "duurSeconden": 92,
-      "laatsteSucces": "2026-09-29T11:11:36.681Z",
+      "laatsteSucces": "2026-09-29T12:00:43.872Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "tr8": {
       "status": "ok",
       "aantal": 11,
       "vorigAantal": 11,
-      "duurSeconden": 0,
-      "laatsteSucces": "2026-09-29T11:11:37.125Z",
+      "duurSeconden": 1,
+      "laatsteSucces": "2026-09-29T12:00:44.669Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "koningshof": {
       "status": "ok",
       "aantal": 112,
       "vorigAantal": 112,
       "duurSeconden": 62,
-      "laatsteSucces": "2026-09-29T11:12:38.739Z",
+      "laatsteSucces": "2026-09-29T12:01:46.405Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "maas": {
       "status": "ok",
       "aantal": 57,
       "vorigAantal": 57,
-      "duurSeconden": 100,
-      "laatsteSucces": "2026-09-29T11:14:19.188Z",
+      "duurSeconden": 99,
+      "laatsteSucces": "2026-09-29T12:03:25.135Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 1
     },
     "insblau": {
       "status": "ok",
       "aantal": 13,
       "vorigAantal": 13,
-      "duurSeconden": 21,
-      "laatsteSucces": "2026-09-29T11:14:40.165Z",
+      "duurSeconden": 31,
+      "laatsteSucces": "2026-09-29T12:03:56.311Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "stadsgehoorzaal": {
       "status": "ok",
       "aantal": 156,
       "vorigAantal": 156,
-      "duurSeconden": 161,
-      "laatsteSucces": "2026-09-29T11:17:20.849Z",
+      "duurSeconden": 205,
+      "laatsteSucces": "2026-09-29T12:07:21.424Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     },
     "kruispunt": {
       "status": "gepauzeerd",
@@ -462,12 +501,13 @@
       "status": "ok",
       "aantal": 256,
       "vorigAantal": 256,
-      "duurSeconden": 246,
-      "laatsteSucces": "2026-09-29T11:21:26.490Z",
+      "duurSeconden": 234,
+      "laatsteSucces": "2026-09-29T12:11:15.923Z",
       "terugvalSinds": null,
       "fout": null,
       "waarschuwing": null,
-      "dubbelingen": 0
+      "dubbelingen": 0,
+      "zonderTijd": 0
     }
   }
 }
