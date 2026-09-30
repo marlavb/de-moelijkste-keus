@@ -61,8 +61,12 @@
   --radius-card: 16px;
   --radius-hero: 20px;
   --touch: 44px;
-  --font: "Work Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  /* Figtree (SIL Open Font License, Google Fonts; 400/600/700, swap) voor
+     koppen en tekst, sinds 30 sep 2026. Gratis alternatief voor Averta,
+     het (betaalde) lettertype van Cineville. Was: Fraunces + Work Sans. */
+  --font: "Figtree", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: var(--font);
+  --kop-gewicht: 700;
 }
 
 /* Eén regel voor alle elementen met het hidden-attribuut. Zonder deze regel
@@ -142,7 +146,7 @@ a {
   margin: 0;
   font-family: var(--font-display);
   font-size: 36px;
-  font-weight: 600;
+  font-weight: var(--kop-gewicht);
   line-height: 1.05;
   letter-spacing: -0.01em;
   color: var(--primary);
@@ -348,7 +352,7 @@ a {
   border-bottom: 1px solid var(--divider);
   font-family: var(--font-display);
   font-size: 18px;
-  font-weight: 600;
+  font-weight: var(--kop-gewicht);
   color: var(--primary);
 }
 
@@ -575,7 +579,7 @@ a {
   margin: 0;
   font-family: var(--font-display);
   font-size: 24px;
-  font-weight: 600;
+  font-weight: var(--kop-gewicht);
   color: var(--primary);
 }
 
@@ -605,7 +609,7 @@ a {
   margin: 0 0 10px;
   font-family: var(--font-display);
   font-size: 18px;
-  font-weight: 600;
+  font-weight: var(--kop-gewicht);
   color: var(--primary);
 }
 
@@ -714,7 +718,7 @@ a {
   overflow-wrap: anywhere;
   font-family: var(--font-display);
   font-size: 32px;
-  font-weight: 600;
+  font-weight: var(--kop-gewicht);
   line-height: 1.1;
   color: var(--on-primary);
 }
@@ -899,7 +903,7 @@ a {
   margin: 0 0 10px;
   font-family: var(--font-display);
   font-size: 18px;
-  font-weight: 600;
+  font-weight: var(--kop-gewicht);
   color: var(--primary);
 }
 
@@ -1051,7 +1055,7 @@ a {
   margin: 28px 0 6px;
   font-family: var(--font-display);
   font-size: 22px;
-  font-weight: 600;
+  font-weight: var(--kop-gewicht);
   color: var(--primary);
 }
 
@@ -1500,7 +1504,7 @@ a {
   margin: 0;
   font-family: var(--font-display);
   font-size: 18px;
-  font-weight: 600;
+  font-weight: var(--kop-gewicht);
   color: var(--primary);
 }
 
@@ -1544,7 +1548,7 @@ a {
   display: block;
   font-family: var(--font-display);
   font-size: 22px;
-  font-weight: 600;
+  font-weight: var(--kop-gewicht);
   font-variant-numeric: tabular-nums;
 }
 
