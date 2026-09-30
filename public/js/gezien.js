@@ -109,8 +109,10 @@ export function isVoorbij(datum, nu = new Date()) {
   return new Date(nu).getTime() >= new Date(j, m - 1, d + 1).getTime();
 }
 
-function planIsAfgelast(item, show) {
-  return Boolean(item.vervallen) || (show != null && isVervallen(show));
+/** 'afgelast', 'verplaatst' of null: uit het plan zelf, anders uit de agenda. */
+function vervallenReden(item, show) {
+  if (item.vervallen) return item.vervallen;
+  return show != null && isVervallen(show) ? show.beschikbaarheid : null;
 }
 
 /** Het bezoek uit de momentopname van het plan. */
@@ -134,7 +136,9 @@ export function planNaarGezien({ gepland, gezien, watchlist }, item, show, now =
 
 /**
  * Verwerkt voorbije plannen (bij het openen van de app en na een sync):
- * - afgelast/verplaatst → stil uit de planning, nooit naar Gezien;
+ * - afgelast → stil uit de planning, nooit naar Gezien;
+ * - verplaatst → niets, ook met kaarten: die blijven vaak geldig voor de
+ *   nieuwe datum, dus we vragen het (zie vragenOver);
  * - "Kaarten geregeld" → naar Gezien en uit de planning (ook als het plan
  *   "Niet meer in de agenda" of "Tijd gewijzigd" was);
  * - "Gepland" → niets; die komen in "Ben je geweest?" (zie vragenOver).
@@ -147,7 +151,9 @@ export function verwerkVoorbijePlannen({ gepland, gezien, watchlist }, { index =
   for (const item of gepland?.gepland ?? []) {
     if (!isVoorbij(item.datum, nu)) continue;
     const { show } = index ? koppel(item, index) : { show: null };
-    if (planIsAfgelast(item, show)) {
+    const reden = vervallenReden(item, show);
+    if (reden === 'verplaatst') continue;
+    if (reden) {
       stand = { ...stand, gepland: haalUitPlanning(stand.gepland, item.sleutel, now) };
       gewijzigd = true;
     } else if (item.status === 'kaarten') {
@@ -158,12 +164,20 @@ export function verwerkVoorbijePlannen({ gepland, gezien, watchlist }, { index =
   return { ...stand, gewijzigd };
 }
 
-/** Voorbije plannen met status "Gepland" (niet afgelast): de vraag "Ben je geweest?". */
+/**
+ * De vraag "Ben je geweest?": voorbije plannen met status "Gepland", en
+ * verplaatste plannen (ook met kaarten), niet afgelaste. Een verplaatst plan
+ * krijgt `verplaatst: true` mee, voor het regeltje in Profiel.
+ */
 export function vragenOver(gepland, { index = null, nu = new Date() } = {}) {
-  return (gepland?.gepland ?? [])
-    .filter((item) => isVoorbij(item.datum, nu) && item.status !== 'kaarten')
-    .filter((item) => !planIsAfgelast(item, index ? koppel(item, index).show : null))
-    .sort((a, b) => `${a.datum} ${a.tijd ?? ''}`.localeCompare(`${b.datum} ${b.tijd ?? ''}`));
+  const uit = [];
+  for (const item of gepland?.gepland ?? []) {
+    if (!isVoorbij(item.datum, nu)) continue;
+    const reden = vervallenReden(item, index ? koppel(item, index).show : null);
+    if (reden === 'verplaatst') uit.push({ ...item, verplaatst: true });
+    else if (!reden && item.status !== 'kaarten') uit.push(item);
+  }
+  return uit.sort((a, b) => `${a.datum} ${a.tijd ?? ''}`.localeCompare(`${b.datum} ${b.tijd ?? ''}`));
 }
 
 /** Antwoord op "Ben je geweest?": ja → Gezien en uit de planning; nee → alleen uit de planning. */

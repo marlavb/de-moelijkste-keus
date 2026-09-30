@@ -210,3 +210,32 @@ test('sorteren: laatste bezoek eerst, zonder bezoek op toegevoegdOp', () => {
   ];
   assert.deepEqual(sorteerGezien(items).map((i) => i.sleutel), ['b', 'a', 'c']);
 });
+
+test('verplaatst (ook met kaarten) → vraag, niet automatisch Gezien en niet stil weg', () => {
+  // Via het vervallen-veld in het plan (de voorstelling is na de datum uit de data)...
+  const index = indexeerShows([show({ beschikbaarheid: 'verplaatst' })]);
+  const plan = laadGepland({ opgeslagen: planMet('kaarten'), index }).profiel;
+  assert.equal(plan.gepland[0].vervallen, 'verplaatst');
+  const stand = { gepland: plan, gezien: legeGezien(), watchlist: legeWatchlist() };
+  const r = verwerkVoorbijePlannen(stand, { index: indexeerShows([]), nu: NA, now: 100 });
+  assert.equal(r.gewijzigd, false);
+  assert.equal(r.gepland.gepland.length, 1);
+  assert.equal(r.gezien.gezien.length, 0);
+  const vragen = vragenOver(plan, { index: indexeerShows([]), nu: NA });
+  assert.equal(vragen.length, 1);
+  assert.equal(vragen[0].verplaatst, true);
+  // ... en via de agenda (voorstelling staat er nog als verplaatst), ook zonder kaarten.
+  assert.equal(vragenOver(planMet('gepland'), { index, nu: NA })[0].verplaatst, true);
+  assert.equal(verwerkVoorbijePlannen({ ...stand, gepland: planMet('kaarten') }, { index, nu: NA }).gewijzigd, false);
+  // Ja → Gezien, Nee → alleen uit de planning.
+  const ja = beantwoord(stand, vragen[0], true, { now: 200 });
+  assert.equal(ja.gezien.gezien.length, 1);
+  assert.equal(ja.gepland.gepland.length, 0);
+  const nee = beantwoord(stand, vragen[0], false, { now: 200 });
+  assert.equal(nee.gezien.gezien.length, 0);
+  assert.equal(nee.gepland.gepland.length, 0);
+  // Afgelast blijft stil weg.
+  const afgelast = laadGepland({ opgeslagen: planMet('kaarten'), index: indexeerShows([show({ beschikbaarheid: 'afgelast' })]) }).profiel;
+  assert.equal(vragenOver(afgelast, { nu: NA }).length, 0);
+  assert.equal(verwerkVoorbijePlannen({ ...stand, gepland: afgelast }, { nu: NA, now: 100 }).gepland.gepland.length, 0);
+});

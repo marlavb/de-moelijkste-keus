@@ -1084,6 +1084,12 @@ function renderVraagRow(item, index) {
   const theaterNaam = planTheaterNaam(item);
   meta.textContent = item.tijd ? `${theaterNaam} · ${item.tijd}` : theaterNaam;
   info.append(title, meta);
+  if (item.verplaatst) {
+    const flag = document.createElement('span');
+    flag.className = 'plan-flag';
+    flag.textContent = 'Verplaatst';
+    info.appendChild(flag);
+  }
 
   const actions = document.createElement('div');
   actions.className = 'vraag-actions';
