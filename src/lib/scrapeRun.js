@@ -6,6 +6,7 @@
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { ontdubbelShows, dubbelSleutel } from './dedupe.js';
+import { volgNavigatie, paginaDiagnose } from './diagnose.js';
 import { metEnDash, zonderStatusWoord } from './titels.js';
 import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
@@ -160,8 +161,10 @@ async function runWithDeadline({ theater, scraper, deps, budgetMs, log }) {
   };
 
   let page;
+  let nav = {};
   try {
     page = await deps.openPage();
+    nav = volgNavigatie(page);
     const work = (async () => {
       const robots = await deps.loadRobots(theater, signal, scraperLog);
       signal.throwIfAborted();
@@ -174,6 +177,12 @@ async function runWithDeadline({ theater, scraper, deps, budgetMs, log }) {
     work.catch(() => {});
     return { shows: await Promise.race([work, aborted]), warnings };
   } catch (error) {
+    // Wat stond er op de pagina? (sanity check gefaald, time-out van een
+    // request, …) Niet na de deadline: dan is de pagina al weg.
+    if (!signal.aborted && page) {
+      const diagnose = await paginaDiagnose(page, nav).catch(() => null);
+      if (diagnose) log(diagnose);
+    }
     return { error, warnings };
   } finally {
     clearTimeout(timer);
