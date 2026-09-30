@@ -72,6 +72,8 @@ const THEATER_INFO = {
   aandeslinger: { adres: 'De Slinger 40' },
   corrosia: { adres: 'Markt 43' },
   kunstlinie: { adres: 'Esplanade 10' },
+  // Uit de voettekst van dok6.eu/theater (30 sep 2026).
+  dok6: { adres: 'Raadhuisplein 6' },
 };
 
 // Alleen "uitverkocht" en "wachtlijst" krijgen een badge — "beschikbaar" is
@@ -81,6 +83,7 @@ const THEATER_INFO = {
 // letters). ITA heet sinds 30 sep 2026 "Stadsschouwburg Amsterdam".
 const THEATER_ZOEKALIASSEN = {
   ita: ['ita', 'internationaal theater amsterdam'],
+  dok6: ['dok6 theater'],
 };
 
 const BESCHIKBAARHEID_LABELS = {

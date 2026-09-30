@@ -542,4 +542,22 @@ export const THEATERS = [
       toelichting: 'Online met het tarief "Podiumpas" (pasnummer invullen), vanaf 30 dagen voor de voorstelling. Niet bij Uit de regio, Events, Educatie en voorstellingen buiten het Maaspoort-gebouw.',
     },
   },
+  {
+    id: 'dok6',
+    naam: 'DOK6',
+    stad: 'Panningen',
+    provincie: 'Limburg',
+    baseUrl: 'https://dok6.eu',
+    agendaUrl: 'https://dok6.eu/theater/programma/',
+    // Per voorstelling: niet bij Uit de regio, Events, Educatie en gratis
+    // voorstellingen (zie src/sites/dok6.js).
+    podiumpas: true,
+    // Bron: https://dok6.eu/theater/podiumpas/ (30 sep 2026); telefoonnummer
+    // uit de voettekst van die pagina.
+    podiumpasReserveren: {
+      online: true,
+      telefoon: '077 310 1064',
+      toelichting: 'Online met het prijstype "Podiumpas" (pasnummer invullen), of telefonisch, vanaf 30 dagen voor de voorstelling. Kaartje tot een half uur voor aanvang ophalen bij de balie.',
+    },
+  },
 ];
