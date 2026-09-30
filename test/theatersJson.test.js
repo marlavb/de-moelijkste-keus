@@ -32,3 +32,9 @@ test('config: elk podiumpasReserveren heeft een manier om te reserveren', () => 
   const size = JSON.stringify(buildTheatersJson(THEATERS)).length;
   assert.ok(size < 15000, `theaters.json blijft klein (${size} bytes)`);
 });
+
+test('elk theater in config.js heeft een provincie (voor de latere provinciefilter)', async () => {
+  const { THEATERS } = await import('../src/lib/config.js');
+  const geldig = new Set(['Noord-Holland', 'Zuid-Holland', 'Utrecht', 'Flevoland', 'Limburg', 'Noord-Brabant', 'Gelderland', 'Overijssel', 'Drenthe', 'Groningen', 'Friesland', 'Zeeland']);
+  for (const t of THEATERS) assert.ok(geldig.has(t.provincie), `${t.id}: provincie "${t.provincie}"`);
+});
