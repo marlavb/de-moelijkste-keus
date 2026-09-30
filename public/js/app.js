@@ -192,6 +192,8 @@ const state = {
   podiumpasOnly: savedFilters.podiumpasOnly,
   watchlistOnly: savedFilters.watchlistOnly,
   hideFullOnly: savedFilters.hideFullOnly,
+  // "Verberg gezien" (standaard uit), zie gezien.js.
+  hideGezien: savedFilters.hideGezien,
   // Bewaard als de ongewijzigde tekst (searchQueryRaw, ook gebruikt om het
   // zoekveld bij het laden weer te vullen) plus de al lowercased/getrimde
   // matchvorm (searchQuery) — lokaal-only, zie loadFilters()/saveFilters().
@@ -232,6 +234,10 @@ const els = {
   sidebarPodiumpasToggle: document.getElementById('sidebarPodiumpasToggle'),
   sidebarWatchlistOnlyToggle: document.getElementById('sidebarWatchlistOnlyToggle'),
   sidebarHideFullToggle: document.getElementById('sidebarHideFullToggle'),
+  hideGezienToggle: document.getElementById('hideGezienToggle'),
+  sidebarHideGezienToggle: document.getElementById('sidebarHideGezienToggle'),
+  detailGezienBtn: document.getElementById('detailGezienBtn'),
+  detailGezienLabel: document.getElementById('detailGezienLabel'),
   sidebarSearchInput: document.getElementById('sidebarSearchInput'),
   sidebarAccordionHeaders: {
     stad: document.getElementById('sidebarStadHeader'),
@@ -425,6 +431,8 @@ async function init() {
   els.sidebarWatchlistOnlyToggle.addEventListener('click', onWatchlistToggleClick);
   els.hideFullToggle.addEventListener('click', onHideFullToggleClick);
   els.sidebarHideFullToggle.addEventListener('click', onHideFullToggleClick);
+  els.hideGezienToggle?.addEventListener('click', onHideGezienToggleClick);
+  els.sidebarHideGezienToggle?.addEventListener('click', onHideGezienToggleClick);
   els.clearFilters.addEventListener('click', clearAllFilters);
   els.sidebarClearFilters.addEventListener('click', clearAllFilters);
   for (const id of SIDEBAR_SECTION_IDS) {
@@ -584,6 +592,7 @@ function loadFilters() {
     // Heette tot 28 sep 2026 favoritesOnly.
     watchlistOnly: (stored.watchlistOnly ?? stored.favoritesOnly) === true,
     hideFullOnly: stored.hideFullOnly === true,
+    hideGezien: stored.hideGezien === true,
     searchQueryRaw: typeof stored.searchQuery === 'string' ? stored.searchQuery : '',
   };
 }
@@ -598,6 +607,7 @@ function saveFilters() {
       podiumpasOnly: state.podiumpasOnly,
       watchlistOnly: state.watchlistOnly,
       hideFullOnly: state.hideFullOnly,
+      hideGezien: state.hideGezien,
       searchQuery: state.searchQueryRaw,
     })
   );
@@ -964,6 +974,14 @@ function wijzigPlanning(nieuw, show) {
   saveGepland();
   if (show) renderPlanControls(show);
   renderAgenda();
+}
+
+/** "Gezien" in een agendaregel: de sleutel staat op Gezien. */
+function makeGezienTag() {
+  const tag = document.createElement('span');
+  tag.className = 'status-badge status-badge--gezien';
+  tag.textContent = 'Gezien';
+  return tag;
 }
 
 /** "Gepland" of "Kaarten ✓" in een agendaregel. */
@@ -1611,6 +1629,14 @@ function onHideFullToggleClick() {
   saveFilters();
 }
 
+function onHideGezienToggleClick() {
+  state.hideGezien = !state.hideGezien;
+  renderHideGezienToggle();
+  renderFilterBadge();
+  renderAgenda();
+  saveFilters();
+}
+
 function clearAllFilters() {
   state.selectedCities.clear();
   state.selectedTheaters.clear();
@@ -1618,6 +1644,7 @@ function clearAllFilters() {
   state.podiumpasOnly = false;
   state.watchlistOnly = false;
   state.hideFullOnly = false;
+  state.hideGezien = false;
   renderFilters();
   renderFilterBadge();
   renderAgenda();
@@ -1695,6 +1722,15 @@ function renderFilters() {
   renderPodiumpasToggle();
   renderWatchlistToggle();
   renderHideFullToggle();
+  renderHideGezienToggle();
+}
+
+function renderHideGezienToggle() {
+  for (const btn of [els.hideGezienToggle, els.sidebarHideGezienToggle]) {
+    if (!btn) continue;
+    btn.classList.toggle('is-on', state.hideGezien);
+    btn.setAttribute('aria-checked', String(state.hideGezien));
+  }
 }
 
 function renderFilterBadge() {
@@ -1704,7 +1740,8 @@ function renderFilterBadge() {
     (state.selectedGenres.size > 0 ? 1 : 0) +
     (state.podiumpasOnly ? 1 : 0) +
     (state.watchlistOnly ? 1 : 0) +
-    (state.hideFullOnly ? 1 : 0);
+    (state.hideFullOnly ? 1 : 0) +
+    (state.hideGezien ? 1 : 0);
   els.filterBadge.textContent = String(count);
   els.filterBadge.hidden = count === 0;
 }
@@ -1737,6 +1774,7 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     const genreOk = state.selectedGenres.size === 0 || state.selectedGenres.has(getGenreBucket(s));
     const podiumpasOk = !state.podiumpasOnly || s.podiumpas === true;
     const watchlistOk = !state.watchlistOnly || isOpWatchlist(s);
+    const gezienOk = !state.hideGezien || !isGezien(s);
     // 'onbekend' blijft altijd zichtbaar — we weten domweg niet of die vol
     // is, en dat is iets anders dan bevestigd vol (uitverkocht/wachtlijst).
     // Afgelast en verplaatst zijn ook niet te boeken: die gaan mee weg.
@@ -1754,7 +1792,7 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
       (s.titelBron ?? '').toLowerCase().includes(state.searchQuery) ||
       s.theaterNaam.toLowerCase().includes(state.searchQuery) ||
       (THEATER_ZOEKALIASSEN[s.theaterId] ?? []).some((alias) => alias.includes(state.searchQuery));
-    return cityOk && theaterOk && genreOk && podiumpasOk && watchlistOk && fullOk && dateOk && searchOk;
+    return cityOk && theaterOk && genreOk && podiumpasOk && watchlistOk && gezienOk && fullOk && dateOk && searchOk;
   });
 }
 
@@ -1772,7 +1810,8 @@ function emptyStateMessage() {
     state.selectedGenres.size > 0 ||
     state.podiumpasOnly ||
     state.watchlistOnly ||
-    state.hideFullOnly;
+    state.hideFullOnly ||
+    state.hideGezien;
   const query = state.searchQueryRaw;
   if (query && filtersActive) return `Geen voorstellingen gevonden voor "${query}" met deze filters.`;
   if (query) return `Geen voorstellingen gevonden voor "${query}".`;
@@ -1883,6 +1922,7 @@ function renderShowRow(show) {
 
   const plan = planVoor(show);
   if (plan) tagsRow.appendChild(makePlanTag(plan.item.status));
+  if (isGezien(show)) tagsRow.appendChild(makeGezienTag());
 
   info.append(title, meta, tagsRow);
   if (isVervallen(show)) row.classList.add('show-row--vervallen');
@@ -2091,6 +2131,8 @@ function renderDetail(show) {
 
   els.detailWatchIcon.onclick = () => toggleWatchlist(show);
   els.detailWatchBtn.onclick = () => toggleWatchlist(show);
+  renderGezienButton(show);
+  if (els.detailGezienBtn) els.detailGezienBtn.onclick = () => toggleGezien(show);
 
   els.detailAddCalendar.onclick = () => downloadIcs(show);
 }
@@ -2099,6 +2141,100 @@ function vervallenUitleg(show) {
   return show.beschikbaarheid === 'verplaatst'
     ? `Het theater heeft deze voorstelling verplaatst. Kijk op de site van ${show.theaterNaam} voor de nieuwe datum.`
     : `Het theater heeft deze voorstelling afgelast. Had je kaarten? Kijk op de site van ${show.theaterNaam} wat er met je kaarten gebeurt.`;
+}
+
+function renderGezienButton(show) {
+  if (!els.detailGezienBtn) return;
+  const gezien = isGezien(show);
+  els.detailGezienBtn.classList.toggle('is-on', gezien);
+  els.detailGezienBtn.setAttribute('aria-pressed', String(gezien));
+  const label = gezien ? '✓ Gezien' : 'Gezien';
+  if (els.detailGezienLabel) els.detailGezienLabel.textContent = label;
+  else els.detailGezienBtn.textContent = label;
+}
+
+// Handmatig aan/uit (detailscherm). Aan: ook van de watchlist, met een
+// melding om beide terug te draaien. Uit: alleen van Gezien.
+function toggleGezien(show) {
+  if (isGezien(show)) {
+    state.gezien = haalUitGezien(state.gezien, showSleutel(show));
+    saveGezien();
+  } else {
+    markeerGezien(show);
+  }
+  renderGezienButton(show);
+  renderWatchButtons(show);
+  renderAgenda();
+}
+
+/**
+ * Handmatig op Gezien zetten (detailscherm of watchlist in Profiel): ook van
+ * de watchlist, en een melding met "Ongedaan maken" die beide terugdraait
+ * (via tombstone en een nieuwe toevoeging, zodat het ook over apparaten
+ * heen klopt).
+ */
+function markeerGezien(show, naAfloop = () => {}) {
+  const sleutel = showSleutel(show);
+  const watchItem = (state.watchlist?.watchlist ?? []).find((i) => i.sleutel === sleutel) ?? null;
+  state.gezien = zetGezien(state.gezien, { show, bron: 'handmatig' });
+  saveGezien();
+  if (watchItem) {
+    state.watchlist = verwijder(state.watchlist, sleutel);
+    saveWatchlist();
+  }
+  toonMelding(watchItem ? 'Gezien · van je watchlist gehaald' : 'Gezien', () => {
+    state.gezien = haalUitGezien(state.gezien, sleutel);
+    saveGezien();
+    if (watchItem) {
+      state.watchlist = voegToe(state.watchlist, { titel: watchItem.titel, theaterId: watchItem.theaterId });
+      saveWatchlist();
+    }
+    naAfloop();
+  });
+  naAfloop();
+}
+
+// Korte melding onderaan met één actie. Het element maakt app.js zelf aan,
+// zodat het niet van index.html afhangt.
+let meldingTimer = null;
+function toonMelding(tekst, ongedaanMaken) {
+  let el = document.getElementById('melding');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'melding';
+    el.className = 'melding';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    document.body.appendChild(el);
+  }
+  el.replaceChildren();
+  const t = document.createElement('span');
+  t.textContent = tekst;
+  const knop = document.createElement('button');
+  knop.type = 'button';
+  knop.className = 'melding-actie';
+  knop.textContent = 'Ongedaan maken';
+  knop.addEventListener('click', () => {
+    el.hidden = true;
+    clearTimeout(meldingTimer);
+    ongedaanMaken();
+    const hash = location.hash || '#/';
+    if (hash.startsWith('#/show/')) {
+      const show = state.shows.find((s) => s.id === decodeURIComponent(hash.slice('#/show/'.length)));
+      if (show) {
+        renderGezienButton(show);
+        renderWatchButtons(show);
+      }
+    }
+    if (hash === '#/profiel') renderProfielScreen();
+    renderAgenda();
+  });
+  el.append(t, knop);
+  el.hidden = false;
+  clearTimeout(meldingTimer);
+  meldingTimer = setTimeout(() => {
+    el.hidden = true;
+  }, 8000);
 }
 
 function renderWatchButtons(show) {
@@ -2540,6 +2676,7 @@ function watchlistProductions() {
     const soonest = komend[0] ?? null;
     const theaters = new Set(komend.map((s) => s.theaterId));
     productions.push({
+      item,
       key: item.sleutel,
       titel: soonest ? weergaveTitel(soonest) : item.titel,
       theaterNaam: soonest
@@ -2610,6 +2747,27 @@ function renderProductionRow(production) {
   return row;
 }
 
+// Watchlist-rij in Profiel met een kleine actie "Gezien" ernaast (een knop
+// kan niet in de rij-knop zelf).
+function renderWatchlistItem(production) {
+  const wrap = document.createElement('div');
+  wrap.className = 'watchlist-item';
+  const actie = document.createElement('button');
+  actie.type = 'button';
+  actie.className = 'link-btn watchlist-gezien';
+  actie.textContent = 'Gezien';
+  actie.setAttribute('aria-label', `${production.titel} als gezien markeren`);
+  actie.addEventListener('click', () => {
+    const show = production.soonest ?? { titel: production.item.titel, theaterId: production.item.theaterId };
+    markeerGezien(show, () => {
+      renderProfielScreen();
+      renderAgenda();
+    });
+  });
+  wrap.append(renderProductionRow(production), actie);
+  return wrap;
+}
+
 function renderProfielScreen() {
   renderVragen();
   renderGeplandList();
@@ -2625,7 +2783,7 @@ function renderProfielScreen() {
   els.favoritesEmpty.hidden = true;
   els.favoritesList.innerHTML = '';
   for (const production of productions) {
-    els.favoritesList.appendChild(renderProductionRow(production));
+    els.favoritesList.appendChild(renderWatchlistItem(production));
   }
 }
 
