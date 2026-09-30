@@ -560,4 +560,20 @@ export const THEATERS = [
       toelichting: 'Online met het prijstype "Podiumpas" (pasnummer invullen), of telefonisch, vanaf 30 dagen voor de voorstelling. Kaartje tot een half uur voor aanvang ophalen bij de balie.',
     },
   },
+  // Theaters zonder Podiumpas (1 okt 2026), om voorstellingen als "Jordy van
+  // Loon speelt Louis Davids" te volgen; podiumpas: false voor het hele
+  // theater, zoals Carré en De Kleine Komedie.
+  {
+    id: 'kennemertheater',
+    naam: 'Kennemer Theater',
+    stad: 'Beverwijk',
+    provincie: 'Noord-Holland',
+    baseUrl: 'https://www.kennemertheater.nl',
+    agendaUrl: 'https://www.kennemertheater.nl/programma',
+    podiumpas: false,
+    // De scraper (browser) krijgt een BunnyCDN-controle ("Establishing a
+    // secure connection…", HTTP 403). Niet omzeilen; de module blijft staan
+    // voor als ze ons toelaten.
+    gepauzeerd: { sinds: '2026-10-01', reden: 'BunnyCDN-botcontrole (403)' },
+  },
 ];

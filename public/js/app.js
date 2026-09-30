@@ -152,6 +152,8 @@ const PROVINCE_BY_CITY = {
   Spijkenisse: 'Zuid-Holland',
   'Capelle aan den IJssel': 'Zuid-Holland',
   Barendrecht: 'Zuid-Holland',
+  Beverwijk: 'Noord-Holland',
+  Hoofddorp: 'Noord-Holland',
   Venlo: 'Limburg',
   Panningen: 'Limburg',
 };
