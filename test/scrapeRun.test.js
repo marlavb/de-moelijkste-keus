@@ -516,3 +516,22 @@ test('waiter wacht echt minstens de effectieve pauze tussen twee requests', asyn
   assert.ok(Date.now() - start >= 1150, `${Date.now() - start} ms`);
   assert.match(meldingen[0], /crawl-delay = 1200ms/);
 });
+
+test('weergave op meerderheid: brontitel terug vóór ontdubbeling, stabiel over twee runs', async () => {
+  const paths = await setup();
+  const scrapers = {
+    carre: async () => [show('carre', '2026-12-03', { titel: 'Sara Kroos - Prikkelarme kermis' })],
+    ssu: async () => [show('ssu', '2026-11-12', { titel: 'Prikkelarme kermis – Sara Kroos', volgordeZeker: true })],
+    ks: async () => [show('ks', '2026-12-02', { titel: 'Prikkelarme kermis – Sara Kroos', volgordeZeker: true })],
+  };
+  const theaters = [theater('carre'), theater('ssu'), theater('ks')];
+  const eerste = await run({ paths, theaters, scrapers });
+  const carre = eerste.written.find((x) => x.theaterId === 'carre');
+  assert.equal(carre.titel, 'Prikkelarme kermis – Sara Kroos');
+  assert.equal(carre.titelBron, 'Sara Kroos – Prikkelarme kermis');
+  // Tweede run: Carré valt terug op de vorige data; titel en titelBron blijven gelijk.
+  const tweede = await run({ paths, theaters, scrapers: { ...scrapers, carre: failing } });
+  const carre2 = tweede.written.find((x) => x.theaterId === 'carre');
+  assert.equal(carre2.titel, 'Prikkelarme kermis – Sara Kroos');
+  assert.equal(carre2.titelBron, 'Sara Kroos – Prikkelarme kermis');
+});

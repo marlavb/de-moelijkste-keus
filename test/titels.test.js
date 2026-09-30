@@ -121,3 +121,9 @@ test('alleGenres (Griffioen): conventie ook bij toneel, dans en muziek', () => {
   const zin = 'Een avond vol muziek, verhalen en verrassingen voor het hele gezin, met liedjes';
   assert.equal(pasTitelConventieToe(toneel, { artiest: toneel.titel, voorstelling: zin, alleGenres: true }).titel, 'Kompagnie Kistemaker');
 });
+
+test('volgordeZeker alleen als de conventie zelf "Voorstelling – Artiest" samenstelt', () => {
+  assert.equal(pasTitelConventieToe(cab(), { artiest: 'Sara Kroos', voorstelling: 'Prikkelarme kermis' }).volgordeZeker, true);
+  assert.equal(pasTitelConventieToe(cab(), { artiest: 'Jenny Arean', voorstelling: 'Jenny Arean zingt' }).volgordeZeker, undefined);
+  assert.equal(pasTitelConventieToe(cab(), { artiest: 'Sara Kroos', voorstelling: '' }).volgordeZeker, undefined);
+});

@@ -66,8 +66,10 @@ export function pasTitelConventieToe(show, { artiest, voorstelling, makerWordtLe
   const kv = kaal(v);
   if (ka === kv) return { ...show, titel: a, maker: makerWordtLeeg ? null : show.maker };
   // Staat de artiest al vooraan in de voorstellingsnaam, dan niet dubbel.
-  const titel = kv.startsWith(`${ka} `) ? v : `${v}${SCHEIDER}${a}`;
-  return { ...show, titel, maker: makerWordtLeeg ? null : show.maker };
+  if (kv.startsWith(`${ka} `)) return { ...show, titel: v, maker: makerWordtLeeg ? null : show.maker };
+  // volgordeZeker: deze titel is hier samengesteld als "Voorstelling –
+  // Artiest"; telt als stem bij de weergave op meerderheid (weergaveMeerderheid.js).
+  return { ...show, titel: `${v}${SCHEIDER}${a}`, maker: makerWordtLeeg ? null : show.maker, volgordeZeker: true };
 }
 
 /**

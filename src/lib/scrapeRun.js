@@ -7,6 +7,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { ontdubbelShows, dubbelSleutel } from './dedupe.js';
 import { volgNavigatie, paginaDiagnose } from './diagnose.js';
+import { pasMeerderheidToe } from './weergaveMeerderheid.js';
 import { metEnDash, zonderStatusWoord } from './titels.js';
 import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
@@ -340,10 +341,13 @@ export async function runRefresh({
     // centraal op null gezet voor elke andere show, in plaats van dat elke
     // afzonderlijke scraper-module het zelf moet opnemen.
     // Eén scheidingsteken in titels en makers (" - " → " – ", zie titels.js).
-    .map((s) => {
+    .map(({ titelBron, ...s }) => {
+      // Behouden voorstellingen van de vorige run: eerst terug naar de
+      // brontitel, zodat ontdubbeling en stemming steeds op de bron werken.
+      const bron = titelBron ?? s.titel;
       // Afgelast/verplaatst: het statuswoord uit de titel, het staat in het label.
       const kaal = isVervallen(s) ? zonderStatusWoord : (t) => t;
-      return { ...s, titel: kaal(metEnDash(s.titel)), prijs: s.prijs ?? null, maker: kaal(metEnDash(s.maker ?? null)) };
+      return { ...s, titel: kaal(metEnDash(bron)), prijs: s.prijs ?? null, maker: kaal(metEnDash(s.maker ?? null)) };
     });
   const purgedCount = mergedShows.length - verseShows.length;
   if (purgedCount > 0) {
@@ -353,7 +357,11 @@ export async function runRefresh({
   // Vangnet: dubbelingen (theater, datum, tijd, titel) eruit — ook uit
   // teruggevallen en behouden data — en per theater tellen. Veel dubbelingen
   // betekent een kapotte scraper; dat moet opvallen (zie dedupe.js).
-  const { shows: freshShows, verwijderdPerTheater } = ontdubbelShows(verseShows);
+  const { shows: ontdubbeld, verwijderdPerTheater } = ontdubbelShows(verseShows);
+  // Weergavetitel op meerderheid (weergaveMeerderheid.js); brontitel blijft
+  // als titelBron.
+  const { shows: freshShows, gewijzigd: titelsOpMeerderheid } = pasMeerderheidToe(ontdubbeld);
+  if (titelsOpMeerderheid > 0) log(`${titelsOpMeerderheid} titel(s) naar de weergave van de meeste theaters (titelBron bewaard).`);
   for (const theater of theaters) {
     const st = theaterStatus[theater.id];
     if (!st || theater.gepauzeerd) continue;

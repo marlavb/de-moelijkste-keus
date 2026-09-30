@@ -38,7 +38,7 @@ export const NORMALISATIE_VERSIE = 4;
 // Scheidingstekens tussen delen van een titel ("Artiest – Voorstelling"):
 // een streepje of pijp mét spaties eromheen, of een dubbele punt met een
 // spatie erna. Streepjes in een woord ("Try-(H)outen") splitsen niet.
-const SCHEIDING = /\s+[–—-]\s+|\s+\|\s+|:\s+/;
+export const SCHEIDING = /\s+[–—-]\s+|\s+\|\s+|:\s+/;
 
 /**
  * Titel zonder de varianten die per theater verschillen: leeftijd ("(6+)",

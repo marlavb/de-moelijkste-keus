@@ -1504,6 +1504,8 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     const searchOk =
       !state.searchQuery ||
       s.titel.toLowerCase().includes(state.searchQuery) ||
+      // Ook op de titel zoals het theater hem schrijft (weergave op meerderheid).
+      (s.titelBron ?? '').toLowerCase().includes(state.searchQuery) ||
       s.theaterNaam.toLowerCase().includes(state.searchQuery) ||
       (THEATER_ZOEKALIASSEN[s.theaterId] ?? []).some((alias) => alias.includes(state.searchQuery));
     return cityOk && theaterOk && genreOk && podiumpasOk && watchlistOk && fullOk && dateOk && searchOk;
