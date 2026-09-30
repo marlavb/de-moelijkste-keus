@@ -26,6 +26,18 @@ import {
   zelfdeAvond,
   komendePlannen,
 } from './gepland.js';
+import {
+  laadGezien,
+  legeGezien,
+  zetGezien,
+  haalUitGezien,
+  gezienSleutels as gezienSleutelsVan,
+  verwerkVoorbijePlannen,
+  vragenOver,
+  beantwoord,
+  laatsteBezoek,
+  sorteerGezien,
+} from './gezien.js';
 
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
@@ -103,6 +115,7 @@ const STORAGE_KEYS = {
   favoritesMigrated: 'podiumagenda:favoritesMigrated',
   watchlist: 'podiumagenda:watchlist',
   gepland: 'podiumagenda:gepland',
+  gezien: 'podiumagenda:gezien',
   sidebarSections: 'podiumagenda:sidebarSections',
   theaterCitySections: 'podiumagenda:theaterCitySections',
   filters: 'podiumagenda:filters',
@@ -195,6 +208,9 @@ const state = {
   // { gepland, geplandVerwijderd }, zie gepland.js; zelfde opzet als hierboven.
   gepland: loadGeplandLocal(),
   cloudGepland: null,
+  // { gezien, gezienVerwijderd }, zie gezien.js; zelfde opzet als hierboven.
+  gezien: loadGezienLocal(),
+  cloudGezien: null,
   sidebarSections: loadSidebarSections(),
   theaterCitySections: loadTheaterCitySections(),
   dateWindowDays: DEFAULT_WINDOW_DAYS,
@@ -282,6 +298,14 @@ const els = {
   theatersList: document.getElementById('theatersList'),
   favoritesList: document.getElementById('favoritesList'),
   favoritesEmpty: document.getElementById('favoritesEmpty'),
+  // Gezien (30 sep 2026). Kan ontbreken bij een oudere index.html naast een
+  // nieuwere app.js (na een deploy): overal met ?. gebruiken.
+  vraagSection: document.getElementById('vraagSection'),
+  vraagList: document.getElementById('vraagList'),
+  vraagCount: document.getElementById('vraagCount'),
+  gezienList: document.getElementById('gezienList'),
+  gezienEmpty: document.getElementById('gezienEmpty'),
+  gezienCount: document.getElementById('gezienCount'),
   authBox: document.getElementById('authBox'),
   feedbackForm: document.getElementById('feedbackForm'),
   feedbackInput: document.getElementById('feedbackInput'),
@@ -702,13 +726,18 @@ function syncProfielForCurrentUser() {
   const lokaalGepland = laadGepland({ opgeslagen: loadGeplandLocal(), index: showIndex });
   if (lokaalGepland.gewijzigd) saveGeplandLocal(lokaalGepland.profiel);
 
+  const lokaalGezien = laadGezien({ opgeslagen: loadGezienLocal() });
+  if (lokaalGezien.gewijzigd) saveGezienLocal(lokaalGezien.profiel);
+
   if (!state.user) {
     state.watchlist = lokaal.profiel;
     state.gepland = lokaalGepland.profiel;
+    state.gezien = lokaalGezien.profiel;
     logOudeSlugs(lokaal);
+    verwerkPlannen(showIndex);
     return;
   }
-  if (!state.cloudWatchlist || !state.cloudGepland) return;
+  if (!state.cloudWatchlist || !state.cloudGepland || !state.cloudGezien) return;
   const ref = userDocRef(state.user.uid);
 
   const cloud = laadWatchlist({
@@ -732,6 +761,33 @@ function syncProfielForCurrentUser() {
       console.error('Kon de planning niet synchroniseren:', err)
     );
   }
+
+  const cloudGezien = laadGezien({ opgeslagen: state.cloudGezien, extra: lokaalGezien.profiel });
+  state.gezien = cloudGezien.profiel;
+  if (cloudGezien.gewijzigd) {
+    state.cloudGezien = cloudGezien.profiel;
+    setDoc(ref, cloudGezien.profiel, { merge: true }).catch((err) => console.error('Kon Gezien niet synchroniseren:', err));
+  }
+  verwerkPlannen(showIndex);
+}
+
+// Voorbije plannen verwerken (zie gezien.js): kaarten → Gezien, afgelast →
+// weg. Na elke laadronde; idempotent, dus twee keer (of op twee apparaten)
+// kan geen kwaad. Zonder melding: dit gebeurt vanzelf.
+function verwerkPlannen(showIndex = indexeerShows(state.shows)) {
+  const r = verwerkVoorbijePlannen(
+    { gepland: state.gepland, gezien: state.gezien, watchlist: state.watchlist },
+    { index: showIndex }
+  );
+  if (!r.gewijzigd) return;
+  const watchlistAnders = r.watchlist !== state.watchlist;
+  const gezienAnders = r.gezien !== state.gezien;
+  state.gepland = r.gepland;
+  state.gezien = r.gezien;
+  state.watchlist = r.watchlist;
+  saveGepland();
+  if (gezienAnders) saveGezien();
+  if (watchlistAnders) saveWatchlist();
 }
 
 function logOudeSlugs({ log, gewijzigd }) {
@@ -810,6 +866,51 @@ function loadGeplandLocal() {
 
 function saveGeplandLocal(profiel) {
   localStorage.setItem(STORAGE_KEYS.gepland, JSON.stringify(profiel));
+}
+
+// ---------- Gezien (zie gezien.js) ----------
+
+function loadGezienLocal() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.gezien)) ?? legeGezien();
+  } catch {
+    return legeGezien();
+  }
+}
+
+function saveGezienLocal(profiel) {
+  localStorage.setItem(STORAGE_KEYS.gezien, JSON.stringify(profiel));
+}
+
+function saveGezien() {
+  if (state.user && state.cloudGezien) {
+    state.cloudGezien = state.gezien;
+    setDoc(userDocRef(state.user.uid), state.gezien, { merge: true }).catch((err) =>
+      console.error('Kon Gezien niet synchroniseren:', err)
+    );
+    return;
+  }
+  saveGezienLocal(state.gezien);
+}
+
+let gezienSleutelsVoor = null;
+let gezienSleutelsCache = new Set();
+function gezienSleutels() {
+  if (gezienSleutelsVoor !== state.gezien) {
+    gezienSleutelsVoor = state.gezien;
+    gezienSleutelsCache = gezienSleutelsVan(state.gezien);
+  }
+  return gezienSleutelsCache;
+}
+
+function isGezien(show) {
+  return gezienSleutels().has(showSleutel(show));
+}
+
+// Weergavenaam van een theater, nooit het id: config (theaters.json), dan
+// de agenda; onbekend → null.
+function theaterNaamVan(id) {
+  return state.theaterInfo[id]?.naam ?? state.shows.find((s) => s.theaterId === id)?.theaterNaam ?? null;
 }
 
 // Theaternaam voor een plan: de actuele naam (config via theaters.json, dan
@@ -903,6 +1004,148 @@ function renderPlanControls(show) {
     ? `Die dag heb je ook ${anderen.map((o) => `${o.titel} gepland (${o.tijd ?? 'tijd volgt'}, ${planTheaterNaam(o)})`).join(' en ')}.`
     : '';
   els.detailPlanConflict.hidden = anderen.length === 0;
+}
+
+// ---------- Gezien en "Ben je geweest?" in Profiel ----------
+
+// Nieuwe stand (planning, Gezien, watchlist) overnemen en alleen bewaren
+// wat veranderd is.
+function pasStandToe(r) {
+  if (r.gepland !== state.gepland) {
+    state.gepland = r.gepland;
+    saveGepland();
+  }
+  if (r.gezien && r.gezien !== state.gezien) {
+    state.gezien = r.gezien;
+    saveGezien();
+  }
+  if (r.watchlist && r.watchlist !== state.watchlist) {
+    state.watchlist = r.watchlist;
+    saveWatchlist();
+  }
+}
+
+function huidigeStand() {
+  return { gepland: state.gepland, gezien: state.gezien, watchlist: state.watchlist };
+}
+
+// "za 4 okt", met het jaar erbij als het niet dit jaar is.
+function formatBezoekDatum(isoDate) {
+  const { year, month, day } = parseIsoDate(isoDate);
+  const jaar = year !== new Date().getFullYear() ? ` ${year}` : '';
+  return `${WEEKDAYS[dateFromIso(isoDate).getDay()]} ${day} ${MONTHS[month - 1]}${jaar}`;
+}
+
+function renderVragen() {
+  if (!els.vraagSection || !els.vraagList) return;
+  const index = indexeerShows(state.shows);
+  const vragen = vragenOver(state.gepland, { index });
+  els.vraagSection.hidden = vragen.length === 0;
+  if (els.vraagCount) els.vraagCount.textContent = vragen.length ? `${vragen.length} voorstelling${vragen.length === 1 ? '' : 'en'}` : '';
+  els.vraagList.innerHTML = '';
+  for (const item of vragen) els.vraagList.appendChild(renderVraagRow(item, index));
+}
+
+function renderVraagRow(item, index) {
+  const row = document.createElement('div');
+  row.className = 'plan-row vraag-row';
+
+  const { day, month } = parseIsoDate(item.datum);
+  const when = document.createElement('div');
+  when.className = 'plan-when';
+  when.innerHTML = `<b>${day}</b><small>${MONTHS[month - 1].slice(0, 3)}</small>`;
+  when.setAttribute('aria-label', formatDateLong(item.datum));
+
+  const info = document.createElement('div');
+  info.className = 'plan-info';
+  const title = document.createElement('span');
+  title.className = 'plan-title';
+  title.textContent = item.titel;
+  const meta = document.createElement('span');
+  meta.className = 'plan-meta';
+  const theaterNaam = planTheaterNaam(item);
+  meta.textContent = item.tijd ? `${theaterNaam} · ${item.tijd}` : theaterNaam;
+  info.append(title, meta);
+
+  const actions = document.createElement('div');
+  actions.className = 'vraag-actions';
+  const knop = (label, ja) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = `vraag-btn${ja ? ' vraag-btn--ja' : ''}`;
+    b.textContent = label;
+    b.setAttribute('aria-label', `${item.titel}: ${ja ? 'ja, ik ben geweest' : 'nee, niet geweest'}`);
+    b.addEventListener('click', () => {
+      pasStandToe(beantwoord(huidigeStand(), item, ja, { index }));
+      renderProfielScreen();
+      renderAgenda();
+    });
+    return b;
+  };
+  actions.append(knop('Ja', true), knop('Nee', false));
+
+  row.append(when, info, actions);
+  return row;
+}
+
+// Eerste voorstelling per sleutel in de agenda (voor de live weergavetitel).
+function showsPerSleutel() {
+  const map = new Map();
+  for (const s of state.shows) {
+    const k = showSleutel(s);
+    if (!map.has(k)) map.set(k, s);
+  }
+  return map;
+}
+
+function renderGezienList() {
+  if (!els.gezienList) return;
+  const items = sorteerGezien(state.gezien?.gezien ?? []);
+  if (els.gezienCount) els.gezienCount.textContent = items.length ? `${items.length} voorstelling${items.length === 1 ? '' : 'en'}` : '';
+  if (els.gezienEmpty) els.gezienEmpty.hidden = items.length > 0;
+  els.gezienList.innerHTML = '';
+  const live = showsPerSleutel();
+  for (const item of items) els.gezienList.appendChild(renderGezienRow(item, live.get(item.sleutel)));
+}
+
+function renderGezienRow(item, liveShow) {
+  const row = document.createElement('div');
+  row.className = 'gezien-row';
+
+  const info = document.createElement('div');
+  info.className = 'plan-info';
+  const title = document.createElement('span');
+  title.className = 'plan-title';
+  // Live weergavetitel als de voorstelling nog in de agenda staat.
+  title.textContent = liveShow ? weergaveTitel(liveShow) : item.titel;
+  const meta = document.createElement('span');
+  meta.className = 'plan-meta';
+  const laatste = laatsteBezoek(item);
+  const delen = [];
+  if (laatste) {
+    const naam = theaterNaamVan(laatste.theaterId);
+    delen.push(naam ? `${formatBezoekDatum(laatste.datum)} · ${naam}` : formatBezoekDatum(laatste.datum));
+    if (item.bezoeken.length > 1) delen.push(`${item.bezoeken.length}× gezien`);
+  } else {
+    delen.push('Zelf als gezien aangevinkt');
+  }
+  meta.textContent = delen.join(' · ');
+  info.append(title, meta);
+
+  const weg = document.createElement('button');
+  weg.type = 'button';
+  weg.className = 'link-btn gezien-weg';
+  weg.textContent = 'Weghalen';
+  weg.setAttribute('aria-label', `${title.textContent} van Gezien halen`);
+  weg.addEventListener('click', () => {
+    state.gezien = haalUitGezien(state.gezien, item.sleutel);
+    saveGezien();
+    renderGezienList();
+    renderAgenda();
+  });
+
+  row.append(info, weg);
+  return row;
 }
 
 function renderGeplandList() {
@@ -1003,6 +1246,7 @@ async function handleAuthChange(user) {
   state.authError = null;
   state.cloudWatchlist = null;
   state.cloudGepland = null;
+  state.cloudGezien = null;
 
   if (user) {
     const ref = userDocRef(user.uid);
@@ -1021,6 +1265,7 @@ async function handleAuthChange(user) {
         renameFavoritesInCloud(ref);
         state.cloudWatchlist = { watchlist: data.watchlist ?? [], watchlistVerwijderd: data.watchlistVerwijderd ?? [] };
         state.cloudGepland = { gepland: data.gepland ?? [], geplandVerwijderd: data.geplandVerwijderd ?? [] };
+        state.cloudGezien = { gezien: data.gezien ?? [], gezienVerwijderd: data.gezienVerwijderd ?? [] };
       } else {
         // Eerste keer inloggen op dit account: neem mee wat er lokaal al
         // stond (migrateFavoritesOnceLocally() heeft dat in init() al naar
@@ -1033,6 +1278,7 @@ async function handleAuthChange(user) {
         });
         state.cloudWatchlist = legeWatchlist();
         state.cloudGepland = legeGepland();
+        state.cloudGezien = legeGezien();
       }
       syncProfielForCurrentUser();
     } catch (err) {
@@ -2365,7 +2611,9 @@ function renderProductionRow(production) {
 }
 
 function renderProfielScreen() {
+  renderVragen();
   renderGeplandList();
+  renderGezienList();
   const productions = watchlistProductions();
 
   if (productions.length === 0) {
