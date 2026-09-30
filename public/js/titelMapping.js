@@ -392,3 +392,68 @@ export const TITEL_MAPPING = new Map([
   ["zoveel meer", [{"sleutel":"beth en flo | zoveel meer","titel":"Beth & Flo – Zoveel meer"}]],
   ["zwaargewicht", [{"sleutel":"fimme bakker | zwaargewicht","titel":"Fimme Bakker – Zwaargewicht"}]],
 ]);
+
+// Griffioen (30 sep 2026): daar geldt de conventie voor alle genres ("Buikzwam
+// – Kompagnie Kistemaker" i.p.v. "Kompagnie Kistemaker"). Oude sleutel →
+// nieuwe, uit de data van vóór en na de omzetting (per voorstellings-id).
+// Bestaat de oude sleutel al hierboven, dan komen de doelen erbij. Weg mag
+// op dezelfde datum als de rest.
+const GRIFFIOEN_30_SEP = [
+  ["admire", [{"sleutel":"admire | een mindful concertervaring","titel":"Een Mindful Concertervaring – Admire"}]],
+  ["alain clark", [{"sleutel":"alain clark | date night","titel":"Date Night – Alain Clark"}]],
+  ["alle geschiedenis ooit", [{"sleutel":"alle geschiedenis ooit | de grote namen geschiedenis show","titel":"De Grote Namen Geschiedenis-show – Alle Geschiedenis Ooit"}]],
+  ["anneke van giersbergen", [{"sleutel":"anneke van giersbergen | the irish road trip","titel":"The Irish Road Trip – Anneke van Giersbergen"}]],
+  ["aqueerius", [{"sleutel":"aqueerius | beyond the ball","titel":"Beyond the ball – Aqueerius"}]],
+  ["bas erlings", [{"sleutel":"bas erlings | geef mij nu je angst","titel":"Geef mij nu je angst – Bas Erlings"}]],
+  ["benr", [{"sleutel":"benr | tussen 2 maten","titel":"Tussen 2 maten – BENR"}]],
+  ["buysse en joosten", [{"sleutel":"buysse en joosten | guyland","titel":"Guyland – Buysse & Joosten"}]],
+  ["club satelliet", [{"sleutel":"club satelliet | tradwives","titel":"TRADWIVES de musical – Club Satelliet"}]],
+  ["compagnia baccala", [{"sleutel":"compagnia baccala | oh oh","titel":"Oh Oh – Compagnia Baccalà"}]],
+  ["de hitbingo band", [{"sleutel":"de hitbingo band | interactieve muziekquiz","titel":"Interactieve muziekquiz – De Hitbingo Band"}]],
+  ["de regahs", [{"sleutel":"de regahs | groeten uit den haag","titel":"Groeten uit Den Haag – De Règâhs"}]],
+  ["de sekszusjes", [{"sleutel":"de sekszusjes spelshow","titel":"De Sekszusjes Spelshow (try-out)"}]],
+  ["deronde deroo", [{"sleutel":"deronde deroo | please don t make love to me i m exhausted","titel":"Please don’t make love to me, I’m exhausted – DeRonde/Deroo"}]],
+  ["dominique schreinemachers", [{"sleutel":"dominique schreinemachers | return to base","titel":"Return to Base – Dominique Schreinemachers"}]],
+  ["een begin | sabine van kuipers", [{"sleutel":"een begin | pyrrha gooit een steen | sabine van kuipers","titel":"Pyrrha gooit een steen – Een begin – Sabine van Kuipers"}]],
+  ["ellen ten damme", [{"sleutel":"ellen ten damme | medusa","titel":"Medusa – Ellen ten Damme"}]],
+  ["eva eikhout", [{"sleutel":"eva eikhout | het leven is kort net als ik","titel":"Het Leven Is Kort, Net Als Ik! (reprise) – Eva Eikhout"}]],
+  ["fajah lourens", [{"sleutel":"100 mannen later | fajah lourens","titel":"100 Mannen Later – Fajah Lourens"}]],
+  ["graziella hunsel rivero", [{"sleutel":"freedom in sound | graziella hunsel rivero | jazz night","titel":"Jazz Night – Freedom in Sound – Graziella Hunsel Rivero"}]],
+  ["hagelslag", [{"sleutel":"hagelslag | live show","titel":"Live show – Hagelslag"}]],
+  ["her majesty", [{"sleutel":"her majesty | neil young en crazy horse","titel":"Neil Young & Crazy Horse – Her Majesty"}]],
+  ["holland dance festival", [{"sleutel":"holland dance festival | talent on the move 2027","titel":"Talent on the Move 2027 – Holland Dance Festival"}]],
+  ["huub smit en gurkan kucuksenturk", [{"sleutel":"huub smit en gurkan kucuksenturk | zei je dat echt","titel":"Zei je dat echt? – Huub Smit en Gürkan Kücüksentürk"}]],
+  ["janna", [{"sleutel":"intieme theatertour | janna","titel":"Intieme theatertour – Janna"}]],
+  ["jip smit", [{"sleutel":"jip smit | motherland iii","titel":"Motherland III – Jip Smit"}]],
+  ["job knoester", [{"sleutel":"job knoester | tbs met job knoester","titel":"TBS met Job Knoester (reprise) – Job Knoester"}]],
+  ["jona van loenen", [{"sleutel":"de babyboomerbiljoenen | jona van loenen","titel":"De Babyboomerbiljoenen – Jona van Loenen"}]],
+  ["joost hofman en barbara sloesen", [{"sleutel":"joost hofman en barbara sloesen | ouder worden","titel":"Ouder Worden (try-out) – Joost Hofman en Barbara Sloesen"}]],
+  ["joost van de loo frederique de jong", [{"sleutel":"joost van de loo frederique de jong | onkreukbaar op de zuidas","titel":"Onkreukbaar op de Zuidas – Joost van de Loo, Frederique de Jong"}]],
+  ["julika marijn", [{"sleutel":"julika marijn | no kidding","titel":"No Kidding – Julika Marijn"}]],
+  ["kobra theaterproducties", [{"sleutel":"baby reindeer | kobra theaterproducties","titel":"Baby Reindeer – Kobra Theaterproducties"}]],
+  ["kompagnie kistemaker", [{"sleutel":"buikzwam | kompagnie kistemaker","titel":"Buikzwam – Kompagnie Kistemaker"}]],
+  ["leo en marius blokhuis", [{"sleutel":"father en son | leo en marius blokhuis","titel":"Father & Son – Leo en Marius Blokhuis"}]],
+  ["lisa weeda en brothertill", [{"sleutel":"begin again | lisa weeda en brothertill","titel":"BEGIN AGAIN – Lisa Weeda & BrotherTill"}]],
+  ["luc hoogenstein", [{"sleutel":"luc hoogenstein | stadssafari","titel":"Stadssafari – Luc Hoogenstein"}]],
+  ["meester mark", [{"sleutel":"later word ik 7 | meester mark","titel":"Later word ik 7 – Meester Mark"}]],
+  ["melanie during", [{"sleutel":"hoe ik per ongeluk een t rex vond | melanie during","titel":"Hoe ik per ongeluk een T.rex vond – Melanie During"}]],
+  ["meneer frans saartje en tibbe", [{"sleutel":"meneer frans saartje en tibbe | simsala saartje en het cijferstrand","titel":"Simsala Saartje en het cijferstrand – Meneer Frans, Saartje en Tibbe"}]],
+  ["menno lagerwey", [{"sleutel":"math with menno wiskunde a havo 5 | menno lagerwey","titel":"Math with Menno (Wiskunde A, Havo 5) – Menno Lagerwey"}, {"sleutel":"math with menno wiskunde b havo 5 | menno lagerwey","titel":"Math with Menno (Wiskunde B, Havo 5) – Menno Lagerwey"}, {"sleutel":"math with menno wiskunde a vwo 6 | menno lagerwey","titel":"Math with Menno (Wiskunde A, VWO 6) – Menno Lagerwey"}, {"sleutel":"math with menno wiskunde b vwo 6 | menno lagerwey","titel":"Math with Menno (Wiskunde B, VWO 6) – Menno Lagerwey"}]],
+  ["merijn van de laar universiteit van nederland live", [{"sleutel":"de slaapwetenschapper | merijn van de laar universiteit van nederland live","titel":"De Slaapwetenschapper – Merijn van de Laar (Universiteit van Nederland Live)"}]],
+  ["nouhaila el guebli", [{"sleutel":"gun gewoon | nouhaila el guebli","titel":"Gun Gewoon – Nouhaila El Guebli"}]],
+  ["pip utton", [{"sleutel":"pip utton | trump","titel":"Trump – Pip Utton"}]],
+  ["popup choir", [{"sleutel":"popup choir | queen sing a long","titel":"Queen Sing-a-long – Popup Choir"}]],
+  ["sadettin k", [{"sleutel":"kameleon | sadettin k","titel":"KAMELEON – SADETTIN K"}]],
+  ["sem konijn", [{"sleutel":"populisme | sem konijn","titel":"Populisme de Musical – Sem Konijn"}]],
+  ["studium generale", [{"sleutel":"de toekomst van vrijheid | studium generale","titel":"De toekomst van vrijheid – Studium Generale"}]],
+  ["tangarine", [{"sleutel":"running in the family ii | tangarine","titel":"Running in the Family II (reprise) – Tangarine"}]],
+  ["taylor swift tribute band", [{"sleutel":"love story | taylor swift tribute band","titel":"Love Story – Taylor Swift Tribute Band"}]],
+  ["vincenzo turiano en boys won t be boys", [{"sleutel":"freedom is a dancer | vincenzo turiano en boys won t be boys","titel":"Freedom is a Dancer – Vincenzo Turiano & Boys Won’t Be Boys"}]],
+  ["vivian reijs en tanja jess", [{"sleutel":"de gierende hormonen show | vivian reijs en tanja jess","titel":"De Gierende Hormonen Show (try-out) – Vivian Reijs en Tanja Jess"}]],
+  ["vu griffioen", [{"sleutel":"science on stage | vu griffioen","titel":"Science on stage – VU Griffioen"}]],
+  ["woordgrapf", [{"sleutel":"de nationale avond van de woordgrap | woordgrapf","titel":"De Nationale Avond van de Woordgrap – Woordgrapf"}]],
+];
+for (const [oud, doelen] of GRIFFIOEN_30_SEP) {
+  const bestaand = TITEL_MAPPING.get(oud) ?? [];
+  TITEL_MAPPING.set(oud, [...bestaand, ...doelen.filter((d) => !bestaand.some((b) => b.sleutel === d.sleutel))]);
+}

@@ -332,3 +332,15 @@ test('her-normaliseren v3 → v4 via de opgeslagen titel, idempotent', () => {
   assert.equal(v4.watchlist[0].v, NORMALISATIE_VERSIE);
   assert.deepEqual(renormaliseer(v4), v4);
 });
+
+test('Griffioen-omzetting (30 sep 2026): oude bladwijzer krijgt de nieuwe sleutel, idempotent', () => {
+  const opgeslagen = {
+    watchlist: [{ sleutel: 'kompagnie kistemaker', titel: 'Kompagnie Kistemaker', theaterId: 'griffioen', toegevoegdOp: 5, v: 4 }],
+    watchlistVerwijderd: [],
+  };
+  const bekend = new Map([['buikzwam | kompagnie kistemaker', 'Buikzwam – Kompagnie Kistemaker']]);
+  const r = laadWatchlist({ opgeslagen, bekend });
+  assert.deepEqual(r.profiel.watchlist.map((i) => i.sleutel), ['buikzwam | kompagnie kistemaker']);
+  assert.equal(r.profiel.watchlist[0].toegevoegdOp, 5);
+  assert.equal(laadWatchlist({ opgeslagen: JSON.parse(JSON.stringify(r.profiel)), bekend }).gewijzigd, false);
+});

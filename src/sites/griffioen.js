@@ -170,6 +170,10 @@ export async function scrapeGriffioen({ page, theater, robots, waitForTurn, log 
     });
   }
 
-  // Titelconventie cabaret (lib/titels.js): bij dit theater staat de artiest in de titel, voorstelling in de beschrijvingsregel.
-  return shows.map((s) => pasTitelConventieToe(s, { artiest: s.titel, voorstelling: s.beschrijving }));
+  // Titelconventie (lib/titels.js), bij dit theater voor alle genres: regel 1
+  // van de kaart is de maker of artiest, regel 2 de voorstelling. Nagegaan op
+  // 29 sep 2026: de JSON-LD TheaterEvent "name" op de detailpagina is in 10 van
+  // 10 steekproeven (7 genres) gelijk aan regel 2, bv.
+  // https://griffioen.vu.nl/voorstellingen (Kompagnie Kistemaker / Buikzwam).
+  return shows.map((s) => pasTitelConventieToe(s, { artiest: s.titel, voorstelling: s.beschrijving, alleGenres: true }));
 }

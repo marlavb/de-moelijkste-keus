@@ -47,10 +47,12 @@ const kaal = (t) =>
  * Past de conventie toe op één voorstelling. `artiest` en `voorstelling`
  * komen uit de velden die het theater daarvoor gebruikt; `makerWordtLeeg`:
  * het makerveld bevatte een van beide en zou anders dubbel staan.
+ * `alleGenres`: ook buiten cabaret, voor een theater waar de bron artiest en
+ * voorstelling bij elk genre eenduidig scheidt (Griffioen, 30 sep 2026).
  * Geeft een (eventueel) aangepaste kopie terug; verder niets veranderd.
  */
-export function pasTitelConventieToe(show, { artiest, voorstelling, makerWordtLeeg = false }) {
-  if (!isCabaret(show)) return show;
+export function pasTitelConventieToe(show, { artiest, voorstelling, makerWordtLeeg = false, alleGenres = false }) {
+  if (!alleGenres && !isCabaret(show)) return show;
   const a = String(artiest ?? '').trim();
   const ruw = String(voorstelling ?? '').trim();
   if (!a || !ruw) return show;

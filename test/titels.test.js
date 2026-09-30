@@ -108,3 +108,15 @@ test('statuswoord als los titeldeel weg bij afgelast/verplaatst', async () => {
   assert.equal(vervallenStatus('Bestel kaarten'), null);
   assert.equal(vervallenStatus(null), null);
 });
+
+test('alleGenres (Griffioen): conventie ook bij toneel, dans en muziek', () => {
+  const toneel = { titel: 'Kompagnie Kistemaker', genre: 'Toneel', genreRuw: 'Toneel', beschrijving: 'Buikzwam' };
+  assert.equal(pasTitelConventieToe(toneel, { artiest: toneel.titel, voorstelling: toneel.beschrijving }), toneel);
+  assert.equal(
+    pasTitelConventieToe(toneel, { artiest: toneel.titel, voorstelling: toneel.beschrijving, alleGenres: true }).titel,
+    'Buikzwam – Kompagnie Kistemaker'
+  );
+  // Een wervende zin blijft ook dan buiten de titel.
+  const zin = 'Een avond vol muziek, verhalen en verrassingen voor het hele gezin, met liedjes';
+  assert.equal(pasTitelConventieToe(toneel, { artiest: toneel.titel, voorstelling: zin, alleGenres: true }).titel, 'Kompagnie Kistemaker');
+});
