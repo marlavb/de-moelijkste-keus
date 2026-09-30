@@ -55,6 +55,7 @@ import { scrapeStoep } from './sites/stoep.js';
 import { scrapeMaaspoort } from './sites/maaspoort.js';
 import { scrapeDok6 } from './sites/dok6.js';
 import { scrapeKennemerTheater } from './sites/kennemertheater.js';
+import { scrapeCpunt } from './sites/cpunt.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -102,6 +103,7 @@ const SCRAPERS = {
   maaspoort: scrapeMaaspoort,
   dok6: scrapeDok6,
   kennemertheater: scrapeKennemerTheater,
+  cpunt: scrapeCpunt,
 };
 
 // Welk bestand waarvoor dient:

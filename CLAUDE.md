@@ -98,3 +98,7 @@ Houd het testverkeer daarom zo klein mogelijk:
   `NORMALISATIE_VERSIE` 4, telling van nieuwe kandidaten per nachtelijke run
   als notice) en stap C (weergavetitel op meerderheid, met `titelBron`)
   wachten op de afvinklijst van de gebruiker. Niet zelf beginnen.
+- Bekende kandidaat voor stap B (1 okt 2026): Jordy van Loon, "Louis Davids –
+  De Grote Kleine Man". Cpunt geeft titel "Jordy van Loon" (sleutel
+  `jordy van loon`), Kennemer Theater "Louis Davids - De Grote, Kleine Man"
+  (sleutel `de grote kleine man | louis davids`). Nog geen alias.

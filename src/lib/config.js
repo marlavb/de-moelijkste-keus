@@ -576,4 +576,13 @@ export const THEATERS = [
     // voor als ze ons toelaten.
     gepauzeerd: { sinds: '2026-10-01', reden: 'BunnyCDN-botcontrole (403)' },
   },
+  {
+    id: 'cpunt',
+    naam: 'Cpunt',
+    stad: 'Hoofddorp',
+    provincie: 'Noord-Holland',
+    baseUrl: 'https://www.cpunt.nl',
+    agendaUrl: 'https://www.cpunt.nl/agenda',
+    podiumpas: false,
+  },
 ];

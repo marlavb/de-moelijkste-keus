@@ -74,6 +74,8 @@ const THEATER_INFO = {
   kunstlinie: { adres: 'Esplanade 10' },
   // Uit de voettekst van dok6.eu/theater (30 sep 2026).
   dok6: { adres: 'Raadhuisplein 6' },
+  // Uit de agenda van cpunt.nl (1 okt 2026).
+  cpunt: { adres: 'Raadhuisplein 3-9' },
 };
 
 // Alleen "uitverkocht" en "wachtlijst" krijgen een badge — "beschikbaar" is
@@ -1921,7 +1923,8 @@ function renderShowRow(show) {
   meta.className = 'show-meta';
   // Externe locatie (bv. De Maaspoort in "Theater De Garage | Venlo"): de
   // plek zelf erbij, zonder het adres.
-  const plek = show.locatie ? show.locatie.split('|')[0].trim() : null;
+  // Of de zaal in het eigen gebouw (bv. Cpunt "Kleine Pier").
+  const plek = show.locatie ? show.locatie.split('|')[0].trim() : show.zaal ?? null;
   meta.textContent = [show.theaterNaam, show.stad, plek].filter(Boolean).join(' · ');
 
   // Genre en badges op één regel.
@@ -2117,11 +2120,12 @@ function renderDetail(show) {
 
   const adres = THEATER_INFO[show.theaterId]?.adres;
   // Externe locatie: die plek (met adres als de bron het geeft), namens het theater.
+  const naamMetZaal = show.zaal ? `${show.theaterNaam} (${show.zaal})` : show.theaterNaam;
   els.detailAddress.textContent = show.locatie
     ? `${show.locatie.split('|').map((d) => d.trim()).join(', ')} (via ${show.theaterNaam})`
     : adres
-      ? `${show.theaterNaam}, ${adres}, ${show.stad}`
-      : `${show.theaterNaam}, ${show.stad}`;
+      ? `${naamMetZaal}, ${adres}, ${show.stad}`
+      : `${naamMetZaal}, ${show.stad}`;
 
   els.detailDescription.textContent = show.beschrijving || 'Nog geen omschrijving beschikbaar.';
 

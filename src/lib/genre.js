@@ -46,6 +46,14 @@ const GENRE_MAP = {
   educatie: 'Overig',
   show: 'Overig',
 
+  // Cpunt (Hoofddorp, 1 okt 2026). "Toneel/Muziektheater" is allebei: Toneel,
+  // en de genrestemming op productieniveau kiest bij een ander theater met
+  // Muziektheater het specifiekste.
+  'cabaret/stand-up/comedy': 'Cabaret',
+  'toneel/muziektheater': 'Toneel',
+  'kids/jeugd': 'Familie & Jeugd',
+  infotainment: 'Overig',
+
   // ITA
   'dans-familie': 'Familie & Jeugd',
   'theater - kind': 'Familie & Jeugd',
