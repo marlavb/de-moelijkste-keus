@@ -77,6 +77,13 @@ test('volgorde omgedraaid (30 sep 2026): watchlist-sleutel verandert niet', () =
 test('één scheidingsteken: " - " wordt " – ", streepjes in een woord blijven', () => {
   assert.equal(metEnDash('Huub Stapel - Mannen komen van Mars - Het vervolg'), 'Huub Stapel – Mannen komen van Mars – Het vervolg');
   assert.equal(metEnDash('Try-(H)outen'), 'Try-(H)outen');
+  assert.equal(metEnDash('Oudejaarsconference 2026 | Try-out'), 'Oudejaarsconference 2026 – Try-out');
+  assert.equal(metEnDash('JUK | reprise'), 'JUK – reprise');
+  assert.equal(metEnDash('AC|DC'), 'AC|DC');
+  for (const [a, b] of [['Joes | 3 t/m 8 jaar', 'Joes – 3 t/m 8 jaar'], ['Kelapa Muda | Try-out', 'Kelapa Muda – Try-out']]) {
+    assert.equal(watchlistSleutel(metEnDash(a), 'x'), watchlistSleutel(a, 'x'));
+    assert.equal(metEnDash(a), b);
+  }
   assert.equal(metEnDash(null), null);
   assert.equal(watchlistSleutel(metEnDash('EEJIT - Een Ierse Idioot'), 'x'), watchlistSleutel('EEJIT - Een Ierse Idioot', 'x'));
 });

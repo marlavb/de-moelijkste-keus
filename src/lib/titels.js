@@ -73,12 +73,14 @@ export function pasTitelConventieToe(show, { artiest, voorstelling, makerWordtLe
 }
 
 /**
- * Eén scheidingsteken overal: een streepje met spaties eromheen (" - ") wordt
- * een en-dash (" – "). Streepjes in een woord ("Try-(H)outen") blijven. De
- * watchlist-sleutel en de ontdubbeling zien beide als hetzelfde.
+ * Eén scheidingsteken overal: een streepje of een verticale streep met
+ * spaties eromheen (" - ", " | ") wordt een en-dash (" – "), bv.
+ * "Oudejaarsconference 2026 | Try-out" (De Maaspoort) → "… – Try-out".
+ * Streepjes in een woord ("Try-(H)outen") en "|" zonder spaties blijven. De
+ * watchlist-sleutel, de planning en de ontdubbeling zien beide als hetzelfde.
  */
 export function metEnDash(tekst) {
-  return typeof tekst === 'string' ? tekst.replace(/\s+-\s+/g, ' – ') : tekst;
+  return typeof tekst === 'string' ? tekst.replace(/\s+[-|]\s+/g, ' – ') : tekst;
 }
 
 const STATUSWOORD = '(?:geannuleerd|afgelast|verplaatst)';

@@ -85,3 +85,22 @@ test('sleutels, plannen en ontdubbeling blijven gelijk; opnieuw toepassen verand
   const terug = shows.map(({ titelBron, ...x }) => ({ ...x, titel: titelBron ?? x.titel }));
   assert.deepEqual(pasMeerderheidToe(terug).shows, shows);
 });
+
+test('gelijke stand tussen twee zekere vormen: de maker (elders laatste deel) achteraan wint (Dolf Jansen)', () => {
+  const invoer = [
+    // Koningshof zette bij deze productie artiest en voorstelling andersom.
+    s('koningshof', 'Dolf Jansen – Schaamteloos – Oudejaars2026', { volgordeZeker: true }),
+    s('maaspoort', 'Schaamteloos – Oudejaars2026 – Dolf Jansen', { volgordeZeker: true }),
+    // Elders is Dolf Jansen de maker (andere schrijfwijze, dus een andere groep).
+    s('kleinekomedie', 'Schaamteloos – Oudejaars 2026 – Dolf Jansen', { volgordeZeker: true }),
+    s('kunstlinie', 'Schaamteloos – Oudejaars 2026 – Dolf Jansen', { volgordeZeker: true }),
+  ];
+  const { shows } = pasMeerderheidToe(invoer);
+  assert.equal(shows[0].titel, 'Schaamteloos – Oudejaars2026 – Dolf Jansen');
+  assert.equal(shows[0].titelBron, 'Dolf Jansen – Schaamteloos – Oudejaars2026');
+  assert.equal(shows[1].titel, 'Schaamteloos – Oudejaars2026 – Dolf Jansen');
+  // Onafhankelijk van de volgorde van de invoer.
+  assert.equal(pasMeerderheidToe([invoer[1], invoer[0], ...invoer.slice(2)]).shows[1].titel, 'Schaamteloos – Oudejaars2026 – Dolf Jansen');
+  // Zonder aanwijzing elders blijft de oude tie-break gelden.
+  assert.equal(kiesWeergave([{ vorm: 'AI&IK – ERAN&CO', zeker: true }, { vorm: 'ERAN&CO – AI&IK', zeker: true }]), 'AI&IK – ERAN&CO');
+});

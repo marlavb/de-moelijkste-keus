@@ -11,8 +11,9 @@ const AGENDA_PATH = '/theater/programma/';
 // "uitsluitend reguliere professionele voorstellingen in DOK6 Theater").
 // Nagegaan in het Ticketmatic-widget (30 sep 2026): Max van den Burg (Cabaret)
 // heeft het prijstype "Rang 1 - Podiumpas", Kids Live Concert 2026 (Uit de
-// regio) niet. Dus false voor Uit de regio, Events, Educatie en gratis
-// voorstellingen (class is_free).
+// regio) niet. Dus false voor Uit de regio, Events, Educatie en een prijs van
+// € 0. De class is_free telt niet: die staat ook bij voorstellingen van
+// € 16,50 (waarschijnlijk "kinderen gratis").
 const PODIUMPAS_UITGESLOTEN_GENRES = new Set(['uit-de-regio', 'events', 'educatie']);
 
 // Tekst en class van de ticketknop: "TICKETS", "laatste tickets"
@@ -112,7 +113,6 @@ export async function scrapeDok6({ page, theater, robots, waitForTurn, log, warn
     const gratis = prijs === 0;
     const waarom =
       (PODIUMPAS_UITGESLOTEN_GENRES.has(genreKlasse) && genreRuw) ||
-      (klassen.includes('is_free') && 'gratis (is_free)') ||
       (gratis && 'prijs € 0') ||
       null;
     if (waarom) reden[waarom] = (reden[waarom] ?? 0) + 1;

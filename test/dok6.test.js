@@ -41,8 +41,8 @@ test('DOK6: titels, datums, status, Podiumpas, schoolvoorstelling, gratis', asyn
   assert.equal(dorper.beschikbaarheid, 'wachtlijst');
   assert.equal(dorper.maker, 'Heerlik Helje');
 
-  // Gratis (is_free) en € 0: geen Podiumpas; € 0 niet omdraaien.
-  assert.equal(van('Joes | 3 t/m 8 jaar').podiumpas, false);
+  // is_free (€ 16,50, "kinderen gratis") telt niet; € 0 wel: geen Podiumpas en niet omdraaien.
+  assert.equal(van('Joes | 3 t/m 8 jaar').podiumpas, true);
   const tv = van("De Cabaret Club op z'n Limburgs");
   assert.ok(tv, 'titel niet omgedraaid');
   assert.equal(tv.podiumpas, false);

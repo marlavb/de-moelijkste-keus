@@ -11,7 +11,11 @@
 // - Stemmen: eerst alleen theaters waar de volgorde "Voorstelling – Maker"
 //   zeker is (de titelconventie heeft de titel zelf samengesteld, veld
 //   volgordeZeker). Geen eenduidige winnaar? Dan alle theaters, en bij gelijke
-//   stand: de vorm met de meeste zekere stemmen, dan een vorm die met een
+//   stand: de vorm met de meeste zekere stemmen, dan de vorm waarvan het
+//   laatste deel elders het vaakst als maker (laatste deel van een zekere
+//   titel) voorkomt — een theater zet soms bij één productie artiest en
+//   voorstelling andersom (Koningshof: "Dolf Jansen – Schaamteloos –
+//   Oudejaars2026", 30 sep 2026) —, dan een vorm die met een
 //   hoofdletter begint ("Begrijpt steeds minder" boven "begrijpt steeds
 //   minder"), dan de minste hoofdletters (Nederlandse zinsopbouw; "GELUKKIG
 //   MAAR" verliest van "Gelukkig maar"), dan de laagste in tekenvolgorde. Zo wisselt een titel niet van nacht
@@ -58,7 +62,31 @@ function uniekeWinnaar(stemmen) {
  * theater. Geeft { titel, reden } terug; reden zegt welke regel besliste
  * (voor het overzicht in debug/).
  */
-export function kiesMetReden(theaters) {
+const laatsteDeel = (v) => {
+  const delen = String(v).split(SCHEIDING);
+  return delen[delen.length - 1].trim().toLowerCase();
+};
+
+/**
+ * Per deel: bij hoeveel producties (theater + titel) met een zekere volgorde
+ * het het laatste deel is, dus de maker. Voor de tie-break hieronder.
+ */
+export function makerTelling(shows) {
+  const gezien = new Set();
+  const telling = new Map();
+  for (const s of shows) {
+    if (!s.volgordeZeker) continue;
+    const k = `${s.theaterId}|${s.titel}`;
+    if (gezien.has(k)) continue;
+    gezien.add(k);
+    if (String(s.titel).split(SCHEIDING).length < 2) continue;
+    const deel = laatsteDeel(s.titel);
+    telling.set(deel, (telling.get(deel) ?? 0) + 1);
+  }
+  return telling;
+}
+
+export function kiesMetReden(theaters, { makers = new Map() } = {}) {
   const zeker = theaters.filter((t) => t.zeker).map((t) => t.vorm);
   if (zeker.length > 0) {
     const { winnaar } = uniekeWinnaar(zeker);
@@ -71,6 +99,8 @@ export function kiesMetReden(theaters) {
   // Eerste teken een hoofdletter? (Begint de titel met een cijfer of
   // leesteken, dan zegt deze regel niets.)
   const begintHoofd = (v) => /^\p{Lu}/u.test(v);
+  // Hoe vaak het laatste deel elders maker is (zonder deze groep zelf).
+  const makerScore = (v) => (makers.get(laatsteDeel(v)) ?? 0) - zeker.filter((z) => laatsteDeel(z) === laatsteDeel(v)).length;
   let reden = 'gelijk: tekenvolgorde';
   const titel = top.reduce((a, b) => {
     const za = zekerePerVorm(a);
@@ -78,6 +108,12 @@ export function kiesMetReden(theaters) {
     if (za !== zb) {
       reden = 'gelijk: meeste zekere stemmen';
       return za > zb ? a : b;
+    }
+    const ma = makerScore(a);
+    const mb = makerScore(b);
+    if (ma !== mb) {
+      if (reden === 'gelijk: tekenvolgorde') reden = 'gelijk: maker achteraan';
+      return ma > mb ? a : b;
     }
     const ba = begintHoofd(a);
     const bb = begintHoofd(b);
@@ -96,8 +132,8 @@ export function kiesMetReden(theaters) {
   return { titel, reden };
 }
 
-export function kiesWeergave(theaters) {
-  return kiesMetReden(theaters).titel;
+export function kiesWeergave(theaters, opties) {
+  return kiesMetReden(theaters, opties).titel;
 }
 
 /**
@@ -106,6 +142,7 @@ export function kiesWeergave(theaters) {
  * `gewijzigd` = aantal voorstellingen met een andere titel.
  */
 export function pasMeerderheidToe(shows, { beslissingen = null } = {}) {
+  const makers = makerTelling(shows);
   const groepen = new Map();
   for (const s of shows) {
     const sleutel = watchlistSleutel(s.titel, s.theaterId);
@@ -128,7 +165,7 @@ export function pasMeerderheidToe(shows, { beslissingen = null } = {}) {
       const vorm = vormVanTheater(t.tellingen);
       return { theaterId, vorm, zeker: t.zeker.has(vorm) };
     });
-    const { titel, reden } = kiesMetReden(theaters);
+    const { titel, reden } = kiesMetReden(theaters, { makers });
     gekozen.set(g, titel);
     beslissingen?.push({ titel, reden, theaters });
   }
