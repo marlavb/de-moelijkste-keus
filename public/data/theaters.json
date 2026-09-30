@@ -278,6 +278,25 @@
       "naam": "Theater de Stoep",
       "stad": "Spijkenisse",
       "podiumpas": true
+    },
+    "maaspoort": {
+      "naam": "De Maaspoort Theater & Events",
+      "stad": "Venlo",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "online": true,
+        "toelichting": "Online met het tarief \"Podiumpas\" (pasnummer invullen), vanaf 30 dagen voor de voorstelling. Niet bij Uit de regio, Events, Educatie en voorstellingen buiten het Maaspoort-gebouw."
+      }
+    },
+    "dok6": {
+      "naam": "DOK6",
+      "stad": "Panningen",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "online": true,
+        "telefoon": "077 310 1064",
+        "toelichting": "Online met het prijstype \"Podiumpas\" (pasnummer invullen), of telefonisch, vanaf 30 dagen voor de voorstelling. Kaartje tot een half uur voor aanvang ophalen bij de balie."
+      }
     }
   }
 }
