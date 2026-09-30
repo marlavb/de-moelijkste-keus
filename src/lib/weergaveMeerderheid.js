@@ -11,9 +11,10 @@
 // - Stemmen: eerst alleen theaters waar de volgorde "Voorstelling – Maker"
 //   zeker is (de titelconventie heeft de titel zelf samengesteld, veld
 //   volgordeZeker). Geen eenduidige winnaar? Dan alle theaters, en bij gelijke
-//   stand: de vorm met de meeste zekere stemmen, dan de minste hoofdletters
-//   (Nederlandse zinsopbouw; "GELUKKIG MAAR" verliest van "Gelukkig maar"),
-//   dan de laagste in tekenvolgorde. Zo wisselt een titel niet van nacht
+//   stand: de vorm met de meeste zekere stemmen, dan een vorm die met een
+//   hoofdletter begint ("Begrijpt steeds minder" boven "begrijpt steeds
+//   minder"), dan de minste hoofdletters (Nederlandse zinsopbouw; "GELUKKIG
+//   MAAR" verliest van "Gelukkig maar"), dan de laagste in tekenvolgorde. Zo wisselt een titel niet van nacht
 //   tot nacht.
 // - Eén theater: niets. Theatergebonden titels (uitsluitlijst) doen niet mee.
 // - De oorspronkelijke titel blijft staan als `titelBron` (alleen als hij
@@ -67,6 +68,9 @@ export function kiesMetReden(theaters) {
   if (winnaar) return { titel: winnaar, reden: 'meerderheid' };
   const zekerePerVorm = (v) => zeker.filter((z) => z === v).length;
   const hoofdletters = (v) => (v.match(/\p{Lu}/gu) ?? []).length;
+  // Eerste teken een hoofdletter? (Begint de titel met een cijfer of
+  // leesteken, dan zegt deze regel niets.)
+  const begintHoofd = (v) => /^\p{Lu}/u.test(v);
   let reden = 'gelijk: tekenvolgorde';
   const titel = top.reduce((a, b) => {
     const za = zekerePerVorm(a);
@@ -74,6 +78,12 @@ export function kiesMetReden(theaters) {
     if (za !== zb) {
       reden = 'gelijk: meeste zekere stemmen';
       return za > zb ? a : b;
+    }
+    const ba = begintHoofd(a);
+    const bb = begintHoofd(b);
+    if (ba !== bb) {
+      if (reden === 'gelijk: tekenvolgorde') reden = 'gelijk: begint met hoofdletter';
+      return ba ? a : b;
     }
     const ha = hoofdletters(a);
     const hb = hoofdletters(b);

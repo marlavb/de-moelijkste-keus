@@ -56,6 +56,14 @@ test('geen zekere stemmen: meerderheid over alle theaters; gelijke stand vast en
   // Gelijke stand in hoofdletters: minste hoofdletters wint, in beide volgordes.
   assert.equal(kiesWeergave([{ vorm: 'GELUKKIG MAAR' }, { vorm: 'Gelukkig maar' }]), 'Gelukkig maar');
   assert.equal(kiesWeergave([{ vorm: 'Gelukkig maar' }, { vorm: 'GELUKKIG MAAR' }]), 'Gelukkig maar');
+  // Begint met een hoofdletter gaat vóór minste hoofdletters (Raoul Heertje).
+  const heertje = [
+    { vorm: 'begrijpt steeds minder – Raoul Heertje', zeker: true },
+    { vorm: 'Begrijpt steeds minder – Raoul Heertje', zeker: true },
+  ];
+  assert.equal(kiesWeergave(heertje), 'Begrijpt steeds minder – Raoul Heertje');
+  assert.equal(kiesWeergave([...heertje].reverse()), 'Begrijpt steeds minder – Raoul Heertje');
+  assert.equal(kiesWeergave([{ vorm: '60-plus – A' }, { vorm: '60-Plus – A' }]), '60-plus – A'); // cijfer vooraan: regel geldt niet, minste hoofdletters beslist
   // Zekere stemmen staken → meerderheid over alle theaters.
   assert.equal(
     kiesWeergave([{ vorm: 'Y – Z', zeker: true }, { vorm: 'Z – Y', zeker: true }, { vorm: 'Z – Y' }]),
