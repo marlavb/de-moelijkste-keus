@@ -377,13 +377,12 @@ async function init() {
   // Herstelde zoekopdracht (zie savedFilters bij het state-object) in
   // beide zoekvelden zetten; op mobiel ook meteen de zoekbalk tonen i.p.v.
   // 'm verborgen te laten terwijl er stilletjes al op gefilterd wordt —
-  // zonder focus() (dat zou ongevraagd het toetsenbord openen).
+  // zonder focus() (dat zou ongevraagd het toetsenbord openen). Op desktop
+  // doet de class niets (zie zetZoekbalkOpen).
   if (state.searchQueryRaw) {
     els.searchInput.value = state.searchQueryRaw;
     els.sidebarSearchInput.value = state.searchQueryRaw;
-    els.headerTitleGroup.hidden = true;
-    els.headerActions.hidden = true;
-    els.headerSearch.hidden = false;
+    zetZoekbalkOpen(true);
   }
 
   els.filterToggle.addEventListener('click', openSheet);
@@ -1176,10 +1175,17 @@ function closeSheet() {
 const SEARCH_DEBOUNCE_MS = 250;
 let searchDebounceTimer = null;
 
+// De zoekbalk in de kop is alleen voor de telefoon (< 900 px). Open/dicht
+// is een class op .header-top; alleen de CSS onder 900 px reageert erop.
+// Op desktop zoek je via de sidebar, ook na het wisselen van breedte, en ook
+// met een herstelde zoekterm (tot 30 sep 2026 verscheen de balk daar dan
+// naast het sidebarveld, en verdween de titel).
+function zetZoekbalkOpen(open) {
+  els.headerSearch.closest('.header-top').classList.toggle('zoekbalk-open', open);
+}
+
 function openSearch() {
-  els.headerTitleGroup.hidden = true;
-  els.headerActions.hidden = true;
-  els.headerSearch.hidden = false;
+  zetZoekbalkOpen(true);
   els.searchInput.focus();
 }
 
@@ -1189,9 +1195,7 @@ function closeSearch() {
   els.sidebarSearchInput.value = '';
   state.searchQuery = '';
   state.searchQueryRaw = '';
-  els.headerSearch.hidden = true;
-  els.headerTitleGroup.hidden = false;
-  els.headerActions.hidden = false;
+  zetZoekbalkOpen(false);
   renderAgenda();
   saveFilters();
 }
@@ -1203,6 +1207,10 @@ function onSearchInput(e) {
   const source = e.target;
   const other = source === els.searchInput ? els.sidebarSearchInput : els.searchInput;
   other.value = source.value;
+  // Getypt in de sidebar (desktop): bij smaller maken van het venster de
+  // telefoonbalk tonen zolang er een zoekterm is, zodat er nooit stil
+  // gefilterd wordt.
+  if (source === els.sidebarSearchInput) zetZoekbalkOpen(source.value.trim() !== '');
 
   clearTimeout(searchDebounceTimer);
   const value = source.value;

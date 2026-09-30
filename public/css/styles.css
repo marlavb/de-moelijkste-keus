@@ -172,6 +172,24 @@ a {
   background: var(--surface);
 }
 
+/* Zoekbalk in de kop: alleen op de telefoon, en alleen als hij open is
+   (class .zoekbalk-open op .header-top, zie app.js zetZoekbalkOpen). Op
+   desktop (≥ 900 px) nooit: daar zoek je via de sidebar. */
+#headerSearch {
+  display: none;
+}
+
+@media (max-width: 899.98px) {
+  .header-top.zoekbalk-open #headerSearch {
+    display: flex;
+  }
+
+  .header-top.zoekbalk-open #headerTitleGroup,
+  .header-top.zoekbalk-open #headerActions {
+    display: none;
+  }
+}
+
 .header-search-icon {
   width: 18px;
   height: 18px;
