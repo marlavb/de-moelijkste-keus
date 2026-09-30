@@ -8,3 +8,16 @@
 export function getGenreBucket(show) {
   return show.genre ?? 'Overig';
 }
+
+// Alle genres waaronder een voorstelling in het filter hoort (30 sep 2026):
+// `genres` (alle echte genres van de productie, zie
+// src/lib/genreMeerderheid.js), of bij oudere data zonder dat veld alleen
+// de bucket van show.genre.
+export function getGenres(show) {
+  return Array.isArray(show.genres) && show.genres.length > 0 ? show.genres : [getGenreBucket(show)];
+}
+
+/** Genrefilter: geen selectie = alles; anders minstens één genre geselecteerd. */
+export function matchtGenreFilter(show, geselecteerd) {
+  return geselecteerd.size === 0 || getGenres(show).some((g) => geselecteerd.has(g));
+}

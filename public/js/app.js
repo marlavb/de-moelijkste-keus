@@ -10,7 +10,7 @@ import {
   setDoc,
   serverTimestamp,
 } from './firebase.js';
-import { getGenreBucket } from './genre.js';
+import { getGenreBucket, getGenres, matchtGenreFilter } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
 import { weergaveTitel, makerStaatInTitel, isVervallen, VERVALLEN_LABELS } from './weergave.js';
 import { renameFavoritesAndPersist, THEATER_MOVES } from './favorites.js';
@@ -1688,7 +1688,7 @@ function renderTheaterFilters() {
 }
 
 function renderGenreFilters() {
-  const present = GENRE_CATEGORIES.filter((g) => state.shows.some((s) => getGenreBucket(s) === g));
+  const present = GENRE_CATEGORIES.filter((g) => state.shows.some((s) => getGenres(s).includes(g)));
 
   for (const container of [els.sidebarGenreFilters, els.sheetGenreFilters]) {
     container.innerHTML = '';
@@ -1777,7 +1777,9 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     if (!enabled.has(s.theaterId)) return false;
     const cityOk = state.selectedCities.size === 0 || state.selectedCities.has(s.stad);
     const theaterOk = state.selectedTheaters.size === 0 || state.selectedTheaters.has(s.theaterId);
-    const genreOk = state.selectedGenres.size === 0 || state.selectedGenres.has(getGenreBucket(s));
+    // Op alle genres van de productie (show.genres); het label toont het
+    // weergavegenre (show.genre).
+    const genreOk = matchtGenreFilter(s, state.selectedGenres);
     const podiumpasOk = !state.podiumpasOnly || s.podiumpas === true;
     const watchlistOk = !state.watchlistOnly || isOpWatchlist(s);
     const gezienOk = !state.hideGezien || !isGezien(s);
