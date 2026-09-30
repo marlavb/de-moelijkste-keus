@@ -19,12 +19,26 @@ export function sleep(ms, signal) {
   });
 }
 
+const geldigeMs = (ms) => (Number.isFinite(ms) && ms > 0 ? ms : 0);
+
+/**
+ * De pauze tussen twee requests naar een theater: het maximum van de
+ * crawl-delay uit robots.txt, een eigen instelling (config.js:
+ * crawlDelaySeconden) en het globale minimum van 1 s. Een eigen instelling
+ * kan robots.txt dus alleen vertragen, nooit versnellen. Een ongeldige waarde
+ * (NaN, negatief, tekst) telt als 0, zodat Math.max nooit NaN oplevert (dan
+ * zou er helemaal niet gewacht worden).
+ */
+export function effectieveCrawlDelayMs(robotsMs, eigenSeconden = 0) {
+  return Math.max(geldigeMs(robotsMs), geldigeMs(eigenSeconden * 1000), DEFAULT_MIN_DELAY_MS);
+}
+
 // Elke scraper roept waitForTurn() aan vóór elke request. Daarom is dit ook
 // hét punt waar het tijdbudget per theater (zie lib/scrapeRun.js) wordt
 // afgedwongen: is `signal` afgebroken, dan gooit waitForTurn — ook midden in
 // een crawl-delay — en vertrekt er geen volgende request meer.
 export function createPoliteWaiter(crawlDelayMs, log, signal) {
-  const delayMs = Math.max(crawlDelayMs, DEFAULT_MIN_DELAY_MS);
+  const delayMs = effectieveCrawlDelayMs(crawlDelayMs);
   let lastRequestAt = 0;
 
   return async function waitForTurn() {

@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 import { runRefresh, ScrapeBlockedError } from '../src/lib/scrapeRun.js';
-import { createPoliteWaiter, sleep } from '../src/lib/politeness.js';
+import { createPoliteWaiter, sleep, effectieveCrawlDelayMs } from '../src/lib/politeness.js';
 
 const MIN_DATE = '2026-10-01';
 const NOW = new Date('2026-10-01T04:30:00.000Z');
@@ -467,4 +467,52 @@ test('afgelast: statuswoord uit de titel; afgelast en gewoon op hetzelfde tijdst
   assert.equal(written[1].titel, 'Wacht – geannuleerd');
   assert.equal(written.filter((s) => s.titel === 'Kiem').length, 2);
   assert.equal(writtenStatus.theaters?.a?.dubbelingen ?? 0, 0);
+});
+
+test('crawl-delay = max(robots.txt, crawlDelaySeconden, 1 s); eigen instelling versnelt nooit', () => {
+  assert.equal(effectieveCrawlDelayMs(0), 1000); // globaal minimum
+  assert.equal(effectieveCrawlDelayMs(500), 1000);
+  assert.equal(effectieveCrawlDelayMs(5000), 5000);
+  assert.equal(effectieveCrawlDelayMs(0, 4), 4000); // ITA: eigen instelling ruimer
+  assert.equal(effectieveCrawlDelayMs(5000, 2), 5000); // eigen instelling korter: robots.txt wint
+  assert.equal(effectieveCrawlDelayMs(5000, 0.5), 5000);
+  assert.equal(effectieveCrawlDelayMs(0, 0.5), 1000); // ook niet onder het minimum
+  // Ongeldige waarden tellen als 0, nooit NaN (dan zou er niet gewacht worden).
+  for (const fout of [NaN, -3, 'vier', null, undefined, Infinity]) {
+    assert.equal(effectieveCrawlDelayMs(5000, fout), 5000, String(fout));
+    assert.equal(effectieveCrawlDelayMs(fout, 0), 1000, String(fout));
+  }
+});
+
+test('runRefresh geeft de effectieve crawl-delay aan de waiter', async () => {
+  const gekregen = {};
+  const cases = [
+    { id: 'robotswint', robots: 5000, eigen: 2, verwacht: 5000 },
+    { id: 'eigenwint', robots: 0, eigen: 4, verwacht: 4000 },
+    { id: 'minimum', robots: 200, eigen: undefined, verwacht: 1000 },
+    { id: 'typfout', robots: 3000, eigen: 'vier', verwacht: 3000 },
+  ];
+  for (const c of cases) {
+    const paths = await setup();
+    const deps = {
+      ...fakeDeps(),
+      loadRobots: async () => ({ robotsUrl: 'robots', crawlDelayMs: c.robots, isAllowed: () => true }),
+      createWaiter: (ms, log, signal) => {
+        gekregen[c.id] = ms;
+        return createPoliteWaiter(ms, log, signal);
+      },
+    };
+    await run({ paths, theaters: [{ ...theater(c.id), crawlDelaySeconden: c.eigen }], scrapers: { [c.id]: empty }, deps });
+    assert.equal(gekregen[c.id], c.verwacht, c.id);
+  }
+});
+
+test('waiter wacht echt minstens de effectieve pauze tussen twee requests', async () => {
+  const meldingen = [];
+  const wacht = createPoliteWaiter(effectieveCrawlDelayMs(0, 1.2), (m) => meldingen.push(m));
+  const start = Date.now();
+  await wacht();
+  await wacht();
+  assert.ok(Date.now() - start >= 1150, `${Date.now() - start} ms`);
+  assert.match(meldingen[0], /crawl-delay = 1200ms/);
 });

@@ -12,6 +12,7 @@ import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
 
 import { todayIsoDate } from './normalize.js';
+import { effectieveCrawlDelayMs } from './politeness.js';
 
 export class ScrapeTimeoutError extends Error {
   name = 'ScrapeTimeoutError';
@@ -170,10 +171,10 @@ async function runWithDeadline({ theater, scraper, deps, budgetMs, log }) {
       signal.throwIfAborted();
       scraperLog(`robots.txt gelezen (${robots.robotsUrl}), crawl-delay = ${robots.crawlDelayMs}ms`);
       // Een eigen, ruimere pauze per theater (config.js: crawlDelaySeconden)
-      // gaat boven die van robots.txt.
-      const eigen = (theater.crawlDelaySeconden ?? 0) * 1000;
-      if (eigen > robots.crawlDelayMs) scraperLog(`eigen crawl-delay ${eigen}ms (ruimer dan robots.txt)`);
-      const waitForTurn = deps.createWaiter(Math.max(robots.crawlDelayMs, eigen), scraperLog, signal);
+      // gaat boven die van robots.txt, nooit eronder (zie politeness.js).
+      const delayMs = effectieveCrawlDelayMs(robots.crawlDelayMs, theater.crawlDelaySeconden ?? 0);
+      if (delayMs > effectieveCrawlDelayMs(robots.crawlDelayMs)) scraperLog(`eigen crawl-delay ${delayMs}ms (ruimer dan robots.txt)`);
+      const waitForTurn = deps.createWaiter(delayMs, scraperLog, signal);
       const shows = await scraper({ page, theater, robots, waitForTurn, log: scraperLog, warn, signal });
       if (!Array.isArray(shows)) throw new Error('scraper gaf geen array terug');
       return shows;
