@@ -11,18 +11,21 @@
 //   gelijke stand het specifiekste genre volgens SPECIFIEK_NAAR_BREED;
 // - alleen "Overig"/leeg → blijft zo.
 // Het oorspronkelijke genre blijft als `genreBron` (alleen als het anders is,
-// ook als dat null was), en alle echte genres van de sleutel staan in
-// `genres`, zodat het filter de voorstelling onder elk genre vindt.
+// ook als dat null was). Heeft de sleutel meer dan één echt genre, dan staan
+// ze allemaal in `genres`, zodat het filter de voorstelling onder elk genre
+// vindt; met één genre valt het filter terug op `genre` (kleiner bestand).
 // Theatergebonden titels (uitsluitlijst) doen niet mee. scrapeRun zet vóór
 // elke run genre terug op genreBron, dus dit is idempotent.
 
 import { watchlistSleutel } from '../../public/js/watchlist.js';
 import { GENRE_CATEGORIES } from './genre.js';
 
-// Tie-break: van specifiek naar breed. Toneel en Muziek & Concert zijn de
+// Tie-break: Familie & Jeugd eerst (het label moet vooral laten zien dat
+// iets een kindervoorstelling is; het filter vindt hem toch onder alle
+// genres), dan van specifiek naar breed. Toneel en Muziek & Concert zijn de
 // brede categorieën waar theaters op terugvallen; Musical is een specifieke
-// vorm van muziektheater; Familie & Jeugd zegt voor wie het is.
-export const SPECIFIEK_NAAR_BREED = ['Musical', 'Cabaret', 'Familie & Jeugd', 'Dans', 'Muziektheater', 'Muziek & Concert', 'Toneel'];
+// vorm van muziektheater.
+export const SPECIFIEK_NAAR_BREED = ['Familie & Jeugd', 'Musical', 'Cabaret', 'Dans', 'Muziektheater', 'Muziek & Concert', 'Toneel'];
 
 const isEcht = (g) => g != null && g !== 'Overig';
 const volgorde = (g) => GENRE_CATEGORIES.indexOf(g);
@@ -91,7 +94,7 @@ export function pasGenreMeerderheidToe(shows, { beslissingen = null } = {}) {
   const uit = shows.map((s) => {
     const keuze = gekozen.get(watchlistSleutel(s.titel, s.theaterId));
     if (!keuze) return s;
-    const nieuw = { ...s, genres: keuze.genres };
+    const nieuw = keuze.genres.length > 1 ? { ...s, genres: keuze.genres } : { ...s };
     if (keuze.genre !== s.genre) {
       nieuw.genre = keuze.genre;
       nieuw.genreBron = s.genre ?? null;

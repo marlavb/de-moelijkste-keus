@@ -16,7 +16,9 @@ test('overig en leeg nemen het ene echte genre over; genreBron bewaard (ook null
   assert.equal(shows[3].genreBron, null);
   assert.ok('genreBron' in shows[3]);
   assert.equal('genreBron' in shows[0], false);
-  assert.deepEqual(shows[2].genres, ['Muziektheater']);
+  // Maar één echt genre: geen genres-veld (het filter valt terug op genre).
+  assert.equal(shows[2].genres, undefined);
+  assert.equal(shows[0].genres, undefined);
   assert.equal(gewijzigd, 2);
 });
 
@@ -43,6 +45,10 @@ test('gelijke stand: specifiekste genre, onafhankelijk van de volgorde', () => {
   assert.equal(kiesGenre(['Toneel', 'Cabaret']).genre, 'Cabaret');
   assert.equal(kiesGenre(['Cabaret', 'Toneel']).genre, 'Cabaret');
   assert.equal(kiesGenre(['Muziektheater', 'Musical']).genre, 'Musical');
+  // Familie & Jeugd gaat voor alles (kindervoorstelling zichtbaar in het label).
+  assert.equal(kiesGenre(['Musical', 'Familie & Jeugd']).genre, 'Familie & Jeugd');
+  assert.equal(kiesGenre(['Familie & Jeugd', 'Cabaret']).genre, 'Familie & Jeugd');
+  assert.deepEqual(SPECIFIEK_NAAR_BREED, ['Familie & Jeugd', 'Musical', 'Cabaret', 'Dans', 'Muziektheater', 'Muziek & Concert', 'Toneel']);
   assert.equal(kiesGenre(['Muziek & Concert', 'Muziektheater']).reden, 'gelijk: specifiekste');
   assert.equal(kiesGenre(['Muziek & Concert', 'Muziektheater']).genre, 'Muziektheater');
   assert.equal(kiesGenre([]), null);
