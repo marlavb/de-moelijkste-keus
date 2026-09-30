@@ -96,6 +96,7 @@ test('statuswoord als los titeldeel weg bij afgelast/verplaatst', async () => {
   assert.equal(zonderStatusWoord('Niek Barendsen, Michiel Nooter e.a. – GEANNULEERD'), 'Niek Barendsen, Michiel Nooter e.a.');
   assert.equal(zonderStatusWoord('Kiem (afgelast)'), 'Kiem');
   assert.equal(zonderStatusWoord('VERPLAATST – Kiem'), 'Kiem');
+  assert.equal(zonderStatusWoord("Geannuleerd | O'DREAMS"), "O'DREAMS");
   // Een woord in een titel blijft staan.
   assert.equal(zonderStatusWoord('De verplaatste man'), 'De verplaatste man');
   assert.equal(zonderStatusWoord('Afgelast'), 'Afgelast');

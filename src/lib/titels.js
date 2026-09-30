@@ -80,7 +80,8 @@ export function metEnDash(tekst) {
 }
 
 const STATUSWOORD = '(?:geannuleerd|afgelast|verplaatst)';
-const STATUS_DEEL = new RegExp(`(?:\\s+[-–]\\s+${STATUSWOORD}(?=\\s+[-–]\\s+|$)|^${STATUSWOORD}\\s+[-–]\\s+|\\s*\\(${STATUSWOORD}\\))`, 'gi');
+// Scheidingstekens: streepje, en-dash of "|" (Koningshof: "Geannuleerd | O'DREAMS").
+const STATUS_DEEL = new RegExp(`(?:\\s+[-–|]\\s+${STATUSWOORD}(?=\\s+[-–|]\\s+|$)|^${STATUSWOORD}\\s+[-–|]\\s+|\\s*\\(${STATUSWOORD}\\))`, 'gi');
 
 /**
  * Een statuswoord als los titeldeel ("Gelukkig maar - geannuleerd",
