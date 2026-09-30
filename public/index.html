@@ -292,25 +292,41 @@
       <div class="profile-account" id="authBox"></div>
 
       <main class="profile-lists">
-        <section class="profile-section profile-section--vraag" id="vraagSection" aria-labelledby="vraagHeading" hidden>
-          <div class="section-head">
-            <h2 id="vraagHeading">Ben je geweest?</h2>
-            <span id="vraagCount"></span>
-          </div>
-          <div id="vraagList" aria-live="polite"></div>
-        </section>
+        <!-- Linkerkolom op desktop: vragen, planning en Gezien onder elkaar;
+             de watchlist staat ernaast. Op de telefoon gewoon onder elkaar. -->
+        <div class="profile-kolom">
+          <section class="profile-section profile-section--vraag" id="vraagSection" aria-labelledby="vraagHeading" hidden>
+            <div class="section-head">
+              <h2 id="vraagHeading">Ben je geweest?</h2>
+              <span id="vraagCount"></span>
+            </div>
+            <div id="vraagList" aria-live="polite"></div>
+          </section>
 
-        <section class="profile-section" aria-labelledby="geplandHeading">
-          <div class="section-head">
-            <h2 id="geplandHeading">Gepland</h2>
-            <span id="geplandCount"></span>
-          </div>
-          <div id="geplandList" aria-live="polite"></div>
-          <p class="empty-state empty-state--compact" id="geplandEmpty" hidden>
-            Nog niets gepland. Kies "Plan deze voorstelling" bij een speeldatum.
-          </p>
-          <p class="profile-note">Na de speeldatum gaat een plan met kaarten vanzelf naar Gezien. Zonder kaarten vragen we eerst of je geweest bent.</p>
-        </section>
+          <section class="profile-section" aria-labelledby="geplandHeading">
+            <div class="section-head">
+              <h2 id="geplandHeading">Gepland</h2>
+              <span id="geplandCount"></span>
+            </div>
+            <div id="geplandList" aria-live="polite"></div>
+            <p class="empty-state empty-state--compact" id="geplandEmpty" hidden>
+              Nog niets gepland. Kies "Plan deze voorstelling" bij een speeldatum.
+            </p>
+            <p class="profile-note">Na de speeldatum gaat een plan met kaarten vanzelf naar Gezien. Zonder kaarten vragen we eerst of je geweest bent.</p>
+          </section>
+
+          <section class="profile-section" aria-labelledby="gezienHeading">
+            <div class="section-head">
+              <h2 id="gezienHeading">Gezien</h2>
+              <span id="gezienCount"></span>
+            </div>
+            <div id="gezienList" aria-live="polite"></div>
+            <p class="empty-state empty-state--compact" id="gezienEmpty" hidden>
+              Nog niets gezien. Een geplande voorstelling komt hier na de voorstelling vanzelf te staan.
+            </p>
+          </section>
+        </div>
+
         <section class="profile-section" aria-labelledby="watchlistHeading">
           <div class="section-head">
             <h2 id="watchlistHeading">Watchlist</h2>
@@ -321,17 +337,6 @@
               Je watchlist is nog leeg. Tik op de bladwijzer bij een voorstelling om hem hier te bewaren.
             </p>
           </div>
-        </section>
-
-        <section class="profile-section" aria-labelledby="gezienHeading">
-          <div class="section-head">
-            <h2 id="gezienHeading">Gezien</h2>
-            <span id="gezienCount"></span>
-          </div>
-          <div id="gezienList" aria-live="polite"></div>
-          <p class="empty-state empty-state--compact" id="gezienEmpty" hidden>
-            Nog niets gezien. Een plan met kaarten komt hier na de voorstelling vanzelf te staan.
-          </p>
         </section>
       </main>
     </section>

@@ -182,3 +182,49 @@ test('oudere index.html zonder de nieuwe elementen: geen fouten, tabs werken', a
   assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
   await ctx.close();
 });
+
+// Zichtbare kopjes in Profiel, van boven naar beneden (op desktop: eerst de
+// linkerkolom, want die staat links; de watchlist ernaast).
+const kopjes = (page) =>
+  page.evaluate(() =>
+    [...document.querySelectorAll('#screen-profiel .profile-section')]
+      .filter((s) => !s.hidden && s.offsetParent !== null)
+      .map((s) => ({ kop: s.querySelector('h2').textContent, x: Math.round(s.getBoundingClientRect().left), y: Math.round(s.getBoundingClientRect().top) }))
+  );
+
+test('Profiel: volgorde Ben je geweest? → Gepland → Gezien → Watchlist; lege tekst Gezien', async () => {
+  for (const viewport of [{ width: 390, height: 900 }, { width: 1280, height: 900 }]) {
+    const desktop = viewport.width >= 900;
+    // Zonder vragen: blok "Ben je geweest?" niet zichtbaar.
+    let { ctx, page } = await openApp({ viewport });
+    await page.goto(`${base}#/profiel`);
+    await page.waitForTimeout(300);
+    let k = await kopjes(page);
+    assert.deepEqual(k.map((x) => x.kop), ['Gepland', 'Gezien', 'Watchlist'], `${viewport.width}px`);
+    assert.equal(
+      (await page.locator('#gezienEmpty').innerText()).trim(),
+      'Nog niets gezien. Een geplande voorstelling komt hier na de voorstelling vanzelf te staan.'
+    );
+    const [gepland, gezien, watchlist] = k;
+    // Gezien direct onder Gepland, in dezelfde kolom.
+    assert.equal(gezien.x, gepland.x);
+    assert.ok(gezien.y > gepland.y);
+    if (desktop) {
+      assert.ok(watchlist.x > gepland.x, 'watchlist in de rechterkolom');
+      assert.equal(watchlist.y, gepland.y, 'watchlist bovenaan naast de planning');
+    } else {
+      assert.ok(watchlist.y > gezien.y);
+    }
+    await ctx.close();
+
+    // Met een vraag: die staat bovenaan.
+    const g = planIn(legeGepland(), nep('Wacht even', '2026-09-28', 'kleinekomedie'), 1);
+    ({ ctx, page } = await openApp({ viewport, opslag: { 'podiumagenda:gepland': g } }));
+    await page.goto(`${base}#/profiel`);
+    await page.waitForTimeout(300);
+    k = await kopjes(page);
+    assert.deepEqual(k.map((x) => x.kop), ['Ben je geweest?', 'Gepland', 'Gezien', 'Watchlist'], `${viewport.width}px`);
+    assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+    await ctx.close();
+  }
+});

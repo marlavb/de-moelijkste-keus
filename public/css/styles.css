@@ -1478,6 +1478,14 @@ a {
   padding: 8px 20px 32px;
 }
 
+/* Ben je geweest? → Gepland → Gezien, als één blok vóór de watchlist. */
+.profile-kolom {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+}
+
 .section-head {
   display: flex;
   align-items: baseline;
@@ -1840,6 +1848,11 @@ button.plan-info {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: start;
+    gap: 24px;
+  }
+
+  /* Links planning en Gezien onder elkaar, rechts de watchlist. */
+  .profile-kolom {
     gap: 24px;
   }
 
