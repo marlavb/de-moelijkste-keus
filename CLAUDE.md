@@ -68,6 +68,10 @@ Houd het testverkeer daarom zo klein mogelijk:
   ontbreekt, in plaats van stil `[]` terug te geven.
 - Test met `npm test` (unit tests, geen netwerk) en `--only=<id>` plus een
   steekproef van 5 voorstellingen tegen de site.
+- Een theater dat een ruimere pauze nodig heeft dan robots.txt geeft:
+  `crawlDelaySeconden` in `config.js` (nu ITA, 4 s).
+- Faalt een scrape, dan staat er een `DIAGNOSE:`-regel in de log (HTTP-status,
+  URL, paginatitel, begin van de body); kijk daar eerst naar.
 
 ## Watchlist-sleutels
 

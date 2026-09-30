@@ -78,6 +78,10 @@ export const THEATERS = [
     baseUrl: 'https://ita.nl',
     agendaUrl: 'https://ita.nl/nl/agenda-stadsschouwburg',
     podiumpas: false,
+    // Eigen pauze tussen requests (robots.txt geeft geen crawl-delay, dus
+    // anders 1 s): 9 listingpagina's gingen in ~8 s, en in CI liep ITA op
+    // 27, 29 en 30 sep 2026 op wisselende pagina's tegen een time-out.
+    crawlDelaySeconden: 4,
   },
   {
     id: 'kleinekomedie',

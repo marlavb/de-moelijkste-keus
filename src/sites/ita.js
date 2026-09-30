@@ -1,9 +1,14 @@
 import { createNumericDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
 import { vervallenStatus } from '../lib/beschikbaarheid.js';
+import { gaNaar } from '../lib/diagnose.js';
+import { sleep } from '../lib/politeness.js';
 
 const AGENDA_PATH = '/nl/agenda-stadsschouwburg';
 const MAX_LISTING_PAGES = 30;
+// Een pagina laadt normaal in ~1 s; 45 s is ruim zonder de run op te houden.
+const GOTO_TIMEOUT_MS = 45000;
+const HERPOGING_PAUZE_MS = 60000;
 
 // Knopteksten op de agendapagina (aria-label "button: <tekst>"). "Laatste
 // kaarten" en "Gratis aanmelden" zijn gewoon te boeken, dus beschikbaar.
@@ -54,7 +59,7 @@ function isSchoolvoorstelling(item) {
  *   vangnet in scrapeRun.js terugvalt. Een echt lege agenda heeft wél een
  *   teller ("0 resultaten").
  */
-export async function scrapeIta({ page, theater, robots, waitForTurn, log }) {
+export async function scrapeIta({ page, theater, robots, waitForTurn, log, signal }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
     return [];
@@ -74,17 +79,26 @@ export async function scrapeIta({ page, theater, robots, waitForTurn, log }) {
       break;
     }
 
-    // Eén herpoging per pagina: op 27 sep liep één keer pagina 2 tegen de
-    // time-out van 30 s (pagina 1 laadde in 1 s), waardoor de hele scrape
-    // faalde. Een tweede mislukte poging gooit gewoon door (vangnet).
+    // Eén herpoging per pagina, na een pauze van een minuut: op 27, 29 en
+    // 30 sep 2026 liep in CI steeds één pagina (2, 9, …) tegen de time-out,
+    // en een herpoging meteen daarna ook. Mislukt ook die, dan gooit het
+    // door en valt het hele theater terug op de vorige run (vangnet): de al
+    // opgehaalde pagina's houden zou de voorstellingen van de rest stil laten
+    // verdwijnen (en plannen op "Niet meer in de agenda" zetten).
     for (let poging = 1; ; poging++) {
       await waitForTurn();
       try {
-        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await gaNaar(page, url, { timeout: GOTO_TIMEOUT_MS });
         break;
       } catch (err) {
-        if (poging >= 2 || err?.name === 'ScrapeTimeoutError') throw err;
-        log(`pagina ${pageNum} laden mislukt (${err.message.split('\n')[0]}) — nog één poging.`);
+        if (err?.name === 'ScrapeTimeoutError' || signal?.aborted) throw err;
+        const melding = `pagina ${pageNum} (${url}), poging ${poging}: ${err.message.split('\n')[0]}`;
+        if (poging >= 2) {
+          err.message = melding;
+          throw err;
+        }
+        log(`${melding} — nog één poging over ${HERPOGING_PAUZE_MS / 1000} s.`);
+        await sleep(HERPOGING_PAUZE_MS, signal);
       }
     }
     const result = await page.evaluate(() => {
@@ -124,7 +138,7 @@ export async function scrapeIta({ page, theater, robots, waitForTurn, log }) {
 
     if (!result.valid || !result.totalLabel) {
       throw new Error(
-        `geen geldige agendapagina op ${page.url()} (${!result.valid ? 'lijst' : 'resultatenteller'} niet gevonden) — site veranderd?`
+        `pagina ${pageNum}, stap: lijst — geen geldige agendapagina op ${page.url()} (${!result.valid ? 'lijst' : 'resultatenteller'} niet gevonden) — site veranderd?`
       );
     }
     if (pageNum === 1) expectedTotal = parseInt(result.totalLabel.match(/\d+/)[0], 10);

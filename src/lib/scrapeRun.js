@@ -169,7 +169,11 @@ async function runWithDeadline({ theater, scraper, deps, budgetMs, log }) {
       const robots = await deps.loadRobots(theater, signal, scraperLog);
       signal.throwIfAborted();
       scraperLog(`robots.txt gelezen (${robots.robotsUrl}), crawl-delay = ${robots.crawlDelayMs}ms`);
-      const waitForTurn = deps.createWaiter(robots.crawlDelayMs, scraperLog, signal);
+      // Een eigen, ruimere pauze per theater (config.js: crawlDelaySeconden)
+      // gaat boven die van robots.txt.
+      const eigen = (theater.crawlDelaySeconden ?? 0) * 1000;
+      if (eigen > robots.crawlDelayMs) scraperLog(`eigen crawl-delay ${eigen}ms (ruimer dan robots.txt)`);
+      const waitForTurn = deps.createWaiter(Math.max(robots.crawlDelayMs, eigen), scraperLog, signal);
       const shows = await scraper({ page, theater, robots, waitForTurn, log: scraperLog, warn, signal });
       if (!Array.isArray(shows)) throw new Error('scraper gaf geen array terug');
       return shows;
