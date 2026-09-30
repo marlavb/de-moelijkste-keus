@@ -526,4 +526,20 @@ export const THEATERS = [
     agendaUrl: 'https://theaterdestoep.nl/voorstellingen',
     podiumpas: true,
   },
+  {
+    id: 'maaspoort',
+    naam: 'De Maaspoort Theater & Events',
+    stad: 'Venlo',
+    provincie: 'Limburg',
+    baseUrl: 'https://www.maaspoort.nl',
+    agendaUrl: 'https://www.maaspoort.nl/programma/',
+    // Per voorstelling: niet bij Uit de regio, Events, Educatie, externe
+    // locaties en boven € 50 (zie src/sites/maaspoort.js).
+    podiumpas: true,
+    // Bron: https://www.maaspoort.nl/informatie/voordeel-extras/podiumpas/ (30 sep 2026)
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Online met het tarief "Podiumpas" (pasnummer invullen), vanaf 30 dagen voor de voorstelling. Niet bij Uit de regio, Events, Educatie en voorstellingen buiten het Maaspoort-gebouw.',
+    },
+  },
 ];

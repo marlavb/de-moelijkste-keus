@@ -26,7 +26,9 @@ test('theaters.json: gepauzeerd theater krijgt een melding met link naar de eige
 test('config: elk podiumpasReserveren heeft een manier om te reserveren', () => {
   for (const t of THEATERS.filter((x) => x.podiumpasReserveren)) {
     const r = t.podiumpasReserveren;
-    assert.ok(r.telefoon || r.email || r.formulier, t.id);
+    // online: true = reserveren via de eigen website (tarief "Podiumpas").
+    assert.ok(r.online || r.telefoon || r.email || r.formulier, t.id);
+    if (r.online) assert.ok(r.toelichting, `${t.id}: online zonder toelichting`);
     assert.ok(t.podiumpas, `${t.id}: reserveerinfo zonder podiumpas`);
   }
   const size = JSON.stringify(buildTheatersJson(THEATERS)).length;

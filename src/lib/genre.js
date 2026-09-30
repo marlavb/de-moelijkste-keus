@@ -38,6 +38,14 @@ const GENRE_MAP = {
   theatercollege: 'Overig',
   special: 'Overig',
 
+  // De Maaspoort en DOK6 (30 sep 2026): sitecategorieën die geen genre zijn
+  // (en bij beide ook geen Podiumpas geven, zie hun scrapers), en "Show".
+  'uit de regio': 'Overig',
+  'uit-de-regio': 'Overig',
+  events: 'Overig',
+  educatie: 'Overig',
+  show: 'Overig',
+
   // ITA
   'dans-familie': 'Familie & Jeugd',
   'theater - kind': 'Familie & Jeugd',
@@ -189,6 +197,14 @@ function lookupGenre(raw) {
 export function normalizeGenre(raw) {
   if (!raw) return null;
   return lookupGenre(raw) ?? 'Overig';
+}
+
+/**
+ * Is dit een bekend brongenre (staat het in de mapping)? Voor scrapers die
+ * onbekende labels willen melden in plaats van ze stil op "Overig" te zetten.
+ */
+export function isBekendGenre(raw) {
+  return Boolean(raw) && lookupGenre(raw) !== null;
 }
 
 /**

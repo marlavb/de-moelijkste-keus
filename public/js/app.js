@@ -128,7 +128,7 @@ const STORAGE_KEYS = {
 // provincie-koppen; een stad die niet in de map staat belandt in de
 // PROVINCE_FALLBACK-sectie zodat een nieuwe stad nooit stilzwijgend
 // verdwijnt.
-const PROVINCE_ORDER = ['Noord-Holland', 'Zuid-Holland', 'Utrecht', 'Flevoland'];
+const PROVINCE_ORDER = ['Noord-Holland', 'Zuid-Holland', 'Utrecht', 'Flevoland', 'Limburg'];
 const PROVINCE_FALLBACK = 'Overig';
 const PROVINCE_BY_CITY = {
   Amsterdam: 'Noord-Holland',
@@ -149,6 +149,8 @@ const PROVINCE_BY_CITY = {
   Spijkenisse: 'Zuid-Holland',
   'Capelle aan den IJssel': 'Zuid-Holland',
   Barendrecht: 'Zuid-Holland',
+  Venlo: 'Limburg',
+  Panningen: 'Limburg',
 };
 
 // Desktop-sidebar accordeon-secties (Stad/Theater/Genre) — standaard allemaal
@@ -1912,7 +1914,10 @@ function renderShowRow(show) {
 
   const meta = document.createElement('p');
   meta.className = 'show-meta';
-  meta.textContent = show.stad ? `${show.theaterNaam} · ${show.stad}` : show.theaterNaam;
+  // Externe locatie (bv. De Maaspoort in "Theater De Garage | Venlo"): de
+  // plek zelf erbij, zonder het adres.
+  const plek = show.locatie ? show.locatie.split('|')[0].trim() : null;
+  meta.textContent = [show.theaterNaam, show.stad, plek].filter(Boolean).join(' · ');
 
   // Genre en badges op één regel.
   const tagsRow = document.createElement('div');
@@ -2109,9 +2114,12 @@ function renderDetail(show) {
   els.detailTime.textContent = show.tijd ? `${show.tijd} uur` : 'Tijd volgt nog';
 
   const adres = THEATER_INFO[show.theaterId]?.adres;
-  els.detailAddress.textContent = adres
-    ? `${show.theaterNaam}, ${adres}, ${show.stad}`
-    : `${show.theaterNaam}, ${show.stad}`;
+  // Externe locatie: die plek (met adres als de bron het geeft), namens het theater.
+  els.detailAddress.textContent = show.locatie
+    ? `${show.locatie.split('|').map((d) => d.trim()).join(', ')} (via ${show.theaterNaam})`
+    : adres
+      ? `${show.theaterNaam}, ${adres}, ${show.stad}`
+      : `${show.theaterNaam}, ${show.stad}`;
 
   els.detailDescription.textContent = show.beschrijving || 'Nog geen omschrijving beschikbaar.';
 
