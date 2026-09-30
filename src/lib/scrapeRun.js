@@ -8,6 +8,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { ontdubbelShows, dubbelSleutel } from './dedupe.js';
 import { volgNavigatie, paginaDiagnose } from './diagnose.js';
 import { pasMeerderheidToe } from './weergaveMeerderheid.js';
+import { pasGenreMeerderheidToe } from './genreMeerderheid.js';
 import { metEnDash, zonderStatusWoord } from './titels.js';
 import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
@@ -341,9 +342,11 @@ export async function runRefresh({
     // centraal op null gezet voor elke andere show, in plaats van dat elke
     // afzonderlijke scraper-module het zelf moet opnemen.
     // Eén scheidingsteken in titels en makers (" - " → " – ", zie titels.js).
-    .map(({ titelBron, ...s }) => {
+    .map(({ titelBron, genreBron, genres, ...s }) => {
       // Behouden voorstellingen van de vorige run: eerst terug naar de
-      // brontitel, zodat ontdubbeling en stemming steeds op de bron werken.
+      // brontitel en het brongenre, zodat ontdubbeling en stemming steeds op
+      // de bron werken (genreBron kan null zijn: "had geen genre").
+      if (genreBron !== undefined) s.genre = genreBron;
       const bron = titelBron ?? s.titel;
       // Afgelast/verplaatst: het statuswoord uit de titel, het staat in het label.
       const kaal = isVervallen(s) ? zonderStatusWoord : (t) => t;
@@ -360,8 +363,11 @@ export async function runRefresh({
   const { shows: ontdubbeld, verwijderdPerTheater } = ontdubbelShows(verseShows);
   // Weergavetitel op meerderheid (weergaveMeerderheid.js); brontitel blijft
   // als titelBron.
-  const { shows: freshShows, gewijzigd: titelsOpMeerderheid } = pasMeerderheidToe(ontdubbeld);
+  const { shows: metWeergave, gewijzigd: titelsOpMeerderheid } = pasMeerderheidToe(ontdubbeld);
   if (titelsOpMeerderheid > 0) log(`${titelsOpMeerderheid} titel(s) naar de weergave van de meeste theaters (titelBron bewaard).`);
+  // Genre op productieniveau (genreMeerderheid.js); brongenre als genreBron.
+  const { shows: freshShows, gewijzigd: genresOpMeerderheid } = pasGenreMeerderheidToe(metWeergave);
+  if (genresOpMeerderheid > 0) log(`${genresOpMeerderheid} voorstelling(en) naar het genre van de productie (genreBron bewaard).`);
   for (const theater of theaters) {
     const st = theaterStatus[theater.id];
     if (!st || theater.gepauzeerd) continue;

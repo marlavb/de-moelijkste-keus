@@ -535,3 +535,24 @@ test('weergave op meerderheid: brontitel terug vóór ontdubbeling, stabiel over
   assert.equal(carre2.titel, 'Prikkelarme kermis – Sara Kroos');
   assert.equal(carre2.titelBron, 'Sara Kroos – Prikkelarme kermis');
 });
+
+test('genre op productieniveau: brongenre terug vóór elke run, stabiel over twee runs', async () => {
+  const paths = await setup();
+  const scrapers = {
+    frascati: async () => [show('frascati', '2026-11-03', { titel: 'SEXODUS', genre: 'Overig' })],
+    kunstlinie: async () => [show('kunstlinie', '2026-11-04', { titel: 'SEXODUS', genre: 'Muziektheater' })],
+  };
+  const theaters = [theater('frascati'), theater('kunstlinie')];
+  const eerste = await run({ paths, theaters, scrapers });
+  const fr = eerste.written.find((x) => x.theaterId === 'frascati');
+  assert.equal(fr.genre, 'Muziektheater');
+  assert.equal(fr.genreBron, 'Overig');
+  // Tweede run: Kunstlinie valt terug; Frascati komt vers binnen.
+  const tweede = await run({ paths, theaters, scrapers: { ...scrapers, kunstlinie: failing } });
+  const fr2 = tweede.written.find((x) => x.theaterId === 'frascati');
+  const kl2 = tweede.written.find((x) => x.theaterId === 'kunstlinie');
+  assert.equal(fr2.genre, 'Muziektheater');
+  assert.equal(fr2.genreBron, 'Overig');
+  assert.equal(kl2.genre, 'Muziektheater');
+  assert.equal('genreBron' in kl2, false);
+});
