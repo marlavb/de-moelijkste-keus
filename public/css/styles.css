@@ -145,7 +145,7 @@ a {
 .app-title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 36px;
+  font-size: 26px; /* was 36px (−28%, 30 sep 2026) */
   font-weight: var(--kop-gewicht);
   line-height: 1.05;
   letter-spacing: -0.01em;
@@ -153,7 +153,7 @@ a {
 }
 
 .app-subtitle {
-  margin: 6px 0 0;
+  margin: 2px 0 0;
   font-size: 14px;
   color: var(--text-2);
 }
