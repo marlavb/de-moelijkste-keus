@@ -1,12 +1,16 @@
 import { pagineerListing } from '../lib/peppered.js';
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/nl/agenda';
 const MAX_LISTING_PAGES = 60;
 
 function classifyBeschikbaarheid(ctrlText) {
   const tekst = (ctrlText ?? '').trim().toLowerCase();
+  // Knop "geannuleerd" (class status-geannuleerd), zie beschikbaarheid.js.
+  const vervallen = vervallenStatus(tekst);
+  if (vervallen) return vervallen;
   if (tekst.includes('wachtlijst')) return 'wachtlijst';
   if (tekst.includes('uitverkocht') || tekst.includes('volgeboekt')) return 'uitverkocht';
   if (
@@ -92,7 +96,9 @@ export async function scrapeFrascati({ page, theater, robots, waitForTurn, log, 
           const dagTekst = dtInner?.querySelector('.datetime .date .start')?.textContent.trim() ?? null;
           if (dagTekst) {
             const tijdTekst = dtInner?.querySelector('.datetime .time .start')?.textContent.trim() ?? null;
-            const ctrl = dtInner?.querySelector('a.btn, button.btn, span.btn');
+            // Zonder knop staat de status in a.status-info ("geannuleerd",
+            // "uitverkocht", "binnenkort"; class status-geannuleerd enz.).
+            const ctrl = dtInner?.querySelector('a.btn, button.btn, span.btn, .status-info:not(.expand-sub)');
             rows.push({
               dagTekst,
               tijdTekst,

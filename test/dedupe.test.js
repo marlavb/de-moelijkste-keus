@@ -88,3 +88,18 @@ test('gepubliceerde shows.json bevat geen dubbelingen', () => {
   const { verwijderdPerTheater } = ontdubbelShows(shows);
   assert.deepEqual(verwijderdPerTheater, {}, `dubbelingen in shows.json: ${JSON.stringify(verwijderdPerTheater)}`);
 });
+
+test('afgelast en gewoon op hetzelfde tijdstip: geen dubbeling, plan koppelt aan de gewone', () => {
+  const afgelast = { ...basis, id: `${basis.id}-2`, beschikbaarheid: 'afgelast' };
+  assert.notEqual(dubbelSleutel(afgelast), dubbelSleutel(basis));
+  const { shows, verwijderdPerTheater } = ontdubbelShows([afgelast, basis]);
+  assert.equal(shows.length, 2);
+  assert.deepEqual(verwijderdPerTheater, {});
+  // Twee afgelaste kopieën zijn wél een dubbeling.
+  assert.equal(ontdubbelShows([afgelast, { ...afgelast, id: 'x' }]).shows.length, 1);
+
+  const plan = planIn(legeGepland(), { ...basis, theaterNaam: 'Muziekgebouw' }).gepland[0];
+  assert.equal(koppel(plan, indexeerShows([afgelast, basis])).show, basis);
+  assert.equal(koppel(plan, indexeerShows([afgelast])).show, afgelast);
+  assert.equal(koppel(plan, indexeerShows([afgelast])).soort, 'exact');
+});

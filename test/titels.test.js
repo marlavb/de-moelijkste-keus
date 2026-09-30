@@ -88,3 +88,23 @@ test('weergave: "titel – maker", maker niet dubbel', () => {
   // Alleen hele woorden tellen: "ITA" staat niet in "La Vita".
   assert.equal(weergaveTitel({ titel: 'La Vita', maker: 'ITA' }), 'La Vita – ITA');
 });
+
+test('statuswoord als los titeldeel weg bij afgelast/verplaatst', async () => {
+  const { zonderStatusWoord } = await import('../src/lib/titels.js');
+  const { vervallenStatus } = await import('../src/lib/beschikbaarheid.js');
+  assert.equal(zonderStatusWoord('Gelukkig maar – geannuleerd – Myrte Siebinga'), 'Gelukkig maar – Myrte Siebinga');
+  assert.equal(zonderStatusWoord('Niek Barendsen, Michiel Nooter e.a. – GEANNULEERD'), 'Niek Barendsen, Michiel Nooter e.a.');
+  assert.equal(zonderStatusWoord('Kiem (afgelast)'), 'Kiem');
+  assert.equal(zonderStatusWoord('VERPLAATST – Kiem'), 'Kiem');
+  // Een woord in een titel blijft staan.
+  assert.equal(zonderStatusWoord('De verplaatste man'), 'De verplaatste man');
+  assert.equal(zonderStatusWoord('Afgelast'), 'Afgelast');
+  assert.equal(zonderStatusWoord(null), null);
+
+  assert.equal(vervallenStatus('geannuleerd'), 'afgelast');
+  assert.equal(vervallenStatus(' Afgelast '), 'afgelast');
+  assert.equal(vervallenStatus('Gaat niet door'), 'afgelast');
+  assert.equal(vervallenStatus('Verplaatst'), 'verplaatst');
+  assert.equal(vervallenStatus('Bestel kaarten'), null);
+  assert.equal(vervallenStatus(null), null);
+});

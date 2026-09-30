@@ -1,5 +1,6 @@
 import { createDutchDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/agenda';
 
@@ -10,6 +11,9 @@ const AGENDA_PATH = '/agenda';
 const EXCLUDED_CATEGORIES = new Set(['market', 'food, kitchen', 'workshop, class', 'film']);
 
 function classifyBeschikbaarheid(ticketUrl, ticketsLabelText) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(ticketsLabelText);
+  if (vervallen) return vervallen;
   if (ticketUrl) return 'beschikbaar';
   if (/gratis|free/i.test(ticketsLabelText ?? '')) return 'beschikbaar';
   return 'onbekend';

@@ -1,5 +1,6 @@
 import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/programma';
 const MONTHS = {
@@ -19,6 +20,9 @@ function parseDate(dateText, timeText) {
 }
 
 function classifyKnop(text) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(text);
+  if (vervallen) return vervallen;
   const t = (text ?? '').trim().toLowerCase();
   if (t.includes('uitverkocht')) return 'uitverkocht';
   if (t.includes('wachtlijst')) return 'wachtlijst';

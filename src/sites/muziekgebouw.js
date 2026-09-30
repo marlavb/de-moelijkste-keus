@@ -1,5 +1,6 @@
 import { pagineerListing } from '../lib/peppered.js';
 import { extractTime, createIdBuilder } from '../lib/normalize.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/nl/agenda';
 const MAX_LISTING_PAGES = 30;
@@ -44,6 +45,9 @@ function parseDate(raw) {
 // de kaart en heeft een eigen status-suffix in de class ("status-normaal",
 // "status-laatste_kaarten", ...) die als fallback/bevestiging dient.
 function classifyBeschikbaarheid(statusInfoText, btnOrderStatus) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(statusInfoText) ?? vervallenStatus(btnOrderStatus);
+  if (vervallen) return vervallen;
   const info = (statusInfoText ?? '').toLowerCase();
   if (info.includes('wachtlijst')) return 'wachtlijst';
   if (info.includes('uitverkocht')) return 'uitverkocht';

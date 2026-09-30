@@ -2,6 +2,7 @@ import { pagineerListing, leesSpeeldataVanDetail } from '../lib/peppered.js';
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/voorstellingen';
 const MAX_LISTING_PAGES = 30;
@@ -10,6 +11,9 @@ const MAX_LISTING_PAGES = 30;
 // een <a class="status-info"> met tekst-label voor uitzonderingen, de
 // bestelknop (.btn-order) met eigen status-suffix als fallback/bevestiging.
 function classifyBeschikbaarheid(statusInfoText, btnOrderStatus) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(statusInfoText) ?? vervallenStatus(btnOrderStatus);
+  if (vervallen) return vervallen;
   const info = (statusInfoText ?? '').toLowerCase();
   if (info.includes('wachtlijst')) return 'wachtlijst';
   if (info.includes('uitverkocht')) return 'uitverkocht';

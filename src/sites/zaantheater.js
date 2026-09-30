@@ -1,11 +1,15 @@
 import { extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/nl/theater/agenda/';
 const MAX_LOAD_MORE_CLICKS = 40;
 
 function classifyBeschikbaarheid(orderText) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(orderText);
+  if (vervallen) return vervallen;
   const tekst = (orderText ?? '').trim().toLowerCase();
   if (tekst.includes('wachtlijst')) return 'wachtlijst';
   if (tekst.includes('uitverkocht')) return 'uitverkocht';

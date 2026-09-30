@@ -12,7 +12,7 @@ import {
 } from './firebase.js';
 import { getGenreBucket } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
-import { weergaveTitel, makerStaatInTitel } from './weergave.js';
+import { weergaveTitel, makerStaatInTitel, isVervallen, VERVALLEN_LABELS } from './weergave.js';
 import { renameFavoritesAndPersist, THEATER_MOVES } from './favorites.js';
 import { laadWatchlist, bekendeSleutels, legeWatchlist, watchlistSleutel, voegToe, verwijder } from './watchlist.js';
 import {
@@ -74,6 +74,8 @@ const THEATER_ZOEKALIASSEN = {
 const BESCHIKBAARHEID_LABELS = {
   uitverkocht: 'Uitverkocht',
   wachtlijst: 'Wachtlijst',
+  // Gaat op deze datum niet door (zie src/lib/beschikbaarheid.js).
+  ...VERVALLEN_LABELS,
 };
 
 const GENRE_CATEGORIES = [
@@ -273,6 +275,7 @@ const els = {
   detailRelatedTheaters: document.getElementById('detailRelatedTheaters'),
   detailCheckedAt: document.getElementById('detailCheckedAt'),
   detailReserveBtn: document.getElementById('detailReserveBtn'),
+  detailVervallenNotice: document.getElementById('detailVervallenNotice'),
   detailReserveLabel: document.getElementById('detailReserveLabel'),
   detailPodiumpasNotice: document.getElementById('detailPodiumpasNotice'),
   detailAddCalendar: document.getElementById('detailAddCalendar'),
@@ -873,7 +876,8 @@ function makePlanTag(status) {
 
 function renderPlanControls(show) {
   const plan = planVoor(show);
-  els.detailPlanBtn.hidden = Boolean(plan);
+  // Een afgelaste voorstelling plan je niet meer; een bestaand plan blijft.
+  els.detailPlanBtn.hidden = Boolean(plan) || isVervallen(show);
   els.detailPlanBar.hidden = !plan;
   els.detailPlanBtn.onclick = () => wijzigPlanning(planIn(state.gepland, show), show);
   if (!plan) return;
@@ -885,8 +889,9 @@ function renderPlanControls(show) {
   els.detailStatusKaarten.onclick = () => wijzigPlanning(zetStatus(state.gepland, item.sleutel, 'kaarten'), show);
   els.detailUnplan.onclick = () => wijzigPlanning(haalUitPlanning(state.gepland, item.sleutel), show);
 
-  const wijziging =
-    soort === 'tijd'
+  const wijziging = isVervallen(show)
+    ? `Deze voorstelling is ${show.beschikbaarheid}. Je plan blijft staan tot je het zelf uit je planning haalt.`
+    : soort === 'tijd'
       ? `Je plande dit om ${item.tijd ?? 'een onbekende tijd'}; het theater geeft nu ${show.tijd ?? 'nog geen tijd'} op.`
       : soort === 'titel'
         ? `Je plande dit als "${item.titel}"; het theater noemt het nu anders.`
@@ -916,7 +921,8 @@ const SOORT_LABELS = { tijd: 'Tijd gewijzigd', titel: 'Titel gewijzigd', weg: 'N
 
 function renderPlanRow(item, { show, soort }) {
   const row = document.createElement('div');
-  row.className = 'plan-row' + (soort === 'weg' ? ' plan-row--weg' : '');
+  const vervallen = isVervallen(show);
+  row.className = 'plan-row' + (soort === 'weg' ? ' plan-row--weg' : '') + (vervallen ? ' plan-row--vervallen' : '');
 
   const { day, month } = parseIsoDate(item.datum);
   const when = document.createElement('div');
@@ -941,6 +947,8 @@ function renderPlanRow(item, { show, soort }) {
   const theaterNaam = planTheaterNaam(item);
   meta.textContent = tijd ? `${theaterNaam} · ${tijd}` : theaterNaam;
   info.append(title, meta);
+  // Afgelast/verplaatst: duidelijk bovenaan, ook bij "Kaarten ✓".
+  if (vervallen) info.prepend(makeStatusBadge(show.beschikbaarheid));
   const notes = [];
   if (soort === 'tijd') notes.push(`${SOORT_LABELS.tijd} (was ${item.tijd ?? 'onbekend'})`);
   else if (soort !== 'exact') notes.push(SOORT_LABELS[soort]);
@@ -978,7 +986,8 @@ function renderPlanRow(item, { show, soort }) {
   ics.addEventListener('click', () =>
     downloadIcs(show ?? { ...item, theaterNaam: planTheaterNaam(item), id: item.sleutel, beschrijving: '' }, item.sleutel)
   );
-  actions.append(status, ics);
+  // Geen .ics voor een voorstelling die niet doorgaat.
+  actions.append(...(vervallen ? [status] : [status, ics]));
 
   row.append(when, info, actions);
   return row;
@@ -1476,8 +1485,10 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     const watchlistOk = !state.watchlistOnly || isOpWatchlist(s);
     // 'onbekend' blijft altijd zichtbaar — we weten domweg niet of die vol
     // is, en dat is iets anders dan bevestigd vol (uitverkocht/wachtlijst).
+    // Afgelast en verplaatst zijn ook niet te boeken: die gaan mee weg.
     const fullOk =
-      !state.hideFullOnly || (s.beschikbaarheid !== 'uitverkocht' && s.beschikbaarheid !== 'wachtlijst');
+      !state.hideFullOnly ||
+      (s.beschikbaarheid !== 'uitverkocht' && s.beschikbaarheid !== 'wachtlijst' && !isVervallen(s));
     // Ondergrens geldt altijd, ook met ignoreDateWindow (dat heft alleen de
     // voorwaartse 30-dagen-grens op via "toon meer" — verleden tijd tonen we
     // nooit, dat is geen "meer", dat is gewoon verlopen data).
@@ -1618,6 +1629,7 @@ function renderShowRow(show) {
   if (plan) tagsRow.appendChild(makePlanTag(plan.item.status));
 
   info.append(title, meta, tagsRow);
+  if (isVervallen(show)) row.classList.add('show-row--vervallen');
 
   row.append(time, info);
   // Alleen watchlist-items krijgen rechts een (gevulde) bladwijzer.
@@ -1809,6 +1821,12 @@ function renderDetail(show) {
     ? 'Kaarten (zonder Podiumpas)'
     : `Reserveer op ${hostnameOf(show.reserverenUrl)}`;
   els.detailReserveBtn.href = show.reserverenUrl;
+  // Afgelast of verplaatst: niet boekbaar, niet in je agenda zetten.
+  const vervallen = isVervallen(show);
+  els.detailVervallenNotice.hidden = !vervallen;
+  els.detailVervallenNotice.textContent = vervallen ? vervallenUitleg(show) : '';
+  els.detailReserveBtn.hidden = vervallen;
+  els.detailAddCalendar.hidden = vervallen;
 
   renderWatchButtons(show);
   renderPlanControls(show);
@@ -1819,6 +1837,12 @@ function renderDetail(show) {
   els.detailWatchBtn.onclick = () => toggleWatchlist(show);
 
   els.detailAddCalendar.onclick = () => downloadIcs(show);
+}
+
+function vervallenUitleg(show) {
+  return show.beschikbaarheid === 'verplaatst'
+    ? `Het theater heeft deze voorstelling verplaatst. Kijk op de site van ${show.theaterNaam} voor de nieuwe datum.`
+    : `Het theater heeft deze voorstelling afgelast. Had je kaarten? Kijk op de site van ${show.theaterNaam} wat er met je kaarten gebeurt.`;
 }
 
 function renderWatchButtons(show) {
@@ -1847,7 +1871,8 @@ function renderOtherDates(show) {
   els.detailOtherDatesWrap.hidden = false;
   els.detailOtherDates.innerHTML = '';
   for (const s of related) {
-    const label = s.tijd ? `${formatDateShort(s.datum)}, ${s.tijd}` : formatDateShort(s.datum);
+    const wanneer = s.tijd ? `${formatDateShort(s.datum)}, ${s.tijd}` : formatDateShort(s.datum);
+    const label = isVervallen(s) ? `${wanneer} (${s.beschikbaarheid})` : wanneer;
     els.detailOtherDates.appendChild(
       makeChip(label, s.id === show.id, () => navigate(`#/show/${encodeURIComponent(s.id)}`))
     );
@@ -1887,7 +1912,8 @@ function renderRelatedTheaters(show) {
     row.setAttribute('role', 'group');
     row.setAttribute('aria-label', shows[0].theaterNaam);
     for (const s of shows) {
-      const label = s.tijd ? `${formatDateShort(s.datum)}, ${s.tijd}` : formatDateShort(s.datum);
+      const wanneer = s.tijd ? `${formatDateShort(s.datum)}, ${s.tijd}` : formatDateShort(s.datum);
+      const label = isVervallen(s) ? `${wanneer} (${s.beschikbaarheid})` : wanneer;
       row.appendChild(makeChip(label, false, () => navigate(`#/show/${encodeURIComponent(s.id)}`)));
     }
     group.appendChild(row);
@@ -2252,7 +2278,8 @@ function watchlistProductions() {
   const productions = [];
   for (const item of state.watchlist?.watchlist ?? []) {
     const komend = (perSleutel.get(item.sleutel) ?? [])
-      .filter((s) => s.datum >= vandaag)
+      // Een afgelaste of verplaatste speeldatum is niet "de eerstvolgende".
+      .filter((s) => s.datum >= vandaag && !isVervallen(s))
       .sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
     const soonest = komend[0] ?? null;
     const theaters = new Set(komend.map((s) => s.theaterId));

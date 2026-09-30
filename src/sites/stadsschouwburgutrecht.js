@@ -2,6 +2,7 @@ import { pagineerListing } from '../lib/peppered.js';
 import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/agenda';
 const MAX_LISTING_PAGES = 60;
@@ -19,7 +20,11 @@ function parseDateTime(raw) {
   return { datum: `${year}-${pad2(month)}-${pad2(day)}`, tijd: `${pad2(hour)}:${minute}` };
 }
 
-function classifyBeschikbaarheid(ticketText) {
+// Een afgelaste voorstelling heeft knoptekst "geannuleerd" en het label
+// (.tag) "geannuleerd" op de plek van het genre.
+function classifyBeschikbaarheid(ticketText, tag) {
+  const vervallen = vervallenStatus(ticketText) ?? vervallenStatus(tag);
+  if (vervallen) return vervallen;
   const tekst = (ticketText ?? '').trim().toLowerCase();
   if (tekst.includes('wachtlijst')) return 'wachtlijst';
   if (tekst.includes('uitverkocht')) return 'uitverkocht';
@@ -106,9 +111,10 @@ export async function scrapeStadsschouwburgUtrecht({ page, theater, robots, wait
       podiumpas: theater.podiumpas,
       datum: parsed.datum,
       tijd: parsed.tijd,
-      genre: normalizeGenre(item.genre),
-      genreRuw: item.genre,
-      beschikbaarheid: classifyBeschikbaarheid(item.ticketText),
+      // Het label "geannuleerd" is een status, geen genre.
+      genre: vervallenStatus(item.genre) ? null : normalizeGenre(item.genre),
+      genreRuw: vervallenStatus(item.genre) ? null : item.genre,
+      beschikbaarheid: classifyBeschikbaarheid(item.ticketText, item.genre),
       beschrijving: item.beschrijving,
       reserverenUrl: ticketUrl ?? detailUrl,
       bron: theater.agendaUrl,

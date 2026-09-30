@@ -3,6 +3,7 @@ import { normalizeGenre } from '../lib/genre.js';
 import { THEATERS } from '../lib/config.js';
 import { createGroupScraper } from '../lib/peppered.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/nl/theater/agenda/';
 const MAX_LOAD_MORE_CLICKS = 40;
@@ -70,6 +71,9 @@ export function bepaalLandingPodiumpas({ orderHref, beschikbaarheid, widget }) {
 }
 
 function classifyBeschikbaarheid(orderText) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(orderText);
+  if (vervallen) return vervallen;
   const tekst = (orderText ?? '').trim().toLowerCase();
   if (tekst.includes('wachtlijst')) return 'wachtlijst';
   if (tekst.includes('uitverkocht')) return 'uitverkocht';

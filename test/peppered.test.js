@@ -31,9 +31,11 @@ test('knopteksten → beschikbaarheid, of overslaan', () => {
   assert.equal(classifyPepperedButton('Wachtlijst'), 'wachtlijst');
   assert.equal(classifyPepperedButton('Uitverkocht'), 'uitverkocht');
   assert.equal(classifyPepperedButton('Geweest'), null);
-  assert.equal(classifyPepperedButton('Geannuleerd'), null);
+  // Sinds 30 sep 2026 niet meer overgeslagen, maar gemarkeerd.
+  assert.equal(classifyPepperedButton('Geannuleerd'), 'afgelast');
+  assert.equal(classifyPepperedButton('Afgelast'), 'afgelast');
   assert.equal(classifyPepperedButton('Verkoop elders'), null);
-  assert.equal(classifyPepperedButton('Verplaatst'), null);
+  assert.equal(classifyPepperedButton('Verplaatst'), 'verplaatst');
   assert.equal(classifyPepperedButton('Kaartverkoop binnenkort'), 'onbekend');
   assert.equal(classifyPepperedButton('Met audiodescriptie'), 'onbekend');
   assert.equal(classifyPepperedButton('Tickets via theater'), null);
@@ -167,4 +169,10 @@ test('pagineerListing: lege pagina 1 met leegIsFout → exception; eigen paramet
   const { items } = await pagineer(page, { parameter: 'sf_paged', leesParameter: false });
   assert.equal(items.length, 6);
   assert.equal(page.bezocht[1], 'https://t.test/agenda?sf_paged=2');
+});
+
+test('dedupeShows: afgelaste en gewone rij op hetzelfde tijdstip blijven allebei', () => {
+  const rij = { id: 'hnt-a', theaterId: 'hnt', titel: 'A', datum: '2026-10-01', tijd: '20:00', beschikbaarheid: 'beschikbaar' };
+  const out = dedupeShows([{ ...rij, id: 'hnt-a-2', beschikbaarheid: 'afgelast' }, rij]);
+  assert.deepEqual(out.map((s) => s.beschikbaarheid), ['afgelast', 'beschikbaar']);
 });

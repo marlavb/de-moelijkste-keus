@@ -2,6 +2,7 @@ import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
 import { dedupeShows } from '../lib/peppered.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/voorstellingen';
 const MONTHS_AHEAD = 14;
@@ -30,6 +31,9 @@ const DAG_MAAND = /(\d{1,2})\s+(januari|februari|maart|april|mei|juni|juli|augus
 const MAANDEN = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
 
 function classifyKnop(text) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(text);
+  if (vervallen) return vervallen;
   const t = (text ?? '').trim().toLowerCase();
   if (!t) return 'onbekend';
   if (t.includes('uitverkocht')) return 'uitverkocht';
@@ -158,7 +162,15 @@ export async function scrapeStoep({ page, theater, robots, waitForTurn, log }) {
     const simonshaven = /simonshaven/i.test(detail.bodyText);
 
     for (const event of detail.events) {
-      if (!event.startDate || /Cancelled|Postponed/i.test(event.eventStatus ?? '')) continue;
+      if (!event.startDate) continue;
+      // schema.org eventStatus: Cancelled → afgelast, Postponed (nieuwe datum
+      // nog niet bekend) → verplaatst. Bij Rescheduled is startDate al de
+      // nieuwe datum: gewoon tonen. Tot 30 sep 2026 werden ze overgeslagen.
+      const vervallen = /Cancelled/i.test(event.eventStatus ?? '')
+        ? 'afgelast'
+        : /Postponed/i.test(event.eventStatus ?? '')
+          ? 'verplaatst'
+          : null;
       const when = toAmsterdam(event.startDate);
       const [, mm, dd] = when.datum.split('-').map(Number);
       const row = detail.rows.find((r) => {
@@ -192,7 +204,7 @@ export async function scrapeStoep({ page, theater, robots, waitForTurn, log }) {
         tijd: when.tijd,
         genre: normalizeGenre(genreTag),
         genreRuw: detail.tags.filter(Boolean).join(', ') || null,
-        beschikbaarheid: soldOut ? 'uitverkocht' : classifyKnop(knop ?? (offers.length ? 'bestel kaarten' : null)),
+        beschikbaarheid: vervallen ?? (soldOut ? 'uitverkocht' : classifyKnop(knop ?? (offers.length ? 'bestel kaarten' : null))),
         beschrijving: null,
         maker: detail.maker,
         prijs,

@@ -19,3 +19,13 @@ export function weergaveTitel(show) {
   if (!maker || makerStaatInTitel(titel, maker)) return titel;
   return `${titel} – ${maker}`;
 }
+
+// Een voorstelling die op deze datum niet doorgaat (zie
+// src/lib/beschikbaarheid.js): wel tonen, met label, niet boekbaar.
+export const VERVALLEN = ['afgelast', 'verplaatst'];
+export const VERVALLEN_LABELS = { afgelast: 'Afgelast', verplaatst: 'Verplaatst' };
+
+export function isVervallen(showOfStatus) {
+  const b = typeof showOfStatus === 'string' ? showOfStatus : showOfStatus?.beschikbaarheid;
+  return VERVALLEN.includes(b);
+}

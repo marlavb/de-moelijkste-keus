@@ -1,12 +1,16 @@
 import { createDutchDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/agenda/';
 const MAX_LOAD_MORE_CLICKS = 40;
 
 // DeLaMar toont maar drie knop-teksten in de tile-footer; geen wachtlijst.
 function classifyBeschikbaarheid(ticketLabel) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(ticketLabel);
+  if (vervallen) return vervallen;
   const label = (ticketLabel ?? '').trim().toLowerCase();
   if (label === 'uitverkocht') return 'uitverkocht';
   if (label === 'koop tickets' || label === 'laatste tickets') return 'beschikbaar';

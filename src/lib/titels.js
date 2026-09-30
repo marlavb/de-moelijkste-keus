@@ -76,3 +76,19 @@ export function pasTitelConventieToe(show, { artiest, voorstelling, makerWordtLe
 export function metEnDash(tekst) {
   return typeof tekst === 'string' ? tekst.replace(/\s+-\s+/g, ' – ') : tekst;
 }
+
+const STATUSWOORD = '(?:geannuleerd|afgelast|verplaatst)';
+const STATUS_DEEL = new RegExp(`(?:\\s+[-–]\\s+${STATUSWOORD}(?=\\s+[-–]\\s+|$)|^${STATUSWOORD}\\s+[-–]\\s+|\\s*\\(${STATUSWOORD}\\))`, 'gi');
+
+/**
+ * Een statuswoord als los titeldeel ("Gelukkig maar - geannuleerd",
+ * "… (afgelast)") weghalen: dat staat voortaan in het label, en zo krijgt de
+ * voorstelling dezelfde watchlist-sleutel als de gewone speeldata. Alleen
+ * voor voorstellingen die het theater zelf als afgelast/verplaatst markeert
+ * (zie scrapeRun.js). Woorden midden in een titel blijven staan.
+ */
+export function zonderStatusWoord(tekst) {
+  if (typeof tekst !== 'string') return tekst;
+  const kaal = tekst.replace(STATUS_DEEL, '').trim();
+  return kaal || tekst;
+}

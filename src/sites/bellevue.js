@@ -2,6 +2,7 @@ import { pagineerListing } from '../lib/peppered.js';
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/agenda';
 const MAX_LISTING_PAGES = 60;
@@ -13,10 +14,13 @@ const MAX_LISTING_PAGES = 60;
 // Frascati/De Kleine Komedie (zelfde platform) bleken ook "uitverkocht",
 // "Volgeboekt", "Tickets" en "Aanmelden via email" voor te komen — die
 // hadden we hier niet expliciet gevangen, nu wel. Randgevallen als
-// "Geweest" (voorbije datum), "binnenkort" (nog niet in verkoop) en
-// "geannuleerd" gaan niet over voorraad en worden dus "onbekend".
+// "Geweest" (voorbije datum) en "binnenkort" (nog niet in verkoop) gaan
+// niet over voorraad en worden dus "onbekend". "geannuleerd" wordt sinds
+// 30 sep 2026 "afgelast" (zie beschikbaarheid.js).
 function classifyBeschikbaarheid(statusTekst) {
   const tekst = (statusTekst ?? '').trim().toLowerCase();
+  const vervallen = vervallenStatus(tekst);
+  if (vervallen) return vervallen;
   if (tekst.includes('wachtlijst')) return 'wachtlijst';
   if (tekst.includes('uitverkocht') || tekst.includes('volgeboekt')) return 'uitverkocht';
   if (tekst.includes('kaarten') || tekst.includes('tickets') || tekst.includes('aanmelden')) return 'beschikbaar';

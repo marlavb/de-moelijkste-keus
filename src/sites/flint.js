@@ -3,6 +3,7 @@ import { sleep } from '../lib/politeness.js';
 import { ScrapeBlockedError } from '../lib/scrapeRun.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/agenda/';
 const PODIUMPAS_PRICE_CEILING = 50;
@@ -92,6 +93,9 @@ function parsePrice(priceText, fullBlockText) {
 }
 
 function classifyBeschikbaarheid(label) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(label);
+  if (vervallen) return vervallen;
   const tekst = (label ?? '').trim().toLowerCase();
   if (!tekst) return 'onbekend';
   if (tekst.includes('wachtlijst')) return 'wachtlijst';

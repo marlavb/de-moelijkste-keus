@@ -1,9 +1,13 @@
 import { createDutchDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/agenda';
 
 function classifyBeschikbaarheid(ticketText) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(ticketText);
+  if (vervallen) return vervallen;
   const tekst = (ticketText ?? '').trim().toLowerCase();
   if (tekst.includes('wachtlijst')) return 'wachtlijst';
   if (tekst.includes('uitverkocht')) return 'uitverkocht';

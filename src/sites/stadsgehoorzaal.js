@@ -1,6 +1,7 @@
 import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList, normalizeGenre } from '../lib/genre.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/programma';
 const MONTHS_AHEAD = 14;
@@ -45,12 +46,13 @@ function parseRowDate(text) {
   };
 }
 
-// Knoptekst per speeldatum. null = overslaan: afgelast, of een
-// aanmeldactiviteit (vrijwilligersavond, vakantieworkshop) i.p.v. een
-// voorstelling.
+// Knoptekst per speeldatum. null = overslaan: een aanmeldactiviteit
+// (vrijwilligersavond, vakantieworkshop) i.p.v. een voorstelling. Afgelast
+// of geannuleerd → "afgelast" (tot 30 sep 2026 overgeslagen).
 function classifyStatus(text) {
   const t = (text ?? '').toLowerCase();
-  if (t.includes('afgelast') || t.includes('geannuleerd')) return null;
+  const vervallen = vervallenStatus(t);
+  if (vervallen) return vervallen;
   if (t.includes('meld je aan') || t.includes('aanmelden')) return null;
   if (t.includes('uitverkocht') || t.includes('wachtlijst vol')) return 'uitverkocht';
   if (t.includes('wachtlijst')) return 'wachtlijst';

@@ -1,5 +1,6 @@
 import { createNumericDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/nl/agenda-stadsschouwburg';
 const MAX_LISTING_PAGES = 30;
@@ -7,6 +8,9 @@ const MAX_LISTING_PAGES = 30;
 // Knopteksten op de agendapagina (aria-label "button: <tekst>"). "Laatste
 // kaarten" en "Gratis aanmelden" zijn gewoon te boeken, dus beschikbaar.
 function classifyBeschikbaarheid(knopTekst) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(knopTekst);
+  if (vervallen) return vervallen;
   const tekst = (knopTekst ?? '').trim().toLowerCase();
   if (tekst.includes('uitverkocht')) return 'uitverkocht';
   if (tekst.includes('wachtlijst')) return 'wachtlijst';

@@ -450,3 +450,21 @@ test('zonder tijd: geteld per theater; warning alleen bij een flinke stijging, n
   assert.equal(status.theaters.c.waarschuwing, null);
   assert.deepEqual(annotations.filter((x) => x.title.startsWith('Tijden')).map((x) => x.title), ['Tijden ontbreken a']);
 });
+
+test('afgelast: statuswoord uit de titel; afgelast en gewoon op hetzelfde tijdstip blijven allebei', async () => {
+  const paths = await setup();
+  const scrapers = {
+    a: async () => [
+      show('a', '2026-10-05', { titel: 'Gelukkig maar - geannuleerd – Myrte Siebinga', beschikbaarheid: 'afgelast' }),
+      show('a', '2026-10-06', { id: 'a-x', titel: 'Wacht - geannuleerd', beschikbaarheid: 'beschikbaar' }),
+      show('a', '2026-10-07', { id: 'a-1', titel: 'Kiem', beschikbaarheid: 'afgelast' }),
+      show('a', '2026-10-07', { id: 'a-2', titel: 'Kiem', beschikbaarheid: 'beschikbaar' }),
+    ],
+  };
+  const { written, writtenStatus } = await run({ paths, theaters: [theater('a')], scrapers });
+  assert.equal(written[0].titel, 'Gelukkig maar – Myrte Siebinga');
+  // Zonder het signaal van het theater blijft de titel zoals hij was.
+  assert.equal(written[1].titel, 'Wacht – geannuleerd');
+  assert.equal(written.filter((s) => s.titel === 'Kiem').length, 2);
+  assert.equal(writtenStatus.theaters?.a?.dubbelingen ?? 0, 0);
+});

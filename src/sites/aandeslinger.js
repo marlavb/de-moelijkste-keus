@@ -1,6 +1,7 @@
 import { createDutchDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/programma';
 
@@ -14,6 +15,8 @@ const PODIUMPAS_EXCLUDED_TAGS = new Set(['film', 'gastbespeling']);
 
 function classifyBeschikbaarheid(soldOut, message) {
   const tekst = (message ?? '').trim().toLowerCase();
+  const vervallen = vervallenStatus(tekst);
+  if (vervallen) return vervallen;
   if (soldOut && tekst.includes('uitverkocht')) return 'uitverkocht';
   if (tekst.includes('wachtlijst')) return 'wachtlijst';
   return 'onbekend';
@@ -94,7 +97,6 @@ export async function scrapeAanDeSlinger({ page, theater, robots, waitForTurn, l
     if (!item.titel || !item.dagTekst) return false; // promotiekaarten zonder datum
     const firstTag = item.tags[0]?.trim().toLowerCase();
     if (firstTag === 'cursus') return false;
-    if (item.message?.trim().toLowerCase() === 'afgelast') return false;
     return true;
   });
 

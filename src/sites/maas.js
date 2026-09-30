@@ -1,6 +1,7 @@
 import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList, normalizeGenre } from '../lib/genre.js';
 import { dedupeShows } from '../lib/peppered.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/nl/agenda/';
 const MAX_LOAD_MORE = 40;
@@ -23,6 +24,9 @@ function parsePlaylistDate(text) {
 }
 
 function classifyKnop(text) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(text);
+  if (vervallen) return vervallen;
   const t = (text ?? '').trim().toLowerCase();
   if (t.includes('uitverkocht')) return 'uitverkocht';
   if (t.includes('wachtlijst')) return 'wachtlijst';

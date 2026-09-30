@@ -2,11 +2,15 @@ import { createDutchDayParser, extractTime, createIdBuilder } from '../lib/norma
 import { normalizeGenreFromList } from '../lib/genre.js';
 import { USER_AGENT } from '../lib/config.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/agenda';
 const SITEMAP_PATH = '/sitemap.xml';
 
 function classifyBeschikbaarheid(bookable, buttonText) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(buttonText);
+  if (vervallen) return vervallen;
   const tekst = (buttonText ?? '').trim().toLowerCase();
   if (tekst.includes('wachtlijst')) return 'wachtlijst';
   if (!bookable || tekst.includes('uitverkocht')) return 'uitverkocht';

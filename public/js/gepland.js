@@ -12,6 +12,7 @@
 // alleen niet getoond.
 
 import { ruimeTitel, titelDelen } from './watchlist.js';
+import { isVervallen } from './weergave.js';
 
 export const STATUSSEN = ['gepland', 'kaarten'];
 
@@ -89,7 +90,10 @@ export function koppel(item, index) {
   const opDag = index.get(`${item.theaterId}|${item.datum}`) ?? [];
   const titel = ruimeTitel(item.titel);
   const tijd = item.tijd ?? '';
-  const exact = opDag.find((s) => (s.tijd ?? '') === tijd && ruimeTitel(s.titel) === titel);
+  // Een afgelaste voorstelling blijft gekoppeld (het plan toont dan
+  // "Afgelast"); staat er op hetzelfde tijdstip ook een gewone, dan die.
+  const exacten = opDag.filter((s) => (s.tijd ?? '') === tijd && ruimeTitel(s.titel) === titel);
+  const exact = exacten.find((s) => !isVervallen(s)) ?? exacten[0];
   if (exact) return { show: exact, soort: 'exact' };
   // Titel uitgebreid (titelconventie sep 2026: "Sara Kroos" werd "Sara Kroos –
   // Prikkelarme kermis"): zelfde tijd en alle oude delen zitten in de nieuwe.

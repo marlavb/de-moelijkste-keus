@@ -1,4 +1,5 @@
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/agenda/';
 // Repertoire van marionettenvoorstellingen (menu "Voorstellingen" →
@@ -44,6 +45,9 @@ export function classifyMarionetItem(item, repertoire) {
 }
 
 function classifyBeschikbaarheid(buttons) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = buttons.map((b) => vervallenStatus(b.text)).find(Boolean) ?? null;
+  if (vervallen) return vervallen;
   const ticketBtn = buttons.find((b) => (b.text ?? '').toLowerCase().includes('ticket') && b.href);
   if (ticketBtn) return 'beschikbaar';
   const freeBtn = buttons.find((b) => /free|gratis/i.test(b.text ?? ''));

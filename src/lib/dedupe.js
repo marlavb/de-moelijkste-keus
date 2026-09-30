@@ -9,10 +9,17 @@
 // in scrape-status.json en als ::warning:: zichtbaar wordt.
 
 import { normalizeTitle } from '../../public/js/productions.js';
+import { isVervallen } from '../../public/js/weergave.js';
 
-/** theaterId|datum|tijd|genormaliseerde titel */
+/**
+ * theaterId|datum|tijd|genormaliseerde titel, met "|vervallen" voor een
+ * afgelaste of verplaatste voorstelling: die en een gewone speeldatum op
+ * hetzelfde tijdstip (vervangende voorstelling) zijn geen dubbeling.
+ */
 export function dubbelSleutel(show) {
-  return [show.theaterId, show.datum, show.tijd ?? '', normalizeTitle(show.titel ?? '')].join('|');
+  const sleutel = [show.theaterId, show.datum, show.tijd ?? '', normalizeTitle(show.titel ?? '')];
+  if (isVervallen(show)) sleutel.push('vervallen');
+  return sleutel.join('|');
 }
 
 /** Aantal ingevulde velden; "onbekend" als beschikbaarheid telt als leeg. */

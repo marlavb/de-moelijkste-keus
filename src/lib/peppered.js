@@ -6,6 +6,7 @@
 // modules hebben hun eigen, beproefde variant en zijn bewust niet omgezet.
 
 import { createDutchAbbrevDayParser } from './normalize.js';
+import { vervallenStatus, isVervallen } from './beschikbaarheid.js';
 
 const DEFAULT_MAX_LISTING_PAGES = 40;
 
@@ -274,13 +275,16 @@ function extractHhmm(text) {
 }
 
 /**
- * Knoptekst → beschikbaarheid. null = rij overslaan: al geweest, geannuleerd
- * of afgelast, of verkoop elders (tournee).
+ * Knoptekst → beschikbaarheid. null = rij overslaan: al geweest, of verkoop
+ * elders (tournee). Geannuleerd/afgelast/verplaatst → "afgelast" of
+ * "verplaatst" (tot 30 sep 2026 werden die overgeslagen).
  */
 export function classifyPepperedButton(buttonText) {
   const t = (buttonText ?? '').trim().toLowerCase();
   if (!t) return 'onbekend';
-  if (t.includes('geweest') || t.includes('geannuleerd') || t.includes('afgelast') || t.includes('verplaatst')) return null;
+  if (t.includes('geweest')) return null;
+  const vervallen = vervallenStatus(t);
+  if (vervallen) return vervallen;
   if (t.includes('verkoop elders') || t.includes('via theater')) return null;
   if (t.includes('uitverkocht') || t.includes('volgeboekt')) return 'uitverkocht';
   if (t.includes('wachtlijst')) return 'wachtlijst';
@@ -292,12 +296,13 @@ export function classifyPepperedButton(buttonText) {
  * Eén show per theater + titel + datum + tijd. HNT zet toegankelijke
  * varianten (LiveText-bril, audiodescriptie, tolk) als aparte rij bij
  * dezelfde voorstelling; die tellen niet dubbel. Bij twee rijen wint die
- * met een echte status boven "onbekend".
+ * met een echte status boven "onbekend". Een afgelaste en een gewone rij
+ * blijven allebei staan (zie dubbelSleutel in dedupe.js).
  */
 export function dedupeShows(shows) {
   const byKey = new Map();
   for (const show of shows) {
-    const key = `${show.theaterId}|${show.titel}|${show.datum}|${show.tijd}`;
+    const key = `${show.theaterId}|${show.titel}|${show.datum}|${show.tijd}|${isVervallen(show) ? 'vervallen' : ''}`;
     const existing = byKey.get(key);
     if (!existing || (existing.beschikbaarheid === 'onbekend' && show.beschikbaarheid !== 'onbekend')) {
       byKey.set(key, { ...show, id: existing?.id ?? show.id });

@@ -6,7 +6,8 @@
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { ontdubbelShows, dubbelSleutel } from './dedupe.js';
-import { metEnDash } from './titels.js';
+import { metEnDash, zonderStatusWoord } from './titels.js';
+import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
 
 import { todayIsoDate } from './normalize.js';
@@ -325,7 +326,11 @@ export async function runRefresh({
     // centraal op null gezet voor elke andere show, in plaats van dat elke
     // afzonderlijke scraper-module het zelf moet opnemen.
     // Eén scheidingsteken in titels en makers (" - " → " – ", zie titels.js).
-    .map((s) => ({ ...s, titel: metEnDash(s.titel), prijs: s.prijs ?? null, maker: metEnDash(s.maker ?? null) }));
+    .map((s) => {
+      // Afgelast/verplaatst: het statuswoord uit de titel, het staat in het label.
+      const kaal = isVervallen(s) ? zonderStatusWoord : (t) => t;
+      return { ...s, titel: kaal(metEnDash(s.titel)), prijs: s.prijs ?? null, maker: kaal(metEnDash(s.maker ?? null)) };
+    });
   const purgedCount = mergedShows.length - verseShows.length;
   if (purgedCount > 0) {
     log(`${purgedCount} verlopen voorstelling(en) verwijderd (datum vóór ${minDate}).`);

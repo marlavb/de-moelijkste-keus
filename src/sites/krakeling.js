@@ -1,4 +1,5 @@
 import { createIdBuilder } from '../lib/normalize.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/programma';
 
@@ -10,6 +11,9 @@ function parseDateTime(raw) {
 }
 
 function classifyBeschikbaarheid(soldOut, statusTekst) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(statusTekst);
+  if (vervallen) return vervallen;
   const tekst = (statusTekst ?? '').trim().toLowerCase();
   if (tekst.includes('wachtlijst')) return 'wachtlijst';
   if (soldOut || tekst.includes('uitverkocht')) return 'uitverkocht';

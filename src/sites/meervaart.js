@@ -1,6 +1,7 @@
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/agenda';
 const MAX_LOAD_MORE_CLICKS = 30;
@@ -14,6 +15,9 @@ const DATE_ROW_PATTERN = /^[a-z]{2}\s\d{1,2}\s[a-zé]+(\s-\s\d{1,2}:\d{2})?$/i;
 // gratis voorstellingen zonder reservering — dus classificeren we op de
 // knoptekst, niet op de (dis)abled-styling. Geen wachtlijst-functie gevonden.
 function classifyBeschikbaarheid(statusTekst) {
+  // Afgelast/verplaatst op de knop of het statuslabel (zie beschikbaarheid.js).
+  const vervallen = vervallenStatus(statusTekst);
+  if (vervallen) return vervallen;
   const tekst = (statusTekst ?? '').trim().toLowerCase();
   if (tekst === 'uitverkocht') return 'uitverkocht';
   if (tekst === 'bestel kaarten' || tekst === 'laatste kaarten' || tekst === 'gratis') return 'beschikbaar';

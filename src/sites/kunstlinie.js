@@ -1,6 +1,7 @@
 import { extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
+import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/programma/';
 const MAX_PAGES = 15;
@@ -54,6 +55,8 @@ function isPodiumpasEligible(categories) {
 
 function classifyBeschikbaarheid(buttonText) {
   const tekst = (buttonText ?? '').trim().toLowerCase();
+  const vervallen = vervallenStatus(tekst);
+  if (vervallen) return vervallen;
   if (tekst.includes('wachtlijst')) return 'wachtlijst';
   if (tekst.includes('uitverkocht')) return 'uitverkocht';
   if (tekst.includes('tickets')) return 'beschikbaar';
@@ -209,11 +212,9 @@ export async function scrapeKunstlinie({ page, theater, robots, waitForTurn, log
 
   for (const item of rawItems) {
     if (!item.titel || !item.dateTimeTekst || !item.detailHref) continue;
-    // Geannuleerde voorstellingen (herkenbaar aan een "disabled"-knop met
-    // tekst "Geannuleerd", geen href) laten we helemaal weg in plaats van
-    // ze met een vage "onbekend"-status te tonen — zelfde afweging als
-    // "Afgelast" bij Aan de Slinger.
-    if (item.ticketText?.trim().toLowerCase() === 'geannuleerd') continue;
+    // Geannuleerde voorstellingen (een "disabled"-knop met tekst
+    // "Geannuleerd", geen href) worden "afgelast"; tot 30 sep 2026 lieten we
+    // ze weg.
     const parsed = parseDateTime(item.dateTimeTekst);
     if (!parsed) {
       log(`kon datum/tijd niet parsen: "${item.dateTimeTekst}" (${item.titel}) — overgeslagen.`);
