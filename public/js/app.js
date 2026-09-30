@@ -2055,8 +2055,11 @@ function renderPodiumpasNotice(show) {
   box.hidden = !info;
   if (!info) return false;
 
+  // online: true (30 sep 2026): reserveren met de pas kan wél online (tarief
+  // "Podiumpas" in de gewone kaartverkoop); dan alleen uitleg, en de
+  // reserveerknop blijft de gewone.
   const title = document.createElement('strong');
-  title.textContent = 'Met je Podiumpas reserveer je hier niet online';
+  title.textContent = info.online ? 'Met je Podiumpas reserveer je hier online' : 'Met je Podiumpas reserveer je hier niet online';
   box.append(title);
 
   const link = (href, label) => {
@@ -2074,13 +2077,16 @@ function renderPodiumpasNotice(show) {
     a.rel = 'noopener';
     ways.push(['gebruik ', a]);
   }
-  const line = document.createElement('span');
-  ways.forEach(([verb, a], i) => {
-    if (i > 0) line.append(i === ways.length - 1 ? ' of ' : ', ');
-    line.append(i === 0 ? verb[0].toUpperCase() + verb.slice(1) : verb, a);
-  });
-  line.append('.');
-  box.append(line);
+  if (ways.length > 0) {
+    const line = document.createElement('span');
+    if (info.online) line.append('Of ');
+    ways.forEach(([verb, a], i) => {
+      if (i > 0) line.append(i === ways.length - 1 ? ' of ' : ', ');
+      line.append(i === 0 && !info.online ? verb[0].toUpperCase() + verb.slice(1) : verb, a);
+    });
+    line.append('.');
+    box.append(line);
+  }
 
   if (info.toelichting) {
     const extra = document.createElement('span');
@@ -2088,7 +2094,7 @@ function renderPodiumpasNotice(show) {
     extra.textContent = info.toelichting;
     box.append(extra);
   }
-  return true;
+  return !info.online;
 }
 
 function renderDetail(show) {

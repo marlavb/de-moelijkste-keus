@@ -24,6 +24,8 @@ export const RUN_BUDGET_MINUTEN = 75;
 // theaters staat hieronder `podiumpasReserveren`; de run schrijft het naar
 // public/data/theaters.json en het detailscherm toont dan een melding. Zonder
 // dit veld (online, of onbekend) verandert er niets. Per theater: bron + datum.
+// Met `online: true` kan het wél online (tarief "Podiumpas"); dan alleen een
+// uitlegregel, en de gewone reserveerknop blijft staan.
 //
 // Bron: https://www.hnt.nl/nl/kaartverkoop-tgcr (27 sep 2026)
 const HNT_RESERVEREN = {
