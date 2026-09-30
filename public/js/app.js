@@ -2085,23 +2085,20 @@ function renderPodiumpasNotice(show) {
     a.rel = 'noopener';
     ways.push(['gebruik ', a]);
   }
-  if (ways.length > 0) {
-    const line = document.createElement('span');
-    if (info.online) line.append('Of ');
-    ways.forEach(([verb, a], i) => {
-      if (i > 0) line.append(i === ways.length - 1 ? ' of ' : ', ');
-      line.append(i === 0 && !info.online ? verb[0].toUpperCase() + verb.slice(1) : verb, a);
-    });
-    line.append('.');
-    box.append(line);
-  }
+  const line = document.createElement('span');
+  if (info.online) line.append('Of ');
+  ways.forEach(([verb, a], i) => {
+    if (i > 0) line.append(i === ways.length - 1 ? ' of ' : ', ');
+    line.append(i === 0 && !info.online ? verb[0].toUpperCase() + verb.slice(1) : verb, a);
+  });
+  line.append('.');
 
-  if (info.toelichting) {
-    const extra = document.createElement('span');
-    extra.className = 'podiumpas-notice__toelichting';
-    extra.textContent = info.toelichting;
-    box.append(extra);
-  }
+  const extra = document.createElement('span');
+  extra.className = 'podiumpas-notice__toelichting';
+  extra.textContent = info.toelichting ?? '';
+  // Online: eerst de uitleg, dan "Of bel …"; anders eerst hoe het wel kan.
+  const delen = info.online ? [extra, ways.length ? line : null] : [ways.length ? line : null, extra];
+  box.append(...delen.filter((d) => d && d.textContent));
   return !info.online;
 }
 
