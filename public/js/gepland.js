@@ -3,13 +3,19 @@
 //
 // Datamodel (localStorage en Firestore, zelfde vorm):
 //   gepland:           [{ sleutel, titel, theaterId, theaterNaam, stad, datum,
-//                         tijd, reserverenUrl, status, toegevoegdOp, gewijzigdOp }]
+//                         tijd, reserverenUrl, status, toegevoegdOp, gewijzigdOp,
+//                         vervallen? }]
 //   geplandVerwijderd: [{ sleutel, verwijderdOp }]      (tombstones)
 // Het item is een momentopname: verdwijnt of verschuift de voorstelling in
 // de agenda, dan blijft het plan staan zoals je het maakte (zie koppel()).
 // Samenvoegen: per sleutel wint de laatste actie (plannen, status wisselen
-// of uit de planning halen). Voorbije plannen worden nooit verwijderd,
-// alleen niet getoond.
+// of uit de planning halen). Voorbije plannen gaan naar Gezien of komen in
+// "Ben je geweest?" (zie gezien.js).
+// `vervallen` ('afgelast'/'verplaatst', sinds 30 sep 2026): gezet zolang de
+// voorstelling nog in de agenda staat (markeerVervallen); na de speeldatum
+// is hij uit de data verdwenen en weten we het anders niet meer. Het is geen
+// handeling van de gebruiker: bij samenvoegen blijft het staan als één
+// kopie het heeft, zonder dat de nieuwste status verloren gaat.
 
 import { ruimeTitel, titelDelen } from './watchlist.js';
 import { isVervallen } from './weergave.js';
@@ -26,10 +32,12 @@ const leeg = () => ({ gepland: [], geplandVerwijderd: [] });
 export function voegGeplandSamen(...bronnen) {
   const items = new Map();
   const verwijderd = new Map();
+  const vervallen = new Map();
   for (const b of bronnen) {
     for (const item of b?.gepland ?? []) {
       const huidig = items.get(item.sleutel);
       if (!huidig || (item.gewijzigdOp ?? 0) > (huidig.gewijzigdOp ?? 0)) items.set(item.sleutel, { ...item });
+      if (item.vervallen) vervallen.set(item.sleutel, item.vervallen);
     }
     for (const t of b?.geplandVerwijderd ?? []) {
       if ((t.verwijderdOp ?? 0) > (verwijderd.get(t.sleutel) ?? -1)) verwijderd.set(t.sleutel, t.verwijderdOp ?? 0);
@@ -39,6 +47,7 @@ export function voegGeplandSamen(...bronnen) {
   const geplandVerwijderd = [];
   for (const [sleutel, item] of items) {
     const weg = verwijderd.get(sleutel);
+    if (vervallen.has(sleutel)) item.vervallen = vervallen.get(sleutel);
     if (weg === undefined || (item.gewijzigdOp ?? 0) > weg) gepland.push(item);
   }
   for (const [sleutel, verwijderdOp] of verwijderd) {
@@ -127,6 +136,24 @@ export function werkPlannenBij(profiel, index) {
   return { profiel: voegGeplandSamen({ gepland, geplandVerwijderd: profiel.geplandVerwijderd ?? [] }), gewijzigd };
 }
 
+/**
+ * Plannen waarvan de voorstelling nu als afgelast of verplaatst in de agenda
+ * staat: `vervallen` in de momentopname zetten (zie boven). Tijdstempels
+ * blijven gelijk; idempotent. Geeft { profiel, gewijzigd }.
+ */
+export function markeerVervallen(profiel, index) {
+  let gewijzigd = false;
+  const gepland = (profiel?.gepland ?? []).map((item) => {
+    if (item.vervallen) return item;
+    const { show } = koppel(item, index);
+    if (!show || !isVervallen(show)) return item;
+    gewijzigd = true;
+    return { ...item, vervallen: show.beschikbaarheid };
+  });
+  if (!gewijzigd) return { profiel, gewijzigd };
+  return { profiel: voegGeplandSamen({ gepland, geplandVerwijderd: profiel.geplandVerwijderd ?? [] }), gewijzigd };
+}
+
 /** Map theaterId|datum → voorstellingen, voor koppel(). */
 export function indexeerShows(shows) {
   const index = new Map();
@@ -158,7 +185,7 @@ export function laadGepland({ opgeslagen, extra = null, index = null }) {
   const basis = { gepland: opgeslagen?.gepland ?? [], geplandVerwijderd: opgeslagen?.geplandVerwijderd ?? [] };
   const samen = voegGeplandSamen(basis, extra ?? leeg());
   // Met de agenda erbij: plannen met een uitgebreide titel bijwerken.
-  const profiel = index ? werkPlannenBij(samen, index).profiel : samen;
+  const profiel = index ? markeerVervallen(werkPlannenBij(samen, index).profiel, index).profiel : samen;
   return { profiel, gewijzigd: JSON.stringify(profiel) !== JSON.stringify(basis) };
 }
 
