@@ -19,12 +19,22 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    // Bestaan en inhoud ná de transactie. Altijd eerst ...Bestaat() checken
+    // voordat ...Na().data wordt gelezen.
+    function profielBestaat(uid) {
+      return existsAfter(/databases/$(database)/documents/profielen/$(uid));
+    }
+
     function profielNa(uid) {
-      return getAfter(/databases/$(database)/documents/profielen/$(uid));
+      return getAfter(/databases/$(database)/documents/profielen/$(uid)).data;
+    }
+
+    function naamBestaat(laag) {
+      return existsAfter(/databases/$(database)/documents/usernames/$(laag));
     }
 
     function naamNa(laag) {
-      return getAfter(/databases/$(database)/documents/usernames/$(laag));
+      return getAfter(/databases/$(database)/documents/usernames/$(laag)).data;
     }
 
     // Gebruikersnaam in kleine letters (= document-id van usernames): 3–20
@@ -72,10 +82,10 @@ service cloud.firestore {
         && request.resource.data.uid == request.auth.uid
         && geldigeWeergave(request.resource.data.gebruikersnaam, laag)
         && geldigeVolledigeNaam(request.resource.data.naam)
-        && profielNa(request.auth.uid) != null
-        && profielNa(request.auth.uid).data.gebruikersnaamLaag == laag
-        && profielNa(request.auth.uid).data.gebruikersnaam == request.resource.data.gebruikersnaam
-        && profielNa(request.auth.uid).data.naam == request.resource.data.naam;
+        && profielBestaat(request.auth.uid)
+        && profielNa(request.auth.uid).gebruikersnaamLaag == laag
+        && profielNa(request.auth.uid).gebruikersnaam == request.resource.data.gebruikersnaam
+        && profielNa(request.auth.uid).naam == request.resource.data.naam;
 
       // Alleen de eigenaar, alleen weergave en naam (bv. "anna" → "Anna").
       allow update: if ingelogd()
@@ -83,17 +93,32 @@ service cloud.firestore {
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['gebruikersnaam', 'naam'])
         && geldigeWeergave(request.resource.data.gebruikersnaam, laag)
         && geldigeVolledigeNaam(request.resource.data.naam)
-        && profielNa(request.auth.uid) != null
-        && profielNa(request.auth.uid).data.gebruikersnaamLaag == laag
-        && profielNa(request.auth.uid).data.gebruikersnaam == request.resource.data.gebruikersnaam
-        && profielNa(request.auth.uid).data.naam == request.resource.data.naam;
+        && profielBestaat(request.auth.uid)
+        && profielNa(request.auth.uid).gebruikersnaamLaag == laag
+        && profielNa(request.auth.uid).gebruikersnaam == request.resource.data.gebruikersnaam
+        && profielNa(request.auth.uid).naam == request.resource.data.naam;
 
       // Vrijgeven: alleen de eigenaar, en niet de naam die het profiel nog
       // gebruikt (wel samen met het profiel, bij het verwijderen van een account).
       allow delete: if ingelogd()
         && resource.data.uid == request.auth.uid
-        && (profielNa(request.auth.uid) == null
-          || profielNa(request.auth.uid).data.gebruikersnaamLaag != laag);
+        && (!profielBestaat(request.auth.uid)
+          || profielNa(request.auth.uid).gebruikersnaamLaag != laag);
+    }
+
+    // Velden, vorm en de koppeling met usernames; voor aanmaken én wijzigen.
+    function geldigProfiel(uid) {
+      return request.resource.data.keys().hasOnly(['gebruikersnaam', 'gebruikersnaamLaag', 'naam', 'aangemaaktOp', 'gewijzigdOp', 'v'])
+        && request.resource.data.keys().hasAll(['gebruikersnaam', 'gebruikersnaamLaag', 'naam', 'aangemaaktOp', 'gewijzigdOp', 'v'])
+        && geldigeLaag(request.resource.data.gebruikersnaamLaag)
+        && geldigeWeergave(request.resource.data.gebruikersnaam, request.resource.data.gebruikersnaamLaag)
+        && geldigeVolledigeNaam(request.resource.data.naam)
+        && request.resource.data.v == 1
+        && request.resource.data.gewijzigdOp == request.time
+        // De naam is (na deze transactie) van mij, met dezelfde gegevens.
+        && naamBestaat(request.resource.data.gebruikersnaamLaag)
+        && naamNa(request.resource.data.gebruikersnaamLaag).uid == uid
+        && naamNa(request.resource.data.gebruikersnaamLaag).naam == request.resource.data.naam;
     }
 
     match /profielen/{uid} {
@@ -101,31 +126,25 @@ service cloud.firestore {
       allow get: if ingelogd() && request.auth.uid == uid;
       allow list: if false;
 
-      allow create, update: if ingelogd()
+      // Nieuw profiel: aangemaaktOp is nu (servertijd).
+      allow create: if ingelogd()
         && request.auth.uid == uid
-        && request.resource.data.keys().hasOnly(['gebruikersnaam', 'gebruikersnaamLaag', 'naam', 'aangemaaktOp', 'gewijzigdOp', 'v'])
-        && request.resource.data.keys().hasAll(['gebruikersnaam', 'gebruikersnaamLaag', 'naam', 'aangemaaktOp', 'gewijzigdOp', 'v'])
-        && geldigeLaag(request.resource.data.gebruikersnaamLaag)
-        && geldigeWeergave(request.resource.data.gebruikersnaam, request.resource.data.gebruikersnaamLaag)
-        && geldigeVolledigeNaam(request.resource.data.naam)
-        && request.resource.data.v == 1
-        && request.resource.data.gewijzigdOp == request.time
-        && (resource == null
-          ? request.resource.data.aangemaaktOp == request.time
-          : request.resource.data.aangemaaktOp == resource.data.aangemaaktOp)
-        // De naam is (na deze transactie) van mij, met dezelfde gegevens.
-        && naamNa(request.resource.data.gebruikersnaamLaag) != null
-        && naamNa(request.resource.data.gebruikersnaamLaag).data.uid == uid
-        && naamNa(request.resource.data.gebruikersnaamLaag).data.naam == request.resource.data.naam
-        // Andere naam gekozen: de oude moet in dezelfde transactie vrijkomen.
-        && (resource == null
-          || resource.data.gebruikersnaamLaag == request.resource.data.gebruikersnaamLaag
-          || naamNa(resource.data.gebruikersnaamLaag) == null);
+        && geldigProfiel(uid)
+        && request.resource.data.aangemaaktOp == request.time;
+
+      // Wijzigen: aangemaaktOp blijft gelijk; een andere naam mag alleen als de
+      // oude in dezelfde transactie vrijkomt.
+      allow update: if ingelogd()
+        && request.auth.uid == uid
+        && geldigProfiel(uid)
+        && request.resource.data.aangemaaktOp == resource.data.aangemaaktOp
+        && (resource.data.gebruikersnaamLaag == request.resource.data.gebruikersnaamLaag
+          || !naamBestaat(resource.data.gebruikersnaamLaag));
 
       // Weghalen (account verwijderen) alleen samen met de gebruikersnaam.
       allow delete: if ingelogd()
         && request.auth.uid == uid
-        && naamNa(resource.data.gebruikersnaamLaag) == null;
+        && !naamBestaat(resource.data.gebruikersnaamLaag);
     }
   }
 }

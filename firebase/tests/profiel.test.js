@@ -19,7 +19,7 @@ import {
   runTransaction,
   serverTimestamp,
 } from 'firebase/firestore';
-import { maakOmgeving, als } from './omgeving.js';
+import { maakOmgeving, als, zonderRules } from './omgeving.js';
 import { bewaarProfiel, laadProfiel, ProfielFout } from '../../public/js/profiel.js';
 
 const fs = { runTransaction, doc, getDoc, serverTimestamp };
@@ -143,6 +143,53 @@ test('de naam die het profiel gebruikt kan niet los worden weggehaald, en het pr
   b.delete(doc(db, 'profielen', 'alice'));
   b.delete(doc(db, 'usernames', 'alice'));
   await assertSucceeds(b.commit());
+});
+
+// ---------- aangemaaktOp: aanmaken versus wijzigen ----------
+// Aanmaken: aangemaaktOp moet de servertijd zijn. Wijzigen: aangemaaktOp
+// moet gelijk blijven, dus ook "opnieuw op nu zetten" mag niet.
+
+test('nieuw profiel met aangemaaktOp = servertijd: toegestaan', async () => {
+  await assertSucceeds(direct('alice', { profiel: { aangemaaktOp: serverTimestamp() } }));
+});
+
+test('profiel wijzigen en aangemaaktOp opnieuw op "nu" zetten: geweigerd', async () => {
+  await bewaar('alice', 'alice', 'Alice A');
+  await assertFails(direct('alice', { laag: 'alice', naam: 'Alice B', profiel: { aangemaaktOp: serverTimestamp() } }));
+});
+
+test('profiel wijzigen met een andere aangemaaktOp of zonder: geweigerd; met de oude: toegestaan', async () => {
+  await bewaar('alice', 'alice', 'Alice A');
+  const { aangemaaktOp } = await laadProfiel({ db: als(omgeving, 'alice'), fs, uid: 'alice' });
+  await assertFails(direct('alice', { laag: 'alice', naam: 'Alice B', profiel: { aangemaaktOp: new Date('2020-01-01') } }));
+  const db = als(omgeving, 'alice');
+  await assertFails(
+    setDoc(doc(db, 'profielen', 'alice'), {
+      gebruikersnaam: 'alice', gebruikersnaamLaag: 'alice', naam: 'Alice A', gewijzigdOp: serverTimestamp(), v: 1,
+    })
+  );
+  await assertSucceeds(direct('alice', { laag: 'alice', naam: 'Alice B', profiel: { aangemaaktOp } }));
+});
+
+// ---------- Opruimen van losse resten (de !existsAfter-takken) ----------
+
+test('een losse naam zonder profiel kan de eigenaar weghalen, een ander niet', async () => {
+  await zonderRules(omgeving, (db) => setDoc(doc(db, 'usernames', 'los'), { uid: 'alice', gebruikersnaam: 'los', naam: 'Alice' }));
+  await assertFails(deleteDoc(doc(als(omgeving, 'bob'), 'usernames', 'los')));
+  await assertSucceeds(deleteDoc(doc(als(omgeving, 'alice'), 'usernames', 'los')));
+});
+
+test('een los profiel zonder naam kan de eigenaar weghalen', async () => {
+  await zonderRules(omgeving, (db) =>
+    setDoc(doc(db, 'profielen', 'alice'), { gebruikersnaam: 'weg', gebruikersnaamLaag: 'weg', naam: 'Alice', aangemaaktOp: new Date(), gewijzigdOp: new Date(), v: 1 })
+  );
+  await assertSucceeds(deleteDoc(doc(als(omgeving, 'alice'), 'profielen', 'alice')));
+});
+
+test('een oude naam weghalen terwijl het profiel al een nieuwe heeft: toegestaan', async () => {
+  await bewaar('alice', 'nieuw');
+  await zonderRules(omgeving, (db) => setDoc(doc(db, 'usernames', 'oud'), { uid: 'alice', gebruikersnaam: 'oud', naam: 'Iemand' }));
+  await assertSucceeds(deleteDoc(doc(als(omgeving, 'alice'), 'usernames', 'oud')));
 });
 
 // ---------- Kapen ----------
