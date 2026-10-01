@@ -7,7 +7,9 @@
     "scrape": "node src/index.js",
     "test": "node --test test/*.test.js",
     "safe-push": "node scripts/safe-push.js",
-    "alias-kandidaten": "node scripts/alias-kandidaten.js"
+    "alias-kandidaten": "node scripts/alias-kandidaten.js",
+    "test:rules": "npm --prefix firebase test",
+    "firebase": "firebase/node_modules/.bin/firebase"
   },
   "keywords": [],
   "author": "",
