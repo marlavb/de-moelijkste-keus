@@ -297,6 +297,18 @@
         "telefoon": "077 310 1064",
         "toelichting": "Online met het prijstype \"Podiumpas\" (pasnummer invullen), of telefonisch, vanaf 30 dagen voor de voorstelling. Kaartje tot een half uur voor aanvang ophalen bij de balie."
       }
+    },
+    "kennemertheater": {
+      "naam": "Kennemer Theater",
+      "stad": "Beverwijk",
+      "podiumpas": false,
+      "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
+      "meldingLink": "https://www.kennemertheater.nl/programma"
+    },
+    "cpunt": {
+      "naam": "Cpunt",
+      "stad": "Hoofddorp",
+      "podiumpas": false
     }
   }
 }
