@@ -39,7 +39,10 @@ import {
   sorteerGezien,
   isVoorbij,
   bezoekUitShow,
+  zetBeoordeling,
+  beoordelingTekst,
 } from './gezien.js';
+import { maakSterren } from './sterren.js';
 
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
@@ -1023,11 +1026,17 @@ function wijzigPlanning(nieuw, show) {
 }
 
 /** "Gezien" in een agendaregel: de sleutel staat op Gezien. */
-function makeGezienTag() {
+function makeGezienTag(show) {
   const tag = document.createElement('span');
   tag.className = 'status-badge status-badge--gezien';
-  tag.textContent = 'Gezien';
+  const cijfer = beoordelingTekst(gezienItemVan(show)?.beoordeling);
+  tag.textContent = cijfer ? `Gezien · ★ ${cijfer}` : 'Gezien';
   return tag;
+}
+
+function gezienItemVan(show) {
+  const k = showSleutel(show);
+  return (state.gezien?.gezien ?? []).find((i) => i.sleutel === k) ?? null;
 }
 
 /** "Gepland" of "Kaarten ✓" in een agendaregel. */
@@ -1137,13 +1146,56 @@ function gezienGenre(item, liveShow) {
   return b?.genre ?? null;
 }
 
+// Sleutel van de voorstelling waarvoor net "Ja" is gezegd: dan staat in het
+// blok "Ben je geweest?" de vraag "Hoe vond je het?" met sterren en "Later".
+let beoordeelNa = null;
+
+function renderBeoordeelVraag() {
+  const item = beoordeelNa && (state.gezien?.gezien ?? []).find((i) => i.sleutel === beoordeelNa);
+  if (!item) {
+    beoordeelNa = null;
+    return null;
+  }
+  const kaart = document.createElement('div');
+  kaart.className = 'beoordeel-vraag';
+  const kop = document.createElement('p');
+  kop.className = 'beoordeel-vraag-kop';
+  kop.textContent = 'Hoe vond je het?';
+  const titel = document.createElement('p');
+  titel.className = 'plan-meta';
+  titel.textContent = item.titel;
+  const later = document.createElement('button');
+  later.type = 'button';
+  later.className = 'vraag-btn';
+  later.textContent = 'Later';
+  const sluit = () => {
+    beoordeelNa = null;
+    renderVragen();
+  };
+  later.addEventListener('click', sluit);
+  const sterren = maakBeoordeling(item.sleutel, {
+    label: `Hoe vond je ${item.titel}?`,
+    naWijziging: (w) => {
+      renderGezienList(); // het cijfer ook in de lijst hieronder
+      if (w) setTimeout(sluit, 600);
+    },
+  });
+  const onder = document.createElement('div');
+  onder.className = 'beoordeel-vraag-onder';
+  onder.append(sterren, later);
+  kaart.append(kop, titel, onder);
+  return kaart;
+}
+
 function renderVragen() {
   if (!els.vraagSection || !els.vraagList) return;
   const index = indexeerShows(state.shows);
   const vragen = vragenOver(state.gepland, { index });
-  els.vraagSection.hidden = vragen.length === 0;
+  const beoordeel = renderBeoordeelVraag();
+  els.vraagSection.hidden = vragen.length === 0 && !beoordeel;
   if (els.vraagCount) els.vraagCount.textContent = vragen.length ? `${vragen.length} voorstelling${vragen.length === 1 ? '' : 'en'}` : '';
   els.vraagList.innerHTML = '';
+  if (beoordeel) els.vraagList.appendChild(beoordeel);
   for (const item of vragen) els.vraagList.appendChild(renderVraagRow(item, index));
 }
 
@@ -1184,6 +1236,11 @@ function renderVraagRow(item, index) {
     b.setAttribute('aria-label', `${item.titel}: ${ja ? 'ja, ik ben geweest' : 'nee, niet geweest'}`);
     b.addEventListener('click', () => {
       pasStandToe(beantwoord(huidigeStand(), item, ja, { index }));
+      // Ja: meteen vragen hoe het was (niet verplicht).
+      if (ja) {
+        const { show } = koppel(item, index);
+        beoordeelNa = watchlistSleutel(show?.titel ?? item.titel, item.theaterId);
+      }
       renderProfielScreen();
       renderAgenda();
     });
@@ -1205,9 +1262,53 @@ function showsPerSleutel() {
   return map;
 }
 
+// "Sorteer op beoordeling": per apparaat onthouden (localStorage).
+let gezienOpBeoordeling = (() => {
+  try {
+    return localStorage.getItem('podiumagenda:gezienSortering') === 'beoordeling';
+  } catch {
+    return false;
+  }
+})();
+
+function sorteerGezienLijst(items) {
+  const opBezoek = sorteerGezien(items);
+  if (!gezienOpBeoordeling) return opBezoek;
+  // Hoogste beoordeling eerst; gelijk of zonder beoordeling: op laatste bezoek.
+  return opBezoek
+    .map((item, i) => ({ item, i }))
+    .sort((a, b) => (b.item.beoordeling ?? 0) - (a.item.beoordeling ?? 0) || a.i - b.i)
+    .map((x) => x.item);
+}
+
+function renderGezienSorteerknop(items) {
+  const kop = els.gezienList?.closest('section')?.querySelector('.section-head');
+  if (!kop) return;
+  let knop = kop.querySelector('.gezien-sorteer');
+  if (!knop) {
+    knop = document.createElement('button');
+    knop.type = 'button';
+    knop.className = 'link-btn gezien-sorteer';
+    knop.addEventListener('click', () => {
+      gezienOpBeoordeling = !gezienOpBeoordeling;
+      try {
+        localStorage.setItem('podiumagenda:gezienSortering', gezienOpBeoordeling ? 'beoordeling' : 'bezoek');
+      } catch {
+        // geen opslag: alleen voor deze keer
+      }
+      renderGezienList();
+    });
+    kop.appendChild(knop);
+  }
+  knop.textContent = gezienOpBeoordeling ? 'Sorteer op laatste bezoek' : 'Sorteer op beoordeling';
+  knop.setAttribute('aria-pressed', String(gezienOpBeoordeling));
+  knop.hidden = !items.some((i) => i.beoordeling);
+}
+
 function renderGezienList() {
   if (!els.gezienList) return;
-  const items = sorteerGezien(state.gezien?.gezien ?? []);
+  const items = sorteerGezienLijst(state.gezien?.gezien ?? []);
+  renderGezienSorteerknop(items);
   if (els.gezienCount) els.gezienCount.textContent = items.length ? `${items.length} voorstelling${items.length === 1 ? '' : 'en'}` : '';
   if (els.gezienEmpty) els.gezienEmpty.hidden = items.length > 0;
   els.gezienList.innerHTML = '';
@@ -1215,19 +1316,62 @@ function renderGezienList() {
   for (const item of items) els.gezienList.appendChild(renderGezienRow(item, live.get(item.sleutel)));
 }
 
+// Sterren met het cijfer ernaast ("★ 4,5") en een kleine wis-link, voor één
+// Gezien-item. Werkt zichzelf bij (zonder de lijst opnieuw te tekenen, zodat
+// de focus blijft); `naWijziging` voor wat de plek verder nog wil.
+function maakBeoordeling(sleutel, { label, naWijziging = () => {} } = {}) {
+  const wrap = document.createElement('div');
+  wrap.className = 'beoordeling';
+  const huidig = () => (state.gezien?.gezien ?? []).find((i) => i.sleutel === sleutel)?.beoordeling ?? null;
+  const cijfer = document.createElement('span');
+  cijfer.className = 'beoordeling-cijfer';
+  const wis = document.createElement('button');
+  wis.type = 'button';
+  wis.className = 'link-btn';
+  wis.textContent = 'Wis beoordeling';
+  const bij = () => {
+    const w = huidig();
+    cijfer.textContent = w ? `★ ${beoordelingTekst(w)}` : '';
+    cijfer.hidden = !w;
+    wis.hidden = !w;
+  };
+  const opslaan = (w) => {
+    state.gezien = zetBeoordeling(state.gezien, sleutel, w);
+    saveGezien();
+    bij();
+    toonMelding(w ? 'Opgeslagen' : 'Beoordeling gewist');
+    renderAgenda();
+    naWijziging(w);
+  };
+  const sterren = maakSterren({ waarde: huidig(), label: label ?? 'Beoordeling', onWijzig: opslaan });
+  wis.addEventListener('click', (e) => {
+    e.stopPropagation();
+    sterren.zetWaarde(null);
+    opslaan(null);
+  });
+  wrap.append(sterren, cijfer, wis);
+  bij();
+  return wrap;
+}
+
 function renderGezienRow(item, liveShow) {
   const row = document.createElement('div');
   row.className = 'gezien-row';
 
-  // Het hele item is aanklikbaar (detailscherm); "Weghalen" staat ernaast.
-  const info = document.createElement('button');
-  info.type = 'button';
+  // Het item opent het detailscherm (titel is de knop, de rest van het vlak
+  // ook); de sterren en "Weghalen" niet.
+  const open = () => navigate(`#/gezien/${encodeURIComponent(item.sleutel)}`);
+  const info = document.createElement('div');
   info.className = 'plan-info gezien-info';
-  info.addEventListener('click', () => navigate(`#/gezien/${encodeURIComponent(item.sleutel)}`));
-  const title = document.createElement('span');
-  title.className = 'plan-title';
+  info.addEventListener('click', (e) => {
+    if (!e.target.closest('.beoordeling, button')) open();
+  });
+  const title = document.createElement('button');
+  title.type = 'button';
+  title.className = 'plan-title gezien-titel';
   // Live weergavetitel als de voorstelling nog in de agenda staat.
   title.textContent = liveShow ? weergaveTitel(liveShow) : item.titel;
+  title.addEventListener('click', open);
   info.appendChild(title);
   const genre = gezienGenre(item, liveShow);
   if (genre) {
@@ -1236,6 +1380,7 @@ function renderGezienRow(item, liveShow) {
     g.textContent = genre;
     info.appendChild(g);
   }
+  info.appendChild(maakBeoordeling(item.sleutel, { label: `Beoordeling van ${title.textContent}` }));
   const lijst = document.createElement('ul');
   lijst.className = 'bezoek-lijst bezoek-lijst--compact';
   vulBezoekLijst(lijst, item);
@@ -1269,7 +1414,10 @@ function renderGezienDetail(item) {
     els.gezienMaker.hidden = !maker || makerStaatInTitel(item.titel, maker);
   }
   if (els.gezienGenre) els.gezienGenre.textContent = gezienGenre(item, null) ?? '';
-  if (els.gezienBezoeken) vulBezoekLijst(els.gezienBezoeken, item);
+  if (els.gezienBezoeken) {
+    vulBezoekLijst(els.gezienBezoeken, item);
+    plaatsBeoordeling(els.gezienBezoeken, item.sleutel);
+  }
   const url = met('url');
   if (els.gezienLink) {
     els.gezienLink.hidden = !url;
@@ -1282,7 +1430,16 @@ function renderDetailGezien(show) {
   if (!els.detailGezienBlok || !els.detailGezienBezoeken) return;
   const item = (state.gezien?.gezien ?? []).find((i) => i.sleutel === showSleutel(show));
   els.detailGezienBlok.hidden = !item;
-  if (item) vulBezoekLijst(els.detailGezienBezoeken, item);
+  if (item) {
+    vulBezoekLijst(els.detailGezienBezoeken, item);
+    plaatsBeoordeling(els.detailGezienBezoeken, item.sleutel);
+  }
+}
+
+// De sterren in een Gezien-blok, direct boven de bezoeklijst (vervangt een vorige).
+function plaatsBeoordeling(lijst, sleutel) {
+  lijst.parentElement?.querySelector(':scope > .beoordeling')?.remove();
+  lijst.before(maakBeoordeling(sleutel, { label: 'Jouw beoordeling' }));
 }
 
 function renderGeplandList() {
@@ -2047,7 +2204,7 @@ function renderShowRow(show) {
 
   const plan = planVoor(show);
   if (plan) tagsRow.appendChild(makePlanTag(plan.item.status));
-  if (isGezien(show)) tagsRow.appendChild(makeGezienTag());
+  if (isGezien(show)) tagsRow.appendChild(makeGezienTag(show));
 
   info.append(title, meta, tagsRow);
   if (isVervallen(show)) row.classList.add('show-row--vervallen');
@@ -2347,6 +2504,16 @@ function toonMelding(tekst, ongedaanMaken) {
   el.replaceChildren();
   const t = document.createElement('span');
   t.textContent = tekst;
+  // Zonder ongedaanMaken: alleen een korte bevestiging ("Opgeslagen").
+  if (!ongedaanMaken) {
+    el.append(t);
+    el.hidden = false;
+    clearTimeout(meldingTimer);
+    meldingTimer = setTimeout(() => {
+      el.hidden = true;
+    }, 2500);
+    return;
+  }
   const knop = document.createElement('button');
   knop.type = 'button';
   knop.className = 'melding-actie';

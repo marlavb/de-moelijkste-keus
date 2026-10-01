@@ -1770,6 +1770,56 @@ button.gezien-info {
   stroke: var(--accent);
 }
 
+/* Titel van een Gezien-item is een knop (opent het detail). */
+button.gezien-titel {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.gezien-info {
+  cursor: pointer;
+}
+
+/* "Hoe vond je het?" na "Ben je geweest?" → Ja. */
+.beoordeel-vraag {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.beoordeel-vraag-kop {
+  margin: 0;
+  font-weight: var(--kop-gewicht);
+  color: var(--primary);
+}
+
+.beoordeel-vraag .plan-meta {
+  margin: 0;
+}
+
+.beoordeel-vraag-onder {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.section-head .gezien-sorteer {
+  min-height: 0;
+  margin-left: auto;
+  font-size: 12px;
+}
+
 /* Sterren met het cijfer ernaast ("★ 4,5") en een kleine wis-link. */
 .beoordeling {
   display: flex;

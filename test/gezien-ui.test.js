@@ -111,7 +111,13 @@ test('voorbij plan zonder kaarten → "Ben je geweest?"; Ja → Gezien; Nee → 
   // Nog niet beantwoord: niet bij de gewone planning.
   assert.equal(await page.locator('#geplandList .plan-row').count(), 0);
   await page.locator('#vraagList .vraag-row', { hasText: 'Lemming' }).locator('.vraag-btn--ja').click();
+  // Na Ja: "Hoe vond je het?" met sterren en "Later" (niet verplicht).
+  const kaart = page.locator('#vraagList .beoordeel-vraag');
+  assert.equal(await kaart.locator('.beoordeel-vraag-kop').innerText(), 'Hoe vond je het?');
+  assert.equal(await kaart.locator('[role="slider"]').count(), 1);
   await page.locator('#vraagList .vraag-row', { hasText: 'Wacht even' }).locator('.vraag-btn:not(.vraag-btn--ja)').click();
+  assert.equal(await page.locator('#vraagSection').isVisible(), true); // de beoordeelvraag staat er nog
+  await page.locator('#vraagList .beoordeel-vraag').getByRole('button', { name: 'Later' }).click();
   assert.equal(await page.locator('#vraagSection').isVisible(), false);
   const gezien = await lees(page, 'podiumagenda:gezien');
   assert.deepEqual(gezien.gezien.map((i) => i.titel), ['Lemming – reprise – Merijn Scholten']);
@@ -279,7 +285,7 @@ for (const viewport of [{ width: 390, height: 900 }, { width: 1280, height: 900 
     const { ctx, page } = await openApp({ viewport, opslag: { 'podiumagenda:gezien': gezienProfiel() } });
     await page.goto(`${base}#/profiel`);
     await page.waitForTimeout(300);
-    await page.locator('#gezienList .gezien-info').first().click();
+    await page.locator('#gezienList .gezien-titel').first().click();
     await page.waitForTimeout(300);
     assert.match(page.url(), /#\/gezien\//);
     assert.equal(await page.locator('#screen-gezien').isVisible(), true);
@@ -301,7 +307,7 @@ test('Gezien-item dat nog in de agenda staat → gewoon detailscherm met blok Ge
   const { ctx, page } = await openApp({ opslag: { 'podiumagenda:gezien': profiel } });
   await page.goto(`${base}#/profiel`);
   await page.waitForTimeout(300);
-  await page.locator('#gezienList .gezien-info').first().click();
+  await page.locator('#gezienList .gezien-titel').first().click();
   await page.waitForTimeout(400);
   assert.match(page.url(), /#\/show\//);
   assert.equal(await page.locator('#detailGezienBlok').isVisible(), true);
@@ -388,4 +394,49 @@ test('sterren: aria-waarden, toetsenbord, halve/hele ster met tikken, wissen', a
   assert.equal(await page.locator('.ster').nth(1).locator('clipPath rect').getAttribute('width'), '12');
   assert.deepEqual(await page.evaluate(() => window.wijzigingen), [1, 1.5, 5, 1, null, 3.5, 4, null, 1, 1.5]);
   await ctx.close();
+});
+
+test('beoordeling in de app: na Ja meteen sterren; Profiel, detail en agendalabel "Gezien · ★ 4,5"', async () => {
+  for (const viewport of [{ width: 390, height: 900 }, { width: 1280, height: 900 }]) {
+    const s = eenShow;
+    const g = planIn(legeGepland(), nep('Lemming – reprise – Merijn Scholten', '2026-09-27', 'kleinekomedie'), 1);
+    const gezienLive = { gezien: [{ sleutel: watchlistSleutel(s.titel, s.theaterId), titel: s.titel, theaterId: s.theaterId, bron: 'handmatig', toegevoegdOp: 5, bezoeken: [] }], gezienVerwijderd: [] };
+    const { ctx, page } = await openApp({ viewport, opslag: { 'podiumagenda:gepland': g, 'podiumagenda:gezien': gezienLive } });
+    await page.goto(`${base}#/profiel`);
+    await page.waitForTimeout(300);
+    await page.locator('#vraagList .vraag-btn--ja').click();
+    // 4,5 via het toetsenbord in "Hoe vond je het?".
+    const slider = page.locator('#vraagList .beoordeel-vraag [role="slider"]');
+    await slider.focus();
+    await page.keyboard.press('End');
+    await page.keyboard.press('ArrowLeft');
+    assert.equal(await slider.getAttribute('aria-valuetext'), '4,5 van 5 sterren');
+    assert.match(await page.locator('#melding').innerText(), /Opgeslagen/);
+    let opgeslagen = await lees(page, 'podiumagenda:gezien');
+    assert.equal(opgeslagen.gezien.find((i) => /lemming/.test(i.sleutel)).beoordeling, 4.5);
+    await page.waitForTimeout(800); // de vraag sluit zichzelf
+    assert.equal(await page.locator('#vraagList .beoordeel-vraag').count(), 0);
+    // Profiel → Gezien: cijfer erbij; sorteerknop verschijnt.
+    const rij = page.locator('#gezienList .gezien-row', { hasText: 'Lemming' });
+    assert.equal(await rij.locator('.beoordeling-cijfer').innerText(), '★ 4,5');
+    assert.equal(await page.locator('.gezien-sorteer').isVisible(), true);
+    // Detailscherm van de voorstelling die in de agenda staat: sterren in het blok.
+    await page.goto(`${base}#/show/${encodeURIComponent(s.id)}`);
+    await page.waitForTimeout(300);
+    const detailSter = page.locator('#detailGezienBlok [role="slider"]');
+    await detailSter.focus();
+    await page.keyboard.press('End');
+    await page.keyboard.press('ArrowLeft');
+    opgeslagen = await lees(page, 'podiumagenda:gezien');
+    assert.equal(opgeslagen.gezien.find((i) => i.sleutel === watchlistSleutel(s.titel, s.theaterId)).beoordeling, 4.5);
+    // Agenda: label met beoordeling.
+    await page.goto(`${base}#/`);
+    await page.waitForTimeout(300);
+    if (viewport.width >= 900) await page.fill('#sidebarSearchInput', s.titel);
+    else { await page.click('#searchToggle'); await page.fill('#searchInput', s.titel); }
+    await page.waitForTimeout(500);
+    assert.equal(await page.locator('#agendaList .show-row').first().locator('.status-badge--gezien').innerText(), 'Gezien · ★ 4,5');
+    assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+    await ctx.close();
+  }
 });
