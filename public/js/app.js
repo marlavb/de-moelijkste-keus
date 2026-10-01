@@ -403,7 +403,11 @@ async function init() {
     if (btn.dataset.tab === 'theaters') navigate('#/theaters');
     if (btn.dataset.tab === 'profiel') navigate('#/profiel');
   });
-  window.addEventListener('hashchange', route);
+  // Terug (knop in de app, browser, vegen): popstate; hashchange voor een
+  // met de hand getypte link. Zie navigate() en terug().
+  window.addEventListener('popstate', naGeschiedenis);
+  window.addEventListener('hashchange', naGeschiedenis);
+  if (!history.state?.id) history.replaceState(navState({ diepte: 0 }), '');
 
   const theaterInfoPromise = loadTheaterInfo();
   const res = await fetch('data/shows.json');
@@ -463,8 +467,8 @@ async function init() {
     els.sidebarAccordionHeaders[id].addEventListener('click', () => toggleSidebarSection(id));
   }
 
-  els.detailBack.addEventListener('click', () => navigate('#/'));
-  els.gezienBack?.addEventListener('click', () => navigate('#/profiel'));
+  els.detailBack.addEventListener('click', () => terug('#/'));
+  els.gezienBack?.addEventListener('click', () => terug('#/profiel'));
   route();
 
   initFeedbackForm();
@@ -480,18 +484,60 @@ async function init() {
 
 // ---------- Routing ----------
 
+// Navigatie met eigen geschiedenis (1 okt 2026): elke stap is een
+// history-entry met een diepte en, bij vertrek, de scrollpositie. Terug (in
+// de app, browser of vegen) gaat naar waar je vandaan kwam, op dezelfde
+// plek: Profiel, Theaters, Agenda of het vorige detailscherm. Een directe
+// link (diepte 0) gaat met de terugknop naar de Agenda.
+let navTeller = 0;
+function navState(extra = {}) {
+  return { id: `${Date.now()}-${++navTeller}`, ...extra };
+}
+
 function navigate(hash) {
-  if (location.hash === hash) {
+  if (location.hash === hash || (hash === '#/' && !location.hash)) {
     route();
-  } else {
-    location.hash = hash;
+    return;
   }
+  history.replaceState({ ...(history.state ?? {}), scroll: window.scrollY }, '');
+  history.pushState(navState({ diepte: (history.state?.diepte ?? 0) + 1 }), '', hash);
+  route();
+}
+
+// Huidige entry vervangen (doorverwijzing binnen route), met behoud van diepte.
+function vervang(hash) {
+  history.replaceState({ ...(history.state ?? {}), id: navState().id, scroll: undefined }, '', hash);
+  route();
+}
+
+function terug(zonderGeschiedenis = '#/') {
+  if ((history.state?.diepte ?? 0) > 0) {
+    history.back();
+    return;
+  }
+  history.replaceState(navState({ diepte: 0 }), '', zonderGeschiedenis);
+  route();
+}
+
+let laatsteRoute = null;
+function naGeschiedenis() {
+  if (`${location.hash}|${history.state?.id ?? ''}` === laatsteRoute) return;
+  route();
 }
 
 function route() {
+  laatsteRoute = `${location.hash}|${history.state?.id ?? ''}`;
   const hash = location.hash || '#/';
   closeSheet();
+  routeNaar(hash);
+  // Terug naar een eerder bezochte entry: dezelfde scrollpositie (één keer;
+  // een latere herberekening op dezelfde plek springt niet opnieuw).
+  const y = history.state?.scroll;
+  window.scrollTo(0, typeof y === 'number' ? y : 0);
+  if (typeof y === 'number') history.replaceState({ ...history.state, scroll: undefined }, '');
+}
 
+function routeNaar(hash) {
   if (hash.startsWith('#/show/')) {
     const id = decodeURIComponent(hash.slice('#/show/'.length));
     const show = state.shows.find((s) => s.id === id);
@@ -501,7 +547,7 @@ function route() {
       return;
     }
     // Onbekend id (bv. verouderde link) -> terug naar de agenda i.p.v. een lege pagina.
-    location.hash = '#/';
+    vervang('#/');
     return;
   }
 
@@ -512,16 +558,16 @@ function route() {
     const sleutel = decodeURIComponent(hash.slice('#/gezien/'.length));
     const item = (state.gezien?.gezien ?? []).find((i) => i.sleutel === sleutel);
     if (!item) {
-      location.replace('#/profiel');
+      vervang('#/profiel');
       return;
     }
     const live = state.shows.filter((s) => showSleutel(s) === sleutel && s.datum >= todayIsoDate()).sort((a, b) => sortKey(a).localeCompare(sortKey(b)))[0];
     if (live) {
-      location.replace(`#/show/${encodeURIComponent(live.id)}`);
+      vervang(`#/show/${encodeURIComponent(live.id)}`);
       return;
     }
     if (!els.screens.gezien) {
-      location.replace('#/profiel');
+      vervang('#/profiel');
       return;
     }
     showScreen('gezien');
@@ -537,7 +583,7 @@ function route() {
 
   // #/favorieten was tot 28 sep 2026 de tab met favorieten (oude links/bladwijzers).
   if (hash === '#/favorieten') {
-    location.replace('#/profiel');
+    vervang('#/profiel');
     return;
   }
 
@@ -558,7 +604,6 @@ function showScreen(name) {
   for (const btn of els.bottomNav.querySelectorAll('.nav-item')) {
     btn.classList.toggle('is-active', btn.dataset.tab === name);
   }
-  window.scrollTo(0, 0);
 }
 
 // ---------- localStorage ----------

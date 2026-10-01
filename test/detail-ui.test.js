@@ -140,3 +140,103 @@ test('eenvoudig Gezien-scherm: vinkje achter de theaternaam als het bewaarde bez
   assert.equal(await regels.nth(1).locator('.podiumpas-icon').count(), 0);
   await ctx.close();
 });
+
+// ---------- Terug naar waar je vandaan kwam (1 okt 2026) ----------
+
+import { zetGezien, legeGezien } from '../public/js/gezien.js';
+
+// Veel Gezien-items, zodat Profiel kan scrollen; de laatste staat nog in de agenda.
+function veelGezien() {
+  let g = legeGezien();
+  for (let i = 0; i < 25; i++) g = zetGezien(g, { show: { titel: `Oud stuk ${String(i).padStart(2, '0')}`, theaterId: 'delamar' }, bron: 'planning', bezoek: { datum: '2026-09-01', tijd: '20:00', theaterId: 'delamar' } }, 100 + i);
+  return zetGezien(g, { show: PROEF[0], bron: 'handmatig' }, 1);
+}
+
+for (const viewport of [{ width: 390, height: 700 }, { width: 1280, height: 700 }]) {
+  test(`terug vanuit Gezien, Gepland en Watchlist naar Profiel op dezelfde scrollpositie (${viewport.width}px)`, async () => {
+    const opslag = {
+      'podiumagenda:gezien': veelGezien(),
+      'podiumagenda:gepland': planIn(legeGepland(), PROEF[2], 1),
+      'podiumagenda:watchlist': voegToe(legeWatchlist(), { titel: PROEF[4].titel, theaterId: PROEF[4].theaterId }, 1),
+    };
+    const { ctx, page } = await openApp({ viewport, extraShows: PROEF, opslag });
+    await page.goto(`${base}#/profiel`);
+    await page.waitForTimeout(300);
+    for (const [naam, klik] of [
+      ['Gezien', () => page.locator('#gezienList .gezien-titel', { hasText: 'Proefstuk' }).click()],
+      ['Gepland', () => page.locator('#geplandList .plan-info').first().click()],
+      ['Watchlist', () => page.locator('#favoritesList .show-row').first().click()],
+    ]) {
+      // Naar het element scrollen en de positie onthouden.
+      const doel = naam === 'Gezien' ? page.locator('#gezienList .gezien-titel', { hasText: 'Proefstuk' }) : naam === 'Gepland' ? page.locator('#geplandList .plan-info').first() : page.locator('#favoritesList .show-row').first();
+      await doel.scrollIntoViewIfNeeded();
+      const y = await page.evaluate(() => window.scrollY);
+      await klik();
+      await page.waitForTimeout(300);
+      assert.match(page.url(), /#\/show\//, naam);
+      await page.click('#detailBack');
+      await page.waitForTimeout(300);
+      assert.match(page.url(), /#\/profiel$/, `${naam}: terug naar Profiel`);
+      assert.equal(await page.locator('#screen-profiel').isVisible(), true);
+      assert.ok(Math.abs((await page.evaluate(() => window.scrollY)) - y) <= 2, `${naam}: scrollpositie ${y}`);
+    }
+    // Ook via de browser (en dus vegen op een telefoon).
+    await page.locator('#watchlistHeading').scrollIntoViewIfNeeded();
+    const y = await page.evaluate(() => window.scrollY);
+    await page.locator('#favoritesList .show-row').first().click();
+    await page.waitForTimeout(300);
+    await page.goBack();
+    await page.waitForTimeout(300);
+    assert.match(page.url(), /#\/profiel$/);
+    assert.ok(Math.abs((await page.evaluate(() => window.scrollY)) - y) <= 2);
+    assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+    await ctx.close();
+  });
+}
+
+test('detail → detail (Andere data) → terug → terug: eerst het vorige detail, dan het tabblad', async () => {
+  const { ctx, page } = await openApp({ extraShows: PROEF, opslag: { 'podiumagenda:gezien': zetGezien(legeGezien(), { show: PROEF[0], bron: 'handmatig' }, 1) } });
+  await page.goto(`${base}#/profiel`);
+  await page.waitForTimeout(300);
+  await page.locator('#gezienList .gezien-titel').first().click();
+  await page.waitForTimeout(300);
+  assert.match(page.url(), /proef-maaspoort-3/);
+  await page.locator('#detailOtherDates .chip').nth(1).click();
+  await page.waitForTimeout(300);
+  assert.match(page.url(), /proef-maaspoort-4/);
+  await page.click('#detailBack');
+  await page.waitForTimeout(300);
+  assert.match(page.url(), /proef-maaspoort-3/);
+  await page.goBack(); // browser-terug doet hetzelfde
+  await page.waitForTimeout(300);
+  assert.match(page.url(), /#\/profiel$/);
+  await ctx.close();
+});
+
+test('terug vanuit de Agenda: filters en scrollpositie blijven; directe link gaat naar de Agenda', async () => {
+  const { ctx, page } = await openApp({ viewport: { width: 390, height: 700 } });
+  await page.evaluate(() => window.scrollTo(0, 900));
+  await page.waitForTimeout(100);
+  const y = await page.evaluate(() => window.scrollY);
+  const rij = page.locator('#agendaList .show-row').nth(12);
+  await rij.scrollIntoViewIfNeeded();
+  const y2 = await page.evaluate(() => window.scrollY);
+  await rij.click();
+  await page.waitForTimeout(300);
+  await page.click('#detailBack');
+  await page.waitForTimeout(300);
+  assert.equal(await page.locator('#screen-agenda').isVisible(), true);
+  assert.ok(Math.abs((await page.evaluate(() => window.scrollY)) - y2) <= 2, `scroll ${y} / ${y2}`);
+  await ctx.close();
+
+  // Directe link naar een voorstelling (geen voorgeschiedenis): terug → Agenda.
+  const tweede = await openApp({});
+  await tweede.page.goto(`${base}#/show/${encodeURIComponent(eenShow.id)}`);
+  await tweede.page.reload({ waitUntil: 'networkidle' });
+  await tweede.page.waitForTimeout(300);
+  await tweede.page.click('#detailBack');
+  await tweede.page.waitForTimeout(300);
+  assert.equal(await tweede.page.locator('#screen-agenda').isVisible(), true);
+  assert.match(tweede.page.url(), /#\/$/);
+  await tweede.ctx.close();
+});
