@@ -34,7 +34,8 @@ export function geplandSleutel(show) {
 
 const leeg = () => ({ gepland: [], geplandVerwijderd: [] });
 
-export const INFO_VELDEN = ['maker', 'genre', 'locatie', 'zaal'];
+// podiumpas (alleen als true bewaard): voor het vinkje bij het bezoek in Gezien.
+export const INFO_VELDEN = ['maker', 'genre', 'locatie', 'zaal', 'podiumpas'];
 
 /** De extra gegevens van een voorstelling die er zijn (geen lege velden). */
 function infoVan(show) {

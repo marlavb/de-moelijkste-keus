@@ -1468,6 +1468,30 @@ a {
   height: 12px;
 }
 
+/* Podiumpas-vinkje achter een theaternaam of in een datumchip (detailscherm). */
+.chip--podiumpas,
+.related-theater-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chip--podiumpas .podiumpas-icon,
+.bezoek--podiumpas .podiumpas-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.bezoek--podiumpas {
+  display: block;
+}
+
+.bezoek--podiumpas .podiumpas-icon {
+  display: inline-flex;
+  vertical-align: -3px;
+  margin: 0 2px 0 6px;
+}
+
 /* Profiel: account bovenaan, daaronder Gepland en Watchlist. */
 .profile-account {
   padding: 8px 20px 12px;

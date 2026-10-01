@@ -38,7 +38,7 @@ export const legeGezien = () => ({ gezien: [], gezienVerwijderd: [] });
 
 const bezoekSleutel = (b) => `${b.datum}|${b.tijd ?? ''}|${b.theaterId ?? ''}`;
 
-export const BEZOEK_EXTRA = ['theaterNaam', 'stad', 'locatie', 'zaal', 'titel', 'maker', 'genre', 'status', 'url'];
+export const BEZOEK_EXTRA = ['theaterNaam', 'stad', 'locatie', 'zaal', 'titel', 'maker', 'genre', 'status', 'url', 'podiumpas'];
 
 /** Een bezoek met alleen de velden die er zijn (datum, tijd en theaterId altijd). */
 function schoonBezoek(b) {
@@ -196,6 +196,7 @@ export function bezoekVan(item, show = null) {
     genre: show?.genre ?? item.genre,
     status: item.status,
     url: show?.reserverenUrl ?? item.reserverenUrl,
+    podiumpas: show ? show.podiumpas === true : item.podiumpas,
   });
 }
 
@@ -213,6 +214,7 @@ export function bezoekUitShow(show) {
     maker: show.maker,
     genre: show.genre,
     url: show.reserverenUrl,
+    podiumpas: show.podiumpas === true,
   });
 }
 

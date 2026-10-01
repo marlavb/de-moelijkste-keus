@@ -1111,16 +1111,21 @@ function formatDatumVolledig(isoDate) {
 // Eén bezoek als regel: "zaterdag 26 september 2026 · 20:15 · DeLaMar,
 // Amsterdam · Theater De Garage". Theaternaam en stad live via theaterId
 // (config/agenda); alleen als het theater er niet meer is de bewaarde naam.
-function bezoekRegel(b) {
+function bezoekDelen(b) {
   const naam = theaterNaamVan(b.theaterId) ?? b.theaterNaam ?? null;
   const stad = state.theaterInfo[b.theaterId]?.stad ?? b.stad ?? null;
   const plek = b.locatie ? b.locatie.split('|')[0].trim() : b.zaal ?? null;
-  return [formatDatumVolledig(b.datum), b.tijd, [naam, stad].filter(Boolean).join(', ') || null, plek].filter(Boolean).join(' · ');
+  return { voor: [formatDatumVolledig(b.datum), b.tijd].filter(Boolean), theater: [naam, stad].filter(Boolean).join(', ') || null, na: plek };
+}
+
+function bezoekRegel(b) {
+  const { voor, theater, na } = bezoekDelen(b);
+  return [...voor, theater, na].filter(Boolean).join(' · ');
 }
 
 // Alle bezoeken van een Gezien-item als <li>'s, nieuwste eerst; zonder
 // bezoek: "Zelf als gezien aangevinkt op …".
-function vulBezoekLijst(ul, item) {
+function vulBezoekLijst(ul, item, { podiumpas = false } = {}) {
   ul.replaceChildren();
   const bezoeken = [...(item.bezoeken ?? [])].sort((a, b) => `${b.datum} ${b.tijd ?? ''}`.localeCompare(`${a.datum} ${a.tijd ?? ''}`));
   if (bezoeken.length === 0) {
@@ -1134,7 +1139,15 @@ function vulBezoekLijst(ul, item) {
   for (const b of bezoeken) {
     const li = document.createElement('li');
     li.className = 'bezoek';
-    li.textContent = bezoekRegel(b);
+    // Detailschermen: vinkje direct achter de theaternaam als het bewaarde
+    // bezoek Podiumpas had.
+    if (podiumpas && b.podiumpas === true) {
+      const { voor, theater, na } = bezoekDelen(b);
+      li.classList.add('bezoek--podiumpas');
+      li.append([...voor, theater].filter(Boolean).join(' · '), makePodiumpasIcon(), na ? ` · ${na}` : '');
+    } else {
+      li.textContent = bezoekRegel(b);
+    }
     ul.appendChild(li);
   }
 }
@@ -1415,7 +1428,7 @@ function renderGezienDetail(item) {
   }
   if (els.gezienGenre) els.gezienGenre.textContent = gezienGenre(item, null) ?? '';
   if (els.gezienBezoeken) {
-    vulBezoekLijst(els.gezienBezoeken, item);
+    vulBezoekLijst(els.gezienBezoeken, item, { podiumpas: true });
     plaatsBeoordeling(els.gezienBezoeken, item.sleutel);
   }
   const url = met('url');
@@ -1431,7 +1444,7 @@ function renderDetailGezien(show) {
   const item = (state.gezien?.gezien ?? []).find((i) => i.sleutel === showSleutel(show));
   els.detailGezienBlok.hidden = !item;
   if (item) {
-    vulBezoekLijst(els.detailGezienBezoeken, item);
+    vulBezoekLijst(els.detailGezienBezoeken, item, { podiumpas: true });
     plaatsBeoordeling(els.detailGezienBezoeken, item.sleutel);
   }
 }
@@ -2022,11 +2035,13 @@ function renderFilterBadge() {
   els.filterBadge.hidden = count === 0;
 }
 
-function makeChip(label, active, onClick) {
+function makeChip(label, active, onClick, { podiumpas = false } = {}) {
   const btn = document.createElement('button');
   btn.type = 'button';
-  btn.className = 'chip' + (active ? ' is-active' : '');
+  btn.className = 'chip' + (active ? ' is-active' : '') + (podiumpas ? ' chip--podiumpas' : '');
   btn.textContent = label;
+  // Podiumpas voor déze speeldatum (bij gemengde dekking per chip).
+  if (podiumpas) btn.appendChild(makePodiumpasIcon());
   btn.addEventListener('click', onClick);
   return btn;
 }
@@ -2567,11 +2582,14 @@ function renderOtherDates(show) {
 
   els.detailOtherDatesWrap.hidden = false;
   els.detailOtherDates.innerHTML = '';
+  // Zelfde theater als de hoofdregel (daar staat het vinkje al); alleen bij
+  // gemengde dekking (bv. De Maaspoort: externe locatie, prijs) per datum.
+  const gemengd = new Set(related.map((s) => s.podiumpas === true)).size > 1;
   for (const s of related) {
     const wanneer = s.tijd ? `${formatDateShort(s.datum)}, ${s.tijd}` : formatDateShort(s.datum);
     const label = isVervallen(s) ? `${wanneer} (${s.beschikbaarheid})` : wanneer;
     els.detailOtherDates.appendChild(
-      makeChip(label, s.id === show.id, () => navigate(`#/show/${encodeURIComponent(s.id)}`))
+      makeChip(label, s.id === show.id, () => navigate(`#/show/${encodeURIComponent(s.id)}`), { podiumpas: gemengd && s.podiumpas === true })
     );
   }
 }
@@ -2602,6 +2620,11 @@ function renderRelatedTheaters(show) {
     const name = document.createElement('h4');
     name.className = 'related-theater-name';
     name.textContent = shows[0].theaterNaam;
+    // Podiumpas per speeldatum: geldt het voor alle data, dan achter de
+    // theaternaam; gemengd, dan alleen bij de data waar het geldt.
+    const allemaal = shows.every((x) => x.podiumpas === true);
+    const gemengd = !allemaal && shows.some((x) => x.podiumpas === true);
+    if (allemaal) name.appendChild(makePodiumpasIcon());
     group.appendChild(name);
 
     const row = document.createElement('div');
@@ -2611,7 +2634,7 @@ function renderRelatedTheaters(show) {
     for (const s of shows) {
       const wanneer = s.tijd ? `${formatDateShort(s.datum)}, ${s.tijd}` : formatDateShort(s.datum);
       const label = isVervallen(s) ? `${wanneer} (${s.beschikbaarheid})` : wanneer;
-      row.appendChild(makeChip(label, false, () => navigate(`#/show/${encodeURIComponent(s.id)}`)));
+      row.appendChild(makeChip(label, false, () => navigate(`#/show/${encodeURIComponent(s.id)}`), { podiumpas: gemengd && s.podiumpas === true }));
     }
     group.appendChild(row);
 
