@@ -440,3 +440,11 @@ test('beoordeling in de app: na Ja meteen sterren; Profiel, detail en agendalabe
     await ctx.close();
   }
 });
+
+test('sterren-kleuren: lege rand --nav-inactive, gevulde ster --accent met rand --accent-text', async () => {
+  const css = await readFile(path.join(ROOT, 'css/styles.css'), 'utf-8');
+  const regel = (sel) => css.match(new RegExp(`${sel.replace(/[.]/g, '\\.')}\\s*\\{([^}]*)\\}`))?.[1] ?? '';
+  assert.match(regel('.ster-rand'), /stroke:\s*var\(--nav-inactive\)/);
+  assert.match(regel('.ster.is-vol .ster-rand'), /stroke:\s*var\(--accent-text\)/);
+  assert.match(regel('.ster-vol'), /fill:\s*var\(--accent\)/);
+});

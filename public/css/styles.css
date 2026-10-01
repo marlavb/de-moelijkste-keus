@@ -1725,9 +1725,11 @@ button.gezien-info {
   font-style: italic;
 }
 
-/* Sterren (beoordeling, zie js/sterren.js): tikvlak 40×44 per ster; gevuld
-   in --accent (3,1:1 op --bg), lege ster omlijnd in --control-border
-   (3,0:1). De halve ster is een clipPath op de gevulde ster. */
+/* Sterren (beoordeling, zie js/sterren.js): tikvlak 40×44 per ster. Lege
+   ster omlijnd in --nav-inactive (4,52:1 op --bg, 4,88:1 op --surface);
+   gevulde ster in --accent met een dunne rand in --accent-text (4,40:1 /
+   4,76:1), zodat de vorm ruim boven 3:1 uitkomt. De halve ster is een
+   clipPath op de gevulde ster. */
 .sterren {
   display: inline-flex;
   align-items: center;
@@ -1761,13 +1763,13 @@ button.gezien-info {
 
 .ster-rand {
   fill: none;
-  stroke: var(--control-border);
+  stroke: var(--nav-inactive);
   stroke-width: 1.5;
   stroke-linejoin: round;
 }
 
 .ster.is-vol .ster-rand {
-  stroke: var(--accent);
+  stroke: var(--accent-text);
 }
 
 /* Titel van een Gezien-item is een knop (opent het detail). */

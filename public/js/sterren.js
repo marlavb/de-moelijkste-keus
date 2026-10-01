@@ -10,7 +10,8 @@
 //   beoordeeld"); pijltjes ±0,5, Home/End, Delete/Backspace = wissen.
 // - De halve ster is een echte halve vulling: per ster een gevulde ster die
 //   met een clipPath op 0, 50 of 100% van de breedte wordt afgesneden.
-// - Kleuren via CSS (.ster-vol: --accent, .ster-rand: --control-border).
+// - Kleuren via CSS: .ster-vol --accent; .ster-rand --nav-inactive (leeg)
+//   of --accent-text (gevuld), beide ≥ 4,4:1 tegen de achtergrond.
 
 const SVG = 'http://www.w3.org/2000/svg';
 const PAD = 'M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.1 1.1-6.5-4.7-4.6 6.5-.9z';
