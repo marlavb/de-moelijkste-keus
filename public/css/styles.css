@@ -1555,6 +1555,158 @@ a {
   color: var(--text-2);
 }
 
+/* Profiel: gebruikersnaam onder het inlogblok (vrienden, stap 1). */
+.profiel-regel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 4px 8px 4px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+}
+
+.profiel-regel-tekst {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}
+
+.profiel-regel-naam {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.profiel-regel--fout .profiel-regel-tekst {
+  color: var(--error-text);
+}
+
+/* Scherm "Kies je gebruikersnaam" / "Profiel wijzigen". Het formulier staat
+   op --surface: daar haalt --control-border 3,24:1 (op --bg precies 3:1). */
+.header-top--terug {
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.profiel-instellen {
+  padding: 0 20px 32px;
+  max-width: 560px;
+}
+
+.profiel-melding {
+  margin: 8px 0;
+  font-size: 14px;
+  color: var(--text-2);
+}
+
+.profiel-laadfout {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--notice-bg);
+  border-radius: var(--radius-card);
+  color: var(--notice-text);
+  font-size: 14px;
+}
+
+.profiel-laadfout p {
+  margin: 0;
+}
+
+.profiel-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+}
+
+.veld {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.veld-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.veld-invoer {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--control-border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.veld-invoer:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.veld-voorvoegsel {
+  margin-right: 2px;
+  font-size: 16px;
+  color: var(--text-2);
+}
+
+.veld-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 46px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  /* 16px: iOS zoomt anders in bij het typen. */
+  font-size: 16px;
+}
+
+.veld-invoer:has(.veld-input[aria-invalid="true"]) {
+  border-color: var(--error-text);
+  border-width: 2px;
+  padding: 0 13px;
+}
+
+.veld-uitleg {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.veld-fout,
+.profiel-status {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--error-text);
+}
+
+.profiel-knoppen {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-primary:disabled {
+  opacity: 1;
+  background: var(--soldout-bg);
+  color: var(--text-2);
+  cursor: progress;
+}
+
 .plan-row {
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr) auto;

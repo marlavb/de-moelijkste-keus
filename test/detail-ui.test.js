@@ -9,6 +9,8 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { chromium } from 'playwright';
 
+import { nepFirebase } from './nepFirebase.js';
+
 import { planIn, zetStatus, legeGepland } from '../public/js/gepland.js';
 import { voegToe, legeWatchlist, watchlistSleutel } from '../public/js/watchlist.js';
 
@@ -55,11 +57,7 @@ async function openApp({ opslag = {}, html, viewport = { width: 390, height: 900
   await ctx.route(`${base}js/firebase.js`, (r) =>
     r.fulfill({
       contentType: 'text/javascript',
-      body: `export const auth = {}, db = {}, googleProvider = {};
-        export const onAuthStateChanged = (_a, cb) => setTimeout(() => cb(null), 0);
-        export const signInWithPopup = async () => {}, signOut = async () => {};
-        export const doc = () => null, getDoc = async () => ({ exists: () => false }), setDoc = async () => {};
-        export const serverTimestamp = () => null;`,
+      body: nepFirebase(),
     })
   );
   if (html) await ctx.route(`${base}`, async (r) => r.fulfill({ status: 200, contentType: 'text/html', body: html(await readFile(path.join(ROOT, 'index.html'), 'utf-8')) }));

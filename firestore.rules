@@ -9,5 +9,123 @@ service cloud.firestore {
     match /users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
+
+    // ---- Profiel: gebruikersnaam en naam (vrienden, stap 1, okt 2026) ----
+    // Zie public/js/profiel.js. Een profiel en zijn usernames-document worden
+    // altijd samen geschreven (één transactie); de regels hieronder kijken
+    // daarom met getAfter/existsAfter naar de stand ná die transactie.
+
+    function ingelogd() {
+      return request.auth != null;
+    }
+
+    function profielNa(uid) {
+      return getAfter(/databases/$(database)/documents/profielen/$(uid));
+    }
+
+    function naamNa(laag) {
+      return getAfter(/databases/$(database)/documents/usernames/$(laag));
+    }
+
+    // Gebruikersnaam in kleine letters (= document-id van usernames): 3–20
+    // tekens, a–z, 0–9, punt en liggend streepje, begint en eindigt met een
+    // letter of cijfer, geen twee leestekens achter elkaar.
+    function geldigeLaag(laag) {
+      return laag is string
+        && laag.size() >= 3 && laag.size() <= 20
+        && laag.matches('^[a-z0-9]+([._][a-z0-9]+)*$')
+        && !gereserveerd(laag);
+    }
+
+    // Zelfde lijst als GERESERVEERDE_NAMEN in public/js/profiel.js (een test
+    // houdt ze gelijk).
+    function gereserveerd(laag) {
+      return laag in ['admin', 'administrator', 'anoniem', 'beheer', 'beheerder', 'berichten', 'bot',
+          'contact', 'help', 'helpdesk', 'iedereen', 'info', 'moderator', 'null', 'profiel',
+          'root', 'support', 'system', 'systeem', 'team', 'theater', 'theaters', 'undefined',
+          'vrienden']
+        || laag.matches('.*(podiumagenda|podiumpas).*');
+    }
+
+    // Weergavevorm: dezelfde naam, hoofdletters toegestaan.
+    function geldigeWeergave(naam, laag) {
+      return naam is string && naam.lower() == laag && naam.matches('^[A-Za-z0-9._]+$');
+    }
+
+    // Volledige naam: 1–60 tekens, geen spatie aan begin of eind, geen
+    // regeleinden.
+    function geldigeVolledigeNaam(naam) {
+      return naam is string
+        && naam.size() >= 1 && naam.size() <= 60
+        && naam.matches('^[^\\s](.*[^\\s])?$');
+    }
+
+    match /usernames/{laag} {
+      // Alleen opvragen op de exacte naam; nooit een lijst.
+      allow get: if ingelogd();
+      allow list: if false;
+
+      allow create: if ingelogd()
+        && geldigeLaag(laag)
+        && request.resource.data.keys().hasOnly(['uid', 'gebruikersnaam', 'naam'])
+        && request.resource.data.keys().hasAll(['uid', 'gebruikersnaam', 'naam'])
+        && request.resource.data.uid == request.auth.uid
+        && geldigeWeergave(request.resource.data.gebruikersnaam, laag)
+        && geldigeVolledigeNaam(request.resource.data.naam)
+        && profielNa(request.auth.uid) != null
+        && profielNa(request.auth.uid).data.gebruikersnaamLaag == laag
+        && profielNa(request.auth.uid).data.gebruikersnaam == request.resource.data.gebruikersnaam
+        && profielNa(request.auth.uid).data.naam == request.resource.data.naam;
+
+      // Alleen de eigenaar, alleen weergave en naam (bv. "anna" → "Anna").
+      allow update: if ingelogd()
+        && resource.data.uid == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['gebruikersnaam', 'naam'])
+        && geldigeWeergave(request.resource.data.gebruikersnaam, laag)
+        && geldigeVolledigeNaam(request.resource.data.naam)
+        && profielNa(request.auth.uid) != null
+        && profielNa(request.auth.uid).data.gebruikersnaamLaag == laag
+        && profielNa(request.auth.uid).data.gebruikersnaam == request.resource.data.gebruikersnaam
+        && profielNa(request.auth.uid).data.naam == request.resource.data.naam;
+
+      // Vrijgeven: alleen de eigenaar, en niet de naam die het profiel nog
+      // gebruikt (wel samen met het profiel, bij het verwijderen van een account).
+      allow delete: if ingelogd()
+        && resource.data.uid == request.auth.uid
+        && (profielNa(request.auth.uid) == null
+          || profielNa(request.auth.uid).data.gebruikersnaamLaag != laag);
+    }
+
+    match /profielen/{uid} {
+      // Stap 1: alleen de eigenaar. Vrienden komen in stap 2.
+      allow get: if ingelogd() && request.auth.uid == uid;
+      allow list: if false;
+
+      allow create, update: if ingelogd()
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['gebruikersnaam', 'gebruikersnaamLaag', 'naam', 'aangemaaktOp', 'gewijzigdOp', 'v'])
+        && request.resource.data.keys().hasAll(['gebruikersnaam', 'gebruikersnaamLaag', 'naam', 'aangemaaktOp', 'gewijzigdOp', 'v'])
+        && geldigeLaag(request.resource.data.gebruikersnaamLaag)
+        && geldigeWeergave(request.resource.data.gebruikersnaam, request.resource.data.gebruikersnaamLaag)
+        && geldigeVolledigeNaam(request.resource.data.naam)
+        && request.resource.data.v == 1
+        && request.resource.data.gewijzigdOp == request.time
+        && (resource == null
+          ? request.resource.data.aangemaaktOp == request.time
+          : request.resource.data.aangemaaktOp == resource.data.aangemaaktOp)
+        // De naam is (na deze transactie) van mij, met dezelfde gegevens.
+        && naamNa(request.resource.data.gebruikersnaamLaag) != null
+        && naamNa(request.resource.data.gebruikersnaamLaag).data.uid == uid
+        && naamNa(request.resource.data.gebruikersnaamLaag).data.naam == request.resource.data.naam
+        // Andere naam gekozen: de oude moet in dezelfde transactie vrijkomen.
+        && (resource == null
+          || resource.data.gebruikersnaamLaag == request.resource.data.gebruikersnaamLaag
+          || naamNa(resource.data.gebruikersnaamLaag) == null);
+
+      // Weghalen (account verwijderen) alleen samen met de gebruikersnaam.
+      allow delete: if ingelogd()
+        && request.auth.uid == uid
+        && naamNa(resource.data.gebruikersnaamLaag) == null;
+    }
   }
 }

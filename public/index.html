@@ -370,6 +370,72 @@
       </main>
     </section>
 
+    <!-- SCHERM: gebruikersnaam en naam kiezen of wijzigen (alleen ingelogd) -->
+    <section class="screen" id="screen-profiel-instellen" hidden>
+      <header class="app-header">
+        <div class="header-top header-top--terug">
+          <button class="icon-btn" type="button" id="profielInstellenBack" aria-label="Terug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="app-title" id="profielInstellenTitel">Kies je gebruikersnaam</h1>
+            <p class="app-subtitle" id="profielInstellenSub"></p>
+          </div>
+        </div>
+      </header>
+
+      <main class="profiel-instellen">
+        <p class="profiel-melding" id="profielInstellenLaden" role="status">Je profiel wordt geladen…</p>
+        <div class="profiel-laadfout" id="profielInstellenLaadFout" role="alert" hidden>
+          <p>Je profiel kon niet worden geladen. Controleer je verbinding en probeer het opnieuw.</p>
+          <button class="btn-secondary" type="button" id="profielInstellenOpnieuw">Opnieuw proberen</button>
+        </div>
+        <form class="profiel-form" id="profielForm" novalidate hidden>
+          <div class="veld">
+            <label class="veld-label" for="profielGebruikersnaam">Gebruikersnaam</label>
+            <div class="veld-invoer">
+              <span class="veld-voorvoegsel" aria-hidden="true">@</span>
+              <input
+                class="veld-input"
+                id="profielGebruikersnaam"
+                type="text"
+                autocomplete="username"
+                autocapitalize="none"
+                autocorrect="off"
+                spellcheck="false"
+                maxlength="21"
+                aria-describedby="profielGebruikersnaamUitleg profielGebruikersnaamFout"
+              />
+            </div>
+            <p class="veld-uitleg" id="profielGebruikersnaamUitleg"></p>
+            <p class="veld-fout" id="profielGebruikersnaamFout" hidden></p>
+          </div>
+          <div class="veld">
+            <label class="veld-label" for="profielNaam">Volledige naam</label>
+            <div class="veld-invoer">
+              <input
+                class="veld-input"
+                id="profielNaam"
+                type="text"
+                autocomplete="name"
+                maxlength="60"
+                aria-describedby="profielNaamUitleg profielNaamFout"
+              />
+            </div>
+            <p class="veld-uitleg" id="profielNaamUitleg">Vrienden zien deze naam, en wie je gebruikersnaam precies intypt ook.</p>
+            <p class="veld-fout" id="profielNaamFout" hidden></p>
+          </div>
+          <p class="profiel-status" id="profielStatus" role="alert" hidden></p>
+          <div class="profiel-knoppen">
+            <button class="btn-primary" type="submit" id="profielOpslaan">Opslaan</button>
+            <button class="btn-secondary" type="button" id="profielLater" hidden>Later</button>
+          </div>
+        </form>
+      </main>
+    </section>
+
     <div class="sheet-backdrop" id="sheetBackdrop" hidden></div>
     <div class="sheet" id="filterSheet" role="dialog" aria-modal="true" aria-label="Filters" hidden>
       <div class="sheet-handle" aria-hidden="true"></div>

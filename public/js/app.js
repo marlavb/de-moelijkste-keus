@@ -8,8 +8,18 @@ import {
   doc,
   getDoc,
   setDoc,
+  runTransaction,
   serverTimestamp,
 } from './firebase.js';
+import {
+  bewaarProfiel,
+  laadProfiel,
+  controleerGebruikersnaam,
+  controleerNaam,
+  voorstelGebruikersnaam,
+  ProfielFout,
+  GEBRUIKERSNAAM_UITLEG,
+} from './profiel.js';
 import { getGenreBucket, getGenres, matchtGenreFilter } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
 import { weergaveTitel, makerStaatInTitel, isVervallen, VERVALLEN_LABELS } from './weergave.js';
@@ -232,6 +242,16 @@ const state = {
   dateWindowDays: DEFAULT_WINDOW_DAYS,
   user: null, // Firebase User, of null als niet ingelogd (= lokaal-only, zoals voorheen)
   authError: null,
+  // Of onAuthStateChanged al één keer is gevuurd (daarvoor weten we niet of
+  // iemand ingelogd is).
+  authBekend: false,
+  // Profiel (gebruikersnaam en naam, zie profiel.js), alleen ingelogd.
+  // undefined = nog niet geladen, null = (nog) geen profiel. profielFout:
+  // laden mislukt (bv. offline). profielGevraagd: de eenmalige vraag na
+  // inloggen is al gesteld (onthouden in users/{uid}, dus op elk apparaat).
+  profiel: undefined,
+  profielFout: false,
+  profielGevraagd: false,
 };
 
 const els = {
@@ -281,6 +301,7 @@ const els = {
     profiel: document.getElementById('screen-profiel'),
     // Kan ontbreken bij een oudere index.html (zie showScreen).
     gezien: document.getElementById('screen-gezien'),
+    profielInstellen: document.getElementById('screen-profiel-instellen'),
   },
   detailGezienBlok: document.getElementById('detailGezienBlok'),
   detailGezienBezoeken: document.getElementById('detailGezienBezoeken'),
@@ -337,6 +358,23 @@ const els = {
   gezienEmpty: document.getElementById('gezienEmpty'),
   gezienCount: document.getElementById('gezienCount'),
   authBox: document.getElementById('authBox'),
+  // Profiel instellen (vrienden, stap 1, okt 2026). Kan ontbreken bij een
+  // oudere index.html: overal met ?. gebruiken.
+  profielBack: document.getElementById('profielInstellenBack'),
+  profielTitel: document.getElementById('profielInstellenTitel'),
+  profielSub: document.getElementById('profielInstellenSub'),
+  profielLaden: document.getElementById('profielInstellenLaden'),
+  profielLaadFout: document.getElementById('profielInstellenLaadFout'),
+  profielOpnieuw: document.getElementById('profielInstellenOpnieuw'),
+  profielForm: document.getElementById('profielForm'),
+  profielGebruikersnaam: document.getElementById('profielGebruikersnaam'),
+  profielGebruikersnaamUitleg: document.getElementById('profielGebruikersnaamUitleg'),
+  profielGebruikersnaamFout: document.getElementById('profielGebruikersnaamFout'),
+  profielNaam: document.getElementById('profielNaam'),
+  profielNaamFout: document.getElementById('profielNaamFout'),
+  profielStatus: document.getElementById('profielStatus'),
+  profielOpslaan: document.getElementById('profielOpslaan'),
+  profielLater: document.getElementById('profielLater'),
   feedbackForm: document.getElementById('feedbackForm'),
   feedbackInput: document.getElementById('feedbackInput'),
   feedbackSubmit: document.getElementById('feedbackSubmit'),
@@ -469,6 +507,11 @@ async function init() {
 
   els.detailBack.addEventListener('click', () => terug('#/'));
   els.gezienBack?.addEventListener('click', () => terug('#/profiel'));
+  els.profielBack?.addEventListener('click', () => terug('#/profiel'));
+  els.profielLater?.addEventListener('click', () => terug('#/profiel'));
+  els.profielOpnieuw?.addEventListener('click', opnieuwProfielLaden);
+  els.profielForm?.addEventListener('submit', onProfielOpslaan);
+  if (els.profielGebruikersnaamUitleg) els.profielGebruikersnaamUitleg.textContent = GEBRUIKERSNAAM_UITLEG;
   route();
 
   initFeedbackForm();
@@ -587,9 +630,22 @@ function routeNaar(hash) {
     return;
   }
 
+  // Gebruikersnaam en naam kiezen of wijzigen; alleen ingelogd.
+  if (hash === '#/profiel/instellen') {
+    if (!els.screens.profielInstellen || (state.authBekend && !state.user)) {
+      vervang('#/profiel');
+      return;
+    }
+    showScreen('profielInstellen');
+    profielFormulierGevuld = false;
+    renderProfielInstellen();
+    return;
+  }
+
   if (hash === '#/profiel') {
     showScreen('profiel');
     renderProfielScreen();
+    vraagProfielEenmalig();
     return;
   }
 
@@ -600,7 +656,7 @@ function showScreen(name) {
   for (const [key, el] of Object.entries(els.screens)) {
     if (el) el.hidden = key !== name;
   }
-  els.bottomNav.hidden = name === 'detail' || name === 'gezien';
+  els.bottomNav.hidden = name === 'detail' || name === 'gezien' || name === 'profielInstellen';
   for (const btn of els.bottomNav.querySelectorAll('.nav-item')) {
     btn.classList.toggle('is-active', btn.dataset.tab === name);
   }
@@ -1595,10 +1651,14 @@ function userDocRef(uid) {
 
 async function handleAuthChange(user) {
   state.user = user;
+  state.authBekend = true;
   state.authError = null;
   state.cloudWatchlist = null;
   state.cloudGepland = null;
   state.cloudGezien = null;
+  state.profiel = undefined;
+  state.profielFout = false;
+  state.profielGevraagd = false;
 
   if (user) {
     const ref = userDocRef(user.uid);
@@ -1607,6 +1667,7 @@ async function handleAuthChange(user) {
       if (snap.exists()) {
         // Bestaande cloud-data is leidend (bv. al eerder op een ander apparaat ingelogd).
         const data = snap.data();
+        state.profielGevraagd = data.profielGevraagd === true;
         state.favorites = new Set(data.favorites ?? []);
         state.enabledTheaters = data.enabledTheaters ?? state.enabledTheaters;
 
@@ -1636,6 +1697,10 @@ async function handleAuthChange(user) {
     } catch (err) {
       console.error('Kon cloudgegevens niet laden:', err);
     }
+    // Los van het blok hierboven: ook als dat mislukte (offline) weten we
+    // dan of het profiel er is, of tonen we een foutmelding met "Opnieuw".
+    await laadEigenProfiel();
+    if (state.user !== user) return;
   } else {
     state.favorites = loadFavorites();
     renameFavoritesLocally();
@@ -1651,7 +1716,14 @@ async function handleAuthChange(user) {
 
   const hash = location.hash || '#/';
   if (hash === '#/theaters') renderTheatersScreen();
-  if (hash === '#/profiel') renderProfielScreen();
+  if (hash === '#/profiel') {
+    renderProfielScreen();
+    vraagProfielEenmalig();
+  }
+  if (hash === '#/profiel/instellen') {
+    if (user) renderProfielInstellen();
+    else vervang('#/profiel');
+  }
   if (hash.startsWith('#/show/')) {
     const id = decodeURIComponent(hash.slice('#/show/'.length));
     const show = state.shows.find((s) => s.id === id);
@@ -1660,6 +1732,170 @@ async function handleAuthChange(user) {
       renderPlanControls(show);
     }
   }
+}
+
+// ---------- Profiel: gebruikersnaam en naam (zie profiel.js) ----------
+
+const firestoreFns = { doc, getDoc, runTransaction, serverTimestamp };
+
+// Opslaan wacht hooguit zo lang; daarna een melding (offline blijft een
+// transactie anders lang hangen). Lukt het later alsnog, dan is de naam van
+// jou en geeft opnieuw opslaan hetzelfde resultaat.
+const PROFIEL_TIMEOUT_MS = 15000;
+
+async function laadEigenProfiel() {
+  const user = state.user;
+  if (!user) return;
+  state.profielFout = false;
+  try {
+    const profiel = await laadProfiel({ db, fs: firestoreFns, uid: user.uid });
+    if (state.user !== user) return;
+    state.profiel = profiel;
+  } catch (err) {
+    if (state.user !== user) return;
+    console.error('Kon het profiel niet laden:', err);
+    state.profiel = undefined;
+    state.profielFout = true;
+  }
+}
+
+async function opnieuwProfielLaden() {
+  state.profielFout = false;
+  renderAuthBox();
+  renderProfielInstellen();
+  await laadEigenProfiel();
+  renderAuthBox();
+  profielFormulierGevuld = false;
+  renderProfielInstellen();
+}
+
+// Na inloggen zonder profiel één keer het scherm "Kies je gebruikersnaam",
+// als je op Profiel bent (daar log je in, en daar komen bestaande gebruikers
+// vanzelf langs). Daarna niet meer vanzelf: Profiel houdt een knop.
+function vraagProfielEenmalig() {
+  if (!state.user || state.profiel !== null || state.profielGevraagd) return;
+  if ((location.hash || '#/') !== '#/profiel' || !els.screens.profielInstellen) return;
+  state.profielGevraagd = true;
+  setDoc(userDocRef(state.user.uid), { profielGevraagd: true }, { merge: true }).catch((err) =>
+    console.error('Kon niet onthouden dat het profiel gevraagd is:', err)
+  );
+  navigate('#/profiel/instellen');
+}
+
+// De velden één keer vullen per bezoek aan het scherm (niet bij elke
+// herberekening, anders verdwijnt wat je aan het typen bent).
+let profielFormulierGevuld = false;
+
+function renderProfielInstellen() {
+  if (!els.screens.profielInstellen || els.screens.profielInstellen.hidden) return;
+  const eerste = state.profiel === null;
+  els.profielTitel.textContent = state.profiel ? 'Profiel wijzigen' : 'Kies je gebruikersnaam';
+  els.profielSub.textContent = state.profiel
+    ? 'Je gebruikersnaam en naam voor vrienden.'
+    : 'Zo kunnen vrienden je straks vinden. Je kunt dit later altijd wijzigen.';
+  els.profielLater.hidden = !eerste;
+
+  const laden = !state.authBekend || (state.user && state.profiel === undefined && !state.profielFout);
+  els.profielLaden.hidden = !laden;
+  els.profielLaadFout.hidden = !state.profielFout;
+  els.profielForm.hidden = laden || state.profielFout;
+  if (els.profielForm.hidden || profielFormulierGevuld) return;
+
+  profielFormulierGevuld = true;
+  els.profielGebruikersnaam.value = state.profiel?.gebruikersnaam ?? voorstelGebruikersnaam(state.user?.displayName);
+  els.profielNaam.value = state.profiel?.naam ?? state.user?.displayName ?? '';
+  toonVeldFout(els.profielGebruikersnaam, els.profielGebruikersnaamFout, null);
+  toonVeldFout(els.profielNaam, els.profielNaamFout, null);
+  toonProfielStatus(null);
+}
+
+function toonVeldFout(input, el, tekst) {
+  el.hidden = !tekst;
+  el.textContent = tekst ?? '';
+  if (tekst) input.setAttribute('aria-invalid', 'true');
+  else input.removeAttribute('aria-invalid');
+}
+
+function toonProfielStatus(tekst) {
+  els.profielStatus.hidden = !tekst;
+  els.profielStatus.textContent = tekst ?? '';
+}
+
+async function onProfielOpslaan(e) {
+  e.preventDefault();
+  if (!state.user) return;
+  const g = controleerGebruikersnaam(els.profielGebruikersnaam.value);
+  const n = controleerNaam(els.profielNaam.value);
+  toonVeldFout(els.profielGebruikersnaam, els.profielGebruikersnaamFout, g.ok ? null : g.fout);
+  toonVeldFout(els.profielNaam, els.profielNaamFout, n.ok ? null : n.fout);
+  toonProfielStatus(null);
+  if (!g.ok || !n.ok) {
+    (g.ok ? els.profielNaam : els.profielGebruikersnaam).focus();
+    return;
+  }
+
+  const user = state.user;
+  els.profielOpslaan.disabled = true;
+  els.profielOpslaan.textContent = 'Opslaan…';
+  try {
+    const opslaan = bewaarProfiel({ db, fs: firestoreFns, uid: user.uid, gebruikersnaam: g.weergave, naam: n.naam });
+    const timeout = new Promise((_, weiger) => setTimeout(() => weiger(new Error('timeout')), PROFIEL_TIMEOUT_MS));
+    const profiel = await Promise.race([opslaan, timeout]);
+    if (state.user !== user) return;
+    state.profiel = { ...(state.profiel ?? {}), ...profiel };
+    state.profielFout = false;
+    renderAuthBox();
+    terug('#/profiel');
+  } catch (err) {
+    if (err instanceof ProfielFout && err.code === 'bezet') {
+      toonVeldFout(els.profielGebruikersnaam, els.profielGebruikersnaamFout, err.message);
+      els.profielGebruikersnaam.focus();
+    } else if (err instanceof ProfielFout) {
+      toonProfielStatus(err.message);
+    } else {
+      console.error('Profiel opslaan mislukt:', err);
+      toonProfielStatus('Opslaan lukte niet. Controleer je verbinding en probeer het opnieuw.');
+    }
+  } finally {
+    els.profielOpslaan.disabled = false;
+    els.profielOpslaan.textContent = 'Opslaan';
+  }
+}
+
+// Onder het inlogblok in Profiel: je gebruikersnaam met "Wijzigen", of een
+// knop om er een te kiezen, of een foutmelding met "Opnieuw".
+function renderProfielRegel() {
+  if (!state.user || !els.screens.profielInstellen) return null;
+  if (state.profiel === undefined && !state.profielFout) return null;
+  const regel = document.createElement('div');
+  regel.className = 'profiel-regel';
+  const tekst = document.createElement('p');
+  tekst.className = 'profiel-regel-tekst';
+  const knop = document.createElement('button');
+  knop.type = 'button';
+  knop.className = 'text-btn-small';
+
+  if (state.profielFout) {
+    regel.classList.add('profiel-regel--fout');
+    tekst.textContent = 'Je profiel kon niet worden geladen.';
+    knop.textContent = 'Opnieuw';
+    knop.addEventListener('click', opnieuwProfielLaden);
+  } else if (state.profiel) {
+    const naam = document.createElement('span');
+    naam.className = 'profiel-regel-naam';
+    naam.textContent = `@${state.profiel.gebruikersnaam}`;
+    tekst.append(naam, document.createTextNode(` · ${state.profiel.naam}`));
+    knop.textContent = 'Wijzigen';
+    knop.setAttribute('aria-label', 'Gebruikersnaam en naam wijzigen');
+    knop.addEventListener('click', () => navigate('#/profiel/instellen'));
+  } else {
+    tekst.textContent = 'Nog geen gebruikersnaam. Daarmee kunnen vrienden je straks vinden.';
+    knop.textContent = 'Kiezen';
+    knop.setAttribute('aria-label', 'Gebruikersnaam kiezen');
+    knop.addEventListener('click', () => navigate('#/profiel/instellen'));
+  }
+  regel.append(tekst, knop);
+  return regel;
 }
 
 async function handleSignIn() {
@@ -1747,6 +1983,8 @@ function renderAuthBox() {
   }
 
   els.authBox.appendChild(box);
+  const profielRegel = renderProfielRegel();
+  if (profielRegel) els.authBox.appendChild(profielRegel);
 
   if (state.authError) {
     const err = document.createElement('p');
