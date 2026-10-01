@@ -1693,6 +1693,71 @@ button.plan-info {
   color: var(--on-primary);
 }
 
+/* Gezien: het item is een knop (opent het detail), bezoeken onder elkaar. */
+button.gezien-info {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+.gezien-info .show-genre-tag {
+  margin-top: 2px;
+}
+
+.bezoek-lijst {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bezoek {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}
+
+.bezoek--zelf {
+  font-style: italic;
+}
+
+/* Blok "Gezien" bovenaan het detailscherm (en het eenvoudige Gezien-scherm). */
+.gezien-blok {
+  margin: 14px 4px 0;
+  padding: 12px 14px;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.gezien-blok-kop {
+  margin: 0;
+  font-size: 14px;
+  font-weight: var(--kop-gewicht);
+  color: var(--primary);
+}
+
+.gezien-blok .bezoek {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.gezien-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 4px 0;
+  text-decoration: none;
+}
+
+#screen-gezien .profile-note {
+  margin: 12px 4px 0;
+}
+
 /* Watchlist in Profiel: de rij plus een kleine actie "Gezien" rechts. */
 .watchlist-item {
   display: grid;

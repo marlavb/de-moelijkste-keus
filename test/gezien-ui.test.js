@@ -45,8 +45,12 @@ after(async () => {
   await new Promise((r) => server.close(r));
 });
 
-async function openApp({ opslag = {}, html, viewport = { width: 390, height: 900 } } = {}) {
+async function openApp({ opslag = {}, html, viewport = { width: 390, height: 900 }, extraShows = [] } = {}) {
   const ctx = await browser.newContext({ viewport, serviceWorkers: 'block' });
+  if (extraShows.length) {
+    const echt = JSON.parse(await readFile(path.join(ROOT, 'data/shows.json'), 'utf-8'));
+    await ctx.route(/data\/shows\.json/, (r) => r.fulfill({ contentType: 'application/json', body: JSON.stringify([...extraShows, ...echt]) }));
+  }
   await ctx.route(/^https?:\/\/(?!127\.0\.0\.1)/, (r) => r.abort());
   await ctx.route(`${base}js/firebase.js`, (r) =>
     r.fulfill({
@@ -91,7 +95,7 @@ test('voorbij plan met kaarten → Gezien, uit de planning en van de watchlist',
   assert.equal((await lees(page, 'podiumagenda:watchlist')).watchlist.length, 0);
   const rij = await page.locator('#gezienList .gezien-row').first().innerText();
   // Weergavenaam van het theater, nooit het id.
-  assert.match(rij, /za 26 sep · DeLaMar/);
+  assert.match(rij, /zaterdag 26 september 2026 · 20:30 · DeLaMar, Amsterdam/);
   assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
   await ctx.close();
 });
@@ -229,4 +233,99 @@ test('Profiel: volgorde Ben je geweest? → Gepland → Gezien → Watchlist; le
     assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
     await ctx.close();
   }
+});
+
+// ---------- Volledige bezoekgegevens en detailschermen (1 okt 2026) ----------
+
+const gisteren = (() => { const d = new Date(); d.setDate(d.getDate() - 1); return d.toISOString().slice(0, 10); })();
+
+function gezienProfiel() {
+  // Twee bezoeken aan een voorstelling die niet meer in de agenda staat, met
+  // externe locatie; plus een oud bezoek zonder extra velden.
+  return {
+    gezien: [
+      {
+        sleutel: 'enfin barbin | marleen hendrickx', titel: 'Enfin, Barbin – Marleen Hendrickx', sleutelTitel: 'Enfin, Barbin – Marleen Hendrickx', theaterId: 'maaspoort', bron: 'planning', toegevoegdOp: 1, gewijzigdOp: 2, v: 4,
+        bezoeken: [
+          { datum: '2026-09-05', tijd: '20:15', theaterId: 'maaspoort', theaterNaam: 'De Maaspoort Theater & Events', stad: 'Venlo', locatie: 'Theater De Garage | Venlo', titel: 'Enfin, Barbin – Marleen Hendrickx', maker: 'Marleen Hendrickx', genre: 'Toneel', status: 'kaarten', url: 'https://www.maaspoort.nl/programma/enfin-barbin/' },
+          { datum: '2026-09-26', tijd: '20:30', theaterId: 'weggehaald-theater', theaterNaam: 'Oud Theater', stad: 'Ergens', titel: 'Enfin, Barbin – Marleen Hendrickx', genre: 'Toneel', status: 'gepland' },
+        ],
+      },
+      { sleutel: 'oud stuk', titel: 'Oud stuk', theaterId: 'delamar', bron: 'planning', toegevoegdOp: 1, bezoeken: [{ datum: '2026-09-12', tijd: null, theaterId: 'delamar' }] },
+    ],
+    gezienVerwijderd: [],
+  };
+}
+
+for (const viewport of [{ width: 390, height: 900 }, { width: 1280, height: 900 }]) {
+  test(`Profiel Gezien: alle bezoeken met datum, tijd, theater en locatie; nieuwste eerst (${viewport.width}px)`, async () => {
+    const { ctx, page } = await openApp({ viewport, opslag: { 'podiumagenda:gezien': gezienProfiel() } });
+    await page.goto(`${base}#/profiel`);
+    await page.waitForTimeout(300);
+    const regels = await page.locator('#gezienList .gezien-row').first().locator('.bezoek').allInnerTexts();
+    assert.deepEqual(regels, [
+      // Theater niet meer in de config: de bewaarde naam.
+      'zaterdag 26 september 2026 · 20:30 · Oud Theater, Ergens',
+      'zaterdag 5 september 2026 · 20:15 · De Maaspoort Theater & Events, Venlo · Theater De Garage',
+    ]);
+    assert.equal(await page.locator('#gezienList .gezien-row').first().locator('.show-genre-tag').textContent(), 'Toneel');
+    // Oud bezoek zonder extra velden: theater live via theaterId.
+    assert.match(await page.locator('#gezienList .gezien-row', { hasText: 'Oud stuk' }).innerText(), /zaterdag 12 september 2026 · DeLaMar, Amsterdam/);
+    assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+    await ctx.close();
+  });
+
+  test(`Gezien-item niet meer in de agenda → eenvoudig detail zonder reserveren of plannen (${viewport.width}px)`, async () => {
+    const { ctx, page } = await openApp({ viewport, opslag: { 'podiumagenda:gezien': gezienProfiel() } });
+    await page.goto(`${base}#/profiel`);
+    await page.waitForTimeout(300);
+    await page.locator('#gezienList .gezien-info').first().click();
+    await page.waitForTimeout(300);
+    assert.match(page.url(), /#\/gezien\//);
+    assert.equal(await page.locator('#screen-gezien').isVisible(), true);
+    assert.equal(await page.locator('#gezienTitel').innerText(), 'Enfin, Barbin – Marleen Hendrickx');
+    assert.equal(await page.locator('#gezienGenre').textContent(), 'Toneel');
+    assert.equal(await page.locator('#gezienBezoeken .bezoek').count(), 2);
+    assert.equal(await page.locator('#gezienLink').getAttribute('href'), 'https://www.maaspoort.nl/programma/enfin-barbin/');
+    assert.equal(await page.locator('#screen-gezien #detailReserveBtn, #screen-gezien #detailPlanBtn').count(), 0);
+    await page.click('#gezienBack');
+    await page.waitForTimeout(200);
+    assert.match(page.url(), /#\/profiel/);
+    await ctx.close();
+  });
+}
+
+test('Gezien-item dat nog in de agenda staat → gewoon detailscherm met blok Gezien', async () => {
+  const s = eenShow;
+  const profiel = { gezien: [{ sleutel: watchlistSleutel(s.titel, s.theaterId), titel: s.titel, theaterId: s.theaterId, bron: 'handmatig', toegevoegdOp: new Date(2026, 9, 1).getTime(), bezoeken: [] }], gezienVerwijderd: [] };
+  const { ctx, page } = await openApp({ opslag: { 'podiumagenda:gezien': profiel } });
+  await page.goto(`${base}#/profiel`);
+  await page.waitForTimeout(300);
+  await page.locator('#gezienList .gezien-info').first().click();
+  await page.waitForTimeout(400);
+  assert.match(page.url(), /#\/show\//);
+  assert.equal(await page.locator('#detailGezienBlok').isVisible(), true);
+  assert.equal(await page.locator('#detailGezienBezoeken .bezoek').innerText(), 'Zelf als gezien aangevinkt op 1 oktober 2026');
+  assert.equal(await page.locator('#detailReserveBtn').isVisible(), true);
+  await ctx.close();
+});
+
+test('Handmatig aanvinken op een voorbije speeldatum bewaart meteen het bezoek', async () => {
+  const voorbij = { ...eenShow, id: 'test-gisteren', datum: gisteren, tijd: '20:15', titel: 'Voorbije proefvoorstelling', maker: 'Proefmaker', locatie: 'Theater De Garage | Venlo' };
+  const { ctx, page } = await openApp({ extraShows: [voorbij] });
+  await page.goto(`${base}#/show/test-gisteren`);
+  await page.waitForTimeout(400);
+  await page.click('#detailGezienBtn');
+  const g = await lees(page, 'podiumagenda:gezien');
+  const b = g.gezien[0].bezoeken;
+  assert.equal(b.length, 1);
+  assert.deepEqual([b[0].datum, b[0].tijd, b[0].theaterId, b[0].locatie, b[0].maker], [gisteren, '20:15', voorbij.theaterId, 'Theater De Garage | Venlo', 'Proefmaker']);
+  assert.equal(await page.locator('#detailGezienBlok').isVisible(), true);
+  // Toekomstige speeldatum: zelf aangevinkt, zonder bezoek.
+  await page.goto(`${base}#/show/${encodeURIComponent(eenShow.id)}`);
+  await page.waitForTimeout(300);
+  await page.click('#detailGezienBtn');
+  const g2 = await lees(page, 'podiumagenda:gezien');
+  assert.deepEqual(g2.gezien.find((i) => i.sleutel === watchlistSleutel(eenShow.titel, eenShow.theaterId)).bezoeken, []);
+  await ctx.close();
 });

@@ -37,6 +37,8 @@ import {
   beantwoord,
   laatsteBezoek,
   sorteerGezien,
+  isVoorbij,
+  bezoekUitShow,
 } from './gezien.js';
 
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
@@ -274,7 +276,17 @@ const els = {
     detail: document.getElementById('screen-detail'),
     theaters: document.getElementById('screen-theaters'),
     profiel: document.getElementById('screen-profiel'),
+    // Kan ontbreken bij een oudere index.html (zie showScreen).
+    gezien: document.getElementById('screen-gezien'),
   },
+  detailGezienBlok: document.getElementById('detailGezienBlok'),
+  detailGezienBezoeken: document.getElementById('detailGezienBezoeken'),
+  gezienBack: document.getElementById('gezienBack'),
+  gezienGenre: document.getElementById('gezienGenre'),
+  gezienTitel: document.getElementById('gezienTitel'),
+  gezienMaker: document.getElementById('gezienMaker'),
+  gezienBezoeken: document.getElementById('gezienBezoeken'),
+  gezienLink: document.getElementById('gezienLink'),
   detailBack: document.getElementById('detailBack'),
   detailWatchIcon: document.getElementById('detailWatchIcon'),
   detailWatchBtn: document.getElementById('detailWatchBtn'),
@@ -449,6 +461,7 @@ async function init() {
   }
 
   els.detailBack.addEventListener('click', () => navigate('#/'));
+  els.gezienBack?.addEventListener('click', () => navigate('#/profiel'));
   route();
 
   initFeedbackForm();
@@ -489,6 +502,30 @@ function route() {
     return;
   }
 
+  // Een gezien voorstelling: staat hij nog in de agenda, dan het gewone
+  // detailscherm (met het blok Gezien); anders een eenvoudig scherm uit de
+  // bewaarde gegevens.
+  if (hash.startsWith('#/gezien/')) {
+    const sleutel = decodeURIComponent(hash.slice('#/gezien/'.length));
+    const item = (state.gezien?.gezien ?? []).find((i) => i.sleutel === sleutel);
+    if (!item) {
+      location.replace('#/profiel');
+      return;
+    }
+    const live = state.shows.filter((s) => showSleutel(s) === sleutel && s.datum >= todayIsoDate()).sort((a, b) => sortKey(a).localeCompare(sortKey(b)))[0];
+    if (live) {
+      location.replace(`#/show/${encodeURIComponent(live.id)}`);
+      return;
+    }
+    if (!els.screens.gezien) {
+      location.replace('#/profiel');
+      return;
+    }
+    showScreen('gezien');
+    renderGezienDetail(item);
+    return;
+  }
+
   if (hash === '#/theaters') {
     showScreen('theaters');
     renderTheatersScreen();
@@ -512,9 +549,9 @@ function route() {
 
 function showScreen(name) {
   for (const [key, el] of Object.entries(els.screens)) {
-    el.hidden = key !== name;
+    if (el) el.hidden = key !== name;
   }
-  els.bottomNav.hidden = name === 'detail';
+  els.bottomNav.hidden = name === 'detail' || name === 'gezien';
   for (const btn of els.bottomNav.querySelectorAll('.nav-item')) {
     btn.classList.toggle('is-active', btn.dataset.tab === name);
   }
@@ -1056,11 +1093,48 @@ function huidigeStand() {
   return { gepland: state.gepland, gezien: state.gezien, watchlist: state.watchlist };
 }
 
-// "za 4 okt", met het jaar erbij als het niet dit jaar is.
-function formatBezoekDatum(isoDate) {
+// "zaterdag 26 september 2026": altijd met het jaartal.
+function formatDatumVolledig(isoDate) {
   const { year, month, day } = parseIsoDate(isoDate);
-  const jaar = year !== new Date().getFullYear() ? ` ${year}` : '';
-  return `${WEEKDAYS[dateFromIso(isoDate).getDay()]} ${day} ${MONTHS[month - 1]}${jaar}`;
+  return `${WEEKDAYS_LONG[dateFromIso(isoDate).getDay()]} ${day} ${MONTHS_LONG[month - 1]} ${year}`;
+}
+
+// Eén bezoek als regel: "zaterdag 26 september 2026 · 20:15 · DeLaMar,
+// Amsterdam · Theater De Garage". Theaternaam en stad live via theaterId
+// (config/agenda); alleen als het theater er niet meer is de bewaarde naam.
+function bezoekRegel(b) {
+  const naam = theaterNaamVan(b.theaterId) ?? b.theaterNaam ?? null;
+  const stad = state.theaterInfo[b.theaterId]?.stad ?? b.stad ?? null;
+  const plek = b.locatie ? b.locatie.split('|')[0].trim() : b.zaal ?? null;
+  return [formatDatumVolledig(b.datum), b.tijd, [naam, stad].filter(Boolean).join(', ') || null, plek].filter(Boolean).join(' · ');
+}
+
+// Alle bezoeken van een Gezien-item als <li>'s, nieuwste eerst; zonder
+// bezoek: "Zelf als gezien aangevinkt op …".
+function vulBezoekLijst(ul, item) {
+  ul.replaceChildren();
+  const bezoeken = [...(item.bezoeken ?? [])].sort((a, b) => `${b.datum} ${b.tijd ?? ''}`.localeCompare(`${a.datum} ${a.tijd ?? ''}`));
+  if (bezoeken.length === 0) {
+    const li = document.createElement('li');
+    li.className = 'bezoek bezoek--zelf';
+    const d = new Date(item.toegevoegdOp ?? Date.now());
+    li.textContent = `Zelf als gezien aangevinkt op ${d.getDate()} ${MONTHS_LONG[d.getMonth()]} ${d.getFullYear()}`;
+    ul.appendChild(li);
+    return;
+  }
+  for (const b of bezoeken) {
+    const li = document.createElement('li');
+    li.className = 'bezoek';
+    li.textContent = bezoekRegel(b);
+    ul.appendChild(li);
+  }
+}
+
+// Genre van een Gezien-item: live, anders van het nieuwste bezoek dat het weet.
+function gezienGenre(item, liveShow) {
+  if (liveShow) return getGenreBucket(liveShow);
+  const b = [...(item.bezoeken ?? [])].sort((x, y) => `${y.datum}`.localeCompare(`${x.datum}`)).find((x) => x.genre);
+  return b?.genre ?? null;
 }
 
 function renderVragen() {
@@ -1145,25 +1219,27 @@ function renderGezienRow(item, liveShow) {
   const row = document.createElement('div');
   row.className = 'gezien-row';
 
-  const info = document.createElement('div');
-  info.className = 'plan-info';
+  // Het hele item is aanklikbaar (detailscherm); "Weghalen" staat ernaast.
+  const info = document.createElement('button');
+  info.type = 'button';
+  info.className = 'plan-info gezien-info';
+  info.addEventListener('click', () => navigate(`#/gezien/${encodeURIComponent(item.sleutel)}`));
   const title = document.createElement('span');
   title.className = 'plan-title';
   // Live weergavetitel als de voorstelling nog in de agenda staat.
   title.textContent = liveShow ? weergaveTitel(liveShow) : item.titel;
-  const meta = document.createElement('span');
-  meta.className = 'plan-meta';
-  const laatste = laatsteBezoek(item);
-  const delen = [];
-  if (laatste) {
-    const naam = theaterNaamVan(laatste.theaterId);
-    delen.push(naam ? `${formatBezoekDatum(laatste.datum)} · ${naam}` : formatBezoekDatum(laatste.datum));
-    if (item.bezoeken.length > 1) delen.push(`${item.bezoeken.length}× gezien`);
-  } else {
-    delen.push('Zelf als gezien aangevinkt');
+  info.appendChild(title);
+  const genre = gezienGenre(item, liveShow);
+  if (genre) {
+    const g = document.createElement('span');
+    g.className = 'show-genre-tag';
+    g.textContent = genre;
+    info.appendChild(g);
   }
-  meta.textContent = delen.join(' · ');
-  info.append(title, meta);
+  const lijst = document.createElement('ul');
+  lijst.className = 'bezoek-lijst bezoek-lijst--compact';
+  vulBezoekLijst(lijst, item);
+  info.appendChild(lijst);
 
   const weg = document.createElement('button');
   weg.type = 'button';
@@ -1179,6 +1255,34 @@ function renderGezienRow(item, liveShow) {
 
   row.append(info, weg);
   return row;
+}
+
+// Detailscherm voor een gezien voorstelling die niet meer in de agenda staat:
+// titel, maker, genre, de bezoeken en de link; geen reserveren of plannen.
+function renderGezienDetail(item) {
+  const nieuwste = [...(item.bezoeken ?? [])].sort((a, b) => `${b.datum} ${b.tijd ?? ''}`.localeCompare(`${a.datum} ${a.tijd ?? ''}`));
+  const met = (veld) => nieuwste.find((b) => b[veld])?.[veld] ?? null;
+  if (els.gezienTitel) els.gezienTitel.textContent = item.titel;
+  const maker = met('maker');
+  if (els.gezienMaker) {
+    els.gezienMaker.textContent = maker ?? '';
+    els.gezienMaker.hidden = !maker || makerStaatInTitel(item.titel, maker);
+  }
+  if (els.gezienGenre) els.gezienGenre.textContent = gezienGenre(item, null) ?? '';
+  if (els.gezienBezoeken) vulBezoekLijst(els.gezienBezoeken, item);
+  const url = met('url');
+  if (els.gezienLink) {
+    els.gezienLink.hidden = !url;
+    if (url) els.gezienLink.href = url;
+  }
+}
+
+// Blok "Gezien" bovenaan het gewone detailscherm.
+function renderDetailGezien(show) {
+  if (!els.detailGezienBlok || !els.detailGezienBezoeken) return;
+  const item = (state.gezien?.gezien ?? []).find((i) => i.sleutel === showSleutel(show));
+  els.detailGezienBlok.hidden = !item;
+  if (item) vulBezoekLijst(els.detailGezienBezoeken, item);
 }
 
 function renderGeplandList() {
@@ -2160,6 +2264,7 @@ function renderDetail(show) {
   els.detailWatchIcon.onclick = () => toggleWatchlist(show);
   els.detailWatchBtn.onclick = () => toggleWatchlist(show);
   renderGezienButton(show);
+  renderDetailGezien(show);
   if (els.detailGezienBtn) els.detailGezienBtn.onclick = () => toggleGezien(show);
 
   els.detailAddCalendar.onclick = () => downloadIcs(show);
@@ -2191,6 +2296,7 @@ function toggleGezien(show) {
     markeerGezien(show);
   }
   renderGezienButton(show);
+  renderDetailGezien(show);
   renderWatchButtons(show);
   renderAgenda();
 }
@@ -2204,7 +2310,10 @@ function toggleGezien(show) {
 function markeerGezien(show, naAfloop = () => {}) {
   const sleutel = showSleutel(show);
   const watchItem = (state.watchlist?.watchlist ?? []).find((i) => i.sleutel === sleutel) ?? null;
-  state.gezien = zetGezien(state.gezien, { show, bron: 'handmatig' });
+  // Voorbije speeldatum (staat nog in de data tot de nachtelijke run):
+  // meteen het bezoek bewaren, alsof het uit de planning kwam.
+  const bezoek = show.datum && isVoorbij(show.datum) ? bezoekUitShow(show) : null;
+  state.gezien = zetGezien(state.gezien, { show, bron: 'handmatig', bezoek });
   saveGezien();
   if (watchItem) {
     state.watchlist = verwijder(state.watchlist, sleutel);
@@ -2251,6 +2360,7 @@ function toonMelding(tekst, ongedaanMaken) {
       const show = state.shows.find((s) => s.id === decodeURIComponent(hash.slice('#/show/'.length)));
       if (show) {
         renderGezienButton(show);
+        renderDetailGezien(show);
         renderWatchButtons(show);
       }
     }
