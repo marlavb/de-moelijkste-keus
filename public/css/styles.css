@@ -1725,6 +1725,71 @@ button.gezien-info {
   font-style: italic;
 }
 
+/* Sterren (beoordeling, zie js/sterren.js): tikvlak 40×44 per ster; gevuld
+   in --accent (3,1:1 op --bg), lege ster omlijnd in --control-border
+   (3,0:1). De halve ster is een clipPath op de gevulde ster. */
+.sterren {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.sterren:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.ster {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: var(--touch);
+}
+
+.ster svg {
+  width: 28px;
+  height: 28px;
+  overflow: visible;
+}
+
+.ster-vol {
+  fill: var(--accent);
+}
+
+.ster-rand {
+  fill: none;
+  stroke: var(--control-border);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.ster.is-vol .ster-rand {
+  stroke: var(--accent);
+}
+
+/* Sterren met het cijfer ernaast ("★ 4,5") en een kleine wis-link. */
+.beoordeling {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+}
+
+.beoordeling-cijfer {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.beoordeling .link-btn {
+  min-height: 0;
+  font-size: 12px;
+}
+
 /* Blok "Gezien" bovenaan het detailscherm (en het eenvoudige Gezien-scherm). */
 .gezien-blok {
   margin: 14px 4px 0;

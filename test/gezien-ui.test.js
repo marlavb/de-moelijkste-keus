@@ -329,3 +329,63 @@ test('Handmatig aanvinken op een voorbije speeldatum bewaart meteen het bezoek',
   assert.deepEqual(g2.gezien.find((i) => i.sleutel === watchlistSleutel(eenShow.titel, eenShow.theaterId)).bezoeken, []);
   await ctx.close();
 });
+
+// ---------- Sterrencomponent (1 okt 2026) ----------
+
+test('sterren: aria-waarden, toetsenbord, halve/hele ster met tikken, wissen', async () => {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 300 }, serviceWorkers: 'block' });
+  await ctx.route(`${base}sterren-proef.html`, (r) =>
+    r.fulfill({
+      contentType: 'text/html',
+      body: `<!doctype html><link rel="stylesheet" href="css/styles.css"><div id="plek"></div><script type="module">
+        import { maakSterren } from './js/sterren.js';
+        window.wijzigingen = [];
+        const el = maakSterren({ waarde: null, label: 'Beoordeling proef', onWijzig: (w) => window.wijzigingen.push(w) });
+        document.getElementById('plek').appendChild(el);
+      </script>`,
+    })
+  );
+  const page = await ctx.newPage();
+  await page.goto(`${base}sterren-proef.html`);
+  const s = page.locator('[role="slider"]');
+  await s.waitFor();
+  assert.equal(await s.getAttribute('aria-valuemin'), '1');
+  assert.equal(await s.getAttribute('aria-valuemax'), '5');
+  assert.equal(await s.getAttribute('aria-valuenow'), null);
+  assert.equal(await s.getAttribute('aria-valuetext'), 'Nog niet beoordeeld');
+  // Tikvlak minstens 44 px hoog.
+  assert.ok((await page.locator('.ster').first().boundingBox()).height >= 44);
+  // Toetsenbord.
+  await s.focus();
+  await page.keyboard.press('ArrowRight');
+  assert.equal(await s.getAttribute('aria-valuenow'), '1');
+  await page.keyboard.press('ArrowRight');
+  assert.equal(await s.getAttribute('aria-valuetext'), '1,5 van 5 sterren');
+  await page.keyboard.press('End');
+  assert.equal(await s.getAttribute('aria-valuenow'), '5');
+  await page.keyboard.press('ArrowRight');
+  assert.equal(await s.getAttribute('aria-valuenow'), '5');
+  await page.keyboard.press('Home');
+  await page.keyboard.press('ArrowLeft');
+  assert.equal(await s.getAttribute('aria-valuenow'), '1');
+  await page.keyboard.press('Delete');
+  assert.equal(await s.getAttribute('aria-valuetext'), 'Nog niet beoordeeld');
+  // Tikken: linkerhelft van ster 4 = 3,5; rechterhelft = 4; dezelfde waarde nog eens = wissen.
+  const ster4 = await page.locator('.ster').nth(3).boundingBox();
+  await page.mouse.click(ster4.x + ster4.width * 0.25, ster4.y + ster4.height / 2);
+  assert.equal(await s.getAttribute('aria-valuenow'), '3.5');
+  await page.mouse.click(ster4.x + ster4.width * 0.75, ster4.y + ster4.height / 2);
+  assert.equal(await s.getAttribute('aria-valuenow'), '4');
+  await page.mouse.click(ster4.x + ster4.width * 0.75, ster4.y + ster4.height / 2);
+  assert.equal(await s.getAttribute('aria-valuenow'), null);
+  // Linkerhelft van de eerste ster geeft 1 (minimum).
+  const ster1 = await page.locator('.ster').first().boundingBox();
+  await page.mouse.click(ster1.x + 2, ster1.y + ster1.height / 2);
+  assert.equal(await s.getAttribute('aria-valuenow'), '1');
+  // Halve ster is een echte halve vulling (clipPath van 12 van 24).
+  await s.focus();
+  await page.keyboard.press('ArrowRight');
+  assert.equal(await page.locator('.ster').nth(1).locator('clipPath rect').getAttribute('width'), '12');
+  assert.deepEqual(await page.evaluate(() => window.wijzigingen), [1, 1.5, 5, 1, null, 3.5, 4, null, 1, 1.5]);
+  await ctx.close();
+});
