@@ -84,7 +84,9 @@ test('voorbij plan met kaarten → Gezien, uit de planning en van de watchlist',
   await page.waitForTimeout(300);
   const gezien = await lees(page, 'podiumagenda:gezien');
   assert.equal(gezien.gezien.length, 1);
-  assert.deepEqual(gezien.gezien[0].bezoeken, [{ datum: '2026-09-26', tijd: '20:30', theaterId: 'delamar' }]);
+  const b = gezien.gezien[0].bezoeken;
+  assert.equal(b.length, 1);
+  assert.deepEqual([b[0].datum, b[0].tijd, b[0].theaterId, b[0].status], ['2026-09-26', '20:30', 'delamar', 'kaarten']);
   assert.equal((await lees(page, 'podiumagenda:gepland')).gepland.length, 0);
   assert.equal((await lees(page, 'podiumagenda:watchlist')).watchlist.length, 0);
   const rij = await page.locator('#gezienList .gezien-row').first().innerText();

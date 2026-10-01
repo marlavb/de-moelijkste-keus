@@ -18,6 +18,8 @@ import {
   laatsteBezoek,
   sorteerGezien,
   laadGezien,
+  bezoekVan,
+  bezoekUitShow,
 } from '../public/js/gezien.js';
 import { planIn, zetStatus, legeGepland, indexeerShows, laadGepland } from '../public/js/gepland.js';
 import { watchlistSleutel, voegToe, legeWatchlist, verwijder } from '../public/js/watchlist.js';
@@ -72,7 +74,10 @@ test('kaarten → Gezien (met bezoek), uit de planning en van de watchlist', () 
   assert.equal(r.gepland.gepland.length, 0);
   assert.equal(r.gezien.gezien.length, 1);
   assert.equal(r.gezien.gezien[0].bron, 'planning');
-  assert.deepEqual(r.gezien.gezien[0].bezoeken, [{ datum: '2026-10-04', tijd: '20:30', theaterId: 'delamar' }]);
+  // Volledig bezoek uit de momentopname van het plan (de voorstelling is al uit de data).
+  assert.deepEqual(r.gezien.gezien[0].bezoeken, [
+    { datum: '2026-10-04', tijd: '20:30', theaterId: 'delamar', theaterNaam: 'DeLaMar', stad: 'Amsterdam', titel: 'Prikkelarme kermis – Sara Kroos', status: 'kaarten' },
+  ]);
   assert.equal(r.watchlist.watchlist.length, 0);
   assert.equal(r.watchlist.watchlistVerwijderd[0].sleutel, 'prikkelarme kermis | sara kroos');
   // Vóór middernacht: niets.
@@ -238,4 +243,105 @@ test('verplaatst (ook met kaarten) → vraag, niet automatisch Gezien en niet st
   const afgelast = laadGepland({ opgeslagen: planMet('kaarten'), index: indexeerShows([show({ beschikbaarheid: 'afgelast' })]) }).profiel;
   assert.equal(vragenOver(afgelast, { nu: NA }).length, 0);
   assert.equal(verwerkVoorbijePlannen({ ...stand, gepland: afgelast }, { nu: NA, now: 100 }).gepland.gepland.length, 0);
+});
+
+// ---------- Volledige bezoekgegevens (1 okt 2026) ----------
+
+const maaspoortShow = (extra = {}) => ({
+  id: 'mp-1',
+  titel: 'Enfin, Barbin',
+  maker: 'Marleen Hendrickx',
+  genre: 'Toneel',
+  theaterId: 'maaspoort',
+  theaterNaam: 'De Maaspoort Theater & Events',
+  stad: 'Venlo',
+  locatie: 'Theater De Garage | Venlo',
+  datum: '2026-10-04',
+  tijd: '20:15',
+  reserverenUrl: 'https://www.maaspoort.nl/programma/enfin-barbin/04-10-2026-20-15/',
+  beschikbaarheid: 'beschikbaar',
+  ...extra,
+});
+
+test('plan bewaart maker, genre en locatie; na de datum staat alles in het bezoek (kaarten, externe locatie)', () => {
+  let gepland = planIn(legeGepland(), maaspoortShow(), 1);
+  assert.equal(gepland.gepland[0].maker, 'Marleen Hendrickx');
+  assert.equal(gepland.gepland[0].locatie, 'Theater De Garage | Venlo');
+  gepland = zetStatus(gepland, gepland.gepland[0].sleutel, 'kaarten', 2);
+  // Na de datum is de voorstelling uit de data: alles komt uit de momentopname.
+  const r = verwerkVoorbijePlannen({ gepland, gezien: legeGezien(), watchlist: legeWatchlist() }, { index: indexeerShows([]), nu: NA, now: 100 });
+  assert.deepEqual(r.gezien.gezien[0].bezoeken[0], {
+    datum: '2026-10-04',
+    tijd: '20:15',
+    theaterId: 'maaspoort',
+    theaterNaam: 'De Maaspoort Theater & Events',
+    stad: 'Venlo',
+    locatie: 'Theater De Garage | Venlo',
+    titel: 'Enfin, Barbin – Marleen Hendrickx',
+    maker: 'Marleen Hendrickx',
+    genre: 'Toneel',
+    status: 'kaarten',
+    url: 'https://www.maaspoort.nl/programma/enfin-barbin/04-10-2026-20-15/',
+  });
+});
+
+test('"Ben je geweest?" → Ja: volledig bezoek met status gepland; live voorstelling vult aan', () => {
+  const gepland = planIn(legeGepland(), { ...show(), maker: null, genre: null }, 1); // oud plan zonder extra's
+  const stand = { gepland, gezien: legeGezien(), watchlist: legeWatchlist() };
+  const [vraag] = vragenOver(gepland, { nu: NA });
+  // De voorstelling staat (nog) in de data, met genre: dat komt in het bezoek.
+  const index = indexeerShows([show({ genre: 'Cabaret', zaal: 'Grote zaal' })]);
+  const ja = beantwoord(stand, vraag, true, { index, now: 200 });
+  const b = ja.gezien.gezien[0].bezoeken[0];
+  assert.equal(b.status, 'gepland');
+  assert.equal(b.genre, 'Cabaret');
+  assert.equal(b.zaal, 'Grote zaal');
+  assert.equal(b.titel, 'Prikkelarme kermis – Sara Kroos');
+  assert.equal(b.stad, 'Amsterdam');
+});
+
+test('oud plan wordt aangevuld zolang de voorstelling in de agenda staat (tijdstempels gelijk)', () => {
+  const oud = planIn(legeGepland(), { ...maaspoortShow(), maker: null, genre: null, locatie: null }, 1);
+  assert.equal(oud.gepland[0].maker, undefined);
+  const index = indexeerShows([maaspoortShow()]);
+  const aangevuld = laadGepland({ opgeslagen: oud, index }).profiel.gepland[0];
+  assert.equal(aangevuld.maker, 'Marleen Hendrickx');
+  assert.equal(aangevuld.locatie, 'Theater De Garage | Venlo');
+  assert.equal(aangevuld.gewijzigdOp, oud.gepland[0].gewijzigdOp);
+  // Ander apparaat met een nieuwere status maar zonder extra's: blijft aangevuld.
+  const anders = zetStatus(oud, oud.gepland[0].sleutel, 'kaarten', 50);
+  const samen = laadGepland({ opgeslagen: { gepland: [aangevuld], geplandVerwijderd: [] }, extra: anders }).profiel.gepland[0];
+  assert.equal(samen.status, 'kaarten');
+  assert.equal(samen.maker, 'Marleen Hendrickx');
+});
+
+test('oude bezoeken zonder extra velden blijven werken; twee kopieën vullen elkaar aan', () => {
+  const oud = { gezien: [{ sleutel: 'k', titel: 'K', toegevoegdOp: 5, bezoeken: [{ datum: '2026-09-01', tijd: null, theaterId: 'x' }] }], gezienVerwijderd: [] };
+  const geladen = laadGezien({ opgeslagen: oud });
+  assert.deepEqual(geladen.profiel.gezien[0].bezoeken, [{ datum: '2026-09-01', tijd: null, theaterId: 'x' }]);
+  assert.equal(laadGezien({ opgeslagen: geladen.profiel }).gewijzigd, false);
+  // Hetzelfde bezoek met extra's van een ander apparaat: één bezoek, aangevuld.
+  const rijk = { gezien: [{ ...oud.gezien[0], bezoeken: [{ datum: '2026-09-01', tijd: null, theaterId: 'x', stad: 'Venlo', genre: 'Dans' }] }], gezienVerwijderd: [] };
+  for (const samen of [voegGezienSamen(oud, rijk), voegGezienSamen(rijk, oud)]) {
+    assert.equal(samen.gezien[0].bezoeken.length, 1);
+    assert.equal(samen.gezien[0].bezoeken[0].stad, 'Venlo');
+    assert.equal(samen.gezien[0].bezoeken[0].genre, 'Dans');
+  }
+});
+
+test('meerdere bezoeken met gegevens: één item, nieuwste eerst via laatsteBezoek', () => {
+  let g = zetGezien(legeGezien(), { show: show(), bron: 'planning', bezoek: bezoekVan({ ...planIn(legeGepland(), show(), 1).gepland[0], status: 'kaarten' }) }, 1);
+  const tweede = planIn(legeGepland(), show({ theaterId: 'carre', theaterNaam: 'Koninklijk Theater Carré', datum: '2026-12-03', tijd: null }), 2).gepland[0];
+  g = zetGezien(g, { show: show(), bron: 'planning', bezoek: bezoekVan(tweede) }, 2);
+  assert.equal(g.gezien[0].bezoeken.length, 2);
+  assert.equal(laatsteBezoek(g.gezien[0]).theaterNaam, 'Koninklijk Theater Carré');
+  assert.equal(laatsteBezoek(g.gezien[0]).status, 'gepland');
+});
+
+test('bezoekUitShow: handmatig op een voorbije speeldatum', () => {
+  const b = bezoekUitShow(maaspoortShow());
+  assert.equal(b.datum, '2026-10-04');
+  assert.equal(b.locatie, 'Theater De Garage | Venlo');
+  assert.equal(b.titel, 'Enfin, Barbin – Marleen Hendrickx');
+  assert.equal(b.status, undefined);
 });

@@ -4,7 +4,7 @@
 // Datamodel (localStorage en Firestore users/{uid}, zelfde vorm):
 //   gezien:           [{ sleutel, titel, sleutelTitel, theaterId, bron,
 //                         toegevoegdOp, gewijzigdOp, v,
-//                         bezoeken: [{ datum, tijd, theaterId }] }]
+//                         bezoeken: [{ datum, tijd, theaterId, ...extra }] }]
 //   gezienVerwijderd: [{ sleutel, verwijderdOp }]          (tombstones)
 // - sleutel: dezelfde als de watchlist (watchlistSleutel, normalisatie v4,
 //   met de uitsluitlijst). `titel` is de weergavetitel op dat moment;
@@ -17,6 +17,13 @@
 //   Bezoeken van alle kopieën die ná de laatste verwijdering zijn gemaakt,
 //   tellen samen (per datum|tijd|theater één keer), zodat twee apparaten die
 //   hetzelfde plan verwerken nooit een dubbel bezoek geven.
+// - Een bezoek bewaart (sinds 1 okt 2026) alles wat er bekend is, zodat het
+//   ook zichtbaar blijft als de voorstelling uit de agenda is: theaterNaam
+//   (alleen als terugval; de app toont de actuele naam via theaterId), stad,
+//   locatie (externe plek), zaal, titel (weergavetitel), maker, genre,
+//   status van het plan (kaarten/gepland) en url. Alleen velden die er
+//   zijn; oudere bezoeken hebben alleen datum, tijd en theaterId. Twee
+//   kopieën van hetzelfde bezoek vullen elkaar aan.
 
 import { watchlistSleutel, NORMALISATIE_VERSIE, verwijder as verwijderVanWatchlist } from './watchlist.js';
 import { koppel, haalUitPlanning } from './gepland.js';
@@ -25,6 +32,22 @@ import { isVervallen, weergaveTitel } from './weergave.js';
 export const legeGezien = () => ({ gezien: [], gezienVerwijderd: [] });
 
 const bezoekSleutel = (b) => `${b.datum}|${b.tijd ?? ''}|${b.theaterId ?? ''}`;
+
+export const BEZOEK_EXTRA = ['theaterNaam', 'stad', 'locatie', 'zaal', 'titel', 'maker', 'genre', 'status', 'url'];
+
+/** Een bezoek met alleen de velden die er zijn (datum, tijd en theaterId altijd). */
+function schoonBezoek(b) {
+  const uit = { datum: b.datum, tijd: b.tijd ?? null, theaterId: b.theaterId ?? null };
+  for (const v of BEZOEK_EXTRA) if (b[v] != null && b[v] !== '') uit[v] = b[v];
+  return uit;
+}
+
+/** Twee kopieën van hetzelfde bezoek: de velden van de eerste, aangevuld met de tweede. */
+function vulAan(a, b) {
+  const uit = { ...a };
+  for (const v of BEZOEK_EXTRA) if (uit[v] == null && b[v] != null) uit[v] = b[v];
+  return uit;
+}
 const laatsteActie = (i) => Math.max(i.toegevoegdOp ?? 0, i.gewijzigdOp ?? 0);
 
 export function voegGezienSamen(...bronnen) {
@@ -47,7 +70,13 @@ export function voegGezienSamen(...bronnen) {
     if (levend.length === 0) continue;
     const basis = levend.reduce((a, b) => (laatsteActie(b) > laatsteActie(a) ? b : a));
     const bezoeken = new Map();
-    for (const i of levend) for (const b of i.bezoeken ?? []) bezoeken.set(bezoekSleutel(b), { datum: b.datum, tijd: b.tijd ?? null, theaterId: b.theaterId ?? null });
+    for (const i of levend) {
+      for (const b of i.bezoeken ?? []) {
+        const k = bezoekSleutel(b);
+        const schoon = schoonBezoek(b);
+        bezoeken.set(k, bezoeken.has(k) ? vulAan(bezoeken.get(k), schoon) : schoon);
+      }
+    }
     gezien.push({
       ...basis,
       toegevoegdOp: Math.max(...levend.map((i) => i.toegevoegdOp ?? 0)),
@@ -115,8 +144,44 @@ function vervallenReden(item, show) {
   return show != null && isVervallen(show) ? show.beschikbaarheid : null;
 }
 
-/** Het bezoek uit de momentopname van het plan. */
-const bezoekVan = (item) => ({ datum: item.datum, tijd: item.tijd ?? null, theaterId: item.theaterId });
+/**
+ * Het bezoek uit de momentopname van het plan, aangevuld met de live
+ * voorstelling als die er nog is (die gaat voor bij titel, maker, genre,
+ * locatie en zaal; datum, tijd en theater komen altijd uit het plan).
+ */
+export function bezoekVan(item, show = null) {
+  return schoonBezoek({
+    datum: item.datum,
+    tijd: item.tijd ?? null,
+    theaterId: item.theaterId,
+    theaterNaam: item.theaterNaam,
+    stad: show?.stad ?? item.stad,
+    locatie: show?.locatie ?? item.locatie,
+    zaal: show?.zaal ?? item.zaal,
+    titel: weergaveTitel(show ?? { titel: item.titel, maker: item.maker }),
+    maker: show?.maker ?? item.maker,
+    genre: show?.genre ?? item.genre,
+    status: item.status,
+    url: show?.reserverenUrl ?? item.reserverenUrl,
+  });
+}
+
+/** Een bezoek rechtstreeks uit een voorstelling (handmatig, voorbije speeldatum). */
+export function bezoekUitShow(show) {
+  return schoonBezoek({
+    datum: show.datum,
+    tijd: show.tijd ?? null,
+    theaterId: show.theaterId,
+    theaterNaam: show.theaterNaam,
+    stad: show.stad,
+    locatie: show.locatie,
+    zaal: show.zaal,
+    titel: weergaveTitel(show),
+    maker: show.maker,
+    genre: show.genre,
+    url: show.reserverenUrl,
+  });
+}
 
 /**
  * Eén voorbij plan naar Gezien: bezoek erbij, uit de planning en (als hij
@@ -124,7 +189,7 @@ const bezoekVan = (item) => ({ datum: item.datum, tijd: item.tijd ?? null, theat
  */
 export function planNaarGezien({ gepland, gezien, watchlist }, item, show, now = Date.now()) {
   const bron = show ?? { titel: item.titel, theaterId: item.theaterId };
-  const nieuwGezien = zetGezien(gezien, { show: bron, bron: 'planning', bezoek: bezoekVan(item) }, now);
+  const nieuwGezien = zetGezien(gezien, { show: bron, bron: 'planning', bezoek: bezoekVan(item, show) }, now);
   const sleutel = watchlistSleutel(bron.titel, bron.theaterId);
   const opWatchlist = (watchlist?.watchlist ?? []).some((i) => i.sleutel === sleutel);
   return {
