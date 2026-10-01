@@ -345,3 +345,57 @@ test('bezoekUitShow: handmatig op een voorbije speeldatum', () => {
   assert.equal(b.titel, 'Enfin, Barbin – Marleen Hendrickx');
   assert.equal(b.status, undefined);
 });
+
+// ---------- Beoordeling (1 okt 2026) ----------
+
+test('beoordeling: 1 t/m 5 in stappen van 0,5; 0,5, 5,5 en 3,3 geweigerd', async () => {
+  const { zetBeoordeling, isGeldigeBeoordeling, beoordelingTekst } = await import('../public/js/gezien.js');
+  for (let w = 1; w <= 5; w += 0.5) assert.equal(isGeldigeBeoordeling(w), true, String(w));
+  for (const w of [0, 0.5, 5.5, 3.3, NaN, '4', null, undefined]) assert.equal(isGeldigeBeoordeling(w), false, String(w));
+  const g = zetGezien(legeGezien(), { show: show(), bron: 'handmatig' }, 1);
+  const k = g.gezien[0].sleutel;
+  assert.throws(() => zetBeoordeling(g, k, 0.5));
+  assert.throws(() => zetBeoordeling(g, k, 5.5));
+  const b = zetBeoordeling(g, k, 4.5, 10);
+  assert.equal(b.gezien[0].beoordeling, 4.5);
+  assert.equal(b.gezien[0].beoordeeldOp, 10);
+  assert.equal(beoordelingTekst(4.5), '4,5');
+  assert.equal(beoordelingTekst(3), '3');
+  // Wissen: veld weg, beoordeeldOp nieuw.
+  const w = zetBeoordeling(b, k, null, 20);
+  assert.equal('beoordeling' in w.gezien[0], false);
+  assert.equal(w.gezien[0].beoordeeldOp, 20);
+  // Onbekend item: niets.
+  assert.equal(zetBeoordeling(g, 'bestaat niet', 3), g);
+});
+
+test('beoordeling sync: nieuwste beoordeeldOp wint, wissen synchroniseert, los van bezoeken', async () => {
+  const { zetBeoordeling } = await import('../public/js/gezien.js');
+  const basis = zetGezien(legeGezien(), { show: show(), bron: 'handmatig' }, 1);
+  const k = basis.gezien[0].sleutel;
+  const a = zetBeoordeling(basis, k, 3, 10);
+  const b = zetBeoordeling(basis, k, 4.5, 20);
+  for (const samen of [voegGezienSamen(a, b), voegGezienSamen(b, a)]) assert.equal(samen.gezien[0].beoordeling, 4.5);
+  const gewist = zetBeoordeling(b, k, null, 30);
+  for (const samen of [voegGezienSamen(a, b, gewist), voegGezienSamen(gewist, b, a)]) {
+    assert.equal('beoordeling' in samen.gezien[0], false);
+    assert.equal(samen.gezien[0].beoordeeldOp, 30);
+  }
+  // Een later bezoek (nieuwere gewijzigdOp, oude beoordeling) gooit de nieuwere beoordeling niet weg.
+  const metBezoek = zetGezien(a, { show: show(), bron: 'planning', bezoek: { datum: '2026-10-04', tijd: '20:30', theaterId: 'delamar' } }, 40);
+  assert.equal(voegGezienSamen(metBezoek, b).gezien[0].beoordeling, 4.5);
+  assert.equal(voegGezienSamen(metBezoek, b).gezien[0].bezoeken.length, 1);
+});
+
+test('beoordeling: item weghalen neemt de beoordeling mee; oude items zonder beoordeling werken', async () => {
+  const { zetBeoordeling } = await import('../public/js/gezien.js');
+  const g = zetBeoordeling(zetGezien(legeGezien(), { show: show(), bron: 'handmatig' }, 1), 'prikkelarme kermis | sara kroos', 4, 5);
+  const weg = haalUitGezien(g, 'prikkelarme kermis | sara kroos', 10);
+  assert.equal(voegGezienSamen(g, weg).gezien.length, 0);
+  // Opnieuw toevoegen: zonder de oude beoordeling.
+  const terug = zetGezien(weg, { show: show(), bron: 'handmatig' }, 20);
+  assert.equal('beoordeling' in voegGezienSamen(g, weg, terug).gezien[0], false);
+  const oud = { gezien: [{ sleutel: 'x', titel: 'X', toegevoegdOp: 1, bezoeken: [] }], gezienVerwijderd: [] };
+  assert.equal(laadGezien({ opgeslagen: oud }).gewijzigd, false);
+  assert.equal('beoordeeldOp' in laadGezien({ opgeslagen: oud }).profiel.gezien[0], false);
+});

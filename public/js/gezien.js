@@ -24,6 +24,11 @@
 //   status van het plan (kaarten/gepland) en url. Alleen velden die er
 //   zijn; oudere bezoeken hebben alleen datum, tijd en theaterId. Twee
 //   kopieën van hetzelfde bezoek vullen elkaar aan.
+// - beoordeling (sinds 1 okt 2026): 1 t/m 5 sterren in stappen van 0,5, per
+//   voorstelling (niet per bezoek), met beoordeeldOp. Bij samenvoegen wint de
+//   kopie met de nieuwste beoordeeldOp; wissen = het veld weg met een nieuwe
+//   beoordeeldOp, zodat ook het wissen naar andere apparaten gaat. Wordt het
+//   item weggehaald, dan gaat de beoordeling mee.
 
 import { watchlistSleutel, NORMALISATIE_VERSIE, verwijder as verwijderVanWatchlist } from './watchlist.js';
 import { koppel, haalUitPlanning } from './gepland.js';
@@ -77,10 +82,15 @@ export function voegGezienSamen(...bronnen) {
         bezoeken.set(k, bezoeken.has(k) ? vulAan(bezoeken.get(k), schoon) : schoon);
       }
     }
+    // Beoordeling: de kopie met de nieuwste beoordeeldOp (los van de rest).
+    const beoordeeld = levend.filter((i) => i.beoordeeldOp != null).reduce((a, b) => (!a || b.beoordeeldOp > a.beoordeeldOp ? b : a), null);
+    const { beoordeling: _b, beoordeeldOp: _o, ...rest } = basis;
     gezien.push({
-      ...basis,
+      ...rest,
       toegevoegdOp: Math.max(...levend.map((i) => i.toegevoegdOp ?? 0)),
       bezoeken: [...bezoeken.values()].sort((a, b) => bezoekSleutel(a).localeCompare(bezoekSleutel(b))),
+      ...(beoordeeld ? { beoordeeldOp: beoordeeld.beoordeeldOp } : {}),
+      ...(beoordeeld && isGeldigeBeoordeling(beoordeeld.beoordeling) ? { beoordeling: beoordeeld.beoordeling } : {}),
     });
   }
   for (const [sleutel, verwijderdOp] of verwijderd) {
@@ -114,6 +124,29 @@ export function zetGezien(profiel, { show, bron, bezoek = null }, now = Date.now
         bezoeken: bezoek ? [bezoek] : [],
       };
   return voegGezienSamen(profiel, { gezien: [item], gezienVerwijderd: [] });
+}
+
+/** 1 t/m 5 in stappen van 0,5. */
+export function isGeldigeBeoordeling(waarde) {
+  return typeof waarde === 'number' && Number.isFinite(waarde) && waarde >= 1 && waarde <= 5 && Number.isInteger(waarde * 2);
+}
+
+/**
+ * Beoordeling zetten (waarde) of wissen (null). Gooit bij een ongeldige
+ * waarde (0,5, 5,5, 3,3, …). Alleen voor een item dat op Gezien staat.
+ */
+export function zetBeoordeling(profiel, sleutel, waarde, now = Date.now()) {
+  if (waarde !== null && !isGeldigeBeoordeling(waarde)) throw new Error(`Ongeldige beoordeling: ${waarde}`);
+  const item = (profiel?.gezien ?? []).find((i) => i.sleutel === sleutel);
+  if (!item) return profiel;
+  const { beoordeling: _b, ...zonder } = item;
+  const nieuw = waarde === null ? { ...zonder, beoordeeldOp: now } : { ...zonder, beoordeling: waarde, beoordeeldOp: now };
+  return voegGezienSamen(profiel, { gezien: [nieuw], gezienVerwijderd: [] });
+}
+
+/** "4,5" (met komma), of null. */
+export function beoordelingTekst(waarde) {
+  return isGeldigeBeoordeling(waarde) ? String(waarde).replace('.', ',') : null;
 }
 
 export function haalUitGezien(profiel, sleutel, now = Date.now()) {
