@@ -1,7 +1,6 @@
 // Privacybericht (vrienden, stap 3): de pagina bestaat, noemt wat we
-// opslaan en wie wat ziet, heeft een duidelijke plaatshouder voor het
-// contactadres, en is te bereiken vanuit Profiel (ook offline via de
-// service worker).
+// opslaan en wie wat ziet, heeft twee keer het contactadres (mailto), en
+// is te bereiken vanuit Profiel (ook offline via de service worker).
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -16,7 +15,8 @@ test('privacy.html: wat we opslaan, wie wat ziet, verwijderen, plaatshouder voor
   assert.match(html, /Je e-mailadres<\/strong> ziet niemand anders/);
   assert.match(html, /Je planning<\/strong> \(Gepland\) ziet niemand anders/);
   assert.match(html, /Account verwijderen/);
-  assert.equal((html.match(/\[CONTACTADRES INVULLEN\]/g) ?? []).length, 2);
+  assert.doesNotMatch(html, /INVULLEN/);
+  assert.equal((html.match(/<a href="mailto:marlavb\.github@gmail\.com">marlavb\.github@gmail\.com<\/a>/g) ?? []).length, 2);
   assert.match(html, /<html lang="nl">/);
 });
 
