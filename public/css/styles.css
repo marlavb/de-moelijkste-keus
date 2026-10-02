@@ -1917,6 +1917,44 @@ a {
   color: var(--text);
 }
 
+/* Uitnodigingslink */
+.vriend-link-resultaat:empty {
+  display: none;
+}
+
+.vriend-link-paneel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.vriend-link-url {
+  width: 100%;
+  padding: 0 12px;
+  border: 1px solid var(--control-border);
+  border-radius: 12px;
+  font-size: 14px;
+  color: var(--text-2);
+}
+
+.vriend-link-knoppen {
+  justify-content: flex-start;
+  margin-left: 0;
+}
+
+.vriend-link-kop {
+  margin: 8px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.vriend-link-naam {
+  margin: -4px 0 0;
+  font-size: 15px;
+  color: var(--text);
+}
+
 /* Kleine knop, tikvlak 44 px. */
 .knop-klein {
   min-height: var(--touch);

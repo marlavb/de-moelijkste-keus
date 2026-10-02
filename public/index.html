@@ -415,7 +415,35 @@
           <div class="vriend-zoek-resultaat" id="vriendZoekResultaat" aria-live="polite"></div>
         </section>
 
+        <section class="vrienden-blok" id="vriendLinkBlok" aria-labelledby="vriendLinkKop">
+          <h2 class="vrienden-kop" id="vriendLinkKop">Uitnodigingslink</h2>
+          <p class="vrienden-leeg">Wie de link opent en inlogt, wordt meteen je vriend. Een link werkt één keer en is 7 dagen geldig.</p>
+          <button class="btn-secondary" type="button" id="vriendLinkMaak">Deel uitnodigingslink</button>
+          <div class="vriend-link-resultaat" id="vriendLinkResultaat" aria-live="polite"></div>
+          <div id="vriendLinkLijst"></div>
+        </section>
+
         <div class="vrienden-inhoud" id="vriendenInhoud" aria-live="polite"></div>
+      </main>
+    </section>
+
+    <!-- SCHERM: een geopende uitnodigingslink (#/vriend-link/<token>) -->
+    <section class="screen" id="screen-vriendlink" hidden>
+      <header class="app-header">
+        <div class="header-top header-top--terug">
+          <button class="icon-btn" type="button" id="vriendLinkBack" aria-label="Terug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="app-title">Uitnodiging</h1>
+            <p class="app-subtitle">Vrienden worden op Podiumagenda</p>
+          </div>
+        </div>
+      </header>
+      <main class="vrienden-scherm">
+        <div class="vrienden-blok" id="vriendLinkInhoud" aria-live="polite"></div>
       </main>
     </section>
 

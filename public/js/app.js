@@ -37,6 +37,12 @@ import {
   deblokkeer,
   laadVriendenScherm,
   telInkomend,
+  maakLink,
+  trekLinkIn,
+  bekijkLink,
+  gebruikLink,
+  linkUrl,
+  linkVerlooptOp,
   VriendFout,
 } from './vrienden.js';
 import { getGenreBucket, getGenres, matchtGenreFilter } from './genre.js';
@@ -278,6 +284,9 @@ const state = {
   vrienden: null,
   vriendenStatus: 'leeg',
   inkomendAantal: null,
+  // Geopende uitnodigingslink: { token, status: 'leeg'|'laden'|'klaar'|'fout'
+  // |'bezig'|'gelukt', uitkomst } (uitkomst van bekijkLink).
+  vriendLink: null,
 };
 
 const els = {
@@ -329,6 +338,7 @@ const els = {
     gezien: document.getElementById('screen-gezien'),
     profielInstellen: document.getElementById('screen-profiel-instellen'),
     vrienden: document.getElementById('screen-vrienden'),
+    vriendLink: document.getElementById('screen-vriendlink'),
   },
   detailGezienBlok: document.getElementById('detailGezienBlok'),
   detailGezienBezoeken: document.getElementById('detailGezienBezoeken'),
@@ -410,6 +420,12 @@ const els = {
   vriendZoekInput: document.getElementById('vriendZoekInput'),
   vriendZoekResultaat: document.getElementById('vriendZoekResultaat'),
   vriendenInhoud: document.getElementById('vriendenInhoud'),
+  vriendLinkBlok: document.getElementById('vriendLinkBlok'),
+  vriendLinkMaak: document.getElementById('vriendLinkMaak'),
+  vriendLinkResultaat: document.getElementById('vriendLinkResultaat'),
+  vriendLinkLijst: document.getElementById('vriendLinkLijst'),
+  vriendLinkBack: document.getElementById('vriendLinkBack'),
+  vriendLinkInhoud: document.getElementById('vriendLinkInhoud'),
   feedbackForm: document.getElementById('feedbackForm'),
   feedbackInput: document.getElementById('feedbackInput'),
   feedbackSubmit: document.getElementById('feedbackSubmit'),
@@ -548,6 +564,8 @@ async function init() {
   els.profielForm?.addEventListener('submit', onProfielOpslaan);
   els.vriendenBack?.addEventListener('click', () => terug('#/profiel'));
   els.vriendZoekForm?.addEventListener('submit', onVriendZoeken);
+  els.vriendLinkMaak?.addEventListener('click', onLinkMaken);
+  els.vriendLinkBack?.addEventListener('click', () => terug('#/profiel'));
   if (els.profielGebruikersnaamUitleg) els.profielGebruikersnaamUitleg.textContent = GEBRUIKERSNAAM_UITLEG;
   route();
 
@@ -679,6 +697,21 @@ function routeNaar(hash) {
     return;
   }
 
+  // Een uitnodigingslink: ook uitgelogd (dan eerst inloggen).
+  if (hash.startsWith('#/vriend-link/')) {
+    if (!els.screens.vriendLink) {
+      vervang('#/');
+      return;
+    }
+    const token = decodeURIComponent(hash.slice('#/vriend-link/'.length));
+    showScreen('vriendLink');
+    if (state.vriendLink?.token !== token || !['bezig', 'gelukt'].includes(state.vriendLink.status)) {
+      state.vriendLink = { token, status: 'leeg', uitkomst: null };
+    }
+    laadVriendLink();
+    return;
+  }
+
   if (hash === '#/vrienden') {
     if (!els.screens.vrienden || (state.authBekend && !state.user)) {
       vervang('#/profiel');
@@ -688,6 +721,7 @@ function routeNaar(hash) {
     vriendMenu = null;
     vriendenMelding = null;
     zetZoekResultaat(null);
+    zetLinkResultaat(null);
     laadVrienden();
     return;
   }
@@ -707,7 +741,7 @@ function showScreen(name) {
   for (const [key, el] of Object.entries(els.screens)) {
     if (el) el.hidden = key !== name;
   }
-  els.bottomNav.hidden = ['detail', 'gezien', 'profielInstellen', 'vrienden'].includes(name);
+  els.bottomNav.hidden = ['detail', 'gezien', 'profielInstellen', 'vrienden', 'vriendLink'].includes(name);
   for (const btn of els.bottomNav.querySelectorAll('.nav-item')) {
     btn.classList.toggle('is-active', btn.dataset.tab === name);
   }
@@ -1713,6 +1747,7 @@ async function handleAuthChange(user) {
   state.vrienden = null;
   state.vriendenStatus = 'leeg';
   state.inkomendAantal = null;
+  if (state.vriendLink) state.vriendLink = { token: state.vriendLink.token, status: 'leeg', uitkomst: null };
 
   if (user) {
     const ref = userDocRef(user.uid);
@@ -1782,6 +1817,7 @@ async function handleAuthChange(user) {
     if (user) laadVrienden();
     else vervang('#/profiel');
   }
+  if (hash.startsWith('#/vriend-link/')) laadVriendLink();
   vernieuwVriendenTeller();
   if (hash.startsWith('#/show/')) {
     const id = decodeURIComponent(hash.slice('#/show/'.length));
@@ -1841,6 +1877,7 @@ async function opnieuwProfielLaden() {
   profielFormulierGevuld = false;
   renderProfielInstellen();
   vernieuwVriendenTeller();
+  if ((location.hash || '').startsWith('#/vriend-link/')) laadVriendLink();
 }
 
 // Na inloggen zonder profiel één keer het scherm "Kies je gebruikersnaam",
@@ -2066,6 +2103,10 @@ async function laadVrienden() {
     state.vrienden = data;
     state.vriendenStatus = 'klaar';
     state.inkomendAantal = data.inkomend.length;
+    // Verlopen links van jezelf opruimen (ze werken toch niet meer).
+    for (const token of data.verlopenLinks) {
+      trekLinkIn({ db, fs: firestoreFns, token }).catch((err) => console.error('Kon een verlopen link niet opruimen:', err));
+    }
   } catch (err) {
     if (id !== vriendenLaadId || state.user !== user) return;
     console.error('Kon de vrienden niet laden:', err);
@@ -2228,6 +2269,8 @@ function renderVriendenScherm() {
   const inhoud = els.vriendenInhoud;
   inhoud.innerHTML = '';
   els.vriendToevoegen.hidden = !magVrienden();
+  if (els.vriendLinkBlok) els.vriendLinkBlok.hidden = !magVrienden();
+  renderEigenLinks();
 
   if (!state.authBekend || (state.user && state.profiel === undefined && !state.profielFout)) {
     inhoud.appendChild(vriendenTekst('p', 'profiel-melding', 'Laden…'));
@@ -2334,6 +2377,285 @@ function renderVriendenScherm() {
       )
     );
   }
+}
+
+// ---------- Persoonlijke uitnodigingslinks ----------
+
+const formatLinkTijd = (ms) =>
+  new Date(ms).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+
+function zetLinkResultaat(inhoud) {
+  if (!els.vriendLinkResultaat) return;
+  els.vriendLinkResultaat.innerHTML = '';
+  if (inhoud) els.vriendLinkResultaat.appendChild(inhoud);
+}
+
+// Kopiëren naar het klembord; lukt dat niet, dan false (de link staat er
+// dan nog om met de hand te kopiëren).
+async function kopieerLink(url) {
+  try {
+    await navigator.clipboard.writeText(url);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// Delen via het deelmenu van het toestel; geen deelmenu → kopiëren.
+// Geeft 'gedeeld' | 'geannuleerd' | 'gekopieerd' | 'mislukt'.
+async function deelLink(url) {
+  if (typeof navigator.share === 'function') {
+    try {
+      await navigator.share({ title: 'Podiumagenda', text: 'Word vrienden met me op Podiumagenda:', url });
+      return 'gedeeld';
+    } catch (err) {
+      if (err?.name === 'AbortError') return 'geannuleerd';
+      // Bv. NotAllowedError (de tik is "verbruikt" door het opslaan): kopiëren.
+    }
+  }
+  return (await kopieerLink(url)) ? 'gekopieerd' : 'mislukt';
+}
+
+const DEEL_MELDING = {
+  gedeeld: 'Link gedeeld.',
+  gekopieerd: 'Link gekopieerd. Plak hem in een bericht aan je vriend.',
+  geannuleerd: 'Niet gedeeld. De link staat hieronder; je kunt hem nog delen of intrekken.',
+  mislukt: 'Delen lukte niet. Kopieer de link hieronder met de hand.',
+};
+
+// Na het maken: de melding, de link zelf (selecteerbaar) en [Delen] [Kopiëren].
+function linkPaneel(url, uitkomst) {
+  const box = document.createElement('div');
+  box.className = 'vriend-link-paneel';
+  const melding = vriendenTekst('p', `vrienden-melding vrienden-melding--${uitkomst === 'mislukt' ? 'fout' : 'succes'}`, DEEL_MELDING[uitkomst]);
+  melding.setAttribute('role', 'status');
+  const veld = document.createElement('input');
+  veld.className = 'veld-input vriend-link-url';
+  veld.type = 'text';
+  veld.readOnly = true;
+  veld.value = url;
+  veld.setAttribute('aria-label', 'Uitnodigingslink');
+  veld.addEventListener('focus', () => veld.select());
+  const knoppen = document.createElement('div');
+  knoppen.className = 'vriend-rij-acties vriend-link-knoppen';
+  if (typeof navigator.share === 'function') {
+    knoppen.appendChild(kleineKnop('Delen', { primair: true, onClick: async () => zetLinkResultaat(linkPaneel(url, await deelLink(url))) }));
+  }
+  knoppen.appendChild(
+    kleineKnop('Kopiëren', { onClick: async () => zetLinkResultaat(linkPaneel(url, (await kopieerLink(url)) ? 'gekopieerd' : 'mislukt')) })
+  );
+  box.append(melding, veld, knoppen);
+  return box;
+}
+
+async function onLinkMaken() {
+  if (!magVrienden()) return;
+  const user = state.user;
+  els.vriendLinkMaak.disabled = true;
+  zetLinkResultaat(zoekMelding('Link maken…'));
+  let url;
+  try {
+    ({ url } = await maakLink({ db, fs: firestoreFns, ik: user.uid, mijnProfiel: state.profiel, plek: location }));
+  } catch (err) {
+    console.error('Link maken mislukt:', err);
+    els.vriendLinkMaak.disabled = false;
+    if (state.user === user) zetLinkResultaat(zoekMelding(VERBINDING_FOUT, 'fout'));
+    return;
+  }
+  els.vriendLinkMaak.disabled = false;
+  if (state.user !== user) return;
+  zetLinkResultaat(linkPaneel(url, await deelLink(url)));
+  laadVrienden();
+}
+
+// Je eigen openstaande links: geldig tot …, [Kopiëren] [Intrekken].
+function renderEigenLinks() {
+  const lijst = els.vriendLinkLijst;
+  if (!lijst) return;
+  lijst.innerHTML = '';
+  const links = state.vrienden?.links ?? [];
+  if (!magVrienden() || links.length === 0) return;
+  const kop = vriendenTekst('h3', 'vriend-link-kop', links.length === 1 ? 'Openstaande link' : 'Openstaande links');
+  lijst.appendChild(kop);
+  for (const link of links) {
+    const tot = formatLinkTijd(linkVerlooptOp(link));
+    const rij = document.createElement('div');
+    rij.className = 'vriend-rij';
+    rij.append(vriendenTekst('p', 'vriend-rij-tekst', `Geldig tot ${tot}`));
+    const acties = document.createElement('div');
+    acties.className = 'vriend-rij-acties';
+    const url = linkUrl(link.token, location);
+    acties.append(
+      kleineKnop('Kopiëren', {
+        label: `Link (geldig tot ${tot}) kopiëren`,
+        onClick: async () => zetLinkResultaat(linkPaneel(url, (await kopieerLink(url)) ? 'gekopieerd' : 'mislukt')),
+      }),
+      kleineKnop('Intrekken', {
+        label: `Link (geldig tot ${tot}) intrekken`,
+        onClick: () => {
+          zetLinkResultaat(null);
+          vriendActie(() => trekLinkIn({ db, fs: firestoreFns, token: link.token }), 'Link ingetrokken. Hij werkt niet meer.');
+        },
+      })
+    );
+    rij.appendChild(acties);
+    lijst.appendChild(rij);
+  }
+}
+
+// ---------- Een geopende uitnodigingslink (#/vriend-link/<token>) ----------
+
+async function laadVriendLink() {
+  const huidig = state.vriendLink;
+  if (!huidig || ['bezig', 'gelukt'].includes(huidig.status)) {
+    renderVriendLink();
+    return;
+  }
+  if (!magVrienden()) {
+    renderVriendLink();
+    return;
+  }
+  const user = state.user;
+  state.vriendLink = { ...huidig, status: 'laden' };
+  renderVriendLink();
+  try {
+    const uitkomst = await bekijkLink({ db, fs: firestoreFns, ik: user.uid, token: huidig.token });
+    if (state.user !== user || state.vriendLink?.token !== huidig.token) return;
+    state.vriendLink = { token: huidig.token, status: 'klaar', uitkomst };
+  } catch (err) {
+    if (state.user !== user || state.vriendLink?.token !== huidig.token) return;
+    console.error('Kon de uitnodigingslink niet bekijken:', err);
+    state.vriendLink = { token: huidig.token, status: 'fout', uitkomst: null };
+  }
+  renderVriendLink();
+}
+
+const LINK_MELDING = {
+  ongeldig: 'Deze link werkt niet (meer). Hij is al gebruikt, ingetrokken of bestaat niet. Vraag je vriend om een nieuwe link.',
+  verlopen: 'Deze link is verlopen: een uitnodigingslink is 7 dagen geldig. Vraag je vriend om een nieuwe link.',
+  eigen: 'Dit is je eigen uitnodigingslink. Stuur hem naar iemand die je als vriend wilt toevoegen.',
+};
+
+function renderVriendLink() {
+  const box = els.vriendLinkInhoud;
+  if (!box || els.screens.vriendLink.hidden) return;
+  box.innerHTML = '';
+  const knop = (tekst, klasse, onClick) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = klasse;
+    b.textContent = tekst;
+    b.addEventListener('click', onClick);
+    return b;
+  };
+  const naarVrienden = () => knop('Naar Vrienden', 'btn-secondary', () => navigate('#/vrienden'));
+
+  if (!state.authBekend || (state.user && state.profiel === undefined && !state.profielFout)) {
+    box.appendChild(vriendenTekst('p', 'profiel-melding', 'Laden…'));
+    return;
+  }
+  if (!state.user) {
+    box.append(vriendenTekst('p', 'vrienden-leeg', 'Je bent uitgenodigd om vrienden te worden. Log in om de uitnodiging te bekijken.'));
+    const inloggen = knop('', 'google-btn', handleSignIn);
+    inloggen.innerHTML = GOOGLE_ICON_SVG;
+    inloggen.appendChild(vriendenTekst('span', '', 'Inloggen met Google'));
+    box.appendChild(inloggen);
+    if (state.authError) box.appendChild(vriendenTekst('p', 'auth-error', state.authError));
+    return;
+  }
+  if (state.profielFout) {
+    box.appendChild(
+      vriendenFoutBlok('Je profiel kon niet worden geladen. Controleer je verbinding en probeer het opnieuw.', opnieuwProfielLaden)
+    );
+    return;
+  }
+  if (!state.profiel) {
+    box.append(
+      vriendenTekst('p', 'vrienden-leeg', 'Kies eerst een gebruikersnaam. Daarna kun je de uitnodiging accepteren.'),
+      knop('Gebruikersnaam kiezen', 'btn-secondary', () => navigate('#/profiel/instellen'))
+    );
+    return;
+  }
+
+  const vl = state.vriendLink;
+  if (!vl || vl.status === 'leeg' || vl.status === 'laden') {
+    box.appendChild(vriendenTekst('p', 'profiel-melding', 'Uitnodiging bekijken…'));
+    return;
+  }
+  if (vl.status === 'fout') {
+    box.appendChild(vriendenFoutBlok('De uitnodiging kon niet worden geladen. Controleer je verbinding en probeer het opnieuw.', () => {
+      state.vriendLink = { token: vl.token, status: 'leeg', uitkomst: null };
+      laadVriendLink();
+    }));
+    return;
+  }
+  const link = vl.uitkomst?.link;
+  const naam = link ? `@${link.gebruikersnaam}` : '';
+  if (vl.status === 'gelukt') {
+    const p = vriendenTekst('p', 'vrienden-melding vrienden-melding--succes', `Je bent nu vrienden met ${naam}.`);
+    p.setAttribute('role', 'status');
+    box.append(p, naarVrienden());
+    return;
+  }
+  if (vl.fout) {
+    const p = vriendenTekst('p', 'vrienden-melding vrienden-melding--fout', vl.fout);
+    p.setAttribute('role', 'alert');
+    box.appendChild(p);
+  }
+  const status = vl.uitkomst.status;
+  if (LINK_MELDING[status]) {
+    box.append(vriendenTekst('p', 'vrienden-leeg', LINK_MELDING[status]), naarVrienden());
+    return;
+  }
+  if (status === 'vrienden') {
+    box.append(vriendenTekst('p', 'vrienden-leeg', `Je bent al vrienden met ${naam}.`), naarVrienden());
+    return;
+  }
+  if (status === 'jij-blokkeert') {
+    box.append(vriendenTekst('p', 'vrienden-leeg', `Je hebt ${naam} geblokkeerd. Deblokkeer ${naam} eerst onder Vrienden.`), naarVrienden());
+    return;
+  }
+  // Geweigerd bij "Ja" (status 'gebruikt'): alleen de melding hierboven.
+  // Bij een netwerkfout blijft de status 'ok' en kun je het opnieuw proberen.
+  if (status !== 'ok') {
+    box.appendChild(naarVrienden());
+    return;
+  }
+  box.append(
+    vriendenTekst('h2', 'vrienden-kop', `Word vrienden met ${naam}?`),
+    vriendenTekst('p', 'vriend-link-naam', link.naam),
+    vriendenTekst('p', 'vrienden-leeg', `Jullie kunnen dan elkaars gebruikersnaam en naam zien. Je kunt de vriendschap later altijd verbreken.`)
+  );
+  const knoppen = document.createElement('div');
+  knoppen.className = 'profiel-knoppen';
+  const ja = knop('Ja, word vrienden', 'btn-primary', onLinkAccepteren);
+  ja.disabled = vl.status === 'bezig';
+  if (vl.status === 'bezig') ja.textContent = 'Bezig…';
+  knoppen.append(ja, knop('Nee, dank je', 'btn-secondary', () => terug('#/profiel')));
+  box.appendChild(knoppen);
+}
+
+async function onLinkAccepteren() {
+  const vl = state.vriendLink;
+  if (!magVrienden() || vl?.uitkomst?.status !== 'ok') return;
+  const user = state.user;
+  state.vriendLink = { ...vl, status: 'bezig', fout: null };
+  renderVriendLink();
+  try {
+    await gebruikLink({ db, fs: firestoreFns, ik: user.uid, link: vl.uitkomst.link });
+    if (state.user !== user) return;
+    state.vriendLink = { ...vl, status: 'gelukt', fout: null };
+    state.vrienden = null;
+  } catch (err) {
+    if (state.user !== user) return;
+    if (!(err instanceof VriendFout)) console.error('Link gebruiken mislukt:', err);
+    // Geweigerd (gebruikt, ingetrokken, of een blokkade door de eigenaar):
+    // neutraal, en niet opnieuw proberen. Netwerk: opnieuw kan.
+    state.vriendLink = err instanceof VriendFout
+      ? { ...vl, status: 'klaar', fout: err.message, uitkomst: { ...vl.uitkomst, status: 'gebruikt' } }
+      : { ...vl, status: 'klaar', fout: VERBINDING_FOUT };
+  }
+  renderVriendLink();
 }
 
 // ---------- Vriend zoeken op exacte gebruikersnaam ----------
