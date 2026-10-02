@@ -5,13 +5,15 @@
 //   window.__nepFirestore  de Map met documenten;
 //   window.__nepOffline    true → elke lees- of schrijfactie faalt zoals offline;
 //   window.__nepWeiger     functie (pad) → true: schrijven naar dat pad wordt
-//                          geweigerd zoals door de rules (permission-denied).
+//                          geweigerd zoals door de rules (permission-denied);
+//   window.__nepSchrijf    lijst van alle geslaagde schrijfacties ['set'|'delete', pad].
 // Queries: alleen gelijkheid (where(veld, '==', waarde)) op directe kinderen.
 
 export function nepFirebase({ gebruiker = null, docs = {} } = {}) {
   return `
 const opslag = new Map(Object.entries(${JSON.stringify(docs)}));
 window.__nepFirestore = opslag;
+window.__nepSchrijf = [];
 const offline = () => {
   if (window.__nepOffline) throw Object.assign(new Error('Failed to get document because the client is offline.'), { code: 'unavailable' });
 };
@@ -36,8 +38,9 @@ export const setDoc = async (ref, data, opties) => {
   offline();
   weiger(ref.path);
   opslag.set(ref.path, structuredClone(opties?.merge ? { ...(opslag.get(ref.path) ?? {}), ...data } : data));
+  window.__nepSchrijf.push(['set', ref.path]);
 };
-export const deleteDoc = async (ref) => { offline(); weiger(ref.path); opslag.delete(ref.path); };
+export const deleteDoc = async (ref) => { offline(); weiger(ref.path); opslag.delete(ref.path); window.__nepSchrijf.push(['delete', ref.path]); };
 export const writeBatch = () => {
   const stappen = [];
   return {
@@ -46,7 +49,10 @@ export const writeBatch = () => {
     commit: async () => {
       offline();
       for (const [, pad] of stappen) weiger(pad);
-      for (const [soort, pad, data] of stappen) soort === 'set' ? opslag.set(pad, structuredClone(data)) : opslag.delete(pad);
+      for (const [soort, pad, data] of stappen) {
+        soort === 'set' ? opslag.set(pad, structuredClone(data)) : opslag.delete(pad);
+        window.__nepSchrijf.push([soort, pad]);
+      }
     },
   };
 };

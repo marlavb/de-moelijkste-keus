@@ -45,6 +45,16 @@ import {
   linkVerlooptOp,
   VriendFout,
 } from './vrienden.js';
+import {
+  ONDERDELEN,
+  STANDAARD_INSTELLING,
+  kopieWatchlist,
+  kopieGezien,
+  standVan,
+  laadEigenDelen,
+  zetInstelling,
+  schrijfKopie,
+} from './gedeeld.js';
 import { getGenreBucket, getGenres, matchtGenreFilter } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
 import { weergaveTitel, makerStaatInTitel, isVervallen, VERVALLEN_LABELS } from './weergave.js';
@@ -287,6 +297,11 @@ const state = {
   // Geopende uitnodigingslink: { token, status: 'leeg'|'laden'|'klaar'|'fout'
   // |'bezig'|'gelukt', uitkomst } (uitkomst van bekijkLink).
   vriendLink: null,
+  // Delen met vrienden (stap 3, zie gedeeld.js): undefined = nog niet
+  // geladen, null = nog niet gekozen (eenmalige melding), anders
+  // { gezien, watchlist }. delenFout: laden mislukt.
+  delen: undefined,
+  delenFout: false,
 };
 
 const els = {
@@ -339,6 +354,7 @@ const els = {
     profielInstellen: document.getElementById('screen-profiel-instellen'),
     vrienden: document.getElementById('screen-vrienden'),
     vriendLink: document.getElementById('screen-vriendlink'),
+    delen: document.getElementById('screen-delen'),
   },
   detailGezienBlok: document.getElementById('detailGezienBlok'),
   detailGezienBezoeken: document.getElementById('detailGezienBezoeken'),
@@ -426,6 +442,8 @@ const els = {
   vriendLinkLijst: document.getElementById('vriendLinkLijst'),
   vriendLinkBack: document.getElementById('vriendLinkBack'),
   vriendLinkInhoud: document.getElementById('vriendLinkInhoud'),
+  delenBack: document.getElementById('delenBack'),
+  delenInhoud: document.getElementById('delenInhoud'),
   feedbackForm: document.getElementById('feedbackForm'),
   feedbackInput: document.getElementById('feedbackInput'),
   feedbackSubmit: document.getElementById('feedbackSubmit'),
@@ -566,6 +584,7 @@ async function init() {
   els.vriendZoekForm?.addEventListener('submit', onVriendZoeken);
   els.vriendLinkMaak?.addEventListener('click', onLinkMaken);
   els.vriendLinkBack?.addEventListener('click', () => terug('#/profiel'));
+  els.delenBack?.addEventListener('click', () => terug('#/profiel'));
   if (els.profielGebruikersnaamUitleg) els.profielGebruikersnaamUitleg.textContent = GEBRUIKERSNAAM_UITLEG;
   route();
 
@@ -697,6 +716,18 @@ function routeNaar(hash) {
     return;
   }
 
+  if (hash === '#/profiel/delen') {
+    if (!els.screens.delen || (state.authBekend && !state.user)) {
+      vervang('#/profiel');
+      return;
+    }
+    showScreen('delen');
+    delenKeuze = null;
+    delenMelding = null;
+    renderDelenScherm();
+    return;
+  }
+
   // Een uitnodigingslink: ook uitgelogd (dan eerst inloggen).
   if (hash.startsWith('#/vriend-link/')) {
     if (!els.screens.vriendLink) {
@@ -741,7 +772,7 @@ function showScreen(name) {
   for (const [key, el] of Object.entries(els.screens)) {
     if (el) el.hidden = key !== name;
   }
-  els.bottomNav.hidden = ['detail', 'gezien', 'profielInstellen', 'vrienden', 'vriendLink'].includes(name);
+  els.bottomNav.hidden = ['detail', 'gezien', 'profielInstellen', 'vrienden', 'vriendLink', 'delen'].includes(name);
   for (const btn of els.bottomNav.querySelectorAll('.nav-item')) {
     btn.classList.toggle('is-active', btn.dataset.tab === name);
   }
@@ -1014,6 +1045,7 @@ function syncProfielForCurrentUser() {
     setDoc(ref, cloudGezien.profiel, { merge: true }).catch((err) => console.error('Kon Gezien niet synchroniseren:', err));
   }
   verwerkPlannen(showIndex);
+  planKopie();
 }
 
 // Voorbije plannen verwerken (zie gezien.js): kaarten → Gezien, afgelast →
@@ -1091,6 +1123,7 @@ function saveWatchlist() {
   // syncProfielForCurrentUser() voegt het straks samen met de cloud.
   if (state.user && state.cloudWatchlist) {
     state.cloudWatchlist = state.watchlist;
+    planKopie();
     setDoc(userDocRef(state.user.uid), state.watchlist, { merge: true }).catch((err) =>
       console.error('Kon de watchlist niet synchroniseren:', err)
     );
@@ -1130,6 +1163,7 @@ function saveGezienLocal(profiel) {
 function saveGezien() {
   if (state.user && state.cloudGezien) {
     state.cloudGezien = state.gezien;
+    planKopie();
     setDoc(userDocRef(state.user.uid), state.gezien, { merge: true }).catch((err) =>
       console.error('Kon Gezien niet synchroniseren:', err)
     );
@@ -1748,6 +1782,11 @@ async function handleAuthChange(user) {
   state.vriendenStatus = 'leeg';
   state.inkomendAantal = null;
   if (state.vriendLink) state.vriendLink = { token: state.vriendLink.token, status: 'leeg', uitkomst: null };
+  state.delen = undefined;
+  state.delenFout = false;
+  clearTimeout(kopieTimer);
+  laatsteKopie.gezien = undefined;
+  laatsteKopie.watchlist = undefined;
 
   if (user) {
     const ref = userDocRef(user.uid);
@@ -1790,6 +1829,8 @@ async function handleAuthChange(user) {
     // dan of het profiel er is, of tonen we een foutmelding met "Opnieuw".
     await laadEigenProfiel();
     if (state.user !== user) return;
+    await laadDelen();
+    if (state.user !== user) return;
   } else {
     state.favorites = loadFavorites();
     renameFavoritesLocally();
@@ -1818,7 +1859,9 @@ async function handleAuthChange(user) {
     else vervang('#/profiel');
   }
   if (hash.startsWith('#/vriend-link/')) laadVriendLink();
+  if (hash === '#/profiel/delen') renderDelenScherm();
   vernieuwVriendenTeller();
+  planKopie();
   if (hash.startsWith('#/show/')) {
     const id = decodeURIComponent(hash.slice('#/show/'.length));
     const show = state.shows.find((s) => s.id === id);
@@ -1878,6 +1921,12 @@ async function opnieuwProfielLaden() {
   renderProfielInstellen();
   vernieuwVriendenTeller();
   if ((location.hash || '').startsWith('#/vriend-link/')) laadVriendLink();
+  if (state.profiel && state.delen === undefined) {
+    await laadDelen();
+    renderProfielTegels();
+    renderDelenScherm();
+    planKopie();
+  }
 }
 
 // Na inloggen zonder profiel één keer het scherm "Kies je gebruikersnaam",
@@ -1956,6 +2005,7 @@ async function onProfielOpslaan(e) {
     state.profiel = { ...(state.profiel ?? {}), ...profiel };
     state.profielFout = false;
     renderAuthBox();
+    if (state.delen === undefined) laadDelen().then(() => renderProfielTegels());
     renderProfielTegels();
     terug('#/profiel');
   } catch (err) {
@@ -2010,6 +2060,253 @@ function renderProfielRegel() {
   return regel;
 }
 
+// ---------- Delen met vrienden (zie gedeeld.js) ----------
+
+const OOG_ICOON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" />
+</svg>`;
+const DEEL_LABELS = { gezien: 'Vrienden zien mijn Gezien (met sterren)', watchlist: 'Vrienden zien mijn Watchlist' };
+const KOPIE_WACHT_MS = 3000;
+
+// Laatst geschreven kopie per onderdeel (JSON van de items): undefined =
+// onbekend, null = er staat geen kopie. Zo wordt er niets geschreven als er
+// niets veranderd is (ook niet bij inloggen op een ander apparaat).
+const laatsteKopie = { gezien: undefined, watchlist: undefined };
+let kopieTimer = null;
+
+async function laadDelen() {
+  const user = state.user;
+  if (!magVrienden()) return;
+  state.delenFout = false;
+  try {
+    const { instelling, kopieen } = await laadEigenDelen({ db, fs: firestoreFns, uid: user.uid });
+    if (state.user !== user) return;
+    state.delen = instelling;
+    for (const o of ONDERDELEN) laatsteKopie[o] = kopieen[o] ? JSON.stringify(kopieen[o].items) : null;
+  } catch (err) {
+    if (state.user !== user) return;
+    console.error('Kon de instelling voor delen niet laden:', err);
+    state.delen = undefined;
+    state.delenFout = true;
+  }
+}
+
+// Actuele titel, maker en genre uit de agenda, per sleutel.
+function kopieInfo() {
+  const live = showsPerSleutel();
+  return (sleutel) => {
+    const show = live.get(sleutel);
+    return show ? { titel: weergaveTitel(show), maker: show.maker ?? null, genre: getGenreBucket(show) } : null;
+  };
+}
+
+// De kopie van één onderdeel, of null zolang de data nog niet compleet is
+// (niet ingelogd, cloud of agenda nog niet geladen).
+function kopieVan(onderdeel, info = kopieInfo()) {
+  if (!state.user || state.shows.length === 0) return null;
+  if (onderdeel === 'gezien') {
+    if (!state.cloudGezien) return null;
+    return { items: kopieGezien(state.gezien, info), stand: standVan(state.gezien, 'gezien') };
+  }
+  if (!state.cloudWatchlist) return null;
+  return { items: kopieWatchlist(state.watchlist, info), stand: standVan(state.watchlist, 'watchlist') };
+}
+
+// Na een wijziging, het inloggen of de sync: over KOPIE_WACHT_MS de kopie
+// bijwerken (één keer, ook na meerdere tikken).
+function planKopie() {
+  if (!state.user || !state.delen) return;
+  clearTimeout(kopieTimer);
+  kopieTimer = setTimeout(schrijfKopieen, KOPIE_WACHT_MS);
+}
+
+async function schrijfKopieen() {
+  const user = state.user;
+  if (!user || !state.delen) return;
+  const info = kopieInfo();
+  for (const o of ONDERDELEN) {
+    if (!state.delen[o]) continue;
+    const kopie = kopieVan(o, info);
+    if (!kopie) continue;
+    const json = JSON.stringify(kopie.items);
+    if (json === laatsteKopie[o]) continue;
+    try {
+      await schrijfKopie({ db, fs: firestoreFns, uid: user.uid, onderdeel: o, ...kopie });
+      if (state.user === user) laatsteKopie[o] = json;
+    } catch (err) {
+      // Geweigerd: o.a. een nieuwere kopie van een ander apparaat (stand).
+      console.warn(`Kopie van ${o} niet bijgewerkt:`, err?.code ?? err);
+    }
+  }
+}
+
+// Eén keer, voor wie een profiel heeft maar nog niets gekozen heeft. Tot
+// "Oké" of een keuze bij "Aanpassen" wordt er niets gedeeld.
+function renderDelenMelding() {
+  if (!magVrienden() || state.delen !== null || !els.screens.delen) return null;
+  const box = document.createElement('div');
+  box.className = 'delen-melding';
+  box.setAttribute('role', 'region');
+  box.setAttribute('aria-label', 'Delen met vrienden');
+  box.appendChild(vriendenTekst('p', 'delen-melding-tekst', 'Je vrienden kunnen je Gezien (met sterren) en Watchlist zien.'));
+  const knoppen = document.createElement('div');
+  knoppen.className = 'vriend-rij-acties delen-melding-knoppen';
+  knoppen.append(
+    kleineKnop('Aanpassen', { onClick: () => navigate('#/profiel/delen') }),
+    kleineKnop('Oké', { primair: true, label: 'Oké, vrienden zien mijn Gezien en Watchlist', onClick: (e) => kiesDelen(STANDAARD_INSTELLING, e.currentTarget) })
+  );
+  box.appendChild(knoppen);
+  return box;
+}
+
+function delenSamenvatting() {
+  if (state.delenFout) return 'Kon niet worden geladen';
+  if (state.delen === undefined) return '…';
+  if (state.delen === null) return 'Nog niet ingesteld';
+  const { gezien, watchlist } = state.delen;
+  if (gezien && watchlist) return 'Gezien en Watchlist';
+  if (gezien) return 'Alleen Gezien';
+  if (watchlist) return 'Alleen Watchlist';
+  return 'Niets';
+}
+
+function renderDelenTegel() {
+  const tegel = document.createElement('button');
+  tegel.type = 'button';
+  tegel.className = 'profiel-tegel';
+  tegel.id = 'delenTegel';
+  const icoon = document.createElement('span');
+  icoon.className = 'profiel-tegel-icoon';
+  icoon.innerHTML = OOG_ICOON;
+  icoon.firstElementChild.setAttribute('aria-hidden', 'true');
+  const tekst = document.createElement('span');
+  tekst.className = 'profiel-tegel-tekst';
+  tekst.append(vriendenTekst('span', 'profiel-tegel-titel', 'Wat vrienden zien'), vriendenTekst('span', 'profiel-tegel-sub', delenSamenvatting()));
+  const pijl = document.createElement('span');
+  pijl.className = 'profiel-tegel-pijl';
+  pijl.innerHTML = CHEVRON;
+  tegel.append(icoon, tekst, pijl);
+  tegel.addEventListener('click', () => navigate('#/profiel/delen'));
+  return tegel;
+}
+
+// Keuze op het scherm "Wat vrienden zien" zolang er nog niets opgeslagen is.
+let delenKeuze = null;
+let delenMelding = null;
+
+/**
+ * Instelling opslaan met in dezelfde batch de kopieën (aan: schrijven als
+ * de data er is; uit: weghalen). `knop` gaat even uit.
+ */
+async function kiesDelen(instelling, knop = null) {
+  const user = state.user;
+  if (!magVrienden()) return;
+  if (knop) knop.disabled = true;
+  const info = kopieInfo();
+  const kopieen = {};
+  for (const o of ONDERDELEN) if (instelling[o]) kopieen[o] = kopieVan(o, info);
+  try {
+    await zetInstelling({ db, fs: firestoreFns, uid: user.uid, instelling, kopieen });
+    if (state.user !== user) return;
+    state.delen = { gezien: instelling.gezien === true, watchlist: instelling.watchlist === true };
+    for (const o of ONDERDELEN) {
+      if (!instelling[o]) laatsteKopie[o] = null;
+      else if (kopieen[o]) laatsteKopie[o] = JSON.stringify(kopieen[o].items);
+    }
+    delenKeuze = null;
+    delenMelding = { tekst: 'Opgeslagen.', soort: 'succes' };
+    planKopie();
+  } catch (err) {
+    console.error('Instelling delen opslaan mislukt:', err);
+    delenMelding = { tekst: VERBINDING_FOUT, soort: 'fout' };
+    if (knop) knop.disabled = false;
+  }
+  renderProfielTegels();
+  renderDelenScherm();
+}
+
+function renderDelenScherm() {
+  const box = els.delenInhoud;
+  if (!box || els.screens.delen.hidden) return;
+  box.innerHTML = '';
+  if (!state.authBekend || (state.user && state.profiel === undefined && !state.profielFout) || (magVrienden() && state.delen === undefined && !state.delenFout)) {
+    box.appendChild(vriendenTekst('p', 'profiel-melding', 'Laden…'));
+    return;
+  }
+  if (!magVrienden()) {
+    box.append(vriendenTekst('p', 'vrienden-leeg', 'Kies eerst een gebruikersnaam. Daarna kun je instellen wat vrienden zien.'));
+    const knop = document.createElement('button');
+    knop.type = 'button';
+    knop.className = 'btn-secondary';
+    knop.textContent = 'Gebruikersnaam kiezen';
+    knop.addEventListener('click', () => navigate('#/profiel/instellen'));
+    box.appendChild(knop);
+    return;
+  }
+  if (state.delenFout) {
+    box.appendChild(
+      vriendenFoutBlok('Je instelling kon niet worden geladen. Controleer je verbinding en probeer het opnieuw.', async () => {
+        state.delenFout = false;
+        renderDelenScherm();
+        await laadDelen();
+        renderDelenScherm();
+        renderProfielTegels();
+        planKopie();
+      })
+    );
+    return;
+  }
+
+  // Nog niets gekozen: schakelaars staan op de standaard en er wordt pas
+  // iets gedeeld na "Opslaan".
+  const eerste = state.delen === null;
+  const huidig = eerste ? (delenKeuze ?? { ...STANDAARD_INSTELLING }) : state.delen;
+  for (const o of ONDERDELEN) {
+    const rij = document.createElement('div');
+    rij.className = 'delen-rij';
+    const id = `delenSchakelaar-${o}`;
+    const label = vriendenTekst('label', 'delen-label', DEEL_LABELS[o]);
+    label.htmlFor = id;
+    const schakelaar = document.createElement('button');
+    schakelaar.type = 'button';
+    schakelaar.id = id;
+    schakelaar.className = 'switch' + (huidig[o] ? ' is-on' : '');
+    schakelaar.setAttribute('role', 'switch');
+    schakelaar.setAttribute('aria-checked', String(huidig[o]));
+    schakelaar.addEventListener('click', () => {
+      const nieuw = { ...huidig, [o]: !huidig[o] };
+      if (eerste) {
+        delenKeuze = nieuw;
+        renderDelenScherm();
+        document.getElementById(id)?.focus();
+        return;
+      }
+      kiesDelen(nieuw, schakelaar).then(() => document.getElementById(id)?.focus());
+    });
+    label.addEventListener('click', (e) => {
+      e.preventDefault();
+      schakelaar.click();
+    });
+    rij.append(label, schakelaar);
+    box.appendChild(rij);
+  }
+  box.appendChild(vriendenTekst('p', 'vrienden-leeg', 'Je planning (Gepland) zien vrienden nooit; alleen wie je uitnodigt, ziet het plan waarvoor je uitnodigt. Wie geen vriend is, ziet niets.'));
+  if (eerste) {
+    box.appendChild(vriendenTekst('p', 'vrienden-leeg', 'Er wordt nog niets gedeeld tot je opslaat.'));
+    const opslaan = document.createElement('button');
+    opslaan.type = 'button';
+    opslaan.className = 'btn-primary';
+    opslaan.textContent = 'Opslaan';
+    opslaan.addEventListener('click', () => kiesDelen(huidig, opslaan));
+    box.appendChild(opslaan);
+  }
+  if (delenMelding) {
+    const p = vriendenTekst('p', `vrienden-melding vrienden-melding--${delenMelding.soort}`, delenMelding.tekst);
+    p.setAttribute('role', delenMelding.soort === 'fout' ? 'alert' : 'status');
+    box.appendChild(p);
+  }
+}
+
 // ---------- Vrienden (zie vrienden.js) ----------
 
 // Alleen ingelogd én met profiel: zonder gebruikersnaam kun je niet gevonden
@@ -2049,6 +2346,9 @@ function renderProfielTegels() {
   box.hidden = !magVrienden() || !els.screens.vrienden;
   if (box.hidden) return;
 
+  const melding = renderDelenMelding();
+  if (melding) box.appendChild(melding);
+
   const n = state.inkomendAantal ?? 0;
   const tegel = document.createElement('button');
   tegel.type = 'button';
@@ -2080,6 +2380,7 @@ function renderProfielTegels() {
   tegel.append(icoon, tekst, pijl);
   tegel.addEventListener('click', () => navigate('#/vrienden'));
   box.appendChild(tegel);
+  if (els.screens.delen) box.appendChild(renderDelenTegel());
 }
 
 // Een geopend menu bij een rij: { uid, soort: 'vriend'|'verzoek', bevestig: null|'verbreek'|'blokkeer' }.
