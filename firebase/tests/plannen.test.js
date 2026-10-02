@@ -323,6 +323,62 @@ test('plan wijzigen buiten genodigden en opheffen: geweigerd', async () => {
   await assertFails(updateDoc(doc(db('alice'), 'plannen', planId), { genodigden: ['bob', 'alice'], gewijzigdOp: serverTimestamp() }));
 });
 
+// ---------- Genodigde zonder lid-document ----------
+
+/** Alice zet dave (geen vriend) rechtstreeks in `genodigden`, zonder lid-document. */
+async function vreemdeInGenodigden(planId) {
+  await assertSucceeds(updateDoc(doc(db('alice'), 'plannen', planId), { genodigden: [...(await plan(planId)).genodigden, 'dave'], gewijzigdOp: serverTimestamp() }));
+}
+
+test('een vreemde in genodigden zonder lid-document kan het plan en de leden niet lezen', async () => {
+  const planId = await nieuwPlan();
+  await vreemdeInGenodigden(planId);
+  await assertFails(getDoc(doc(db('dave'), 'plannen', planId)));
+  await assertFails(getDocs(collection(db('dave'), 'plannen', planId, 'leden')));
+  await assertFails(getDoc(doc(db('dave'), 'plannen', planId, 'leden', 'bob')));
+  // Een echte gast wel.
+  await assertSucceeds(getDoc(doc(db('bob'), 'plannen', planId)));
+  await assertSucceeds(getDocs(collection(db('bob'), 'plannen', planId, 'leden')));
+});
+
+test('opheffen: geen bericht aan een vreemde zonder lid-document; wel aan een gast die meegaat', async () => {
+  const planId = await nieuwPlan();
+  await zetMijnStatus({ db: db('bob'), fs, ik: 'bob', planId, eigenaar: 'alice', status: 'gaat' });
+  await vreemdeInGenodigden(planId);
+  const melding = (u, id = `opgeheven_${planId}`) =>
+    setDoc(doc(db('alice'), 'inbox', u, 'berichten', id), { soort: 'opgeheven', van: 'alice', planId, aangemaaktOp: serverTimestamp(), gelezen: false });
+  // Vóór het opheffen: geen opheffingsbericht.
+  await assertFails(melding('bob'));
+  await assertSucceeds(updateDoc(doc(db('alice'), 'plannen', planId), { opgeheven: true, gewijzigdOp: serverTimestamp() }));
+  await assertFails(melding('dave'));
+  await assertSucceeds(melding('bob'));
+  // Hooguit één per plan, en alleen met de vaste id.
+  await assertFails(melding('bob'));
+  await assertFails(melding('bob', 'anders'));
+  assert.deepEqual((await inboxVan('dave')), []);
+  assert.deepEqual((await inboxVan('bob')).map((b) => b.soort).sort(), ['opgeheven', 'uitnodiging']);
+});
+
+test('opheffen: geen bericht aan wie "kan niet" zei of niet meer meegaat', async () => {
+  const planId = await nieuwPlan();
+  await erbij(planId, 'carol');
+  await zetMijnStatus({ db: db('bob'), fs, ik: 'bob', planId, eigenaar: 'alice', status: 'kan-niet' });
+  await zetMijnStatus({ db: db('carol'), fs, ik: 'carol', planId, eigenaar: 'alice', status: 'gaat' });
+  await zetMijnStatus({ db: db('carol'), fs, ik: 'carol', planId, eigenaar: 'alice', status: 'weg' });
+  await updateDoc(doc(db('alice'), 'plannen', planId), { opgeheven: true, gewijzigdOp: serverTimestamp() });
+  for (const u of ['bob', 'carol']) {
+    await assertFails(setDoc(doc(db('alice'), 'inbox', u, 'berichten', `opgeheven_${planId}`), { soort: 'opgeheven', van: 'alice', planId, aangemaaktOp: serverTimestamp(), gelezen: false }));
+  }
+});
+
+test('opheffen met 10 gasten die meegaan: iedereen krijgt een bericht (binnen de limiet van de rules)', async () => {
+  const planId = await nieuwPlan('v0');
+  for (let i = 1; i < 10; i++) await erbij(planId, `v${i}`);
+  for (let i = 0; i < 10; i++) await zetMijnStatus({ db: db(`v${i}`), fs, ik: `v${i}`, planId, eigenaar: 'alice', status: 'gaat' });
+  await assertSucceeds(hefOp({ db: db('alice'), fs, ik: 'alice', planId, leden: (await laadPlan({ db: db('alice'), fs, planId })).leden }));
+  for (let i = 0; i < 10; i++) assert.ok((await inboxVan(`v${i}`)).some((b) => b.soort === 'opgeheven'), `v${i}`);
+});
+
 // ---------- Berichten ----------
 
 test('een los bericht in andermans inbox (zonder gebeurtenis in een plan): geweigerd', async () => {

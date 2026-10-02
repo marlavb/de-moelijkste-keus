@@ -431,9 +431,16 @@ service cloud.firestore {
       return lijst is list && lijst.size() <= 10 && !(request.auth.uid in lijst);
     }
 
+    // Een genodigde telt alleen mee met een lid-document: dat is bij het
+    // uitnodigen gecontroleerd op vriendschap en blokkades. Een uid die
+    // alleen in `genodigden` staat (aangepaste client), telt niet.
+    function isGenodigdeMetLid(planId, genodigden) {
+      return request.auth.uid in genodigden && exists(lidPad(planId, request.auth.uid));
+    }
+
     match /plannen/{planId} {
       allow get: if ingelogd()
-        && (resource.data.eigenaar == request.auth.uid || request.auth.uid in resource.data.genodigden);
+        && (resource.data.eigenaar == request.auth.uid || isGenodigdeMetLid(planId, resource.data.genodigden));
       allow list: if false;
 
       allow create: if ingelogd()
@@ -477,7 +484,7 @@ service cloud.firestore {
         }
 
         allow get, list: if ingelogd()
-          && (plan().eigenaar == request.auth.uid || request.auth.uid in plan().genodigden);
+          && (plan().eigenaar == request.auth.uid || isGenodigdeMetLid(planId, plan().genodigden));
 
         allow create: if ingelogd()
           && request.resource.data.keys().hasOnly(['uid', 'planId', 'rol', 'status', 'uitgenodigdDoor', 'uitgenodigdOp', 'kaarten'])
@@ -547,8 +554,11 @@ service cloud.firestore {
       }
     }
 
-    // Een bericht hoort bij een echte overgang in het plan, in dezelfde batch.
-    function berichtPastBijPlan(ontvanger, soort, planId) {
+    // Een bericht hoort bij een echte overgang in het plan, in dezelfde batch;
+    // behalve 'opgeheven': dat volgt per ontvanger na het opheffen (anders
+    // past het bij 10 gasten niet binnen de 20 document-controles per batch),
+    // met een vaste id zodat elke ontvanger er per plan hooguit één krijgt.
+    function berichtPastBijPlan(ontvanger, soort, planId, id) {
       return (soort == 'uitnodiging'
           && getAfter(planPad(planId)).data.eigenaar == request.auth.uid
           && !exists(lidPad(planId, ontvanger))
@@ -567,10 +577,13 @@ service cloud.firestore {
           && get(lidPad(planId, request.auth.uid)).data.status == 'gaat'
           && getAfter(lidPad(planId, request.auth.uid)).data.status == 'weg')
         || (soort == 'opgeheven'
+          && id == 'opgeheven_' + planId
           && get(planPad(planId)).data.eigenaar == request.auth.uid
-          && get(planPad(planId)).data.opgeheven == false
-          && getAfter(planPad(planId)).data.opgeheven == true
-          && ontvanger in get(planPad(planId)).data.genodigden);
+          && get(planPad(planId)).data.opgeheven == true
+          && ontvanger in get(planPad(planId)).data.genodigden
+          // Alleen een echte gast die nog meedoet (niet "kan niet" of "weg").
+          && exists(lidPad(planId, ontvanger))
+          && get(lidPad(planId, ontvanger)).data.status in ['uitgenodigd', 'gaat']);
     }
 
     match /inbox/{uid}/berichten/{id} {
@@ -592,7 +605,7 @@ service cloud.firestore {
         && request.resource.data.planId is string
         && request.resource.data.soort in ['uitnodiging', 'gaat-mee', 'kan-niet', 'weg', 'opgeheven']
         && !heeftGeblokkeerd(uid, request.auth.uid)
-        && berichtPastBijPlan(uid, request.resource.data.soort, request.resource.data.planId);
+        && berichtPastBijPlan(uid, request.resource.data.soort, request.resource.data.planId, id);
     }
   }
 }

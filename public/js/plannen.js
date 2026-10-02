@@ -179,24 +179,20 @@ export function zetKaarten({ db, fs, ik, planId, kaarten }) {
 }
 
 /**
- * Plan opheffen (alleen de organisator), met een bericht aan wie nog
- * uitgenodigd is of meegaat. Weigeren de rules een bericht (blokkade), dan
- * zonder berichten.
+ * Plan opheffen (alleen de organisator), daarna een bericht aan wie nog
+ * uitgenodigd is of meegaat: per ontvanger een eigen write met de vaste id
+ * opgeheven_{planId} (zie firestore.rules). Een geweigerd bericht (bv. een
+ * blokkade) houdt de andere niet tegen.
  */
 export async function hefOp({ db, fs, ik, planId, leden }) {
   const ontvangers = (leden ?? []).filter((l) => l.uid !== ik && ['gaat', 'uitgenodigd'].includes(l.status)).map((l) => l.uid);
-  const maak = (metBerichten) => {
-    const b = fs.writeBatch(db);
-    b.update(planRef(fs, db, planId), { opgeheven: true, gewijzigdOp: fs.serverTimestamp() });
-    if (metBerichten) for (const u of ontvangers) b.set(nieuwBericht(fs, db, u), bericht(fs, 'opgeheven', ik, planId));
-    return b;
-  };
-  try {
-    await maak(true).commit();
-  } catch (err) {
-    if (!isGeweigerd(err) || ontvangers.length === 0) throw err;
-    await maak(false).commit();
-  }
+  const b = fs.writeBatch(db);
+  b.update(planRef(fs, db, planId), { opgeheven: true, gewijzigdOp: fs.serverTimestamp() });
+  await b.commit();
+  const uitkomst = await Promise.allSettled(
+    ontvangers.map((u) => fs.setDoc(fs.doc(db, 'inbox', u, 'berichten', `opgeheven_${planId}`), bericht(fs, 'opgeheven', ik, planId)))
+  );
+  for (const u of uitkomst) if (u.status === 'rejected' && !isGeweigerd(u.reason)) throw u.reason;
 }
 
 /**
