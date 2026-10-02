@@ -95,6 +95,7 @@ import {
   markeerGelezen,
   ruimBerichtenOp,
   uitnodigingStand,
+  isNogTePlannen,
 } from './plannen.js';
 import {
   laadGezien,
@@ -2321,8 +2322,10 @@ function deelKaarten(item, kaarten) {
   );
 }
 
+// Uitnodigen kan tot middernacht in Amsterdam op de speeldag (niet UTC, niet
+// de tijdzone van het toestel); zie isNogTePlannen in plannen.js.
 const magUitnodigen = (item) =>
-  magVrienden() && item.datum >= todayIsoDate() && (!gedeeldPlan(item) || isOrganisator(gedeeldPlan(item)));
+  magVrienden() && isNogTePlannen(item.datum) && (!gedeeldPlan(item) || isOrganisator(gedeeldPlan(item)));
 
 // De regels "met wie" als tekst.
 function metWieTekst(item) {
@@ -2335,7 +2338,7 @@ function metWieTekst(item) {
 
 // Onder een Gepland-rij: met wie, en [Vrienden uitnodigen] of [Ik ga toch niet].
 function planSamenRij(item) {
-  if (!magVrienden() || item.datum < todayIsoDate()) return null;
+  if (!magVrienden() || !isNogTePlannen(item.datum)) return null;
   const info = gedeeldPlan(item);
   const tekst = metWieTekst(item);
   const rij = document.createElement('div');
@@ -2367,7 +2370,7 @@ function renderPlanSamen(item) {
   const box = els.detailPlanSamen;
   if (!box) return;
   box.replaceChildren();
-  if (!magVrienden() || item.datum < todayIsoDate()) {
+  if (!magVrienden() || !isNogTePlannen(item.datum)) {
     box.hidden = true;
     return;
   }
@@ -2788,7 +2791,7 @@ function renderUitnodigen() {
     box.appendChild(vriendenTekst('p', 'vrienden-leeg', 'Deze voorstelling staat niet (meer) in je planning.'));
     return;
   }
-  if (item.datum < todayIsoDate()) {
+  if (!isNogTePlannen(item.datum)) {
     box.appendChild(vriendenTekst('p', 'vrienden-leeg', 'Deze voorstelling is voorbij; uitnodigen kan niet meer.'));
     return;
   }

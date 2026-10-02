@@ -47,14 +47,25 @@ export class PlanFout extends Error {
 
 const isGeweigerd = (err) => err?.code === 'permission-denied' || err?.code === 'firestore/permission-denied';
 
-/** Middernacht UTC van een ISO-datum ('2026-10-18'). */
+/**
+ * Middernacht UTC van een ISO-datum ('2026-10-18'). Alleen voor de rules
+ * (die kennen geen tijdzones); de app rekent met amsterdamDatum().
+ */
 export function speeldagVan(datum) {
   const [j, m, d] = String(datum).split('-').map(Number);
   return new Date(Date.UTC(j, m - 1, d));
 }
 
-/** Vandaag of later (lokale datum, zoals de rest van de app). */
-export function isNogTePlannen(datum, vandaag) {
+const AMSTERDAM = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', year: 'numeric', month: '2-digit', day: '2-digit' });
+
+/** De datum in Amsterdam ('YYYY-MM-DD'), ook in zomer- en wintertijd en op een toestel in een andere tijdzone. */
+export function amsterdamDatum(nu = Date.now()) {
+  const d = Object.fromEntries(AMSTERDAM.formatToParts(new Date(nu)).map((p) => [p.type, p.value]));
+  return `${d.year}-${d.month}-${d.day}`;
+}
+
+/** Vandaag of later, in Amsterdam: dan kun je nog uitnodigen of meegaan. */
+export function isNogTePlannen(datum, vandaag = amsterdamDatum()) {
   return typeof datum === 'string' && datum >= vandaag;
 }
 
@@ -208,8 +219,11 @@ export async function laadPlan({ db, fs, planId }) {
 
 const tijdMs = (t) => (typeof t?.toMillis === 'function' ? t.toMillis() : t instanceof Date ? t.getTime() : Number(t));
 
-/** Is het plan voorbij (speeldag + 1 dag ≤ nu)? */
-export const isPlanVoorbij = (plan, nu = Date.now()) => tijdMs(plan.speeldag) + 24 * 3600 * 1000 <= nu;
+/** De speeldatum van een plan ('YYYY-MM-DD'). */
+const datumVanPlan = (plan) => plan.voorstelling?.datum ?? new Date(tijdMs(plan.speeldag)).toISOString().slice(0, 10);
+
+/** Is het plan voorbij? Na middernacht in Amsterdam (niet UTC). */
+export const isPlanVoorbij = (plan, nu = Date.now()) => !isNogTePlannen(datumVanPlan(plan), amsterdamDatum(nu));
 
 /**
  * "Met wie" voor één lid: de anderen die meegaan (met kaarten), en voor de

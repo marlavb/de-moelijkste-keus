@@ -400,6 +400,14 @@ service cloud.firestore {
     }
 
     // Speeldag = middernacht UTC van de datum, en die dag nog niet voorbij.
+    // Marge: de rules kennen geen tijdzones en rekenen tot middernacht UTC
+    // na de speeldag (request.time < speeldag + 1 dag). De app stopt al om
+    // middernacht in Amsterdam (zie isNogTePlannen in plannen.js), en dat is
+    // 1 uur (wintertijd, UTC+1) of 2 uur (zomertijd, UTC+2) eerder. De rules
+    // zijn dus hooguit 2 uur ruimer dan de app, nooit strenger: van 00:00
+    // Amsterdam tot 01:00/02:00 kan een aangepaste client nog uitnodigen of
+    // meegaan voor de dag ervoor. Dat is onschadelijk; strenger kan alleen
+    // met een tijdzone, en die hebben rules niet.
     function geldigeSpeeldag(v, speeldag) {
       return v.datum is string
         && v.datum.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')

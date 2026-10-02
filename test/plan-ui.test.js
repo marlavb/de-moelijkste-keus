@@ -303,6 +303,32 @@ test('gewoon (niet gedeeld) plan: Uit je planning halen zonder bevestiging, zoal
   await ctx.close();
 });
 
+test('rond middernacht: uitnodigen volgt de datum in Amsterdam, niet die van het toestel (UTC)', async () => {
+  for (const [datum, voor, na] of [
+    ['2026-07-15', '2026-07-15T21:30:00Z', '2026-07-15T22:30:00Z'], // zomertijd: 23:30 / 00:30 Amsterdam
+    ['2026-01-15', '2026-01-15T22:30:00Z', '2026-01-15T23:30:00Z'], // wintertijd: 23:30 / 00:30 Amsterdam
+  ]) {
+    const plan = { ...item, sleutel: `${item.theaterId}|${datum}|20:00|middernacht`, datum, tijd: '20:00' };
+    for (const [tijd, verwacht] of [[voor, 1], [na, 0]]) {
+      const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block', timezoneId: 'UTC' });
+      await ctx.clock.setFixedTime(new Date(tijd));
+      await ctx.route(/^https?:\/\/(?!127\.0\.0\.1)/, (r) => r.abort());
+      await ctx.route(`${base}js/firebase.js`, (r) => r.fulfill({ contentType: 'text/javascript', body: nepFirebase({ gebruiker: ANNA, docs: { ...BASIS, ...gebruiker('u1', [plan]) } }) }));
+      const page = await ctx.newPage();
+      const fouten = [];
+      page.on('pageerror', (e) => fouten.push(e.message));
+      await page.goto(`${base}#/profiel`);
+      await page.waitForSelector('.nav-item', { state: 'attached' });
+      await page.waitForTimeout(600);
+      // Op het toestel (UTC) is het in beide gevallen nog de speeldag: het plan staat in Gepland.
+      assert.match(await tekst(page, '#geplandList'), /middernacht|Grip|20:00/);
+      assert.equal(await page.locator('#geplandList button[aria-label^="Vrienden uitnodigen"]').count(), verwacht, `${datum} ${tijd}`);
+      assert.deepEqual(fouten, []);
+      await ctx.close();
+    }
+  }
+});
+
 test('voorbije datum: geen uitnodigknop; het scherm zegt dat het voorbij is', async () => {
   const oud = { ...item, sleutel: `${item.theaterId}|2020-01-01|20:00|oud`, datum: '2020-01-01' };
   const docs = { ...BASIS, ...gebruiker('u1', [oud]) };

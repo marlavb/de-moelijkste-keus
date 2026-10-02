@@ -254,6 +254,32 @@ test('alles van anderen als gewone tekst (titel, theater en stad uit het plan)',
   await ctx.close();
 });
 
+test('rond middernacht: [Ik ga mee] tot 00:00 in Amsterdam, daarna "Verlopen" (zomer- en wintertijd)', async () => {
+  for (const [datum, voor, na] of [
+    ['2026-07-15', '2026-07-15T21:30:00Z', '2026-07-15T22:30:00Z'],
+    ['2026-01-15', '2026-01-15T22:30:00Z', '2026-01-15T23:30:00Z'],
+  ]) {
+    const docs = { ...BASIS };
+    for (const k of Object.keys(docs)) if (k.startsWith('plannen/')) delete docs[k];
+    Object.assign(docs, plan({ datum }));
+    for (const [tijd, verwacht] of [[voor, /Ik ga mee/], [na, /Verlopen$/]]) {
+      const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block', timezoneId: 'UTC' });
+      await ctx.clock.setFixedTime(new Date(tijd));
+      await ctx.route(/^https?:\/\/(?!127\.0\.0\.1)/, (r) => r.abort());
+      await ctx.route(`${base}js/firebase.js`, (r) => r.fulfill({ contentType: 'text/javascript', body: nepFirebase({ gebruiker: BOB, docs }) }));
+      const page = await ctx.newPage();
+      const fouten = [];
+      page.on('pageerror', (e) => fouten.push(e.message));
+      await page.goto(`${base}#/berichten`);
+      await page.waitForSelector('.nav-item', { state: 'attached' });
+      await page.waitForTimeout(600);
+      assert.match(await tekst(page, '.bericht'), verwacht, `${datum} ${tijd}`);
+      assert.deepEqual(fouten, []);
+      await ctx.close();
+    }
+  }
+});
+
 test('offline: melding met Opnieuw; weer online laden', async () => {
   const { ctx, page, fouten } = await openApp({ hash: '#/profiel' });
   await page.evaluate(() => { window.__nepOffline = true; });

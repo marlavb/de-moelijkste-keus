@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 
 import {
   speeldagVan,
+  amsterdamDatum,
   isNogTePlannen,
   voorstellingVan,
   isPlanVoorbij,
@@ -45,11 +46,38 @@ test('momentopname van de voorstelling: alleen titel, theater, stad, datum en ti
   assert.deepEqual(voorstellingVan(item), { titel: SHOW.titel, theaterId: 'delamar', theaterNaam: 'DeLaMar', stad: 'Amsterdam', datum: '2026-10-18', tijd: '20:15' });
 });
 
-test('plan voorbij: pas na de hele speeldag', () => {
+test('plan voorbij: na middernacht in Amsterdam (18 okt = zomertijd, UTC+2)', () => {
   const plan = { speeldag: speeldagVan('2026-10-18') };
-  assert.equal(isPlanVoorbij(plan, Date.UTC(2026, 9, 18, 23)), false);
-  assert.equal(isPlanVoorbij(plan, Date.UTC(2026, 9, 19, 0)), true);
+  assert.equal(isPlanVoorbij(plan, Date.parse('2026-10-18T21:59:59Z')), false); // 23:59:59 Amsterdam
+  assert.equal(isPlanVoorbij(plan, Date.parse('2026-10-18T22:00:00Z')), true); // 00:00 Amsterdam, in UTC nog de 18e
   assert.equal(isPlanVoorbij({ speeldag: { toMillis: () => Date.UTC(2026, 9, 18) } }, Date.UTC(2026, 9, 17)), false);
+  // Met voorstelling: de datum daaruit.
+  assert.equal(isPlanVoorbij({ voorstelling: { datum: '2026-10-18' }, speeldag: 0 }, Date.parse('2026-10-18T21:00:00Z')), false);
+});
+
+test('rond middernacht in zomertijd (UTC+2): Amsterdam, niet UTC', () => {
+  assert.equal(amsterdamDatum(Date.parse('2026-07-15T21:59:59Z')), '2026-07-15');
+  assert.equal(amsterdamDatum(Date.parse('2026-07-15T22:00:00Z')), '2026-07-16');
+  assert.equal(amsterdamDatum(Date.parse('2026-07-14T22:30:00Z')), '2026-07-15'); // 00:30, UTC zegt nog de 14e
+  assert.equal(isNogTePlannen('2026-07-15', amsterdamDatum(Date.parse('2026-07-15T21:59:59Z'))), true);
+  assert.equal(isNogTePlannen('2026-07-15', amsterdamDatum(Date.parse('2026-07-15T22:00:00Z'))), false);
+  const plan = { voorstelling: { datum: '2026-07-15' }, speeldag: speeldagVan('2026-07-15') };
+  assert.equal(uitnodigingStand({ plan, leden: [{ uid: 'b', status: 'uitgenodigd' }] }, 'b', Date.parse('2026-07-15T21:59:59Z')), 'open');
+  assert.equal(uitnodigingStand({ plan, leden: [{ uid: 'b', status: 'uitgenodigd' }] }, 'b', Date.parse('2026-07-15T22:00:00Z')), 'verlopen');
+});
+
+test('rond middernacht in wintertijd (UTC+1): Amsterdam, niet UTC', () => {
+  assert.equal(amsterdamDatum(Date.parse('2026-01-15T22:59:59Z')), '2026-01-15');
+  assert.equal(amsterdamDatum(Date.parse('2026-01-15T23:00:00Z')), '2026-01-16');
+  assert.equal(amsterdamDatum(Date.parse('2026-01-14T23:30:00Z')), '2026-01-15');
+  const plan = { voorstelling: { datum: '2026-01-15' }, speeldag: speeldagVan('2026-01-15') };
+  assert.equal(isPlanVoorbij(plan, Date.parse('2026-01-15T22:59:59Z')), false);
+  assert.equal(isPlanVoorbij(plan, Date.parse('2026-01-15T23:00:00Z')), true);
+  // De wissel naar wintertijd (25 okt 2026, 03:00 → 02:00) en naar zomertijd (29 mrt 2026).
+  assert.equal(amsterdamDatum(Date.parse('2026-10-25T22:59:59Z')), '2026-10-25');
+  assert.equal(amsterdamDatum(Date.parse('2026-10-25T23:00:00Z')), '2026-10-26');
+  assert.equal(amsterdamDatum(Date.parse('2026-03-29T21:59:59Z')), '2026-03-29');
+  assert.equal(amsterdamDatum(Date.parse('2026-03-29T22:00:00Z')), '2026-03-30');
 });
 
 const INFO = {
