@@ -15,6 +15,7 @@ test('privacy.html: wat we opslaan, wie wat ziet, verwijderen, plaatshouder voor
   assert.match(html, /Je e-mailadres<\/strong> ziet niemand anders/);
   assert.match(html, /Je planning<\/strong> \(Gepland\) ziet niemand anders/);
   assert.match(html, /Account verwijderen/);
+  assert.match(html, /alleen om je een mail te sturen als een vriend je uitnodigt voor een voorstelling\. Die mail gaat via Gmail \(Google\)\. Je zet het uit in Profiel → Mail\./);
   assert.doesNotMatch(html, /INVULLEN/);
   assert.equal((html.match(/<a href="mailto:marlavb\.github@gmail\.com">marlavb\.github@gmail\.com<\/a>/g) ?? []).length, 2);
   assert.match(html, /<html lang="nl">/);

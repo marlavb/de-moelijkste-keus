@@ -330,6 +330,9 @@ const state = {
   delenFout: false,
   // Berichten (stap 4b): aantal ongelezen (live, de enige listener), null = onbekend.
   ongelezen: null,
+  // Mail bij uitnodigingen (stap 5): undefined = niet geladen, anders true/false.
+  mailAan: undefined,
+  mailFout: false,
 };
 
 const els = {
@@ -387,6 +390,7 @@ const els = {
     vriendItem: document.getElementById('screen-vrienditem'),
     uitnodigen: document.getElementById('screen-uitnodigen'),
     berichten: document.getElementById('screen-berichten'),
+    mail: document.getElementById('screen-mail'),
   },
   detailGezienBlok: document.getElementById('detailGezienBlok'),
   detailGezienBezoeken: document.getElementById('detailGezienBezoeken'),
@@ -491,6 +495,8 @@ const els = {
   uitnodigenSub: document.getElementById('uitnodigenSub'),
   uitnodigenInhoud: document.getElementById('uitnodigenInhoud'),
   berichtenBack: document.getElementById('berichtenBack'),
+  mailBack: document.getElementById('mailBack'),
+  mailInhoud: document.getElementById('mailInhoud'),
   berichtenInhoud: document.getElementById('berichtenInhoud'),
   profielBadge: document.getElementById('profielBadge'),
   feedbackForm: document.getElementById('feedbackForm'),
@@ -638,6 +644,7 @@ async function init() {
   els.vriendItemBack?.addEventListener('click', () => terug(vriendItemTerug));
   els.uitnodigenBack?.addEventListener('click', () => terug('#/profiel'));
   els.berichtenBack?.addEventListener('click', () => terug('#/profiel'));
+  els.mailBack?.addEventListener('click', () => terug('#/profiel'));
   if (els.profielGebruikersnaamUitleg) els.profielGebruikersnaamUitleg.textContent = GEBRUIKERSNAAM_UITLEG;
   route();
 
@@ -804,6 +811,18 @@ function routeNaar(hash) {
     return;
   }
 
+  // Ook uitgelogd: de link in elke mail komt hier ("eerst inloggen").
+  if (hash === '#/profiel/mail') {
+    if (!els.screens.mail) {
+      vervang('#/profiel');
+      return;
+    }
+    showScreen('mail');
+    mailMelding = null;
+    laadMail();
+    return;
+  }
+
   if (hash === '#/berichten') {
     if (!els.screens.berichten || (state.authBekend && !state.user)) {
       vervang('#/profiel');
@@ -895,7 +914,7 @@ function showScreen(name) {
   for (const [key, el] of Object.entries(els.screens)) {
     if (el) el.hidden = key !== name;
   }
-  els.bottomNav.hidden = ['detail', 'gezien', 'profielInstellen', 'vrienden', 'vriendLink', 'delen', 'vriend', 'vriendItem', 'uitnodigen', 'berichten'].includes(name);
+  els.bottomNav.hidden = ['detail', 'gezien', 'profielInstellen', 'vrienden', 'vriendLink', 'delen', 'vriend', 'vriendItem', 'uitnodigen', 'berichten', 'mail'].includes(name);
   for (const btn of els.bottomNav.querySelectorAll('.nav-item')) {
     btn.classList.toggle('is-active', btn.dataset.tab === name);
   }
@@ -1935,6 +1954,8 @@ async function handleAuthChange(user) {
   planCache.clear();
   naamCache.clear();
   stopBerichtenTeller();
+  state.mailAan = undefined;
+  state.mailFout = false;
   clearTimeout(kopieTimer);
   laatsteKopie.gezien = undefined;
   laatsteKopie.watchlist = undefined;
@@ -2014,6 +2035,7 @@ async function handleAuthChange(user) {
   if (hash.startsWith('#/vriend/')) routeNaar(hash);
   if (hash.startsWith('#/uitnodigen/')) routeNaar(hash);
   if (hash === '#/berichten') routeNaar(hash);
+  if (hash === '#/profiel/mail') laadMail();
   vernieuwVriendenTeller();
   planKopie();
   laadEigenPlannen();
@@ -2498,6 +2520,130 @@ async function verlaatGedeeldPlan(item) {
   naPlanLaden();
   renderAgenda();
   return true;
+}
+
+// ---------- Mail bij uitnodigingen (stap 5) ----------
+
+// mailvoorkeur/{uid}: { uitnodigingen, gewijzigdOp }; geen document = aan.
+// De Cloud Function leest dit vóór het versturen (functions/uitnodiging.js).
+const MAIL_ICOON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 6h16v12H4z" /><path d="M4 7l8 6 8-6" /><path d="M16 3l4 3" />
+</svg>`;
+let mailMelding = null;
+
+function renderMailTegel() {
+  const tegel = document.createElement('button');
+  tegel.type = 'button';
+  tegel.className = 'profiel-tegel';
+  tegel.id = 'mailTegel';
+  const icoon = document.createElement('span');
+  icoon.className = 'profiel-tegel-icoon';
+  icoon.innerHTML = MAIL_ICOON;
+  icoon.firstElementChild.setAttribute('aria-hidden', 'true');
+  const tekst = document.createElement('span');
+  tekst.className = 'profiel-tegel-tekst';
+  tekst.append(vriendenTekst('span', 'profiel-tegel-titel', 'Mail'), vriendenTekst('span', 'profiel-tegel-sub', 'Mail bij uitnodigingen'));
+  const pijl = document.createElement('span');
+  pijl.className = 'profiel-tegel-pijl';
+  pijl.innerHTML = CHEVRON;
+  tegel.append(icoon, tekst, pijl);
+  tegel.addEventListener('click', () => navigate('#/profiel/mail'));
+  return tegel;
+}
+
+async function laadMail() {
+  renderMailScherm();
+  if (!state.user) return;
+  const user = state.user;
+  state.mailFout = false;
+  try {
+    const snap = await getDoc(doc(db, 'mailvoorkeur', user.uid));
+    if (state.user !== user) return;
+    state.mailAan = !(snap.exists() && snap.data().uitnodigingen === false);
+  } catch (err) {
+    if (state.user !== user) return;
+    console.error('Kon de mailinstelling niet laden:', err);
+    state.mailFout = true;
+  }
+  renderMailScherm();
+}
+
+async function zetMail(aan, knop) {
+  const user = state.user;
+  if (!user) return;
+  knop.disabled = true;
+  try {
+    await setDoc(doc(db, 'mailvoorkeur', user.uid), { uitnodigingen: aan, gewijzigdOp: serverTimestamp() });
+    if (state.user !== user) return;
+    state.mailAan = aan;
+    mailMelding = { tekst: aan ? 'Opgeslagen: je krijgt weer mail bij uitnodigingen.' : 'Opgeslagen: geen mail meer bij uitnodigingen.', soort: 'succes' };
+  } catch (err) {
+    console.error('Mailinstelling opslaan mislukt:', err);
+    mailMelding = { tekst: VERBINDING_FOUT, soort: 'fout' };
+  }
+  renderMailScherm();
+  document.getElementById('mailSchakelaar')?.focus();
+}
+
+function renderMailScherm() {
+  const box = els.mailInhoud;
+  if (!box || els.screens.mail.hidden) return;
+  box.replaceChildren();
+  if (!state.authBekend) {
+    box.appendChild(vriendenTekst('p', 'profiel-melding', 'Laden…'));
+    return;
+  }
+  if (!state.user) {
+    box.appendChild(vriendenTekst('p', 'vrienden-leeg', 'Log in om je mailinstelling te bekijken of te wijzigen.'));
+    const inloggen = document.createElement('button');
+    inloggen.type = 'button';
+    inloggen.className = 'google-btn';
+    inloggen.innerHTML = GOOGLE_ICON_SVG;
+    inloggen.appendChild(vriendenTekst('span', '', 'Inloggen met Google'));
+    inloggen.addEventListener('click', handleSignIn);
+    box.appendChild(inloggen);
+    return;
+  }
+  if (state.mailFout) {
+    box.appendChild(vriendenFoutBlok('Je mailinstelling kon niet worden geladen. Controleer je verbinding en probeer het opnieuw.', laadMail));
+    return;
+  }
+  if (state.mailAan === undefined) {
+    box.appendChild(vriendenTekst('p', 'profiel-melding', 'Laden…'));
+    return;
+  }
+  const rij = document.createElement('div');
+  rij.className = 'delen-rij';
+  const label = vriendenTekst('label', 'delen-label', 'Mail bij uitnodigingen');
+  label.htmlFor = 'mailSchakelaar';
+  const schakelaar = document.createElement('button');
+  schakelaar.type = 'button';
+  schakelaar.id = 'mailSchakelaar';
+  schakelaar.className = 'switch' + (state.mailAan ? ' is-on' : '');
+  schakelaar.setAttribute('role', 'switch');
+  schakelaar.setAttribute('aria-checked', String(state.mailAan));
+  schakelaar.addEventListener('click', () => zetMail(!state.mailAan, schakelaar));
+  label.addEventListener('click', (e) => {
+    e.preventDefault();
+    schakelaar.click();
+  });
+  rij.append(label, schakelaar);
+  box.appendChild(rij);
+  const uitleg = vriendenTekst(
+    'p',
+    'vrienden-leeg',
+    'Nodigt een vriend je uit voor een voorstelling, dan sturen we een korte mail naar het adres van je Google-account. Je adres is nooit zichtbaar voor anderen. '
+  );
+  const privacy = document.createElement('a');
+  privacy.href = 'privacy.html';
+  privacy.textContent = 'Meer over privacy';
+  uitleg.appendChild(privacy);
+  box.appendChild(uitleg);
+  if (mailMelding) {
+    const p = vriendenTekst('p', `vrienden-melding vrienden-melding--${mailMelding.soort}`, mailMelding.tekst);
+    p.setAttribute('role', mailMelding.soort === 'fout' ? 'alert' : 'status');
+    box.appendChild(p);
+  }
 }
 
 // ---------- Berichten (zie plannen.js) ----------
@@ -3293,6 +3439,7 @@ function renderProfielTegels() {
   tegel.addEventListener('click', () => navigate('#/vrienden'));
   box.appendChild(tegel);
   if (els.screens.delen) box.appendChild(renderDelenTegel());
+  if (els.screens.mail) box.appendChild(renderMailTegel());
 }
 
 // Een geopend menu bij een rij: { uid, soort: 'vriend'|'verzoek', bevestig: null|'verbreek'|'blokkeer' }.

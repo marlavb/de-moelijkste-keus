@@ -335,8 +335,27 @@ test('uitgelogd: geen teller, geen tegels; #/berichten gaat naar Profiel', async
   await g.ctx.close();
 });
 
+test('Mail in Profiel: uitzetten en weer aanzetten (mailvoorkeur, echte rules)', async () => {
+  const B = ik.B.page;
+  await ga(B, base, '#/profiel');
+  await B.click('#mailTegel');
+  await B.waitForSelector('#mailSchakelaar');
+  assert.equal(await B.getAttribute('#mailSchakelaar', 'aria-checked'), 'true');
+  await B.click('#mailSchakelaar');
+  await wachtOpDoc(`mailvoorkeur/${uid.B}`, (d) => d?.uitnodigingen === false);
+  await wachtOpTekst(B, '#mailInhoud', /geen mail meer bij uitnodigingen/);
+  assert.equal(await B.getAttribute('#mailSchakelaar', 'aria-checked'), 'false');
+  await schermafbeelding(B, '7-mail');
+  await B.click('#mailSchakelaar');
+  await wachtOpDoc(`mailvoorkeur/${uid.B}`, (d) => d?.uitnodigingen === true);
+  // De link uit de mail, uitgelogd: eerst inloggen.
+  const g = await openGebruiker(browser, base, null, '#/profiel/mail');
+  await wachtOpTekst(g.page, '#mailInhoud', /Log in om je mailinstelling/);
+  await g.ctx.close();
+});
+
 test('veldcontrole: geen e-mailadres in Firestore; berichten, plannen en leden met precies de verwachte velden', async () => {
-  const collecties = ['users', 'profielen', 'usernames', 'vriendverzoeken', 'lijst', 'uitnodigingslinks', 'gedeeld', 'onderdelen', 'plannen', 'leden', 'berichten'];
+  const collecties = ['users', 'profielen', 'usernames', 'vriendverzoeken', 'lijst', 'uitnodigingslinks', 'gedeeld', 'onderdelen', 'plannen', 'leden', 'berichten', 'mailvoorkeur'];
   const alles = [];
   for (const c of collecties) alles.push(...(await alleIn(c)));
   assert.ok(alles.length > 20, `${alles.length} documenten`);
