@@ -230,6 +230,23 @@ test('organisator heft het plan op: berichten aan de leden, eigen item blijft al
   await ctx.close();
 });
 
+test('"Uit je planning halen" bij een gedeeld plan: organisator heft op en het item is weg', async () => {
+  const docs = {
+    ...BASIS,
+    ...gebruiker('u1', [{ ...item, planId: 'P1' }]),
+    ...planDocs({ leden: [{ uid: 'u1', rol: 'organisator', status: 'gaat' }, { uid: 'u2', rol: 'gast', status: 'gaat' }] }),
+  };
+  const { ctx, page, fouten } = await openApp({ docs, hash: `#/show/${encodeURIComponent(show.id)}` });
+  await even(page, 600);
+  await page.click('#detailUnplan');
+  await even(page, 500);
+  assert.equal((await opslag(page, 'plannen/P1')).opgeheven, true);
+  assert.equal((await paden(page, 'inbox/u2/')).length, 1);
+  assert.equal((await opslag(page, 'users/u1')).gepland.length, 0);
+  assert.deepEqual(fouten, []);
+  await ctx.close();
+});
+
 test('voorbije datum: geen uitnodigknop; het scherm zegt dat het voorbij is', async () => {
   const oud = { ...item, sleutel: `${item.theaterId}|2020-01-01|20:00|oud`, datum: '2020-01-01' };
   const docs = { ...BASIS, ...gebruiker('u1', [oud]) };

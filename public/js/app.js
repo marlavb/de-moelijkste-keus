@@ -1407,8 +1407,12 @@ function renderPlanControls(show) {
   };
   // Bij een gedeeld plan: een gast meldt zich af, de organisator heft op.
   els.detailUnplan.onclick = async () => {
-    if (gedeeldPlan(item)) {
-      await verlaatGedeeldPlan(item);
+    const info = gedeeldPlan(item);
+    if (info) {
+      // De organisator heft op en haalt het daarna uit de eigen planning; een
+      // gast meldt zich af (verlaatGedeeldPlan haalt het item dan al weg).
+      const gelukt = await verlaatGedeeldPlan(item);
+      if (gelukt && isOrganisator(info)) wijzigPlanning(haalUitPlanning(state.gepland, item.sleutel), show);
       return;
     }
     wijzigPlanning(haalUitPlanning(state.gepland, item.sleutel), show);
@@ -2382,7 +2386,7 @@ function renderPlanSamen(item) {
 // bericht; zijn eigen item blijft als gewoon plan staan).
 async function verlaatGedeeldPlan(item) {
   const info = gedeeldPlan(item);
-  if (!info) return;
+  if (!info) return false;
   const user = state.user;
   try {
     if (isOrganisator(info)) {
@@ -2399,11 +2403,12 @@ async function verlaatGedeeldPlan(item) {
   } catch (err) {
     console.error('Gedeeld plan verlaten mislukt:', err);
     toonMelding(err instanceof PlanFout ? err.message : VERBINDING_FOUT);
-    return;
+    return false;
   }
-  if (state.user !== user) return;
+  if (state.user !== user) return false;
   naPlanLaden();
   renderAgenda();
+  return true;
 }
 
 // ---------- Berichten (zie plannen.js) ----------
