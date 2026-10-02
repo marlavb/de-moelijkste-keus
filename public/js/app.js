@@ -54,12 +54,15 @@ import {
   laadEigenDelen,
   zetInstelling,
   schrijfKopie,
+  laadVriendDelen,
+  sorteerKopieGezien,
+  sorteerKopieWatchlist,
 } from './gedeeld.js';
 import { getGenreBucket, getGenres, matchtGenreFilter } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
 import { weergaveTitel, makerStaatInTitel, isVervallen, VERVALLEN_LABELS } from './weergave.js';
 import { renameFavoritesAndPersist, THEATER_MOVES } from './favorites.js';
-import { laadWatchlist, bekendeSleutels, legeWatchlist, watchlistSleutel, voegToe, verwijder } from './watchlist.js';
+import { laadWatchlist, bekendeSleutels, legeWatchlist, watchlistSleutel, voegToe, verwijder, NORMALISATIE_VERSIE } from './watchlist.js';
 import {
   laadGepland,
   legeGepland,
@@ -355,6 +358,8 @@ const els = {
     vrienden: document.getElementById('screen-vrienden'),
     vriendLink: document.getElementById('screen-vriendlink'),
     delen: document.getElementById('screen-delen'),
+    vriend: document.getElementById('screen-vriend'),
+    vriendItem: document.getElementById('screen-vrienditem'),
   },
   detailGezienBlok: document.getElementById('detailGezienBlok'),
   detailGezienBezoeken: document.getElementById('detailGezienBezoeken'),
@@ -444,6 +449,15 @@ const els = {
   vriendLinkInhoud: document.getElementById('vriendLinkInhoud'),
   delenBack: document.getElementById('delenBack'),
   delenInhoud: document.getElementById('delenInhoud'),
+  vriendBack: document.getElementById('vriendBack'),
+  vriendTitel: document.getElementById('vriendTitel'),
+  vriendSub: document.getElementById('vriendSub'),
+  vriendInhoud: document.getElementById('vriendInhoud'),
+  vriendItemBack: document.getElementById('vriendItemBack'),
+  vriendItemGenre: document.getElementById('vriendItemGenre'),
+  vriendItemTitel: document.getElementById('vriendItemTitel'),
+  vriendItemMaker: document.getElementById('vriendItemMaker'),
+  vriendItemOordeel: document.getElementById('vriendItemOordeel'),
   feedbackForm: document.getElementById('feedbackForm'),
   feedbackInput: document.getElementById('feedbackInput'),
   feedbackSubmit: document.getElementById('feedbackSubmit'),
@@ -585,6 +599,8 @@ async function init() {
   els.vriendLinkMaak?.addEventListener('click', onLinkMaken);
   els.vriendLinkBack?.addEventListener('click', () => terug('#/profiel'));
   els.delenBack?.addEventListener('click', () => terug('#/profiel'));
+  els.vriendBack?.addEventListener('click', () => terug('#/vrienden'));
+  els.vriendItemBack?.addEventListener('click', () => terug(vriendItemTerug));
   if (els.profielGebruikersnaamUitleg) els.profielGebruikersnaamUitleg.textContent = GEBRUIKERSNAAM_UITLEG;
   route();
 
@@ -716,6 +732,28 @@ function routeNaar(hash) {
     return;
   }
 
+  // Profiel van een vriend, en een voorstelling daaruit die niet in de agenda staat.
+  if (hash.startsWith('#/vriend/')) {
+    const [uid, soort, onderdeel, sleutel] = hash.slice('#/vriend/'.length).split('/').map(decodeURIComponent);
+    if (!els.screens.vriend || (state.authBekend && !state.user)) {
+      vervang('#/profiel');
+      return;
+    }
+    if (soort === 'titel') {
+      const item = vriendProfielCache.get(uid)?.data?.[onderdeel]?.find((i) => i.sleutel === sleutel);
+      if (!item || !els.screens.vriendItem) {
+        vervang(`#/vriend/${encodeURIComponent(uid)}`);
+        return;
+      }
+      showScreen('vriendItem');
+      renderVriendItem(vriendProfielCache.get(uid).data, onderdeel, item);
+      return;
+    }
+    showScreen('vriend');
+    laadVriendProfiel(uid);
+    return;
+  }
+
   if (hash === '#/profiel/delen') {
     if (!els.screens.delen || (state.authBekend && !state.user)) {
       vervang('#/profiel');
@@ -751,6 +789,10 @@ function routeNaar(hash) {
     showScreen('vrienden');
     vriendMenu = null;
     vriendenMelding = null;
+    // Een vriendenprofiel wordt vers geladen als je het vanuit de lijst
+    // opent; terug van een detailscherm naar het profiel gebruikt de
+    // geladen versie (zelfde scrollpositie).
+    vriendProfielCache.clear();
     zetZoekResultaat(null);
     zetLinkResultaat(null);
     laadVrienden();
@@ -772,7 +814,7 @@ function showScreen(name) {
   for (const [key, el] of Object.entries(els.screens)) {
     if (el) el.hidden = key !== name;
   }
-  els.bottomNav.hidden = ['detail', 'gezien', 'profielInstellen', 'vrienden', 'vriendLink', 'delen'].includes(name);
+  els.bottomNav.hidden = ['detail', 'gezien', 'profielInstellen', 'vrienden', 'vriendLink', 'delen', 'vriend', 'vriendItem'].includes(name);
   for (const btn of els.bottomNav.querySelectorAll('.nav-item')) {
     btn.classList.toggle('is-active', btn.dataset.tab === name);
   }
@@ -1784,6 +1826,7 @@ async function handleAuthChange(user) {
   if (state.vriendLink) state.vriendLink = { token: state.vriendLink.token, status: 'leeg', uitkomst: null };
   state.delen = undefined;
   state.delenFout = false;
+  vriendProfielCache.clear();
   clearTimeout(kopieTimer);
   laatsteKopie.gezien = undefined;
   laatsteKopie.watchlist = undefined;
@@ -1860,6 +1903,7 @@ async function handleAuthChange(user) {
   }
   if (hash.startsWith('#/vriend-link/')) laadVriendLink();
   if (hash === '#/profiel/delen') renderDelenScherm();
+  if (hash.startsWith('#/vriend/')) routeNaar(hash);
   vernieuwVriendenTeller();
   planKopie();
   if (hash.startsWith('#/show/')) {
@@ -2290,7 +2334,7 @@ function renderDelenScherm() {
     rij.append(label, schakelaar);
     box.appendChild(rij);
   }
-  box.appendChild(vriendenTekst('p', 'vrienden-leeg', 'Je planning (Gepland) zien vrienden nooit; alleen wie je uitnodigt, ziet het plan waarvoor je uitnodigt. Wie geen vriend is, ziet niets.'));
+  box.appendChild(vriendenTekst('p', 'vrienden-leeg', 'Je planning (Gepland) zien vrienden niet. Wie geen vriend is, ziet niets.'));
   if (eerste) {
     box.appendChild(vriendenTekst('p', 'vrienden-leeg', 'Er wordt nog niets gedeeld tot je opslaat.'));
     const opslaan = document.createElement('button');
@@ -2484,7 +2528,17 @@ function vriendRij(persoon, acties, menu = null) {
       document.querySelector('.vriend-menu button')?.focus();
     });
     knoppen.appendChild(meer);
-    rij.append(persoonTekst(persoon), knoppen);
+    if (menu.soort === 'vriend' && !persoon.onbekend) {
+      const naarProfiel = document.createElement('button');
+      naarProfiel.type = 'button';
+      naarProfiel.className = 'vriend-rij-open';
+      naarProfiel.setAttribute('aria-label', `Profiel van @${persoon.gebruikersnaam} bekijken`);
+      naarProfiel.appendChild(persoonTekst(persoon));
+      naarProfiel.addEventListener('click', () => navigate(`#/vriend/${encodeURIComponent(persoon.uid)}`));
+      rij.append(naarProfiel, knoppen);
+    } else {
+      rij.append(persoonTekst(persoon), knoppen);
+    }
     wrap.appendChild(rij);
     if (open) wrap.appendChild(renderVriendMenu(persoon, menu));
     return wrap;
@@ -2678,6 +2732,191 @@ function renderVriendenScherm() {
       )
     );
   }
+}
+
+// ---------- Profiel van een vriend (#/vriend/<uid>) ----------
+
+// uid → { status: 'laden'|'klaar'|'fout', data }; data = uitkomst van
+// laadVriendDelen (null = geen vriend). Geleegd bij het openen van Vrienden
+// en bij in- of uitloggen; terug van een detailscherm gebruikt de cache.
+const vriendProfielCache = new Map();
+let vriendItemTerug = '#/vrienden';
+
+async function laadVriendProfiel(uid) {
+  if (!magVrienden()) {
+    renderVriendProfiel(uid);
+    return;
+  }
+  const huidig = vriendProfielCache.get(uid);
+  if (huidig && huidig.status !== 'fout') {
+    renderVriendProfiel(uid);
+    return;
+  }
+  const user = state.user;
+  vriendProfielCache.set(uid, { status: 'laden', data: null });
+  renderVriendProfiel(uid);
+  try {
+    const data = await laadVriendDelen({ db, fs: firestoreFns, uid });
+    if (state.user !== user) return;
+    vriendProfielCache.set(uid, { status: 'klaar', data });
+  } catch (err) {
+    if (state.user !== user) return;
+    console.error('Kon het profiel van een vriend niet laden:', err);
+    vriendProfielCache.set(uid, { status: 'fout', data: null });
+  }
+  if (location.hash === `#/vriend/${encodeURIComponent(uid)}`) renderVriendProfiel(uid);
+}
+
+const korteDatum = (iso) => {
+  const { day, month, year } = parseIsoDate(iso);
+  return `${day} ${MONTHS_LONG[month - 1]} ${year}`;
+};
+
+// Sleutel van een item van een vriend in onze normalisatie (een vriend met
+// een oudere of nieuwere app kan andere sleutels hebben).
+function kopieSleutel(item, nv) {
+  return nv === NORMALISATIE_VERSIE ? item.sleutel : watchlistSleutel(item.titel);
+}
+
+// Eerstvolgende speeldatum in de agenda, of null.
+function liveShowVoor(sleutel) {
+  const vandaag = todayIsoDate();
+  return state.shows.filter((s) => showSleutel(s) === sleutel && s.datum >= vandaag).sort((a, b) => sortKey(a).localeCompare(sortKey(b)))[0] ?? null;
+}
+
+function vriendItemRij(vriend, onderdeel, item) {
+  const live = liveShowVoor(kopieSleutel(item, vriend[`${onderdeel}Nv`] ?? vriend.nv));
+  const knop = document.createElement('button');
+  knop.type = 'button';
+  knop.className = 'vriend-titel-rij';
+  const titel = live ? weergaveTitel(live) : item.titel;
+  knop.appendChild(vriendenTekst('span', 'vriend-titel-naam', titel));
+  const meta = [item.maker && !makerStaatInTitel(titel, item.maker) ? item.maker : null, item.genre].filter(Boolean).join(' · ');
+  if (meta) knop.appendChild(vriendenTekst('span', 'vriend-titel-meta', meta));
+  const regel = [];
+  const label = [titel];
+  if (onderdeel === 'gezien') {
+    if (item.beoordeling) {
+      regel.push(`★ ${beoordelingTekst(item.beoordeling)}`);
+      label.push(`${beoordelingTekst(item.beoordeling)} van 5 sterren`);
+    }
+    if (item.laatsteBezoek) {
+      const keer = item.aantal > 1 ? ` (${item.aantal}×)` : '';
+      regel.push(`gezien ${korteDatum(item.laatsteBezoek)}${keer}`);
+      label.push(`gezien op ${korteDatum(item.laatsteBezoek)}${item.aantal > 1 ? `, ${item.aantal} keer` : ''}`);
+    }
+  }
+  if (live) {
+    regel.push('in de agenda');
+    label.push('staat in de agenda');
+  }
+  if (regel.length) knop.appendChild(vriendenTekst('span', 'vriend-titel-regel', regel.join(' · ')));
+  knop.setAttribute('aria-label', label.join(', '));
+  knop.addEventListener('click', () => {
+    if (live) navigate(`#/show/${encodeURIComponent(live.id)}`);
+    else navigate(`#/vriend/${encodeURIComponent(vriend.uid)}/titel/${onderdeel}/${encodeURIComponent(item.sleutel)}`);
+  });
+  return knop;
+}
+
+function vriendOnderdeel(vriend, onderdeel) {
+  const sectie = document.createElement('section');
+  sectie.className = 'vrienden-blok';
+  const kop = document.createElement('div');
+  kop.className = 'section-head vriend-sectie-kop';
+  const titel = onderdeel === 'gezien' ? 'Gezien' : 'Watchlist';
+  kop.appendChild(vriendenTekst('h2', 'vrienden-kop', titel));
+  sectie.appendChild(kop);
+  const items = vriend[onderdeel];
+  if (items === null) {
+    sectie.appendChild(vriendenTekst('p', 'vrienden-leeg', `@${vriend.gebruikersnaam} deelt dit niet.`));
+    return sectie;
+  }
+  if (items.length === 0) {
+    sectie.appendChild(vriendenTekst('p', 'vrienden-leeg', 'Nog niets.'));
+    return sectie;
+  }
+  if (onderdeel === 'gezien' && items.some((i) => i.beoordeling)) {
+    const sorteer = document.createElement('button');
+    sorteer.type = 'button';
+    sorteer.className = 'link-btn gezien-sorteer';
+    sorteer.textContent = gezienOpBeoordeling ? 'Sorteer op laatste bezoek' : 'Sorteer op beoordeling';
+    sorteer.setAttribute('aria-pressed', String(gezienOpBeoordeling));
+    sorteer.addEventListener('click', () => {
+      gezienOpBeoordeling = !gezienOpBeoordeling;
+      try {
+        localStorage.setItem('podiumagenda:gezienSortering', gezienOpBeoordeling ? 'beoordeling' : 'bezoek');
+      } catch {
+        // geen opslag: alleen voor deze keer
+      }
+      renderVriendProfiel(vriend.uid);
+      document.querySelector('#vriendInhoud .gezien-sorteer')?.focus();
+    });
+    kop.appendChild(sorteer);
+  }
+  const lijst = onderdeel === 'gezien' ? sorteerKopieGezien(items, gezienOpBeoordeling) : sorteerKopieWatchlist(items);
+  const ul = document.createElement('div');
+  ul.className = 'vriend-titels';
+  for (const item of lijst) ul.appendChild(vriendItemRij(vriend, onderdeel, item));
+  sectie.appendChild(ul);
+  return sectie;
+}
+
+function renderVriendProfiel(uid) {
+  const box = els.vriendInhoud;
+  if (!box || els.screens.vriend.hidden) return;
+  box.innerHTML = '';
+  const terugNaarVrienden = () => {
+    const knop = document.createElement('button');
+    knop.type = 'button';
+    knop.className = 'btn-secondary';
+    knop.textContent = 'Naar Vrienden';
+    knop.addEventListener('click', () => navigate('#/vrienden'));
+    return knop;
+  };
+  const cache = vriendProfielCache.get(uid);
+  if (!state.authBekend || (state.user && state.profiel === undefined && !state.profielFout) || !cache || cache.status === 'laden') {
+    els.vriendTitel.textContent = 'Vriend';
+    els.vriendSub.textContent = '';
+    box.appendChild(vriendenTekst('p', 'profiel-melding', 'Laden…'));
+    return;
+  }
+  if (cache.status === 'fout') {
+    box.appendChild(
+      vriendenFoutBlok('Dit profiel kon niet worden geladen. Controleer je verbinding en probeer het opnieuw.', () => laadVriendProfiel(uid))
+    );
+    return;
+  }
+  const vriend = cache.data;
+  if (!vriend) {
+    els.vriendTitel.textContent = 'Vriend';
+    els.vriendSub.textContent = '';
+    box.append(vriendenTekst('p', 'vrienden-leeg', 'Dit profiel kun je niet (meer) bekijken: jullie zijn geen vrienden.'), terugNaarVrienden());
+    return;
+  }
+  els.vriendTitel.textContent = `@${vriend.gebruikersnaam}`;
+  els.vriendSub.textContent = vriend.naam;
+  box.append(vriendOnderdeel(vriend, 'gezien'), vriendOnderdeel(vriend, 'watchlist'));
+}
+
+// Een voorstelling van een vriend die niet in de agenda staat: titel,
+// maker, genre en (bij Gezien) de sterren van de vriend.
+function renderVriendItem(vriend, onderdeel, item) {
+  vriendItemTerug = `#/vriend/${encodeURIComponent(vriend.uid)}`;
+  els.vriendItemTitel.textContent = item.titel;
+  els.vriendItemGenre.textContent = item.genre ?? '';
+  const maker = item.maker && !makerStaatInTitel(item.titel, item.maker) ? item.maker : null;
+  els.vriendItemMaker.textContent = maker ?? '';
+  els.vriendItemMaker.hidden = !maker;
+  const oordeel = [];
+  if (onderdeel === 'gezien') {
+    if (item.beoordeling) oordeel.push(`@${vriend.gebruikersnaam} gaf ★ ${beoordelingTekst(item.beoordeling)}`);
+    if (item.laatsteBezoek) oordeel.push(`gezien ${korteDatum(item.laatsteBezoek)}${item.aantal > 1 ? ` (${item.aantal}×)` : ''}`);
+  } else {
+    oordeel.push(`Op de watchlist van @${vriend.gebruikersnaam}`);
+  }
+  els.vriendItemOordeel.textContent = oordeel.join(' · ');
+  els.vriendItemOordeel.hidden = oordeel.length === 0;
 }
 
 // ---------- Persoonlijke uitnodigingslinks ----------

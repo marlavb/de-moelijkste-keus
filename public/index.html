@@ -427,6 +427,44 @@
       </main>
     </section>
 
+    <!-- SCHERM: profiel van een vriend (#/vriend/<uid>) -->
+    <section class="screen" id="screen-vriend" hidden>
+      <header class="app-header">
+        <div class="header-top header-top--terug">
+          <button class="icon-btn" type="button" id="vriendBack" aria-label="Terug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="app-title" id="vriendTitel">Vriend</h1>
+            <p class="app-subtitle" id="vriendSub"></p>
+          </div>
+        </div>
+      </header>
+      <main class="vrienden-scherm vriend-profiel" id="vriendInhoud" aria-live="polite"></main>
+    </section>
+
+    <!-- SCHERM: voorstelling van een vriend die niet (meer) in de agenda staat -->
+    <section class="screen" id="screen-vrienditem" hidden>
+      <div class="detail-body">
+        <div class="detail-banner">
+          <div class="detail-banner-top">
+            <button class="icon-btn icon-btn--floating" type="button" id="vriendItemBack" aria-label="Terug">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 6 9 12 15 18" />
+              </svg>
+            </button>
+          </div>
+          <span class="detail-genre-tag" id="vriendItemGenre"></span>
+          <h1 class="detail-title" id="vriendItemTitel"></h1>
+          <p class="detail-maker" id="vriendItemMaker" hidden></p>
+        </div>
+        <p class="vriend-item-oordeel" id="vriendItemOordeel" hidden></p>
+        <p class="profile-note">Deze voorstelling staat nu niet in de agenda.</p>
+      </div>
+    </section>
+
     <!-- SCHERM: wat vrienden zien (instelling delen, alleen ingelogd met profiel) -->
     <section class="screen" id="screen-delen" hidden>
       <header class="app-header">

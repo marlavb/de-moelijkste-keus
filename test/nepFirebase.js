@@ -6,7 +6,8 @@
 //   window.__nepOffline    true → elke lees- of schrijfactie faalt zoals offline;
 //   window.__nepWeiger     functie (pad) → true: schrijven naar dat pad wordt
 //                          geweigerd zoals door de rules (permission-denied);
-//   window.__nepSchrijf    lijst van alle geslaagde schrijfacties ['set'|'delete', pad].
+//   window.__nepSchrijf    lijst van alle geslaagde schrijfacties ['set'|'delete', pad];
+//   window.__nepLees       aantal leesacties (getDoc, getDocs, getCountFromServer).
 // Queries: alleen gelijkheid (where(veld, '==', waarde)) op directe kinderen.
 
 export function nepFirebase({ gebruiker = null, docs = {} } = {}) {
@@ -14,6 +15,7 @@ export function nepFirebase({ gebruiker = null, docs = {} } = {}) {
 const opslag = new Map(Object.entries(${JSON.stringify(docs)}));
 window.__nepFirestore = opslag;
 window.__nepSchrijf = [];
+window.__nepLees = 0;
 const offline = () => {
   if (window.__nepOffline) throw Object.assign(new Error('Failed to get document because the client is offline.'), { code: 'unavailable' });
 };
@@ -31,9 +33,9 @@ export const doc = (_db, ...pad) => ({ path: pad.join('/') });
 export const collection = (_db, ...pad) => ({ path: pad.join('/') });
 export const where = (veld, _op, waarde) => ({ veld, waarde });
 export const query = (col, ...waar) => ({ path: col.path, waar });
-export const getDoc = async (ref) => { offline(); return snap(ref.path); };
-export const getDocs = async (q) => { offline(); const docs = kinderen(q).map(snap); return { docs, size: docs.length, empty: docs.length === 0 }; };
-export const getCountFromServer = async (q) => { offline(); const n = kinderen(q).length; return { data: () => ({ count: n }) }; };
+export const getDoc = async (ref) => { offline(); window.__nepLees++; return snap(ref.path); };
+export const getDocs = async (q) => { offline(); window.__nepLees++; const docs = kinderen(q).map(snap); return { docs, size: docs.length, empty: docs.length === 0 }; };
+export const getCountFromServer = async (q) => { offline(); window.__nepLees++; const n = kinderen(q).length; return { data: () => ({ count: n }) }; };
 export const setDoc = async (ref, data, opties) => {
   offline();
   weiger(ref.path);
