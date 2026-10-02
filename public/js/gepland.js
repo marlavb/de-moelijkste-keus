@@ -21,6 +21,13 @@
 // data). Bij een nieuw plan meteen; bij oudere plannen aangevuld zolang de
 // voorstelling in de agenda staat (vulInfoAan). Ook geen handeling: bij
 // samenvoegen vult een kopie die ze heeft de andere aan.
+// planId (sinds stap 4 van vrienden, okt 2026): het gedeelde plan
+// (plannen/{planId}) waar dit item bij hoort. Gezet met koppelPlan, als
+// handeling (nieuwe gewijzigdOp). Alle functies hier kopiëren items met
+// {...item}, dus het veld blijft bij samenvoegen, status wisselen en
+// bijwerken staan (ook in oudere app-versies, die dezelfde code hadden).
+// metWie: wie er meegaan (['@naam', …]) als momentopname, voor het bezoek
+// in Gezien; geen handeling (tijdstempels blijven gelijk), alleen voor jezelf.
 
 import { ruimeTitel, titelDelen } from './watchlist.js';
 import { isVervallen } from './weergave.js';
@@ -100,6 +107,37 @@ export function zetStatus(profiel, sleutel, status, now = Date.now()) {
   const item = profiel.gepland.find((i) => i.sleutel === sleutel);
   if (!item) return profiel;
   return voegGeplandSamen(profiel, { gepland: [{ ...item, status, gewijzigdOp: now }], geplandVerwijderd: [] });
+}
+
+/**
+ * Koppelt een gepland item aan een gedeeld plan (een handeling: nieuwe
+ * gewijzigdOp). Altijd later dan de vorige handeling, ook als die in
+ * dezelfde milliseconde was (planIn direct gevolgd door koppelPlan):
+ * anders wint bij samenvoegen het item zonder planId.
+ */
+export function koppelPlan(profiel, sleutel, planId, now = Date.now()) {
+  const item = profiel.gepland.find((i) => i.sleutel === sleutel);
+  if (!item || item.planId === planId) return profiel;
+  const gewijzigdOp = Math.max(now, (item.gewijzigdOp ?? 0) + 1);
+  return voegGeplandSamen(profiel, { gepland: [{ ...item, planId, gewijzigdOp }], geplandVerwijderd: [] });
+}
+
+/**
+ * "Met wie" als momentopname bij een plan (['@a', '@b'], gesorteerd). Geen
+ * handeling: de tijdstempels blijven gelijk. Geeft { profiel, gewijzigd }.
+ */
+export function zetMetWie(profiel, sleutel, namen) {
+  const nieuw = [...new Set(namen)].sort();
+  let gewijzigd = false;
+  const gepland = profiel.gepland.map((item) => {
+    if (item.sleutel !== sleutel) return item;
+    const oud = item.metWie ?? [];
+    if (JSON.stringify(oud) === JSON.stringify(nieuw)) return item;
+    gewijzigd = true;
+    const { metWie, ...rest } = item;
+    return nieuw.length ? { ...rest, metWie: nieuw } : rest;
+  });
+  return gewijzigd ? { profiel: { ...profiel, gepland }, gewijzigd } : { profiel, gewijzigd };
 }
 
 export function haalUitPlanning(profiel, sleutel, now = Date.now()) {

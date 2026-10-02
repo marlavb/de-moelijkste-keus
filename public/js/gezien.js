@@ -38,7 +38,9 @@ export const legeGezien = () => ({ gezien: [], gezienVerwijderd: [] });
 
 const bezoekSleutel = (b) => `${b.datum}|${b.tijd ?? ''}|${b.theaterId ?? ''}`;
 
-export const BEZOEK_EXTRA = ['theaterNaam', 'stad', 'locatie', 'zaal', 'titel', 'maker', 'genre', 'status', 'url', 'podiumpas'];
+// metWie (stap 4 van vrienden): ['@a', '@b'] uit het gedeelde plan, alleen
+// voor jezelf; niet in de kopie voor vrienden (gedeeld.js neemt het niet over).
+export const BEZOEK_EXTRA = ['theaterNaam', 'stad', 'locatie', 'zaal', 'titel', 'maker', 'genre', 'status', 'url', 'podiumpas', 'metWie'];
 
 /** Een bezoek met alleen de velden die er zijn (datum, tijd en theaterId altijd). */
 function schoonBezoek(b) {
@@ -197,6 +199,7 @@ export function bezoekVan(item, show = null) {
     status: item.status,
     url: show?.reserverenUrl ?? item.reserverenUrl,
     podiumpas: show ? show.podiumpas === true : item.podiumpas,
+    metWie: item.metWie?.length ? [...item.metWie] : null,
   });
 }
 

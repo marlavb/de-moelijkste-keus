@@ -39,7 +39,19 @@ before(async () => {
   browser = await chromium.launch();
   const shows = JSON.parse(await readFile(path.join(ROOT, 'data/shows.json'), 'utf-8'));
   const vandaag = new Date().toISOString().slice(0, 10);
-  eenShow = shows.find((s) => s.datum > vandaag && s.beschikbaarheid === 'beschikbaar' && !s.titel.includes('::'));
+  // Een voorstelling met een gewone sleutel (niet theatergebonden, zoals
+  // "Cabaret" op de uitsluitlijst) en een titel die geen genrenaam is: de
+  // agendarijen worden op titeltekst gefilterd, en "Cabaret" trof ook de rij
+  // van een andere voorstelling met het genre Cabaret (data van 2 okt 2026).
+  const genres = new Set(shows.map((x) => String(x.genre ?? '').toLowerCase()));
+  eenShow = shows.find(
+    (s) =>
+      s.datum > vandaag &&
+      s.beschikbaarheid === 'beschikbaar' &&
+      !s.titel.includes('::') &&
+      watchlistSleutel(s.titel, s.theaterId) === watchlistSleutel(s.titel) &&
+      !genres.has(s.titel.toLowerCase())
+  );
 });
 
 after(async () => {

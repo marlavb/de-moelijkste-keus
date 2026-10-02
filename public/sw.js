@@ -1,10 +1,11 @@
-const CACHE_NAME = 'podiumagenda-v32';
+const CACHE_NAME = 'podiumagenda-v34';
 const APP_SHELL = [
   './',
   './index.html',
   './css/styles.css',
   './js/app.js',
   './js/firebase.js',
+  './js/emulator.js',
   './js/genre.js',
   './js/productions.js',
   './js/favorites.js',
@@ -14,6 +15,7 @@ const APP_SHELL = [
   './js/profiel.js',
   './js/vrienden.js',
   './js/gedeeld.js',
+  './js/plannen.js',
   './js/sterren.js',
   './js/titelMapping.js',
   './js/weergave.js',

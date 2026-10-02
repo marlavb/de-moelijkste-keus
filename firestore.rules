@@ -377,5 +377,235 @@ service cloud.firestore {
           && request.resource.data.stand >= resource.data.stand;
       }
     }
+
+    // ---- Gedeelde plannen en uitnodigingen (vrienden, stap 4, okt 2026) ----
+    // Zie public/js/plannen.js.
+    //   plannen/{planId}                 momentopname, speeldag, genodigden (max. 10)
+    //   plannen/{planId}/leden/{uid}     rol, status, kaarten
+    //   inbox/{uid}/berichten/{id}       alleen bij een echte statusovergang
+    // Lezen: de organisator en wie in `genodigden` staat. Alleen de
+    // organisator nodigt uit (één vriend per batch), trekt in en heft op; een
+    // gast zet alleen zijn eigen status. Rules kunnen geen documenten tellen:
+    // `genodigden` begrenst het aantal.
+    // Mail (stap 5): de functie reageert op het aanmaken van
+    // plannen/{planId}/leden/{uid} met rol 'gast' en status 'uitgenodigd'.
+    // Clients schrijven niets in een mailcollectie.
+
+    function planPad(planId) {
+      return /databases/$(database)/documents/plannen/$(planId);
+    }
+
+    function lidPad(planId, uid) {
+      return /databases/$(database)/documents/plannen/$(planId)/leden/$(uid);
+    }
+
+    // Speeldag = middernacht UTC van de datum, en die dag nog niet voorbij.
+    // Marge: de rules kennen geen tijdzones en rekenen tot middernacht UTC
+    // na de speeldag (request.time < speeldag + 1 dag). De app stopt al om
+    // middernacht in Amsterdam (zie isNogTePlannen in plannen.js), en dat is
+    // 1 uur (wintertijd, UTC+1) of 2 uur (zomertijd, UTC+2) eerder. De rules
+    // zijn dus hooguit 2 uur ruimer dan de app, nooit strenger: van 00:00
+    // Amsterdam tot 01:00/02:00 kan een aangepaste client nog uitnodigen of
+    // meegaan voor de dag ervoor. Dat is onschadelijk; strenger kan alleen
+    // met een tijdzone, en die hebben rules niet.
+    function geldigeSpeeldag(v, speeldag) {
+      return v.datum is string
+        && v.datum.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+        && speeldag is timestamp
+        && speeldag == timestamp.date(int(v.datum[0:4]), int(v.datum[5:7]), int(v.datum[8:10]))
+        && request.time < speeldag + duration.value(1, 'd');
+    }
+
+    function geldigeVoorstelling(v) {
+      return v is map
+        && v.keys().hasOnly(['titel', 'theaterId', 'theaterNaam', 'stad', 'datum', 'tijd'])
+        && v.keys().hasAll(['titel', 'theaterId', 'theaterNaam', 'stad', 'datum', 'tijd'])
+        && v.titel is string && v.titel.size() >= 1 && v.titel.size() <= 200
+        && v.theaterId is string && v.theaterId.size() <= 60
+        && v.theaterNaam is string && v.theaterNaam.size() <= 120
+        && v.stad is string && v.stad.size() <= 80
+        && (v.tijd == null || (v.tijd is string && v.tijd.matches('^[0-9]{2}:[0-9]{2}$')));
+    }
+
+    function geldigeGenodigden(lijst) {
+      return lijst is list && lijst.size() <= 10 && !(request.auth.uid in lijst);
+    }
+
+    // Een genodigde telt alleen mee met een lid-document: dat is bij het
+    // uitnodigen gecontroleerd op vriendschap en blokkades. Een uid die
+    // alleen in `genodigden` staat (aangepaste client), telt niet.
+    function isGenodigdeMetLid(planId, genodigden) {
+      return request.auth.uid in genodigden && exists(lidPad(planId, request.auth.uid));
+    }
+
+    match /plannen/{planId} {
+      allow get: if ingelogd()
+        && (resource.data.eigenaar == request.auth.uid || isGenodigdeMetLid(planId, resource.data.genodigden));
+      allow list: if false;
+
+      allow create: if ingelogd()
+        && request.resource.data.keys().hasOnly(['eigenaar', 'sleutel', 'sleutelV', 'voorstelling', 'speeldag', 'genodigden', 'opgeheven', 'aangemaaktOp', 'gewijzigdOp'])
+        && request.resource.data.keys().hasAll(['eigenaar', 'sleutel', 'sleutelV', 'voorstelling', 'speeldag', 'genodigden', 'opgeheven', 'aangemaaktOp', 'gewijzigdOp'])
+        && request.resource.data.eigenaar == request.auth.uid
+        && request.resource.data.sleutel is string && request.resource.data.sleutel.size() <= 400
+        && request.resource.data.sleutelV is int
+        && geldigeVoorstelling(request.resource.data.voorstelling)
+        && geldigeSpeeldag(request.resource.data.voorstelling, request.resource.data.speeldag)
+        && geldigeGenodigden(request.resource.data.genodigden)
+        && request.resource.data.opgeheven == false
+        && request.resource.data.aangemaaktOp == request.time
+        && request.resource.data.gewijzigdOp == request.time
+        && heeftProfiel(request.auth.uid)
+        // De organisator staat er zelf als lid in, in dezelfde batch.
+        && existsAfter(lidPad(planId, request.auth.uid))
+        && getAfter(lidPad(planId, request.auth.uid)).data.rol == 'organisator';
+
+      // Alleen de organisator: genodigden aanpassen of opheffen (eenmalig).
+      // Iemand toevoegen kan alleen zolang het plan loopt.
+      allow update: if ingelogd()
+        && resource.data.eigenaar == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['genodigden', 'opgeheven', 'gewijzigdOp'])
+        && request.resource.data.gewijzigdOp == request.time
+        && geldigeGenodigden(request.resource.data.genodigden)
+        && request.resource.data.opgeheven is bool
+        && (resource.data.opgeheven == false || request.resource.data.opgeheven == true)
+        && (request.resource.data.genodigden.toSet().difference(resource.data.genodigden.toSet()).size() == 0
+          || (resource.data.opgeheven == false
+            && request.resource.data.opgeheven == false
+            && request.time < resource.data.speeldag + duration.value(1, 'd')));
+      allow delete: if false;
+
+      match /leden/{uid} {
+        function plan() {
+          return get(planPad(planId)).data;
+        }
+        function planNa() {
+          return getAfter(planPad(planId)).data;
+        }
+
+        allow get, list: if ingelogd()
+          && (plan().eigenaar == request.auth.uid || isGenodigdeMetLid(planId, plan().genodigden));
+
+        allow create: if ingelogd()
+          && request.resource.data.keys().hasOnly(['uid', 'planId', 'rol', 'status', 'uitgenodigdDoor', 'uitgenodigdOp', 'kaarten'])
+          && request.resource.data.keys().hasAll(['uid', 'planId', 'rol', 'status', 'uitgenodigdDoor', 'uitgenodigdOp', 'kaarten'])
+          && request.resource.data.uid == uid
+          && request.resource.data.planId == planId
+          && request.resource.data.uitgenodigdDoor == request.auth.uid
+          && request.resource.data.uitgenodigdOp == request.time
+          && request.resource.data.kaarten is bool
+          && existsAfter(planPad(planId))
+          && planNa().eigenaar == request.auth.uid
+          && (
+            // De organisator zelf, samen met een nieuw plan.
+            (uid == request.auth.uid
+              && !exists(planPad(planId))
+              && request.resource.data.rol == 'organisator'
+              && request.resource.data.status == 'gaat')
+            ||
+            // Een vriend (in beide richtingen, zonder blokkade), die in
+            // dezelfde batch aan `genodigden` is toegevoegd.
+            (uid != request.auth.uid
+              && request.resource.data.rol == 'gast'
+              && request.resource.data.status == 'uitgenodigd'
+              && uid in planNa().genodigden
+              && planNa().opgeheven == false
+              && request.time < planNa().speeldag + duration.value(1, 'd')
+              && isVriendVan(uid, request.auth.uid)
+              && isVriendVan(request.auth.uid, uid)
+              && !geblokkeerdTussen(uid, request.auth.uid))
+          );
+
+        // Alleen je eigen document: kaarten, of je status (uitgenodigd → gaat
+        // of kan-niet; gaat → weg voor een gast). Meegaan alleen zolang het
+        // plan loopt.
+        allow update: if ingelogd()
+          && uid == request.auth.uid
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'reactieOp', 'kaarten'])
+          && request.resource.data.kaarten is bool
+          && (
+            // Alleen kaarten.
+            !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'reactieOp'])
+            ||
+            // Reageren: meegaan (zolang het plan loopt) of niet kunnen.
+            (resource.data.status == 'uitgenodigd'
+              && request.resource.data.status == 'gaat'
+              && request.resource.data.reactieOp == request.time
+              && plan().opgeheven == false
+              && request.time < plan().speeldag + duration.value(1, 'd'))
+            ||
+            (resource.data.status == 'uitgenodigd'
+              && request.resource.data.status == 'kan-niet'
+              && request.resource.data.reactieOp == request.time)
+            ||
+            // Een gast die meeging, gaat toch niet.
+            (resource.data.status == 'gaat'
+              && resource.data.rol == 'gast'
+              && request.resource.data.status == 'weg'
+              && request.resource.data.reactieOp == request.time)
+          );
+
+        // Intrekken: alleen de organisator, voor een gast die in dezelfde
+        // batch uit `genodigden` is gehaald.
+        allow delete: if ingelogd()
+          && plan().eigenaar == request.auth.uid
+          && uid != request.auth.uid
+          && !(uid in planNa().genodigden);
+      }
+    }
+
+    // Een bericht hoort bij een echte overgang in het plan, in dezelfde batch;
+    // behalve 'opgeheven': dat volgt per ontvanger na het opheffen (anders
+    // past het bij 10 gasten niet binnen de 20 document-controles per batch),
+    // met een vaste id zodat elke ontvanger er per plan hooguit één krijgt.
+    function berichtPastBijPlan(ontvanger, soort, planId, id) {
+      return (soort == 'uitnodiging'
+          && getAfter(planPad(planId)).data.eigenaar == request.auth.uid
+          && !exists(lidPad(planId, ontvanger))
+          && existsAfter(lidPad(planId, ontvanger))
+          && getAfter(lidPad(planId, ontvanger)).data.status == 'uitgenodigd')
+        || (soort == 'gaat-mee'
+          && get(planPad(planId)).data.eigenaar == ontvanger
+          && get(lidPad(planId, request.auth.uid)).data.status == 'uitgenodigd'
+          && getAfter(lidPad(planId, request.auth.uid)).data.status == 'gaat')
+        || (soort == 'kan-niet'
+          && get(planPad(planId)).data.eigenaar == ontvanger
+          && get(lidPad(planId, request.auth.uid)).data.status == 'uitgenodigd'
+          && getAfter(lidPad(planId, request.auth.uid)).data.status == 'kan-niet')
+        || (soort == 'weg'
+          && get(planPad(planId)).data.eigenaar == ontvanger
+          && get(lidPad(planId, request.auth.uid)).data.status == 'gaat'
+          && getAfter(lidPad(planId, request.auth.uid)).data.status == 'weg')
+        || (soort == 'opgeheven'
+          && id == 'opgeheven_' + planId
+          && get(planPad(planId)).data.eigenaar == request.auth.uid
+          && get(planPad(planId)).data.opgeheven == true
+          && ontvanger in get(planPad(planId)).data.genodigden
+          // Alleen een echte gast die nog meedoet (niet "kan niet" of "weg").
+          && exists(lidPad(planId, ontvanger))
+          && get(lidPad(planId, ontvanger)).data.status in ['uitgenodigd', 'gaat']);
+    }
+
+    match /inbox/{uid}/berichten/{id} {
+      // Alleen de ontvanger: lezen, gelezen zetten, weghalen.
+      allow get, list: if ingelogd() && request.auth.uid == uid;
+      allow update: if ingelogd()
+        && request.auth.uid == uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['gelezen'])
+        && request.resource.data.gelezen == true;
+      allow delete: if ingelogd() && request.auth.uid == uid;
+
+      allow create: if ingelogd()
+        && uid != request.auth.uid
+        && request.resource.data.keys().hasOnly(['soort', 'van', 'planId', 'aangemaaktOp', 'gelezen'])
+        && request.resource.data.keys().hasAll(['soort', 'van', 'planId', 'aangemaaktOp', 'gelezen'])
+        && request.resource.data.van == request.auth.uid
+        && request.resource.data.gelezen == false
+        && request.resource.data.aangemaaktOp == request.time
+        && request.resource.data.planId is string
+        && request.resource.data.soort in ['uitnodiging', 'gaat-mee', 'kan-niet', 'weg', 'opgeheven']
+        && !heeftGeblokkeerd(uid, request.auth.uid)
+        && berichtPastBijPlan(uid, request.resource.data.soort, request.resource.data.planId, id);
+    }
   }
 }
