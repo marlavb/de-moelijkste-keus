@@ -311,5 +311,71 @@ service cloud.firestore {
         && geldigeVolledigeNaam(request.resource.data.naam)
         && request.resource.data.sinds == request.time;
     }
+
+    // ---- Delen met vrienden (vrienden, stap 3, okt 2026) ----
+    // Zie public/js/gedeeld.js.
+    //   gedeeld/{uid}                      instelling { gezien, watchlist }
+    //   gedeeld/{uid}/onderdelen/{gezien|watchlist}  uitgeklede kopie
+    // Lezen: de eigenaar, en vrienden zolang het onderdeel gedeeld wordt
+    // (ook als de kopie er na het uitzetten nog zou staan). Schrijven: alleen
+    // de eigenaar, alleen een gedeeld onderdeel, en nooit een oudere stand
+    // over een nieuwere heen. De rules kunnen de items in de lijst niet één
+    // voor één controleren; de app maakt ze schoon bij schrijven en lezen.
+
+    function deeltMetVrienden(eigenaar, onderdeel) {
+      return exists(/databases/$(database)/documents/gedeeld/$(eigenaar))
+        && get(/databases/$(database)/documents/gedeeld/$(eigenaar)).data[onderdeel] == true;
+    }
+
+    function geldigeKopie(uid, onderdeel) {
+      return ingelogd()
+        && request.auth.uid == uid
+        && onderdeel in ['gezien', 'watchlist']
+        && existsAfter(/databases/$(database)/documents/gedeeld/$(uid))
+        && getAfter(/databases/$(database)/documents/gedeeld/$(uid)).data[onderdeel] == true
+        && request.resource.data.keys().hasOnly(['items', 'stand', 'nv', 'v', 'bijgewerktOp'])
+        && request.resource.data.keys().hasAll(['items', 'stand', 'nv', 'v', 'bijgewerktOp'])
+        && request.resource.data.items is list
+        && request.resource.data.items.size() <= 1000
+        && request.resource.data.stand is int
+        && request.resource.data.stand >= 0
+        && request.resource.data.nv is int
+        && request.resource.data.nv >= 1
+        && request.resource.data.v == 1
+        && request.resource.data.bijgewerktOp == request.time;
+    }
+
+    match /gedeeld/{uid} {
+      // Vrienden mogen de instelling zien (alleen twee ja/nee-velden), zodat
+      // de app "@naam deelt dit niet" kan tonen.
+      allow get: if ingelogd() && (request.auth.uid == uid || isVriendVan(uid, request.auth.uid));
+      allow list: if false;
+      allow create, update: if ingelogd()
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['gezien', 'watchlist', 'gewijzigdOp'])
+        && request.resource.data.keys().hasAll(['gezien', 'watchlist', 'gewijzigdOp'])
+        && request.resource.data.gezien is bool
+        && request.resource.data.watchlist is bool
+        && request.resource.data.gewijzigdOp == request.time;
+      // Weghalen (account verwijderen) alleen samen met de kopieën.
+      allow delete: if ingelogd()
+        && request.auth.uid == uid
+        && !existsAfter(/databases/$(database)/documents/gedeeld/$(uid)/onderdelen/gezien)
+        && !existsAfter(/databases/$(database)/documents/gedeeld/$(uid)/onderdelen/watchlist);
+
+      match /onderdelen/{onderdeel} {
+        allow get: if ingelogd()
+          && onderdeel in ['gezien', 'watchlist']
+          && (request.auth.uid == uid
+            || (isVriendVan(uid, request.auth.uid) && deeltMetVrienden(uid, onderdeel)));
+        allow list: if false;
+        allow delete: if ingelogd() && request.auth.uid == uid;
+        allow create: if geldigeKopie(uid, onderdeel);
+        // Nooit een oudere stand over een nieuwere (een tweede apparaat dat
+        // nog niet gesynchroniseerd is).
+        allow update: if geldigeKopie(uid, onderdeel)
+          && request.resource.data.stand >= resource.data.stand;
+      }
+    }
   }
 }
