@@ -217,6 +217,8 @@
           </div>
           <p class="plan-note" id="detailPlanChange" hidden></p>
           <p class="plan-note plan-note--warn" id="detailPlanConflict" role="note" hidden></p>
+          <!-- Gedeeld plan: met wie, uitnodigen, weggaan of opheffen (vrienden, stap 4) -->
+          <div class="plan-samen" id="detailPlanSamen" aria-live="polite" hidden></div>
         </div>
 
         <hr class="detail-divider" />
@@ -464,6 +466,26 @@
         <p class="vriend-item-oordeel" id="vriendItemOordeel" hidden></p>
         <p class="profile-note">Deze voorstelling staat nu niet in de agenda.</p>
       </div>
+    </section>
+
+    <!-- SCHERM: vrienden uitnodigen voor een geplande voorstelling (#/uitnodigen/<sleutel>) -->
+    <section class="screen" id="screen-uitnodigen" hidden>
+      <header class="app-header">
+        <div class="header-top header-top--terug">
+          <button class="icon-btn" type="button" id="uitnodigenBack" aria-label="Terug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="app-title">Vrienden uitnodigen</h1>
+            <p class="app-subtitle" id="uitnodigenSub"></p>
+          </div>
+        </div>
+      </header>
+      <main class="vrienden-scherm">
+        <div class="vrienden-blok" id="uitnodigenInhoud" aria-live="polite"></div>
+      </main>
     </section>
 
     <!-- SCHERM: wat vrienden zien (instelling delen, alleen ingelogd met profiel) -->
