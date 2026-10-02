@@ -696,6 +696,8 @@ function naGeschiedenis() {
 
 function route() {
   laatsteRoute = `${location.hash}|${history.state?.id ?? ''}`;
+  // Een open bevestiging (gedeeld plan) hoort bij het vorige scherm.
+  planBevestig = null;
   const hash = location.hash || '#/';
   closeSheet();
   routeNaar(hash);
@@ -1406,13 +1408,10 @@ function renderPlanControls(show) {
     deelKaarten(item, true);
   };
   // Bij een gedeeld plan: een gast meldt zich af, de organisator heft op.
-  els.detailUnplan.onclick = async () => {
-    const info = gedeeldPlan(item);
-    if (info) {
-      // De organisator heft op en haalt het daarna uit de eigen planning; een
-      // gast meldt zich af (verlaatGedeeldPlan haalt het item dan al weg).
-      const gelukt = await verlaatGedeeldPlan(item);
-      if (gelukt && isOrganisator(info)) wijzigPlanning(haalUitPlanning(state.gepland, item.sleutel), show);
+  // Bij een gedeeld plan eerst een bevestiging (zie bevestigPlan).
+  els.detailUnplan.onclick = () => {
+    if (gedeeldPlan(item)) {
+      vraagPlanBevestiging(item, 'uit');
       return;
     }
     wijzigPlanning(haalUitPlanning(state.gepland, item.sleutel), show);
@@ -2342,6 +2341,11 @@ function planSamenRij(item) {
   const rij = document.createElement('div');
   rij.className = 'plan-samen-rij';
   if (tekst) rij.appendChild(vriendenTekst('p', 'plan-samen-tekst', tekst));
+  const vraag = planBevestigBlok(item);
+  if (vraag) {
+    rij.appendChild(vraag);
+    return rij;
+  }
   const acties = document.createElement('div');
   acties.className = 'plan-samen-acties';
   if (magUitnodigen(item)) {
@@ -2352,7 +2356,7 @@ function planSamenRij(item) {
       })
     );
   } else if (info && !isOrganisator(info)) {
-    acties.appendChild(kleineKnop('Ik ga toch niet', { label: `Ik ga toch niet naar ${item.titel}`, onClick: () => verlaatGedeeldPlan(item) }));
+    acties.appendChild(kleineKnop('Ik ga toch niet', { label: `Ik ga toch niet naar ${item.titel}`, onClick: () => vraagPlanBevestiging(item, 'weg') }));
   }
   rij.appendChild(acties);
   return rij;
@@ -2371,14 +2375,91 @@ function renderPlanSamen(item) {
   const info = gedeeldPlan(item);
   const tekst = metWieTekst(item);
   if (tekst) box.appendChild(vriendenTekst('p', 'plan-samen-tekst', tekst));
+  const vraag = planBevestigBlok(item);
+  if (vraag) {
+    box.appendChild(vraag);
+    return;
+  }
   const acties = document.createElement('div');
   acties.className = 'plan-samen-acties';
   if (magUitnodigen(item)) {
     acties.appendChild(kleineKnop('Vrienden uitnodigen', { primair: true, onClick: () => navigate(`#/uitnodigen/${encodeURIComponent(item.sleutel)}`) }));
   }
-  if (info && isOrganisator(info)) acties.appendChild(kleineKnop('Plan opheffen', { onClick: () => verlaatGedeeldPlan(item) }));
-  if (info && !isOrganisator(info)) acties.appendChild(kleineKnop('Ik ga toch niet', { onClick: () => verlaatGedeeldPlan(item) }));
+  if (info && isOrganisator(info)) acties.appendChild(kleineKnop('Plan opheffen', { onClick: () => vraagPlanBevestiging(item, 'opheffen') }));
+  if (info && !isOrganisator(info)) acties.appendChild(kleineKnop('Ik ga toch niet', { onClick: () => vraagPlanBevestiging(item, 'weg') }));
   box.appendChild(acties);
+}
+
+// ---------- Bevestigen bij een gedeeld plan ----------
+
+// { sleutel, actie: 'opheffen' | 'weg' | 'uit' } zolang er een vraag openstaat.
+let planBevestig = null;
+
+// "@b", "@b en @c", "@b, @c en @d"
+function namenZin(namen) {
+  if (namen.length <= 1) return namen.join('');
+  return `${namen.slice(0, -1).join(', ')} en ${namen[namen.length - 1]}`;
+}
+
+function vraagPlanBevestiging(item, actie) {
+  planBevestig = { sleutel: item.sleutel, actie };
+  naPlanLaden();
+  document.querySelector('.plan-bevestig button')?.focus();
+}
+
+function annuleerPlanBevestiging() {
+  planBevestig = null;
+  naPlanLaden();
+}
+
+// De vraag met [bevestig] [Annuleren], of null als er niets gevraagd wordt.
+function planBevestigBlok(item) {
+  const info = gedeeldPlan(item);
+  if (!info || planBevestig?.sleutel !== item.sleutel) return null;
+  const ik = state.user.uid;
+  const organisator = isOrganisator(info);
+  // Wie een bericht krijgt: bij opheffen wie nog meegaat of uitgenodigd is,
+  // bij afmelden de organisator.
+  const ontvangers = organisator
+    ? info.leden.filter((l) => l.uid !== ik && ['gaat', 'uitgenodigd'].includes(l.status)).map((l) => naamNu(l.uid))
+    : [naamNu(info.plan.eigenaar)];
+  const bericht = ontvangers.length ? ` ${namenZin(ontvangers)} ${ontvangers.length === 1 ? 'krijgt' : 'krijgen'} hiervan een bericht.` : '';
+  const { actie } = planBevestig;
+  const vraag = organisator
+    ? actie === 'uit'
+      ? `Uit je planning halen? Het gedeelde plan wordt dan opgeheven.${bericht}`
+      : `Plan opheffen?${bericht}`
+    : `Toch niet meegaan?${bericht}`;
+  const knopTekst = organisator ? (actie === 'uit' ? 'Uit planning halen' : 'Opheffen') : 'Ik ga niet';
+  const box = document.createElement('div');
+  box.className = 'vriend-menu plan-bevestig';
+  box.setAttribute('role', 'group');
+  box.setAttribute('aria-label', 'Bevestigen');
+  box.append(
+    vriendenTekst('p', 'vriend-menu-vraag', vraag),
+    kleineKnop(knopTekst, { primair: true, onClick: () => bevestigPlan(item) }),
+    kleineKnop('Annuleren', { onClick: annuleerPlanBevestiging })
+  );
+  return box;
+}
+
+async function bevestigPlan(item) {
+  const info = gedeeldPlan(item);
+  const actie = planBevestig?.actie;
+  planBevestig = null;
+  if (!info) {
+    naPlanLaden();
+    return;
+  }
+  // De organisator heft op (en haalt het bij 'uit' daarna uit de eigen
+  // planning); een gast meldt zich af (verlaatGedeeldPlan haalt het item weg).
+  const gelukt = await verlaatGedeeldPlan(item);
+  if (gelukt && isOrganisator(info) && actie === 'uit') {
+    state.gepland = haalUitPlanning(state.gepland, item.sleutel);
+    saveGepland();
+    naPlanLaden();
+    renderAgenda();
+  }
 }
 
 // Een gast meldt zich af (item uit de eigen planning, bericht aan de

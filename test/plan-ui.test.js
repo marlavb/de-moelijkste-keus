@@ -200,6 +200,8 @@ test('gast: met wie, kaarten in het plan, en "Ik ga toch niet"', async () => {
   await even(page, 600);
 
   await page.click('#geplandList button[aria-label^="Ik ga toch niet"]');
+  assert.match(await tekst(page, '#geplandList .plan-bevestig'), /^Toch niet meegaan\? @Anna_V krijgt hiervan een bericht\./);
+  await page.click('#geplandList .plan-bevestig >> text="Ik ga niet"');
   await even(page, 500);
   assert.equal((await opslag(page, 'plannen/P1/leden/u2')).status, 'weg');
   assert.equal((await opslag(page, 'users/u2')).gepland.length, 0);
@@ -218,6 +220,8 @@ test('organisator heft het plan op: berichten aan de leden, eigen item blijft al
   const { ctx, page, fouten } = await openApp({ docs, hash: `#/show/${encodeURIComponent(show.id)}` });
   await even(page, 600);
   await page.click('#detailPlanSamen >> text=Plan opheffen');
+  assert.match(await tekst(page, '#detailPlanSamen .plan-bevestig'), /^Plan opheffen\? @bob en @carol krijgen hiervan een bericht\./);
+  await page.click('#detailPlanSamen .plan-bevestig >> text="Opheffen"');
   await even(page, 500);
   assert.equal((await opslag(page, 'plannen/P1')).opgeheven, true);
   assert.equal((await paden(page, 'inbox/u2/')).length, 1);
@@ -239,9 +243,61 @@ test('"Uit je planning halen" bij een gedeeld plan: organisator heft op en het i
   const { ctx, page, fouten } = await openApp({ docs, hash: `#/show/${encodeURIComponent(show.id)}` });
   await even(page, 600);
   await page.click('#detailUnplan');
+  assert.match(await tekst(page, '#detailPlanSamen .plan-bevestig'), /^Uit je planning halen\? Het gedeelde plan wordt dan opgeheven\. @bob krijgt hiervan een bericht\./);
+  await page.click('#detailPlanSamen .plan-bevestig >> text="Uit planning halen"');
   await even(page, 500);
   assert.equal((await opslag(page, 'plannen/P1')).opgeheven, true);
   assert.equal((await paden(page, 'inbox/u2/')).length, 1);
+  assert.equal((await opslag(page, 'users/u1')).gepland.length, 0);
+  assert.deepEqual(fouten, []);
+  await ctx.close();
+});
+
+test('Annuleren bij Plan opheffen, Uit je planning halen en Ik ga toch niet: er gebeurt niets, geen bericht', async () => {
+  const leden = [{ uid: 'u1', rol: 'organisator', status: 'gaat' }, { uid: 'u2', rol: 'gast', status: 'gaat' }];
+  // Organisator: opheffen en uit planning halen, allebei annuleren.
+  const docsA = { ...BASIS, ...gebruiker('u1', [{ ...item, planId: 'P1' }]), ...planDocs({ leden }) };
+  const a = await openApp({ docs: docsA, hash: `#/show/${encodeURIComponent(show.id)}` });
+  await even(a.page, 600);
+  for (const knop of ['#detailPlanSamen >> text=Plan opheffen', '#detailUnplan']) {
+    await a.page.click(knop);
+    assert.equal(await a.page.locator('#detailPlanSamen .plan-bevestig').count(), 1);
+    await a.page.click('#detailPlanSamen .plan-bevestig >> text="Annuleren"');
+    await even(a.page);
+    assert.equal(await a.page.locator('.plan-bevestig').count(), 0);
+  }
+  assert.equal((await opslag(a.page, 'plannen/P1')).opgeheven, false);
+  assert.equal((await opslag(a.page, 'users/u1')).gepland.length, 1);
+  assert.deepEqual(await paden(a.page, 'inbox/'), []);
+  assert.deepEqual(a.fouten, []);
+  await a.ctx.close();
+
+  // Gast: Ik ga toch niet, annuleren (in Gepland en in het detailscherm).
+  const docsB = { ...BASIS, 'profielen/u2': profiel('bob', 'Bob Jansen'), ...gebruiker('u2', [{ ...item, planId: 'P1' }]), ...planDocs({ leden }) };
+  const b = await openApp({ wie: BOB, docs: docsB });
+  await even(b.page, 400);
+  await b.page.click('#geplandList button[aria-label^="Ik ga toch niet"]');
+  await b.page.click('#geplandList .plan-bevestig >> text="Annuleren"');
+  await even(b.page);
+  await b.page.goto(`${base}#/show/${encodeURIComponent(show.id)}`);
+  await even(b.page, 600);
+  await b.page.click('#detailUnplan');
+  assert.match(await tekst(b.page, '#detailPlanSamen .plan-bevestig'), /Toch niet meegaan\?/);
+  await b.page.click('#detailPlanSamen .plan-bevestig >> text="Annuleren"');
+  await even(b.page);
+  assert.equal((await opslag(b.page, 'plannen/P1/leden/u2')).status, 'gaat');
+  assert.equal((await opslag(b.page, 'users/u2')).gepland.length, 1);
+  assert.deepEqual(await paden(b.page, 'inbox/'), []);
+  assert.deepEqual(b.fouten, []);
+  await b.ctx.close();
+});
+
+test('gewoon (niet gedeeld) plan: Uit je planning halen zonder bevestiging, zoals voorheen', async () => {
+  const { ctx, page, fouten } = await openApp({ hash: `#/show/${encodeURIComponent(show.id)}` });
+  await even(page, 400);
+  await page.click('#detailUnplan');
+  await even(page);
+  assert.equal(await page.locator('.plan-bevestig').count(), 0);
   assert.equal((await opslag(page, 'users/u1')).gepland.length, 0);
   assert.deepEqual(fouten, []);
   await ctx.close();
