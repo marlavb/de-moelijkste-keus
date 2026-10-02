@@ -122,8 +122,9 @@ service cloud.firestore {
     }
 
     match /profielen/{uid} {
-      // Stap 1: alleen de eigenaar. Vrienden komen in stap 2.
-      allow get: if ingelogd() && request.auth.uid == uid;
+      // De eigenaar en vrienden (stap 2). Er staan alleen gebruikersnaam en
+      // naam in; wie geen vriend is, ziet alleen wat usernames/{naam} geeft.
+      allow get: if ingelogd() && (request.auth.uid == uid || isVriendVan(uid, request.auth.uid));
       allow list: if false;
 
       // Nieuw profiel: aangemaaktOp is nu (servertijd).
@@ -145,6 +146,166 @@ service cloud.firestore {
       allow delete: if ingelogd()
         && request.auth.uid == uid
         && !naamBestaat(resource.data.gebruikersnaamLaag);
+    }
+
+    // ---- Vriendschappen (vrienden, stap 2, okt 2026) ----
+    // Zie public/js/vrienden.js.
+    //   vriendverzoeken/{van}_{naar}       openstaand verzoek
+    //   vrienden/{eigenaar}/lijst/{vriend}  één document per richting; altijd
+    //                                       samen aangemaakt (batch)
+    //   uitnodigingslinks/{token}           eenmalig, 7 dagen geldig
+    //   blokkades/{uid}/lijst/{ander}       alleen voor uid zelf zichtbaar
+    // Een vriendschap ontstaat alleen met toestemming van de ander: diens
+    // verzoek aan jou (dat in dezelfde batch verdwijnt) of diens geldige
+    // link (die in dezelfde batch verdwijnt).
+
+    // `eigenaar` heeft `lezer` als vriend.
+    function isVriendVan(eigenaar, lezer) {
+      return exists(/databases/$(database)/documents/vrienden/$(eigenaar)/lijst/$(lezer));
+    }
+
+    function heeftGeblokkeerd(wie, wien) {
+      return exists(/databases/$(database)/documents/blokkades/$(wie)/lijst/$(wien));
+    }
+
+    function geblokkeerdTussen(a, b) {
+      return heeftGeblokkeerd(a, b) || heeftGeblokkeerd(b, a);
+    }
+
+    function heeftProfiel(uid) {
+      return exists(/databases/$(database)/documents/profielen/$(uid));
+    }
+
+    function profielNu(uid) {
+      return get(/databases/$(database)/documents/profielen/$(uid)).data;
+    }
+
+    // 24 willekeurige bytes als base64url (192 bits).
+    function geldigToken(token) {
+      return token is string && token.matches('^[A-Za-z0-9_-]{32}$');
+    }
+
+    function linkPad(token) {
+      return /databases/$(database)/documents/uitnodigingslinks/$(token);
+    }
+
+    // Verzoek-id "van_naar"; Firebase-uids bevatten geen liggend streepje.
+    function betrokkenBijVerzoek(id) {
+      return ingelogd()
+        && id.split('_').size() == 2
+        && (id.split('_')[0] == request.auth.uid || id.split('_')[1] == request.auth.uid);
+    }
+
+    match /vriendverzoeken/{id} {
+      // Opvragen en weghalen (intrekken, weigeren, na accepteren, bij
+      // blokkeren) op id, ook als het verzoek niet (meer) bestaat.
+      allow get, delete: if betrokkenBijVerzoek(id);
+      // Lijsten: alleen je eigen inkomende of uitgaande verzoeken.
+      allow list: if ingelogd()
+        && (resource.data.van == request.auth.uid || resource.data.naar == request.auth.uid);
+      allow update: if false;
+
+      allow create: if ingelogd()
+        && request.resource.data.keys().hasOnly(['van', 'naar', 'vanGebruikersnaam', 'vanNaam', 'naarGebruikersnaam', 'naarNaam', 'aangemaaktOp'])
+        && request.resource.data.keys().hasAll(['van', 'naar', 'vanGebruikersnaam', 'vanNaam', 'naarGebruikersnaam', 'naarNaam', 'aangemaaktOp'])
+        && request.resource.data.van == request.auth.uid
+        && request.resource.data.naar is string
+        && request.resource.data.naar != request.auth.uid
+        && id == request.auth.uid + '_' + request.resource.data.naar
+        && request.resource.data.aangemaaktOp == request.time
+        // Afzender: gegevens uit het eigen profiel.
+        && heeftProfiel(request.auth.uid)
+        && request.resource.data.vanGebruikersnaam == profielNu(request.auth.uid).gebruikersnaam
+        && request.resource.data.vanNaam == profielNu(request.auth.uid).naam
+        // Ontvanger: gevonden op de exacte gebruikersnaam.
+        && request.resource.data.naarGebruikersnaam is string
+        && request.resource.data.naarGebruikersnaam.matches('^[A-Za-z0-9._]{3,20}$')
+        && exists(/databases/$(database)/documents/usernames/$(request.resource.data.naarGebruikersnaam.lower()))
+        && get(/databases/$(database)/documents/usernames/$(request.resource.data.naarGebruikersnaam.lower())).data.uid == request.resource.data.naar
+        && request.resource.data.naarNaam == get(/databases/$(database)/documents/usernames/$(request.resource.data.naarGebruikersnaam.lower())).data.naam
+        // Geen vrienden al, geen verzoek de andere kant op (dan accepteren),
+        // geen blokkade in een van beide richtingen.
+        && !isVriendVan(request.auth.uid, request.resource.data.naar)
+        && !exists(/databases/$(database)/documents/vriendverzoeken/$(request.resource.data.naar + '_' + request.auth.uid))
+        && !geblokkeerdTussen(request.auth.uid, request.resource.data.naar);
+    }
+
+    // `ander` gaf `ik` toestemming: een verzoek van ander aan ik, of een
+    // geldige link van ander. Dat verzoek of die link verdwijnt in dezelfde batch.
+    function toestemmingVan(ander, ik) {
+      return (request.resource.data.via == 'verzoek'
+          && !('token' in request.resource.data)
+          && exists(/databases/$(database)/documents/vriendverzoeken/$(ander + '_' + ik))
+          && !existsAfter(/databases/$(database)/documents/vriendverzoeken/$(ander + '_' + ik)))
+        || (request.resource.data.via == 'link'
+          && geldigToken(request.resource.data.token)
+          && exists(linkPad(request.resource.data.token))
+          && get(linkPad(request.resource.data.token)).data.uid == ander
+          && request.time < get(linkPad(request.resource.data.token)).data.aangemaaktOp + duration.value(7, 'd')
+          && !existsAfter(linkPad(request.resource.data.token)));
+    }
+
+    match /vrienden/{eigenaar}/lijst/{vriend} {
+      allow read: if ingelogd() && request.auth.uid == eigenaar;
+      allow update: if false;
+      // Verbreken (en blokkeren) mag elk van beiden, ook als het document al weg is.
+      allow delete: if ingelogd() && (request.auth.uid == eigenaar || request.auth.uid == vriend);
+
+      allow create: if ingelogd()
+        && eigenaar != vriend
+        && request.resource.data.keys().hasOnly(['uid', 'sinds', 'via', 'token'])
+        && request.resource.data.keys().hasAll(['uid', 'sinds', 'via'])
+        && request.resource.data.uid == vriend
+        && request.resource.data.sinds == request.time
+        && request.resource.data.via in ['verzoek', 'link']
+        && heeftProfiel(request.auth.uid)
+        // Beide richtingen in dezelfde batch.
+        && existsAfter(/databases/$(database)/documents/vrienden/$(vriend)/lijst/$(eigenaar))
+        && !geblokkeerdTussen(eigenaar, vriend)
+        && ((request.auth.uid == eigenaar && toestemmingVan(vriend, eigenaar))
+          || (request.auth.uid == vriend && toestemmingVan(eigenaar, vriend)));
+    }
+
+    match /uitnodigingslinks/{token} {
+      // Alleen het exacte token opvragen; een lijst alleen van je eigen links.
+      allow get: if ingelogd();
+      allow list: if ingelogd() && resource.data.uid == request.auth.uid;
+      allow update: if false;
+
+      allow create: if ingelogd()
+        && geldigToken(token)
+        && request.resource.data.keys().hasOnly(['uid', 'gebruikersnaam', 'naam', 'aangemaaktOp'])
+        && request.resource.data.keys().hasAll(['uid', 'gebruikersnaam', 'naam', 'aangemaaktOp'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.aangemaaktOp == request.time
+        && heeftProfiel(request.auth.uid)
+        && request.resource.data.gebruikersnaam == profielNu(request.auth.uid).gebruikersnaam
+        && request.resource.data.naam == profielNu(request.auth.uid).naam;
+
+      // Intrekken door de eigenaar, of gebruiken: wie in dezelfde batch via
+      // precies deze link vriend van de eigenaar wordt.
+      allow delete: if ingelogd()
+        && (resource.data.uid == request.auth.uid
+          || (existsAfter(/databases/$(database)/documents/vrienden/$(resource.data.uid)/lijst/$(request.auth.uid))
+            && getAfter(/databases/$(database)/documents/vrienden/$(resource.data.uid)/lijst/$(request.auth.uid)).data.get('token', '') == token));
+    }
+
+    match /blokkades/{uid}/lijst/{ander} {
+      // Alleen voor jezelf. Anderen kunnen een blokkade niet zien of weghalen
+      // (de rules hierboven gebruiken exists(), dat geen leesrecht vraagt).
+      allow read: if ingelogd() && request.auth.uid == uid;
+      allow update: if false;
+      allow delete: if ingelogd() && request.auth.uid == uid;
+      allow create: if ingelogd()
+        && request.auth.uid == uid
+        && ander != uid
+        && request.resource.data.keys().hasOnly(['uid', 'gebruikersnaam', 'naam', 'sinds'])
+        && request.resource.data.keys().hasAll(['uid', 'gebruikersnaam', 'naam', 'sinds'])
+        && request.resource.data.uid == ander
+        && request.resource.data.gebruikersnaam is string
+        && request.resource.data.gebruikersnaam.matches('^[A-Za-z0-9._]{3,20}$')
+        && geldigeVolledigeNaam(request.resource.data.naam)
+        && request.resource.data.sinds == request.time;
     }
   }
 }

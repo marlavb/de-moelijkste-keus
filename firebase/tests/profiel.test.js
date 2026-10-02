@@ -242,7 +242,7 @@ test('usernames en profielen: een lijst opvragen (list) wordt altijd geweigerd',
   await assertFails(getDocs(query(collection(db, 'profielen'), where('gebruikersnaamLaag', '==', 'alice'))));
 });
 
-test('profielen: alleen de eigenaar leest het eigen profiel (vrienden pas in stap 2)', async () => {
+test('profielen: de eigenaar leest het eigen profiel, een niet-vriend en uitgelogd niet (vrienden: vrienden.test.js)', async () => {
   await bewaar('alice', 'alice');
   await assertSucceeds(getDoc(doc(als(omgeving, 'alice'), 'profielen', 'alice')));
   await assertFails(getDoc(doc(als(omgeving, 'bob'), 'profielen', 'alice')));
