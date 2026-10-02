@@ -20,3 +20,6 @@ public/data/*
 firebase-debug*.log
 firestore-debug.log
 ui-debug.log
+
+# Nepgeheimen voor de Functions-emulator (worden door npm run test:functions aangemaakt).
+functions/.secret.local

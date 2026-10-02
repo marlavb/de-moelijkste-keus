@@ -1,0 +1,20 @@
+{
+  "name": "podiumagenda-functions",
+  "private": true,
+  "description": "Cloud Functions (2nd gen) voor Podiumagenda: uitnodigingsmail en facturering stoppen bij overschrijding van het budget.",
+  "type": "module",
+  "main": "index.js",
+  "engines": {
+    "node": "22"
+  },
+  "dependencies": {
+    "@google-cloud/billing": "^6.1.1",
+    "firebase-admin": "^14.5.0",
+    "firebase-functions": "^7.4.0",
+    "nodemailer": "^10.0.13"
+  },
+  "devDependencies": {
+    "mailparser": "^3.9.33",
+    "smtp-server": "^3.19.16"
+  }
+}
