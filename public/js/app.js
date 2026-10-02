@@ -734,7 +734,15 @@ function routeNaar(hash) {
 
   // Profiel van een vriend, en een voorstelling daaruit die niet in de agenda staat.
   if (hash.startsWith('#/vriend/')) {
-    const [uid, soort, onderdeel, sleutel] = hash.slice('#/vriend/'.length).split('/').map(decodeURIComponent);
+    let delen;
+    try {
+      delen = hash.slice('#/vriend/'.length).split('/').map(decodeURIComponent);
+    } catch {
+      // Kapotte link (bv. een losse %): naar Vrienden in plaats van een fout.
+      vervang('#/vrienden');
+      return;
+    }
+    const [uid, soort, onderdeel, sleutel] = delen;
     if (!els.screens.vriend || (state.authBekend && !state.user)) {
       vervang('#/profiel');
       return;

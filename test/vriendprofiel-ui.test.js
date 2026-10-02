@@ -222,3 +222,53 @@ test('offline: melding met Opnieuw', async () => {
   assert.deepEqual(fouten, []);
   await ctx.close();
 });
+
+test('alles uit de kopie van een vriend verschijnt als gewone tekst (geen HTML, geen script), ook in de URL', async () => {
+  const XSS = '<img src=x onerror=alert(1)>';
+  const VLAG = '<img src=x onerror="window.__xss=1">';
+  const SLEUTEL = '"><img src=x onerror="window.__xss=2">/../#/show/x?y=1';
+  const beginDocs = {
+    ...docs,
+    'profielen/u2': { ...docs['profielen/u2'], naam: '<b onmouseover="window.__xss=3">Bob</b>' },
+    'gedeeld/u2/onderdelen/gezien': kopie([
+      { sleutel: SLEUTEL, titel: XSS, maker: VLAG, genre: '<script>window.__xss=4</script>', beoordeling: 4, laatsteBezoek: '2026-09-01', aantal: 1 },
+    ]),
+    'gedeeld/u2/onderdelen/watchlist': kopie([{ sleutel: 'w', titel: VLAG, genre: XSS }]),
+  };
+  const { ctx, page, fouten } = await openApp({ beginDocs, hash: '#/vriend/u2' });
+  const dialogen = [];
+  page.on('dialog', (d) => {
+    dialogen.push(d.message());
+    d.dismiss();
+  });
+  await even(page, 500);
+  assert.equal(await tekst(page, '#vriendSub'), '<b onmouseover="window.__xss=3">Bob</b>');
+  assert.equal(await tekst(page, '#vriendInhoud section:nth-of-type(1) .vriend-titel-naam'), XSS);
+  assert.equal(await tekst(page, '#vriendInhoud section:nth-of-type(1) .vriend-titel-meta'), `${VLAG} · <script>window.__xss=4</script>`);
+  assert.equal(await tekst(page, '#vriendInhoud section:nth-of-type(2) .vriend-titel-naam'), VLAG);
+  assert.equal(await page.locator('#screen-vriend img, #screen-vriend script, #screen-vriend b').count(), 0);
+
+  // Doorklikken: de sleutel staat gecodeerd in de URL en komt er heel weer uit.
+  await page.click('#vriendInhoud section:nth-of-type(1) .vriend-titel-rij');
+  await even(page);
+  assert.equal(hash(page), `#/vriend/u2/titel/gezien/${encodeURIComponent(SLEUTEL)}`);
+  assert.equal(await tekst(page, '#vriendItemTitel'), XSS);
+  assert.equal(await tekst(page, '#vriendItemMaker'), VLAG);
+  assert.equal(await tekst(page, '#vriendItemGenre'), '<script>window.__xss=4</script>');
+  assert.equal(await page.locator('#screen-vrienditem img, #screen-vrienditem script').count(), 0);
+  await page.click('#vriendItemBack');
+  await even(page);
+  assert.equal(hash(page), '#/vriend/u2');
+
+  assert.equal(await page.evaluate(() => window.__xss ?? null), null);
+  assert.deepEqual(dialogen, []);
+  assert.deepEqual(fouten, []);
+  await ctx.close();
+});
+
+test('een kapotte vriend-link (losse %) geeft geen fout maar gaat naar Vrienden', async () => {
+  const { ctx, page, fouten } = await openApp({ hash: '#/vriend/%E0%A4%A' });
+  assert.equal(hash(page), '#/vrienden');
+  assert.deepEqual(fouten, []);
+  await ctx.close();
+});
