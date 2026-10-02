@@ -270,6 +270,48 @@ test('elk van beiden kan verbreken; een derde niet', async () => {
   assert.ok(await geenVriendschap('alice', 'bob'));
 });
 
+test('eenzijdig verbreken (één richting weghalen) wordt geweigerd, door beide partijen', async () => {
+  await vriendenMaken('alice', 'bob');
+  // Alice haalt alleen haar eigen kant weg: daarna zou Bob haar nog als vriend hebben.
+  await assertFails(deleteDoc(doc(db('alice'), 'vrienden', 'alice', 'lijst', 'bob')));
+  // Alice haalt alleen Bobs kant weg: daarna zou zij Bobs gegevens nog kunnen lezen.
+  await assertFails(deleteDoc(doc(db('alice'), 'vrienden', 'bob', 'lijst', 'alice')));
+  await assertFails(deleteDoc(doc(db('bob'), 'vrienden', 'bob', 'lijst', 'alice')));
+  await assertFails(deleteDoc(doc(db('bob'), 'vrienden', 'alice', 'lijst', 'bob')));
+  assert.ok(await zijnVrienden('alice', 'bob'));
+});
+
+test('beide richtingen samen weghalen mag (verbreek)', async () => {
+  await vriendenMaken('alice', 'bob');
+  const d = db('bob');
+  const b = writeBatch(d);
+  b.delete(doc(d, 'vrienden', 'alice', 'lijst', 'bob'));
+  b.delete(doc(d, 'vrienden', 'bob', 'lijst', 'alice'));
+  await assertSucceeds(b.commit());
+  assert.ok(await geenVriendschap('alice', 'bob'));
+});
+
+test('een halve vriendschap opruimen: beide samen mag, en de overgebleven kant alleen ook', async () => {
+  await zonderRules(omgeving, (d) => setDoc(doc(d, 'vrienden', 'bob', 'lijst', 'alice'), { uid: 'alice', sinds: new Date(), via: 'verzoek' }));
+  await assertSucceeds(verbreek({ db: db('alice'), fs, ik: 'alice', ander: 'bob' }));
+  assert.ok(await geenVriendschap('alice', 'bob'));
+  await zonderRules(omgeving, (d) => setDoc(doc(d, 'vrienden', 'bob', 'lijst', 'alice'), { uid: 'alice', sinds: new Date(), via: 'verzoek' }));
+  await assertSucceeds(deleteDoc(doc(db('alice'), 'vrienden', 'bob', 'lijst', 'alice')));
+});
+
+test('blokkeren bij een bestaande vriendschap, een halve, en zonder vriendschap: mag', async () => {
+  await vriendenMaken('alice', 'bob');
+  await assertSucceeds(blokkeer({ db: db('alice'), fs, ik: 'alice', ander: ALS('bob') }));
+  assert.ok(await geenVriendschap('alice', 'bob'));
+
+  await zonderRules(omgeving, (d) => setDoc(doc(d, 'vrienden', 'carol', 'lijst', 'alice'), { uid: 'alice', sinds: new Date(), via: 'verzoek' }));
+  await assertSucceeds(blokkeer({ db: db('alice'), fs, ik: 'alice', ander: ALS('carol') }));
+  assert.ok(await geenVriendschap('alice', 'carol'));
+
+  await assertSucceeds(blokkeer({ db: db('bob'), fs, ik: 'bob', ander: ALS('carol') }));
+  assert.ok(await bestaat('blokkades/bob/lijst/carol'));
+});
+
 test('vriendenlijsten: alleen je eigen', async () => {
   await vriendenMaken('alice', 'bob');
   await assertSucceeds(getDocs(collection(db('alice'), 'vrienden', 'alice', 'lijst')));

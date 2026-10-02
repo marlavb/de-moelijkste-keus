@@ -248,8 +248,12 @@ service cloud.firestore {
     match /vrienden/{eigenaar}/lijst/{vriend} {
       allow read: if ingelogd() && request.auth.uid == eigenaar;
       allow update: if false;
-      // Verbreken (en blokkeren) mag elk van beiden, ook als het document al weg is.
-      allow delete: if ingelogd() && (request.auth.uid == eigenaar || request.auth.uid == vriend);
+      // Verbreken (en blokkeren) mag elk van beiden, ook als het document al
+      // weg is, maar alleen samen met de andere richting (in dezelfde batch):
+      // niemand kan eenzijdig verbreken en daarna nog de gegevens van de ander lezen.
+      allow delete: if ingelogd()
+        && (request.auth.uid == eigenaar || request.auth.uid == vriend)
+        && !existsAfter(/databases/$(database)/documents/vrienden/$(vriend)/lijst/$(eigenaar));
 
       allow create: if ingelogd()
         && eigenaar != vriend
