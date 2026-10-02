@@ -319,6 +319,8 @@
       </header>
 
       <div class="profile-account" id="authBox"></div>
+      <!-- Tegels (alleen ingelogd met profiel): Vrienden; Berichten volgt. -->
+      <div class="profiel-tegels" id="profielTegels" hidden></div>
 
       <main class="profile-lists">
         <!-- Linkerkolom op desktop: vragen, planning en Gezien onder elkaar;
@@ -367,6 +369,53 @@
             </p>
           </div>
         </section>
+      </main>
+    </section>
+
+    <!-- SCHERM: vrienden (alleen ingelogd met profiel) -->
+    <section class="screen" id="screen-vrienden" hidden>
+      <header class="app-header">
+        <div class="header-top header-top--terug">
+          <button class="icon-btn" type="button" id="vriendenBack" aria-label="Terug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="app-title">Vrienden</h1>
+            <p class="app-subtitle">Voeg vrienden toe met hun gebruikersnaam of een uitnodigingslink.</p>
+          </div>
+        </div>
+      </header>
+
+      <main class="vrienden-scherm">
+        <section class="vrienden-blok" id="vriendToevoegen" aria-labelledby="vriendToevoegenKop">
+          <h2 class="vrienden-kop" id="vriendToevoegenKop">Vriend toevoegen</h2>
+          <form class="vriend-zoek" id="vriendZoekForm" novalidate>
+            <label class="veld-label" for="vriendZoekInput">Gebruikersnaam</label>
+            <div class="vriend-zoek-rij">
+              <div class="veld-invoer">
+                <span class="veld-voorvoegsel" aria-hidden="true">@</span>
+                <input
+                  class="veld-input"
+                  id="vriendZoekInput"
+                  type="text"
+                  autocomplete="off"
+                  autocapitalize="none"
+                  autocorrect="off"
+                  spellcheck="false"
+                  maxlength="21"
+                  aria-describedby="vriendZoekUitleg"
+                />
+              </div>
+              <button class="knop-klein knop-klein--primair" type="submit" id="vriendZoekKnop">Zoeken</button>
+            </div>
+            <p class="veld-uitleg" id="vriendZoekUitleg">Typ de gebruikersnaam precies zoals je vriend hem gekozen heeft.</p>
+          </form>
+          <div class="vriend-zoek-resultaat" id="vriendZoekResultaat" aria-live="polite"></div>
+        </section>
+
+        <div class="vrienden-inhoud" id="vriendenInhoud" aria-live="polite"></div>
       </main>
     </section>
 

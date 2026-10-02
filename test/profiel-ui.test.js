@@ -53,7 +53,8 @@ async function openApp({ gebruiker = null, docs = {}, hash = '#/profiel', offlin
   const fouten = [];
   page.on('pageerror', (e) => fouten.push(e.message));
   await page.goto(`${base}${hash}`);
-  await page.waitForSelector('.nav-item');
+  // 'attached': op sommige schermen (Vrienden, profiel instellen) is de onderbalk verborgen.
+  await page.waitForSelector('.nav-item', { state: 'attached' });
   await page.waitForTimeout(400);
   return { ctx, page, fouten };
 }

@@ -7,7 +7,14 @@ import {
   onAuthStateChanged,
   doc,
   getDoc,
+  getDocs,
   setDoc,
+  deleteDoc,
+  writeBatch,
+  collection,
+  query,
+  where,
+  getCountFromServer,
   runTransaction,
   serverTimestamp,
 } from './firebase.js';
@@ -20,6 +27,18 @@ import {
   ProfielFout,
   GEBRUIKERSNAAM_UITLEG,
 } from './profiel.js';
+import {
+  zoekGebruiker,
+  stuurVerzoek,
+  accepteer,
+  haalVerzoekWeg,
+  verbreek,
+  blokkeer,
+  deblokkeer,
+  laadVriendenScherm,
+  telInkomend,
+  VriendFout,
+} from './vrienden.js';
 import { getGenreBucket, getGenres, matchtGenreFilter } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
 import { weergaveTitel, makerStaatInTitel, isVervallen, VERVALLEN_LABELS } from './weergave.js';
@@ -252,6 +271,13 @@ const state = {
   profiel: undefined,
   profielFout: false,
   profielGevraagd: false,
+  // Vrienden (stap 2, zie vrienden.js): geladen bij het openen van het
+  // scherm, niet live. vrienden = { vrienden, inkomend, uitgaand,
+  // geblokkeerd, links } of null; vriendenStatus 'leeg' | 'laden' | 'klaar'
+  // | 'fout'; inkomendAantal voor de tegel in Profiel (null = onbekend).
+  vrienden: null,
+  vriendenStatus: 'leeg',
+  inkomendAantal: null,
 };
 
 const els = {
@@ -302,6 +328,7 @@ const els = {
     // Kan ontbreken bij een oudere index.html (zie showScreen).
     gezien: document.getElementById('screen-gezien'),
     profielInstellen: document.getElementById('screen-profiel-instellen'),
+    vrienden: document.getElementById('screen-vrienden'),
   },
   detailGezienBlok: document.getElementById('detailGezienBlok'),
   detailGezienBezoeken: document.getElementById('detailGezienBezoeken'),
@@ -375,6 +402,14 @@ const els = {
   profielStatus: document.getElementById('profielStatus'),
   profielOpslaan: document.getElementById('profielOpslaan'),
   profielLater: document.getElementById('profielLater'),
+  // Vrienden (stap 2). Kan ontbreken bij een oudere index.html.
+  profielTegels: document.getElementById('profielTegels'),
+  vriendenBack: document.getElementById('vriendenBack'),
+  vriendToevoegen: document.getElementById('vriendToevoegen'),
+  vriendZoekForm: document.getElementById('vriendZoekForm'),
+  vriendZoekInput: document.getElementById('vriendZoekInput'),
+  vriendZoekResultaat: document.getElementById('vriendZoekResultaat'),
+  vriendenInhoud: document.getElementById('vriendenInhoud'),
   feedbackForm: document.getElementById('feedbackForm'),
   feedbackInput: document.getElementById('feedbackInput'),
   feedbackSubmit: document.getElementById('feedbackSubmit'),
@@ -511,6 +546,8 @@ async function init() {
   els.profielLater?.addEventListener('click', () => terug('#/profiel'));
   els.profielOpnieuw?.addEventListener('click', opnieuwProfielLaden);
   els.profielForm?.addEventListener('submit', onProfielOpslaan);
+  els.vriendenBack?.addEventListener('click', () => terug('#/profiel'));
+  els.vriendZoekForm?.addEventListener('submit', onVriendZoeken);
   if (els.profielGebruikersnaamUitleg) els.profielGebruikersnaamUitleg.textContent = GEBRUIKERSNAAM_UITLEG;
   route();
 
@@ -642,10 +679,24 @@ function routeNaar(hash) {
     return;
   }
 
+  if (hash === '#/vrienden') {
+    if (!els.screens.vrienden || (state.authBekend && !state.user)) {
+      vervang('#/profiel');
+      return;
+    }
+    showScreen('vrienden');
+    vriendMenu = null;
+    vriendenMelding = null;
+    zetZoekResultaat(null);
+    laadVrienden();
+    return;
+  }
+
   if (hash === '#/profiel') {
     showScreen('profiel');
     renderProfielScreen();
     vraagProfielEenmalig();
+    vernieuwVriendenTeller();
     return;
   }
 
@@ -656,7 +707,7 @@ function showScreen(name) {
   for (const [key, el] of Object.entries(els.screens)) {
     if (el) el.hidden = key !== name;
   }
-  els.bottomNav.hidden = name === 'detail' || name === 'gezien' || name === 'profielInstellen';
+  els.bottomNav.hidden = ['detail', 'gezien', 'profielInstellen', 'vrienden'].includes(name);
   for (const btn of els.bottomNav.querySelectorAll('.nav-item')) {
     btn.classList.toggle('is-active', btn.dataset.tab === name);
   }
@@ -1659,6 +1710,9 @@ async function handleAuthChange(user) {
   state.profiel = undefined;
   state.profielFout = false;
   state.profielGevraagd = false;
+  state.vrienden = null;
+  state.vriendenStatus = 'leeg';
+  state.inkomendAantal = null;
 
   if (user) {
     const ref = userDocRef(user.uid);
@@ -1724,6 +1778,11 @@ async function handleAuthChange(user) {
     if (user) renderProfielInstellen();
     else vervang('#/profiel');
   }
+  if (hash === '#/vrienden') {
+    if (user) laadVrienden();
+    else vervang('#/profiel');
+  }
+  vernieuwVriendenTeller();
   if (hash.startsWith('#/show/')) {
     const id = decodeURIComponent(hash.slice('#/show/'.length));
     const show = state.shows.find((s) => s.id === id);
@@ -1736,7 +1795,20 @@ async function handleAuthChange(user) {
 
 // ---------- Profiel: gebruikersnaam en naam (zie profiel.js) ----------
 
-const firestoreFns = { doc, getDoc, runTransaction, serverTimestamp };
+const firestoreFns = {
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  deleteDoc,
+  writeBatch,
+  collection,
+  query,
+  where,
+  getCountFromServer,
+  runTransaction,
+  serverTimestamp,
+};
 
 // Opslaan wacht hooguit zo lang; daarna een melding (offline blijft een
 // transactie anders lang hangen). Lukt het later alsnog, dan is de naam van
@@ -1765,8 +1837,10 @@ async function opnieuwProfielLaden() {
   renderProfielInstellen();
   await laadEigenProfiel();
   renderAuthBox();
+  renderProfielTegels();
   profielFormulierGevuld = false;
   renderProfielInstellen();
+  vernieuwVriendenTeller();
 }
 
 // Na inloggen zonder profiel één keer het scherm "Kies je gebruikersnaam",
@@ -1845,6 +1919,7 @@ async function onProfielOpslaan(e) {
     state.profiel = { ...(state.profiel ?? {}), ...profiel };
     state.profielFout = false;
     renderAuthBox();
+    renderProfielTegels();
     terug('#/profiel');
   } catch (err) {
     if (err instanceof ProfielFout && err.code === 'bezet') {
@@ -1896,6 +1971,458 @@ function renderProfielRegel() {
   }
   regel.append(tekst, knop);
   return regel;
+}
+
+// ---------- Vrienden (zie vrienden.js) ----------
+
+// Alleen ingelogd én met profiel: zonder gebruikersnaam kun je niet gevonden
+// worden en geven de rules geen verzoek of link.
+const magVrienden = () => Boolean(state.user && state.profiel);
+
+const VRIENDEN_ICOON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" />
+  <circle cx="17" cy="9" r="2.5" /><path d="M16.5 14.2c2.9.2 5 2.3 5 5.3" />
+</svg>`;
+const CHEVRON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18" /></svg>';
+const MEER_ICOON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="19" cy="12" r="2" /></svg>';
+
+const VERBINDING_FOUT = 'Dat lukte niet. Controleer je verbinding en probeer het opnieuw.';
+
+// Aantal openstaande verzoeken voor de tegel (1 read), bij het openen van
+// Profiel en na inloggen.
+async function vernieuwVriendenTeller() {
+  if (!magVrienden()) return;
+  const user = state.user;
+  try {
+    const n = await telInkomend({ db, fs: firestoreFns, ik: user.uid });
+    if (state.user !== user) return;
+    state.inkomendAantal = n;
+  } catch (err) {
+    if (state.user !== user) return;
+    console.error('Kon het aantal vriendschapsverzoeken niet ophalen:', err);
+    state.inkomendAantal = null;
+  }
+  renderProfielTegels();
+}
+
+function renderProfielTegels() {
+  const box = els.profielTegels;
+  if (!box) return;
+  box.innerHTML = '';
+  box.hidden = !magVrienden() || !els.screens.vrienden;
+  if (box.hidden) return;
+
+  const n = state.inkomendAantal ?? 0;
+  const tegel = document.createElement('button');
+  tegel.type = 'button';
+  tegel.className = 'profiel-tegel';
+  tegel.id = 'vriendenTegel';
+  const icoon = document.createElement('span');
+  icoon.className = 'profiel-tegel-icoon';
+  icoon.innerHTML = VRIENDEN_ICOON;
+  icoon.firstElementChild.setAttribute('aria-hidden', 'true');
+  if (n > 0) {
+    const badge = document.createElement('span');
+    badge.className = 'badge';
+    badge.setAttribute('aria-hidden', 'true');
+    badge.textContent = n > 99 ? '99+' : String(n);
+    icoon.appendChild(badge);
+  }
+  const tekst = document.createElement('span');
+  tekst.className = 'profiel-tegel-tekst';
+  const titel = document.createElement('span');
+  titel.className = 'profiel-tegel-titel';
+  titel.textContent = 'Vrienden';
+  const sub = document.createElement('span');
+  sub.className = 'profiel-tegel-sub';
+  sub.textContent = n > 0 ? `${n} ${n === 1 ? 'nieuw verzoek' : 'nieuwe verzoeken'}` : 'Toevoegen, verzoeken en je uitnodigingslink';
+  tekst.append(titel, sub);
+  const pijl = document.createElement('span');
+  pijl.className = 'profiel-tegel-pijl';
+  pijl.innerHTML = CHEVRON;
+  tegel.append(icoon, tekst, pijl);
+  tegel.addEventListener('click', () => navigate('#/vrienden'));
+  box.appendChild(tegel);
+}
+
+// Een geopend menu bij een rij: { uid, soort: 'vriend'|'verzoek', bevestig: null|'verbreek'|'blokkeer' }.
+let vriendMenu = null;
+// Laatste melding bovenaan de lijsten na een actie: { tekst, soort: 'succes'|'fout' }.
+let vriendenMelding = null;
+let vriendenLaadId = 0;
+
+async function laadVrienden() {
+  if (!magVrienden()) {
+    renderVriendenScherm();
+    return;
+  }
+  const id = ++vriendenLaadId;
+  const user = state.user;
+  state.vriendenStatus = 'laden';
+  renderVriendenScherm();
+  try {
+    const data = await laadVriendenScherm({ db, fs: firestoreFns, ik: user.uid });
+    if (id !== vriendenLaadId || state.user !== user) return;
+    state.vrienden = data;
+    state.vriendenStatus = 'klaar';
+    state.inkomendAantal = data.inkomend.length;
+  } catch (err) {
+    if (id !== vriendenLaadId || state.user !== user) return;
+    console.error('Kon de vrienden niet laden:', err);
+    state.vriendenStatus = 'fout';
+  }
+  renderVriendenScherm();
+  renderProfielTegels();
+}
+
+function vriendenTekst(tag, className, tekst) {
+  const el = document.createElement(tag);
+  el.className = className;
+  el.textContent = tekst;
+  return el;
+}
+
+function kleineKnop(tekst, { primair = false, label = null, onClick }) {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'knop-klein' + (primair ? ' knop-klein--primair' : '');
+  b.textContent = tekst;
+  if (label) b.setAttribute('aria-label', label);
+  b.addEventListener('click', onClick);
+  return b;
+}
+
+// "@naam · Volledige naam"
+function persoonTekst(persoon) {
+  const p = document.createElement('p');
+  p.className = 'vriend-rij-tekst';
+  if (persoon.onbekend) {
+    p.textContent = 'Onbekende gebruiker';
+    return p;
+  }
+  p.append(vriendenTekst('span', 'vriend-naam', `@${persoon.gebruikersnaam}`), document.createTextNode(` · ${persoon.naam}`));
+  return p;
+}
+
+// Een actie uitvoeren (knoppen in het scherm even uit), daarna opnieuw laden.
+async function vriendActie(fn, succesTekst) {
+  const user = state.user;
+  for (const b of els.vriendenInhoud.querySelectorAll('button')) b.disabled = true;
+  try {
+    await fn();
+    vriendenMelding = succesTekst ? { tekst: succesTekst, soort: 'succes' } : null;
+  } catch (err) {
+    console.error('Vriendactie mislukt:', err);
+    vriendenMelding = { tekst: err instanceof VriendFout ? err.message : VERBINDING_FOUT, soort: 'fout' };
+  }
+  if (state.user !== user) return;
+  vriendMenu = null;
+  await laadVrienden();
+}
+
+function vriendRij(persoon, acties, menu = null) {
+  const wrap = document.createElement('div');
+  wrap.className = 'vriend-item';
+  const rij = document.createElement('div');
+  rij.className = 'vriend-rij';
+  const knoppen = document.createElement('div');
+  knoppen.className = 'vriend-rij-acties';
+  knoppen.append(...acties);
+  if (menu) {
+    const open = vriendMenu?.uid === persoon.uid && vriendMenu?.soort === menu.soort;
+    const meer = document.createElement('button');
+    meer.type = 'button';
+    meer.className = 'icon-btn icon-btn--plat';
+    meer.innerHTML = MEER_ICOON;
+    meer.setAttribute('aria-label', `Opties voor @${persoon.gebruikersnaam ?? 'onbekend'}`);
+    meer.setAttribute('aria-expanded', String(open));
+    meer.addEventListener('click', () => {
+      vriendMenu = open ? null : { uid: persoon.uid, soort: menu.soort, bevestig: null };
+      renderVriendenScherm();
+      document.querySelector('.vriend-menu button')?.focus();
+    });
+    knoppen.appendChild(meer);
+    rij.append(persoonTekst(persoon), knoppen);
+    wrap.appendChild(rij);
+    if (open) wrap.appendChild(renderVriendMenu(persoon, menu));
+    return wrap;
+  }
+  rij.append(persoonTekst(persoon), knoppen);
+  wrap.appendChild(rij);
+  return wrap;
+}
+
+// Menu onder een rij: eerst de keuzes, dan een bevestiging.
+function renderVriendMenu(persoon, menu) {
+  const box = document.createElement('div');
+  box.className = 'vriend-menu';
+  const naam = `@${persoon.gebruikersnaam}`;
+  const ik = state.user.uid;
+  const annuleer = kleineKnop('Annuleren', {
+    onClick: () => {
+      vriendMenu = null;
+      renderVriendenScherm();
+    },
+  });
+  if (vriendMenu.bevestig === 'verbreek') {
+    box.append(
+      vriendenTekst('p', 'vriend-menu-vraag', `Vriendschap met ${naam} verbreken? ${naam} krijgt daar geen melding van.`),
+      kleineKnop('Ja, verbreken', {
+        primair: true,
+        onClick: () => vriendActie(() => verbreek({ db, fs: firestoreFns, ik, ander: persoon.uid }), `Je bent geen vrienden meer met ${naam}.`),
+      }),
+      annuleer
+    );
+    return box;
+  }
+  if (vriendMenu.bevestig === 'blokkeer') {
+    box.append(
+      vriendenTekst(
+        'p',
+        'vriend-menu-vraag',
+        `${naam} blokkeren? Jullie zijn dan geen vrienden meer en ${naam} kan je geen verzoek meer sturen of je link gebruiken. ${naam} krijgt daar geen melding van.`
+      ),
+      kleineKnop('Ja, blokkeren', {
+        primair: true,
+        onClick: () => vriendActie(() => blokkeer({ db, fs: firestoreFns, ik, ander: persoon }), `${naam} is geblokkeerd.`),
+      }),
+      annuleer
+    );
+    return box;
+  }
+  const kies = (bevestig) => () => {
+    vriendMenu = { ...vriendMenu, bevestig };
+    renderVriendenScherm();
+    document.querySelector('.vriend-menu button')?.focus();
+  };
+  if (menu.soort === 'vriend') box.appendChild(kleineKnop('Vriendschap verbreken', { onClick: kies('verbreek') }));
+  box.append(kleineKnop('Blokkeren', { onClick: kies('blokkeer') }), annuleer);
+  return box;
+}
+
+function vriendenSectie(titel, items, leegTekst = null) {
+  const sectie = document.createElement('section');
+  sectie.className = 'vrienden-blok';
+  sectie.append(vriendenTekst('h2', 'vrienden-kop', titel));
+  if (items.length === 0 && leegTekst) sectie.appendChild(vriendenTekst('p', 'vrienden-leeg', leegTekst));
+  sectie.append(...items);
+  return sectie;
+}
+
+function vriendenFoutBlok(tekst, opnieuw) {
+  const box = document.createElement('div');
+  box.className = 'profiel-laadfout';
+  box.setAttribute('role', 'alert');
+  box.append(vriendenTekst('p', '', tekst));
+  const knop = document.createElement('button');
+  knop.type = 'button';
+  knop.className = 'btn-secondary';
+  knop.textContent = 'Opnieuw proberen';
+  knop.addEventListener('click', opnieuw);
+  box.appendChild(knop);
+  return box;
+}
+
+function renderVriendenScherm() {
+  if (!els.screens.vrienden || els.screens.vrienden.hidden) return;
+  const inhoud = els.vriendenInhoud;
+  inhoud.innerHTML = '';
+  els.vriendToevoegen.hidden = !magVrienden();
+
+  if (!state.authBekend || (state.user && state.profiel === undefined && !state.profielFout)) {
+    inhoud.appendChild(vriendenTekst('p', 'profiel-melding', 'Laden…'));
+    return;
+  }
+  if (state.profielFout) {
+    inhoud.appendChild(
+      vriendenFoutBlok('Je profiel kon niet worden geladen. Controleer je verbinding en probeer het opnieuw.', async () => {
+        await opnieuwProfielLaden();
+        laadVrienden();
+      })
+    );
+    return;
+  }
+  if (!state.profiel) {
+    const box = document.createElement('div');
+    box.className = 'vrienden-blok';
+    box.append(vriendenTekst('p', 'vrienden-leeg', 'Kies eerst een gebruikersnaam. Daarmee kunnen vrienden je vinden.'));
+    const knop = document.createElement('button');
+    knop.type = 'button';
+    knop.className = 'btn-secondary';
+    knop.textContent = 'Gebruikersnaam kiezen';
+    knop.addEventListener('click', () => navigate('#/profiel/instellen'));
+    box.appendChild(knop);
+    inhoud.appendChild(box);
+    return;
+  }
+  const data = state.vrienden;
+  if (!data) {
+    inhoud.appendChild(
+      state.vriendenStatus === 'fout'
+        ? vriendenFoutBlok('Je vrienden konden niet worden geladen. Controleer je verbinding en probeer het opnieuw.', laadVrienden)
+        : vriendenTekst('p', 'profiel-melding', 'Je vrienden worden geladen…')
+    );
+    return;
+  }
+
+  const melding = vriendenMelding ?? (state.vriendenStatus === 'fout' ? { tekst: 'Bijwerken lukte niet; dit is de laatst geladen stand.', soort: 'fout' } : null);
+  if (melding) {
+    const p = vriendenTekst('p', `vrienden-melding vrienden-melding--${melding.soort}`, melding.tekst);
+    p.setAttribute('role', melding.soort === 'fout' ? 'alert' : 'status');
+    inhoud.appendChild(p);
+  }
+
+  const ik = state.user.uid;
+  if (data.inkomend.length) {
+    inhoud.appendChild(
+      vriendenSectie(
+        'Verzoeken voor jou',
+        data.inkomend.map((p) =>
+          vriendRij(
+            p,
+            [
+              kleineKnop('Accepteren', {
+                primair: true,
+                label: `Verzoek van @${p.gebruikersnaam} accepteren`,
+                onClick: () => vriendActie(() => accepteer({ db, fs: firestoreFns, ik, van: p.uid }), `Je bent nu vrienden met @${p.gebruikersnaam}.`),
+              }),
+              kleineKnop('Weigeren', {
+                label: `Verzoek van @${p.gebruikersnaam} weigeren`,
+                onClick: () => vriendActie(() => haalVerzoekWeg({ db, fs: firestoreFns, van: p.uid, naar: ik }), null),
+              }),
+            ],
+            { soort: 'verzoek' }
+          )
+        )
+      )
+    );
+  }
+  if (data.uitgaand.length) {
+    inhoud.appendChild(
+      vriendenSectie(
+        'Verstuurd',
+        data.uitgaand.map((p) =>
+          vriendRij(p, [
+            kleineKnop('Intrekken', {
+              label: `Verzoek aan @${p.gebruikersnaam} intrekken`,
+              onClick: () => vriendActie(() => haalVerzoekWeg({ db, fs: firestoreFns, van: ik, naar: p.uid }), null),
+            }),
+          ])
+        )
+      )
+    );
+  }
+  inhoud.appendChild(
+    vriendenSectie(
+      'Vrienden',
+      data.vrienden.map((p) => vriendRij(p, [], { soort: 'vriend' })),
+      'Nog geen vrienden. Voeg iemand toe met de gebruikersnaam, of deel je uitnodigingslink.'
+    )
+  );
+  if (data.geblokkeerd.length) {
+    inhoud.appendChild(
+      vriendenSectie(
+        'Geblokkeerd',
+        data.geblokkeerd.map((p) =>
+          vriendRij(p, [
+            kleineKnop('Deblokkeren', {
+              label: `@${p.gebruikersnaam} deblokkeren`,
+              onClick: () => vriendActie(() => deblokkeer({ db, fs: firestoreFns, ik, ander: p.uid }), `@${p.gebruikersnaam} is niet meer geblokkeerd.`),
+            }),
+          ])
+        )
+      )
+    );
+  }
+}
+
+// ---------- Vriend zoeken op exacte gebruikersnaam ----------
+
+function zetZoekResultaat(inhoud) {
+  if (!els.vriendZoekResultaat) return;
+  els.vriendZoekResultaat.innerHTML = '';
+  if (inhoud) els.vriendZoekResultaat.appendChild(inhoud);
+}
+
+function zoekMelding(tekst, soort = 'info') {
+  const p = vriendenTekst('p', `vrienden-melding vrienden-melding--${soort}`, tekst);
+  if (soort === 'fout') p.setAttribute('role', 'alert');
+  return p;
+}
+
+async function onVriendZoeken(e) {
+  e.preventDefault();
+  if (!magVrienden()) return;
+  const user = state.user;
+  zetZoekResultaat(zoekMelding('Zoeken…'));
+  let gevonden;
+  try {
+    gevonden = await zoekGebruiker({ db, fs: firestoreFns, invoer: els.vriendZoekInput.value });
+  } catch (err) {
+    if (state.user !== user) return;
+    if (!(err instanceof VriendFout)) console.error('Zoeken mislukt:', err);
+    zetZoekResultaat(zoekMelding(err instanceof VriendFout ? err.message : VERBINDING_FOUT, 'fout'));
+    return;
+  }
+  if (state.user !== user) return;
+  if (!gevonden) {
+    zetZoekResultaat(zoekMelding('Niemand gevonden met deze gebruikersnaam.'));
+    return;
+  }
+  if (gevonden.uid === user.uid) {
+    zetZoekResultaat(zoekMelding('Dat ben je zelf.'));
+    return;
+  }
+  const data = state.vrienden;
+  const kaart = document.createElement('div');
+  kaart.className = 'vriend-rij vriend-rij--kaart';
+  const acties = document.createElement('div');
+  acties.className = 'vriend-rij-acties';
+  if (data?.vrienden.some((v) => v.uid === gevonden.uid)) {
+    acties.appendChild(vriendenTekst('span', 'vriend-status', 'Al vrienden'));
+  } else if (data?.uitgaand.some((v) => v.uid === gevonden.uid)) {
+    acties.appendChild(vriendenTekst('span', 'vriend-status', 'Verzoek verstuurd'));
+  } else if (data?.inkomend.some((v) => v.uid === gevonden.uid)) {
+    // stuurVerzoek accepteert dan het bestaande verzoek.
+    acties.append(
+      vriendenTekst('span', 'vriend-status', 'Heeft jou een verzoek gestuurd'),
+      kleineKnop('Accepteren', {
+        primair: true,
+        label: `Verzoek van @${gevonden.gebruikersnaam} accepteren`,
+        onClick: (ev) => onVerzoekSturen(gevonden, ev.currentTarget),
+      })
+    );
+  } else {
+    acties.appendChild(
+      kleineKnop('Verzoek sturen', {
+        primair: true,
+        label: `Vriendschapsverzoek sturen aan @${gevonden.gebruikersnaam}`,
+        onClick: (ev) => onVerzoekSturen(gevonden, ev.currentTarget),
+      })
+    );
+  }
+  kaart.append(persoonTekst(gevonden), acties);
+  zetZoekResultaat(kaart);
+}
+
+async function onVerzoekSturen(gevonden, knop) {
+  const user = state.user;
+  knop.disabled = true;
+  const naam = `@${gevonden.gebruikersnaam}`;
+  try {
+    const uitkomst = await stuurVerzoek({ db, fs: firestoreFns, ik: user.uid, mijnProfiel: state.profiel, ander: gevonden });
+    if (state.user !== user) return;
+    zetZoekResultaat(
+      zoekMelding(uitkomst === 'vrienden' ? `Jullie zijn nu vrienden: ${naam} had jou al een verzoek gestuurd.` : `Verzoek verstuurd aan ${naam}.`, 'succes')
+    );
+    els.vriendZoekInput.value = '';
+  } catch (err) {
+    if (state.user !== user) return;
+    if (!(err instanceof VriendFout)) console.error('Verzoek sturen mislukt:', err);
+    zetZoekResultaat(zoekMelding(err instanceof VriendFout ? err.message : VERBINDING_FOUT, 'fout'));
+  }
+  vriendenMelding = null;
+  laadVrienden();
 }
 
 async function handleSignIn() {
@@ -3380,6 +3907,7 @@ function renderWatchlistItem(production) {
 }
 
 function renderProfielScreen() {
+  renderProfielTegels();
   renderVragen();
   renderGeplandList();
   renderGezienList();

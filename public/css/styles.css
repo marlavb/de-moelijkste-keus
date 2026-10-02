@@ -1700,6 +1700,256 @@ a {
   gap: 10px;
 }
 
+/* Tegels in Profiel (vrienden, stap 2): op --surface, zodat
+   --control-border en de iconen hun contrast halen. */
+.profiel-tegels {
+  display: grid;
+  gap: 8px;
+  padding: 0 20px 4px;
+}
+
+.profiel-tegel {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 64px;
+  padding: 10px 12px 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.profiel-tegel-icoon {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--tint);
+  color: var(--primary);
+}
+
+/* Ring in --surface: de bol (--accent) haalt tegen --tint maar 2,65:1,
+   tegen de ring 3,34:1. */
+.profiel-tegel-icoon .badge {
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+.profiel-tegel-icoon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.profiel-tegel-tekst {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profiel-tegel-titel {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.profiel-tegel-sub {
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.profiel-tegel-pijl svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  color: var(--text-2);
+}
+
+/* Vrienden-scherm */
+.vrienden-scherm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0 20px 32px;
+  max-width: 640px;
+}
+
+.vrienden-inhoud {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.vrienden-blok {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+}
+
+.vrienden-kop {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: var(--kop-gewicht);
+  color: var(--primary);
+}
+
+.vrienden-leeg {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-2);
+}
+
+.vriend-zoek {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.vriend-zoek-rij {
+  display: flex;
+  gap: 8px;
+}
+
+.vriend-zoek-rij .veld-invoer {
+  flex: 1;
+  min-width: 0;
+}
+
+.vriend-zoek-resultaat:empty {
+  display: none;
+}
+
+.vrienden-melding {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-2);
+}
+
+.vrienden-melding--succes {
+  color: var(--success-text);
+  font-weight: 600;
+}
+
+.vrienden-melding--fout {
+  color: var(--error-text);
+  font-weight: 600;
+}
+
+.vriend-item + .vriend-item {
+  border-top: 1px solid var(--divider);
+}
+
+/* Passen de knoppen niet naast de naam, dan gaan ze eronder. */
+.vriend-rij {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 4px 0;
+}
+
+.vriend-rij--kaart {
+  padding: 4px 4px 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.vriend-rij-tekst {
+  flex: 1 1 150px;
+  min-width: 0;
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}
+
+.vriend-naam {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.vriend-rij-acties {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.vriend-status {
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.vriend-menu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  /* --surface: daar haalt de knoprand (--control-border) 3,24:1; op
+     --segment-bg zou dat 2,75:1 zijn. */
+  background: var(--surface);
+}
+
+.vriend-menu-vraag {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* Kleine knop, tikvlak 44 px. */
+.knop-klein {
+  min-height: var(--touch);
+  padding: 0 14px;
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.knop-klein--primair {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.knop-klein:disabled {
+  border-color: var(--soldout-bg);
+  background: var(--soldout-bg);
+  color: var(--text-2);
+  cursor: progress;
+}
+
+/* Icoonknop zonder rand (bv. ⋯ in een rij); 44 × 44 via .icon-btn. */
+.icon-btn--plat {
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-2);
+}
+
 .btn-primary:disabled {
   opacity: 1;
   background: var(--soldout-bg);

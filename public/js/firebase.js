@@ -12,7 +12,14 @@ import {
   getFirestore,
   doc,
   getDoc,
+  getDocs,
   setDoc,
+  deleteDoc,
+  writeBatch,
+  collection,
+  query,
+  where,
+  getCountFromServer,
   runTransaction,
   serverTimestamp,
 } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js';
@@ -36,4 +43,20 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 
-export { signInWithPopup, signOut, onAuthStateChanged, doc, getDoc, setDoc, runTransaction, serverTimestamp };
+export {
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  deleteDoc,
+  writeBatch,
+  collection,
+  query,
+  where,
+  getCountFromServer,
+  runTransaction,
+  serverTimestamp,
+};
