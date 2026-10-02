@@ -1,4 +1,4 @@
-const CACHE_NAME = 'podiumagenda-v29';
+const CACHE_NAME = 'podiumagenda-v32';
 const APP_SHELL = [
   './',
   './index.html',
@@ -11,6 +11,9 @@ const APP_SHELL = [
   './js/watchlist.js',
   './js/gepland.js',
   './js/gezien.js',
+  './js/profiel.js',
+  './js/vrienden.js',
+  './js/gedeeld.js',
   './js/sterren.js',
   './js/titelMapping.js',
   './js/weergave.js',
@@ -25,7 +28,7 @@ const APP_SHELL = [
 // Alles onder js/ en css/ telt automatisch mee, zodat een nieuwe module
 // (zoals genre.js/productions.js, die hier eerder ontbraken) niet vergeten
 // kan worden.
-const NETWORK_FIRST_PATHS = ['/', '/index.html', '/manifest.json', '/data/shows.json', '/data/scrape-status.json', '/data/theaters.json', '/bot.html'];
+const NETWORK_FIRST_PATHS = ['/', '/index.html', '/manifest.json', '/data/shows.json', '/data/scrape-status.json', '/data/theaters.json', '/bot.html', '/privacy.html'];
 const NETWORK_FIRST_DIRS = ['/js/', '/css/'];
 
 self.addEventListener('install', (event) => {

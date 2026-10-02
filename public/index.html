@@ -319,6 +319,8 @@
       </header>
 
       <div class="profile-account" id="authBox"></div>
+      <!-- Tegels (alleen ingelogd met profiel): Vrienden; Berichten volgt. -->
+      <div class="profiel-tegels" id="profielTegels" hidden></div>
 
       <main class="profile-lists">
         <!-- Linkerkolom op desktop: vragen, planning en Gezien onder elkaar;
@@ -367,6 +369,206 @@
             </p>
           </div>
         </section>
+      </main>
+      <p class="bot-link profiel-privacy"><a href="privacy.html">Privacy: wat we opslaan en wie wat ziet</a></p>
+    </section>
+
+    <!-- SCHERM: vrienden (alleen ingelogd met profiel) -->
+    <section class="screen" id="screen-vrienden" hidden>
+      <header class="app-header">
+        <div class="header-top header-top--terug">
+          <button class="icon-btn" type="button" id="vriendenBack" aria-label="Terug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="app-title">Vrienden</h1>
+            <p class="app-subtitle">Voeg vrienden toe met hun gebruikersnaam of een uitnodigingslink.</p>
+          </div>
+        </div>
+      </header>
+
+      <main class="vrienden-scherm">
+        <section class="vrienden-blok" id="vriendToevoegen" aria-labelledby="vriendToevoegenKop">
+          <h2 class="vrienden-kop" id="vriendToevoegenKop">Vriend toevoegen</h2>
+          <form class="vriend-zoek" id="vriendZoekForm" novalidate>
+            <label class="veld-label" for="vriendZoekInput">Gebruikersnaam</label>
+            <div class="vriend-zoek-rij">
+              <div class="veld-invoer">
+                <span class="veld-voorvoegsel" aria-hidden="true">@</span>
+                <input
+                  class="veld-input"
+                  id="vriendZoekInput"
+                  type="text"
+                  autocomplete="off"
+                  autocapitalize="none"
+                  autocorrect="off"
+                  spellcheck="false"
+                  maxlength="21"
+                  aria-describedby="vriendZoekUitleg"
+                />
+              </div>
+              <button class="knop-klein knop-klein--primair" type="submit" id="vriendZoekKnop">Zoeken</button>
+            </div>
+            <p class="veld-uitleg" id="vriendZoekUitleg">Typ de gebruikersnaam precies zoals je vriend hem gekozen heeft.</p>
+          </form>
+          <div class="vriend-zoek-resultaat" id="vriendZoekResultaat" aria-live="polite"></div>
+        </section>
+
+        <section class="vrienden-blok" id="vriendLinkBlok" aria-labelledby="vriendLinkKop">
+          <h2 class="vrienden-kop" id="vriendLinkKop">Uitnodigingslink</h2>
+          <p class="vrienden-leeg">Wie de link opent en inlogt, wordt meteen je vriend. Een link werkt één keer en is 7 dagen geldig.</p>
+          <button class="btn-secondary" type="button" id="vriendLinkMaak">Deel uitnodigingslink</button>
+          <div class="vriend-link-resultaat" id="vriendLinkResultaat" aria-live="polite"></div>
+          <div id="vriendLinkLijst"></div>
+        </section>
+
+        <div class="vrienden-inhoud" id="vriendenInhoud" aria-live="polite"></div>
+      </main>
+    </section>
+
+    <!-- SCHERM: profiel van een vriend (#/vriend/<uid>) -->
+    <section class="screen" id="screen-vriend" hidden>
+      <header class="app-header">
+        <div class="header-top header-top--terug">
+          <button class="icon-btn" type="button" id="vriendBack" aria-label="Terug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="app-title" id="vriendTitel">Vriend</h1>
+            <p class="app-subtitle" id="vriendSub"></p>
+          </div>
+        </div>
+      </header>
+      <main class="vrienden-scherm vriend-profiel" id="vriendInhoud" aria-live="polite"></main>
+    </section>
+
+    <!-- SCHERM: voorstelling van een vriend die niet (meer) in de agenda staat -->
+    <section class="screen" id="screen-vrienditem" hidden>
+      <div class="detail-body">
+        <div class="detail-banner">
+          <div class="detail-banner-top">
+            <button class="icon-btn icon-btn--floating" type="button" id="vriendItemBack" aria-label="Terug">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 6 9 12 15 18" />
+              </svg>
+            </button>
+          </div>
+          <span class="detail-genre-tag" id="vriendItemGenre"></span>
+          <h1 class="detail-title" id="vriendItemTitel"></h1>
+          <p class="detail-maker" id="vriendItemMaker" hidden></p>
+        </div>
+        <p class="vriend-item-oordeel" id="vriendItemOordeel" hidden></p>
+        <p class="profile-note">Deze voorstelling staat nu niet in de agenda.</p>
+      </div>
+    </section>
+
+    <!-- SCHERM: wat vrienden zien (instelling delen, alleen ingelogd met profiel) -->
+    <section class="screen" id="screen-delen" hidden>
+      <header class="app-header">
+        <div class="header-top header-top--terug">
+          <button class="icon-btn" type="button" id="delenBack" aria-label="Terug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="app-title">Wat vrienden zien</h1>
+            <p class="app-subtitle">Kies wat je vrienden van je lijsten zien.</p>
+          </div>
+        </div>
+      </header>
+      <main class="vrienden-scherm">
+        <div class="vrienden-blok" id="delenInhoud" aria-live="polite"></div>
+      </main>
+    </section>
+
+    <!-- SCHERM: een geopende uitnodigingslink (#/vriend-link/<token>) -->
+    <section class="screen" id="screen-vriendlink" hidden>
+      <header class="app-header">
+        <div class="header-top header-top--terug">
+          <button class="icon-btn" type="button" id="vriendLinkBack" aria-label="Terug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="app-title">Uitnodiging</h1>
+            <p class="app-subtitle">Vrienden worden op Podiumagenda</p>
+          </div>
+        </div>
+      </header>
+      <main class="vrienden-scherm">
+        <div class="vrienden-blok" id="vriendLinkInhoud" aria-live="polite"></div>
+      </main>
+    </section>
+
+    <!-- SCHERM: gebruikersnaam en naam kiezen of wijzigen (alleen ingelogd) -->
+    <section class="screen" id="screen-profiel-instellen" hidden>
+      <header class="app-header">
+        <div class="header-top header-top--terug">
+          <button class="icon-btn" type="button" id="profielInstellenBack" aria-label="Terug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="app-title" id="profielInstellenTitel">Kies je gebruikersnaam</h1>
+            <p class="app-subtitle" id="profielInstellenSub"></p>
+          </div>
+        </div>
+      </header>
+
+      <main class="profiel-instellen">
+        <p class="profiel-melding" id="profielInstellenLaden" role="status">Je profiel wordt geladen…</p>
+        <div class="profiel-laadfout" id="profielInstellenLaadFout" role="alert" hidden>
+          <p>Je profiel kon niet worden geladen. Controleer je verbinding en probeer het opnieuw.</p>
+          <button class="btn-secondary" type="button" id="profielInstellenOpnieuw">Opnieuw proberen</button>
+        </div>
+        <form class="profiel-form" id="profielForm" novalidate hidden>
+          <div class="veld">
+            <label class="veld-label" for="profielGebruikersnaam">Gebruikersnaam</label>
+            <div class="veld-invoer">
+              <span class="veld-voorvoegsel" aria-hidden="true">@</span>
+              <input
+                class="veld-input"
+                id="profielGebruikersnaam"
+                type="text"
+                autocomplete="username"
+                autocapitalize="none"
+                autocorrect="off"
+                spellcheck="false"
+                maxlength="21"
+                aria-describedby="profielGebruikersnaamUitleg profielGebruikersnaamFout"
+              />
+            </div>
+            <p class="veld-uitleg" id="profielGebruikersnaamUitleg"></p>
+            <p class="veld-fout" id="profielGebruikersnaamFout" hidden></p>
+          </div>
+          <div class="veld">
+            <label class="veld-label" for="profielNaam">Volledige naam</label>
+            <div class="veld-invoer">
+              <input
+                class="veld-input"
+                id="profielNaam"
+                type="text"
+                autocomplete="name"
+                maxlength="60"
+                aria-describedby="profielNaamUitleg profielNaamFout"
+              />
+            </div>
+            <p class="veld-uitleg" id="profielNaamUitleg">Vrienden zien deze naam, en wie je gebruikersnaam precies intypt ook.</p>
+            <p class="veld-fout" id="profielNaamFout" hidden></p>
+          </div>
+          <p class="profiel-status" id="profielStatus" role="alert" hidden></p>
+          <div class="profiel-knoppen">
+            <button class="btn-primary" type="submit" id="profielOpslaan">Opslaan</button>
+            <button class="btn-secondary" type="button" id="profielLater" hidden>Later</button>
+          </div>
+        </form>
       </main>
     </section>
 

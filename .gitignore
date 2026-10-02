@@ -15,3 +15,8 @@ public/data/*
 !public/data/shows.json
 !public/data/scrape-status.json
 !public/data/theaters.json
+
+# Logbestanden van de Firebase-emulator (npm run test:rules).
+firebase-debug*.log
+firestore-debug.log
+ui-debug.log

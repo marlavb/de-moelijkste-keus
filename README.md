@@ -107,7 +107,28 @@ de [Firebase Console](https://console.firebase.google.com/):
    database** → kies een locatie → start in *production mode* (de rules
    hieronder regelen de toegang).
 3. **Firestore Database → Rules** → plak de inhoud van `firestore.rules` →
-   **Publish**.
+   **Publish**, of rol ze uit met de CLI (zie hieronder).
+
+### Rules testen en uitrollen
+
+Het Firebase-gereedschap (CLI, emulator, `@firebase/rules-unit-testing`)
+staat in een eigen map `firebase/` met een eigen `package.json`, zodat
+`npm ci` en `npm test` (ook in de nachtelijke workflow) er niet zwaarder van
+worden. Eenmalig:
+
+```sh
+npm --prefix firebase ci
+brew install openjdk@21   # de Firestore-emulator draait op Java 21+
+```
+
+- `npm run test:rules` start de Firestore-emulator (project
+  `demo-podiumagenda`, nooit het echte project) en draait
+  `firebase/tests/*.test.js` tegen `firestore.rules`.
+- Uitrollen (pas na groene rules-tests, en vóór de app-code die de nieuwe
+  rules nodig heeft): `npm run firebase -- login` en daarna
+  `npm run firebase -- deploy --only firestore:rules`. `firebase.json` en
+  `.firebaserc` in de root wijzen naar `firestore.rules` en het project
+  `de-moeilijkste-keus`.
 
 Ga je de app op een ander domein hosten dan `marlavb.github.io`, voeg dat
 domein dan ook toe bij **Authentication → Settings → Authorized domains**
