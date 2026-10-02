@@ -1853,6 +1853,12 @@ a {
   color: var(--text-2);
 }
 
+.vrienden-leeg a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
 .vriend-zoek {
   display: flex;
   flex-direction: column;

@@ -28,7 +28,7 @@ const APP_SHELL = [
 // Alles onder js/ en css/ telt automatisch mee, zodat een nieuwe module
 // (zoals genre.js/productions.js, die hier eerder ontbraken) niet vergeten
 // kan worden.
-const NETWORK_FIRST_PATHS = ['/', '/index.html', '/manifest.json', '/data/shows.json', '/data/scrape-status.json', '/data/theaters.json', '/bot.html'];
+const NETWORK_FIRST_PATHS = ['/', '/index.html', '/manifest.json', '/data/shows.json', '/data/scrape-status.json', '/data/theaters.json', '/bot.html', '/privacy.html'];
 const NETWORK_FIRST_DIRS = ['/js/', '/css/'];
 
 self.addEventListener('install', (event) => {

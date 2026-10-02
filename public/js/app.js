@@ -2334,7 +2334,12 @@ function renderDelenScherm() {
     rij.append(label, schakelaar);
     box.appendChild(rij);
   }
-  box.appendChild(vriendenTekst('p', 'vrienden-leeg', 'Je planning (Gepland) zien vrienden niet. Wie geen vriend is, ziet niets.'));
+  const uitleg = vriendenTekst('p', 'vrienden-leeg', 'Je planning (Gepland) zien vrienden niet. Wie geen vriend is, ziet niets. ');
+  const privacy = document.createElement('a');
+  privacy.href = 'privacy.html';
+  privacy.textContent = 'Meer over privacy';
+  uitleg.appendChild(privacy);
+  box.appendChild(uitleg);
   if (eerste) {
     box.appendChild(vriendenTekst('p', 'vrienden-leeg', 'Er wordt nog niets gedeeld tot je opslaat.'));
     const opslaan = document.createElement('button');
