@@ -716,6 +716,9 @@ function routeNaar(hash) {
     if (show) {
       showScreen('detail');
       renderDetail(show);
+      // Een gedeeld plan vers laden: anderen kunnen intussen gereageerd hebben.
+      const plan = planVoor(show);
+      if (plan?.item.planId && magVrienden()) laadPlanInfo(plan.item.planId, { opnieuw: true }).then(() => naPlanLaden());
       return;
     }
     // Onbekend id (bv. verouderde link) -> terug naar de agenda i.p.v. een lege pagina.
@@ -879,7 +882,9 @@ function routeNaar(hash) {
     renderProfielScreen();
     vraagProfielEenmalig();
     vernieuwVriendenTeller();
-    laadEigenPlannen();
+    // Elke keer vers: reacties van anderen ("kan niet", kaarten) zie je dan
+    // als je terugkomt op Profiel.
+    laadEigenPlannen({ opnieuw: true });
     return;
   }
 
@@ -2584,6 +2589,8 @@ function renderBerichtenTegel() {
   return tegel;
 }
 
+const BERICHTEN_TIMEOUT_MS = 12000;
+
 // { status: 'leeg'|'laden'|'klaar'|'fout', lijst, nieuw (ids die bij het
 // openen ongelezen waren), melding }
 let berichtenStand = { status: 'leeg', lijst: [], nieuw: new Set(), melding: null };
@@ -2596,11 +2603,18 @@ async function openBerichten() {
   berichtenStand = { ...berichtenStand, status: 'laden' };
   renderBerichten();
   try {
-    let lijst = await laadBerichten({ db, fs: firestoreFns, ik: user.uid });
-    lijst = await ruimBerichtenOp({ db, fs: firestoreFns, ik: user.uid, berichten: lijst });
-    await Promise.all([
-      ...[...new Set(lijst.map((b) => b.planId))].map((id) => laadPlanInfo(id, { opnieuw: true })),
-      ...[...new Set(lijst.map((b) => b.van))].map((uid) => naamVan(uid)),
+    // Offline wacht Firestore soms lang; na BERICHTEN_TIMEOUT_MS een melding.
+    const lijst = await Promise.race([
+      (async () => {
+        let l = await laadBerichten({ db, fs: firestoreFns, ik: user.uid });
+        l = await ruimBerichtenOp({ db, fs: firestoreFns, ik: user.uid, berichten: l });
+        await Promise.all([
+          ...[...new Set(l.map((b) => b.planId))].map((id) => laadPlanInfo(id, { opnieuw: true })),
+          ...[...new Set(l.map((b) => b.van))].map((uid) => naamVan(uid)),
+        ]);
+        return l;
+      })(),
+      new Promise((_, weiger) => setTimeout(() => weiger(new Error('timeout')), BERICHTEN_TIMEOUT_MS)),
     ]);
     if (state.user !== user) return;
     const nieuw = new Set(lijst.filter((b) => !b.gelezen).map((b) => b.id));
@@ -2765,8 +2779,13 @@ async function openUitnodigen(sleutel) {
   renderUitnodigen();
   if (!magVrienden()) return;
   const item = state.gepland?.gepland.find((i) => i.sleutel === sleutel);
-  const laden = [];
-  if (!state.vrienden) laden.push(laadVrienden());
+  // De vriendenlijst altijd opnieuw, en de oude niet tonen ("Laden…"): wie
+  // sinds het vorige laden vriend werd (bv. via jouw link), moet erin staan,
+  // en wie geen vriend meer is (verbroken, geblokkeerd) niet.
+  state.vrienden = null;
+  state.vriendenStatus = 'leeg';
+  renderUitnodigen();
+  const laden = [laadVrienden()];
   if (item?.planId) laden.push(laadPlanInfo(item.planId, { opnieuw: true }));
   await Promise.all(laden);
   renderUitnodigen();
