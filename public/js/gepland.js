@@ -109,11 +109,17 @@ export function zetStatus(profiel, sleutel, status, now = Date.now()) {
   return voegGeplandSamen(profiel, { gepland: [{ ...item, status, gewijzigdOp: now }], geplandVerwijderd: [] });
 }
 
-/** Koppelt een gepland item aan een gedeeld plan (een handeling: nieuwe gewijzigdOp). */
+/**
+ * Koppelt een gepland item aan een gedeeld plan (een handeling: nieuwe
+ * gewijzigdOp). Altijd later dan de vorige handeling, ook als die in
+ * dezelfde milliseconde was (planIn direct gevolgd door koppelPlan):
+ * anders wint bij samenvoegen het item zonder planId.
+ */
 export function koppelPlan(profiel, sleutel, planId, now = Date.now()) {
   const item = profiel.gepland.find((i) => i.sleutel === sleutel);
   if (!item || item.planId === planId) return profiel;
-  return voegGeplandSamen(profiel, { gepland: [{ ...item, planId, gewijzigdOp: now }], geplandVerwijderd: [] });
+  const gewijzigdOp = Math.max(now, (item.gewijzigdOp ?? 0) + 1);
+  return voegGeplandSamen(profiel, { gepland: [{ ...item, planId, gewijzigdOp }], geplandVerwijderd: [] });
 }
 
 /**

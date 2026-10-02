@@ -2154,6 +2154,109 @@ a {
   margin-right: 4px;
 }
 
+/* Berichten (stap 4b) */
+.berichten-lijst {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bericht {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+}
+
+/* Nieuw: een balk en het woord "Nieuw" (niet alleen kleur). */
+.bericht--nieuw {
+  border-left: 4px solid var(--primary);
+  padding-left: 13px;
+}
+
+.bericht-nieuw {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.bericht-tekst {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.bericht-titel {
+  display: inline;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.bericht-titel--tekst {
+  text-decoration: none;
+  color: var(--text);
+}
+
+.bericht-meta {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.bericht-stand {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.bericht-stand--gaat {
+  color: var(--success-text);
+}
+
+.bericht-acties {
+  justify-content: flex-start;
+  margin-left: 0;
+}
+
+/* Teller op de Profiel-tab: rechts boven het icoon, met een ring in
+   --surface (de onderbalk) zodat de bol overal 3:1 haalt. */
+.nav-item {
+  position: relative;
+}
+
+.nav-badge {
+  position: absolute;
+  top: 2px;
+  left: calc(50% + 4px);
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 0 0 2px var(--surface);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
 /* Kleine knop, tikvlak 44 px. */
 .knop-klein {
   min-height: var(--touch);

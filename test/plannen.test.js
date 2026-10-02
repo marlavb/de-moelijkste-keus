@@ -94,6 +94,13 @@ test('planId: koppelPlan is een handeling (nieuwe gewijzigdOp)', () => {
   assert.equal(p.gepland[0].gewijzigdOp, 5);
 });
 
+test('planId: direct na planIn in dezelfde milliseconde gekoppeld, blijft staan', () => {
+  const p = planIn(legeGepland(), SHOW, 7);
+  const k = koppelPlan(p, p.gepland[0].sleutel, 'P1', 7);
+  assert.equal(k.gepland[0].planId, 'P1');
+  assert.equal(k.gepland[0].gewijzigdOp, 8);
+});
+
 test('planId blijft staan bij samenvoegen, status wisselen en laden met de agenda', () => {
   let p = planIn(legeGepland(), SHOW, 1);
   const sleutel = p.gepland[0].sleutel;

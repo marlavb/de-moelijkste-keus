@@ -468,6 +468,26 @@
       </div>
     </section>
 
+    <!-- SCHERM: berichten (uitnodigingen en reacties; vrienden, stap 4) -->
+    <section class="screen" id="screen-berichten" hidden>
+      <header class="app-header">
+        <div class="header-top header-top--terug">
+          <button class="icon-btn" type="button" id="berichtenBack" aria-label="Terug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="app-title">Berichten</h1>
+            <p class="app-subtitle">Uitnodigingen en reacties van vrienden</p>
+          </div>
+        </div>
+      </header>
+      <main class="vrienden-scherm">
+        <div class="berichten-lijst" id="berichtenInhoud" aria-live="polite"></div>
+      </main>
+    </section>
+
     <!-- SCHERM: vrienden uitnodigen voor een geplande voorstelling (#/uitnodigen/<sleutel>) -->
     <section class="screen" id="screen-uitnodigen" hidden>
       <header class="app-header">
@@ -674,6 +694,7 @@
           <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" />
         </svg>
         <span>Profiel</span>
+        <span class="nav-badge" id="profielBadge" aria-hidden="true" hidden></span>
       </button>
     </nav>
   </div>

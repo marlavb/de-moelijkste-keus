@@ -77,6 +77,7 @@ import {
   komendePlannen,
   koppelPlan,
   zetMetWie,
+  geplandSleutel,
 } from './gepland.js';
 import {
   MAX_GENODIGDEN,
@@ -90,6 +91,10 @@ import {
   laadPlan,
   metWie,
   metWieRegels,
+  laadBerichten,
+  markeerGelezen,
+  ruimBerichtenOp,
+  uitnodigingStand,
 } from './plannen.js';
 import {
   laadGezien,
@@ -322,6 +327,8 @@ const state = {
   // { gezien, watchlist }. delenFout: laden mislukt.
   delen: undefined,
   delenFout: false,
+  // Berichten (stap 4b): aantal ongelezen (live, de enige listener), null = onbekend.
+  ongelezen: null,
 };
 
 const els = {
@@ -378,6 +385,7 @@ const els = {
     vriend: document.getElementById('screen-vriend'),
     vriendItem: document.getElementById('screen-vrienditem'),
     uitnodigen: document.getElementById('screen-uitnodigen'),
+    berichten: document.getElementById('screen-berichten'),
   },
   detailGezienBlok: document.getElementById('detailGezienBlok'),
   detailGezienBezoeken: document.getElementById('detailGezienBezoeken'),
@@ -481,6 +489,9 @@ const els = {
   uitnodigenBack: document.getElementById('uitnodigenBack'),
   uitnodigenSub: document.getElementById('uitnodigenSub'),
   uitnodigenInhoud: document.getElementById('uitnodigenInhoud'),
+  berichtenBack: document.getElementById('berichtenBack'),
+  berichtenInhoud: document.getElementById('berichtenInhoud'),
+  profielBadge: document.getElementById('profielBadge'),
   feedbackForm: document.getElementById('feedbackForm'),
   feedbackInput: document.getElementById('feedbackInput'),
   feedbackSubmit: document.getElementById('feedbackSubmit'),
@@ -625,6 +636,7 @@ async function init() {
   els.vriendBack?.addEventListener('click', () => terug('#/vrienden'));
   els.vriendItemBack?.addEventListener('click', () => terug(vriendItemTerug));
   els.uitnodigenBack?.addEventListener('click', () => terug('#/profiel'));
+  els.berichtenBack?.addEventListener('click', () => terug('#/profiel'));
   if (els.profielGebruikersnaamUitleg) els.profielGebruikersnaamUitleg.textContent = GEBRUIKERSNAAM_UITLEG;
   route();
 
@@ -786,6 +798,16 @@ function routeNaar(hash) {
     return;
   }
 
+  if (hash === '#/berichten') {
+    if (!els.screens.berichten || (state.authBekend && !state.user)) {
+      vervang('#/profiel');
+      return;
+    }
+    showScreen('berichten');
+    openBerichten();
+    return;
+  }
+
   // Vrienden uitnodigen voor een eigen geplande voorstelling.
   if (hash.startsWith('#/uitnodigen/')) {
     let sleutel;
@@ -865,7 +887,7 @@ function showScreen(name) {
   for (const [key, el] of Object.entries(els.screens)) {
     if (el) el.hidden = key !== name;
   }
-  els.bottomNav.hidden = ['detail', 'gezien', 'profielInstellen', 'vrienden', 'vriendLink', 'delen', 'vriend', 'vriendItem', 'uitnodigen'].includes(name);
+  els.bottomNav.hidden = ['detail', 'gezien', 'profielInstellen', 'vrienden', 'vriendLink', 'delen', 'vriend', 'vriendItem', 'uitnodigen', 'berichten'].includes(name);
   for (const btn of els.bottomNav.querySelectorAll('.nav-item')) {
     btn.classList.toggle('is-active', btn.dataset.tab === name);
   }
@@ -1479,6 +1501,8 @@ function vulBezoekLijst(ul, item, { podiumpas = false } = {}) {
     } else {
       li.textContent = bezoekRegel(b);
     }
+    // Met wie je ging (gedeeld plan; alleen voor jezelf, niet voor vrienden).
+    if (Array.isArray(b.metWie) && b.metWie.length) li.append(` · met ${b.metWie.join(', ')}`);
     ul.appendChild(li);
   }
 }
@@ -1901,6 +1925,7 @@ async function handleAuthChange(user) {
   vriendProfielCache.clear();
   planCache.clear();
   naamCache.clear();
+  stopBerichtenTeller();
   clearTimeout(kopieTimer);
   laatsteKopie.gezien = undefined;
   laatsteKopie.watchlist = undefined;
@@ -1979,9 +2004,11 @@ async function handleAuthChange(user) {
   if (hash === '#/profiel/delen') renderDelenScherm();
   if (hash.startsWith('#/vriend/')) routeNaar(hash);
   if (hash.startsWith('#/uitnodigen/')) routeNaar(hash);
+  if (hash === '#/berichten') routeNaar(hash);
   vernieuwVriendenTeller();
   planKopie();
   laadEigenPlannen();
+  startBerichtenTeller();
   if (hash.startsWith('#/show/')) {
     const id = decodeURIComponent(hash.slice('#/show/'.length));
     const show = state.shows.find((s) => s.id === id);
@@ -2048,6 +2075,7 @@ async function opnieuwProfielLaden() {
     renderDelenScherm();
     planKopie();
   }
+  startBerichtenTeller();
 }
 
 // Na inloggen zonder profiel één keer het scherm "Kies je gebruikersnaam",
@@ -2127,6 +2155,7 @@ async function onProfielOpslaan(e) {
     state.profielFout = false;
     renderAuthBox();
     if (state.delen === undefined) laadDelen().then(() => renderProfielTegels());
+    startBerichtenTeller();
     renderProfielTegels();
     terug('#/profiel');
   } catch (err) {
@@ -2375,6 +2404,260 @@ async function verlaatGedeeldPlan(item) {
   if (state.user !== user) return;
   naPlanLaden();
   renderAgenda();
+}
+
+// ---------- Berichten (zie plannen.js) ----------
+
+const BERICHT_ICOON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3" y="5" width="18" height="14" rx="2" /><polyline points="3 7 12 13 21 7" />
+</svg>`;
+const STAND_TEKST = {
+  gaat: 'Je gaat mee',
+  'kan-niet': 'Afgeslagen',
+  weg: 'Je gaat niet meer',
+  ingetrokken: 'Ingetrokken',
+  opgeheven: 'Opgeheven',
+  verlopen: 'Verlopen',
+};
+
+// De enige live listener in de app: het aantal ongelezen berichten, voor de
+// teller op de tegel en de Profiel-tab.
+let berichtenAfmelden = null;
+
+function startBerichtenTeller() {
+  if (!magVrienden() || berichtenAfmelden || !els.screens.berichten) return;
+  const user = state.user;
+  const q = query(collection(db, 'inbox', user.uid, 'berichten'), where('gelezen', '==', false));
+  berichtenAfmelden = onSnapshot(
+    q,
+    (snap) => {
+      if (state.user !== user) return;
+      state.ongelezen = snap.size;
+      renderBerichtenTeller();
+    },
+    (err) => {
+      console.error('Teller van berichten werkt niet:', err);
+      state.ongelezen = null;
+      renderBerichtenTeller();
+    }
+  );
+}
+
+function stopBerichtenTeller() {
+  berichtenAfmelden?.();
+  berichtenAfmelden = null;
+  state.ongelezen = null;
+  renderBerichtenTeller();
+}
+
+function renderBerichtenTeller() {
+  const n = state.ongelezen ?? 0;
+  if (els.profielBadge) {
+    els.profielBadge.hidden = n === 0;
+    els.profielBadge.textContent = n > 99 ? '99+' : String(n);
+  }
+  const tab = els.bottomNav?.querySelector('.nav-item[data-tab="profiel"]');
+  if (tab) {
+    if (n) tab.setAttribute('aria-label', `Profiel, ${n} ongelezen ${n === 1 ? 'bericht' : 'berichten'}`);
+    else tab.removeAttribute('aria-label');
+  }
+  document.getElementById('berichtenTegel')?.replaceWith(renderBerichtenTegel());
+}
+
+function renderBerichtenTegel() {
+  const n = state.ongelezen ?? 0;
+  const tegel = document.createElement('button');
+  tegel.type = 'button';
+  tegel.className = 'profiel-tegel';
+  tegel.id = 'berichtenTegel';
+  const icoon = document.createElement('span');
+  icoon.className = 'profiel-tegel-icoon';
+  icoon.innerHTML = BERICHT_ICOON;
+  icoon.firstElementChild.setAttribute('aria-hidden', 'true');
+  if (n > 0) {
+    const badge = document.createElement('span');
+    badge.className = 'badge';
+    badge.setAttribute('aria-hidden', 'true');
+    badge.textContent = n > 99 ? '99+' : String(n);
+    icoon.appendChild(badge);
+  }
+  const tekst = document.createElement('span');
+  tekst.className = 'profiel-tegel-tekst';
+  tekst.append(
+    vriendenTekst('span', 'profiel-tegel-titel', 'Berichten'),
+    vriendenTekst('span', 'profiel-tegel-sub', n > 0 ? `${n} ongelezen` : 'Uitnodigingen en reacties')
+  );
+  const pijl = document.createElement('span');
+  pijl.className = 'profiel-tegel-pijl';
+  pijl.innerHTML = CHEVRON;
+  tegel.append(icoon, tekst, pijl);
+  tegel.addEventListener('click', () => navigate('#/berichten'));
+  return tegel;
+}
+
+// { status: 'leeg'|'laden'|'klaar'|'fout', lijst, nieuw (ids die bij het
+// openen ongelezen waren), melding }
+let berichtenStand = { status: 'leeg', lijst: [], nieuw: new Set(), melding: null };
+
+async function openBerichten() {
+  berichtenStand = { ...berichtenStand, melding: null };
+  renderBerichten();
+  if (!magVrienden()) return;
+  const user = state.user;
+  berichtenStand = { ...berichtenStand, status: 'laden' };
+  renderBerichten();
+  try {
+    let lijst = await laadBerichten({ db, fs: firestoreFns, ik: user.uid });
+    lijst = await ruimBerichtenOp({ db, fs: firestoreFns, ik: user.uid, berichten: lijst });
+    await Promise.all([
+      ...[...new Set(lijst.map((b) => b.planId))].map((id) => laadPlanInfo(id, { opnieuw: true })),
+      ...[...new Set(lijst.map((b) => b.van))].map((uid) => naamVan(uid)),
+    ]);
+    if (state.user !== user) return;
+    const nieuw = new Set(lijst.filter((b) => !b.gelezen).map((b) => b.id));
+    berichtenStand = { status: 'klaar', lijst, nieuw, melding: null };
+    renderBerichten();
+    markeerGelezen({ db, fs: firestoreFns, ik: user.uid, ids: [...nieuw] }).catch((err) => console.error('Kon berichten niet als gelezen zetten:', err));
+  } catch (err) {
+    if (state.user !== user) return;
+    console.error('Kon berichten niet laden:', err);
+    berichtenStand = { ...berichtenStand, status: 'fout' };
+    renderBerichten();
+  }
+}
+
+// "za 18 okt"
+function dagKort(iso) {
+  const { day, month, year } = parseIsoDate(iso);
+  return `${WEEKDAYS[new Date(Date.UTC(year, month - 1, day)).getUTCDay()]} ${day} ${MONTHS[month - 1]}`;
+}
+
+// De voorstelling van een plan in de agenda (voor de titelknop), of null.
+function showVanPlan(info) {
+  const v = info?.plan.voorstelling;
+  if (!v) return null;
+  return koppel({ titel: v.titel, theaterId: v.theaterId, datum: v.datum, tijd: v.tijd }, indexeerShows(state.shows)).show;
+}
+
+function berichtKaart(b) {
+  const info = planCache.get(b.planId)?.info ?? null;
+  const v = info?.plan.voorstelling ?? null;
+  const naam = naamNu(b.van);
+  const kaart = document.createElement('article');
+  kaart.className = 'bericht' + (berichtenStand.nieuw.has(b.id) ? ' bericht--nieuw' : '');
+  if (berichtenStand.nieuw.has(b.id)) kaart.appendChild(vriendenTekst('span', 'bericht-nieuw', 'Nieuw'));
+
+  const zin = document.createElement('p');
+  zin.className = 'bericht-tekst';
+  const voor = {
+    uitnodiging: `${naam} nodigt je uit voor `,
+    'gaat-mee': `${naam} gaat mee naar `,
+    'kan-niet': `${naam} kan niet naar `,
+    weg: `${naam} gaat toch niet naar `,
+    opgeheven: `${naam} heeft het plan opgeheven voor `,
+  }[b.soort] ?? `${naam}: `;
+  zin.appendChild(document.createTextNode(voor));
+  const show = showVanPlan(info);
+  if (v && show) {
+    const titel = document.createElement('button');
+    titel.type = 'button';
+    titel.className = 'bericht-titel';
+    titel.textContent = v.titel;
+    titel.addEventListener('click', () => navigate(`#/show/${encodeURIComponent(show.id)}`));
+    zin.appendChild(titel);
+  } else {
+    zin.appendChild(vriendenTekst('span', 'bericht-titel bericht-titel--tekst', v?.titel ?? 'een voorstelling'));
+  }
+  kaart.appendChild(zin);
+  if (v) {
+    const plek = [v.theaterNaam, v.stad].filter(Boolean).join(', ');
+    kaart.appendChild(vriendenTekst('p', 'bericht-meta', [dagKort(v.datum), v.tijd, plek].filter(Boolean).join(' · ')));
+  }
+
+  if (b.soort === 'uitnodiging') {
+    const stand = uitnodigingStand(info, state.user.uid);
+    if (stand === 'open') {
+      const acties = document.createElement('div');
+      acties.className = 'vriend-rij-acties bericht-acties';
+      acties.append(
+        kleineKnop('Ik ga mee', { primair: true, label: `Ik ga mee naar ${v.titel}`, onClick: (e) => reageerOpUitnodiging(b, info, 'gaat', e.currentTarget) }),
+        kleineKnop('Kan niet', { label: `Ik kan niet naar ${v.titel}`, onClick: (e) => reageerOpUitnodiging(b, info, 'kan-niet', e.currentTarget) })
+      );
+      kaart.appendChild(acties);
+    } else {
+      kaart.appendChild(vriendenTekst('p', `bericht-stand bericht-stand--${stand}`, STAND_TEKST[stand] ?? ''));
+    }
+  }
+  return kaart;
+}
+
+function renderBerichten() {
+  const box = els.berichtenInhoud;
+  if (!box || els.screens.berichten.hidden) return;
+  box.replaceChildren();
+  if (!state.authBekend || (state.user && state.profiel === undefined && !state.profielFout)) {
+    box.appendChild(vriendenTekst('p', 'profiel-melding', 'Laden…'));
+    return;
+  }
+  if (!magVrienden()) {
+    box.appendChild(vriendenTekst('p', 'vrienden-leeg', 'Kies eerst een gebruikersnaam; daarna kunnen vrienden je uitnodigen.'));
+    return;
+  }
+  if (berichtenStand.melding) {
+    const p = vriendenTekst('p', `vrienden-melding vrienden-melding--${berichtenStand.melding.soort}`, berichtenStand.melding.tekst);
+    p.setAttribute('role', berichtenStand.melding.soort === 'fout' ? 'alert' : 'status');
+    box.appendChild(p);
+  }
+  if (berichtenStand.status === 'fout') {
+    box.appendChild(vriendenFoutBlok('Je berichten konden niet worden geladen. Controleer je verbinding en probeer het opnieuw.', openBerichten));
+    return;
+  }
+  if (berichtenStand.status !== 'klaar') {
+    box.appendChild(vriendenTekst('p', 'profiel-melding', 'Laden…'));
+    return;
+  }
+  if (berichtenStand.lijst.length === 0) {
+    box.appendChild(vriendenTekst('p', 'vrienden-leeg', 'Nog geen berichten. Nodigt een vriend je uit voor een voorstelling, dan zie je dat hier.'));
+    return;
+  }
+  for (const b of berichtenStand.lijst) box.appendChild(berichtKaart(b));
+}
+
+// Ik ga mee: status in het plan en het plan in je eigen Gepland (een
+// bestaand item met dezelfde sleutel wordt gekoppeld, niet verdubbeld).
+async function reageerOpUitnodiging(b, info, status, knop) {
+  const user = state.user;
+  knop.disabled = true;
+  try {
+    await zetMijnStatus({ db, fs: firestoreFns, ik: user.uid, planId: b.planId, eigenaar: info.plan.eigenaar, status });
+    if (status === 'gaat') voegGedeeldPlanToe(info);
+    berichtenStand.melding = {
+      tekst: status === 'gaat' ? 'Je gaat mee. Het staat in je Gepland.' : `Afgeslagen. ${naamNu(info.plan.eigenaar)} krijgt een bericht.`,
+      soort: 'succes',
+    };
+  } catch (err) {
+    if (!(err instanceof PlanFout)) console.error('Reageren mislukt:', err);
+    berichtenStand.melding = { tekst: err instanceof PlanFout ? err.message : VERBINDING_FOUT, soort: 'fout' };
+  }
+  if (state.user !== user) return;
+  await laadPlanInfo(b.planId, { opnieuw: true });
+  renderBerichten();
+  naPlanLaden();
+  renderAgenda();
+}
+
+function voegGedeeldPlanToe(info) {
+  const v = info.plan.voorstelling;
+  const sleutels = new Set([info.plan.sleutel, geplandSleutel(v)]);
+  let eigen = state.gepland.gepland.find((i) => sleutels.has(i.sleutel));
+  if (!eigen) {
+    const show = showVanPlan(info);
+    const bron = show ?? { ...v, reserverenUrl: '' };
+    state.gepland = planIn(state.gepland, bron);
+    eigen = state.gepland.gepland.find((i) => i.sleutel === geplandSleutel(bron));
+  }
+  state.gepland = koppelPlan(state.gepland, eigen.sleutel, info.plan.planId);
+  saveGepland();
 }
 
 // ---------- Scherm "Vrienden uitnodigen" (#/uitnodigen/<sleutel>) ----------
@@ -2868,6 +3151,7 @@ function renderProfielTegels() {
 
   const melding = renderDelenMelding();
   if (melding) box.appendChild(melding);
+  if (els.screens.berichten) box.appendChild(renderBerichtenTegel());
 
   const n = state.inkomendAantal ?? 0;
   const tegel = document.createElement('button');
