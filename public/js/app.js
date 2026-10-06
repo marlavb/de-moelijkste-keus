@@ -5469,6 +5469,34 @@ function buildCityToggleButton(stad, cityIds, allOn) {
   return btn;
 }
 
+/** Vinkje bij de provinciekop (okt 2026): alle theaters van de provincie
+ * in één keer aan of uit. Aan, uit of deels (indeterminate, voorgelezen als
+ * "gemengd"); een tik bij deels zet alles aan. Eén opslag per tik, net als
+ * de schakelaars per theater en per stad. */
+function buildProvincieVinkje(provincie, ids, alleIds = ids) {
+  const aan = ids.filter((id) => state.enabledTheaters[id] !== false).length;
+  const label = document.createElement('label');
+  label.className = 'provincie-vinkje';
+  const vak = document.createElement('input');
+  vak.type = 'checkbox';
+  vak.className = 'provincie-vak';
+  vak.dataset.provincie = provincie;
+  vak.checked = aan === ids.length;
+  vak.indeterminate = aan > 0 && aan < ids.length;
+  vak.setAttribute('aria-label', `Alle theaters in ${provincie}`);
+  vak.addEventListener('change', () => {
+    const nieuw = aan !== ids.length;
+    for (const id of alleIds) state.enabledTheaters[id] = nieuw;
+    refreshAfterTheaterToggle();
+    // Het scherm is opnieuw opgebouwd: de focus terug op dit vinkje.
+    [...els.theatersList.querySelectorAll('.provincie-vak')].find((v) => v.dataset.provincie === provincie)?.focus();
+  });
+  const tekst = document.createElement('span');
+  tekst.textContent = 'Alle';
+  label.append(tekst, vak);
+  return label;
+}
+
 /** Zelfde chevron-markup als de .filter-accordion-header-knoppen in de
  * sidebar (zie index.html), maar hier dynamisch opgebouwd omdat elke stad
  * zijn eigen accordeon-instantie krijgt. */
@@ -5577,10 +5605,20 @@ function renderTheatersScreen() {
 
   els.theatersList.innerHTML = '';
   for (const provincie of provincies) {
+    const kop = document.createElement('div');
+    kop.className = 'theaters-province-head';
     const heading = document.createElement('h2');
     heading.className = 'theaters-province-heading';
     heading.textContent = provincie;
-    els.theatersList.appendChild(heading);
+    kop.appendChild(heading);
+    // De stand (aan/uit/deels) telt, net als "Alles aan/uit" per stad, alleen
+    // theaters met voorstellingen (met een schakelaar). Een tik zet ook de
+    // gepauzeerde of gesloten theaters van de provincie: komen die terug,
+    // dan volgen ze je keuze.
+    const alleIds = stedenByProvincie.get(provincie).flatMap((stad) => idsByStad.get(stad));
+    const ids = alleIds.filter((id) => state.shows.some((s) => s.theaterId === id));
+    if (ids.length > 0) kop.appendChild(buildProvincieVinkje(provincie, ids, alleIds));
+    els.theatersList.appendChild(kop);
 
     for (const stad of stedenByProvincie.get(provincie)) {
       els.theatersList.appendChild(buildCitySection(stad, idsByStad.get(stad)));

@@ -122,3 +122,43 @@ test('terug na een datumwissel: vanuit Gepland naar een andere datum, terug (kno
   }
   assert.deepEqual(ik.fouten, []);
 });
+
+// ---------- Theaters: vinkje per provincie ----------
+
+test('provincievinkje: uit (echte rules), tweede apparaat ziet "uit"; één theater aan → deels; tik → alles aan', async () => {
+  const { page } = ik;
+  const vak = (p) => p.getByRole('checkbox', { name: 'Alle theaters in Zuid-Holland' });
+  const stand = (p) => vak(p).evaluate((v) => (v.indeterminate ? 'deels' : v.checked ? 'aan' : 'uit'));
+  await ga(page, base, '#/theaters');
+  await page.waitForSelector('.provincie-vak');
+  assert.equal(await stand(page), 'aan');
+  await vak(page).click();
+  const doc = await wachtOpDoc(`users/${uid}`, (d) => d?.enabledTheaters?.isala === false);
+  const zh = Object.entries(doc.enabledTheaters).filter(([, v]) => v === false).map(([id]) => id);
+  assert.ok(zh.length >= 3, zh.join(','));
+  await schermafbeelding(page, '10-provincievinkje');
+
+  // Tweede apparaat: zelfde keuze.
+  const twee = await openGebruiker(browser, base, ACCOUNT, '#/theaters');
+  await twee.page.waitForSelector('.provincie-vak');
+  await twee.page.waitForFunction(() => {
+    const v = [...document.querySelectorAll('.provincie-vak')].find((x) => x.dataset.provincie === 'Zuid-Holland');
+    return v && !v.checked && !v.indeterminate;
+  });
+  // Daar één theater weer aan: deels; en de keuze gaat terug naar Firestore.
+  const stad = twee.page.locator('#theatersList .theaters-province-head', { hasText: 'Zuid-Holland' }).locator('xpath=following-sibling::div[contains(@class,"theaters-city-section")][.//button[contains(@class,"switch")]][1]');
+  await stad.locator('.theaters-city-header > span').last().click();
+  await stad.locator('.switch').first().click();
+  assert.equal(await stand(twee.page), 'deels');
+  await wachtOpDoc(`users/${uid}`, (d) => Object.values(d?.enabledTheaters ?? {}).filter((v) => v === false).length === zh.length - 1);
+  await vak(twee.page).click();
+  assert.equal(await stand(twee.page), 'aan');
+  await wachtOpDoc(`users/${uid}`, (d) => !Object.values(d?.enabledTheaters ?? {}).includes(false));
+  // Het eerste apparaat volgt.
+  await ga(page, base, '#/theaters');
+  await page.waitForSelector('.provincie-vak');
+  assert.equal(await stand(page), 'aan');
+  assert.deepEqual(twee.fouten, []);
+  assert.deepEqual(ik.fouten, []);
+  await twee.ctx.close();
+});

@@ -1082,16 +1082,46 @@ a {
   overflow-y: auto;
 }
 
-.theaters-province-heading {
+/* Provinciekop met rechts het vinkje "Alle" (tikvlak 44 × 44). */
+.theaters-province-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin: 28px 0 6px;
+}
+
+.theaters-province-head:first-child {
+  margin-top: 0;
+}
+
+.theaters-province-heading {
+  margin: 0;
   font-family: var(--font-display);
   font-size: 22px;
   font-weight: var(--kop-gewicht);
   color: var(--primary);
 }
 
-.theaters-province-heading:first-child {
-  margin-top: 0;
+.provincie-vinkje {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: var(--touch);
+  min-height: var(--touch);
+  padding: 0 4px 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+.provincie-vak {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--primary);
+  cursor: pointer;
 }
 
 .theaters-city-section {
