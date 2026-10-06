@@ -2,8 +2,10 @@
 
 Podiumagenda (repo `de-moelijkste-keus`) scrapet elke nacht de agenda's van
 Podiumpas-theaters (`src/`), schrijft `public/data/*.json` en publiceert de
-app in `public/` via GitHub Pages. De workflow `refresh-data.yml` draait om
-03:17 UTC (een scheve minuut, zie de workflow; soms later) en commit de data zelf.
+app in `public/` via GitHub Pages. De workflow `refresh-data.yml` start om
+05:00 Europe/Amsterdam via de Cloud Function `startNachtrun`, met de cron van
+03:17 UTC als vangnet (GitHub start die soms uren later); een tweede run op
+dezelfde dag stopt meteen. De workflow commit de data zelf.
 
 ## Git
 
@@ -22,6 +24,18 @@ app in `public/` via GitHub Pages. De workflow `refresh-data.yml` draait om
   run liep, ondanks de afspraak. De workflow zet vlak voor zijn eigen push de
   data op de nieuwste `main`, maar een push midden in een run blijft risico.
 - Eén commit per stap of onderwerp; stage expliciete bestanden, geen `git add -A`.
+
+## README
+
+- Bij een nieuwe of gewijzigde functie ook de vaste tekst in `README.md`
+  bijwerken, in dezelfde commit of branch.
+- De blokken tussen `<!-- AUTO:…:start -->` en `<!-- AUTO:…:end -->` niet met
+  de hand aanpassen: die maakt `scripts/readme.js` (workflow `readme.yml`, na
+  elke push naar main en na de nachtelijke run; commit alleen bij een
+  wijziging, met `[skip ci]`). Nieuw blok = markers in de README plus een
+  sleutel in `maakBlokken`.
+- Na een push naar main kan de README-bot er een commit achter zetten: eerst
+  pullen voordat je op main verder werkt of merget.
 
 ## Testverkeer naar theatersites
 

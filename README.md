@@ -1,281 +1,217 @@
-# De Moeilijkste Keus
+# Podiumagenda
 
-Twee onderdelen:
+Eén agenda voor de theaters waar je met de [Podiumpas](https://www.podiumpas.nl/)
+terechtkunt. Elke nacht halen we de agenda's van de theaters op. De app
+toont ze als één doorzoekbare agenda op je telefoon.
 
-1. **Scraper** (`src/`) — command-line tool die theateragenda's van
-   Amsterdamse theaters ophaalt en normaliseert naar één gedeeld
-   JSON-formaat (`data/shows.json`).
-2. **App** (`public/`) — mobile-first PWA die die data toont als
-   doorzoekbare, filterbare agenda. Puur HTML/CSS/JS, geen build-stap, leest
-   `public/data/shows.json` (een kopie die de scraper er automatisch
-   naartoe zet).
+- Live: <https://marlavb.github.io/de-moelijkste-keus/>
+- Over de scraper, voor theaters: [bot.html](https://marlavb.github.io/de-moelijkste-keus/bot.html)
+  (wat we ophalen, hoe vaak, en hoe je bezwaar maakt)
 
-Ondersteunde theaters: **DeLaMar Theater**, **Theater Bellevue**, **De Meervaart**.
+Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
+worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
-## Installeren
+<!-- AUTO:aantallen:start -->
+- Theaters: **46** (42 ok, 1 leeg, 3 gepauzeerd)
+- Voorstellingen (titel per theater): **4497**
+- Speeldata: **6885**
+- Laatste refresh: **5 oktober 2026, 13:11** (Amsterdamse tijd)
+<!-- AUTO:aantallen:end -->
 
-Vereist Node.js 20+.
+## Functies
 
-```bash
-npm install
-npx playwright install chromium
-```
+- **Agenda**: alle komende voorstellingen per dag, zoeken op titel en theater,
+  standaard de komende 30 dagen ("Toon … verder in de toekomst").
+- **Filters**: stad, theater, genre, alleen Podiumpas, alleen watchlist,
+  "Verberg volle voorstellingen" (uitverkocht, wachtlijst, afgelast) en
+  "Verberg gezien". De keuze wordt onthouden.
+- **Detailscherm**: info, reserveren, Podiumpas per speeldatum, andere data en
+  "Ook te zien bij" (volle data grijs en doorgestreept), in je agenda zetten.
+- **Theaters per provincie**: theaters aan of uit, per theater, per stad of per
+  provincie (vinkje met aan/uit/deels). Gepauzeerde theaters staan er met een
+  melding.
+- **Watchlist**: voorstellingen die je wilt zien, met de eerstvolgende datum.
+- **Gepland**: een speeldatum die je wilt bezoeken, met of zonder kaarten. Na de
+  speeldag (Amsterdamse tijd) gaat hij vanzelf naar Gezien; afgelast of
+  verplaatst gaat stil uit de planning.
+- **Gezien met sterren**: je bezoekgeschiedenis, 1 tot 5 sterren in halve
+  stappen, sorteren op laatste bezoek of beoordeling.
+- **Profiel** (na inloggen met Google): gebruikersnaam en naam. Alles
+  hierboven werkt ook zonder inloggen (alleen op dat apparaat); ingelogd
+  synchroniseert het tussen je apparaten.
+- **Vrienden**: zoeken op gebruikersnaam, verzoeken, eenmalige
+  uitnodigingslink, blokkeren.
+- **Delen**: je Gezien (met sterren) en Watchlist voor vrienden, per onderdeel
+  aan of uit.
+- **Uitnodigen**: een vriend uitnodigen voor een geplande voorstelling; zij
+  gaan mee of kunnen niet, en je ziet wie er kaarten heeft.
+- **Berichten**: uitnodigingen en reacties, met een teller in Profiel.
+- **Mail**: een korte mail bij een nieuwe uitnodiging (uit te zetten in
+  Profiel → Mail). Je adres is nooit zichtbaar voor anderen.
 
-## Draaien
+Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.html).
 
-```bash
-npm run scrape
-```
+## Hoe het werkt
 
-Dit scraped alle drie theaters en schrijft (samengevoegd) naar `data/shows.json`.
+- **Scraper** (`src/`, Node 20 + Playwright): haalt per theater de agenda op,
+  netjes (robots.txt, crawl-delay, eigen user-agent met link naar `bot.html`)
+  en schrijft `public/data/shows.json`, `scrape-status.json` en
+  `theaters.json`. Faalt een theater, dan valt het terug op de vorige data van
+  dat theater. Theaters, steden, provincies en Podiumpas staan in
+  `src/lib/config.js` (met bron en datum).
+- **Nachtelijke run**: `.github/workflows/refresh-data.yml` scrapet, commit de
+  data naar `main` en start de deploy. De Cloud Function `startNachtrun` start
+  hem elke dag om 05:00 (Amsterdam); de cron van GitHub (03:17 UTC) blijft als
+  vangnet. Is de data die dag al ververst, dan stopt een tweede run meteen
+  (handmatig toch draaien: "Run workflow" met `forceer`).
+- **App** (`public/`): een PWA zonder build-stap (HTML, CSS, JavaScript-modules,
+  service worker). Gehost op **GitHub Pages** via `.github/workflows/deploy.yml`
+  bij elke push naar `main`.
+- **Firebase** (project `de-moeilijkste-keus`):
+  - **Auth**: inloggen met Google.
+  - **Firestore**: watchlist, planning, Gezien, theaterkeuze, profiel,
+    vrienden, delen, plannen en berichten. Toegang via `firestore.rules`.
+  - **Functions** (2nd gen, Node 22, **europe-west4**, map `functions/`):
+    `uitnodigingsmail` (mail bij een uitnodiging), `stopFacturering` (stopt de
+    facturering bij overschrijding van het budget; staat in DRY_RUN) en
+    `startNachtrun` (Cloud Scheduler, start de nachtelijke run via de GitHub
+    API). Geheimen staan in Secret Manager, nooit in de repo.
 
-Om maar één theater te (her)scrapen zonder de rest te overschrijven:
+## Lokaal ontwikkelen
 
-```bash
-node src/index.js --only=delamar
-node src/index.js --only=bellevue
-node src/index.js --only=meervaart
-node src/index.js --only=delamar,meervaart
-```
-
-Elke run vervangt alleen de entries van de gescrapete theater(s) — de rest
-wordt overgenomen uit `public/data/shows.json` (de getrackte, laatst
-gepubliceerde data) en blijft dus staan. `data/shows.json` is alleen een
-lokale, ge-gitignorede kopie van de output; daar wordt niet uit gelezen.
-
-### Vangnet bij falende scrapers
-
-Faalt een theater volledig, dan valt de run terug op de vorige
-voorstellingen van alléén dat theater (uit `public/data/shows.json`, na
-dezelfde purge van verlopen voorstellingen), in plaats van het leeg te
-overschrijven. Als falen telt:
-
-- een exception in de scraper;
-- een timeout: elk theater heeft een tijdbudget (standaard 10 min,
-  Bellevue 40 min, per theater aan te passen met `budgetMinuten` in
-  `src/lib/config.js`), en de hele run een totaalbudget van 75 min —
-  theaters die dan nog niet aan de beurt waren vallen ook terug;
-- 0 resultaten terwijl er vorige keer nog komende voorstellingen waren.
-
-Een daling tot onder 30% van het vorige aantal (bij minstens 20) geeft
-alleen een waarschuwing; de nieuwe data wordt dan gewoon gebruikt.
-
-Per theater komt de uitkomst in `public/data/scrape-status.json`
-(`ok` / `leeg` / `terugval` / `fout`, aantal, duur, laatste succesvolle
-scrape, sinds wanneer teruggevallen, foutmelding). In GitHub Actions
-verschijnt elke terugval ook als waarschuwing in de run-samenvatting, en
-wordt de run na commit en deploy rood (met mail) bij `terugval` of `fout`.
-
-Tests (nep-scrapers, geen netwerk): `npm test`.
-
-### Hoe lang duurt het?
-
-- **DeLaMar**: ~1 minuut. Eén agendapagina, alle voorstellingen staan er al
-  op (met "Toon meer" bijgeladen).
-- **Meervaart**: ~1-2 minuten. Agendapagina + één detailpagina per productie
-  (nodig om per-datum ticketlinks te krijgen).
-- **Bellevue**: **~15-20 minuten**. Bellevue's `robots.txt` vraagt expliciet
-  om een crawl-delay van 5 seconden, en omdat de agendapagina alleen
-  startdatums toont (niet elke losse voorstelling), bezoeken we voor élke
-  productie de detailpagina om de echte datums en ticketlinks te vinden.
-  Bij ~200 producties + ~25 agendapagina's, elk met 5s wachttijd ertussen,
-  loopt dat vanzelf op. Dit is bewust traag gehouden — de site vraagt erom.
-
-## De app draaien
-
-De app is een statische map (`public/`) — elke simpele static file server
-werkt, bijvoorbeeld:
-
-```bash
-npx serve public
-# of
-python3 -m http.server 8080 --directory public
-```
-
-Open daarna de getoonde URL (bv. `http://localhost:8080`) in je (mobiele)
-browser. "Toevoegen aan beginscherm" installeert 'm als PWA.
-
-## Optioneel inloggen instellen (Firebase)
-
-Inloggen is niet nodig om de app te gebruiken. Wil je het (opnieuw)
-instellen op een nieuw Firebase-project, doorloop dan deze drie stappen in
-de [Firebase Console](https://console.firebase.google.com/):
-
-1. **Authentication → Sign-in method** → Google-provider aanzetten
-   (support-e-mailadres invullen, Save).
-2. **Firestore Database** → als er nog geen database is: **Create
-   database** → kies een locatie → start in *production mode* (de rules
-   hieronder regelen de toegang).
-3. **Firestore Database → Rules** → plak de inhoud van `firestore.rules` →
-   **Publish**, of rol ze uit met de CLI (zie hieronder).
-
-### Rules testen en uitrollen
-
-Het Firebase-gereedschap (CLI, emulator, `@firebase/rules-unit-testing`)
-staat in een eigen map `firebase/` met een eigen `package.json`, zodat
-`npm ci` en `npm test` (ook in de nachtelijke workflow) er niet zwaarder van
-worden. Eenmalig:
+Vereist Node.js 20+ (Functions: Node 22) en, voor de emulators, Java 21.
 
 ```sh
-npm --prefix firebase ci
-brew install openjdk@21   # de Firestore-emulator draait op Java 21+
+npm ci
+npx playwright install chromium
+npm --prefix firebase ci          # Firebase CLI en emulators
+npm --prefix functions ci         # alleen voor de Functions
+brew install openjdk@21           # emulators; zet openjdk@21/bin in je PATH
 ```
 
-- `npm run test:rules` start de Firestore-emulator (project
-  `demo-podiumagenda`, nooit het echte project) en draait
-  `firebase/tests/*.test.js` tegen `firestore.rules`.
-- Uitrollen (pas na groene rules-tests, en vóór de app-code die de nieuwe
-  rules nodig heeft): `npm run firebase -- login` en daarna
-  `npm run firebase -- deploy --only firestore:rules`. `firebase.json` en
-  `.firebaserc` in de root wijzen naar `firestore.rules` en het project
-  `de-moeilijkste-keus`.
+- App bekijken: `npx serve public` (of `python3 -m http.server 8080 --directory public`).
+  Met `?emulator=1` praat de app met lokale emulators in plaats van Firebase.
+- Eén theater scrapen tijdens het bouwen, uit de lokale cache:
+  `SCRAPE_CACHE=1 node src/index.js --only=<id>`. Houd testverkeer naar
+  theatersites klein (zie `CLAUDE.md`).
 
-Ga je de app op een ander domein hosten dan `marlavb.github.io`, voeg dat
-domein dan ook toe bij **Authentication → Settings → Authorized domains**
-— anders weigert Google's inlogpopup daar te werken. `localhost` staat er
-standaard al in, dus lokaal testen werkt direct.
+### Testen
 
-De `firebaseConfig`-waarden in `public/js/firebase.js` zijn bewust gewoon
-zichtbaar in de broncode — dat is normaal voor Firebase-webapps en geen
-geheim. De echte toegangscontrole zit in `firestore.rules`.
+| Commando | Wat |
+|---|---|
+| `npm test` | unit-tests en UI-tests (Playwright, nep-Firebase, geen netwerk) |
+| `npm run test:rules` | `firestore.rules` tegen de Firestore-emulator |
+| `npm run test:e2e` | de app end-to-end met Auth- en Firestore-emulators en de echte rules |
+| `npm run test:functions` | de Cloud Functions met emulators, een nep-SMTP-server en een nep-GitHub-API |
 
-Let op: `public/data/shows.json` is een momentopname van de laatste
-`npm run scrape`. Na een nieuwe scrape hoef je de app niet opnieuw te
-bouwen — gewoon de pagina verversen.
+De emulators gebruiken altijd het project `demo-podiumagenda`, nooit het echte.
 
-## Hoe de scraper werkt
+## Uitrollen
 
-- `src/lib/robots.js` — kleine, zelfgeschreven robots.txt-parser (geen
-  dependency). Leest `User-agent: *`-regels, `Allow`/`Disallow`-patronen
-  (met `*`-wildcards) en `Crawl-delay`, en wordt gebruikt om vóór elke request
-  te checken of het pad is toegestaan.
-- `src/lib/politeness.js` — regelt de vertraging tussen requests naar
-  dezelfde site, gebaseerd op de crawl-delay uit robots.txt (met een nette
-  minimumwaarde van 1 seconde als een site niets opgeeft).
-- `src/lib/config.js` — theaterconfiguratie (naam, stad, URLs) en de
-  User-Agent string. Zet evt. `SCRAPER_CONTACT=<url>` als env var om een
-  contact-URL in de User-Agent op te nemen.
-- `src/lib/normalize.js` — gedeelde helpers: Nederlandse datum-labels
-  parsen ("Vandaag", "Zondag 23 augustus", "wo 9 sep"), tijd extraheren,
-  en stabiele/unieke ids bouwen.
-- `src/lib/genre.js` — mapt de site-specifieke genre-labels van elk
-  theater naar één vaste set categorieën (`GENRE_CATEGORIES`) waarop de
-  app filtert. Het originele label blijft bewaard als `genreRuw`.
-- `src/lib/beschikbaarheid.js` — legt de vier toegestane waarden voor
-  `beschikbaarheid` vast. Anders dan genre is er geen gedeelde
-  normalize-functie: elke site toont ticketstatus met eigen knop-teksten/
-  CSS-classes, dus elke scraper-module classificeert dat zelf (zie de
-  comments in `src/sites/*.js`) — met "onbekend" als eerlijke fallback
-  zodra een site geen duidelijk voorraad-signaal geeft.
-- `src/sites/*.js` — één module per theater met de eigen scrape-logica.
-  Elke site heeft een andere structuur (zie de comments bovenaan elk
-  bestand voor wat er per site is uitgezocht), maar levert allemaal
-  hetzelfde genormaliseerde schema op.
-- `src/lib/scrapeRun.js` — de gedeelde run-logica: elk theater binnen zijn
-  tijdbudget draaien (afbreken via een AbortSignal dat `waitForTurn()` vóór
-  elke request controleert), bij falen terugvallen op de vorige data,
-  purgen/normaliseren en `shows.json` + `scrape-status.json` wegschrijven.
-- `src/index.js` — CLI-orchestratie: start een browser en geeft theaters,
-  scrapers, paden en budgetten door aan `scrapeRun.js`.
+- **App**: merge naar `main` en push met `npm run safe-push`; de deploy-workflow
+  zet `public/` op GitHub Pages. Hoog bij wijzigingen in de app de versie in
+  `public/sw.js` op.
+- **Rules**: na groene `test:rules`, vóór de app-code die ze nodig heeft:
+  `npm run firebase -- deploy --only firestore:rules`.
+- **Functions**: na groene `test:functions`:
+  `npm run firebase -- deploy --only functions`.
+- Pushen naar `main` altijd via `npm run safe-push`: die weigert zolang de
+  nachtelijke run loopt of wacht.
 
-Alle pagina's worden opgehaald met Playwright (Chromium) en een duidelijke,
-herkenbare User-Agent string, zodat theaters kunnen zien wie/wat er langskomt.
+## Werkafspraken
 
-## Output-schema
+Zie [`CLAUDE.md`](CLAUDE.md): git en pushen, testverkeer naar theatersites,
+botblokkades (nooit omzeilen), Podiumpas-dekking verifiëren, scrapers,
+watchlist-sleutels en de README bijwerken bij nieuwe functies.
 
-Elke voorstelling in `data/shows.json`:
+## Automatisch bijgewerkt
 
-```json
-{
-  "id": "delamar-we-will-rock-you-2026-08-21-2000",
-  "titel": "We Will Rock You",
-  "theaterId": "delamar",
-  "theaterNaam": "DeLaMar Theater",
-  "stad": "Amsterdam",
-  "datum": "2026-08-21",
-  "tijd": "20:00",
-  "genre": "Musical",
-  "genreRuw": "Musical",
-  "beschikbaarheid": "beschikbaar",
-  "beschrijving": "De enige echte officiële Queen musical!",
-  "reserverenUrl": "https://tickets.delamar.nl/nl/buyingflow/tickets/46810/114566/",
-  "bron": "https://delamar.nl/agenda/",
-  "opgehaaldOp": "2026-08-21T11:34:15.966Z"
-}
-```
+De blokken hieronder (en het blok met aantallen bovenaan) maakt
+`scripts/readme.js`; `.github/workflows/readme.yml` draait dat na elke push
+naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
+Pas de tekst tussen de markers dus niet met de hand aan.
 
-- `tijd` en `genre` zijn `null` wanneer de site zelf geen tijd/genre toont.
-- `genre` is genormaliseerd naar één van de acht vaste categorieën in
-  `src/lib/genre.js` (Toneel, Musical, Cabaret, Muziektheater, Dans,
-  Familie & Jeugd, Muziek & Concert, Overig) — dit is het veld waarop de
-  app filtert. `genreRuw` is het originele, site-specifieke label
-  (bv. Bellevue's "kleinkunst" of Meervaart's "theatercollege").
-- `beschikbaarheid` is `"beschikbaar"`, `"uitverkocht"`, `"wachtlijst"` of
-  `"onbekend"` — dit komt uit hetzelfde agenda-/detailbezoek dat de
-  scraper toch al doet, dus geen extra requests. De app toont hiervoor
-  alleen een badge bij `uitverkocht`/`wachtlijst`; bij `onbekend` (site
-  geeft geen duidelijk signaal, of toont iets tijd-gerelateerds zoals
-  "voorstelling bezig") laten we bewust niets zien in plaats van een
-  misleidende "beschikbaar"-badge te tonen.
-- `reserverenUrl` is de directe reserveringslink wanneer die beschikbaar is;
-  als een voorstelling is uitverkocht of het theater geen directe link
-  toont, valt dit terug op de infopagina van de voorstelling op de site van
-  het theater zelf.
+<!-- AUTO:sw:start -->
+Service worker: `podiumagenda-v36`
+<!-- AUTO:sw:end -->
 
-## Hoe de app werkt
+### Theaters
 
-- `public/index.html` — bevat alle vier schermen (agenda, detail, mijn
-  theaters, favorieten) als losse `<section>`'s; `js/app.js` toont/verbergt
-  ze op basis van een simpele hash-route (`#/`, `#/show/<id>`, `#/theaters`,
-  `#/favorieten`), zodat de browser-terugknop en het delen van een link naar
-  een specifieke voorstelling gewoon werken.
-- Filters: theater is een quick-filter chip-rij op het agenda-scherm zelf;
-  genre zit (samen met dezelfde theater-chips) achter het filter-icoon in
-  een sheet, met een badge die het aantal actieve filters toont. Alle
-  filters (stad/theater/genre, zoekopdracht, en de 3 toggles) worden
-  onthouden in `localStorage` en blijven staan na het herladen/opnieuw
-  openen van de site — lokaal-only per browser, geen Firestore-sync
-  (zelfde niveau als de sidebar-accordion-state).
-- Het agenda-scherm toont standaard alleen voorstellingen tot 60 dagen
-  vooruit (met 1136+ voorstellingen tot in 2028 is "alles" geen bruikbare
-  lijst) — een knop onderaan de lijst toont in één tik de rest, voor
-  langlopende producties die je maanden van tevoren wil boeken.
-- "Mijn theaters" bepaalt welke theaters überhaupt in de agenda meedoen —
-  los van de quick-filter, die bepaalt wat je *op dit moment* ziet binnen
-  de ingeschakelde theaters.
-- Favorieten (hartje op het detailscherm) heeft een eigen scherm via de
-  "Favorieten"-tab, met dezelfde datum-gegroepeerde lijst als de agenda en
-  een lege-staat-melding.
-- **Inloggen is optioneel.** Zonder inloggen werken theaterkeuze en
-  favorieten zoals altijd, lokaal in `localStorage` op dit ene apparaat.
-  Via "Inloggen met Google" op het Theaters-scherm (`public/js/firebase.js`)
-  worden ze in plaats daarvan gelezen/geschreven in Firestore, onder een
-  document `users/{uid}` — dus gesynchroniseerd op elk apparaat waarop je
-  inlogt. Bij de allereerste keer inloggen op een account wordt wat er
-  lokaal al stond eenmalig meegenomen naar Firestore in plaats van
-  weggegooid; bij een account dat al cloud-data heeft, is die cloud-data
-  leidend. `firestore.rules` zorgt dat elke gebruiker alleen het eigen
-  document kan lezen/schrijven.
-- De "Voeg toe aan agenda"-knop op het detailscherm genereert een
-  `.ics`-bestand, downloadbaar in elke agenda-app.
-- Ticketstatus: een muted-rode "Uitverkocht"- of amberkleurige
-  "Wachtlijst"-badge verschijnt op agenda-rijen en het detailscherm zodra
-  `beschikbaarheid` dat aangeeft (nooit bij `onbekend`). Het detailscherm
-  toont daarnaast "Laatst gecontroleerd: [tijdstip]" boven de
-  reserveringsknop, gebaseerd op `opgehaaldOp` — dit is dus de status van
-  de laatste nachtelijke ververing, niet live.
-- `sw.js` cachet de app-shell (cache-first) en `data/shows.json`
-  (network-first, met cache als fallback) voor gebruik zonder internet na
-  een eerste bezoek.
+Status uit de laatste refresh: `ok`, `leeg` (geen komende voorstellingen) of
+`gepauzeerd` (het theater weert ons; we omzeilen dat niet). Podiumpas per
+voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
+`–` (geen voorstellingen in de data). De app toont `ja` en `deels` als
+"Podiumpas".
 
-## Bekende beperkingen
+<!-- AUTO:theaters:start -->
+**Noord-Holland** (25)
 
-- Datums zonder jaartal (zoals theaters die zelf ook tonen, bv. "23
-  augustus") worden geïnterpreteerd door het jaar op te hogen zodra de
-  agenda chronologisch een maand terugspringt. Dit gaat ervan uit dat de
-  bronpagina chronologisch gesorteerd is, wat bij alle drie theaters het
-  geval is.
-- Bij Bellevue heeft een deel van de voorstellingen (vooral ver in de
-  toekomst) nog geen directe ticketlink op de site zelf — de site gebruikt
-  daar een eigen boekingswidget (JavaScript) in plaats van een normale link.
-  In die gevallen valt `reserverenUrl` terug op de infopagina.
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| Karavaan - Theater de Drukkerij | Alkmaar | ja | ok |
+| Bostheater | Amstelveen | – | leeg |
+| De Landing | Amstelveen | deels | ok |
+| Schouwburg Amstelveen | Amstelveen | ja | ok |
+| Amsterdams Marionetten Theater | Amsterdam | deels | ok |
+| Bijlmer Parktheater | Amsterdam | ja | ok |
+| CC Amstel | Amsterdam | ja | ok |
+| De Kleine Komedie | Amsterdam | nee | ok |
+| DeLaMar | Amsterdam | ja | ok |
+| Frascati | Amsterdam | ja | ok |
+| Koninklijk Theater Carré | Amsterdam | nee | ok |
+| Muziekgebouw aan 't IJ | Amsterdam | ja | ok |
+| Plein Theater | Amsterdam | nee | ok |
+| Podium Mozaïek | Amsterdam | ja | ok |
+| Scala Theater | Amsterdam | ja | ok |
+| Stadsschouwburg Amsterdam | Amsterdam | nee | ok |
+| Theater Bellevue | Amsterdam | ja | ok |
+| Theater De Krakeling | Amsterdam | ja | ok |
+| Theater de Meervaart | Amsterdam | ja | ok |
+| VU Griffioen | Amsterdam | ja | ok |
+| Kennemer Theater | Beverwijk | – | gepauzeerd sinds 2026-10-01 |
+| Theater de Omval | Diemen | ja | ok |
+| Schuur | Haarlem | ja | ok |
+| Cpunt | Hoofddorp | nee | ok |
+| Zaantheater | Zaandam | ja | ok |
+
+**Zuid-Holland** (12)
+
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| Theater het Kruispunt | Barendrecht | – | gepauzeerd sinds 2026-09-28 |
+| Isala theater | Capelle aan den IJssel | – | gepauzeerd sinds 2026-09-28 |
+| Koninklijke Schouwburg | Den Haag | ja | ok |
+| Theater aan het Spui | Den Haag | ja | ok |
+| Zaal 3 | Den Haag | ja | ok |
+| Theater Ins Blau | Leiden | ja | ok |
+| Theater Koningshof | Maassluis | deels | ok |
+| Maas theater en dans | Rotterdam | ja | ok |
+| Theater Rotterdam (TR25 Schouwburg) | Rotterdam | ja | ok |
+| Theater Rotterdam (TR8 William Boothlaan) | Rotterdam | ja | ok |
+| Theater de Stoep | Spijkenisse | deels | ok |
+| Stadsgehoorzaal | Vlaardingen | deels | ok |
+
+**Utrecht** (5)
+
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| Flint | Amersfoort | deels | ok |
+| Aan de Slinger | Houten | deels | ok |
+| Podium Hoge Woerd | Utrecht | ja | ok |
+| Stadsschouwburg Utrecht | Utrecht | ja | ok |
+| Theater Kikker | Utrecht | ja | ok |
+
+**Flevoland** (2)
+
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| Corrosia | Almere | deels | ok |
+| Kunstlinie | Almere | deels | ok |
+
+**Limburg** (2)
+
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| DOK6 | Panningen | deels | ok |
+| De Maaspoort Theater & Events | Venlo | deels | ok |
+<!-- AUTO:theaters:end -->

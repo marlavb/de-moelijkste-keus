@@ -3,7 +3,8 @@
 //   1. Firestore + Auth: de kernlogica (controles, tellers, inhoud, billing).
 //   2. Functions + Firestore + Auth: de echte trigger met een lokale SMTP-vanger.
 // Daarna wordt de uitvoer van de emulators (o.a. de logs van de functies)
-// gecontroleerd: er mag geen e-mailadres van een testgebruiker in staan.
+// gecontroleerd: er mag geen e-mailadres van een testgebruiker in staan, en
+// geen (nep-)GitHub-token.
 // Het nepgeheim voor de emulator (functions/.secret.local) wordt hier
 // aangemaakt; het staat in .gitignore.
 
@@ -11,7 +12,11 @@ import { spawn } from 'node:child_process';
 import { writeFile } from 'node:fs/promises';
 
 const FIREBASE = 'firebase/node_modules/.bin/firebase';
-await writeFile('functions/.secret.local', 'GMAIL_USER=podiumagenda-test@localhost.invalid\nGMAIL_APP_PASSWORD=nep-wachtwoord\n');
+const NEP_GITHUB_TOKEN = 'github_pat_NEP0000emulator0000geheim';
+await writeFile(
+  'functions/.secret.local',
+  `GMAIL_USER=podiumagenda-test@localhost.invalid\nGMAIL_APP_PASSWORD=nep-wachtwoord\nGITHUB_DISPATCH_TOKEN=${NEP_GITHUB_TOKEN}\n`
+);
 
 function ronde(only, bestanden) {
   return new Promise((klaar) => {
@@ -31,7 +36,7 @@ function ronde(only, bestanden) {
   });
 }
 
-const een = await ronde('firestore,auth', 'functions/test/mail.test.js functions/test/facturering.test.js functions/test/uitnodiging.test.js');
+const een = await ronde('firestore,auth', 'functions/test/mail.test.js functions/test/facturering.test.js functions/test/uitnodiging.test.js functions/test/nachtrun.test.js');
 const twee = await ronde('functions,firestore,auth', 'functions/test/trigger.test.js');
 
 // Testgebruikers hebben adressen op @mail.test; geen daarvan mag in de logs.
@@ -41,4 +46,11 @@ if (adressen.length) {
   process.exit(1);
 }
 console.log('\n✔ geen e-mailadres in de uitvoer van de emulators');
+// Het nep-token van de emulator en dat van functions/test/nachtrun.test.js.
+const tokens = [NEP_GITHUB_TOKEN, 'github_pat_NEP0000geheim0000nachtrun'].filter((t) => `${een.uitvoer}\n${twee.uitvoer}`.includes(t));
+if (tokens.length) {
+  console.error(`\n✖ GitHub-token in de uitvoer van de emulators (${tokens.length})`);
+  process.exit(1);
+}
+console.log('✔ geen GitHub-token in de uitvoer van de emulators');
 process.exit(een.code || twee.code ? 1 : 0);
