@@ -110,6 +110,8 @@ import {
   bezoekUitShow,
   zetBeoordeling,
   beoordelingTekst,
+  infoPerSleutel,
+  gezienVeld,
 } from './gezien.js';
 import { maakSterren } from './sterren.js';
 
@@ -1172,7 +1174,9 @@ function syncProfielForCurrentUser() {
   const lokaalGepland = laadGepland({ opgeslagen: loadGeplandLocal(), index: showIndex });
   if (lokaalGepland.gewijzigd) saveGeplandLocal(lokaalGepland.profiel);
 
-  const lokaalGezien = laadGezien({ opgeslagen: loadGezienLocal() });
+  // Gezien-items zonder maker of genre aanvullen uit de agenda (nooit overschrijven).
+  const gezienInfo = infoPerSleutel(state.shows);
+  const lokaalGezien = laadGezien({ opgeslagen: loadGezienLocal(), info: gezienInfo });
   if (lokaalGezien.gewijzigd) saveGezienLocal(lokaalGezien.profiel);
 
   if (!state.user) {
@@ -1208,7 +1212,7 @@ function syncProfielForCurrentUser() {
     );
   }
 
-  const cloudGezien = laadGezien({ opgeslagen: state.cloudGezien, extra: lokaalGezien.profiel });
+  const cloudGezien = laadGezien({ opgeslagen: state.cloudGezien, extra: lokaalGezien.profiel, info: gezienInfo });
   state.gezien = cloudGezien.profiel;
   if (cloudGezien.gewijzigd) {
     state.cloudGezien = cloudGezien.profiel;
@@ -1566,8 +1570,7 @@ function vulBezoekLijst(ul, item, { podiumpas = false } = {}) {
 // Genre van een Gezien-item: live, anders van het nieuwste bezoek dat het weet.
 function gezienGenre(item, liveShow) {
   if (liveShow) return getGenreBucket(liveShow);
-  const b = [...(item.bezoeken ?? [])].sort((x, y) => `${y.datum}`.localeCompare(`${x.datum}`)).find((x) => x.genre);
-  return b?.genre ?? null;
+  return gezienVeld(item, 'genre');
 }
 
 // Eerste voorstelling per sleutel in de agenda (voor de live weergavetitel).
@@ -1729,10 +1732,8 @@ function renderGezienRow(item, liveShow) {
 // Detailscherm voor een gezien voorstelling die niet meer in de agenda staat:
 // titel, maker, genre, de bezoeken en de link; geen reserveren of plannen.
 function renderGezienDetail(item) {
-  const nieuwste = [...(item.bezoeken ?? [])].sort((a, b) => `${b.datum} ${b.tijd ?? ''}`.localeCompare(`${a.datum} ${a.tijd ?? ''}`));
-  const met = (veld) => nieuwste.find((b) => b[veld])?.[veld] ?? null;
   if (els.gezienTitel) els.gezienTitel.textContent = item.titel;
-  const maker = met('maker');
+  const maker = gezienVeld(item, 'maker');
   if (els.gezienMaker) {
     els.gezienMaker.textContent = maker ?? '';
     els.gezienMaker.hidden = !maker || makerStaatInTitel(item.titel, maker);
@@ -1742,7 +1743,7 @@ function renderGezienDetail(item) {
     vulBezoekLijst(els.gezienBezoeken, item, { podiumpas: true });
     plaatsBeoordeling(els.gezienBezoeken, item.sleutel);
   }
-  const url = met('url');
+  const url = gezienVeld(item, 'url');
   if (els.gezienLink) {
     els.gezienLink.hidden = !url;
     if (url) els.gezienLink.href = url;

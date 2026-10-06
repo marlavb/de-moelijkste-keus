@@ -35,7 +35,9 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
   speeldag (Amsterdamse tijd) gaat hij vanzelf naar Gezien; afgelast of
   verplaatst gaat stil uit de planning.
 - **Gezien met sterren**: je bezoekgeschiedenis, 1 tot 5 sterren in halve
-  stappen, sorteren op laatste bezoek of beoordeling.
+  stappen, sorteren op laatste bezoek of beoordeling. Een item zonder maker
+  of genre (bv. zelf aangevinkt) wordt aangevuld zodra de voorstelling in de
+  agenda staat; een bestaande maker blijft staan.
 - **Profiel** (na inloggen met Google): gebruikersnaam en naam. Alles
   hierboven werkt ook zonder inloggen (alleen op dat apparaat); ingelogd
   synchroniseert het tussen je apparaten.

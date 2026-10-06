@@ -30,6 +30,12 @@
 //   kopie met de nieuwste beoordeeldOp; wissen = het veld weg met een nieuwe
 //   beoordeeldOp, zodat ook het wissen naar andere apparaten gaat. Wordt het
 //   item weggehaald, dan gaat de beoordeling mee.
+// - maker en genre op het item (sinds okt 2026): voor items zonder bezoek
+//   ("Zelf als gezien aangevinkt …") of met bezoeken zonder maker/genre.
+//   Bij het aanvinken meteen, daarna aangevuld zodra de productie in de
+//   agenda staat (vulGezienAan). Nooit overschreven: een item of bezoek dat
+//   al een maker/genre heeft, houdt die. Geen handeling: tijdstempels blijven
+//   gelijk en bij samenvoegen vult een kopie die ze heeft de andere aan.
 
 import { watchlistSleutel, NORMALISATIE_VERSIE, verwijder as verwijderVanWatchlist } from './watchlist.js';
 import { koppel, haalUitPlanning } from './gepland.js';
@@ -57,6 +63,9 @@ function vulAan(a, b) {
   for (const v of BEZOEK_EXTRA) if (uit[v] == null && b[v] != null) uit[v] = b[v];
   return uit;
 }
+// Velden op het item zelf die bij samenvoegen worden aangevuld (geen handeling).
+const ITEM_INFO = ['maker', 'genre'];
+
 const laatsteActie = (i) => Math.max(i.toegevoegdOp ?? 0, i.gewijzigdOp ?? 0);
 
 export function voegGezienSamen(...bronnen) {
@@ -89,6 +98,12 @@ export function voegGezienSamen(...bronnen) {
     // Beoordeling: de kopie met de nieuwste beoordeeldOp (los van de rest).
     const beoordeeld = levend.filter((i) => i.beoordeeldOp != null).reduce((a, b) => (!a || b.beoordeeldOp > a.beoordeeldOp ? b : a), null);
     const { beoordeling: _b, beoordeeldOp: _o, ...rest } = basis;
+    for (const v of ITEM_INFO) {
+      if (rest[v] == null) {
+        const andere = levend.find((i) => i[v] != null);
+        if (andere) rest[v] = andere[v];
+      }
+    }
     gezien.push({
       ...rest,
       toegevoegdOp: Math.max(...levend.map((i) => i.toegevoegdOp ?? 0)),
@@ -125,6 +140,8 @@ export function zetGezien(profiel, { show, bron, bezoek = null }, now = Date.now
         toegevoegdOp: now,
         gewijzigdOp: now,
         v: NORMALISATIE_VERSIE,
+        ...(show.maker ? { maker: show.maker } : {}),
+        ...(show.genre ? { genre: show.genre } : {}),
         bezoeken: bezoek ? [bezoek] : [],
       };
   return voegGezienSamen(profiel, { gezien: [item], gezienVerwijderd: [] });
@@ -297,9 +314,67 @@ export function sorteerGezien(items) {
   return [...items].sort((a, b) => moment(b) - moment(a));
 }
 
-/** Eén laadronde (localStorage of Firestore, eventueel met de lokale lijst erbij). */
-export function laadGezien({ opgeslagen, extra = null }) {
+/**
+ * Maker en genre per sleutel uit de agenda, voor vulGezienAan. Alleen als
+ * alle speeldata met een maker (genre) het eens zijn: de nachtelijke run
+ * trekt de maker per productie gelijk (makerMeerderheid.js); bij een
+ * gelijke stand blijven ze verschillen en vullen we niets aan.
+ */
+export function infoPerSleutel(shows) {
+  const per = new Map();
+  for (const s of shows ?? []) {
+    const k = watchlistSleutel(s.titel, s.theaterId);
+    if (!per.has(k)) per.set(k, { maker: new Set(), genre: new Set() });
+    const p = per.get(k);
+    if (typeof s.maker === 'string' && s.maker.trim()) p.maker.add(s.maker.trim());
+    if (typeof s.genre === 'string' && s.genre.trim()) p.genre.add(s.genre.trim());
+  }
+  const uit = new Map();
+  for (const [k, p] of per) {
+    const info = {};
+    if (p.maker.size === 1) info.maker = [...p.maker][0];
+    if (p.genre.size === 1) info.genre = [...p.genre][0];
+    if (info.maker || info.genre) uit.set(k, info);
+  }
+  return uit;
+}
+
+/** Heeft het item (of een van zijn bezoeken) dit veld al? */
+const heeft = (item, v) => item[v] != null || (item.bezoeken ?? []).some((b) => b[v] != null);
+
+/**
+ * Items zonder maker of genre aanvullen uit de agenda (`info`: Map sleutel →
+ * { maker?, genre? }, zie infoPerSleutel). Nooit overschrijven; tijdstempels
+ * blijven gelijk; idempotent. Geeft { profiel, gewijzigd }.
+ */
+export function vulGezienAan(profiel, info) {
+  let gewijzigd = false;
+  const gezien = (profiel?.gezien ?? []).map((item) => {
+    const live = info?.get(item.sleutel);
+    if (!live) return item;
+    const extra = {};
+    for (const v of ITEM_INFO) if (live[v] && !heeft(item, v)) extra[v] = live[v];
+    if (Object.keys(extra).length === 0) return item;
+    gewijzigd = true;
+    return { ...item, ...extra };
+  });
+  if (!gewijzigd) return { profiel, gewijzigd };
+  return { profiel: { ...profiel, gezien }, gewijzigd };
+}
+
+/** Maker of genre van een item: het nieuwste bezoek dat hem weet, anders het item zelf. */
+export function gezienVeld(item, veld) {
+  const nieuwste = [...(item?.bezoeken ?? [])].sort((a, b) => `${b.datum} ${b.tijd ?? ''}`.localeCompare(`${a.datum} ${a.tijd ?? ''}`));
+  return nieuwste.find((b) => b[veld])?.[veld] ?? item?.[veld] ?? null;
+}
+
+/**
+ * Eén laadronde (localStorage of Firestore, eventueel met de lokale lijst
+ * erbij). Met `info` (infoPerSleutel) worden items aangevuld met maker en genre.
+ */
+export function laadGezien({ opgeslagen, extra = null, info = null }) {
   const basis = { gezien: opgeslagen?.gezien ?? [], gezienVerwijderd: opgeslagen?.gezienVerwijderd ?? [] };
-  const profiel = voegGezienSamen(basis, extra ?? legeGezien());
+  const samen = voegGezienSamen(basis, extra ?? legeGezien());
+  const profiel = info ? vulGezienAan(samen, info).profiel : samen;
   return { profiel, gewijzigd: JSON.stringify(profiel) !== JSON.stringify(basis) };
 }
