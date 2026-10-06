@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **50** (42 ok, 1 leeg, 3 gepauzeerd, 4 onbekend)
+- Theaters: **51** (42 ok, 1 leeg, 3 gepauzeerd, 5 onbekend)
 - Voorstellingen (titel per theater): **4498**
 - Speeldata: **6891**
 - Laatste refresh: **6 oktober 2026, 13:03** (Amsterdamse tijd)
@@ -215,7 +215,7 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | DOK6 | Panningen | deels | ok |
 | De Maaspoort Theater & Events | Venlo | deels | ok |
 
-**Noord-Brabant** (4)
+**Noord-Brabant** (5)
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
@@ -223,4 +223,5 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | De Link | Tilburg | – | onbekend |
 | Paradox | Tilburg | – | onbekend |
 | S.M.E.T. | Tilburg | – | onbekend |
+| Markant Theater Maashorst | Uden | – | onbekend |
 <!-- AUTO:theaters:end -->

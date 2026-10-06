@@ -164,6 +164,7 @@ const THEATER_ZOEKALIASSEN = {
   paradox: ['muziekpodium paradox', 'paradox tilburg'],
   delink: ['nieuwe muziek tilburg', 'cenakel'],
   smet: ['smet', 's.m.e.t.', 'kamermuziek tilburg', 'cenakel'],
+  markant: ['markant', 'maashorst', 'markant uden'],
 };
 
 const BESCHIKBAARHEID_LABELS = {

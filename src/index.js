@@ -59,6 +59,7 @@ import { scrapeCpunt } from './sites/cpunt.js';
 import { scrapeKattendans } from './sites/kattendans.js';
 import { scrapeParadox } from './sites/paradox.js';
 import { scrapeCenakelGroep } from './sites/cenakel.js';
+import { scrapeMarkant } from './sites/markant.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -111,6 +112,7 @@ const SCRAPERS = {
   paradox: scrapeParadox,
   delink: scrapeCenakelGroep,
   smet: scrapeCenakelGroep,
+  markant: scrapeMarkant,
 };
 
 // Welk bestand waarvoor dient:

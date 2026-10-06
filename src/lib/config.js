@@ -660,4 +660,21 @@ export const THEATERS = [
     podiumpas: true,
     melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
   },
+  {
+    id: 'markant',
+    naam: 'Markant Theater Maashorst',
+    stad: 'Uden',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.markantmaashorst.nl',
+    agendaUrl: 'https://www.markantmaashorst.nl/nl/agenda',
+    // Per voorstelling: niet boven € 50 en niet bij verkoop door derden (zie
+    // src/sites/markant.js). Achter BunnyCDN (crawl-delay 5 s): bij een
+    // wachtrij of controlepagina pauzeren, niet omzeilen.
+    podiumpas: true,
+    // Bron: https://www.markantmaashorst.nl/nl/podiumpas-qz2t (6 okt 2026).
+    podiumpasReserveren: {
+      telefoon: '0413 230 230',
+      toelichting: 'Bel het Informatiepunt (optie 1) vanaf 30 dagen voor de voorstelling; online reserveren is niet mogelijk. Ticket ophalen en pas laten scannen bij het Informatiepunt, vanaf een uur voor aanvang.',
+    },
+  },
 ];
