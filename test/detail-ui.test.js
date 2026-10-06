@@ -319,29 +319,52 @@ async function zoek(page, tekst) {
   await page.waitForTimeout(400);
 }
 
+const ROW_LABEL = '#agendaList .status-badge--wachtlijst, #agendaList .status-badge--uitverkocht';
+
 for (const viewport of [{ width: 390, height: 900 }, { width: 1280, height: 900 }]) {
-  test(`agenda: geen uitverkochte of wachtlijst-data, geen label "Wachtlijst"; helemaal volle voorstelling weg (${viewport.width}px)`, async () => {
+  test(`agenda, schakelaar uit (standaard): volle data staan erin met "Uitverkocht" of "Wachtlijst" (${viewport.width}px)`, async () => {
     const { ctx, page } = await openApp({ viewport, extraShows: VOL });
-    // Zonder zoekopdracht: nergens een uitverkocht- of wachtlijstlabel (ook niet uit de echte data).
-    if (await page.locator('.show-more-btn').count()) await page.locator('.show-more-btn').click();
-    await page.waitForTimeout(300);
-    assert.equal(await page.locator('#agendaList .status-badge--wachtlijst, #agendaList .status-badge--uitverkocht').count(), 0);
     await zoek(page, 'Proefstuk Volle Zaal');
     const rijen = page.locator('#agendaList .show-row');
-    // beschikbaar, afgelast (met label), onbekend en DOK6 beschikbaar: 4 rijen.
-    assert.equal(await rijen.count(), 4);
+    // Alle zeven data, met hun labels.
+    assert.equal(await rijen.count(), 7);
+    assert.equal(await page.locator('#agendaList .status-badge--uitverkocht').innerText(), 'Uitverkocht');
+    assert.deepEqual(await page.locator('#agendaList .status-badge--wachtlijst').allInnerTexts(), ['Wachtlijst', 'Wachtlijst']);
     assert.equal(await page.locator('#agendaList .status-badge--afgelast').count(), 1);
     await zoek(page, 'Proefstuk Helemaal Vol');
+    assert.equal(await rijen.count(), 2);
+    assert.equal(await page.locator(ROW_LABEL).count(), 2);
+    assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+    await ctx.close();
+  });
+
+  test(`agenda, schakelaar aan (opgeslagen keuze): geen uitverkochte, wachtlijst- of afgelaste data; helemaal volle voorstelling weg (${viewport.width}px)`, async () => {
+    const { ctx, page } = await openApp({ viewport, extraShows: VOL, opslag: { 'podiumagenda:filters': { hideFullOnly: true } } });
+    const id = viewport.width >= 900 ? '#sidebarHideFullToggle' : '#hideFullToggle';
+    assert.equal(await page.locator(id).getAttribute('aria-checked'), 'true');
+    if (await page.locator('.show-more-btn').count()) await page.locator('.show-more-btn').click();
+    await page.waitForTimeout(300);
+    assert.equal(await page.locator(ROW_LABEL).count(), 0); // ook niet uit de echte data
+    await zoek(page, 'Proefstuk Volle Zaal');
+    const rijen = page.locator('#agendaList .show-row');
+    // beschikbaar, onbekend en DOK6 beschikbaar.
+    assert.equal(await rijen.count(), 3);
+    assert.equal(await page.locator('#agendaList .status-badge--afgelast').count(), 0);
+    await zoek(page, 'Proefstuk Helemaal Vol');
     assert.equal(await rijen.count(), 0);
-    assert.match(await page.locator('#emptyState').innerText(), /Geen voorstellingen gevonden voor "Proefstuk Helemaal Vol"/);
+    assert.match(await page.locator('#emptyState').innerText(), /Geen voorstellingen gevonden voor "Proefstuk Helemaal Vol" met deze filters/);
     assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
     await ctx.close();
   });
 }
 
-test('agenda: filters en tellers brengen volle data niet terug; "Verberg afgelaste voorstellingen" verbergt alleen afgelast', async () => {
+test('schakelaar "Verberg volle voorstellingen": zelfde naam, standaard uit, keuze onthouden; watchlist-filter en teller kloppen', async () => {
   const { ctx, page } = await openApp({ viewport: { width: 1280, height: 900 }, extraShows: VOL });
-  // Watchlist-filter met een volle voorstelling op de watchlist: niets.
+  for (const id of ['#sidebarHideFullToggle', '#hideFullToggle']) {
+    assert.equal(await page.locator('.toggle-row', { has: page.locator(id) }).locator('.toggle-row-label').textContent(), 'Verberg volle voorstellingen');
+  }
+  assert.equal(await page.locator('#sidebarHideFullToggle').getAttribute('aria-checked'), 'false');
+  // Volle voorstelling op de watchlist: zichtbaar met de schakelaar uit, weg met de schakelaar aan.
   await page.goto(`${base}#/show/helemaal-4`);
   await page.waitForTimeout(300);
   await page.click('#detailWatchBtn');
@@ -349,8 +372,12 @@ test('agenda: filters en tellers brengen volle data niet terug; "Verberg afgelas
   await page.waitForTimeout(300);
   await page.click('#sidebarWatchlistOnlyToggle');
   await page.waitForTimeout(300);
+  assert.equal(await page.locator('#agendaList .show-row', { hasText: 'Proefstuk Helemaal Vol' }).count(), 2);
+  await page.click('#sidebarHideFullToggle');
+  await page.waitForTimeout(300);
   assert.equal(await page.locator('#agendaList .show-row', { hasText: 'Proefstuk Helemaal Vol' }).count(), 0);
   await page.click('#sidebarWatchlistOnlyToggle');
+  await page.waitForTimeout(300);
   // Teller "Toon … verder in de toekomst" telt alleen wat je dan ook ziet.
   const teller = (await page.locator('.show-more-btn').count()) ? await page.locator('.show-more-btn').innerText() : null;
   if (teller) {
@@ -359,14 +386,12 @@ test('agenda: filters en tellers brengen volle data niet terug; "Verberg afgelas
     await page.click('.show-more-btn');
     await page.waitForTimeout(400);
     assert.equal(await page.locator('#agendaList .show-row').count(), zichtbaar + n);
-    assert.equal(await page.locator('#agendaList .status-badge--wachtlijst, #agendaList .status-badge--uitverkocht').count(), 0);
+    assert.equal(await page.locator(ROW_LABEL).count(), 0);
   }
-  await zoek(page, 'Proefstuk Volle Zaal');
-  assert.equal(await page.locator('.toggle-row', { has: page.locator('#sidebarHideFullToggle') }).locator('.toggle-row-label').innerText(), 'Verberg afgelaste voorstellingen');
-  await page.click('#sidebarHideFullToggle');
+  // Onthouden na herladen.
+  await page.reload({ waitUntil: 'networkidle' });
   await page.waitForTimeout(300);
-  assert.equal(await page.locator('#agendaList .show-row').count(), 3);
-  assert.equal(await page.locator('#agendaList .status-badge--afgelast').count(), 0);
+  assert.equal(await page.locator('#sidebarHideFullToggle').getAttribute('aria-checked'), 'true');
   assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
   await ctx.close();
 });

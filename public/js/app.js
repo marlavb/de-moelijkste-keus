@@ -4644,9 +4644,6 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
 
   return state.shows.filter((s) => {
     if (!enabled.has(s.theaterId)) return false;
-    // Uitverkocht of alleen een wachtlijst: nooit in de agenda (okt 2026).
-    // Ook de tellers ("Toon … verder in de toekomst") tellen ze dus niet.
-    if (isVol(s)) return false;
     const cityOk = state.selectedCities.size === 0 || state.selectedCities.has(s.stad);
     const theaterOk = state.selectedTheaters.size === 0 || state.selectedTheaters.has(s.theaterId);
     // Op alle genres van de productie (show.genres); het label toont het
@@ -4655,10 +4652,12 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     const podiumpasOk = !state.podiumpasOnly || s.podiumpas === true;
     const watchlistOk = !state.watchlistOnly || isOpWatchlist(s);
     const gezienOk = !state.hideGezien || !isGezien(s);
-    // "Verberg afgelaste voorstellingen" (heette "Verberg volle
-    // voorstellingen"; vol staat sinds okt 2026 nooit meer in de agenda).
-    // 'onbekend' blijft altijd zichtbaar: we weten niet of die vol is.
-    const fullOk = !state.hideFullOnly || !isVervallen(s);
+    // 'onbekend' blijft altijd zichtbaar — we weten domweg niet of die vol
+    // is, en dat is iets anders dan bevestigd vol (uitverkocht/wachtlijst).
+    // Afgelast en verplaatst zijn ook niet te boeken: die gaan mee weg.
+    // Een voorstelling met alleen volle data verdwijnt dan helemaal, en de
+    // tellers tellen ze niet mee (ze gaan allemaal via deze filter).
+    const fullOk = !state.hideFullOnly || (!isVol(s) && !isVervallen(s));
     // Ondergrens geldt altijd, ook met ignoreDateWindow (dat heft alleen de
     // voorwaartse 30-dagen-grens op via "toon meer" — verleden tijd tonen we
     // nooit, dat is geen "meer", dat is gewoon verlopen data).

@@ -1,5 +1,6 @@
-// Tests voor isVol (public/js/weergave.js): uitverkocht en wachtlijst staan
-// niet in de agenda; afgelast, verplaatst en onbekend wel (okt 2026).
+// Tests voor isVol (public/js/weergave.js): uitverkocht en wachtlijst zijn
+// vol (grijze datumblokjes, "Verberg volle voorstellingen"); afgelast,
+// verplaatst en onbekend niet (okt 2026).
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

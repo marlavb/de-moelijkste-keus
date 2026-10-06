@@ -61,7 +61,7 @@ async function zoek(page, tekst) {
 
 // ---------- Uitverkochte en wachtlijst-data ----------
 
-test('volle data: niet in de agenda, wel als grijze blokjes in het detail; eigen plan op een wachtlijst-datum blijft (Firestore)', async () => {
+test('volle data: in de agenda met label; "Verberg volle voorstellingen" haalt ze weg; grijze blokjes in het detail; eigen plan op een wachtlijst-datum blijft (Firestore)', async () => {
   // Een voorstelling met een gewone datum én een wachtlijst-datum, en een unieke titel.
   const titels = new Map();
   for (const s of shows) titels.set(s.titel, (titels.get(s.titel) ?? new Set()).add(s.theaterId));
@@ -73,8 +73,19 @@ test('volle data: niet in de agenda, wel als grijze blokjes in het detail; eigen
   await ga(page, base, '#/');
   await zoek(page, prod[0].titel);
   const rijen = page.locator('#agendaList .show-row', { hasText: prod[0].titel });
-  assert.equal(await rijen.count(), prod.filter((s) => !isVol(s)).length);
+  // Schakelaar uit (standaard): alle data, met "Wachtlijst" of "Uitverkocht".
+  assert.equal(await rijen.count(), prod.length);
+  assert.equal(await page.locator('#agendaList .status-badge--wachtlijst').count(), prod.filter((s) => s.beschikbaarheid === 'wachtlijst').length);
+  assert.equal(await page.locator('#agendaList .status-badge--uitverkocht').count(), prod.filter((s) => s.beschikbaarheid === 'uitverkocht').length);
+  // Schakelaar aan: de volle (en afgelaste) data weg. (Tijdens het zoeken is
+  // de filterknop verborgen; de schakelaar zelf werkt hetzelfde.)
+  await page.locator('#hideFullToggle').dispatchEvent('click');
+  await page.waitForTimeout(300);
+  assert.equal(await page.locator('#hideFullToggle').getAttribute('aria-checked'), 'true');
+  assert.equal(await rijen.count(), prod.filter((s) => !isVol(s) && s.beschikbaarheid !== 'afgelast' && s.beschikbaarheid !== 'verplaatst').length);
   assert.equal(await page.locator('#agendaList .status-badge--wachtlijst, #agendaList .status-badge--uitverkocht').count(), 0);
+  // Weer uit, voor de volgende tests.
+  await page.locator('#hideFullToggle').dispatchEvent('click');
 
   // Detail: alle data op volgorde, de volle grijs en uitgeschakeld.
   const open = prod.find((s) => !isVol(s));

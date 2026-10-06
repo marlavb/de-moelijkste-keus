@@ -30,9 +30,10 @@ export function isVervallen(showOfStatus) {
   return VERVALLEN.includes(b);
 }
 
-// Vol (okt 2026): uitverkocht of alleen een wachtlijst. Staat niet in de
-// agenda; in het detailscherm een grijs, doorgestreept datumblokje. Een
-// eigen plan of een directe link (watchlist) blijft gewoon werken.
+// Vol: uitverkocht of alleen een wachtlijst. In de agenda verborgen met
+// "Verberg volle voorstellingen"; in het detailscherm altijd een grijs,
+// doorgestreept datumblokje (okt 2026). Een eigen plan of een directe link
+// (watchlist) blijft gewoon werken.
 export const VOL = ['uitverkocht', 'wachtlijst'];
 
 export function isVol(showOfStatus) {
