@@ -3,15 +3,17 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { pasMakerMeerderheidToe, kiesMaker, makerSleutel, makerKern, verdachtReden } from '../src/lib/makerMeerderheid.js';
+import { pasMakerMeerderheidToe, kiesMaker, makerSleutel, makerKern, verdachtReden, kernMag, lijktOpGezelschap } from '../src/lib/makerMeerderheid.js';
 
 let n = 0;
 const s = (theaterId, maker, titel = 'Teckel') => ({ id: `${theaterId}-${++n}`, theaterId, titel, maker, datum: '2027-02-11', tijd: '20:30' });
 
 test('lege maker neemt de ene maker over; makerBron bewaard (ook null)', () => {
-  const invoer = [s('bellevue', 'Nina van Tongeren'), s('ssu', null), s('schuur', undefined), s('kunstlinie', '  ')];
+  // Nina van Tongeren is ook elders maker (bekende maker, zie onder).
+  const elders = s('mozaiek', 'Nina van Tongeren', 'Iets anders');
+  const invoer = [s('bellevue', 'Nina van Tongeren'), s('ssu', null), s('schuur', undefined), s('kunstlinie', '  '), elders];
   const { shows, gewijzigd } = pasMakerMeerderheidToe(invoer);
-  assert.deepEqual(shows.map((x) => x.maker), Array(4).fill('Nina van Tongeren'));
+  assert.deepEqual(shows.slice(0, 4).map((x) => x.maker), Array(4).fill('Nina van Tongeren'));
   assert.equal(shows[1].makerBron, null);
   assert.equal(shows[2].makerBron, null);
   assert.equal(shows[3].makerBron, '  ');
@@ -85,7 +87,8 @@ test('coproductie blijft: één variant met " / " wordt niet ingekort; een ander
 test('verdachte maker van één theater wordt niet overgenomen, wel gemeld', () => {
   const geval = (maker, extra = []) => {
     const verdacht = [];
-    const r = pasMakerMeerderheidToe([s('flint', maker, 'Nhung Dam'), s('delanding', null, 'Nhung Dam'), ...extra], { verdacht });
+    // Elke maker ook elders als maker, zodat alleen de verdacht-regels tellen.
+    const r = pasMakerMeerderheidToe([s('flint', maker, 'Nhung Dam'), s('delanding', null, 'Nhung Dam'), s('elders', maker, 'Iets anders'), ...extra], { verdacht });
     return { maker: r.shows[1].maker, verdacht };
   };
   // Cijfers, kleine letter, nooit-maker-lijst.
@@ -124,8 +127,49 @@ test('gelijke stand tussen verschillende makers: niets wijzigen, wel als conflic
 });
 
 test('binnen één theater: data zonder maker krijgen de maker van de andere data', () => {
-  const { shows } = pasMakerMeerderheidToe([s('a', 'Jan Beuving'), s('a', null)]);
+  const { shows } = pasMakerMeerderheidToe([s('a', 'Jan Beuving'), s('a', null), s('b', 'Jan Beuving', 'Dekpunt')]);
   assert.equal(shows[1].maker, 'Jan Beuving');
+});
+
+test('maker van één theater alleen als hij elders ook maker is (bij een andere productie); anders gemeld als onbekend', () => {
+  const verdacht = [];
+  const r = pasMakerMeerderheidToe([s('stoep', 'The international hit show', 'The Simon & Garfunkel Story'), s('maaspoort', null, 'The Simon & Garfunkel Story')], { verdacht });
+  assert.equal(r.shows[1].maker, null);
+  assert.equal(verdacht[0].reden, 'onbekend (nergens anders maker)');
+  // Dezelfde maker bij een andere productie: bekend, wel overnemen.
+  const bekend = pasMakerMeerderheidToe([s('stoep', 'Theater Terra', 'Kikker is Kikker'), s('maaspoort', null, 'Kikker is Kikker'), s('meervaart', 'Theater Terra', 'Pippi en de Piraten')]);
+  assert.equal(bekend.shows[1].maker, 'Theater Terra');
+});
+
+test('kern alleen als het weggelaten deel een gezelschap is en de kern niet', () => {
+  assert.equal(lijktOpGezelschap('Bellevue Producties'), true);
+  assert.equal(lijktOpGezelschap('Toneelschuur'), true);
+  assert.equal(lijktOpGezelschap('Glen Faria'), false);
+  assert.equal(kernMag('Nina van Tongeren / Theater Bellevue'), true);
+  assert.equal(kernMag('Theater Rotterdam / Glen Faria'), false);
+  assert.equal(kernMag('Maas Theater en Dans / 155'), false);
+  assert.equal(kernMag('Thorn de Vries/Roeland Fernhout'), false);
+  // "Man": Theater Rotterdam / Glen Faria … blijft heel; geen kern, dus de volledige maker telt.
+  const conflicten = [];
+  const man = pasMakerMeerderheidToe(
+    [s('ita', 'Theater Rotterdam / Glen Faria'), s('tr25', 'Theater Rotterdam / Glen Faria'), s('ks', 'Theater Rotterdam / ZO! Gospel Choir'), s('x', null)].map((v) => ({ ...v, titel: 'Man' })),
+    { conflicten }
+  );
+  assert.equal(man.shows[3].maker, 'Theater Rotterdam / Glen Faria');
+  assert.equal(man.shows[2].maker, 'Theater Rotterdam / Glen Faria');
+  // Een deel dat elders in z'n geheel maker van een andere productie is, telt ook als gezelschap.
+  const bt = pasMakerMeerderheidToe([
+    s('a', 'Lisa Weeda / BrotherTill', 'Begin again'),
+    s('b', 'Lisa Weeda / Zeelandia', 'Begin again'),
+    s('c', null, 'Begin again'),
+    s('d', 'BrotherTill', 'Iets anders'),
+    s('e', 'Zeelandia', 'Nog iets'),
+  ]);
+  assert.equal(bt.shows[2].maker, 'Lisa Weeda');
+  // Een duo ("DeRonde/Deroo/Feikes Huis" naast "DeRonde/Deroo"): Deroo is geen gezelschap, niet inkorten.
+  assert.equal(kernMag('DeRonde/Deroo/Feikes Huis'), false);
+  // "De Coproducers" is een producent.
+  assert.equal(kernMag('Elias De Bruyne / De Coproducers'), true);
 });
 
 test('idempotent: terug naar makerBron en opnieuw toepassen geeft hetzelfde', () => {

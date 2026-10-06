@@ -10,21 +10,24 @@
 // - makers tellen als dezelfde als ze na normalisatie gelijk zijn
 //   (hoofdletters, leestekens, "&" = "en"): "Nina van Tongeren / Theater
 //   Bellevue" = "Nina van Tongeren / theater bellevue";
-// - stemmen tellen per kern: het deel vóór " / " (gezelschap of producent
-//   staat erna). Verschillen de varianten van de winnende kern alleen ná
-//   " / ", dan wordt de maker de kern: "Nina van Tongeren / Theater
-//   Bellevue" en "Nina van Tongeren / Bellevue Producties" → "Nina van
-//   Tongeren". Zo lost de kern ook een gelijke stand op. Een coproductie
-//   (een ander deel vóór " / ") blijft een eigen kern en wordt niet ingekort;
-//   heeft de winnende kern maar één variant, dan blijft die heel staan;
+// - stemmen tellen per kern: het deel vóór " / ", maar alleen als wat erna
+//   staat een gezelschap of producent is en de kern zelf niet (kernMag).
+//   Verschillen de varianten van de winnende kern alleen ná " / ", dan wordt
+//   de maker de kern: "Nina van Tongeren / Theater Bellevue" en "Nina van
+//   Tongeren / Bellevue Producties" → "Nina van Tongeren". Zo lost de kern
+//   ook een gelijke stand op. Niet ingekort: een coproductie (een ander deel
+//   vóór " / "), "Theater Rotterdam / Glen Faria" (de kern is zelf een
+//   gezelschap, en Glen Faria niet), en een winnende kern met maar één
+//   variant;
 // - de schrijfwijze die de meeste theaters gebruiken (gelijk: hoofdletter
 //   vooraan, minste hoofdletters, dan tekenvolgorde, zodat hij niet van
 //   nacht tot nacht wisselt);
 // - gelijke stand tussen kernen → niets wijzigen (`conflicten`);
 // - komt de winnende maker van maar één theater, dan alleen als hij niet
-//   verdacht is (verdachtReden): geen cijfers, geen (onder)titel van een
+//   verdacht is (verdachtReden: geen cijfers, geen (onder)titel van een
 //   andere productie, geen kleine letter vooraan, niet op de nooit-maker-
-//   lijst. Verdacht → niets wijzigen (`verdacht`).
+//   lijst) én bekend is: dezelfde naam is elders in de data ook maker, bij
+//   een andere productie. Anders niets wijzigen (`verdacht`).
 // Nooit een maker verzinnen of van een andere sleutel overnemen.
 // Theatergebonden titels (uitsluitlijst) doen niet mee. De oorspronkelijke
 // maker blijft als `makerBron` (alleen als hij anders is, ook als dat null
@@ -71,24 +74,44 @@ const meesteMetLaagste = (tellingen) => {
 
 const tel = (map, k) => map.set(k, (map.get(k) ?? 0) + 1);
 
+// Woorden waaraan je een gezelschap of producent herkent (ook midden in een
+// woord: "Toneelschuur", "Dansgezelschap", "Productiehuis").
+const GEZELSCHAP = /theat|produc|gezelschap|company|compagn|kompagn|toneel|dans|huis\b|stichting|collect|ensemble|orkest|orchestr|opera|ballet|studio|festival/i;
+
+/** Lijkt deze tekst op een gezelschap of producent (alleen aan de woorden)? */
+export function lijktOpGezelschap(tekst) {
+  return GEZELSCHAP.test(String(tekst ?? ''));
+}
+
+/**
+ * Mag deze maker tot zijn kern worden ingekort? Alleen als elk deel ná
+ * " / " een gezelschap is en de kern zelf niet op een gezelschap lijkt
+ * (aan de woorden). `isGezelschap` (voor de delen erna) kan meer weten dan
+ * de woorden (zie pasMakerMeerderheidToe).
+ */
+export function kernMag(maker, isGezelschap = lijktOpGezelschap) {
+  const delen = String(maker ?? '').split(KERN_SCHEIDING).map((d) => d.trim());
+  if (delen.length < 2) return false;
+  return delen.slice(1).every((d) => isGezelschap(d)) && !lijktOpGezelschap(delen[0]);
+}
+
 /**
  * Kiest de maker uit de stemmen ([{ theaterId, maker }], één per theater).
  * Geeft { maker, reden, theaters } (theaters = de theaters achter de
  * winnaar), { maker: null, gelijk: true } bij gelijke stand, of null.
  */
-export function kiesMaker(stemmen) {
+export function kiesMaker(stemmen, { isGezelschap = lijktOpGezelschap } = {}) {
   if (stemmen.length === 0) return null;
-  // Een variant zonder " / " die na normalisatie gelijk is aan een variant
-  // mét " / " ("Theater Rotterdam – Mathieu Wijdeven" en "Theater
-  // Rotterdam/Mathieu Wijdeven") hoort bij dezelfde kern.
+  // De kern van elke maker die ingekort mag worden. Een variant zonder " / "
+  // die na normalisatie gelijk is ("Nina van Tongeren – Theater Bellevue" en
+  // "Nina van Tongeren / Theater Bellevue") hoort bij dezelfde kern.
   const kernVan = new Map(); // makerSleutel(maker) → kern
   for (const { maker } of stemmen) {
-    const kern = makerKern(maker);
-    if (kern !== maker.trim()) kernVan.set(makerSleutel(maker), kern);
+    if (kernMag(maker, isGezelschap)) kernVan.set(makerSleutel(maker), makerKern(maker));
   }
   const perKern = new Map(); // makerSleutel(kern) → { theaters, volledig: Map(makerSleutel → Map(tekst → n)), kern: Map(tekst → n) }
   for (const { theaterId, maker } of stemmen) {
-    const kern = kernVan.get(makerSleutel(maker)) ?? makerKern(maker);
+    const kern = kernVan.get(makerSleutel(maker)) ?? maker.trim();
     const k = makerSleutel(kern);
     if (!perKern.has(k)) perKern.set(k, { theaters: [], volledig: new Map(), kern: new Map() });
     const g = perKern.get(k);
@@ -168,11 +191,26 @@ export function pasMakerMeerderheidToe(shows, { beslissingen = null, conflicten 
     tel(perTheater.get(s.theaterId), maker);
   }
 
+  // Bekende makers: elke maker per productie en theater. Een deel ná " / "
+  // dat elders in z'n geheel de maker van een andere productie is
+  // ("Lloydscompany"), telt ook als gezelschap.
+  const makerBij = new Map(); // makerSleutel(maker) → Set(sleutel|theaterId)
+  for (const [sleutel, perTheater] of groepen) {
+    for (const [theaterId, t] of perTheater) {
+      for (const maker of t.keys()) {
+        const m = makerSleutel(maker);
+        if (!makerBij.has(m)) makerBij.set(m, new Set());
+        makerBij.get(m).add(`${sleutel}|${theaterId}`);
+      }
+    }
+  }
+
   let index = null;
   const gekozen = new Map(); // sleutel → maker
   for (const [sleutel, perTheater] of groepen) {
     const stemmen = [...perTheater].map(([theaterId, t]) => ({ theaterId, maker: meesteMetLaagste(t) }));
-    const keuze = kiesMaker(stemmen);
+    const isGezelschap = (d) => lijktOpGezelschap(d) || [...(makerBij.get(makerSleutel(d)) ?? [])].some((k) => !k.startsWith(`${sleutel}|`));
+    const keuze = kiesMaker(stemmen, { isGezelschap });
     if (!keuze) continue;
     if (keuze.gelijk) {
       conflicten?.push({ sleutel, theaters: stemmen });
@@ -183,7 +221,9 @@ export function pasMakerMeerderheidToe(shows, { beslissingen = null, conflicten 
     if (alGoed === aantal.get(sleutel)) continue;
     if (keuze.theaters.length === 1) {
       index ??= titelIndex(shows);
-      const reden = verdachtReden(keuze.maker, { sleutel, index });
+      const bron = `${sleutel}|${keuze.theaters[0]}`;
+      const bekend = [...(makerBij.get(makerSleutel(keuze.maker)) ?? [])].some((k) => k !== bron);
+      const reden = verdachtReden(keuze.maker, { sleutel, index }) ?? (bekend ? null : 'onbekend (nergens anders maker)');
       if (reden) {
         verdacht?.push({ sleutel, maker: keuze.maker, theaterId: keuze.theaters[0], reden });
         continue;
