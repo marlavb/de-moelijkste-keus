@@ -168,3 +168,25 @@ test('titel uit kop en ondertitel, met een vaste volgorde per theater/genre', as
   const cab = { titel: 'Rundfunk', genre: 'Cabaret', maker: null };
   assert.equal(pasTitelConventieToe(cab, { artiest: 'Rundfunk', voorstelling: 'try-out' }).titel, 'Rundfunk');
 });
+
+test('omgedraaide titel en maker per theater (OMGEDRAAID); jubileum-ondertitel is nooit maker', async () => {
+  const { draaiTitelEnMakerOm, isGeenMaker } = await import('../src/lib/titels.js');
+  const nhung = { theaterId: 'flint', titel: 'Nhung Dam', maker: 'Legende van de witte slang' };
+  assert.deepEqual(draaiTitelEnMakerOm(nhung), { theaterId: 'flint', titel: 'Legende van de witte slang', maker: 'Nhung Dam' });
+  // Idempotent: na het omdraaien niet nog eens.
+  assert.deepEqual(draaiTitelEnMakerOm(draaiTitelEnMakerOm(nhung)), draaiTitelEnMakerOm(nhung));
+  assert.equal(draaiTitelEnMakerOm({ theaterId: 'stoep', titel: 'Alain Clark', maker: 'Date Night' }).titel, 'Date Night');
+  // Ander theater, andere titel of geen maker: niets.
+  assert.equal(draaiTitelEnMakerOm({ ...nhung, theaterId: 'kunstlinie' }).titel, 'Nhung Dam');
+  assert.equal(draaiTitelEnMakerOm({ theaterId: 'flint', titel: 'Sherlock Holmes', maker: 'Mark Rietman' }).titel, 'Sherlock Holmes');
+  assert.equal(draaiTitelEnMakerOm({ theaterId: 'flint', titel: 'Nhung Dam', maker: null }).titel, 'Nhung Dam');
+  assert.equal(isGeenMaker('20 jaar 3JS'), true);
+  assert.equal(isGeenMaker('20 jaar onmeunig druk'), true);
+  assert.equal(isGeenMaker('Theater 155'), false);
+});
+
+test('"Met: …" (filmcast) is nooit maker', async () => {
+  const { isGeenMaker } = await import('../src/lib/titels.js');
+  assert.equal(isGeenMaker('Met: Daisy Edgar-Jones, Caitríona Balfe, Fiona Shaw e.a.'), true);
+  assert.equal(isGeenMaker('Metropole Orkest'), false);
+});

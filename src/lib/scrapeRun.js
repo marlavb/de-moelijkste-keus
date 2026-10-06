@@ -10,7 +10,7 @@ import { volgNavigatie, paginaDiagnose } from './diagnose.js';
 import { pasMeerderheidToe } from './weergaveMeerderheid.js';
 import { pasGenreMeerderheidToe } from './genreMeerderheid.js';
 import { pasMakerMeerderheidToe } from './makerMeerderheid.js';
-import { metEnDash, zonderStatusWoord, isGeenMaker, makerZonderVoorvoegsel } from './titels.js';
+import { metEnDash, zonderStatusWoord, isGeenMaker, makerZonderVoorvoegsel, draaiTitelEnMakerOm } from './titels.js';
 import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
 
@@ -350,7 +350,11 @@ export async function runRefresh({
       // zijn: "had geen genre/maker").
       if (genreBron !== undefined) s.genre = genreBron;
       if (makerBron !== undefined) s.maker = makerBron;
-      const bron = titelBron ?? s.titel;
+      // Omgedraaide titel en maker (titels.js, OMGEDRAAID): de scraper doet
+      // dit al; hier ook voor behouden data van een theater dat faalde.
+      const recht = draaiTitelEnMakerOm({ ...s, titel: titelBron ?? s.titel });
+      s.maker = recht.maker;
+      const bron = recht.titel;
       // Afgelast/verplaatst: het statuswoord uit de titel, het staat in het label.
       const kaal = isVervallen(s) ? zonderStatusWoord : (t) => t;
       // Nooit maker (titels.js): een content warning, "Met …", een leeftijd of

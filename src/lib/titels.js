@@ -42,16 +42,46 @@ export function isWervend(tekst) {
 // (ICE) is een voorstellingsnaam.
 const GEEN_MAKER = [
   /^(content warning|⚠)/i,
-  /^met\s/i,
+  // Ook "Met: Daisy Edgar-Jones, …" (filmcast, Aan de Slinger).
+  /^met[\s:]/i,
   /^\(?\s*\d{1,2}(?:[,.]\d)?\s*\+\s*\)?$/,
   /^\(?\s*\d{1,2}(?:[,.]\d)?\s*(?:tot|t\/m|-|–)\s*\d{1,2}(?:[,.]\d)?(?:\s*jaar)?\s*\)?$/i,
   /^vanaf \d{1,2} jaar$/i,
   /^\(?\s*(?:reprise|try[- ]?out|premi[eè]re|grand finale|live in (?:het )?theater)\s*\)?$/i,
+  // Een jubileum-ondertitel ("20 jaar 3JS", Flint; "20 jaar onmeunig druk",
+  // Miss Montreal), okt 2026.
+  /^\d+\s+jaar\s/i,
 ];
 
 export function isGeenMaker(tekst) {
   const t = String(tekst ?? '').trim();
   return Boolean(t) && GEEN_MAKER.some((re) => re.test(t));
+}
+
+// Titel en maker omgedraaid bij de bron (okt 2026): de artiest staat als
+// titel en de voorstelling als ondertitel/maker, buiten cabaret (waar
+// pasTitelConventieToe dat al oplost). Per theater, per letterlijke
+// brontitel: bij deze theaters is de volgorde per genre niet vast (Flint:
+// "Sherlock Holmes" / "Mark Rietman" naast "Nhung Dam" / "Legende van de
+// witte slang"), dus een genreregel zou goede titels omdraaien. Gecontroleerd
+// tegen de theaters met de goede volgorde (6 okt 2026):
+// - "Nhung Dam" / "Legende van de witte slang": Aan de Slinger, Koningshof
+//   en De Maaspoort hebben titel "Legende van de witte slang", maker "Nhung Dam".
+// - "Alain Clark" / "Date Night": Omval heeft titel "Date Night", maker
+//   "Alain Clark"; Griffioen "Date Night – Alain Clark".
+export const OMGEDRAAID = {
+  flint: ['Nhung Dam'],
+  cpunt: ['Nhung Dam'],
+  stoep: ['Alain Clark'],
+  maaspoort: ['Alain Clark'],
+};
+
+/** Draait titel en maker om als dit theater de titel op OMGEDRAAID heeft (en er een maker is). */
+export function draaiTitelEnMakerOm(show, lijst = OMGEDRAAID) {
+  const titels = lijst[show?.theaterId];
+  const maker = typeof show?.maker === 'string' ? show.maker.trim() : '';
+  if (!titels || !maker || !titels.includes(String(show.titel ?? '').trim())) return show;
+  return { ...show, titel: maker, maker: show.titel.trim() };
 }
 
 /** "door Oortwolk" → "Oortwolk", "o.l.v. Tijn Trommelen" → "Tijn Trommelen". */
