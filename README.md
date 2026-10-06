@@ -138,7 +138,10 @@ Service worker: `podiumagenda-v36`
 ### Theaters
 
 Status uit de laatste refresh: `ok`, `leeg` (geen komende voorstellingen) of
-`gepauzeerd` (het theater weert ons; we omzeilen dat niet).
+`gepauzeerd` (het theater weert ons; we omzeilen dat niet). Podiumpas per
+voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
+`–` (geen voorstellingen in de data). De app toont `ja` en `deels` als
+"Podiumpas".
 
 <!-- AUTO:theaters:start -->
 **Noord-Holland** (25)
@@ -146,7 +149,7 @@ Status uit de laatste refresh: `ok`, `leeg` (geen komende voorstellingen) of
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
 | Karavaan - Theater de Drukkerij | Alkmaar | ja | ok |
-| Bostheater | Amstelveen | ja | leeg |
+| Bostheater | Amstelveen | – | leeg |
 | De Landing | Amstelveen | deels | ok |
 | Schouwburg Amstelveen | Amstelveen | ja | ok |
 | Amsterdams Marionetten Theater | Amsterdam | deels | ok |
@@ -165,7 +168,7 @@ Status uit de laatste refresh: `ok`, `leeg` (geen komende voorstellingen) of
 | Theater De Krakeling | Amsterdam | ja | ok |
 | Theater de Meervaart | Amsterdam | ja | ok |
 | VU Griffioen | Amsterdam | ja | ok |
-| Kennemer Theater | Beverwijk | nee | gepauzeerd sinds 2026-10-01 |
+| Kennemer Theater | Beverwijk | – | gepauzeerd sinds 2026-10-01 |
 | Theater de Omval | Diemen | ja | ok |
 | Schuur | Haarlem | ja | ok |
 | Cpunt | Hoofddorp | nee | ok |
@@ -175,8 +178,8 @@ Status uit de laatste refresh: `ok`, `leeg` (geen komende voorstellingen) of
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| Theater het Kruispunt | Barendrecht | ja | gepauzeerd sinds 2026-09-28 |
-| Isala theater | Capelle aan den IJssel | ja | gepauzeerd sinds 2026-09-28 |
+| Theater het Kruispunt | Barendrecht | – | gepauzeerd sinds 2026-09-28 |
+| Isala theater | Capelle aan den IJssel | – | gepauzeerd sinds 2026-09-28 |
 | Koninklijke Schouwburg | Den Haag | ja | ok |
 | Theater aan het Spui | Den Haag | ja | ok |
 | Zaal 3 | Den Haag | ja | ok |

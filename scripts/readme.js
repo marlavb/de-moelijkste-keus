@@ -54,9 +54,15 @@ export function amsterdamTijd(iso) {
 
 const cel = (t) => String(t ?? '').replace(/\|/g, '\\|');
 
-function podiumpasVan(theater, shows) {
-  const eigen = shows.filter((s) => s.theaterId === theater.id);
-  if (eigen.length === 0) return theater.podiumpas ? 'ja' : 'nee';
+// Podiumpas: dezelfde bron als het tabblad Theaters in de app, namelijk
+// `podiumpas` per voorstelling in shows.json (niet het veld in config.js,
+// dat bij gemengde theaters niet per voorstelling klopt). ja = alle
+// voorstellingen, deels = een deel, nee = geen. Zonder voorstellingen in de
+// data toont de app geen Podiumpas-label; hier dan "–".
+// (De app zelf toont "Podiumpas" bij ja of deels, en "Geen Podiumpas" bij nee.)
+export function podiumpasVan(theaterId, shows) {
+  const eigen = shows.filter((s) => s.theaterId === theaterId);
+  if (eigen.length === 0) return '–';
   const ja = eigen.filter((s) => s.podiumpas === true).length;
   return ja === eigen.length ? 'ja' : ja === 0 ? 'nee' : 'deels';
 }
@@ -79,7 +85,7 @@ export function maakBlokken({ theaters, scrapeStatus, shows, swBron }) {
     const rijen = [...perProvincie.get(p)].sort((a, b) => a.stad.localeCompare(b.stad, 'nl') || a.naam.localeCompare(b.naam, 'nl'));
     delen.push(
       `**${p}** (${rijen.length})\n\n| Theater | Stad | Podiumpas | Status |\n|---|---|---|---|\n` +
-        rijen.map((t) => `| ${cel(t.naam)} | ${cel(t.stad)} | ${podiumpasVan(t, shows)} | ${cel(statusVan(t, scrapeStatus.theaters?.[t.id]))} |`).join('\n')
+        rijen.map((t) => `| ${cel(t.naam)} | ${cel(t.stad)} | ${podiumpasVan(t.id, shows)} | ${cel(statusVan(t, scrapeStatus.theaters?.[t.id]))} |`).join('\n')
     );
   }
 
