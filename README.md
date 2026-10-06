@@ -63,7 +63,12 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   `peppered.js` (Peppered), `wpTheatre.js` (Theater for WordPress) en
   `cre8ion.js` (The Cre8ion.Lab). Dubbele speeldata gaan eruit binnen een
   theater en tussen vaste paren theaters met één agenda-overlap
-  (`dedupe.js`).
+  (`dedupe.js`). Titels: waar een theater per genre een vaste volgorde van
+  maker en titel heeft, wordt dat "Titel – Maker"; content warnings,
+  "met o.a. …", leeftijden en ondertitels als "reprise" worden nooit maker
+  maar beschrijving (`titels.js`). Een agendapagina die niet laadt, krijgt
+  bij sommige theaters (ITA, Theater aan de Parade) één herpoging na een
+  minuut; mislukt die ook, dan geldt de vorige data.
 - **Nachtelijke run**: `.github/workflows/refresh-data.yml` scrapet, commit de
   data naar `main` en start de deploy. De Cloud Function `startNachtrun` start
   hem elke dag om 05:00 (Amsterdam); de cron van GitHub (03:17 UTC) blijft als
