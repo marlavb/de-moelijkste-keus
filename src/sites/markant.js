@@ -2,7 +2,9 @@ import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre, normalizeGenreFromList, isBekendGenre } from '../lib/genre.js';
 import { pasTitelConventieToe, isWervend } from '../lib/titels.js';
 import { blokkeerZwareBronnen } from '../lib/zwareBronnen.js';
-import { scrapePepperedListing, createRowDateResolver, classifyPepperedButton, logUnknownButtons, dedupeShows } from '../lib/peppered.js';
+import { scrapePepperedListing, createRowDateResolver, classifyPepperedButton, logUnknownButtons, dedupeShows, laagstePrijs } from '../lib/peppered.js';
+
+export { laagstePrijs };
 
 const AGENDA_PATH = '/nl/agenda';
 
@@ -16,12 +18,6 @@ const AGENDA_PATH = '/nl/agenda';
 // "Te gast" en verhuringen staan niet als label in de agenda: die passen we
 // niet toe (akkoord 6 okt 2026, open vraag 7).
 const PODIUMPAS_PRIJSGRENS = 50;
-
-/** Laagste €-bedrag in de prijstekst ("Normaal € 49,50 … € 49,50"), of null. */
-export function laagstePrijs(tekst) {
-  const bedragen = [...String(tekst ?? '').matchAll(/€\s*(\d+)(?:[,.](\d{2}|-))?/g)].map((m) => Number(`${m[1]}.${/\d{2}/.test(m[2] ?? '') ? m[2] : '00'}`));
-  return bedragen.length ? Math.min(...bedragen) : null;
-}
 
 /**
  * Markant Theater Maashorst (Uden).

@@ -343,3 +343,9 @@ export function createGroupScraper(scrapeAll) {
     return shows.filter((show) => show.theaterId === ctx.theater.id);
   };
 }
+
+/** Laagste €-bedrag in een prijstekst ("Rang 1 Normaal € 39,-", "€ 15,-–€ 20,-"), of null. */
+export function laagstePrijs(tekst) {
+  const bedragen = [...String(tekst ?? '').matchAll(/€\s*(\d+)(?:[,.](\d{2}|-))?/g)].map((m) => Number(`${m[1]}.${/\d{2}/.test(m[2] ?? '') ? m[2] : '00'}`));
+  return bedragen.length ? Math.min(...bedragen) : null;
+}

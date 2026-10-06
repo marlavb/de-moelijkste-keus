@@ -192,6 +192,7 @@ const GENRE_MAP = {
   event: 'Overig', // Markant
   carnaval: 'Overig', // Theater aan de Parade
   'echt bosch': 'Overig', // Theater aan de Parade: lokale reeks, geen genre
+  spellen: 'Overig', // Parktheater: "Moord in het Parktheater" (interactief spel)
 };
 
 // Samengestelde labels komen in allerlei varianten voor ("jeugd & familie",

@@ -771,4 +771,25 @@ export const THEATERS = [
       toelichting: 'Uitsluitend telefonisch via de kaartverkoopbalie, vanaf 30 dagen voor de voorstelling; online reserveren is niet mogelijk. Kaartje tot een half uur voor aanvang ophalen bij de balie.',
     },
   },
+  {
+    id: 'parktheater',
+    naam: 'Parktheater Eindhoven',
+    stad: 'Eindhoven',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.parktheater.nl',
+    agendaUrl: 'https://www.parktheater.nl/programma',
+    // Per voorstelling: alleen in het Parktheater en Pand P, niet boven € 50
+    // en niet bij de genoemde uitzonderingen (zie src/sites/parktheater.js).
+    podiumpas: true,
+    // Gepauzeerd: bij de verkenning (6 okt 2026) kwamen we bij ons 5e
+    // verzoek in 7 minuten in de BunnyCDN-wachtrij (/csq/queue). Niet
+    // omzeilen; geen verzoeken tot het theater antwoordt (gemaild). De
+    // scraper staat klaar. Terugzetten = deze regel weghalen.
+    gepauzeerd: { sinds: '2026-10-06', reden: 'BunnyCDN-wachtrij (/csq/queue)' },
+    // Bron: https://www.parktheater.nl/podiumpas-q3yt (6 okt 2026).
+    podiumpasReserveren: {
+      telefoon: '040-211 11 22',
+      toelichting: 'Telefonisch via de kaartverkoopbalie, vanaf 30 dagen voor de voorstelling; online reserveren is nog niet mogelijk. Pas laten scannen bij de avondkassa (open vanaf een uur voor aanvang).',
+    },
+  },
 ];
