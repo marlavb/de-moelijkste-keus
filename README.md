@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **46** (42 ok, 1 leeg, 3 gepauzeerd)
+- Theaters: **48** (42 ok, 1 leeg, 3 gepauzeerd, 2 onbekend)
 - Voorstellingen (titel per theater): **4498**
 - Speeldata: **6891**
 - Laatste refresh: **6 oktober 2026, 13:03** (Amsterdamse tijd)
@@ -132,7 +132,7 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v36`
+Service worker: `podiumagenda-v37`
 <!-- AUTO:sw:end -->
 
 ### Theaters
@@ -214,4 +214,11 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 |---|---|---|---|
 | DOK6 | Panningen | deels | ok |
 | De Maaspoort Theater & Events | Venlo | deels | ok |
+
+**Noord-Brabant** (2)
+
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| Kattendans | Bergeijk | – | onbekend |
+| Paradox | Tilburg | – | onbekend |
 <!-- AUTO:theaters:end -->

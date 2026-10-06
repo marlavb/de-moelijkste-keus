@@ -585,4 +585,45 @@ export const THEATERS = [
     agendaUrl: 'https://www.cpunt.nl/agenda',
     podiumpas: false,
   },
+  // Noord-Brabant (okt 2026; inventarisatie in debug/noord-brabant-
+  // inventarisatie.md, akkoord 6 okt 2026). Bewust achteraan: valt het
+  // totaalbudget van de run op, dan vallen alleen deze theaters terug op hun
+  // vorige data. Namen letterlijk zoals op podiumpas.nl/waar-te-besteden.
+  {
+    id: 'kattendans',
+    naam: 'Kattendans',
+    stad: 'Bergeijk',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://kattendans.nl',
+    agendaUrl: 'https://kattendans.nl/programma/',
+    // Per voorstelling: niet boven € 50, niet bij film, "Uit de regio" en
+    // gratis voorstellingen (zie src/sites/kattendans.js).
+    podiumpas: true,
+    // Bron: https://kattendans.nl/podiumpas/ (6 okt 2026); telefoonnummer uit
+    // de voettekst van die pagina.
+    podiumpasReserveren: {
+      online: true,
+      telefoon: '0497-571318',
+      toelichting: 'Online met het prijstype "podiumpas" (pasnummer invullen), of telefonisch, vanaf 30 dagen voor de voorstelling. Kaartje tot een half uur voor aanvang ophalen bij de theaterkassa.',
+    },
+  },
+  {
+    id: 'paradox',
+    naam: 'Paradox',
+    stad: 'Tilburg',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.paradoxtilburg.nl',
+    agendaUrl: 'https://www.paradoxtilburg.nl/agenda/',
+    // Alle concerten, behalve gratis toegankelijke avonden (zie
+    // src/sites/paradox.js).
+    podiumpas: true,
+    // Bron: https://www.paradoxtilburg.nl/over-paradox/tickets-kortingspassen/
+    // (6 okt 2026): "Voor een entreeticket stuur je een mail naar …". Het
+    // adres is daar afgeschermd; de eigen RSS-feed (/upcoming_events, 6 okt
+    // 2026) noemt voor dezelfde pasregeling info@paradoxtilburg.nl.
+    podiumpasReserveren: {
+      email: 'info@paradoxtilburg.nl',
+      toelichting: 'Je krijgt per mail een entreeticket met barcode; alleen de pas tonen bij de kassa is niet genoeg.',
+    },
+  },
 ];

@@ -160,6 +160,8 @@ const THEATER_INFO = {
 const THEATER_ZOEKALIASSEN = {
   ita: ['ita', 'internationaal theater amsterdam'],
   dok6: ['dok6 theater'],
+  kattendans: ['kattendans bergeijk'],
+  paradox: ['muziekpodium paradox', 'paradox tilburg'],
 };
 
 const BESCHIKBAARHEID_LABELS = {
