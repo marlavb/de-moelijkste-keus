@@ -193,6 +193,17 @@ const GENRE_MAP = {
   carnaval: 'Overig', // Theater aan de Parade
   'echt bosch': 'Overig', // Theater aan de Parade: lokale reeks, geen genre
   spellen: 'Overig', // Parktheater: "Moord in het Parktheater" (interactief spel)
+
+  // Limburg (okt 2026; zie debug/limburg-2-inventarisatie.md)
+  'theatercollege en literair': 'Overig', // Vrijthof, zoals 'theatercollege'
+  'cabaret & stand-up': 'Cabaret', // PLT
+  'toneel & taal': 'Toneel', // PLT
+  'klassiek & opera': 'Muziek & Concert', // PLT: opera niet te onderscheiden op de tegel
+  'kennis & interactie': 'Overig', // PLT, zoals 'kennis & personality'
+  regio: 'Overig', // PLT, zoals 'uit de regio'
+  speciaal: 'Overig', // Munttheater, zoals 'special'
+  'weert respecteert': 'Overig', // Munttheater: lokale reeks
+  verhuring: 'Overig', // De Oranjerie
 };
 
 // Samengestelde labels komen in allerlei varianten voor ("jeugd & familie",

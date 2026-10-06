@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **58** (42 ok, 1 leeg, 4 gepauzeerd, 11 onbekend)
+- Theaters: **65** (42 ok, 1 leeg, 4 gepauzeerd, 18 onbekend)
 - Voorstellingen (titel per theater): **4498**
 - Speeldata: **6891**
 - Laatste refresh: **6 oktober 2026, 13:03** (Amsterdamse tijd)
@@ -68,7 +68,13 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   "met o.a. …", leeftijden en ondertitels als "reprise" worden nooit maker
   maar beschrijving (`titels.js`). Een agendapagina die niet laadt, krijgt
   bij sommige theaters (ITA, Theater aan de Parade) één herpoging na een
-  minuut; mislukt die ook, dan geldt de vorige data.
+  minuut; mislukt die ook, dan geldt de vorige data. Sommige bronnen dienen
+  meer theaters tegelijk (één scrape per run): Het Cenakel (De Link,
+  S.M.E.T.), Theater aan het Vrijthof (ook AINSI, via de zoekindex van de
+  site) en PLT (Heerlen, Kerkrade, Sittard). Theaters zonder Podiumpas staan
+  er ook in, met `podiumpas: false` (ITA, de Limburgse theaters behalve De
+  Maaspoort en DOK6); de nieuwste theaters draaien achteraan in de run, elk
+  met een eigen tijdbudget.
 - **Nachtelijke run**: `.github/workflows/refresh-data.yml` scrapet, commit de
   data naar `main` en start de deploy. De Cloud Function `startNachtrun` start
   hem elke dag om 05:00 (Amsterdam); de cron van GitHub (03:17 UTC) blijft als
@@ -142,7 +148,7 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v37`
+Service worker: `podiumagenda-v38`
 <!-- AUTO:sw:end -->
 
 ### Theaters
@@ -218,12 +224,19 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Corrosia | Almere | deels | ok |
 | Kunstlinie | Almere | deels | ok |
 
-**Limburg** (2)
+**Limburg** (9)
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
+| Theater Heerlen | Heerlen | – | onbekend |
+| Theater Kerkrade | Kerkrade | – | onbekend |
+| AINSI | Maastricht | – | onbekend |
+| Theater aan het Vrijthof | Maastricht | – | onbekend |
 | DOK6 | Panningen | deels | ok |
+| Theater De Oranjerie | Roermond | – | onbekend |
+| Toon Hermans Theater Sittard | Sittard | – | onbekend |
 | De Maaspoort Theater & Events | Venlo | deels | ok |
+| Munttheater | Weert | – | onbekend |
 
 **Noord-Brabant** (12)
 

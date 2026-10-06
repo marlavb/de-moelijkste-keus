@@ -172,6 +172,13 @@ const THEATER_ZOEKALIASSEN = {
   denieuwevorst: ['nieuwe vorst', 'de nieuwe vorst'],
   hofnar: ['hofnar', 'hofnar valkenswaard'],
   parktheater: ['parktheater', 'pand p'],
+  vrijthof: ['vrijthof', 'theater vrijthof', 'tahv'],
+  ainsi: ['ainsi theater', 'ainsi maastricht'],
+  pltheerlen: ['plt', 'parkstad', 'parkstad limburg theaters', 'plt heerlen'],
+  pltkerkrade: ['plt', 'parkstad', 'plt kerkrade'],
+  pltsittard: ['plt', 'toon hermans', 'plt sittard'],
+  oranjerie: ['oranjerie', 'theater roermond'],
+  munttheater: ['munt', 'munttheater weert'],
 };
 
 const BESCHIKBAARHEID_LABELS = {
@@ -244,6 +251,12 @@ const PROVINCE_BY_CITY = {
   Hoofddorp: 'Noord-Holland',
   Venlo: 'Limburg',
   Panningen: 'Limburg',
+  Maastricht: 'Limburg',
+  Heerlen: 'Limburg',
+  Kerkrade: 'Limburg',
+  Sittard: 'Limburg',
+  Roermond: 'Limburg',
+  Weert: 'Limburg',
   "'s-Hertogenbosch": 'Noord-Brabant',
   Eindhoven: 'Noord-Brabant',
   Helmond: 'Noord-Brabant',
