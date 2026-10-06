@@ -1,18 +1,28 @@
 name: Refresh data
 
 on:
+  # De gewone start: de Cloud Function startNachtrun (functions/nachtrun.js)
+  # doet om 05:00 Europe/Amsterdam een workflow_dispatch op main.
+  workflow_dispatch:
+    inputs:
+      forceer:
+        description: 'Ook verversen als de data vandaag al ververst is'
+        type: boolean
+        default: false
   schedule:
-    # 03:17 UTC = 04:17 (winter) / 05:17 (zomer) tijd in Amsterdam.
-    # Bewust een scheve minuut: GitHub stelt geplande runs op het hele uur
-    # vaak uren uit (de run van 04:00 begon op 29 sep 2026 pas om 10:33),
-    # omdat daar de meeste workflows tegelijk starten. Niets in deze of de
-    # deploy-workflow rekent op dit tijdstip.
+    # Vangnet als de Cloud Function niet start. 03:17 UTC = 04:17 (winter) /
+    # 05:17 (zomer) in Amsterdam. Bewust een scheve minuut: GitHub stelt
+    # geplande runs op het hele uur vaak uren uit (de run van 04:00 begon op
+    # 29 sep 2026 pas om 10:33). Is de data die dag al ververst, dan stopt
+    # hij meteen (job "vandaag").
     - cron: '17 3 * * *'
-  workflow_dispatch: {}
 
 # Nooit twee refreshes tegelijk (bv. een handmatige run terwijl de geplande
 # nog loopt): de tweede zou anders bij de push falen op een verouderde
 # checkout. Een lopende run wordt niet afgebroken; de nieuwe wacht.
+# Komt er nog een bij terwijl er al een wacht, dan vervalt de wachtende
+# (zo werkt een concurrency-groep); geen verlies, ze doen hetzelfde. Daarom
+# gebruikt readme.yml een eigen groep.
 concurrency:
   group: refresh-data
   cancel-in-progress: false
@@ -23,7 +33,30 @@ permissions:
   actions: write
 
 jobs:
+  # Is de data vandaag (Amsterdamse datum) al ververst? Dan niets doen: zo
+  # geven de start om 05:00 en de cron samen hooguit één refresh per dag.
+  # Een run die in de wachtrij stond (concurrency hierboven) kijkt pas als de
+  # vorige klaar is, en ziet dan diens data op main.
+  vandaag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      al_gedaan: ${{ steps.controle.outputs.al_gedaan }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Vandaag al ververst?
+        id: controle
+        env:
+          FORCEER: ${{ inputs.forceer == true }}
+        run: node scripts/refresh-vandaag.js
+
   refresh:
+    needs: vandaag
+    if: needs.vandaag.outputs.al_gedaan != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:

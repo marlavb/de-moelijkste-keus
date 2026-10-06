@@ -2,13 +2,17 @@
 //   uitnodigingsmail  — mail bij een nieuwe uitnodiging (zie uitnodiging.js)
 //   stopFacturering   — facturering stoppen bij overschrijding van het budget
 //                       (zie facturering.js); DRY_RUN staat standaard aan.
-// Geheimen (Secret Manager): GMAIL_USER, GMAIL_APP_PASSWORD. Nooit in de repo.
+//   startNachtrun     — start refresh-data.yml om 05:00 Europe/Amsterdam
+//                       (Cloud Scheduler, zie nachtrun.js).
+// Geheimen (Secret Manager): GMAIL_USER, GMAIL_APP_PASSWORD,
+// GITHUB_DISPATCH_TOKEN. Nooit in de repo.
 // Instellingen (functions/.env): BUDGET_TOPIC, DRY_RUN; in de emulator
 // (functions/.env.local) een lokale SMTP-vanger in plaats van Gmail.
 
 import { setGlobalOptions } from 'firebase-functions/v2';
 import { onDocumentCreated } from 'firebase-functions/v2/firestore';
 import { onMessagePublished } from 'firebase-functions/v2/pubsub';
+import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { defineSecret, defineString, defineInt, defineBoolean } from 'firebase-functions/params';
 import * as logger from 'firebase-functions/logger';
 import { initializeApp } from 'firebase-admin/app';
@@ -18,6 +22,7 @@ import nodemailer from 'nodemailer';
 
 import { verwerkUitnodiging, ruimOp } from './uitnodiging.js';
 import { verwerkBudgetBericht } from './facturering.js';
+import { startRefresh } from './nachtrun.js';
 
 setGlobalOptions({ region: 'europe-west4', maxInstances: 2 });
 initializeApp();
@@ -29,6 +34,7 @@ const SMTP_HOST = defineString('SMTP_HOST', { default: 'smtp.gmail.com' });
 const SMTP_PORT = defineInt('SMTP_PORT', { default: 465 });
 const SMTP_SECURE = defineBoolean('SMTP_SECURE', { default: true });
 const DRY_RUN = defineBoolean('DRY_RUN', { default: true });
+const GITHUB_DISPATCH_TOKEN = defineSecret('GITHUB_DISPATCH_TOKEN');
 // Het topic moet bij het deployen bekend zijn: uit functions/.env.
 const BUDGET_TOPIC = process.env.BUDGET_TOPIC || 'budget-meldingen';
 
@@ -83,3 +89,27 @@ export const stopFacturering = onMessagePublished({ topic: BUDGET_TOPIC, retry: 
   });
   logger.warn('stopFacturering', { status, dryRun: DRY_RUN.value() });
 });
+
+// Elke dag om 05:00 in Amsterdam (zomer- en wintertijd) de nachtelijke run
+// starten. Geen herhaling (retryCount 0): een tweede poging zou een dubbele
+// run kunnen geven; mislukt het, dan vangt de cron in de workflow het op.
+// De workflow stopt zelf als de data vandaag al ververst is.
+export const startNachtrun = onSchedule(
+  {
+    schedule: '0 5 * * *',
+    timeZone: 'Europe/Amsterdam',
+    secrets: [GITHUB_DISPATCH_TOKEN],
+    retryCount: 0,
+    timeoutSeconds: 30,
+    maxInstances: 1,
+    memory: '256MiB',
+  },
+  async () => {
+    const status = await startRefresh({
+      token: GITHUB_DISPATCH_TOKEN.value(),
+      // Nooit het token: alleen status, HTTP-code en een opgeschoonde melding.
+      log: (s, extra) => (s === 'gestart' ? logger.info : logger.error)('startNachtrun', { status: s, ...extra }),
+    });
+    if (status !== 'gestart') logger.error('startNachtrun', { status, uitkomst: 'niet gestart; de cron van GitHub is het vangnet' });
+  }
+);

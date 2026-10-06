@@ -59,9 +59,11 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   `theaters.json`. Faalt een theater, dan valt het terug op de vorige data van
   dat theater. Theaters, steden, provincies en Podiumpas staan in
   `src/lib/config.js` (met bron en datum).
-- **Nachtelijke run**: `.github/workflows/refresh-data.yml` (GitHub Actions,
-  cron `17 3 * * *` UTC) scrapet, commit de data naar `main` en start de
-  deploy.
+- **Nachtelijke run**: `.github/workflows/refresh-data.yml` scrapet, commit de
+  data naar `main` en start de deploy. De Cloud Function `startNachtrun` start
+  hem elke dag om 05:00 (Amsterdam); de cron van GitHub (03:17 UTC) blijft als
+  vangnet. Is de data die dag al ververst, dan stopt een tweede run meteen
+  (handmatig toch draaien: "Run workflow" met `forceer`).
 - **App** (`public/`): een PWA zonder build-stap (HTML, CSS, JavaScript-modules,
   service worker). Gehost op **GitHub Pages** via `.github/workflows/deploy.yml`
   bij elke push naar `main`.
@@ -71,8 +73,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
     vrienden, delen, plannen en berichten. Toegang via `firestore.rules`.
   - **Functions** (2nd gen, Node 22, **europe-west4**, map `functions/`):
     `uitnodigingsmail` (mail bij een uitnodiging), `stopFacturering` (stopt de
-    facturering bij overschrijding van het budget; staat in DRY_RUN).
-    Geheimen staan in Secret Manager, nooit in de repo.
+    facturering bij overschrijding van het budget; staat in DRY_RUN) en
+    `startNachtrun` (Cloud Scheduler, start de nachtelijke run via de GitHub
+    API). Geheimen staan in Secret Manager, nooit in de repo.
 
 ## Lokaal ontwikkelen
 
@@ -99,7 +102,7 @@ brew install openjdk@21           # emulators; zet openjdk@21/bin in je PATH
 | `npm test` | unit-tests en UI-tests (Playwright, nep-Firebase, geen netwerk) |
 | `npm run test:rules` | `firestore.rules` tegen de Firestore-emulator |
 | `npm run test:e2e` | de app end-to-end met Auth- en Firestore-emulators en de echte rules |
-| `npm run test:functions` | de Cloud Functions met emulators en een nep-SMTP-server |
+| `npm run test:functions` | de Cloud Functions met emulators, een nep-SMTP-server en een nep-GitHub-API |
 
 De emulators gebruiken altijd het project `demo-podiumagenda`, nooit het echte.
 
