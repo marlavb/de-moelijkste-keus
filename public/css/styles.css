@@ -401,12 +401,6 @@ a {
   color: inherit;
 }
 
-/* Watchlist-productie zonder komende voorstelling: zelfde rij-stijl, maar
-   niet klikbaar (geen detailscherm om naartoe te navigeren). */
-.show-row--inert {
-  cursor: default;
-}
-
 .show-time {
   flex-shrink: 0;
   width: 48px;
@@ -2635,16 +2629,27 @@ button.gezien-titel {
   margin: 12px 4px 0;
 }
 
-/* Watchlist in Profiel: de rij plus een kleine actie "Gezien" rechts. */
+/* Watchlist in Profiel: de rij plus rechts "Gezien" en de gevulde
+   bladwijzer om het item weg te halen (44 × 44, altijd bruikbaar). */
 .watchlist-item {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .watchlist-gezien {
   padding: 0 4px;
+}
+
+.watchlist-weg {
+  color: var(--primary);
+}
+
+/* "Afgelast", "2 van 5 data afgelast", "Niet meer in de agenda" (stijl van .plan-flag). */
+.watchlist-stand {
+  display: block;
+  margin-top: 2px;
 }
 
 /* Melding onderaan (bv. "Gezien · van je watchlist gehaald") met één

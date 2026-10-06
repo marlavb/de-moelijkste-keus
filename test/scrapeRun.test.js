@@ -556,3 +556,48 @@ test('genre op productieniveau: brongenre terug vóór elke run, stabiel over tw
   assert.equal(kl2.genre, 'Muziektheater');
   assert.equal('genreBron' in kl2, false);
 });
+
+test('maker op productieniveau: bronmaker terug vóór elke run, stabiel over twee runs', async () => {
+  const paths = await setup();
+  const scrapers = {
+    ssu: async () => [show('ssu', '2027-02-11', { titel: 'Teckel' })],
+    bellevue: async () => [show('bellevue', '2027-04-02', { titel: 'Teckel', maker: 'Nina van Tongeren / Bellevue Producties' })],
+    mozaiek: async () => [show('mozaiek', '2027-01-22', { titel: 'Teckel', maker: 'Nina van Tongeren / Theater Bellevue' })],
+  };
+  const theaters = [theater('ssu'), theater('bellevue'), theater('mozaiek')];
+  const eerste = await run({ paths, theaters, scrapers });
+  const ssu = eerste.written.find((x) => x.theaterId === 'ssu');
+  assert.equal(ssu.maker, 'Nina van Tongeren');
+  assert.equal(ssu.makerBron, null);
+  // Tweede run: Bellevue valt terug, SSU komt vers binnen (weer zonder maker).
+  const tweede = await run({ paths, theaters, scrapers: { ...scrapers, bellevue: failing } });
+  const ssu2 = tweede.written.find((x) => x.theaterId === 'ssu');
+  const bv2 = tweede.written.find((x) => x.theaterId === 'bellevue');
+  assert.equal(ssu2.maker, 'Nina van Tongeren');
+  assert.equal(ssu2.makerBron, null);
+  assert.equal(bv2.maker, 'Nina van Tongeren');
+  assert.equal(bv2.makerBron, 'Nina van Tongeren / Bellevue Producties');
+  // Derde run zonder bron met maker: SSU valt terug op zijn eigen (lege) maker.
+  const derde = await run({ paths, theaters: [theater('ssu')], scrapers: { ssu: scrapers.ssu } });
+  const ssu3 = derde.written.find((x) => x.theaterId === 'ssu');
+  assert.equal(ssu3.maker, 'Nina van Tongeren'); // Bellevue en Mozaïek staan nog in de behouden data
+});
+
+test('omgedraaide titel en maker (OMGEDRAAID): ook in teruggevallen data recht, groepeert met de andere theaters', async () => {
+  const paths = await setup();
+  const scrapers = {
+    flint: async () => [show('flint', '2027-04-29', { titel: 'Nhung Dam', maker: 'Legende van de witte slang', genre: 'Muziektheater' })],
+    aandeslinger: async () => [show('aandeslinger', '2027-02-10', { titel: 'Legende van de witte slang', maker: 'Nhung Dam' })],
+    ssu: async () => [show('ssu', '2027-04-10', { titel: 'Legende van de witte slang' })],
+  };
+  const theaters = [theater('flint'), theater('aandeslinger'), theater('ssu')];
+  const eerste = await run({ paths, theaters, scrapers });
+  const fl = eerste.written.find((x) => x.theaterId === 'flint');
+  assert.equal(fl.titel, 'Legende van de witte slang');
+  assert.equal(fl.maker, 'Nhung Dam');
+  assert.equal(eerste.written.find((x) => x.theaterId === 'ssu').maker, 'Nhung Dam');
+  const tweede = await run({ paths, theaters, scrapers: { ...scrapers, flint: failing } });
+  const fl2 = tweede.written.find((x) => x.theaterId === 'flint');
+  assert.equal(fl2.titel, 'Legende van de witte slang');
+  assert.equal(fl2.maker, 'Nhung Dam');
+});

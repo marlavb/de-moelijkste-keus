@@ -276,6 +276,33 @@
       </div>
     </section>
 
+    <!-- SCHERM: een watchlist-item dat niet meer in de agenda staat -->
+    <section class="screen" id="screen-watchlist" hidden>
+      <div class="detail-body">
+        <div class="detail-banner">
+          <div class="detail-banner-top">
+            <button class="icon-btn icon-btn--floating" type="button" id="watchlistItemBack" aria-label="Terug">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 6 9 12 15 18" />
+              </svg>
+            </button>
+            <button class="icon-btn icon-btn--floating is-on" type="button" id="watchlistItemIcon" aria-label="Van watchlist halen" aria-pressed="true">
+              <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3h12v18l-6-4-6 4z" />
+              </svg>
+            </button>
+          </div>
+          <span class="detail-genre-tag" id="watchlistItemGenre"></span>
+          <h1 class="detail-title" id="watchlistItemTitel"></h1>
+          <p class="detail-maker" id="watchlistItemMaker" hidden></p>
+          <div class="detail-tags-row">
+            <span class="pill-tag" id="watchlistItemTheater" hidden></span>
+          </div>
+        </div>
+        <p class="profile-note" id="watchlistItemNoot">Deze voorstelling staat niet meer in de agenda.</p>
+      </div>
+    </section>
+
     <!-- SCHERM: mijn theaters -->
     <section class="screen" id="screen-theaters" hidden>
       <header class="app-header">

@@ -11,6 +11,12 @@
 // (bij gelijke tijd wint de verwijdering).
 // Oude favorieten tellen als toegevoegdOp = 0, zodat een bewuste verwijdering
 // altijd wint. Het oude `favorites`-veld blijft onaangeroerd (back-up).
+// maker en genre (optioneel, sinds okt 2026): voor het eenvoudige scherm van
+// een item dat niet meer in de agenda staat. Bij het toevoegen meteen,
+// daarna aangevuld zolang de voorstelling in de agenda staat
+// (vulWatchlistAan). Geen handeling: tijdstempels blijven gelijk, en bij
+// samenvoegen vult een kopie die ze heeft de andere aan. Ze tellen niet mee
+// voor de sleutel.
 
 import { normalizeTitle, EXCLUDED_NORMALIZED_TITLES } from './productions.js';
 import { RENAMED_FAVORITE_KEYS } from './favorites.js';
@@ -98,6 +104,9 @@ export function watchlistSleutel(titel, theaterId) {
 
 const leeg = () => ({ watchlist: [], watchlistVerwijderd: [] });
 
+// Velden op het item die bij samenvoegen worden aangevuld (geen handeling).
+const ITEM_INFO = ['maker', 'genre'];
+
 /**
  * Voegt meerdere bronnen samen (elk { watchlist, watchlistVerwijderd }).
  * Per sleutel wint de laatste toevoeging en de laatste verwijdering; het
@@ -119,6 +128,13 @@ export function voegSamen(...bronnen) {
       if ((t.verwijderdOp ?? 0) > (verwijderd.get(t.sleutel) ?? -1)) verwijderd.set(t.sleutel, t.verwijderdOp ?? 0);
     }
   }
+  // Maker/genre: een andere kopie van hetzelfde item vult aan.
+  for (const b of bronnen) {
+    for (const item of b?.watchlist ?? []) {
+      const winnaar = toegevoegd.get(item.sleutel);
+      for (const v of ITEM_INFO) if (winnaar[v] == null && item[v] != null) winnaar[v] = item[v];
+    }
+  }
   const watchlist = [];
   const watchlistVerwijderd = [];
   for (const [sleutel, item] of toegevoegd) {
@@ -138,9 +154,11 @@ export function isGelijk(a, b) {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
-export function voegToe(profiel, { titel, theaterId }, now = Date.now()) {
+export function voegToe(profiel, { titel, theaterId, maker = null, genre = null }, now = Date.now()) {
   const sleutel = watchlistSleutel(titel, theaterId);
   const item = { sleutel, titel, theaterId, toegevoegdOp: now, v: NORMALISATIE_VERSIE };
+  if (maker) item.maker = maker;
+  if (genre) item.genre = genre;
   return voegSamen(profiel, { watchlist: [item], watchlistVerwijderd: [] });
 }
 
@@ -190,12 +208,16 @@ export function renormaliseer(profiel) {
  * in de data (een theater zonder voorstellingsnaam), dan blijft het oude item
  * ook staan. Idempotent, zonder vlag.
  */
+/** Laatste milliseconde van een datum (JJJJ-MM-DD) in UTC+0; ruim genoeg voor een einddatum. */
+export const eindeVanDag = (datum) => Date.parse(`${datum}T23:59:59.999Z`);
+
 export function pasTitelMappingToe(profiel, bekend = new Map(), mapping = TITEL_MAPPING) {
   const houden = [];
   const nieuw = [];
   for (const item of profiel?.watchlist ?? []) {
-    const doelen = mapping.get(item.sleutel);
-    if (!doelen) {
+    // Een doel met `tot` geldt alleen voor items die vóór het eind van die dag zijn toegevoegd.
+    const doelen = mapping.get(item.sleutel)?.filter((d) => !d.tot || (item.toegevoegdOp ?? 0) <= eindeVanDag(d.tot));
+    if (!doelen?.length) {
       houden.push(item);
       continue;
     }
@@ -282,18 +304,66 @@ export function bekendeSleutels(shows) {
 }
 
 /**
+ * Maker en genre per sleutel uit de agenda, voor vulGezienAan (gezien.js) en
+ * vulWatchlistAan. Alleen als
+ * alle speeldata met een maker (genre) het eens zijn: de nachtelijke run
+ * trekt de maker per productie gelijk (makerMeerderheid.js); bij een
+ * gelijke stand blijven ze verschillen en vullen we niets aan.
+ */
+export function infoPerSleutel(shows) {
+  const per = new Map();
+  for (const s of shows ?? []) {
+    const k = watchlistSleutel(s.titel, s.theaterId);
+    if (!per.has(k)) per.set(k, { maker: new Set(), genre: new Set() });
+    const p = per.get(k);
+    if (typeof s.maker === 'string' && s.maker.trim()) p.maker.add(s.maker.trim());
+    if (typeof s.genre === 'string' && s.genre.trim()) p.genre.add(s.genre.trim());
+  }
+  const uit = new Map();
+  for (const [k, p] of per) {
+    const info = {};
+    if (p.maker.size === 1) info.maker = [...p.maker][0];
+    if (p.genre.size === 1) info.genre = [...p.genre][0];
+    if (info.maker || info.genre) uit.set(k, info);
+  }
+  return uit;
+}
+
+/**
+ * Items zonder maker of genre aanvullen uit de agenda (`info`, zie
+ * infoPerSleutel). Nooit overschrijven; tijdstempels blijven gelijk;
+ * idempotent. Geeft { profiel, gewijzigd }.
+ */
+export function vulWatchlistAan(profiel, info) {
+  let gewijzigd = false;
+  const watchlist = (profiel?.watchlist ?? []).map((item) => {
+    const live = info?.get(item.sleutel);
+    if (!live) return item;
+    const extra = {};
+    for (const v of ITEM_INFO) if (live[v] && item[v] == null) extra[v] = live[v];
+    if (Object.keys(extra).length === 0) return item;
+    gewijzigd = true;
+    return { ...item, ...extra };
+  });
+  if (!gewijzigd) return { profiel, gewijzigd };
+  return { profiel: { ...profiel, watchlist }, gewijzigd };
+}
+
+/**
  * Eén laadronde, voor localStorage én Firestore: oude favorieten omzetten,
  * samenvoegen met wat er al stond (en eventueel een tweede bron, bv. de
  * lokale watchlist bij inloggen), her-normaliseren. `gewijzigd` zegt of het
  * resultaat afwijkt van `opgeslagen`; alleen dan hoeft er geschreven.
  * Idempotent en zonder vlag: een tweede keer laden levert niets nieuws op.
  */
-export function laadWatchlist({ opgeslagen, favorieten = [], extra = null, bekend = new Map(), mapping = TITEL_MAPPING }) {
+export function laadWatchlist({ opgeslagen, favorieten = [], extra = null, bekend = new Map(), mapping = TITEL_MAPPING, info = null }) {
   const basis = { watchlist: opgeslagen?.watchlist ?? [], watchlistVerwijderd: opgeslagen?.watchlistVerwijderd ?? [] };
   const { profiel: uitFavorieten, log } = migreerFavorieten(favorieten, bekend);
   // Eerst de titelmapping (die werkt op de oude, v2-sleutels), dan de
   // her-normalisatie van wat overblijft.
-  const profiel = renormaliseer(pasTitelMappingToe(voegSamen(basis, uitFavorieten, extra ?? leeg()), bekend, mapping));
+  const genormaliseerd = renormaliseer(pasTitelMappingToe(voegSamen(basis, uitFavorieten, extra ?? leeg()), bekend, mapping));
+  // Met de agenda erbij: maker en genre aanvullen (voor het eenvoudige scherm).
+  const profiel = info ? vulWatchlistAan(genormaliseerd, info).profiel : genormaliseerd;
   return { profiel, log, gewijzigd: !isGelijk(profiel, basis) };
 }
 

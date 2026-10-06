@@ -84,8 +84,8 @@ export function kopieGezien(profiel, info = () => null) {
       {
         sleutel: i.sleutel,
         titel: live.titel ?? i.titel,
-        maker: live.maker ?? met('maker'),
-        genre: live.genre ?? met('genre'),
+        maker: live.maker ?? met('maker') ?? i.maker,
+        genre: live.genre ?? met('genre') ?? i.genre,
         beoordeling: i.beoordeling,
         laatsteBezoek: laatsteBezoek(i)?.datum,
         aantal: bezoeken.length || 1,

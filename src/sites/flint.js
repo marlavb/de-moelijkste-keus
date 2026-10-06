@@ -2,7 +2,7 @@ import { extractTime, createIdBuilder } from '../lib/normalize.js';
 import { sleep } from '../lib/politeness.js';
 import { ScrapeBlockedError } from '../lib/scrapeRun.js';
 import { normalizeGenreFromList } from '../lib/genre.js';
-import { pasTitelConventieToe } from '../lib/titels.js';
+import { draaiTitelEnMakerOm, pasTitelConventieToe } from '../lib/titels.js';
 import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/agenda/';
@@ -313,5 +313,6 @@ export async function scrapeFlint({ page, theater, robots, waitForTurn, log, sig
   }
 
   // Titelconventie cabaret (lib/titels.js): bij dit theater staat de artiest in de titel, voorstelling in het makerveld.
-  return shows.map((s) => pasTitelConventieToe(s, { artiest: s.titel, voorstelling: s.maker, makerWordtLeeg: true }));
+  // Plus een paar titels waar artiest en voorstelling buiten cabaret omgedraaid staan (OMGEDRAAID).
+  return shows.map((s) => draaiTitelEnMakerOm(pasTitelConventieToe(s, { artiest: s.titel, voorstelling: s.maker, makerWordtLeeg: true })));
 }

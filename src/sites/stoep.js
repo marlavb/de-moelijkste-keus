@@ -1,7 +1,7 @@
 import { createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
 import { dedupeShows } from '../lib/peppered.js';
-import { pasTitelConventieToe } from '../lib/titels.js';
+import { draaiTitelEnMakerOm, pasTitelConventieToe } from '../lib/titels.js';
 import { vervallenStatus } from '../lib/beschikbaarheid.js';
 
 const AGENDA_PATH = '/voorstellingen';
@@ -218,5 +218,6 @@ export async function scrapeStoep({ page, theater, robots, waitForTurn, log }) {
   const reasonList = Object.entries(reasons);
   log(`podiumpas: false bij ${reasonList.reduce((n, [, c]) => n + c, 0)} voorstellingen (${reasonList.map(([r, c]) => `${r}: ${c}`).join(', ')})`);
   // Titelconventie cabaret (lib/titels.js): bij dit theater staat de artiest in de titel, voorstelling in het makerveld.
-  return dedupeShows(shows).map((s) => pasTitelConventieToe(s, { artiest: s.titel, voorstelling: s.maker, makerWordtLeeg: true }));
+  // Plus een paar titels waar artiest en voorstelling buiten cabaret omgedraaid staan (OMGEDRAAID).
+  return dedupeShows(shows).map((s) => draaiTitelEnMakerOm(pasTitelConventieToe(s, { artiest: s.titel, voorstelling: s.maker, makerWordtLeeg: true })));
 }

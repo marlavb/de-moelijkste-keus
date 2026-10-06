@@ -457,3 +457,21 @@ for (const [oud, doelen] of GRIFFIOEN_30_SEP) {
   const bestaand = TITEL_MAPPING.get(oud) ?? [];
   TITEL_MAPPING.set(oud, [...bestaand, ...doelen.filter((d) => !bestaand.some((b) => b.sleutel === d.sleutel))]);
 }
+
+// Alain Clark → "Date Night" (6 okt 2026): De Stoep, De Maaspoort,
+// Kunstlinie en Stadsgehoorzaal gaven alleen "Alain Clark" als titel; de
+// scraper maakt daar nu titel "Date Night", maker "Alain Clark" van (zoals
+// Omval), zie OMGEDRAAID en VOORSTELLING_BIJ_ARTIEST in src/lib/titels.js.
+// `tot`: alleen voor items van vóór die datum (toegevoegd, of bij Gezien het
+// laatste bezoek); een latere "Alain Clark" is een andere voorstelling.
+// Ook voor Gezien (GEZIEN_MAPPING): alleen gedateerde, eenduidige regels,
+// nooit de rest van TITEL_MAPPING (een gezien "Babel" is niet per se Kommil
+// Foo). Weg mag: vanaf 1 januari 2027.
+export const ALAIN_CLARK_OKT_2026 = [
+  ['alain clark', [{ sleutel: 'date night', titel: 'Date Night', weergave: 'Date Night – Alain Clark', tot: '2026-12-31' }]],
+];
+for (const [oud, doelen] of ALAIN_CLARK_OKT_2026) {
+  const bestaand = TITEL_MAPPING.get(oud) ?? [];
+  TITEL_MAPPING.set(oud, [...bestaand, ...doelen.filter((d) => !bestaand.some((b) => b.sleutel === d.sleutel))]);
+}
+export const GEZIEN_MAPPING = new Map(ALAIN_CLARK_OKT_2026);

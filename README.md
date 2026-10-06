@@ -30,12 +30,18 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
 - **Theaters per provincie**: theaters aan of uit, per theater, per stad of per
   provincie (vinkje met aan/uit/deels). Gepauzeerde theaters staan er met een
   melding.
-- **Watchlist**: voorstellingen die je wilt zien, met de eerstvolgende datum.
+- **Watchlist**: voorstellingen die je wilt zien, met de eerstvolgende datum
+  en de stand: "Afgelast", "2 van 5 data afgelast" of "Niet meer in de
+  agenda". Elk item heeft een eigen knop om het weg te halen; een item dat niet
+  meer in de agenda staat opent een eenvoudig scherm (titel, maker, genre) met
+  de bladwijzer.
 - **Gepland**: een speeldatum die je wilt bezoeken, met of zonder kaarten. Na de
   speeldag (Amsterdamse tijd) gaat hij vanzelf naar Gezien; afgelast of
   verplaatst gaat stil uit de planning.
 - **Gezien met sterren**: je bezoekgeschiedenis, 1 tot 5 sterren in halve
-  stappen, sorteren op laatste bezoek of beoordeling.
+  stappen, sorteren op laatste bezoek of beoordeling. Een item zonder maker
+  of genre (bv. zelf aangevinkt) wordt aangevuld zodra de voorstelling in de
+  agenda staat; een bestaande maker blijft staan.
 - **Profiel** (na inloggen met Google): gebruikersnaam en naam. Alles
   hierboven werkt ook zonder inloggen (alleen op dat apparaat); ingelogd
   synchroniseert het tussen je apparaten.
@@ -65,8 +71,23 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   theater en tussen vaste paren theaters met één agenda-overlap
   (`dedupe.js`). Titels: waar een theater per genre een vaste volgorde van
   maker en titel heeft, wordt dat "Titel – Maker"; content warnings,
-  "met o.a. …", leeftijden en ondertitels als "reprise" worden nooit maker
-  maar beschrijving (`titels.js`). Een agendapagina die niet laadt, krijgt
+  "met o.a. …", leeftijden en ondertitels als "reprise", "20 jaar …" of
+  "In Concert" worden nooit maker maar beschrijving; een paar titels waar
+  een theater artiest en voorstelling omgedraaid heeft of alleen de artiest
+  noemt, staan per theater in `OMGEDRAAID` en `VOORSTELLING_BIJ_ARTIEST`
+  (`titels.js`); watchlist en Gezien gaan dan mee naar de nieuwe titel
+  (`titelMapping.js`). Dezelfde productie (zelfde
+  watchlist-sleutel) krijgt bij elk theater dezelfde weergavetitel, hetzelfde
+  genre en dezelfde maker: die van de meeste theaters
+  (`weergaveMeerderheid.js`, `genreMeerderheid.js`, `makerMeerderheid.js`);
+  de bronwaarde blijft bewaard. Verschillen de makers alleen in wat ná " / "
+  staat en is dat een gezelschap of producent (en de kern ervóór niet), dan
+  wordt het de kern ("Nina van Tongeren / Theater Bellevue" en "… / Bellevue
+  Producties" → "Nina van Tongeren"; "Theater Rotterdam / Glen Faria" blijft
+  heel). Twee makers met evenveel theaters: dan blijft de maker zoals hij
+  was. Een maker van maar één theater gaat alleen naar de andere als hij
+  elders ook maker is en niet verdacht (cijfers, kleine letter vooraan,
+  titel van een andere productie, nooit-maker). Een agendapagina die niet laadt, krijgt
   bij sommige theaters (ITA, Theater aan de Parade) één herpoging na een
   minuut; mislukt die ook, dan geldt de vorige data. Sommige bronnen dienen
   meer theaters tegelijk (één scrape per run): Het Cenakel (De Link,

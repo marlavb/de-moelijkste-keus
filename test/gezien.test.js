@@ -475,3 +475,124 @@ test('beoordeling: item weghalen neemt de beoordeling mee; oude items zonder beo
   assert.equal(laadGezien({ opgeslagen: oud }).gewijzigd, false);
   assert.equal('beoordeeldOp' in laadGezien({ opgeslagen: oud }).profiel.gezien[0], false);
 });
+
+// ---------- Maker en genre aanvullen (okt 2026) ----------
+
+import { infoPerSleutel, vulGezienAan, gezienVeld } from '../public/js/gezien.js';
+import { kopieGezien } from '../public/js/gedeeld.js';
+
+const teckelZelf = () => ({
+  sleutel: 'teckel',
+  titel: 'Teckel',
+  sleutelTitel: 'Teckel',
+  theaterId: 'stadsschouwburgutrecht',
+  bron: 'handmatig',
+  toegevoegdOp: 1000,
+  gewijzigdOp: 1000,
+  v: 4,
+  bezoeken: [],
+});
+const teckelShows = [
+  { titel: 'Teckel', theaterId: 'stadsschouwburgutrecht', maker: 'Nina van Tongeren / Theater Bellevue', genre: 'Toneel' },
+  { titel: 'Teckel', theaterId: 'bellevue', maker: 'Nina van Tongeren / Theater Bellevue', genre: 'Toneel' },
+];
+
+test('infoPerSleutel: alleen als alle speeldata het eens zijn', () => {
+  const info = infoPerSleutel([...teckelShows, { titel: 'Nora', theaterId: 'a', maker: 'X' }, { titel: 'Tiresias', theaterId: 'a', maker: 'A' }, { titel: 'Tiresias', theaterId: 'b', maker: 'B', genre: 'Toneel' }]);
+  assert.deepEqual(info.get('teckel'), { maker: 'Nina van Tongeren / Theater Bellevue', genre: 'Toneel' });
+  // Theatergebonden titel: eigen sleutel.
+  assert.ok(info.has('a::nora'));
+  // Twee verschillende makers (gelijke stand): geen maker, wel het genre.
+  assert.deepEqual(info.get('tiresias'), { genre: 'Toneel' });
+  // Oude data zonder maker/genre: niets.
+  assert.equal(infoPerSleutel([{ titel: 'Teckel', theaterId: 'x' }]).size, 0);
+});
+
+test('vulGezienAan: zelf aangevinkt item zonder maker krijgt maker en genre, tijdstempels gelijk, idempotent', () => {
+  const profiel = { gezien: [teckelZelf()], gezienVerwijderd: [] };
+  const { profiel: uit, gewijzigd } = vulGezienAan(profiel, infoPerSleutel(teckelShows));
+  assert.equal(gewijzigd, true);
+  assert.equal(uit.gezien[0].maker, 'Nina van Tongeren / Theater Bellevue');
+  assert.equal(uit.gezien[0].genre, 'Toneel');
+  assert.equal(uit.gezien[0].gewijzigdOp, 1000);
+  assert.equal(uit.gezien[0].toegevoegdOp, 1000);
+  assert.equal(vulGezienAan(uit, infoPerSleutel(teckelShows)).gewijzigd, false);
+  // Productie niet in de agenda: niets.
+  assert.equal(vulGezienAan(profiel, new Map()).gewijzigd, false);
+});
+
+test('vulGezienAan: nooit een bestaande maker of genre overschrijven (item of bezoek)', () => {
+  const eigen = { ...teckelZelf(), maker: 'Nina van Tongeren' };
+  const metBezoek = { ...teckelZelf(), sleutel: 'teckel', bezoeken: [{ datum: '2026-09-30', tijd: null, theaterId: 'ssu', maker: 'Bellevue', genre: 'Overig' }] };
+  const info = infoPerSleutel(teckelShows);
+  assert.equal(vulGezienAan({ gezien: [eigen] }, info).profiel.gezien[0].maker, 'Nina van Tongeren');
+  const r = vulGezienAan({ gezien: [metBezoek] }, info);
+  assert.equal(r.gewijzigd, false);
+  assert.equal(gezienVeld(r.profiel.gezien[0], 'maker'), 'Bellevue');
+});
+
+test('laadGezien met info: aanvullen telt als wijziging; zonder info en bij oude items zonder velden blijft alles', () => {
+  const opgeslagen = { gezien: [teckelZelf()], gezienVerwijderd: [] };
+  const r = laadGezien({ opgeslagen, info: infoPerSleutel(teckelShows) });
+  assert.equal(r.gewijzigd, true);
+  assert.equal(r.profiel.gezien[0].maker, 'Nina van Tongeren / Theater Bellevue');
+  assert.equal(laadGezien({ opgeslagen }).gewijzigd, false);
+  assert.equal(laadGezien({ opgeslagen: {} }).gewijzigd, false);
+});
+
+test('samenvoegen: een kopie mét maker vult een nieuwere kopie zonder maker aan', () => {
+  const oud = { ...teckelZelf(), maker: 'Nina van Tongeren / Theater Bellevue', genre: 'Toneel' };
+  const nieuw = { ...teckelZelf(), gewijzigdOp: 5000, beoordeling: 4, beoordeeldOp: 5000 };
+  const { gezien } = voegGezienSamen({ gezien: [oud] }, { gezien: [nieuw] });
+  assert.equal(gezien[0].maker, 'Nina van Tongeren / Theater Bellevue');
+  assert.equal(gezien[0].genre, 'Toneel');
+  assert.equal(gezien[0].gewijzigdOp, 5000);
+});
+
+test('zetGezien bewaart maker en genre van de voorstelling op het item', () => {
+  const p = zetGezien(legeGezien(), { show: teckelShows[0], bron: 'handmatig' }, 1);
+  assert.equal(p.gezien[0].maker, 'Nina van Tongeren / Theater Bellevue');
+  assert.equal(p.gezien[0].genre, 'Toneel');
+  const zonder = zetGezien(legeGezien(), { show: { titel: 'Teckel', theaterId: 'x' }, bron: 'handmatig' }, 1);
+  assert.equal('maker' in zonder.gezien[0], false);
+});
+
+test('kopie voor vrienden: maker van het item als de voorstelling niet in de agenda staat', () => {
+  const item = { ...teckelZelf(), maker: 'Nina van Tongeren / Theater Bellevue', genre: 'Toneel' };
+  const [k] = kopieGezien({ gezien: [item] });
+  assert.equal(k.maker, 'Nina van Tongeren / Theater Bellevue');
+  assert.equal(k.genre, 'Toneel');
+  // Een bezoek met maker gaat voor het item.
+  const [k2] = kopieGezien({ gezien: [{ ...item, bezoeken: [{ datum: '2026-09-30', maker: 'Bezoek' }] }] });
+  assert.equal(k2.maker, 'Bezoek');
+});
+
+test('Alain Clark → Date Night (okt 2026): Gezien-item migreert met bezoeken en sterren; niet na de einddatum, niet als de oude sleutel nog in de agenda staat', async () => {
+  const { pasGezienMappingToe } = await import('../public/js/gezien.js');
+  const item = {
+    sleutel: 'alain clark', titel: 'Alain Clark – Date Night', sleutelTitel: 'Alain Clark', theaterId: 'stoep', bron: 'planning',
+    toegevoegdOp: 10, gewijzigdOp: 10, v: 4, beoordeling: 4.5, beoordeeldOp: 11,
+    bezoeken: [{ datum: '2026-10-09', tijd: '20:15', theaterId: 'stoep' }],
+  };
+  const r = laadGezien({ opgeslagen: { gezien: [item], gezienVerwijderd: [] }, bekend: new Map() });
+  assert.equal(r.gewijzigd, true);
+  const [n] = r.profiel.gezien;
+  assert.equal(n.sleutel, 'date night');
+  assert.equal(n.titel, 'Date Night – Alain Clark');
+  assert.equal(n.beoordeling, 4.5);
+  assert.equal(n.bezoeken.length, 1);
+  assert.equal(laadGezien({ opgeslagen: r.profiel, bekend: new Map() }).gewijzigd, false);
+  // Samen met een bestaand "date night"-item: één item, beide bezoeken.
+  const al = { ...item, sleutel: 'date night', bezoeken: [{ datum: '2026-10-07', tijd: '20:15', theaterId: 'omval' }] };
+  const samen = pasGezienMappingToe({ gezien: [item, al], gezienVerwijderd: [] }, new Map()).profiel;
+  assert.equal(samen.gezien.length, 1);
+  assert.equal(samen.gezien[0].bezoeken.length, 2);
+  // Oude sleutel nog in de agenda, of bezoek na de einddatum: niets.
+  assert.equal(pasGezienMappingToe({ gezien: [item] }, new Map([['alain clark', 'Alain Clark']])).gewijzigd, false);
+  assert.equal(pasGezienMappingToe({ gezien: [{ ...item, bezoeken: [{ datum: '2027-03-01', theaterId: 'x' }] }] }, new Map()).gewijzigd, false);
+  // Zonder `bekend` (oude aanroep) blijft alles zoals het was.
+  assert.equal(laadGezien({ opgeslagen: { gezien: [item] } }).profiel.gezien[0].sleutel, 'alain clark');
+  // De rest van TITEL_MAPPING geldt niet voor Gezien.
+  const babel = { ...item, sleutel: 'babel', titel: 'Babel', bezoeken: [{ datum: '2026-10-02', theaterId: 'x' }] };
+  assert.equal(pasGezienMappingToe({ gezien: [babel] }, new Map()).gewijzigd, false);
+});

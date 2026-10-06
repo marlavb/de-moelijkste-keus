@@ -1,7 +1,7 @@
 import { pagineerListing } from '../lib/peppered.js';
 import { createDutchDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre, isBekendGenre } from '../lib/genre.js';
-import { pasTitelConventieToe, isWervend } from '../lib/titels.js';
+import { draaiTitelEnMakerOm, pasTitelConventieToe, isWervend } from '../lib/titels.js';
 import { vervallenStatus } from '../lib/beschikbaarheid.js';
 import { blokkeerZwareBronnen } from '../lib/zwareBronnen.js';
 
@@ -164,7 +164,8 @@ export async function scrapeMaaspoort({ page, theater, robots, waitForTurn, log,
       opgehaaldOp,
     };
     // Cabaret: artiest in de titel, voorstelling in de ondertitel.
-    shows.push(pasTitelConventieToe(show, { artiest: b.titel, voorstelling: b.ondertitel, makerWordtLeeg: true }));
+    // Plus een paar titels waar artiest en voorstelling buiten cabaret omgedraaid staan (OMGEDRAAID).
+    shows.push(draaiTitelEnMakerOm(pasTitelConventieToe(show, { artiest: b.titel, voorstelling: b.ondertitel, makerWordtLeeg: true })));
   }
 
   const lijst = (o) => Object.entries(o).map(([k, n]) => `${k} (${n})`).join(', ');

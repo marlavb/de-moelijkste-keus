@@ -40,3 +40,33 @@ export function isVol(showOfStatus) {
   const b = typeof showOfStatus === 'string' ? showOfStatus : showOfStatus?.beschikbaarheid;
   return VOL.includes(b);
 }
+
+/**
+ * Stand van een watchlist-item uit zijn speeldata (alle theaters, zelfde
+ * sleutel). Alleen data vanaf `vandaag` tellen. Geeft:
+ * - soort 'komend': er is een datum die doorgaat (soonest = de eerste);
+ *   label null, of "2 van 5 data afgelast" als een deel niet doorgaat;
+ * - soort 'vervallen': alle komende data afgelast/verplaatst; label
+ *   "Afgelast" (of "Verplaatst"), eerste = de eerste vervallen datum;
+ * - soort 'weg': niet meer in de agenda; label "Niet meer in de agenda".
+ * Tolerant voor oude data zonder beschikbaarheid (telt als gewoon).
+ */
+export function watchlistStand(shows, vandaag) {
+  const sorteer = (a, b) => `${a.datum}T${a.tijd ?? '99:99'}`.localeCompare(`${b.datum}T${b.tijd ?? '99:99'}`);
+  const komend = (shows ?? []).filter((s) => typeof s?.datum === 'string' && s.datum >= vandaag).sort(sorteer);
+  if (komend.length === 0) return { soort: 'weg', label: 'Niet meer in de agenda', soonest: null, eerste: null, vervallen: 0, totaal: 0 };
+  const vervallen = komend.filter(isVervallen);
+  const gaatDoor = komend.filter((s) => !isVervallen(s));
+  const woord = vervallen.every((s) => s.beschikbaarheid === 'verplaatst')
+    ? 'verplaatst'
+    : vervallen.every((s) => s.beschikbaarheid === 'afgelast')
+      ? 'afgelast'
+      : 'afgelast of verplaatst';
+  const basis = { vervallen: vervallen.length, totaal: komend.length };
+  if (gaatDoor.length === 0) {
+    const label = woord === 'verplaatst' ? 'Verplaatst' : 'Afgelast';
+    return { ...basis, soort: 'vervallen', label, soonest: null, eerste: vervallen[0] };
+  }
+  const label = vervallen.length ? `${vervallen.length} van ${komend.length} data ${woord}` : null;
+  return { ...basis, soort: 'komend', label, soonest: gaatDoor[0], eerste: gaatDoor[0] };
+}
