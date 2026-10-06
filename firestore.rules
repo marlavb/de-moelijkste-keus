@@ -607,5 +607,30 @@ service cloud.firestore {
         && !heeftGeblokkeerd(uid, request.auth.uid)
         && berichtPastBijPlan(uid, request.resource.data.soort, request.resource.data.planId, id);
     }
+
+    // ---- Mail bij uitnodigingen (vrienden, stap 5, okt 2026) ----
+    // mailvoorkeur/{uid}: { uitnodigingen: bool, gewijzigdOp }. Alleen voor
+    // jezelf; geen document = mail aan (standaard). De Cloud Function leest
+    // het met de Admin SDK (die de rules niet volgt).
+    match /mailvoorkeur/{uid} {
+      allow get: if ingelogd() && request.auth.uid == uid;
+      allow list: if false;
+      allow create, update: if ingelogd()
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['uitnodigingen', 'gewijzigdOp'])
+        && request.resource.data.keys().hasAll(['uitnodigingen', 'gewijzigdOp'])
+        && request.resource.data.uitnodigingen is bool
+        && request.resource.data.gewijzigdOp == request.time;
+      allow delete: if ingelogd() && request.auth.uid == uid;
+    }
+
+    // Alleen voor de Cloud Function: hooguit één mail per uitnodiging en de
+    // dagtellers. Voor clients onleesbaar en onschrijfbaar.
+    match /mailLog/{id} {
+      allow read, write: if false;
+    }
+    match /mailTellers/{dag} {
+      allow read, write: if false;
+    }
   }
 }

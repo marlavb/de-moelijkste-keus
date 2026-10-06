@@ -57,9 +57,21 @@ export function linkUrl(token, plek = globalThis.location) {
 
 const millis = (t) => (typeof t?.toMillis === 'function' ? t.toMillis() : t instanceof Date ? t.getTime() : Number(t));
 
-/** Tot wanneer een link geldig is (ms), uit aangemaaktOp. */
-export const linkVerlooptOp = (link) => millis(link.aangemaaktOp) + LINK_GELDIG_MS;
-export const isLinkVerlopen = (link, nu = Date.now()) => nu >= linkVerlooptOp(link);
+/**
+ * Tot wanneer een link geldig is (ms), uit aangemaaktOp; null zolang de
+ * servertijd nog niet bekend is. Een link die net geschreven wordt, kan in
+ * een gelijktijdige query met aangemaaktOp null terugkomen (lokale write met
+ * serverTimestamp): die telt niet als verlopen. Anders ruimde de app een
+ * zojuist gemaakte link meteen weer op (gevonden door de e2e-tests).
+ */
+export const linkVerlooptOp = (link) => {
+  const ms = link?.aangemaaktOp == null ? NaN : millis(link.aangemaaktOp);
+  return Number.isFinite(ms) && ms > 0 ? ms + LINK_GELDIG_MS : null;
+};
+export const isLinkVerlopen = (link, nu = Date.now()) => {
+  const tot = linkVerlooptOp(link);
+  return tot !== null && nu >= tot;
+};
 
 const isGeweigerd = (err) => err?.code === 'permission-denied' || err?.code === 'firestore/permission-denied';
 
@@ -272,7 +284,7 @@ export async function laadVriendenScherm({ db, fs, ik, nu = Date.now() }) {
     inkomend: docsVan(inkomend).map((v) => ({ uid: v.van, gebruikersnaam: v.vanGebruikersnaam, naam: v.vanNaam })).sort(opNaam),
     uitgaand: docsVan(uitgaand).map((v) => ({ uid: v.naar, gebruikersnaam: v.naarGebruikersnaam, naam: v.naarNaam })).sort(opNaam),
     geblokkeerd: docsVan(geblokkeerd).map((g) => ({ uid: g.uid, gebruikersnaam: g.gebruikersnaam, naam: g.naam })).sort(opNaam),
-    links: alleLinks.filter((l) => !isLinkVerlopen(l, nu)).sort((a, b) => linkVerlooptOp(a) - linkVerlooptOp(b)),
+    links: alleLinks.filter((l) => !isLinkVerlopen(l, nu)).sort((a, b) => (linkVerlooptOp(a) ?? Infinity) - (linkVerlooptOp(b) ?? Infinity)),
     verlopenLinks: alleLinks.filter((l) => isLinkVerlopen(l, nu)).map((l) => l.token),
   };
 }

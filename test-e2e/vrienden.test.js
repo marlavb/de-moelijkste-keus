@@ -179,7 +179,7 @@ test('uitnodigen: A plant, nodigt B en C uit; plan, leden en berichten', async (
   planId = plannen[0].pad.split('/')[1];
   assert.deepEqual(plannen[0].data.genodigden, [uid.B, uid.C]);
   assert.equal((await leesDoc(`plannen/${planId}/leden/${uid.B}`)).status, 'uitgenodigd');
-  assert.equal((await leesDoc(`users/${uid.A}`)).gepland[0].planId, planId);
+  await wachtOpDoc(`users/${uid.A}`, (d) => d?.gepland?.[0]?.planId === planId);
 });
 
 test('teller bij B zonder herladen, Berichten met de uitnodiging, titel naar het detailscherm', async () => {
@@ -271,7 +271,8 @@ test('B: "Ik ga toch niet" — eerst Annuleren (niets gebeurt), daarna bevestige
   await B.click('#geplandList .plan-bevestig >> text="Ik ga niet"');
   await wachtOpDoc(`plannen/${planId}/leden/${uid.B}`, (d) => d?.status === 'weg');
   assert.ok((await inbox('A')).some((b) => b.soort === 'weg' && b.van === uid.B));
-  assert.equal(((await leesDoc(`users/${uid.B}`)).gepland ?? []).length, 0);
+  // saveGepland schrijft zonder te wachten: wachten tot het binnen is.
+  await wachtOpDoc(`users/${uid.B}`, (d) => (d?.gepland ?? []).length === 0);
 });
 
 test('A heft het plan op (met bevestiging); C krijgt het opheffingsbericht', async () => {
@@ -335,8 +336,27 @@ test('uitgelogd: geen teller, geen tegels; #/berichten gaat naar Profiel', async
   await g.ctx.close();
 });
 
+test('Mail in Profiel: uitzetten en weer aanzetten (mailvoorkeur, echte rules)', async () => {
+  const B = ik.B.page;
+  await ga(B, base, '#/profiel');
+  await B.click('#mailTegel');
+  await B.waitForSelector('#mailSchakelaar');
+  assert.equal(await B.getAttribute('#mailSchakelaar', 'aria-checked'), 'true');
+  await B.click('#mailSchakelaar');
+  await wachtOpDoc(`mailvoorkeur/${uid.B}`, (d) => d?.uitnodigingen === false);
+  await wachtOpTekst(B, '#mailInhoud', /geen mail meer bij uitnodigingen/);
+  assert.equal(await B.getAttribute('#mailSchakelaar', 'aria-checked'), 'false');
+  await schermafbeelding(B, '7-mail');
+  await B.click('#mailSchakelaar');
+  await wachtOpDoc(`mailvoorkeur/${uid.B}`, (d) => d?.uitnodigingen === true);
+  // De link uit de mail, uitgelogd: eerst inloggen.
+  const g = await openGebruiker(browser, base, null, '#/profiel/mail');
+  await wachtOpTekst(g.page, '#mailInhoud', /Log in om je mailinstelling/);
+  await g.ctx.close();
+});
+
 test('veldcontrole: geen e-mailadres in Firestore; berichten, plannen en leden met precies de verwachte velden', async () => {
-  const collecties = ['users', 'profielen', 'usernames', 'vriendverzoeken', 'lijst', 'uitnodigingslinks', 'gedeeld', 'onderdelen', 'plannen', 'leden', 'berichten'];
+  const collecties = ['users', 'profielen', 'usernames', 'vriendverzoeken', 'lijst', 'uitnodigingslinks', 'gedeeld', 'onderdelen', 'plannen', 'leden', 'berichten', 'mailvoorkeur'];
   const alles = [];
   for (const c of collecties) alles.push(...(await alleIn(c)));
   assert.ok(alles.length > 20, `${alles.length} documenten`);

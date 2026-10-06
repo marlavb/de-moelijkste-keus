@@ -55,3 +55,11 @@ test('link is 7 dagen geldig vanaf aangemaaktOp (Timestamp, Date of getal)', () 
 test('verzoek-id is van_naar', () => {
   assert.equal(verzoekId('a1', 'b2'), 'a1_b2');
 });
+
+test('een net gemaakte link zonder bevestigde servertijd (aangemaaktOp null) is niet verlopen', () => {
+  for (const aangemaaktOp of [null, undefined, NaN, 0]) {
+    assert.equal(linkVerlooptOp({ aangemaaktOp }), null, String(aangemaaktOp));
+    assert.equal(isLinkVerlopen({ aangemaaktOp }), false, String(aangemaaktOp));
+  }
+  assert.equal(isLinkVerlopen({}), false);
+});
