@@ -424,3 +424,22 @@ test('samenvoegen: maker/genre van een oudere kopie vullen de nieuwere aan; tomb
   const weg = voegSamen(p, { watchlist: [], watchlistVerwijderd: [{ sleutel: 'teckel', verwijderdOp: 10 }] });
   assert.equal(weg.watchlist.length, 0);
 });
+
+test('Alain Clark → Date Night (okt 2026): watchlist-item migreert, alleen als het vóór de einddatum is toegevoegd', () => {
+  const okt = Date.parse('2026-10-05T12:00:00Z');
+  const item = { sleutel: 'alain clark', titel: 'Alain Clark', theaterId: 'stoep', toegevoegdOp: okt, v: NORMALISATIE_VERSIE };
+  const r = laadWatchlist({ opgeslagen: { watchlist: [item], watchlistVerwijderd: [] }, bekend: new Map([['date night', 'Date Night']]) });
+  // Ook naar Griffioens "Date Night – Alain Clark" (al in TITEL_MAPPING sinds 29 sep): liever een bladwijzer te veel.
+  assert.deepEqual(r.profiel.watchlist.map((i) => i.sleutel), ['alain clark | date night', 'date night']);
+  assert.equal(r.profiel.watchlist[0].toegevoegdOp, okt);
+  assert.equal(r.profiel.watchlist[0].theaterId, 'stoep');
+  // Idempotent.
+  assert.equal(laadWatchlist({ opgeslagen: r.profiel, bekend: new Map([['date night', 'Date Night']]) }).gewijzigd, false);
+  // Staat "Alain Clark" nog in de agenda (vóór de nachtrun), dan blijft het oude item er ook.
+  const nogBekend = laadWatchlist({ opgeslagen: { watchlist: [item], watchlistVerwijderd: [] }, bekend: new Map([['alain clark', 'Alain Clark']]) });
+  assert.deepEqual(nogBekend.profiel.watchlist.map((i) => i.sleutel).sort(), ['alain clark', 'alain clark | date night', 'date night']);
+  // Na de einddatum toegevoegd: een andere voorstelling, niet migreren.
+  const later = { ...item, toegevoegdOp: Date.parse('2027-02-01T12:00:00Z') };
+  const naEind = laadWatchlist({ opgeslagen: { watchlist: [later], watchlistVerwijderd: [] } }).profiel.watchlist.map((i) => i.sleutel);
+  assert.equal(naEind.includes('date night'), false);
+});

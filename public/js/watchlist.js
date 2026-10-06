@@ -208,12 +208,16 @@ export function renormaliseer(profiel) {
  * in de data (een theater zonder voorstellingsnaam), dan blijft het oude item
  * ook staan. Idempotent, zonder vlag.
  */
+/** Laatste milliseconde van een datum (JJJJ-MM-DD) in UTC+0; ruim genoeg voor een einddatum. */
+export const eindeVanDag = (datum) => Date.parse(`${datum}T23:59:59.999Z`);
+
 export function pasTitelMappingToe(profiel, bekend = new Map(), mapping = TITEL_MAPPING) {
   const houden = [];
   const nieuw = [];
   for (const item of profiel?.watchlist ?? []) {
-    const doelen = mapping.get(item.sleutel);
-    if (!doelen) {
+    // Een doel met `tot` geldt alleen voor items die vóór het eind van die dag zijn toegevoegd.
+    const doelen = mapping.get(item.sleutel)?.filter((d) => !d.tot || (item.toegevoegdOp ?? 0) <= eindeVanDag(d.tot));
+    if (!doelen?.length) {
       houden.push(item);
       continue;
     }

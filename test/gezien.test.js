@@ -566,3 +566,33 @@ test('kopie voor vrienden: maker van het item als de voorstelling niet in de age
   const [k2] = kopieGezien({ gezien: [{ ...item, bezoeken: [{ datum: '2026-09-30', maker: 'Bezoek' }] }] });
   assert.equal(k2.maker, 'Bezoek');
 });
+
+test('Alain Clark → Date Night (okt 2026): Gezien-item migreert met bezoeken en sterren; niet na de einddatum, niet als de oude sleutel nog in de agenda staat', async () => {
+  const { pasGezienMappingToe } = await import('../public/js/gezien.js');
+  const item = {
+    sleutel: 'alain clark', titel: 'Alain Clark – Date Night', sleutelTitel: 'Alain Clark', theaterId: 'stoep', bron: 'planning',
+    toegevoegdOp: 10, gewijzigdOp: 10, v: 4, beoordeling: 4.5, beoordeeldOp: 11,
+    bezoeken: [{ datum: '2026-10-09', tijd: '20:15', theaterId: 'stoep' }],
+  };
+  const r = laadGezien({ opgeslagen: { gezien: [item], gezienVerwijderd: [] }, bekend: new Map() });
+  assert.equal(r.gewijzigd, true);
+  const [n] = r.profiel.gezien;
+  assert.equal(n.sleutel, 'date night');
+  assert.equal(n.titel, 'Date Night – Alain Clark');
+  assert.equal(n.beoordeling, 4.5);
+  assert.equal(n.bezoeken.length, 1);
+  assert.equal(laadGezien({ opgeslagen: r.profiel, bekend: new Map() }).gewijzigd, false);
+  // Samen met een bestaand "date night"-item: één item, beide bezoeken.
+  const al = { ...item, sleutel: 'date night', bezoeken: [{ datum: '2026-10-07', tijd: '20:15', theaterId: 'omval' }] };
+  const samen = pasGezienMappingToe({ gezien: [item, al], gezienVerwijderd: [] }, new Map()).profiel;
+  assert.equal(samen.gezien.length, 1);
+  assert.equal(samen.gezien[0].bezoeken.length, 2);
+  // Oude sleutel nog in de agenda, of bezoek na de einddatum: niets.
+  assert.equal(pasGezienMappingToe({ gezien: [item] }, new Map([['alain clark', 'Alain Clark']])).gewijzigd, false);
+  assert.equal(pasGezienMappingToe({ gezien: [{ ...item, bezoeken: [{ datum: '2027-03-01', theaterId: 'x' }] }] }, new Map()).gewijzigd, false);
+  // Zonder `bekend` (oude aanroep) blijft alles zoals het was.
+  assert.equal(laadGezien({ opgeslagen: { gezien: [item] } }).profiel.gezien[0].sleutel, 'alain clark');
+  // De rest van TITEL_MAPPING geldt niet voor Gezien.
+  const babel = { ...item, sleutel: 'babel', titel: 'Babel', bezoeken: [{ datum: '2026-10-02', theaterId: 'x' }] };
+  assert.equal(pasGezienMappingToe({ gezien: [babel] }, new Map()).gewijzigd, false);
+});

@@ -190,3 +190,19 @@ test('"Met: …" (filmcast) is nooit maker', async () => {
   assert.equal(isGeenMaker('Met: Daisy Edgar-Jones, Caitríona Balfe, Fiona Shaw e.a.'), true);
   assert.equal(isGeenMaker('Metropole Orkest'), false);
 });
+
+test('voorstelling bij de artiest (VOORSTELLING_BIJ_ARTIEST): Alain Clark → Date Night, alleen t/m de einddatum', async () => {
+  const { draaiTitelEnMakerOm } = await import('../src/lib/titels.js');
+  const kl = { theaterId: 'kunstlinie', titel: 'Alain Clark', maker: null, datum: '2026-10-28' };
+  assert.deepEqual(draaiTitelEnMakerOm(kl), { ...kl, titel: 'Date Night', maker: 'Alain Clark' });
+  assert.deepEqual(draaiTitelEnMakerOm(draaiTitelEnMakerOm(kl)), draaiTitelEnMakerOm(kl));
+  assert.equal(draaiTitelEnMakerOm({ ...kl, theaterId: 'stadsgehoorzaal' }).titel, 'Date Night');
+  assert.equal(draaiTitelEnMakerOm({ ...kl, datum: '2027-03-01' }).titel, 'Alain Clark');
+  assert.equal(draaiTitelEnMakerOm({ ...kl, theaterId: 'flint' }).titel, 'Alain Clark');
+});
+
+test('algemene ondertitels ("In Concert", "Theatertour") zijn nooit maker', async () => {
+  const { isGeenMaker } = await import('../src/lib/titels.js');
+  for (const t of ['In Concert', 'Theaterconcert', 'Theatertour', 'Live']) assert.equal(isGeenMaker(t), true, t);
+  for (const t of ['Concertgebouworkest', 'Live Rock Band', 'Tourist LeMC']) assert.equal(isGeenMaker(t), false, t);
+});

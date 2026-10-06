@@ -51,6 +51,9 @@ const GEEN_MAKER = [
   // Een jubileum-ondertitel ("20 jaar 3JS", Flint; "20 jaar onmeunig druk",
   // Miss Montreal), okt 2026.
   /^\d+\s+jaar\s/i,
+  // Algemene ondertitels zonder naam: "In Concert" (Flint, Meervaart),
+  // "Theaterconcert", "Theatertour" (okt 2026).
+  /^(?:in concert|(?:theater)?concert|(?:theater)?tour|live)$/i,
 ];
 
 export function isGeenMaker(tekst) {
@@ -76,12 +79,32 @@ export const OMGEDRAAID = {
   maaspoort: ['Alain Clark'],
 };
 
-/** Draait titel en maker om als dit theater de titel op OMGEDRAAID heeft (en er een maker is). */
-export function draaiTitelEnMakerOm(show, lijst = OMGEDRAAID) {
+// Alleen de artiest als titel, de voorstelling niet in titel of makerveld
+// (wel op de detailpagina of als ondertitel in de agenda): titel wordt de
+// voorstelling, maker de artiest. Per theater, letterlijke brontitel, alleen
+// speeldata t/m `tot` (een latere tournee kan anders heten).
+// - Alain Clark, "Date Night" (tournee okt 2026): Kunstlinie (detailpagina
+//   kunstlinie.nl/programma/alain-clark/: "Alain Clark – Date Night",
+//   bekeken 6 okt 2026) en Stadsgehoorzaal (agenda: "Alain Clark" met
+//   ondertitel "Date Night", 30 sep 2026).
+export const VOORSTELLING_BIJ_ARTIEST = {
+  kunstlinie: { 'Alain Clark': { voorstelling: 'Date Night', tot: '2026-12-31' } },
+  stadsgehoorzaal: { 'Alain Clark': { voorstelling: 'Date Night', tot: '2026-12-31' } },
+};
+
+/**
+ * Zet titel en maker recht: omdraaien als dit theater de titel op
+ * OMGEDRAAID heeft (en er een maker is), of de voorstelling erbij uit
+ * VOORSTELLING_BIJ_ARTIEST. Idempotent.
+ */
+export function draaiTitelEnMakerOm(show, lijst = OMGEDRAAID, bijArtiest = VOORSTELLING_BIJ_ARTIEST) {
+  const titel = String(show?.titel ?? '').trim();
+  const extra = bijArtiest[show?.theaterId]?.[titel];
+  if (extra && (!show.datum || show.datum <= extra.tot)) return { ...show, titel: extra.voorstelling, maker: titel };
   const titels = lijst[show?.theaterId];
   const maker = typeof show?.maker === 'string' ? show.maker.trim() : '';
-  if (!titels || !maker || !titels.includes(String(show.titel ?? '').trim())) return show;
-  return { ...show, titel: maker, maker: show.titel.trim() };
+  if (!titels || !maker || !titels.includes(titel)) return show;
+  return { ...show, titel: maker, maker: titel };
 }
 
 /** "door Oortwolk" → "Oortwolk", "o.l.v. Tijn Trommelen" → "Tijn Trommelen". */

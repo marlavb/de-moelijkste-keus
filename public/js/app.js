@@ -1204,7 +1204,7 @@ function syncProfielForCurrentUser() {
   const lokaalGepland = laadGepland({ opgeslagen: loadGeplandLocal(), index: showIndex });
   if (lokaalGepland.gewijzigd) saveGeplandLocal(lokaalGepland.profiel);
 
-  const lokaalGezien = laadGezien({ opgeslagen: loadGezienLocal(), info });
+  const lokaalGezien = laadGezien({ opgeslagen: loadGezienLocal(), info, bekend });
   if (lokaalGezien.gewijzigd) saveGezienLocal(lokaalGezien.profiel);
 
   if (!state.user) {
@@ -1241,7 +1241,7 @@ function syncProfielForCurrentUser() {
     );
   }
 
-  const cloudGezien = laadGezien({ opgeslagen: state.cloudGezien, extra: lokaalGezien.profiel, info });
+  const cloudGezien = laadGezien({ opgeslagen: state.cloudGezien, extra: lokaalGezien.profiel, info, bekend });
   state.gezien = cloudGezien.profiel;
   if (cloudGezien.gewijzigd) {
     state.cloudGezien = cloudGezien.profiel;

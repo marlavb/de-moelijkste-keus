@@ -37,7 +37,8 @@
 //   al een maker/genre heeft, houdt die. Geen handeling: tijdstempels blijven
 //   gelijk en bij samenvoegen vult een kopie die ze heeft de andere aan.
 
-import { watchlistSleutel, NORMALISATIE_VERSIE, verwijder as verwijderVanWatchlist, infoPerSleutel } from './watchlist.js';
+import { watchlistSleutel, NORMALISATIE_VERSIE, verwijder as verwijderVanWatchlist, infoPerSleutel, eindeVanDag } from './watchlist.js';
+import { GEZIEN_MAPPING } from './titelMapping.js';
 
 // infoPerSleutel staat in watchlist.js (ook de watchlist vult ermee aan).
 export { infoPerSleutel };
@@ -347,12 +348,39 @@ export function gezienVeld(item, veld) {
 }
 
 /**
- * Eén laadronde (localStorage of Firestore, eventueel met de lokale lijst
- * erbij). Met `info` (infoPerSleutel) worden items aangevuld met maker en genre.
+ * Gezien-items naar een nieuwe sleutel als de titel bij de bron veranderd is
+ * (GEZIEN_MAPPING in titelMapping.js: alleen eenduidige, gedateerde regels).
+ * Alleen als de oude sleutel niet meer in de agenda staat (`bekend`) en het
+ * item van vóór de einddatum is (laatste bezoek, anders toegevoegdOp). Het
+ * item houdt zijn tijdstempels, bezoeken en beoordeling; staat de nieuwe
+ * sleutel er al, dan voegen ze samen. Idempotent.
  */
-export function laadGezien({ opgeslagen, extra = null, info = null }) {
+export function pasGezienMappingToe(profiel, bekend = new Map(), mapping = GEZIEN_MAPPING) {
+  let gewijzigd = false;
+  const gezien = (profiel?.gezien ?? []).map((item) => {
+    const doelen = mapping.get(item.sleutel);
+    if (!doelen || doelen.length !== 1 || bekend.has(item.sleutel)) return item;
+    const [doel] = doelen;
+    const laatste = laatsteBezoek(item)?.datum;
+    const vanVoor = laatste ? laatste <= doel.tot : (item.toegevoegdOp ?? 0) <= eindeVanDag(doel.tot);
+    if (doel.tot && !vanVoor) return item;
+    gewijzigd = true;
+    return { ...item, sleutel: doel.sleutel, sleutelTitel: doel.titel, titel: doel.weergave ?? doel.titel };
+  });
+  if (!gewijzigd) return { profiel, gewijzigd };
+  return { profiel: voegGezienSamen({ gezien, gezienVerwijderd: profiel?.gezienVerwijderd ?? [] }), gewijzigd };
+}
+
+/**
+ * Eén laadronde (localStorage of Firestore, eventueel met de lokale lijst
+ * erbij). Met `info` (infoPerSleutel) worden items aangevuld met maker en
+ * genre; met `bekend` (bekendeSleutels) gaan items via GEZIEN_MAPPING naar
+ * een nieuwe sleutel.
+ */
+export function laadGezien({ opgeslagen, extra = null, info = null, bekend = null, mapping = GEZIEN_MAPPING }) {
   const basis = { gezien: opgeslagen?.gezien ?? [], gezienVerwijderd: opgeslagen?.gezienVerwijderd ?? [] };
-  const samen = voegGezienSamen(basis, extra ?? legeGezien());
+  const samengevoegd = voegGezienSamen(basis, extra ?? legeGezien());
+  const samen = bekend ? pasGezienMappingToe(samengevoegd, bekend, mapping).profiel : samengevoegd;
   const profiel = info ? vulGezienAan(samen, info).profiel : samen;
   return { profiel, gewijzigd: JSON.stringify(profiel) !== JSON.stringify(basis) };
 }
