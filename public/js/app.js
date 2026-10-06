@@ -169,6 +169,7 @@ const THEATER_ZOEKALIASSEN = {
   schouwburgconcertzaal: ['schouwburg tilburg', 'concertzaal tilburg', 'theaters tilburg'],
   willemtwee: ['willem twee', 'w2', 'toonzaal', 'den bosch'],
   theateraandeparade: ['parade', 'theater aan de parade', 'den bosch'],
+  denieuwevorst: ['nieuwe vorst', 'de nieuwe vorst'],
 };
 
 const BESCHIKBAARHEID_LABELS = {

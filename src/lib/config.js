@@ -738,4 +738,18 @@ export const THEATERS = [
       toelichting: 'Online reserveren kan vanaf één maand voor de voorstelling, als je bent ingelogd en je Podiumpas hebt laten registreren; je tickets staan daarna in je mail of account. Eén ticket per pas.',
     },
   },
+  {
+    id: 'denieuwevorst',
+    naam: 'Theater De Nieuwe Vorst',
+    stad: 'Tilburg',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://denieuwevorst.nl',
+    agendaUrl: 'https://denieuwevorst.nl/programma',
+    podiumpas: true,
+    // Bron: https://denieuwevorst.nl/bezoekinfo/ticketinfo (6 okt 2026).
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Online met de kaartsoort "Podiumpas" (pasnummer invullen), vanaf 30 dagen voor de voorstelling. Neem je pas mee naar de kassa; reserveringen blijven tot 15 minuten voor aanvang geldig.',
+    },
+  },
 ];
