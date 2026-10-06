@@ -344,3 +344,83 @@ test('Griffioen-omzetting (30 sep 2026): oude bladwijzer krijgt de nieuwe sleute
   assert.equal(r.profiel.watchlist[0].toegevoegdOp, 5);
   assert.equal(laadWatchlist({ opgeslagen: JSON.parse(JSON.stringify(r.profiel)), bekend }).gewijzigd, false);
 });
+
+// ---------- Stand, maker en genre (okt 2026) ----------
+
+import { vulWatchlistAan, infoPerSleutel } from '../public/js/watchlist.js';
+import { watchlistStand } from '../public/js/weergave.js';
+
+const VANDAAG = '2026-10-06';
+const d = (datum, beschikbaarheid, extra = {}) => ({ id: `x-${datum}-${beschikbaarheid}`, titel: 'Dekpunt – Jan Beuving', theaterId: 'kleinekomedie', theaterNaam: 'De Kleine Komedie', datum, tijd: '20:15', beschikbaarheid, ...extra });
+
+test('watchlistStand: deels afgelast → "2 van 5 data afgelast", eerstvolgende die doorgaat', () => {
+  const st = watchlistStand([d('2026-10-14', 'afgelast'), d('2026-10-15', 'afgelast'), d('2027-01-21', 'beschikbaar'), d('2027-01-22', 'uitverkocht'), d('2027-01-23', 'beschikbaar'), d('2026-09-01', 'afgelast')], VANDAAG);
+  assert.equal(st.soort, 'komend');
+  assert.equal(st.label, '2 van 5 data afgelast');
+  assert.equal(st.soonest.datum, '2027-01-21');
+  assert.equal(st.eerste, st.soonest);
+});
+
+test('watchlistStand: alles afgelast → "Afgelast", met de eerste afgelaste datum om te openen', () => {
+  const st = watchlistStand([d('2027-02-20', 'afgelast'), d('2027-01-10', 'afgelast')], VANDAAG);
+  assert.equal(st.soort, 'vervallen');
+  assert.equal(st.label, 'Afgelast');
+  assert.equal(st.soonest, null);
+  assert.equal(st.eerste.datum, '2027-01-10');
+  assert.equal(watchlistStand([d('2027-01-10', 'verplaatst')], VANDAAG).label, 'Verplaatst');
+  assert.equal(watchlistStand([d('2027-01-10', 'verplaatst'), d('2027-01-11', 'afgelast')], VANDAAG).label, 'Afgelast');
+  assert.equal(watchlistStand([d('2027-01-10', 'verplaatst'), d('2027-01-11', 'afgelast'), d('2027-01-12', 'beschikbaar')], VANDAAG).label, '2 van 3 data afgelast of verplaatst');
+});
+
+test('watchlistStand: niet meer in de agenda (of alleen voorbije data) → "Niet meer in de agenda"', () => {
+  for (const shows of [[], undefined, [d('2026-09-01', 'beschikbaar')]]) {
+    const st = watchlistStand(shows, VANDAAG);
+    assert.equal(st.soort, 'weg');
+    assert.equal(st.label, 'Niet meer in de agenda');
+    assert.equal(st.eerste, null);
+  }
+});
+
+test('watchlistStand: oude data zonder beschikbaarheid telt als gewoon; geen label', () => {
+  const st = watchlistStand([{ id: 'a', titel: 'X', theaterId: 't', datum: '2027-01-01' }], VANDAAG);
+  assert.equal(st.soort, 'komend');
+  assert.equal(st.label, null);
+});
+
+test('voegToe bewaart maker en genre (optioneel); verwijderen geeft een tombstone', () => {
+  const p = voegToe(legeWatchlist(), { titel: 'Teckel', theaterId: 'bellevue', maker: 'Nina van Tongeren', genre: 'Toneel' }, 5);
+  assert.deepEqual(p.watchlist[0], { sleutel: 'teckel', titel: 'Teckel', theaterId: 'bellevue', toegevoegdOp: 5, v: NORMALISATIE_VERSIE, maker: 'Nina van Tongeren', genre: 'Toneel' });
+  assert.equal('maker' in voegToe(legeWatchlist(), { titel: 'Teckel', theaterId: 'bellevue' }, 5).watchlist[0], false);
+  const weg = verwijder(p, 'teckel', 6);
+  assert.deepEqual(weg, { watchlist: [], watchlistVerwijderd: [{ sleutel: 'teckel', verwijderdOp: 6 }] });
+});
+
+test('vulWatchlistAan en laadWatchlist met info: oude items zonder maker/genre aangevuld, nooit overschreven, idempotent', () => {
+  const oud = { sleutel: 'teckel', titel: 'Teckel', theaterId: 'ssu', toegevoegdOp: 5, v: NORMALISATIE_VERSIE };
+  const eigen = { sleutel: 'flint::nora', titel: 'Nora', theaterId: 'flint', toegevoegdOp: 5, v: NORMALISATIE_VERSIE, maker: 'Eigen' };
+  const info = infoPerSleutel([
+    { titel: 'Teckel', theaterId: 'ssu', maker: 'Nina van Tongeren', genre: 'Toneel' },
+    { titel: 'Nora', theaterId: 'flint', maker: 'Anders', genre: 'Toneel' },
+  ]);
+  const { profiel, gewijzigd } = vulWatchlistAan({ watchlist: [oud], watchlistVerwijderd: [] }, info);
+  assert.equal(gewijzigd, true);
+  assert.equal(profiel.watchlist[0].maker, 'Nina van Tongeren');
+  assert.equal(profiel.watchlist[0].toegevoegdOp, 5);
+  assert.equal(vulWatchlistAan(profiel, info).gewijzigd, false);
+  const r = laadWatchlist({ opgeslagen: { watchlist: [oud, eigen], watchlistVerwijderd: [] }, info });
+  assert.equal(r.gewijzigd, true);
+  assert.equal(r.profiel.watchlist.find((i) => i.sleutel === 'teckel').genre, 'Toneel');
+  assert.equal(r.profiel.watchlist.find((i) => i.sleutel === 'flint::nora').maker, 'Eigen');
+  // Zonder info en zonder nieuwe velden: niets te schrijven.
+  assert.equal(laadWatchlist({ opgeslagen: { watchlist: [oud], watchlistVerwijderd: [] } }).gewijzigd, false);
+});
+
+test('samenvoegen: maker/genre van een oudere kopie vullen de nieuwere aan; tombstone wint nog steeds', () => {
+  const oud = { sleutel: 'teckel', titel: 'Teckel', theaterId: 'ssu', toegevoegdOp: 5, v: NORMALISATIE_VERSIE, maker: 'Nina van Tongeren' };
+  const nieuw = { sleutel: 'teckel', titel: 'Teckel', theaterId: 'ssu', toegevoegdOp: 9, v: NORMALISATIE_VERSIE };
+  const p = voegSamen({ watchlist: [oud] }, { watchlist: [nieuw] });
+  assert.equal(p.watchlist[0].toegevoegdOp, 9);
+  assert.equal(p.watchlist[0].maker, 'Nina van Tongeren');
+  const weg = voegSamen(p, { watchlist: [], watchlistVerwijderd: [{ sleutel: 'teckel', verwijderdOp: 10 }] });
+  assert.equal(weg.watchlist.length, 0);
+});

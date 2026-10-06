@@ -37,7 +37,10 @@
 //   al een maker/genre heeft, houdt die. Geen handeling: tijdstempels blijven
 //   gelijk en bij samenvoegen vult een kopie die ze heeft de andere aan.
 
-import { watchlistSleutel, NORMALISATIE_VERSIE, verwijder as verwijderVanWatchlist } from './watchlist.js';
+import { watchlistSleutel, NORMALISATIE_VERSIE, verwijder as verwijderVanWatchlist, infoPerSleutel } from './watchlist.js';
+
+// infoPerSleutel staat in watchlist.js (ook de watchlist vult ermee aan).
+export { infoPerSleutel };
 import { koppel, haalUitPlanning } from './gepland.js';
 import { isVervallen, weergaveTitel } from './weergave.js';
 import { amsterdamDatum } from './plannen.js';
@@ -312,31 +315,6 @@ export function sorteerGezien(items) {
     return new Date(j, m - 1, d, u, min).getTime();
   };
   return [...items].sort((a, b) => moment(b) - moment(a));
-}
-
-/**
- * Maker en genre per sleutel uit de agenda, voor vulGezienAan. Alleen als
- * alle speeldata met een maker (genre) het eens zijn: de nachtelijke run
- * trekt de maker per productie gelijk (makerMeerderheid.js); bij een
- * gelijke stand blijven ze verschillen en vullen we niets aan.
- */
-export function infoPerSleutel(shows) {
-  const per = new Map();
-  for (const s of shows ?? []) {
-    const k = watchlistSleutel(s.titel, s.theaterId);
-    if (!per.has(k)) per.set(k, { maker: new Set(), genre: new Set() });
-    const p = per.get(k);
-    if (typeof s.maker === 'string' && s.maker.trim()) p.maker.add(s.maker.trim());
-    if (typeof s.genre === 'string' && s.genre.trim()) p.genre.add(s.genre.trim());
-  }
-  const uit = new Map();
-  for (const [k, p] of per) {
-    const info = {};
-    if (p.maker.size === 1) info.maker = [...p.maker][0];
-    if (p.genre.size === 1) info.genre = [...p.genre][0];
-    if (info.maker || info.genre) uit.set(k, info);
-  }
-  return uit;
 }
 
 /** Heeft het item (of een van zijn bezoeken) dit veld al? */

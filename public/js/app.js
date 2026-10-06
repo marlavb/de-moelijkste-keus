@@ -62,7 +62,7 @@ import {
 } from './gedeeld.js';
 import { getGenreBucket, getGenres, matchtGenreFilter } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
-import { weergaveTitel, makerStaatInTitel, isVervallen, isVol, VERVALLEN_LABELS } from './weergave.js';
+import { weergaveTitel, makerStaatInTitel, isVervallen, isVol, VERVALLEN_LABELS, watchlistStand } from './weergave.js';
 import { renameFavoritesAndPersist, THEATER_MOVES } from './favorites.js';
 import { laadWatchlist, bekendeSleutels, legeWatchlist, watchlistSleutel, voegToe, verwijder, NORMALISATIE_VERSIE } from './watchlist.js';
 import {
@@ -414,6 +414,7 @@ const els = {
     profiel: document.getElementById('screen-profiel'),
     // Kan ontbreken bij een oudere index.html (zie showScreen).
     gezien: document.getElementById('screen-gezien'),
+    watchlist: document.getElementById('screen-watchlist'),
     profielInstellen: document.getElementById('screen-profiel-instellen'),
     vrienden: document.getElementById('screen-vrienden'),
     vriendLink: document.getElementById('screen-vriendlink'),
@@ -432,6 +433,12 @@ const els = {
   gezienMaker: document.getElementById('gezienMaker'),
   gezienBezoeken: document.getElementById('gezienBezoeken'),
   gezienLink: document.getElementById('gezienLink'),
+  watchlistItemBack: document.getElementById('watchlistItemBack'),
+  watchlistItemIcon: document.getElementById('watchlistItemIcon'),
+  watchlistItemGenre: document.getElementById('watchlistItemGenre'),
+  watchlistItemTitel: document.getElementById('watchlistItemTitel'),
+  watchlistItemMaker: document.getElementById('watchlistItemMaker'),
+  watchlistItemTheater: document.getElementById('watchlistItemTheater'),
   detailBack: document.getElementById('detailBack'),
   detailWatchIcon: document.getElementById('detailWatchIcon'),
   detailWatchBtn: document.getElementById('detailWatchBtn'),
@@ -660,6 +667,7 @@ async function init() {
 
   els.detailBack.addEventListener('click', () => terug('#/'));
   els.gezienBack?.addEventListener('click', () => terug('#/profiel'));
+  els.watchlistItemBack?.addEventListener('click', () => terug('#/profiel'));
   els.profielBack?.addEventListener('click', () => terug('#/profiel'));
   els.profielLater?.addEventListener('click', () => terug('#/profiel'));
   els.profielOpnieuw?.addEventListener('click', opnieuwProfielLaden);
@@ -784,6 +792,26 @@ function routeNaar(hash) {
     }
     showScreen('gezien');
     renderGezienDetail(item);
+    return;
+  }
+
+  // Een watchlist-item: staat het (weer) in de agenda, dan het gewone
+  // detailscherm; anders een eenvoudig scherm met de bladwijzer om het weg
+  // te halen (ook als het al van de watchlist af is: dan weer toe te voegen).
+  if (hash.startsWith('#/watchlist/')) {
+    const sleutel = decodeURIComponent(hash.slice('#/watchlist/'.length));
+    const item = (state.watchlist?.watchlist ?? []).find((i) => i.sleutel === sleutel) ?? (watchlistSchermItem?.sleutel === sleutel ? watchlistSchermItem : null);
+    if (!item || !els.screens.watchlist) {
+      vervang('#/profiel');
+      return;
+    }
+    const stand = watchlistStand(state.shows.filter((s) => showSleutel(s) === sleutel), todayIsoDate());
+    if (stand.eerste) {
+      vervang(`#/show/${encodeURIComponent(stand.eerste.id)}`);
+      return;
+    }
+    showScreen('watchlist');
+    renderWatchlistScherm(item);
     return;
   }
 
@@ -944,7 +972,7 @@ function showScreen(name) {
   for (const [key, el] of Object.entries(els.screens)) {
     if (el) el.hidden = key !== name;
   }
-  els.bottomNav.hidden = ['detail', 'gezien', 'profielInstellen', 'vrienden', 'vriendLink', 'delen', 'vriend', 'vriendItem', 'uitnodigen', 'berichten', 'mail'].includes(name);
+  els.bottomNav.hidden = ['detail', 'gezien', 'watchlist', 'profielInstellen', 'vrienden', 'vriendLink', 'delen', 'vriend', 'vriendItem', 'uitnodigen', 'berichten', 'mail'].includes(name);
   for (const btn of els.bottomNav.querySelectorAll('.nav-item')) {
     btn.classList.toggle('is-active', btn.dataset.tab === name);
   }
@@ -1168,15 +1196,15 @@ function saveWatchlistLocal(profiel) {
 function syncProfielForCurrentUser() {
   if (state.shows.length === 0) return;
   const bekend = bekendeSleutels(state.shows);
-  const lokaal = laadWatchlist({ opgeslagen: loadWatchlistLocal(), favorieten: [...loadFavorites()], bekend });
+  // Watchlist- en Gezien-items zonder maker of genre aanvullen uit de agenda (nooit overschrijven).
+  const info = infoPerSleutel(state.shows);
+  const lokaal = laadWatchlist({ opgeslagen: loadWatchlistLocal(), favorieten: [...loadFavorites()], bekend, info });
   if (lokaal.gewijzigd) saveWatchlistLocal(lokaal.profiel);
   const showIndex = indexeerShows(state.shows);
   const lokaalGepland = laadGepland({ opgeslagen: loadGeplandLocal(), index: showIndex });
   if (lokaalGepland.gewijzigd) saveGeplandLocal(lokaalGepland.profiel);
 
-  // Gezien-items zonder maker of genre aanvullen uit de agenda (nooit overschrijven).
-  const gezienInfo = infoPerSleutel(state.shows);
-  const lokaalGezien = laadGezien({ opgeslagen: loadGezienLocal(), info: gezienInfo });
+  const lokaalGezien = laadGezien({ opgeslagen: loadGezienLocal(), info });
   if (lokaalGezien.gewijzigd) saveGezienLocal(lokaalGezien.profiel);
 
   if (!state.user) {
@@ -1195,6 +1223,7 @@ function syncProfielForCurrentUser() {
     favorieten: [...state.favorites],
     extra: lokaal.profiel,
     bekend,
+    info,
   });
   state.watchlist = cloud.profiel;
   logOudeSlugs(cloud);
@@ -1212,7 +1241,7 @@ function syncProfielForCurrentUser() {
     );
   }
 
-  const cloudGezien = laadGezien({ opgeslagen: state.cloudGezien, extra: lokaalGezien.profiel, info: gezienInfo });
+  const cloudGezien = laadGezien({ opgeslagen: state.cloudGezien, extra: lokaalGezien.profiel, info });
   state.gezien = cloudGezien.profiel;
   if (cloudGezien.gewijzigd) {
     state.cloudGezien = cloudGezien.profiel;
@@ -1286,10 +1315,31 @@ function toggleWatchlist(show) {
   const sleutel = showSleutel(show);
   state.watchlist = isOpWatchlist(show)
     ? verwijder(state.watchlist, sleutel)
-    : voegToe(state.watchlist, { titel: show.titel, theaterId: show.theaterId });
+    : voegToe(state.watchlist, watchlistGegevens(show));
   saveWatchlist();
   renderWatchButtons(show);
   renderAgenda();
+}
+
+// Wat een nieuw watchlist-item onthoudt (maker en genre voor het eenvoudige scherm).
+function watchlistGegevens(show) {
+  return { titel: show.titel, theaterId: show.theaterId, maker: show.maker ?? null, genre: show.genre ?? null };
+}
+
+// Van de watchlist halen vanuit Profiel of het eenvoudige scherm, met
+// "Ongedaan maken". Via verwijder() (tombstone) en saveWatchlist(): dat
+// synchroniseert met Firestore en werkt de kopie voor vrienden bij.
+function haalVanWatchlist(item, naAfloop = () => {}) {
+  state.watchlist = verwijder(state.watchlist, item.sleutel);
+  saveWatchlist();
+  toonMelding('Van je watchlist gehaald', () => {
+    state.watchlist = voegToe(state.watchlist, { titel: item.titel, theaterId: item.theaterId, maker: item.maker ?? null, genre: item.genre ?? null });
+    saveWatchlist();
+    renderAgenda();
+    naAfloop();
+  });
+  renderAgenda();
+  naAfloop();
 }
 
 function saveWatchlist() {
@@ -5112,7 +5162,7 @@ function markeerGezien(show, naAfloop = () => {}) {
     state.gezien = haalUitGezien(state.gezien, sleutel);
     saveGezien();
     if (watchItem) {
-      state.watchlist = voegToe(state.watchlist, { titel: watchItem.titel, theaterId: watchItem.theaterId });
+      state.watchlist = voegToe(state.watchlist, { titel: watchItem.titel, theaterId: watchItem.theaterId, maker: watchItem.maker ?? null, genre: watchItem.genre ?? null });
       saveWatchlist();
     }
     naAfloop();
@@ -5661,8 +5711,9 @@ function renderTheatersScreen() {
 // ---------- Profiel: watchlist ----------
 
 /** Eén rij per watchlist-item, met de eerstvolgende voorstelling over alle
- * theaters heen. Staat een item niet (meer) in de agenda, dan tonen we het
- * niet-klikbaar met "Geen komende voorstellingen" — nooit stil weglaten. */
+ * theaters heen en de stand (watchlistStand): "Afgelast", "2 van 5 data
+ * afgelast" of "Niet meer in de agenda". Nooit stil weglaten, en altijd te
+ * openen en te verwijderen. */
 function watchlistProductions() {
   const vandaag = todayIsoDate();
   const perSleutel = new Map();
@@ -5674,32 +5725,32 @@ function watchlistProductions() {
   }
   const productions = [];
   for (const item of state.watchlist?.watchlist ?? []) {
-    const komend = (perSleutel.get(item.sleutel) ?? [])
-      // Een afgelaste of verplaatste speeldatum is niet "de eerstvolgende".
-      .filter((s) => s.datum >= vandaag && !isVervallen(s))
-      .sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
-    const soonest = komend[0] ?? null;
-    const theaters = new Set(komend.map((s) => s.theaterId));
+    const stand = watchlistStand(perSleutel.get(item.sleutel) ?? [], vandaag);
+    const soonest = stand.soonest;
+    // Theaters waar hij nog doorgaat (of, helemaal afgelast, waar hij stond).
+    const relevant = (perSleutel.get(item.sleutel) ?? []).filter((s) => s.datum >= vandaag && (soonest ? !isVervallen(s) : true));
+    const theaters = new Set(relevant.map((s) => s.theaterId));
+    const eerste = stand.eerste;
     productions.push({
       item,
       key: item.sleutel,
-      titel: soonest ? weergaveTitel(soonest) : item.titel,
-      theaterNaam: soonest
+      stand,
+      titel: eerste ? weergaveTitel(eerste) : weergaveTitel({ titel: item.titel, maker: item.maker }),
+      theaterNaam: eerste
         ? theaters.size > 1
-          ? `${soonest.theaterNaam} en ${theaters.size - 1} ander${theaters.size === 2 ? '' : 'e'} theater${theaters.size === 2 ? '' : 's'}`
-          : soonest.theaterNaam
+          ? `${eerste.theaterNaam} en ${theaters.size - 1} ander${theaters.size === 2 ? '' : 'e'} theater${theaters.size === 2 ? '' : 's'}`
+          : eerste.theaterNaam
         : item.theaterId ? theaterDisplayName(item.theaterId) : '',
       podiumpas: soonest?.podiumpas,
       soonest,
     });
   }
 
+  // Komende eerst (op datum), dan helemaal afgelast, dan niet meer in de agenda.
+  const groep = (p) => ({ komend: 0, vervallen: 1, weg: 2 })[p.stand.soort];
   productions.sort((a, b) => {
-    const aSort = a.soonest ? sortKey(a.soonest) : null;
-    const bSort = b.soonest ? sortKey(b.soonest) : null;
-    if (aSort && bSort) return aSort.localeCompare(bSort);
-    if (aSort) return -1; // producties zonder komende datum onderaan
-    if (bSort) return 1;
+    if (groep(a) !== groep(b)) return groep(a) - groep(b);
+    if (a.stand.eerste && b.stand.eerste) return sortKey(a.stand.eerste).localeCompare(sortKey(b.stand.eerste));
     return a.titel.localeCompare(b.titel, 'nl');
   });
 
@@ -5707,13 +5758,15 @@ function watchlistProductions() {
 }
 
 function renderProductionRow(production) {
-  const hasUpcoming = production.soonest != null;
-  const row = document.createElement(hasUpcoming ? 'button' : 'div');
-  row.className = 'show-row' + (hasUpcoming ? '' : ' show-row--inert');
-  if (hasUpcoming) {
-    row.type = 'button';
-    row.addEventListener('click', () => navigate(`#/show/${encodeURIComponent(production.soonest.id)}`));
-  }
+  const { stand } = production;
+  const row = document.createElement('button');
+  row.type = 'button';
+  row.className = 'show-row' + (stand.soort === 'komend' ? '' : ' show-row--vervallen');
+  // Komend of afgelast: het detailscherm (daar staat "Afgelast"); niet meer
+  // in de agenda: het eenvoudige scherm met de bladwijzer.
+  row.addEventListener('click', () =>
+    navigate(stand.eerste ? `#/show/${encodeURIComponent(stand.eerste.id)}` : `#/watchlist/${encodeURIComponent(production.key)}`)
+  );
 
   const dot = document.createElement('span');
   dot.className = 'show-dot';
@@ -5724,36 +5777,41 @@ function renderProductionRow(production) {
 
   const title = document.createElement('p');
   title.className = 'show-title';
-  title.textContent = production.titel;
+  const titleText = document.createElement('span');
+  titleText.className = 'show-title-text';
+  titleText.textContent = production.titel;
+  title.appendChild(titleText);
 
   const metaRow = document.createElement('div');
   metaRow.className = 'show-meta-row';
 
   const meta = document.createElement('p');
   meta.className = 'show-meta';
-  const theaterNaam = production.theaterNaam;
-  const wanneer = hasUpcoming ? `${formatDateShort(production.soonest.datum)} · ` : '';
-  meta.textContent = hasUpcoming
-    ? `${wanneer}${theaterNaam}`
-    : [theaterNaam, 'Geen komende voorstellingen'].filter(Boolean).join(' · ');
+  const wanneer = stand.eerste ? `${formatDateShort(stand.eerste.datum)} · ` : '';
+  meta.textContent = `${wanneer}${production.theaterNaam}`;
   metaRow.appendChild(meta);
 
   if (production.podiumpas === true) metaRow.appendChild(makePodiumpasIcon());
 
   info.append(title, metaRow);
+  if (stand.label) {
+    const flag = document.createElement('span');
+    flag.className = 'plan-flag watchlist-stand';
+    flag.textContent = stand.label;
+    info.appendChild(flag);
+  }
   row.append(dot, info);
 
-  if (hasUpcoming) {
-    const chevron = svgIcon('<polyline points="9 6 15 12 9 18" />');
-    chevron.classList.add('show-chevron');
-    row.appendChild(chevron);
-  }
+  const chevron = svgIcon('<polyline points="9 6 15 12 9 18" />');
+  chevron.classList.add('show-chevron');
+  row.appendChild(chevron);
 
   return row;
 }
 
-// Watchlist-rij in Profiel met een kleine actie "Gezien" ernaast (een knop
-// kan niet in de rij-knop zelf).
+// Watchlist-rij in Profiel met rechts "Gezien" en een eigen knop om het
+// item te verwijderen (een knop kan niet in de rij-knop zelf). Die werkt
+// altijd, ook als de voorstelling afgelast is of niet meer in de agenda staat.
 function renderWatchlistItem(production) {
   const wrap = document.createElement('div');
   wrap.className = 'watchlist-item';
@@ -5763,14 +5821,60 @@ function renderWatchlistItem(production) {
   actie.textContent = 'Gezien';
   actie.setAttribute('aria-label', `${production.titel} als gezien markeren`);
   actie.addEventListener('click', () => {
-    const show = production.soonest ?? { titel: production.item.titel, theaterId: production.item.theaterId };
+    const show = production.soonest ?? { titel: production.item.titel, theaterId: production.item.theaterId, maker: production.item.maker, genre: production.item.genre };
     markeerGezien(show, () => {
       renderProfielScreen();
       renderAgenda();
     });
   });
-  wrap.append(renderProductionRow(production), actie);
+  const weg = document.createElement('button');
+  weg.type = 'button';
+  weg.className = 'icon-btn icon-btn--plat watchlist-weg';
+  weg.setAttribute('aria-label', `Verwijder ${production.titel} van watchlist`);
+  weg.title = 'Van watchlist halen';
+  const icoon = svgIcon(BLADWIJZER);
+  icoon.setAttribute('fill', 'currentColor');
+  weg.appendChild(icoon);
+  weg.addEventListener('click', () => haalVanWatchlist(production.item, renderProfielScreen));
+  wrap.append(renderProductionRow(production), actie, weg);
   return wrap;
+}
+
+// Het eenvoudige scherm van een watchlist-item dat niet meer in de agenda
+// staat: titel, maker, genre en theater uit het item, met de bladwijzer.
+// Na het weghalen blijft het scherm staan (bladwijzer leeg), zodat je hem
+// meteen terug kunt zetten.
+let watchlistSchermItem = null;
+function renderWatchlistScherm(item) {
+  watchlistSchermItem = item;
+  const titel = item.titel ?? '';
+  els.watchlistItemTitel.textContent = titel;
+  const maker = item.maker && !makerStaatInTitel(titel, item.maker) ? item.maker : null;
+  els.watchlistItemMaker.textContent = maker ?? '';
+  els.watchlistItemMaker.hidden = !maker;
+  els.watchlistItemGenre.textContent = item.genre ?? '';
+  // Het theater waar je hem op de watchlist zette.
+  const theater = item.theaterId ? theaterDisplayName(item.theaterId) : null;
+  els.watchlistItemTheater.textContent = theater ?? '';
+  els.watchlistItemTheater.hidden = !theater;
+  const op = watchlistSleutels().has(item.sleutel);
+  const label = op ? `Verwijder ${titel} van watchlist` : `${titel} weer op watchlist zetten`;
+  const btn = els.watchlistItemIcon;
+  btn.classList.toggle('is-on', op);
+  btn.setAttribute('aria-pressed', String(op));
+  btn.setAttribute('aria-label', label);
+  btn.title = op ? 'Van watchlist halen' : 'Op watchlist zetten';
+  btn.querySelector('svg').setAttribute('fill', op ? 'currentColor' : 'none');
+  btn.onclick = () => {
+    if (watchlistSleutels().has(item.sleutel)) {
+      haalVanWatchlist(item, () => renderWatchlistScherm(item));
+    } else {
+      state.watchlist = voegToe(state.watchlist, { titel: item.titel, theaterId: item.theaterId, maker: item.maker ?? null, genre: item.genre ?? null });
+      saveWatchlist();
+      renderAgenda();
+      renderWatchlistScherm(item);
+    }
+  };
 }
 
 function renderProfielScreen() {

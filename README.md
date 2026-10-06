@@ -30,7 +30,11 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
 - **Theaters per provincie**: theaters aan of uit, per theater, per stad of per
   provincie (vinkje met aan/uit/deels). Gepauzeerde theaters staan er met een
   melding.
-- **Watchlist**: voorstellingen die je wilt zien, met de eerstvolgende datum.
+- **Watchlist**: voorstellingen die je wilt zien, met de eerstvolgende datum
+  en de stand: "Afgelast", "2 van 5 data afgelast" of "Niet meer in de
+  agenda". Elk item heeft een eigen knop om het weg te halen; een item dat niet
+  meer in de agenda staat opent een eenvoudig scherm (titel, maker, genre) met
+  de bladwijzer.
 - **Gepland**: een speeldatum die je wilt bezoeken, met of zonder kaarten. Na de
   speeldag (Amsterdamse tijd) gaat hij vanzelf naar Gezien; afgelast of
   verplaatst gaat stil uit de planning.
