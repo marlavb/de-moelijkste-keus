@@ -9,6 +9,7 @@ import { ontdubbelShows, dubbelSleutel, ontdubbelTussenTheaters } from './dedupe
 import { volgNavigatie, paginaDiagnose } from './diagnose.js';
 import { pasMeerderheidToe } from './weergaveMeerderheid.js';
 import { pasGenreMeerderheidToe } from './genreMeerderheid.js';
+import { pasMakerMeerderheidToe } from './makerMeerderheid.js';
 import { metEnDash, zonderStatusWoord, isGeenMaker, makerZonderVoorvoegsel } from './titels.js';
 import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
@@ -342,11 +343,13 @@ export async function runRefresh({
     // centraal op null gezet voor elke andere show, in plaats van dat elke
     // afzonderlijke scraper-module het zelf moet opnemen.
     // Eén scheidingsteken in titels en makers (" - " → " – ", zie titels.js).
-    .map(({ titelBron, genreBron, genres, ...s }) => {
+    .map(({ titelBron, genreBron, makerBron, genres, ...s }) => {
       // Behouden voorstellingen van de vorige run: eerst terug naar de
-      // brontitel en het brongenre, zodat ontdubbeling en stemming steeds op
-      // de bron werken (genreBron kan null zijn: "had geen genre").
+      // brontitel, het brongenre en de bronmaker, zodat ontdubbeling en
+      // stemming steeds op de bron werken (genreBron/makerBron kunnen null
+      // zijn: "had geen genre/maker").
       if (genreBron !== undefined) s.genre = genreBron;
+      if (makerBron !== undefined) s.maker = makerBron;
       const bron = titelBron ?? s.titel;
       // Afgelast/verplaatst: het statuswoord uit de titel, het staat in het label.
       const kaal = isVervallen(s) ? zonderStatusWoord : (t) => t;
@@ -379,8 +382,13 @@ export async function runRefresh({
   const { shows: metWeergave, gewijzigd: titelsOpMeerderheid } = pasMeerderheidToe(ontdubbeld);
   if (titelsOpMeerderheid > 0) log(`${titelsOpMeerderheid} titel(s) naar de weergave van de meeste theaters (titelBron bewaard).`);
   // Genre op productieniveau (genreMeerderheid.js); brongenre als genreBron.
-  const { shows: freshShows, gewijzigd: genresOpMeerderheid } = pasGenreMeerderheidToe(metWeergave);
+  const { shows: metGenre, gewijzigd: genresOpMeerderheid } = pasGenreMeerderheidToe(metWeergave);
   if (genresOpMeerderheid > 0) log(`${genresOpMeerderheid} voorstelling(en) naar het genre van de productie (genreBron bewaard).`);
+  // Maker op productieniveau (makerMeerderheid.js); bronmaker als makerBron.
+  const makerConflicten = [];
+  const { shows: freshShows, gewijzigd: makersOpMeerderheid } = pasMakerMeerderheidToe(metGenre, { conflicten: makerConflicten });
+  if (makersOpMeerderheid > 0) log(`${makersOpMeerderheid} voorstelling(en) naar de maker van de productie (makerBron bewaard).`);
+  for (const c of makerConflicten) log(`Maker van "${c.sleutel}" niet gelijkgetrokken (gelijke stand): ${c.theaters.map((t) => `${t.theaterId}: ${t.maker}`).join('; ')}.`);
   for (const theater of theaters) {
     const st = theaterStatus[theater.id];
     if (!st || theater.gepauzeerd) continue;

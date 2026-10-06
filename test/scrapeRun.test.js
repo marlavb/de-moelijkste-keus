@@ -556,3 +556,28 @@ test('genre op productieniveau: brongenre terug vóór elke run, stabiel over tw
   assert.equal(kl2.genre, 'Muziektheater');
   assert.equal('genreBron' in kl2, false);
 });
+
+test('maker op productieniveau: bronmaker terug vóór elke run, stabiel over twee runs', async () => {
+  const paths = await setup();
+  const scrapers = {
+    ssu: async () => [show('ssu', '2027-02-11', { titel: 'Teckel' })],
+    bellevue: async () => [show('bellevue', '2027-04-02', { titel: 'Teckel', maker: 'Nina van Tongeren / Theater Bellevue' })],
+  };
+  const theaters = [theater('ssu'), theater('bellevue')];
+  const eerste = await run({ paths, theaters, scrapers });
+  const ssu = eerste.written.find((x) => x.theaterId === 'ssu');
+  assert.equal(ssu.maker, 'Nina van Tongeren / Theater Bellevue');
+  assert.equal(ssu.makerBron, null);
+  // Tweede run: Bellevue valt terug, SSU komt vers binnen (weer zonder maker).
+  const tweede = await run({ paths, theaters, scrapers: { ...scrapers, bellevue: failing } });
+  const ssu2 = tweede.written.find((x) => x.theaterId === 'ssu');
+  const bv2 = tweede.written.find((x) => x.theaterId === 'bellevue');
+  assert.equal(ssu2.maker, 'Nina van Tongeren / Theater Bellevue');
+  assert.equal(ssu2.makerBron, null);
+  assert.equal(bv2.maker, 'Nina van Tongeren / Theater Bellevue');
+  assert.equal('makerBron' in bv2, false);
+  // Derde run zonder bron met maker: SSU valt terug op zijn eigen (lege) maker.
+  const derde = await run({ paths, theaters: [theater('ssu')], scrapers: { ssu: scrapers.ssu } });
+  const ssu3 = derde.written.find((x) => x.theaterId === 'ssu');
+  assert.equal(ssu3.maker, 'Nina van Tongeren / Theater Bellevue'); // Bellevue staat nog in de behouden data
+});
