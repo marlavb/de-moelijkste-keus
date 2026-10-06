@@ -23,6 +23,18 @@ app in `public/` via GitHub Pages. De workflow `refresh-data.yml` draait om
   data op de nieuwste `main`, maar een push midden in een run blijft risico.
 - Eén commit per stap of onderwerp; stage expliciete bestanden, geen `git add -A`.
 
+## README
+
+- Bij een nieuwe of gewijzigde functie ook de vaste tekst in `README.md`
+  bijwerken, in dezelfde commit of branch.
+- De blokken tussen `<!-- AUTO:…:start -->` en `<!-- AUTO:…:end -->` niet met
+  de hand aanpassen: die maakt `scripts/readme.js` (workflow `readme.yml`, na
+  elke push naar main en na de nachtelijke run; commit alleen bij een
+  wijziging, met `[skip ci]`). Nieuw blok = markers in de README plus een
+  sleutel in `maakBlokken`.
+- Na een push naar main kan de README-bot er een commit achter zetten: eerst
+  pullen voordat je op main verder werkt of merget.
+
 ## Testverkeer naar theatersites
 
 Theaters kunnen ons weren (Isala en Kruispunt deden dat op 28 sep 2026).

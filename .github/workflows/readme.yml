@@ -1,0 +1,84 @@
+name: README bijwerken
+
+# Werkt de automatische blokken in README.md bij (scripts/readme.js): na
+# elke push naar main en na elke nachtelijke refresh. Commit alleen als er
+# iets verandert.
+#
+# Geen lus en geen dubbele deploy: de commit gaat met het ingebouwde
+# GITHUB_TOKEN, en een push daarmee start geen andere workflows (ook deze
+# niet, en deploy.yml niet). Voor de zekerheid staat [skip ci] in de
+# boodschap. README.md staat niet in public/, dus een deploy is ook niet
+# nodig.
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: ['Refresh data']
+    types: [completed]
+  workflow_dispatch: {}
+
+# Eigen groep, niet die van refresh-data: een nieuwe run in een groep annuleert
+# een run die daar nog wacht, en een wachtende refresh mag nooit wegvallen.
+# Een nieuwere README-run vervangt een oudere wel (die doet hetzelfde).
+concurrency:
+  group: readme
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  readme:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Node.js instellen
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Loopt refresh-data of wacht er een, dan nu niets doen: na die run
+      # start deze workflow vanzelf opnieuw (workflow_run), met de nieuwe data.
+      # Zelfde controle als safe-push (scripts/refresh-check.js). Bij een
+      # workflow_run is de refresh net klaar, dus dan altijd doorgaan.
+      - name: Refresh-data bezig?
+        id: refresh
+        if: github.event_name != 'workflow_run'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if node scripts/refresh-check.js; then
+            echo "bezig=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "bezig=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::refresh-data loopt of wacht; de README volgt na die run."
+          fi
+
+      - name: README bijwerken, committen en pushen
+        if: steps.refresh.outputs.bezig != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for poging in 1 2 3; do
+            git fetch --quiet origin main
+            git reset --quiet --hard origin/main
+            node scripts/readme.js
+            if git diff --quiet -- README.md; then
+              echo "README.md is actueel — niets te committen."
+              exit 0
+            fi
+            git add README.md
+            git commit --quiet -m "README: automatische blokken bijgewerkt [skip ci]"
+            # Is main intussen verder gegaan (bv. de data van refresh-data),
+            # dan opnieuw vanaf de nieuwste main.
+            if git push --quiet origin HEAD:main; then exit 0; fi
+            echo "Push geweigerd (main is verder gegaan), poging $poging — opnieuw."
+            sleep 5
+          done
+          echo "::error::README kon niet gepusht worden na 3 pogingen."
+          exit 1
