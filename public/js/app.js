@@ -4033,7 +4033,8 @@ function renderEigenLinks() {
   const kop = vriendenTekst('h3', 'vriend-link-kop', links.length === 1 ? 'Openstaande link' : 'Openstaande links');
   lijst.appendChild(kop);
   for (const link of links) {
-    const tot = formatLinkTijd(linkVerlooptOp(link));
+    const verloopt = linkVerlooptOp(link);
+    const tot = verloopt === null ? 'over 7 dagen' : formatLinkTijd(verloopt);
     const rij = document.createElement('div');
     rij.className = 'vriend-rij';
     rij.append(vriendenTekst('p', 'vriend-rij-tekst', `Geldig tot ${tot}`));
