@@ -1,6 +1,6 @@
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre, isBekendGenre } from '../lib/genre.js';
-import { pasTitelConventieToe, isWervend } from '../lib/titels.js';
+import { pasTitelConventieToe, isWervend, isGeenMaker, titelUitKopEnOndertitel } from '../lib/titels.js';
 import { blokkeerZwareBronnen } from '../lib/zwareBronnen.js';
 import { gaNaar } from '../lib/diagnose.js';
 import { leesStandaardEvents, classifyWpBeschikbaarheid, prijsUitTekst } from '../lib/wpTheatre.js';
@@ -17,6 +17,34 @@ const AGENDA_PATH = '/programma/';
 // (amateurgezelschappen uit de streek, niet professioneel), niet boven € 50
 // en niet gratis (€ 0: geen reguliere voorstelling, zoals bij DOK6).
 const PODIUMPAS_PRIJSGRENS = 50;
+
+// Titelvolgorde (okt 2026): titel en ondertitel (.wp_theatre_event_title en
+// _subtitle). Over alle 130 producties (6 okt 2026) vast Maker / Titel bij
+// Cabaret (43 van 44), Comedy, Komedie, Muziektheater, Musical, Dans, Show,
+// Theatercollege, Personality show, Entertainment, Uit de regio en Muziek (29
+// van 30): "Tangarine" / "Running in the Family II" → "Running in the
+// Family II – Tangarine". Bij Film is de ondertitel een reeksnaam
+// ("Dinsdagmiddagfilm"). Bij Toneel, Special en Jeugdtheater wisselt het
+// (jeugdtheater meestal "Stuntelman ◆ 4+" / "door Het Laagland", maar 4 van
+// 16 met de maker bovenaan: "Arno Huibers ◆ 4+" / "Verliefd op Truus"):
+// daar de oude aanpak. Bekende uitzondering
+// in Muziek: "De Gouden Herinnering" / "Een zolder vol verhalen" wordt
+// omgedraaid.
+const VOLGORDE_PER_GENRE = {
+  cabaret: 'maker-titel',
+  comedy: 'maker-titel',
+  komedie: 'maker-titel',
+  muziektheater: 'maker-titel',
+  musical: 'maker-titel',
+  dans: 'maker-titel',
+  show: 'maker-titel',
+  theatercollege: 'maker-titel',
+  'personality show': 'maker-titel',
+  entertainment: 'maker-titel',
+  'uit de regio': 'maker-titel',
+  muziek: 'maker-titel',
+  film: 'titel-beschrijving',
+};
 const PODIUMPAS_UITGESLOTEN_GENRES = new Set(['film', 'uit-de-regio']);
 
 /**
@@ -30,10 +58,10 @@ const PODIUMPAS_UITGESLOTEN_GENRES = new Set(['film', 'uit-de-regio']);
  * robots.txt, geen crawl-delay). De pagina is groot (1,7 MB HTML), maar
  * afbeeldingen, scripts en fonts laden we niet.
  *
- * Titels zoals bij DOK6: bij cabaret artiest in de titel en voorstelling in
- * de ondertitel ("Rundfunk" / "Wagyu" → "Wagyu – Rundfunk"); anders
- * bronvolgorde met de ondertitel als maker, tenzij dat een wervende zin is.
- * Een ondertitel als "door Oortwolk" wordt maker "Oortwolk".
+ * Titels: zie VOLGORDE_PER_GENRE hierboven ("Rundfunk" / "Wagyu" → "Wagyu –
+ * Rundfunk"; "BOINK! ◆ 4+" / "door Oortwolk" → maker Oortwolk); zonder vaste
+ * volgorde bronvolgorde met de ondertitel als maker, tenzij wervend of
+ * nooit-maker.
  */
 export async function scrapeKattendans({ page, theater, robots, waitForTurn, log, warn = log }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
@@ -81,7 +109,7 @@ export async function scrapeKattendans({ page, theater, robots, waitForTurn, log
     knoppen[it.knopTekst ?? '(geen knop)'] = (knoppen[it.knopTekst ?? '(geen knop)'] ?? 0) + 1;
 
     const sub = it.ondertitel?.replace(/^door\s+/i, '') ?? null;
-    const ondertitelIsMaker = sub && !isWervend(sub) && !gratis;
+    const ondertitelIsMaker = sub && !isWervend(sub) && !isGeenMaker(sub) && !gratis;
     const show = {
       id: buildId(theater.id, it.titel, datum, tijd),
       titel: it.titel,
@@ -101,7 +129,9 @@ export async function scrapeKattendans({ page, theater, robots, waitForTurn, log
       bron: theater.agendaUrl,
       opgehaaldOp,
     };
-    shows.push(gratis ? show : pasTitelConventieToe(show, { artiest: it.titel, voorstelling: it.ondertitel, makerWordtLeeg: true }));
+    const volgorde = VOLGORDE_PER_GENRE[(genreRuw ?? '').toLowerCase()] ?? null;
+    const vast = volgorde ? titelUitKopEnOndertitel(show, { kop: it.titel, ondertitel: it.ondertitel, volgorde }) : null;
+    shows.push(vast ?? (gratis ? show : pasTitelConventieToe(show, { artiest: it.titel, voorstelling: it.ondertitel, makerWordtLeeg: true })));
   }
 
   const lijst = (o) => Object.entries(o).map(([k, n]) => `${k} (${n})`).join(', ');

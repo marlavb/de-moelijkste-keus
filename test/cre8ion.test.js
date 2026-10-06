@@ -58,6 +58,12 @@ test('Het Speelhuis: dataLayer-datum met jaar, zaal, status, titels, Podiumpas z
   assert.equal(voorHaar.prijs, 48.5);
   assert.equal(voorHaar.podiumpas, true);
   assert.equal(voorHaar.maker, null, 'beschrijvende ondertitel is geen maker');
+  // Titelvolgorde: Dans, College en Divers vast Maker / Titel → "Voorstelling – Maker".
+  assert.ok(shows.some((s) => s.titel === 'Danslokaal 14 – Conny Janssen Danst'), titels(shows));
+  assert.ok(shows.some((s) => s.titel === 'De toestand in de wereld volgens Harm Edens – Harm Edens'));
+  assert.ok(shows.some((s) => s.titel === 'de BUS Whiskey Tour – Dennis Hurkmans'));
+  // Jeugd wisselt: daar de oude aanpak (bronvolgorde).
+  assert.ok(shows.some((s) => s.titel === 'Jeugdtheater Carrousel' && s.maker === 'Het Zakmes (4+)'));
   // Twee voorstellingen op één dag: twee speeldata.
   assert.equal(shows.filter((s) => /Carrousel/.test(s.titel)).length, 2);
   assert.equal(new Set(shows.map((s) => s.id)).size, shows.length);

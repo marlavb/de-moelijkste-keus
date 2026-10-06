@@ -55,10 +55,16 @@ test('Hofnar: één pagina per productie (niet dubbel), tijden uit de productiep
   assert.equal(bert.podiumpas, true);
   assert.match(bert.reserverenUrl, /^https:\/\/bestellen\.hofnar\.nl\/widgets\/hofnar\//);
 
-  // Yes Jazz (kaartverkoop door derden): geen Podiumpas.
+  // Yes Jazz (kaartverkoop door derden): geen Podiumpas. "Yes Jazz" is de
+  // concertreeks: geen titel en geen maker, maar de beschrijving.
   const jazz = shows.find((s) => /Yes Jazz/.test(`${s.titel} ${s.maker ?? ''} ${s.beschrijving ?? ''}`));
   assert.ok(jazz);
   assert.equal(jazz.podiumpas, false);
+  assert.equal(jazz.titel, 'Trio Happy Village met Frank Montis');
+  assert.equal(jazz.maker, null);
+  assert.equal(jazz.beschrijving, 'Yes Jazz');
+  // Klassiek wisselt (oude aanpak): "Bram Invites" blijft de titel.
+  assert.ok(shows.some((s) => s.titel === 'Bram Invites'));
   // Festival weggelaten.
   assert.equal(shows.some((s) => s.genreRuw === 'Festival'), false);
 });

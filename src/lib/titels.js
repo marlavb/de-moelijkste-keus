@@ -35,6 +35,31 @@ export function isWervend(tekst) {
   return false;
 }
 
+// Nooit maker (okt 2026, bij alle theaters): een content warning, "Met o.a.
+// …", een leeftijdsaanduiding of een duidelijke ondertitel ("Grand Finale",
+// "Live in het theater", "reprise", "try-out", "première"). Die horen in de
+// beschrijving. Alleen als de hele tekst zo is: "Live in Theater (reprise)"
+// (ICE) is een voorstellingsnaam.
+const GEEN_MAKER = [
+  /^(content warning|⚠)/i,
+  /^met\s/i,
+  /^\(?\s*\d{1,2}(?:[,.]\d)?\s*\+\s*\)?$/,
+  /^\(?\s*\d{1,2}(?:[,.]\d)?\s*(?:tot|t\/m|-|–)\s*\d{1,2}(?:[,.]\d)?(?:\s*jaar)?\s*\)?$/i,
+  /^vanaf \d{1,2} jaar$/i,
+  /^\(?\s*(?:reprise|try[- ]?out|premi[eè]re|grand finale|live in (?:het )?theater)\s*\)?$/i,
+];
+
+export function isGeenMaker(tekst) {
+  const t = String(tekst ?? '').trim();
+  return Boolean(t) && GEEN_MAKER.some((re) => re.test(t));
+}
+
+/** "door Oortwolk" → "Oortwolk", "o.l.v. Tijn Trommelen" → "Tijn Trommelen". */
+export function makerZonderVoorvoegsel(tekst) {
+  if (typeof tekst !== 'string') return tekst;
+  return tekst.replace(/^(?:door|o\.l\.v\.)\s+/i, '').trim() || tekst;
+}
+
 const kaal = (t) =>
   String(t ?? '')
     .toLowerCase()
@@ -59,7 +84,7 @@ export function pasTitelConventieToe(show, { artiest, voorstelling, makerWordtLe
   // De wervende-zin-regel kijkt naar de oorspronkelijke tekst (ook naar een
   // slotpunt); pas daarna een losse punt aan het eind weghalen ("Kintsugi." →
   // "Kintsugi"). "…", "?" en "!" blijven staan.
-  if (isWervend(a) || isWervend(ruw)) return show;
+  if (isWervend(a) || isWervend(ruw) || isGeenMaker(a) || isGeenMaker(ruw)) return show;
   const v = ruw.replace(/(?<!\.)\.$/, '');
   if (!v) return show;
   const ka = kaal(a);
@@ -98,4 +123,32 @@ export function zonderStatusWoord(tekst) {
   if (typeof tekst !== 'string') return tekst;
   const kaal = tekst.replace(STATUS_DEEL, '').trim();
   return kaal || tekst;
+}
+
+/**
+ * Titel en maker uit twee regels van de bron ("kop" en "ondertitel"), als de
+ * HTML-structuur van een theater (per genre) een vaste volgorde heeft:
+ * - 'maker-titel': kop = maker, ondertitel = voorstelling → "Voorstelling –
+ *   Maker" (ook buiten cabaret, zoals bij Griffioen);
+ * - 'titel-maker': kop = voorstelling, ondertitel = maker;
+ * - 'titel-beschrijving': ondertitel is een omschrijving of reeksnaam.
+ * Altijd eerst: een ondertitel die nooit maker is (isGeenMaker) of een
+ * wervende zin gaat naar de beschrijving; "door X", "by X" en "o.l.v. X"
+ * wordt maker X. Geeft null zonder vaste volgorde (dan beslist de scraper
+ * zoals voorheen).
+ */
+export function titelUitKopEnOndertitel(show, { kop, ondertitel, volgorde }) {
+  const sub = String(ondertitel ?? '').trim() || null;
+  const basis = { ...show, titel: kop, maker: null };
+  const alsBeschrijving = () => ({ ...basis, beschrijving: show.beschrijving ?? sub });
+  if (!sub) return volgorde ? basis : null;
+  if (isGeenMaker(sub) || isWervend(sub)) return alsBeschrijving();
+  if (/^(door|by|o\.l\.v\.)\s/i.test(sub)) return { ...basis, maker: makerZonderVoorvoegsel(sub.replace(/^by\s+/i, '')) };
+  if (volgorde === 'maker-titel') {
+    const r = pasTitelConventieToe(basis, { artiest: kop, voorstelling: sub, alleGenres: true });
+    return r.titel !== kop || kaal(kop) === kaal(sub) ? { ...r, maker: null } : alsBeschrijving();
+  }
+  if (volgorde === 'titel-maker') return { ...basis, maker: sub };
+  if (volgorde === 'titel-beschrijving') return alsBeschrijving();
+  return null;
 }

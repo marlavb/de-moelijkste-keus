@@ -56,9 +56,23 @@ test('Kattendans: titels, datums, status, Podiumpas (prijsgrens, film, Uit de re
   assert.equal(harmonie.prijs, 0);
 
   // Boven € 50: geen Podiumpas.
-  assert.equal(van('Testvoorstelling Duur').podiumpas, false);
-  assert.equal(van('Testvoorstelling Duur').prijs, 52.5);
+  assert.equal(van('Running in the Family II – Testvoorstelling Duur').podiumpas, false);
+  assert.equal(van('Running in the Family II – Testvoorstelling Duur').prijs, 52.5);
 
   // Uitverkocht zonder knop (alleen een statusregel).
   assert.equal(shows.find((s) => /Tobi Kooiman/.test(s.titel)).beschikbaarheid, 'uitverkocht');
+
+  // Titelvolgorde (vast per genre, zie VOLGORDE_PER_GENRE in kattendans.js):
+  // Muziek Maker / Titel; Jeugdtheater "door X" → maker; Film → reeks in de beschrijving;
+  // een content warning wordt nooit maker.
+  const tangarine = van('Running in the Family II – Tangarine');
+  assert.ok(tangarine, shows.map((s) => s.titel).join(' | '));
+  assert.equal(tangarine.maker, null);
+  assert.equal(van('BOINK! ◆ 4+').maker, 'Oortwolk');
+  assert.equal(van("L'Attachement").maker, null);
+  assert.equal(van("L'Attachement").beschrijving, 'Dinsdagmiddagfilm');
+  const speels = van('Speels Collectief');
+  assert.equal(speels.maker, null);
+  assert.equal(speels.beschrijving, 'CONTENT WARNING: weinig prikkels');
+  assert.ok(shows.some((s) => /^De Vloek Van Toetang En Zijn Amon – Toneelvereniging/.test(s.titel)), 'Uit de regio: Maker / Titel');
 });

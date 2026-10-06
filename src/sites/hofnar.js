@@ -1,6 +1,6 @@
 import { createDutchDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre, isBekendGenre } from '../lib/genre.js';
-import { pasTitelConventieToe, isWervend } from '../lib/titels.js';
+import { pasTitelConventieToe, isWervend, isGeenMaker, titelUitKopEnOndertitel } from '../lib/titels.js';
 import { vervallenStatus } from '../lib/beschikbaarheid.js';
 import { blokkeerZwareBronnen } from '../lib/zwareBronnen.js';
 import { gaNaar } from '../lib/diagnose.js';
@@ -16,6 +16,20 @@ const AGENDA_PATH = '/theater/';
 // streek" staat er niet bij als label: niet toegepast (akkoord 6 okt 2026,
 // open vraag 7). Geen prijsgrens genoemd.
 const PODIUMPAS_UITGESLOTEN = /\b(yes ?jazz|tonpraoten|kinderbuffet)/i;
+
+// Titelvolgorde (okt 2026): titel (h4.event-item__title) en teaser.
+// Over alle 129 producties (6 okt 2026): vast Maker / Titel bij Cabaret
+// (op "Comedy Café" na, waar de teaser een omschrijving is) en
+// Theatercollege (6 van 6): "Joep en Rob" / "De Verbinders" → "De
+// Verbinders – Joep en Rob". Vast Titel / Maker bij Jeugdtheater ("Pippi en
+// de Piraten (6+)" / "Theater Terra"). Bij Muziek, Show, Toneel, Musical en
+// Klassiek wisselt het ("Century's Crime" / "A Tribute to Supertramp",
+// "Revue aon de Mert" / "Stichting Carnavalsviering Striepersgat"): daar de
+// oude aanpak. "Yes Jazz" is geen titel of maker maar de concertreeks (de
+// externe organisator, bij 6 verschillende bands): die gaat naar de
+// beschrijving.
+const VOLGORDE_PER_GENRE = { cabaret: 'maker-titel', theatercollege: 'maker-titel', jeugdtheater: 'titel-maker' };
+const REEKS = /^yes ?jazz$/i;
 
 // Geen voorstelling (inventarisatie, akkoord 6 okt 2026): evenementen en
 // festivals.
@@ -72,8 +86,8 @@ export function hofnarStatus(tekst) {
  * productie (niet per speeldatum), met waitForTurn() en minstens 1 s
  * pauze; robots.txt staat alles toe. ~120 verzoeken per run (~3 min).
  *
- * Titels: bij cabaret artiest/voorstelling ("Bert Visscher" / "65 Dat Zou Je
- * Niet Zeggen"); anders de teaser als maker, tenzij wervend.
+ * Titels: zie VOLGORDE_PER_GENRE hierboven; zonder vaste volgorde de teaser
+ * als maker, tenzij wervend of nooit-maker.
  */
 export async function scrapeHofnar({ page, theater, robots, waitForTurn, log, warn = log }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
@@ -133,7 +147,7 @@ export async function scrapeHofnar({ page, theater, robots, waitForTurn, log, wa
       }
       if (uitgesloten) reden['verkoop door derden / kinderbuffet'] = (reden['verkoop door derden / kinderbuffet'] ?? 0) + 1;
       const tijd = extractTime(r.aanvang);
-      const makerOk = p.teaser && !isWervend(p.teaser);
+      const makerOk = p.teaser && !isWervend(p.teaser) && !isGeenMaker(p.teaser) && !REEKS.test(p.teaser);
       const show = {
         id: buildId(theater.id, p.titel, datum, tijd),
         titel: p.titel,
@@ -153,7 +167,9 @@ export async function scrapeHofnar({ page, theater, robots, waitForTurn, log, wa
         bron: url.toString(),
         opgehaaldOp,
       };
-      shows.push(pasTitelConventieToe(show, { artiest: p.titel, voorstelling: p.teaser, makerWordtLeeg: true }));
+      const volgorde = REEKS.test(p.teaser ?? '') ? 'titel-beschrijving' : VOLGORDE_PER_GENRE[(p.genre ?? '').toLowerCase()] ?? null;
+      const vast = volgorde ? titelUitKopEnOndertitel(show, { kop: p.titel, ondertitel: p.teaser, volgorde }) : null;
+      shows.push(vast ?? pasTitelConventieToe(show, { artiest: p.titel, voorstelling: p.teaser, makerWordtLeeg: true }));
     }
   }
   const lijst = (o) => Object.entries(o).map(([k, n]) => `${k} (${n})`).join(', ');

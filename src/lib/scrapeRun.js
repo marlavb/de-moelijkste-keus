@@ -9,7 +9,7 @@ import { ontdubbelShows, dubbelSleutel, ontdubbelTussenTheaters } from './dedupe
 import { volgNavigatie, paginaDiagnose } from './diagnose.js';
 import { pasMeerderheidToe } from './weergaveMeerderheid.js';
 import { pasGenreMeerderheidToe } from './genreMeerderheid.js';
-import { metEnDash, zonderStatusWoord } from './titels.js';
+import { metEnDash, zonderStatusWoord, isGeenMaker, makerZonderVoorvoegsel } from './titels.js';
 import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
 
@@ -350,7 +350,17 @@ export async function runRefresh({
       const bron = titelBron ?? s.titel;
       // Afgelast/verplaatst: het statuswoord uit de titel, het staat in het label.
       const kaal = isVervallen(s) ? zonderStatusWoord : (t) => t;
-      return { ...s, titel: kaal(metEnDash(bron)), prijs: s.prijs ?? null, maker: kaal(metEnDash(s.maker ?? null)) };
+      // Nooit maker (titels.js): een content warning, "Met …", een leeftijd of
+      // "reprise" gaat naar de beschrijving; "door X" / "o.l.v. X" wordt X.
+      let maker = kaal(metEnDash(s.maker ?? null));
+      let beschrijving = s.beschrijving ?? null;
+      if (maker && isGeenMaker(maker)) {
+        beschrijving = beschrijving ?? maker;
+        maker = null;
+      } else if (maker) {
+        maker = makerZonderVoorvoegsel(maker);
+      }
+      return { ...s, titel: kaal(metEnDash(bron)), prijs: s.prijs ?? null, maker, beschrijving };
     });
   const purgedCount = mergedShows.length - verseShows.length;
   if (purgedCount > 0) {

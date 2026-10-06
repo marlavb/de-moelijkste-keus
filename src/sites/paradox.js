@@ -3,6 +3,7 @@ import { blokkeerZwareBronnen } from '../lib/zwareBronnen.js';
 import { gaNaar } from '../lib/diagnose.js';
 import { vervallenStatus } from '../lib/beschikbaarheid.js';
 import { classifyWpBeschikbaarheid, prijsUitTekst } from '../lib/wpTheatre.js';
+import { makerZonderVoorvoegsel } from '../lib/titels.js';
 
 const AGENDA_PATH = '/agenda/';
 const MAX_LAAD_MEER = 30;
@@ -99,8 +100,8 @@ function leesParadox() {
  * Weglaten: debat, workshops, masterclasses (akkoord 6 okt 2026), en
  * concerten met "Tickets via Schouwburg Concertzaal": die staan bij dat
  * theater (geen dubbele speeldatum). Titel = de concerttitel; de kleine
- * regel eronder ("EP presentatie", "o.l.v. Tijn Trommelen") wordt de
- * beschrijving, geen maker.
+ * regel eronder wordt de beschrijving ("EP presentatie"), behalve "o.l.v.
+ * Tijn Trommelen": dan maker.
  */
 export async function scrapeParadox({ page, theater, robots, waitForTurn, log, warn = log }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
@@ -214,8 +215,9 @@ export async function scrapeParadox({ page, theater, robots, waitForTurn, log, w
       genre: 'Muziek & Concert',
       genreRuw: it.genres.join(', ') || null,
       beschikbaarheid,
-      beschrijving: it.ondertitel,
-      maker: null,
+      // "o.l.v. Tijn Trommelen (vocals/gitaar)" → maker; anders beschrijving.
+      beschrijving: /^o\.l\.v\.\s/i.test(it.ondertitel ?? '') ? null : it.ondertitel,
+      maker: /^o\.l\.v\.\s/i.test(it.ondertitel ?? '') ? makerZonderVoorvoegsel(it.ondertitel) : null,
       prijs: gratis ? 0 : prijs,
       reserverenUrl: it.ticketUrl ?? (it.href ? new URL(it.href, theater.baseUrl).toString() : theater.agendaUrl),
       bron: theater.agendaUrl,

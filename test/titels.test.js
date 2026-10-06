@@ -134,3 +134,37 @@ test('volgordeZeker alleen als de conventie zelf "Voorstelling – Artiest" same
   assert.equal(pasTitelConventieToe(cab(), { artiest: 'Jenny Arean', voorstelling: 'Jenny Arean zingt' }).volgordeZeker, undefined);
   assert.equal(pasTitelConventieToe(cab(), { artiest: 'Sara Kroos', voorstelling: '' }).volgordeZeker, undefined);
 });
+
+test('nooit maker: content warning, "Met o.a.", leeftijd, reprise, try-out, Grand Finale, Live in het theater', async () => {
+  const { isGeenMaker, makerZonderVoorvoegsel } = await import('../src/lib/titels.js');
+  for (const t of ['CONTENT WARNING: weinig prikkels', '⚠ stroboscoop', 'Met o.a. Suzan Seegers', 'met Soy Kroon', '4+', '(6+)', '0,5 tot 1,5', '4-7', 'vanaf 6 jaar', 'reprise', '(reprise)', 'try-out', 'Try out', 'Première', 'Grand Finale', 'Live in het theater', 'Live in theater']) {
+    assert.equal(isGeenMaker(t), true, t);
+  }
+  // Wel een naam of voorstelling (ook als het woord er ín staat).
+  for (const t of ['Live in Theater (reprise)', 'Grip (reprise)', 'Silbersee (met o.a. Ariane Schluter)', 'Dronken Mensen met o.a. Bram Suijker', 'Het Zakmes (4+)', 'Kor Hoebe', 'De Ballonnenfee']) {
+    assert.equal(isGeenMaker(t), false, t);
+  }
+  assert.equal(makerZonderVoorvoegsel('door Oortwolk'), 'Oortwolk');
+  assert.equal(makerZonderVoorvoegsel('o.l.v. Tijn Trommelen (vocals/gitaar)'), 'Tijn Trommelen (vocals/gitaar)');
+  assert.equal(makerZonderVoorvoegsel('Doorbraak'), 'Doorbraak');
+});
+
+test('titel uit kop en ondertitel, met een vaste volgorde per theater/genre', async () => {
+  const { titelUitKopEnOndertitel, pasTitelConventieToe } = await import('../src/lib/titels.js');
+  const show = { titel: 'x', maker: 'y', beschrijving: null, genre: 'Dans', genreRuw: 'Dans' };
+  const f = (kop, ondertitel, volgorde) => titelUitKopEnOndertitel(show, { kop, ondertitel, volgorde });
+  assert.deepEqual([f('Conny Janssen Danst', 'Danslokaal 14', 'maker-titel').titel, f('Conny Janssen Danst', 'Danslokaal 14', 'maker-titel').maker], ['Danslokaal 14 – Conny Janssen Danst', null]);
+  assert.equal(f('Joep en Rob', 'De Verbinders', 'maker-titel').titel, 'De Verbinders – Joep en Rob');
+  // Nooit maker gaat altijd voor: geen "reprise – Artiest".
+  const r = f('Rayen Panday', 'reprise', 'maker-titel');
+  assert.deepEqual([r.titel, r.maker, r.beschrijving], ['Rayen Panday', null, 'reprise']);
+  // "door X" wordt maker, ook zonder vaste volgorde.
+  const d = f('BOINK! ◆ 4+', 'door Oortwolk', null);
+  assert.deepEqual([d.titel, d.maker], ['BOINK! ◆ 4+', 'Oortwolk']);
+  assert.equal(f('Pippi en de Piraten (6+)', 'Theater Terra', 'titel-maker').maker, 'Theater Terra');
+  assert.equal(f('Trio Happy Village met Frank Montis', 'Yes Jazz', 'titel-beschrijving').beschrijving, 'Yes Jazz');
+  assert.equal(f('Kop', 'Ondertitel', null), null, 'zonder vaste volgorde beslist de scraper');
+  // De cabaret-helper weigert ook bij een nooit-maker-ondertitel.
+  const cab = { titel: 'Rundfunk', genre: 'Cabaret', maker: null };
+  assert.equal(pasTitelConventieToe(cab, { artiest: 'Rundfunk', voorstelling: 'try-out' }).titel, 'Rundfunk');
+});

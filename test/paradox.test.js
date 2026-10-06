@@ -76,8 +76,9 @@ test('Paradox: "Laad meer" zoals de knop, concerten, status, Podiumpas, weglaten
   assert.equal(sessies.length, 2);
   assert.equal(sessies[0].podiumpas, false);
   assert.equal(sessies[0].prijs, 0);
-  assert.match(sessies[0].beschrijving, /Tijn Trommelen/);
-  assert.equal(sessies[0].maker, null);
+  // "o.l.v. X" wordt maker X.
+  assert.equal(sessies[0].maker, 'Tijn Trommelen (vocals/gitaar)');
+  assert.equal(sessies[0].beschrijving, null);
 
   // Uitverkocht uit span.soldout; middagconcert met de aanvang (niet de UTC-tijd uit content).
   const cesar = van('Cesar: Het verhaal van een Drummer')[0];
