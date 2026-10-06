@@ -792,4 +792,89 @@ export const THEATERS = [
       toelichting: 'Telefonisch via de kaartverkoopbalie, vanaf 30 dagen voor de voorstelling; online reserveren is nog niet mogelijk. Pas laten scannen bij de avondkassa (open vanaf een uur voor aanvang).',
     },
   },
+
+  // Limburg (okt 2026): theaters zonder Podiumpas. Niet op
+  // https://podiumpas.nl/waar-te-besteden en nergens op de eigen sites
+  // (6 okt 2026, debug/limburg-2-inventarisatie.md §1). Achteraan in de run,
+  // met budgetten die samen 12 minuten zijn.
+  {
+    id: 'vrijthof',
+    naam: 'Theater aan het Vrijthof',
+    stad: 'Maastricht',
+    provincie: 'Limburg',
+    baseUrl: 'https://www.theateraanhetvrijthof.nl',
+    agendaUrl: 'https://www.theateraanhetvrijthof.nl/voorstellingen',
+    // 1 pagina + 1 Algolia-query, samen met AINSI (zie src/sites/vrijthof.js).
+    budgetMinuten: 1,
+    podiumpas: false,
+  },
+  {
+    // Kaartverkoop via Theater aan het Vrijthof; de speeldata komen uit
+    // dezelfde bron (locatie "AINSI: …").
+    id: 'ainsi',
+    naam: 'AINSI',
+    stad: 'Maastricht',
+    provincie: 'Limburg',
+    baseUrl: 'https://www.theateraanhetvrijthof.nl',
+    agendaUrl: 'https://www.theateraanhetvrijthof.nl/voorstellingen',
+    budgetMinuten: 0.5,
+    podiumpas: false,
+  },
+  {
+    // PLT Heerlen Sittard Kerkrade: één agenda voor drie theaters (zie
+    // src/sites/plt.js). Heerlen doet de scrape (~55 pagina's), Kerkrade en
+    // Sittard hergebruiken die.
+    id: 'pltheerlen',
+    naam: 'Theater Heerlen',
+    stad: 'Heerlen',
+    provincie: 'Limburg',
+    baseUrl: 'https://www.plt.nl',
+    agendaUrl: 'https://www.plt.nl/programma',
+    budgetMinuten: 3.5,
+    podiumpas: false,
+  },
+  {
+    id: 'pltkerkrade',
+    naam: 'Theater Kerkrade',
+    stad: 'Kerkrade',
+    provincie: 'Limburg',
+    baseUrl: 'https://www.plt.nl',
+    agendaUrl: 'https://www.plt.nl/programma',
+    budgetMinuten: 0.5,
+    podiumpas: false,
+  },
+  {
+    id: 'pltsittard',
+    naam: 'Toon Hermans Theater Sittard',
+    stad: 'Sittard',
+    provincie: 'Limburg',
+    baseUrl: 'https://www.plt.nl',
+    agendaUrl: 'https://www.plt.nl/programma',
+    budgetMinuten: 0.5,
+    podiumpas: false,
+  },
+  {
+    // Van Van der Valk Theaterhotel De Oranjerie; de agenda staat op
+    // theaterroermond.nl. ~20 verzoeken per run.
+    id: 'oranjerie',
+    naam: 'Theater De Oranjerie',
+    stad: 'Roermond',
+    provincie: 'Limburg',
+    baseUrl: 'https://www.theaterroermond.nl',
+    agendaUrl: 'https://www.theaterroermond.nl/agenda',
+    budgetMinuten: 1,
+    podiumpas: false,
+  },
+  {
+    // ~150 verzoeken per run (sitemap + 1 pagina per productie, min. 1 s
+    // pauze): /mvc/ ("Toon meer") verbiedt robots.txt. Zie src/sites/munttheater.js.
+    id: 'munttheater',
+    naam: 'Munttheater',
+    stad: 'Weert',
+    provincie: 'Limburg',
+    baseUrl: 'https://www.munttheater.nl',
+    agendaUrl: 'https://www.munttheater.nl/agenda',
+    budgetMinuten: 5,
+    podiumpas: false,
+  },
 ];
