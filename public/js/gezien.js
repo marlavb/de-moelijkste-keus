@@ -10,7 +10,8 @@
 //   met de uitsluitlijst). `titel` is de weergavetitel op dat moment;
 //   `sleutelTitel` de titel waar de sleutel van komt, voor een toekomstige
 //   her-normalisatie (zoals renormaliseer() in watchlist.js).
-// - bron: 'planning' (automatisch of via "Ben je geweest?") of 'handmatig'.
+// - bron: 'planning' (automatisch na de speeldag) of 'handmatig'. Items uit
+//   de oude vraag "Ben je geweest?" (tot okt 2026) hebben ook 'planning'.
 //   Een tweede bezoek aan dezelfde voorstelling komt bij `bezoeken`, geen
 //   tweede item.
 // - Samenvoegen: per sleutel wint de laatste actie (toevoegen of weghalen).
@@ -33,6 +34,7 @@
 import { watchlistSleutel, NORMALISATIE_VERSIE, verwijder as verwijderVanWatchlist } from './watchlist.js';
 import { koppel, haalUitPlanning } from './gepland.js';
 import { isVervallen, weergaveTitel } from './weergave.js';
+import { amsterdamDatum } from './plannen.js';
 
 export const legeGezien = () => ({ gezien: [], gezienVerwijderd: [] });
 
@@ -165,12 +167,24 @@ export function zonderGezien(shows, sleutels) {
 }
 
 /**
- * Is de speeldatum voorbij? Vanaf 00:00 lokale tijd op de dag erna, zodat
- * het ook werkt zonder aanvangstijd en bij avondvoorstellingen.
+ * Is de speeldag voorbij? Vanaf 00:00 in Amsterdam op de dag erna, zodat
+ * het ook werkt zonder aanvangstijd, bij avondvoorstellingen en op een
+ * toestel in een andere tijdzone.
  */
 export function isVoorbij(datum, nu = new Date()) {
+  return typeof datum === 'string' && datum < amsterdamDatum(nu);
+}
+
+/**
+ * Vast moment net na de speeldag (22:00 UTC op de speeldag, dus nooit later
+ * dan middernacht in Amsterdam). Een plan dat automatisch naar Gezien gaat,
+ * krijgt dit als toegevoegdOp, op elk apparaat hetzelfde. Haal je het item
+ * daarna weg, dan is die tombstone altijd nieuwer: een apparaat dat het plan
+ * later (met oude gegevens) nog eens verwerkt, zet het niet terug.
+ */
+export function naSpeeldag(datum) {
   const [j, m, d] = datum.split('-').map(Number);
-  return new Date(nu).getTime() >= new Date(j, m - 1, d + 1).getTime();
+  return Date.UTC(j, m - 1, d, 22, 0);
 }
 
 /** 'afgelast', 'verplaatst' of null: uit het plan zelf, anders uit de agenda. */
@@ -224,11 +238,14 @@ export function bezoekUitShow(show) {
 /**
  * Eén voorbij plan naar Gezien: bezoek erbij, uit de planning en (als hij
  * erop staat) van de watchlist. `show`: de gekoppelde voorstelling, of null.
+ * Een nieuw Gezien-item krijgt toegevoegdOp = naSpeeldag (zie daar).
  */
 export function planNaarGezien({ gepland, gezien, watchlist }, item, show, now = Date.now()) {
   const bron = show ?? { titel: item.titel, theaterId: item.theaterId };
-  const nieuwGezien = zetGezien(gezien, { show: bron, bron: 'planning', bezoek: bezoekVan(item, show) }, now);
   const sleutel = watchlistSleutel(bron.titel, bron.theaterId);
+  const bestaat = (gezien?.gezien ?? []).some((i) => i.sleutel === sleutel);
+  const toegevoegd = bestaat ? now : Math.min(now, naSpeeldag(item.datum));
+  const nieuwGezien = zetGezien(gezien, { show: bron, bron: 'planning', bezoek: bezoekVan(item, show) }, toegevoegd);
   const opWatchlist = (watchlist?.watchlist ?? []).some((i) => i.sleutel === sleutel);
   return {
     gepland: haalUitPlanning(gepland, item.sleutel, now),
@@ -238,13 +255,13 @@ export function planNaarGezien({ gepland, gezien, watchlist }, item, show, now =
 }
 
 /**
- * Verwerkt voorbije plannen (bij het openen van de app en na een sync):
- * - afgelast → stil uit de planning, nooit naar Gezien;
- * - verplaatst → niets, ook met kaarten: die blijven vaak geldig voor de
- *   nieuwe datum, dus we vragen het (zie vragenOver);
- * - "Kaarten geregeld" → naar Gezien en uit de planning (ook als het plan
- *   "Niet meer in de agenda" of "Tijd gewijzigd" was);
- * - "Gepland" → niets; die komen in "Ben je geweest?" (zie vragenOver).
+ * Verwerkt voorbije plannen (bij het openen van de app en na een sync), na
+ * de speeldag in Amsterdam:
+ * - afgelast of verplaatst → stil uit de planning, niet naar Gezien (op die
+ *   datum is hij niet gespeeld);
+ * - al het andere → naar Gezien en uit de planning: met of zonder kaarten,
+ *   gedeeld of niet, ook als het plan "Niet meer in de agenda" of "Tijd
+ *   gewijzigd" was. Ook plannen die vroeger op "Ben je geweest?" wachtten.
  * Idempotent: een verwerkt plan staat daarna niet meer in de planning.
  * Geeft { gepland, gezien, watchlist, gewijzigd } terug.
  */
@@ -254,40 +271,12 @@ export function verwerkVoorbijePlannen({ gepland, gezien, watchlist }, { index =
   for (const item of gepland?.gepland ?? []) {
     if (!isVoorbij(item.datum, nu)) continue;
     const { show } = index ? koppel(item, index) : { show: null };
-    const reden = vervallenReden(item, show);
-    if (reden === 'verplaatst') continue;
-    if (reden) {
-      stand = { ...stand, gepland: haalUitPlanning(stand.gepland, item.sleutel, now) };
-      gewijzigd = true;
-    } else if (item.status === 'kaarten') {
-      stand = planNaarGezien(stand, item, show, now);
-      gewijzigd = true;
-    }
+    stand = vervallenReden(item, show)
+      ? { ...stand, gepland: haalUitPlanning(stand.gepland, item.sleutel, now) }
+      : planNaarGezien(stand, item, show, now);
+    gewijzigd = true;
   }
   return { ...stand, gewijzigd };
-}
-
-/**
- * De vraag "Ben je geweest?": voorbije plannen met status "Gepland", en
- * verplaatste plannen (ook met kaarten), niet afgelaste. Een verplaatst plan
- * krijgt `verplaatst: true` mee, voor het regeltje in Profiel.
- */
-export function vragenOver(gepland, { index = null, nu = new Date() } = {}) {
-  const uit = [];
-  for (const item of gepland?.gepland ?? []) {
-    if (!isVoorbij(item.datum, nu)) continue;
-    const reden = vervallenReden(item, index ? koppel(item, index).show : null);
-    if (reden === 'verplaatst') uit.push({ ...item, verplaatst: true });
-    else if (!reden && item.status !== 'kaarten') uit.push(item);
-  }
-  return uit.sort((a, b) => `${a.datum} ${a.tijd ?? ''}`.localeCompare(`${b.datum} ${b.tijd ?? ''}`));
-}
-
-/** Antwoord op "Ben je geweest?": ja → Gezien en uit de planning; nee → alleen uit de planning. */
-export function beantwoord(stand, item, ja, { index = null, now = Date.now() } = {}) {
-  if (!ja) return { ...stand, gepland: haalUitPlanning(stand.gepland, item.sleutel, now) };
-  const { show } = index ? koppel(item, index) : { show: null };
-  return planNaarGezien(stand, item, show, now);
 }
 
 /** Laatste bezoek (datum, tijd), of null. */

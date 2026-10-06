@@ -62,7 +62,7 @@ import {
 } from './gedeeld.js';
 import { getGenreBucket, getGenres, matchtGenreFilter } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
-import { weergaveTitel, makerStaatInTitel, isVervallen, VERVALLEN_LABELS } from './weergave.js';
+import { weergaveTitel, makerStaatInTitel, isVervallen, isVol, VERVALLEN_LABELS } from './weergave.js';
 import { renameFavoritesAndPersist, THEATER_MOVES } from './favorites.js';
 import { laadWatchlist, bekendeSleutels, legeWatchlist, watchlistSleutel, voegToe, verwijder, NORMALISATIE_VERSIE } from './watchlist.js';
 import {
@@ -104,8 +104,6 @@ import {
   haalUitGezien,
   gezienSleutels as gezienSleutelsVan,
   verwerkVoorbijePlannen,
-  vragenOver,
-  beantwoord,
   laatsteBezoek,
   sorteerGezien,
   isVoorbij,
@@ -440,9 +438,6 @@ const els = {
   favoritesEmpty: document.getElementById('favoritesEmpty'),
   // Gezien (30 sep 2026). Kan ontbreken bij een oudere index.html naast een
   // nieuwere app.js (na een deploy): overal met ?. gebruiken.
-  vraagSection: document.getElementById('vraagSection'),
-  vraagList: document.getElementById('vraagList'),
-  vraagCount: document.getElementById('vraagCount'),
   gezienList: document.getElementById('gezienList'),
   gezienEmpty: document.getElementById('gezienEmpty'),
   gezienCount: document.getElementById('gezienCount'),
@@ -665,7 +660,8 @@ async function init() {
 // history-entry met een diepte en, bij vertrek, de scrollpositie. Terug (in
 // de app, browser of vegen) gaat naar waar je vandaan kwam, op dezelfde
 // plek: Profiel, Theaters, Agenda of het vorige detailscherm. Een directe
-// link (diepte 0) gaat met de terugknop naar de Agenda.
+// link (diepte 0) gaat met de terugknop naar de Agenda. Een andere datum
+// van dezelfde voorstelling is geen stap (vervang, zie datumChip).
 let navTeller = 0;
 function navState(extra = {}) {
   return { id: `${Date.now()}-${++navTeller}`, ...extra };
@@ -1190,8 +1186,8 @@ function syncProfielForCurrentUser() {
   planKopie();
 }
 
-// Voorbije plannen verwerken (zie gezien.js): kaarten → Gezien, afgelast →
-// weg. Na elke laadronde; idempotent, dus twee keer (of op twee apparaten)
+// Voorbije plannen verwerken (zie gezien.js): na de speeldag naar Gezien,
+// afgelast of verplaatst → weg. Na elke laadronde; idempotent, dus twee keer (of op twee apparaten)
 // kan geen kwaad. Zonder melding: dit gebeurt vanzelf.
 function verwerkPlannen(showIndex = indexeerShows(state.shows)) {
   const r = verwerkVoorbijePlannen(
@@ -1460,7 +1456,7 @@ function renderPlanControls(show) {
   els.detailPlanConflict.hidden = anderen.length === 0;
 }
 
-// ---------- Gezien en "Ben je geweest?" in Profiel ----------
+// ---------- Gezien in Profiel ----------
 
 // Nieuwe stand (planning, Gezien, watchlist) overnemen en alleen bewaren
 // wat veranderd is.
@@ -1540,112 +1536,6 @@ function gezienGenre(item, liveShow) {
   if (liveShow) return getGenreBucket(liveShow);
   const b = [...(item.bezoeken ?? [])].sort((x, y) => `${y.datum}`.localeCompare(`${x.datum}`)).find((x) => x.genre);
   return b?.genre ?? null;
-}
-
-// Sleutel van de voorstelling waarvoor net "Ja" is gezegd: dan staat in het
-// blok "Ben je geweest?" de vraag "Hoe vond je het?" met sterren en "Later".
-let beoordeelNa = null;
-
-function renderBeoordeelVraag() {
-  const item = beoordeelNa && (state.gezien?.gezien ?? []).find((i) => i.sleutel === beoordeelNa);
-  if (!item) {
-    beoordeelNa = null;
-    return null;
-  }
-  const kaart = document.createElement('div');
-  kaart.className = 'beoordeel-vraag';
-  const kop = document.createElement('p');
-  kop.className = 'beoordeel-vraag-kop';
-  kop.textContent = 'Hoe vond je het?';
-  const titel = document.createElement('p');
-  titel.className = 'plan-meta';
-  titel.textContent = item.titel;
-  const later = document.createElement('button');
-  later.type = 'button';
-  later.className = 'vraag-btn';
-  later.textContent = 'Later';
-  const sluit = () => {
-    beoordeelNa = null;
-    renderVragen();
-  };
-  later.addEventListener('click', sluit);
-  const sterren = maakBeoordeling(item.sleutel, {
-    label: `Hoe vond je ${item.titel}?`,
-    naWijziging: (w) => {
-      renderGezienList(); // het cijfer ook in de lijst hieronder
-      if (w) setTimeout(sluit, 600);
-    },
-  });
-  const onder = document.createElement('div');
-  onder.className = 'beoordeel-vraag-onder';
-  onder.append(sterren, later);
-  kaart.append(kop, titel, onder);
-  return kaart;
-}
-
-function renderVragen() {
-  if (!els.vraagSection || !els.vraagList) return;
-  const index = indexeerShows(state.shows);
-  const vragen = vragenOver(state.gepland, { index });
-  const beoordeel = renderBeoordeelVraag();
-  els.vraagSection.hidden = vragen.length === 0 && !beoordeel;
-  if (els.vraagCount) els.vraagCount.textContent = vragen.length ? `${vragen.length} voorstelling${vragen.length === 1 ? '' : 'en'}` : '';
-  els.vraagList.innerHTML = '';
-  if (beoordeel) els.vraagList.appendChild(beoordeel);
-  for (const item of vragen) els.vraagList.appendChild(renderVraagRow(item, index));
-}
-
-function renderVraagRow(item, index) {
-  const row = document.createElement('div');
-  row.className = 'plan-row vraag-row';
-
-  const { day, month } = parseIsoDate(item.datum);
-  const when = document.createElement('div');
-  when.className = 'plan-when';
-  when.innerHTML = `<b>${day}</b><small>${MONTHS[month - 1].slice(0, 3)}</small>`;
-  when.setAttribute('aria-label', formatDateLong(item.datum));
-
-  const info = document.createElement('div');
-  info.className = 'plan-info';
-  const title = document.createElement('span');
-  title.className = 'plan-title';
-  title.textContent = item.titel;
-  const meta = document.createElement('span');
-  meta.className = 'plan-meta';
-  const theaterNaam = planTheaterNaam(item);
-  meta.textContent = item.tijd ? `${theaterNaam} · ${item.tijd}` : theaterNaam;
-  info.append(title, meta);
-  if (item.verplaatst) {
-    const flag = document.createElement('span');
-    flag.className = 'plan-flag';
-    flag.textContent = 'Verplaatst';
-    info.appendChild(flag);
-  }
-
-  const actions = document.createElement('div');
-  actions.className = 'vraag-actions';
-  const knop = (label, ja) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = `vraag-btn${ja ? ' vraag-btn--ja' : ''}`;
-    b.textContent = label;
-    b.setAttribute('aria-label', `${item.titel}: ${ja ? 'ja, ik ben geweest' : 'nee, niet geweest'}`);
-    b.addEventListener('click', () => {
-      pasStandToe(beantwoord(huidigeStand(), item, ja, { index }));
-      // Ja: meteen vragen hoe het was (niet verplicht).
-      if (ja) {
-        const { show } = koppel(item, index);
-        beoordeelNa = watchlistSleutel(show?.titel ?? item.titel, item.theaterId);
-      }
-      renderProfielScreen();
-      renderAgenda();
-    });
-    return b;
-  };
-  actions.append(knop('Ja', true), knop('Nee', false));
-
-  row.append(when, info, actions);
-  return row;
 }
 
 // Eerste voorstelling per sleutel in de agenda (voor de live weergavetitel).
@@ -1776,7 +1666,13 @@ function renderGezienRow(item, liveShow) {
     g.textContent = genre;
     info.appendChild(g);
   }
-  info.appendChild(maakBeoordeling(item.sleutel, { label: `Beoordeling van ${title.textContent}` }));
+  info.appendChild(
+    maakBeoordeling(item.sleutel, {
+      label: `Beoordeling van ${title.textContent}`,
+      // Alleen de sorteerknop bijwerken (de lijst niet: dan blijft de focus).
+      naWijziging: () => renderGezienSorteerknop(state.gezien?.gezien ?? []),
+    })
+  );
   const lijst = document.createElement('ul');
   lijst.className = 'bezoek-lijst bezoek-lijst--compact';
   vulBezoekLijst(lijst, item);
@@ -4759,9 +4655,9 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     // 'onbekend' blijft altijd zichtbaar — we weten domweg niet of die vol
     // is, en dat is iets anders dan bevestigd vol (uitverkocht/wachtlijst).
     // Afgelast en verplaatst zijn ook niet te boeken: die gaan mee weg.
-    const fullOk =
-      !state.hideFullOnly ||
-      (s.beschikbaarheid !== 'uitverkocht' && s.beschikbaarheid !== 'wachtlijst' && !isVervallen(s));
+    // Een voorstelling met alleen volle data verdwijnt dan helemaal, en de
+    // tellers tellen ze niet mee (ze gaan allemaal via deze filter).
+    const fullOk = !state.hideFullOnly || (!isVol(s) && !isVervallen(s));
     // Ondergrens geldt altijd, ook met ignoreDateWindow (dat heft alleen de
     // voorwaartse 30-dagen-grens op via "toon meer" — verleden tijd tonen we
     // nooit, dat is geen "meer", dat is gewoon verlopen data).
@@ -5273,13 +5169,39 @@ function renderOtherDates(show) {
   // Zelfde theater als de hoofdregel (daar staat het vinkje al); alleen bij
   // gemengde dekking (bv. De Maaspoort: externe locatie, prijs) per datum.
   const gemengd = new Set(related.map((s) => s.podiumpas === true)).size > 1;
-  for (const s of related) {
-    const wanneer = s.tijd ? `${formatDateShort(s.datum)}, ${s.tijd}` : formatDateShort(s.datum);
-    const label = isVervallen(s) ? `${wanneer} (${s.beschikbaarheid})` : wanneer;
-    els.detailOtherDates.appendChild(
-      makeChip(label, s.id === show.id, () => navigate(`#/show/${encodeURIComponent(s.id)}`), { podiumpas: gemengd && s.podiumpas === true })
-    );
-  }
+  for (const s of related) els.detailOtherDates.appendChild(datumChip(s, { actief: s.id === show.id, gemengd }));
+}
+
+// Eén datumblokje in het detailscherm. Uitverkocht of wachtlijst: grijs,
+// doorgestreept en niet te kiezen (een uitgeschakelde knop: niet focusbaar,
+// wel voorgelezen als "za 18 okt 20:15, uitverkocht").
+function datumChip(s, { actief = false, gemengd = false } = {}) {
+  const wanneer = s.tijd ? `${formatDateShort(s.datum)}, ${s.tijd}` : formatDateShort(s.datum);
+  if (isVol(s)) return makeVolChip(s, wanneer, actief);
+  const label = isVervallen(s) ? `${wanneer} (${s.beschikbaarheid})` : wanneer;
+  // Een andere datum van dezelfde voorstelling vervangt de huidige plek in
+  // de geschiedenis (okt 2026): terug gaat dan meteen naar waar je vandaan
+  // kwam (Agenda, Profiel, Berichten, …), niet langs elke bekeken datum.
+  return makeChip(label, actief, () => vervang(`#/show/${encodeURIComponent(s.id)}`), { podiumpas: gemengd && s.podiumpas === true });
+}
+
+function makeVolChip(s, wanneer, actief) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.disabled = true;
+  btn.className = `chip chip--vol${actief ? ' is-active' : ''}`;
+  btn.setAttribute('aria-disabled', 'true');
+  if (actief) btn.setAttribute('aria-current', 'true');
+  const dag = WEEKDAYS[dateFromIso(s.datum).getDay()];
+  btn.setAttribute('aria-label', `${dag} ${formatDateShort(s.datum)}${s.tijd ? ` ${s.tijd}` : ''}, ${s.beschikbaarheid}`);
+  const datum = document.createElement('span');
+  datum.className = 'chip-vol-datum';
+  datum.textContent = wanneer;
+  const reden = document.createElement('span');
+  reden.className = 'chip-vol-reden';
+  reden.textContent = s.beschikbaarheid;
+  btn.append(datum, reden);
+  return btn;
 }
 
 function renderRelatedTheaters(show) {
@@ -5319,11 +5241,7 @@ function renderRelatedTheaters(show) {
     row.className = 'filter-row filter-row--wrap';
     row.setAttribute('role', 'group');
     row.setAttribute('aria-label', shows[0].theaterNaam);
-    for (const s of shows) {
-      const wanneer = s.tijd ? `${formatDateShort(s.datum)}, ${s.tijd}` : formatDateShort(s.datum);
-      const label = isVervallen(s) ? `${wanneer} (${s.beschikbaarheid})` : wanneer;
-      row.appendChild(makeChip(label, false, () => navigate(`#/show/${encodeURIComponent(s.id)}`), { podiumpas: gemengd && s.podiumpas === true }));
-    }
+    for (const s of shows) row.appendChild(datumChip(s, { gemengd }));
     group.appendChild(row);
 
     els.detailRelatedTheaters.appendChild(group);
@@ -5550,6 +5468,34 @@ function buildCityToggleButton(stad, cityIds, allOn) {
   return btn;
 }
 
+/** Vinkje bij de provinciekop (okt 2026): alle theaters van de provincie
+ * in één keer aan of uit. Aan, uit of deels (indeterminate, voorgelezen als
+ * "gemengd"); een tik bij deels zet alles aan. Eén opslag per tik, net als
+ * de schakelaars per theater en per stad. */
+function buildProvincieVinkje(provincie, ids, alleIds = ids) {
+  const aan = ids.filter((id) => state.enabledTheaters[id] !== false).length;
+  const label = document.createElement('label');
+  label.className = 'provincie-vinkje';
+  const vak = document.createElement('input');
+  vak.type = 'checkbox';
+  vak.className = 'provincie-vak';
+  vak.dataset.provincie = provincie;
+  vak.checked = aan === ids.length;
+  vak.indeterminate = aan > 0 && aan < ids.length;
+  vak.setAttribute('aria-label', `Alle theaters in ${provincie}`);
+  vak.addEventListener('change', () => {
+    const nieuw = aan !== ids.length;
+    for (const id of alleIds) state.enabledTheaters[id] = nieuw;
+    refreshAfterTheaterToggle();
+    // Het scherm is opnieuw opgebouwd: de focus terug op dit vinkje.
+    [...els.theatersList.querySelectorAll('.provincie-vak')].find((v) => v.dataset.provincie === provincie)?.focus();
+  });
+  const tekst = document.createElement('span');
+  tekst.textContent = 'Alle';
+  label.append(tekst, vak);
+  return label;
+}
+
 /** Zelfde chevron-markup als de .filter-accordion-header-knoppen in de
  * sidebar (zie index.html), maar hier dynamisch opgebouwd omdat elke stad
  * zijn eigen accordeon-instantie krijgt. */
@@ -5658,10 +5604,20 @@ function renderTheatersScreen() {
 
   els.theatersList.innerHTML = '';
   for (const provincie of provincies) {
+    const kop = document.createElement('div');
+    kop.className = 'theaters-province-head';
     const heading = document.createElement('h2');
     heading.className = 'theaters-province-heading';
     heading.textContent = provincie;
-    els.theatersList.appendChild(heading);
+    kop.appendChild(heading);
+    // De stand (aan/uit/deels) telt, net als "Alles aan/uit" per stad, alleen
+    // theaters met voorstellingen (met een schakelaar). Een tik zet ook de
+    // gepauzeerde of gesloten theaters van de provincie: komen die terug,
+    // dan volgen ze je keuze.
+    const alleIds = stedenByProvincie.get(provincie).flatMap((stad) => idsByStad.get(stad));
+    const ids = alleIds.filter((id) => state.shows.some((s) => s.theaterId === id));
+    if (ids.length > 0) kop.appendChild(buildProvincieVinkje(provincie, ids, alleIds));
+    els.theatersList.appendChild(kop);
 
     for (const stad of stedenByProvincie.get(provincie)) {
       els.theatersList.appendChild(buildCitySection(stad, idsByStad.get(stad)));
@@ -5786,7 +5742,6 @@ function renderWatchlistItem(production) {
 
 function renderProfielScreen() {
   renderProfielTegels();
-  renderVragen();
   renderGeplandList();
   renderGezienList();
   const productions = watchlistProductions();

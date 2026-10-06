@@ -355,6 +355,74 @@ test('Mail in Profiel: uitzetten en weer aanzetten (mailvoorkeur, echte rules)',
   await g.ctx.close();
 });
 
+// ---------- Na de speeldag vanzelf naar Gezien (okt 2026) ----------
+
+test('na de speeldag: gedeeld plan zonder kaarten gaat vanzelf naar Gezien (met @anna); weghalen blijft weg', async () => {
+  // Een voorstelling die zo snel mogelijk speelt (kleine klokverschuiving).
+  const data = JSON.parse(await readFile(path.join(new URL('../public/', import.meta.url).pathname, 'data/shows.json'), 'utf-8'));
+  const vandaag = new Date().toISOString().slice(0, 10);
+  const bezet = new Set(shows.map((s) => watchlistSleutel(s.titel, s.theaterId)));
+  const s = (Array.isArray(data) ? data : data.shows)
+    .filter((x) => x.datum > vandaag && x.tijd && x.beschikbaarheid === 'beschikbaar' && !bezet.has(watchlistSleutel(x.titel, x.theaterId)))
+    .sort((a, b) => a.datum.localeCompare(b.datum))[0];
+  const sleutel = geplandSleutel(s);
+  // A plant en nodigt C uit; C gaat mee (zonder kaarten).
+  const A = ik.A.page;
+  await ga(A, base, `#/show/${encodeURIComponent(s.id)}`);
+  await A.click('#detailPlanBtn');
+  await ga(A, base, `#/uitnodigen/${encodeURIComponent(sleutel)}`);
+  await A.waitForSelector(`#uitnodig-${uid.C}`);
+  await A.check(`#uitnodig-${uid.C}`);
+  await A.click('#uitnodigenInhoud >> text="Uitnodigen (1)"');
+  await wachtOpTekst(A, '#uitnodigenInhoud .vrienden-melding', /Uitgenodigd: @carol\./);
+  const C = ik.C.page;
+  await ga(C, base, '#/berichten');
+  await C.locator('.bericht', { hasText: s.titel }).locator('text="Ik ga mee"').first().click();
+  await wachtOpDoc(`users/${uid.C}`, (d) => (d?.gepland ?? []).some((i) => i.sleutel === sleutel && i.planId));
+  await ga(C, base, '#/profiel');
+  await wachtOpTekst(C, '#geplandList', /Met @anna/);
+
+  // C op een tweede apparaat, de dag na de speeldag (10:00 in Amsterdam).
+  const [j, m, d] = s.datum.split('-').map(Number);
+  const morgen = new Date(Date.UTC(j, m - 1, d + 1, 8, 0));
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
+  await ctx.clock.install({ time: morgen });
+  await ctx.clock.resume();
+  const page = await ctx.newPage();
+  const fouten = [];
+  page.on('pageerror', (e) => fouten.push(e.message));
+  await page.goto(`${base}?emulator=1#/profiel`);
+  await page.waitForFunction(() => typeof window.__e2eLogin === 'function');
+  await page.evaluate(([e, w]) => window.__e2eLogin(e, w), [ACCOUNTS.C.email, ACCOUNTS.C.wachtwoord]);
+  const doc = await wachtOpDoc(`users/${uid.C}`, (x) => (x?.gezien ?? []).some((i) => i.sleutel === watchlistSleutel(s.titel, s.theaterId)));
+  assert.ok(!(doc.gepland ?? []).some((i) => i.sleutel === sleutel), 'uit de planning');
+  const item = doc.gezien.find((i) => i.sleutel === watchlistSleutel(s.titel, s.theaterId));
+  assert.equal(item.bron, 'planning');
+  assert.deepEqual(item.bezoeken.map((b) => [b.datum, b.status, b.metWie]), [[s.datum, 'gepland', ['@anna']]]);
+  await wachtOpTekst(page, '#gezienList', /met @anna/);
+  assert.equal(await page.getByText('Ben je geweest?').count(), 0);
+  // Bovenaan Gezien (nieuwste eerst), met sterren.
+  const eerste = page.locator('#gezienList .gezien-row').first();
+  assert.match(await eerste.innerText(), new RegExp(s.datum.slice(8).replace(/^0/, '')));
+  assert.equal(await eerste.locator('[role="slider"]').count(), 1);
+  await eerste.scrollIntoViewIfNeeded();
+  await schermafbeelding(page, '8-vanzelf-gezien');
+  // Ten onrechte: weghalen. Het eerste apparaat (echte tijd) en herladen zetten het niet terug.
+  await eerste.locator('.gezien-weg').click();
+  await wachtOpDoc(`users/${uid.C}`, (x) => (x?.gezienVerwijderd ?? []).some((t) => t.sleutel === item.sleutel));
+  await page.reload();
+  await page.waitForSelector('.nav-item', { state: 'attached' });
+  await ga(C, base, '#/profiel');
+  await even(C, 1500);
+  await even(page, 1500);
+  const na = await leesDoc(`users/${uid.C}`);
+  assert.ok(!(na.gezien ?? []).some((i) => i.sleutel === item.sleutel), 'blijft weg');
+  assert.ok(!(na.gepland ?? []).some((i) => i.sleutel === sleutel), 'niet terug in de planning');
+  assert.equal(await page.locator('#gezienList .gezien-row', { hasText: s.titel }).count(), 0);
+  assert.deepEqual(fouten, []);
+  await ctx.close();
+});
+
 test('veldcontrole: geen e-mailadres in Firestore; berichten, plannen en leden met precies de verwachte velden', async () => {
   const collecties = ['users', 'profielen', 'usernames', 'vriendverzoeken', 'lijst', 'uitnodigingslinks', 'gedeeld', 'onderdelen', 'plannen', 'leden', 'berichten', 'mailvoorkeur'];
   const alles = [];

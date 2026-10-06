@@ -320,20 +320,27 @@ test('rond middernacht: uitnodigen volgt de datum in Amsterdam, niet die van het
       await page.goto(`${base}#/profiel`);
       await page.waitForSelector('.nav-item', { state: 'attached' });
       await page.waitForTimeout(600);
-      // Op het toestel (UTC) is het in beide gevallen nog de speeldag: het plan staat in Gepland.
-      assert.match(await tekst(page, '#geplandList'), /middernacht|Grip|20:00/);
+      // Op het toestel (UTC) is het in beide gevallen nog de speeldag, maar
+      // telt Amsterdam: vóór middernacht in Gepland met uitnodigknop, erna
+      // is de speeldag voorbij en staat het plan in Gezien.
       assert.equal(await page.locator('#geplandList button[aria-label^="Vrienden uitnodigen"]').count(), verwacht, `${datum} ${tijd}`);
+      if (verwacht) assert.match(await tekst(page, '#geplandList'), /middernacht|Grip|20:00/);
+      else {
+        assert.equal(await page.locator('#geplandList .plan-row').count(), 0, `${datum} ${tijd}`);
+        assert.equal((await opslag(page, 'users/u1')).gezien.length, 1, `${datum} ${tijd}`);
+      }
       assert.deepEqual(fouten, []);
       await ctx.close();
     }
   }
 });
 
-test('voorbije datum: geen uitnodigknop; het scherm zegt dat het voorbij is', async () => {
+test('voorbije datum: het plan is al naar Gezien, dus niets meer uit te nodigen', async () => {
   const oud = { ...item, sleutel: `${item.theaterId}|2020-01-01|20:00|oud`, datum: '2020-01-01' };
   const docs = { ...BASIS, ...gebruiker('u1', [oud]) };
   const { ctx, page, fouten } = await openApp({ docs, hash: `#/uitnodigen/${encodeURIComponent(oud.sleutel)}` });
-  assert.match(await tekst(page, '#uitnodigenInhoud'), /voorbij/);
+  assert.match(await tekst(page, '#uitnodigenInhoud'), /niet \(meer\) in je planning/);
+  assert.equal(await page.locator('#uitnodigenInhoud button').filter({ hasText: /uitnodigen/i }).count(), 0);
   assert.deepEqual(fouten, []);
   await ctx.close();
 });

@@ -13,8 +13,7 @@ import {
   zonderGezien,
   isVoorbij,
   verwerkVoorbijePlannen,
-  vragenOver,
-  beantwoord,
+  naSpeeldag,
   laatsteBezoek,
   sorteerGezien,
   laadGezien,
@@ -36,9 +35,10 @@ const show = (extra = {}) => ({
   maker: null,
   ...extra,
 });
-// 5 okt 2026, 00:00 lokale tijd: de eerste minuut waarop 4 okt voorbij is.
-const NA = new Date(2026, 9, 5, 0, 0);
-const VOOR = new Date(2026, 9, 4, 23, 59);
+// 5 okt 2026, 00:00 in Amsterdam (zomertijd, UTC+2): de eerste minuut
+// waarop 4 okt voorbij is. Los van de tijdzone van de testmachine.
+const NA = new Date('2026-10-04T22:00:00Z');
+const VOOR = new Date('2026-10-04T21:59:00Z');
 
 function planMet(status, extra = {}, now = 1) {
   let g = planIn(legeGepland(), show(extra), now);
@@ -58,11 +58,17 @@ test('sleutel = watchlist-sleutel (v4, volgorde-onafhankelijk, uitsluitlijst)', 
   assert.deepEqual(nora.gezien[0].bezoeken, []);
 });
 
-test('"voorbij" vanaf 00:00 lokale tijd op de dag ná de speeldatum', () => {
+test('"voorbij" vanaf 00:00 in Amsterdam op de dag ná de speeldatum (zomer- en wintertijd)', () => {
   assert.equal(isVoorbij('2026-10-04', VOOR), false);
   assert.equal(isVoorbij('2026-10-04', NA), true);
-  assert.equal(isVoorbij('2026-10-04', new Date(2026, 9, 4, 12, 0)), false); // middagvoorstelling, zelfde dag
-  assert.equal(isVoorbij('2026-12-31', new Date(2027, 0, 1, 0, 0)), true); // jaarwisseling
+  assert.equal(isVoorbij('2026-10-04', new Date('2026-10-04T10:00:00Z')), false); // middagvoorstelling, zelfde dag
+  // Wintertijd (UTC+1): 31 dec is voorbij om 23:00 UTC.
+  assert.equal(isVoorbij('2026-12-31', new Date('2026-12-31T22:59:00Z')), false);
+  assert.equal(isVoorbij('2026-12-31', new Date('2026-12-31T23:00:00Z')), true); // jaarwisseling
+  // naSpeeldag ligt nooit na middernacht in Amsterdam.
+  assert.ok(naSpeeldag('2026-10-04') <= NA.getTime());
+  assert.ok(naSpeeldag('2026-12-31') <= new Date('2026-12-31T23:00:00Z').getTime());
+  assert.ok(naSpeeldag('2026-10-04') > new Date('2026-10-04T21:00:00Z').getTime());
 });
 
 test('kaarten → Gezien (met bezoek), uit de planning en van de watchlist', () => {
@@ -95,24 +101,100 @@ test('kaarten ook bij "Niet meer in de agenda" en "Tijd gewijzigd"', () => {
   assert.equal(r.gezien.gezien[0].bezoeken[0].tijd, '20:30');
 });
 
-test('gepland → vraag; ja → Gezien en uit de planning; nee → alleen uit de planning', () => {
+test('ook zonder kaarten (status "Gepland") automatisch naar Gezien en uit de planning', () => {
   const gepland = planMet('gepland');
   const stand = { gepland, gezien: legeGezien(), watchlist: legeWatchlist() };
-  const verwerkt = verwerkVoorbijePlannen(stand, { index: indexeerShows([]), nu: NA, now: 100 });
-  assert.equal(verwerkt.gewijzigd, false); // niet automatisch
-  const vragen = vragenOver(gepland, { index: indexeerShows([]), nu: NA });
-  assert.equal(vragen.length, 1);
-  assert.equal(vragenOver(gepland, { nu: VOOR }).length, 0);
+  assert.equal(verwerkVoorbijePlannen(stand, { index: indexeerShows([]), nu: VOOR, now: 100 }).gewijzigd, false);
+  const r = verwerkVoorbijePlannen(stand, { index: indexeerShows([]), nu: NA, now: 100 });
+  assert.equal(r.gewijzigd, true);
+  assert.equal(r.gepland.gepland.length, 0);
+  assert.equal(r.gezien.gezien.length, 1);
+  assert.equal(r.gezien.gezien[0].bron, 'planning');
+  assert.equal(r.gezien.gezien[0].bezoeken[0].status, 'gepland');
+});
 
-  const ja = beantwoord(stand, vragen[0], true, { now: 200 });
-  assert.equal(ja.gepland.gepland.length, 0);
-  assert.equal(ja.gezien.gezien.length, 1);
-  assert.equal(ja.gezien.gezien[0].bezoeken.length, 1);
+test('plan dat vroeger op "Ben je geweest?" wachtte (weken voorbij): bij openen naar Gezien', () => {
+  // Plan van 4 okt zonder kaarten, app pas op 20 okt weer geopend.
+  const stand = { gepland: planMet('gepland'), gezien: legeGezien(), watchlist: legeWatchlist() };
+  const r = verwerkVoorbijePlannen(stand, { index: indexeerShows([]), nu: new Date('2026-10-20T08:00:00Z'), now: 5000 });
+  assert.equal(r.gepland.gepland.length, 0);
+  assert.equal(r.gezien.gezien[0].bezoeken[0].datum, '2026-10-04');
+});
 
-  const nee = beantwoord(stand, vragen[0], false, { now: 200 });
-  assert.equal(nee.gepland.gepland.length, 0);
-  assert.equal(nee.gezien.gezien.length, 0);
-  assert.equal(vragenOver(nee.gepland, { nu: NA }).length, 0);
+test('"Niet meer in de agenda" (geen afgelast) zonder kaarten: ook naar Gezien', () => {
+  const index = indexeerShows([show({ id: 'ander', titel: 'Iets anders' })]);
+  const r = verwerkVoorbijePlannen({ gepland: planMet('gepland'), gezien: legeGezien(), watchlist: legeWatchlist() }, { index, nu: NA, now: 100 });
+  assert.equal(r.gezien.gezien.length, 1);
+});
+
+test('gedeeld plan (planId, met wie): naar Gezien met "met @…" in het bezoek', () => {
+  let gepland = planMet('gepland');
+  gepland = { ...gepland, gepland: [{ ...gepland.gepland[0], planId: 'p1', metWie: ['@bob', '@cleo'] }] };
+  const r = verwerkVoorbijePlannen({ gepland, gezien: legeGezien(), watchlist: legeWatchlist() }, { index: indexeerShows([]), nu: NA, now: 100 });
+  assert.deepEqual(r.gezien.gezien[0].bezoeken[0].metWie, ['@bob', '@cleo']);
+  assert.equal(r.gepland.gepland.length, 0);
+});
+
+test('nieuw Gezien-item krijgt toegevoegdOp net na de speeldag, op elk apparaat hetzelfde', () => {
+  const stand = { gepland: planMet('gepland'), gezien: legeGezien(), watchlist: legeWatchlist() };
+  const later = Date.parse('2026-10-09T10:00:00Z');
+  const a = verwerkVoorbijePlannen(stand, { nu: new Date(later), now: later });
+  const b = verwerkVoorbijePlannen(stand, { nu: new Date(later + 3600e3), now: later + 3600e3 });
+  assert.equal(a.gezien.gezien[0].toegevoegdOp, naSpeeldag('2026-10-04'));
+  assert.equal(b.gezien.gezien[0].toegevoegdOp, naSpeeldag('2026-10-04'));
+  // Stond hij al op Gezien (eerder bezoek), dan blijft dat item en komt het bezoek erbij.
+  const al = zetGezien(legeGezien(), { show: show(), bron: 'handmatig', bezoek: { datum: '2026-01-10', tijd: null, theaterId: 'carre' } }, 7);
+  const c = verwerkVoorbijePlannen({ ...stand, gezien: al }, { nu: new Date(later), now: later });
+  assert.equal(c.gezien.gezien.length, 1);
+  assert.equal(c.gezien.gezien[0].toegevoegdOp, 7);
+  assert.equal(c.gezien.gezien[0].bezoeken.length, 2);
+});
+
+test('ten onrechte op Gezien: weghalen, en het komt niet terug (ook niet via een ander apparaat met oude gegevens)', () => {
+  const stand = { gepland: planMet('gepland'), gezien: legeGezien(), watchlist: legeWatchlist() };
+  const t1 = Date.parse('2026-10-05T07:00:00Z');
+  // Apparaat A verwerkt het plan en de gebruiker haalt het weg.
+  const a = verwerkVoorbijePlannen(stand, { nu: new Date(t1), now: t1 });
+  const sleutel = a.gezien.gezien[0].sleutel;
+  const aWeg = { ...a, gezien: haalUitGezien(a.gezien, sleutel, t1 + 60e3) };
+  assert.equal(aWeg.gezien.gezien.length, 0);
+  // A opnieuw openen: niets terug (het plan is al uit de planning).
+  assert.equal(verwerkVoorbijePlannen(aWeg, { nu: new Date(t1 + 120e3), now: t1 + 120e3 }).gewijzigd, false);
+  // Apparaat B (offline, oude stand met het plan nog in de planning) verwerkt het later zelf.
+  const t2 = t1 + 86400e3;
+  const b = verwerkVoorbijePlannen(stand, { nu: new Date(t2), now: t2 });
+  assert.equal(b.gezien.gezien.length, 1);
+  // Sync: het weghalen van A wint, in beide volgordes; de planning blijft leeg.
+  for (const samen of [voegGezienSamen(aWeg.gezien, b.gezien), voegGezienSamen(b.gezien, aWeg.gezien)]) {
+    assert.equal(samen.gezien.length, 0);
+    assert.equal(samen.gezienVerwijderd[0].sleutel, sleutel);
+  }
+  const plan = laadGepland({ opgeslagen: aWeg.gepland, extra: b.gepland }).profiel;
+  assert.equal(plan.gepland.length, 0);
+  // Daarna opnieuw verwerken (zoals na elke sync): blijft weg.
+  const na = verwerkVoorbijePlannen(
+    { gepland: plan, gezien: voegGezienSamen(aWeg.gezien, b.gezien), watchlist: legeWatchlist() },
+    { nu: new Date(t2 + 1000), now: t2 + 1000 }
+  );
+  assert.equal(na.gewijzigd, false);
+  assert.equal(na.gezien.gezien.length, 0);
+});
+
+test('later opnieuw dezelfde voorstelling gepland en gezien: verschijnt weer, ondanks het eerdere weghalen', () => {
+  const t1 = Date.parse('2026-10-05T07:00:00Z');
+  const a = verwerkVoorbijePlannen({ gepland: planMet('gepland'), gezien: legeGezien(), watchlist: legeWatchlist() }, { nu: new Date(t1), now: t1 });
+  const weg = haalUitGezien(a.gezien, a.gezien.gezien[0].sleutel, t1 + 60e3);
+  const nieuwPlan = planIn(legeGepland(), show({ datum: '2026-11-14', theaterId: 'carre' }), t1 + 1e5);
+  const t3 = Date.parse('2026-11-15T09:00:00Z');
+  const r = verwerkVoorbijePlannen({ gepland: nieuwPlan, gezien: weg, watchlist: legeWatchlist() }, { nu: new Date(t3), now: t3 });
+  assert.equal(r.gezien.gezien.length, 1);
+  assert.deepEqual(r.gezien.gezien[0].bezoeken.map((b) => b.datum), ['2026-11-14']);
+});
+
+test('net verwerkt plan staat bovenaan Gezien (nieuwste eerst)', () => {
+  const eerder = zetGezien(legeGezien(), { show: show({ titel: 'Titanique' }), bron: 'handmatig', bezoek: { datum: '2026-09-20', tijd: '20:00', theaterId: 'x' } }, 5);
+  const r = verwerkVoorbijePlannen({ gepland: planMet('gepland'), gezien: eerder, watchlist: legeWatchlist() }, { nu: NA, now: 100 });
+  assert.equal(sorteerGezien(r.gezien.gezien)[0].sleutel, 'prikkelarme kermis | sara kroos');
 });
 
 test('afgelast → nooit naar Gezien, stil uit de planning (ook als hij al uit de data is)', () => {
@@ -127,9 +209,15 @@ test('afgelast → nooit naar Gezien, stil uit de planning (ook als hij al uit d
   );
   assert.equal(r.gepland.gepland.length, 0);
   assert.equal(r.gezien.gezien.length, 0);
-  // Ook een "Gepland"-plan: geen vraag.
+  // Ook een "Gepland"-plan: weg, niet naar Gezien.
   const gm = laadGepland({ opgeslagen: planMet('gepland'), index }).profiel;
-  assert.equal(vragenOver(gm, { nu: NA }).length, 0);
+  const rg = verwerkVoorbijePlannen({ gepland: gm, gezien: legeGezien(), watchlist: legeWatchlist() }, { nu: NA, now: 100 });
+  assert.equal(rg.gepland.gepland.length, 0);
+  assert.equal(rg.gezien.gezien.length, 0);
+  // Afgelast via de agenda (plan zonder markering, voorstelling nog in de data): ook niet.
+  const viaAgenda = verwerkVoorbijePlannen({ gepland: planMet('gepland'), gezien: legeGezien(), watchlist: legeWatchlist() }, { index, nu: NA, now: 100 });
+  assert.equal(viaAgenda.gezien.gezien.length, 0);
+  assert.equal(viaAgenda.gepland.gepland.length, 0);
   // De markering blijft staan als een ander apparaat een nieuwere status heeft.
   const anderApparaat = zetStatus(planMet('gepland'), gm.gepland[0].sleutel, 'kaarten', 50);
   assert.equal(laadGepland({ opgeslagen: gm, extra: anderApparaat }).profiel.gepland[0].vervallen, 'afgelast');
@@ -216,33 +304,22 @@ test('sorteren: laatste bezoek eerst, zonder bezoek op toegevoegdOp', () => {
   assert.deepEqual(sorteerGezien(items).map((i) => i.sleutel), ['b', 'a', 'c']);
 });
 
-test('verplaatst (ook met kaarten) → vraag, niet automatisch Gezien en niet stil weg', () => {
+test('verplaatst (ook met kaarten): niet naar Gezien, uit de planning (op die datum niet gespeeld)', () => {
   // Via het vervallen-veld in het plan (de voorstelling is na de datum uit de data)...
   const index = indexeerShows([show({ beschikbaarheid: 'verplaatst' })]);
   const plan = laadGepland({ opgeslagen: planMet('kaarten'), index }).profiel;
   assert.equal(plan.gepland[0].vervallen, 'verplaatst');
   const stand = { gepland: plan, gezien: legeGezien(), watchlist: legeWatchlist() };
   const r = verwerkVoorbijePlannen(stand, { index: indexeerShows([]), nu: NA, now: 100 });
-  assert.equal(r.gewijzigd, false);
-  assert.equal(r.gepland.gepland.length, 1);
+  assert.equal(r.gewijzigd, true);
+  assert.equal(r.gepland.gepland.length, 0);
   assert.equal(r.gezien.gezien.length, 0);
-  const vragen = vragenOver(plan, { index: indexeerShows([]), nu: NA });
-  assert.equal(vragen.length, 1);
-  assert.equal(vragen[0].verplaatst, true);
   // ... en via de agenda (voorstelling staat er nog als verplaatst), ook zonder kaarten.
-  assert.equal(vragenOver(planMet('gepland'), { index, nu: NA })[0].verplaatst, true);
-  assert.equal(verwerkVoorbijePlannen({ ...stand, gepland: planMet('kaarten') }, { index, nu: NA }).gewijzigd, false);
-  // Ja → Gezien, Nee → alleen uit de planning.
-  const ja = beantwoord(stand, vragen[0], true, { now: 200 });
-  assert.equal(ja.gezien.gezien.length, 1);
-  assert.equal(ja.gepland.gepland.length, 0);
-  const nee = beantwoord(stand, vragen[0], false, { now: 200 });
-  assert.equal(nee.gezien.gezien.length, 0);
-  assert.equal(nee.gepland.gepland.length, 0);
-  // Afgelast blijft stil weg.
-  const afgelast = laadGepland({ opgeslagen: planMet('kaarten'), index: indexeerShows([show({ beschikbaarheid: 'afgelast' })]) }).profiel;
-  assert.equal(vragenOver(afgelast, { nu: NA }).length, 0);
-  assert.equal(verwerkVoorbijePlannen({ ...stand, gepland: afgelast }, { nu: NA, now: 100 }).gepland.gepland.length, 0);
+  const viaAgenda = verwerkVoorbijePlannen({ ...stand, gepland: planMet('gepland') }, { index, nu: NA, now: 100 });
+  assert.equal(viaAgenda.gezien.gezien.length, 0);
+  assert.equal(viaAgenda.gepland.gepland.length, 0);
+  // Vóór de speeldag blijft hij staan (met de melding "Verplaatst" bij het plan).
+  assert.equal(verwerkVoorbijePlannen(stand, { index, nu: VOOR, now: 100 }).gewijzigd, false);
 });
 
 // ---------- Volledige bezoekgegevens (1 okt 2026) ----------
@@ -285,13 +362,12 @@ test('plan bewaart maker, genre en locatie; na de datum staat alles in het bezoe
   });
 });
 
-test('"Ben je geweest?" → Ja: volledig bezoek met status gepland; live voorstelling vult aan', () => {
+test('automatisch zonder kaarten: volledig bezoek met status gepland; live voorstelling vult aan', () => {
   const gepland = planIn(legeGepland(), { ...show(), maker: null, genre: null }, 1); // oud plan zonder extra's
   const stand = { gepland, gezien: legeGezien(), watchlist: legeWatchlist() };
-  const [vraag] = vragenOver(gepland, { nu: NA });
   // De voorstelling staat (nog) in de data, met genre: dat komt in het bezoek.
   const index = indexeerShows([show({ genre: 'Cabaret', zaal: 'Grote zaal' })]);
-  const ja = beantwoord(stand, vraag, true, { index, now: 200 });
+  const ja = verwerkVoorbijePlannen(stand, { index, nu: NA, now: 200 });
   const b = ja.gezien.gezien[0].bezoeken[0];
   assert.equal(b.status, 'gepland');
   assert.equal(b.genre, 'Cabaret');

@@ -320,6 +320,35 @@ a {
   color: var(--on-primary);
 }
 
+/* Uitverkochte of wachtlijst-datum in het detailscherm: grijs, doorgestreept,
+   niet te kiezen; een klein woord erachter. --text-2 op --soldout-bg: 5,6:1. */
+.chip.chip--vol,
+#screen-detail .chip.chip--vol.is-active {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-color: var(--soldout-bg);
+  background: var(--soldout-bg);
+  color: var(--text-2);
+  font-weight: 500;
+  opacity: 1;
+  cursor: default;
+}
+
+/* De datum waar je zelf staat (via je planning of een directe link). */
+#screen-detail .chip.chip--vol.is-active {
+  border-color: var(--text-2);
+}
+
+.chip-vol-datum {
+  text-decoration: line-through;
+}
+
+.chip-vol-reden {
+  font-size: 12px;
+  font-weight: 600;
+}
+
 /* Agenda list */
 
 .agenda-body {
@@ -1053,16 +1082,46 @@ a {
   overflow-y: auto;
 }
 
-.theaters-province-heading {
+/* Provinciekop met rechts het vinkje "Alle" (tikvlak 44 × 44). */
+.theaters-province-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin: 28px 0 6px;
+}
+
+.theaters-province-head:first-child {
+  margin-top: 0;
+}
+
+.theaters-province-heading {
+  margin: 0;
   font-family: var(--font-display);
   font-size: 22px;
   font-weight: var(--kop-gewicht);
   color: var(--primary);
 }
 
-.theaters-province-heading:first-child {
-  margin-top: 0;
+.provincie-vinkje {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: var(--touch);
+  min-height: var(--touch);
+  padding: 0 4px 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+.provincie-vak {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--primary);
+  cursor: pointer;
 }
 
 .theaters-city-section {
@@ -1508,7 +1567,7 @@ a {
   padding: 8px 20px 32px;
 }
 
-/* Ben je geweest? → Gepland → Gezien, als één blok vóór de watchlist. */
+/* Gepland → Gezien, als één blok vóór de watchlist. */
 .profile-kolom {
   display: flex;
   flex-direction: column;
@@ -2421,44 +2480,6 @@ button.plan-info {
   color: var(--text-2);
 }
 
-/* "Ben je geweest?" (Profiel): een plan zonder kaarten na de speeldatum.
-   Zelfde rij als een plan, met twee knoppen: Ja (gevuld) en Nee (omlijnd). */
-.profile-section--vraag {
-  border-color: var(--accent);
-}
-
-.vraag-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.vraag-btn {
-  position: relative;
-  min-height: 36px;
-  min-width: 52px;
-  padding: 4px 14px;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--control-border);
-  background: var(--surface);
-  color: var(--primary);
-  font: inherit;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.vraag-btn::before {
-  content: "";
-  position: absolute;
-  inset: -4px 0;
-}
-
-.vraag-btn--ja {
-  border-color: var(--primary);
-  background: var(--primary);
-  color: var(--on-primary);
-}
-
 /* Gezien: het item is een knop (opent het detail), bezoeken onder elkaar. */
 button.gezien-info {
   width: 100%;
@@ -2553,33 +2574,6 @@ button.gezien-titel {
 
 .gezien-info {
   cursor: pointer;
-}
-
-/* "Hoe vond je het?" na "Ben je geweest?" → Ja. */
-.beoordeel-vraag {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--divider);
-}
-
-.beoordeel-vraag-kop {
-  margin: 0;
-  font-weight: var(--kop-gewicht);
-  color: var(--primary);
-}
-
-.beoordeel-vraag .plan-meta {
-  margin: 0;
-}
-
-.beoordeel-vraag-onder {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
 }
 
 .section-head .gezien-sorteer {
