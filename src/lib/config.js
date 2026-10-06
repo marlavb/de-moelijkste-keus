@@ -677,4 +677,47 @@ export const THEATERS = [
       toelichting: 'Bel het Informatiepunt (optie 1) vanaf 30 dagen voor de voorstelling; online reserveren is niet mogelijk. Ticket ophalen en pas laten scannen bij het Informatiepunt, vanaf een uur voor aanvang.',
     },
   },
+  {
+    id: 'speelhuis',
+    naam: 'Het Speelhuis',
+    stad: 'Helmond',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://theaterspeelhuis.nl',
+    agendaUrl: 'https://theaterspeelhuis.nl/programma',
+    // Bron: https://podiumpas.nl/waar-te-besteden (6 okt 2026). De eigen
+    // pagina https://theaterspeelhuis.nl/podiumpas (6 okt 2026) noemt geen
+    // voorwaarden: Podiumpas bij alle voorstellingen behalve gratis (zie
+    // src/sites/speelhuis.js); voorwaarden worden nagevraagd.
+    podiumpas: true,
+    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+  },
+  {
+    id: 'schouwburgconcertzaal',
+    naam: 'Schouwburg Concertzaal',
+    stad: 'Tilburg',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.schouwburgconcertzaaltilburg.nl',
+    agendaUrl: 'https://www.schouwburgconcertzaaltilburg.nl/nl/agenda',
+    // Bron: https://podiumpas.nl/waar-te-besteden (6 okt 2026); de eigen site
+    // noemt de pas niet (6 okt 2026). Podiumpas bij alle voorstellingen
+    // behalve gratis (zie src/sites/schouwburgconcertzaal.js); voorwaarden
+    // worden nagevraagd.
+    podiumpas: true,
+    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+  },
+  {
+    id: 'willemtwee',
+    naam: 'Toonzaal Willem Twee',
+    stad: "'s-Hertogenbosch",
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.willem-twee.nl',
+    agendaUrl: 'https://www.willem-twee.nl/agenda/toonzaal',
+    // Per concert: de tag "Podiumpas" op de site (zie src/sites/willemtwee.js).
+    podiumpas: true,
+    // Bron: https://www.willem-twee.nl/podiumpas (6 okt 2026).
+    podiumpasReserveren: {
+      email: 'podiumpas@willem-twee.nl',
+      toelichting: 'Mail vanaf 15 dagen voor het concert welk concert je wilt bezoeken; er zijn 5 Podiumpasplaatsen per concert. Laat op de dag zelf je pas zien bij de kassa (open vanaf een uur voor aanvang).',
+    },
+  },
 ];

@@ -60,6 +60,9 @@ import { scrapeKattendans } from './sites/kattendans.js';
 import { scrapeParadox } from './sites/paradox.js';
 import { scrapeCenakelGroep } from './sites/cenakel.js';
 import { scrapeMarkant } from './sites/markant.js';
+import { scrapeSpeelhuis } from './sites/speelhuis.js';
+import { scrapeSchouwburgConcertzaal } from './sites/schouwburgconcertzaal.js';
+import { scrapeWillemTwee } from './sites/willemtwee.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -113,6 +116,9 @@ const SCRAPERS = {
   delink: scrapeCenakelGroep,
   smet: scrapeCenakelGroep,
   markant: scrapeMarkant,
+  speelhuis: scrapeSpeelhuis,
+  schouwburgconcertzaal: scrapeSchouwburgConcertzaal,
+  willemtwee: scrapeWillemTwee,
 };
 
 // Welk bestand waarvoor dient:

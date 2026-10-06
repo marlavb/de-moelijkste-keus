@@ -165,6 +165,9 @@ const THEATER_ZOEKALIASSEN = {
   delink: ['nieuwe muziek tilburg', 'cenakel'],
   smet: ['smet', 's.m.e.t.', 'kamermuziek tilburg', 'cenakel'],
   markant: ['markant', 'maashorst', 'markant uden'],
+  speelhuis: ['speelhuis helmond'],
+  schouwburgconcertzaal: ['schouwburg tilburg', 'concertzaal tilburg', 'theaters tilburg'],
+  willemtwee: ['willem twee', 'w2', 'toonzaal', 'den bosch'],
 };
 
 const BESCHIKBAARHEID_LABELS = {

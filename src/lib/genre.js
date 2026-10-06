@@ -187,6 +187,7 @@ const GENRE_MAP = {
   taal: 'Overig', // De Nieuwe Vorst (schrijfavonden, voordrachten)
   'lezing / debat': 'Overig', // De Nieuwe Vorst
   divers: 'Overig', // Speelhuis
+  lokaal: 'Overig', // Speelhuis: lokale (amateur)producties, geen genre op zich (zoals 'uit de regio')
   evenement: 'Overig', // Hofnar
   event: 'Overig', // Markant
   carnaval: 'Overig', // Theater aan de Parade
