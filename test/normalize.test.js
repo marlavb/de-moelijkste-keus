@@ -51,3 +51,18 @@ test('createDutchAbbrevDayParser: zonder weekdag de gewone rollover', () => {
   assert.equal(parse('3 okt'), '2026-10-03');
   assert.equal(parse('24 sep'), '2027-09-24');
 });
+
+test('genres Noord-Brabant (okt 2026): cabaret & comedy → Cabaret, en de nieuwe labels zijn bekend', async () => {
+  const { normalizeGenre, isBekendGenre } = await import('../src/lib/genre.js');
+  for (const label of ['cabaret & comedy', 'Cabaret & Comedy', 'Comedy & cabaret']) assert.equal(normalizeGenre(label), 'Cabaret', label);
+  assert.equal(normalizeGenre('musical & muziektheater'), 'Musical');
+  assert.equal(normalizeGenre('Sta-concert'), 'Muziek & Concert');
+  for (const label of ['College', 'kennis & personality', 'Personality show', 'Entertainment', 'Toegepast theater', 'Taal', 'Lezing / debat', 'Divers', 'Evenement', 'Event', 'Carnaval', 'Echt Bosch', 'circus & variété']) {
+    assert.equal(normalizeGenre(label), 'Overig', label);
+    assert.ok(isBekendGenre(label), label);
+  }
+  // Bestaande labels blijven gelijk.
+  assert.equal(normalizeGenre('Theatercollege'), 'Overig');
+  assert.equal(normalizeGenre('Met thema Carnaval'), 'Overig');
+  assert.equal(isBekendGenre('Met thema Carnaval'), false);
+});

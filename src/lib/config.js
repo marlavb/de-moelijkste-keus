@@ -585,4 +585,211 @@ export const THEATERS = [
     agendaUrl: 'https://www.cpunt.nl/agenda',
     podiumpas: false,
   },
+  // Noord-Brabant (okt 2026; inventarisatie in debug/noord-brabant-
+  // inventarisatie.md, akkoord 6 okt 2026). Bewust achteraan: valt het
+  // totaalbudget van de run op, dan vallen alleen deze theaters terug op hun
+  // vorige data. Namen letterlijk zoals op podiumpas.nl/waar-te-besteden.
+  {
+    id: 'kattendans',
+    naam: 'Kattendans',
+    stad: 'Bergeijk',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://kattendans.nl',
+    agendaUrl: 'https://kattendans.nl/programma/',
+    // Per voorstelling: niet boven € 50, niet bij film, "Uit de regio" en
+    // gratis voorstellingen (zie src/sites/kattendans.js).
+    podiumpas: true,
+    // Bron: https://kattendans.nl/podiumpas/ (6 okt 2026); telefoonnummer uit
+    // de voettekst van die pagina.
+    podiumpasReserveren: {
+      online: true,
+      telefoon: '0497-571318',
+      toelichting: 'Online met het prijstype "podiumpas" (pasnummer invullen), of telefonisch, vanaf 30 dagen voor de voorstelling. Kaartje tot een half uur voor aanvang ophalen bij de theaterkassa.',
+    },
+  },
+  {
+    id: 'paradox',
+    naam: 'Paradox',
+    stad: 'Tilburg',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.paradoxtilburg.nl',
+    agendaUrl: 'https://www.paradoxtilburg.nl/agenda/',
+    // Alle concerten, behalve gratis toegankelijke avonden (zie
+    // src/sites/paradox.js).
+    podiumpas: true,
+    // Bron: https://www.paradoxtilburg.nl/over-paradox/tickets-kortingspassen/
+    // (6 okt 2026): "Voor een entreeticket stuur je een mail naar …". Het
+    // adres is daar afgeschermd; de eigen RSS-feed (/upcoming_events, 6 okt
+    // 2026) noemt voor dezelfde pasregeling info@paradoxtilburg.nl.
+    podiumpasReserveren: {
+      email: 'info@paradoxtilburg.nl',
+      toelichting: 'Je krijgt per mail een entreeticket met barcode; alleen de pas tonen bij de kassa is niet genoeg.',
+    },
+  },
+  // De Link en S.M.E.T. staan op podiumpas.nl als losse locaties; beide
+  // spelen in Het Cenakel en staan in dezelfde agenda (src/sites/cenakel.js,
+  // één scrape per run). Weergavenamen zoals op podiumpas.nl.
+  {
+    id: 'delink',
+    naam: 'De Link',
+    stad: 'Tilburg',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.cenakel.nl',
+    agendaUrl: 'https://www.cenakel.nl/agenda',
+    // Bron: https://delink.nl/tickets-en-kortingspassen/ (6 okt 2026):
+    // "Podiumpashouders bezoeken alle concerten van De Link in het Cenakel
+    // gratis." Alleen de concerten in Het Cenakel (de scraper leest alleen
+    // die agenda).
+    podiumpas: true,
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Reserveer vanaf 30 dagen voor het concert online een zitplaats: kies op de concertpagina bij De Link "Ik heb een Podiumpas". Je krijgt een ticket van € 0; laat ticket én pas zien bij de kassa.',
+    },
+  },
+  {
+    id: 'smet',
+    naam: 'S.M.E.T.',
+    stad: 'Tilburg',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.cenakel.nl',
+    agendaUrl: 'https://www.cenakel.nl/agenda',
+    // Bron: https://podiumpas.nl/waar-te-besteden (6 okt 2026): S.M.E.T.
+    // staat erop, met een link naar de agenda van Het Cenakel. Eigen
+    // voorwaarden niet gevonden (akkoord 6 okt 2026: Podiumpas volgens
+    // podiumpas.nl; voorwaarden worden nagevraagd).
+    podiumpas: true,
+    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+  },
+  {
+    id: 'markant',
+    naam: 'Markant Theater Maashorst',
+    stad: 'Uden',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.markantmaashorst.nl',
+    agendaUrl: 'https://www.markantmaashorst.nl/nl/agenda',
+    // Per voorstelling: niet boven € 50 en niet bij verkoop door derden (zie
+    // src/sites/markant.js). Achter BunnyCDN (crawl-delay 5 s): bij een
+    // wachtrij of controlepagina pauzeren, niet omzeilen.
+    podiumpas: true,
+    // Bron: https://www.markantmaashorst.nl/nl/podiumpas-qz2t (6 okt 2026).
+    podiumpasReserveren: {
+      telefoon: '0413 230 230',
+      toelichting: 'Bel het Informatiepunt (optie 1) vanaf 30 dagen voor de voorstelling; online reserveren is niet mogelijk. Ticket ophalen en pas laten scannen bij het Informatiepunt, vanaf een uur voor aanvang.',
+    },
+  },
+  {
+    id: 'speelhuis',
+    naam: 'Het Speelhuis',
+    stad: 'Helmond',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://theaterspeelhuis.nl',
+    agendaUrl: 'https://theaterspeelhuis.nl/programma',
+    // Bron: https://podiumpas.nl/waar-te-besteden (6 okt 2026). De eigen
+    // pagina https://theaterspeelhuis.nl/podiumpas (6 okt 2026) noemt geen
+    // voorwaarden: Podiumpas bij alle voorstellingen behalve gratis (zie
+    // src/sites/speelhuis.js); voorwaarden worden nagevraagd.
+    podiumpas: true,
+    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+  },
+  {
+    id: 'schouwburgconcertzaal',
+    naam: 'Schouwburg Concertzaal',
+    stad: 'Tilburg',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.schouwburgconcertzaaltilburg.nl',
+    agendaUrl: 'https://www.schouwburgconcertzaaltilburg.nl/nl/agenda',
+    // Bron: https://podiumpas.nl/waar-te-besteden (6 okt 2026); de eigen site
+    // noemt de pas niet (6 okt 2026). Podiumpas bij alle voorstellingen
+    // behalve gratis (zie src/sites/schouwburgconcertzaal.js); voorwaarden
+    // worden nagevraagd.
+    podiumpas: true,
+    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+  },
+  {
+    id: 'willemtwee',
+    naam: 'Toonzaal Willem Twee',
+    stad: "'s-Hertogenbosch",
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.willem-twee.nl',
+    agendaUrl: 'https://www.willem-twee.nl/agenda/toonzaal',
+    // Per concert: de tag "Podiumpas" op de site (zie src/sites/willemtwee.js).
+    podiumpas: true,
+    // Bron: https://www.willem-twee.nl/podiumpas (6 okt 2026).
+    podiumpasReserveren: {
+      email: 'podiumpas@willem-twee.nl',
+      toelichting: 'Mail vanaf 15 dagen voor het concert welk concert je wilt bezoeken; er zijn 5 Podiumpasplaatsen per concert. Laat op de dag zelf je pas zien bij de kassa (open vanaf een uur voor aanvang).',
+    },
+  },
+  {
+    id: 'theateraandeparade',
+    naam: 'Theater aan de Parade',
+    stad: "'s-Hertogenbosch",
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.theateraandeparade.nl',
+    agendaUrl: 'https://www.theateraandeparade.nl/nl/programma',
+    // Per speeldatum: het prijstype "Podiumpas" in de eigen data van de site
+    // (zie src/sites/theateraandeparade.js).
+    podiumpas: true,
+    // Bron: https://www.theateraandeparade.nl/nl/podiumpas (6 okt 2026);
+    // telefoonnummer van Tickets & Service uit de voettekst van die pagina.
+    podiumpasReserveren: {
+      online: true,
+      telefoon: '073 680 9809',
+      toelichting: 'Online reserveren kan vanaf één maand voor de voorstelling, als je bent ingelogd en je Podiumpas hebt laten registreren; je tickets staan daarna in je mail of account. Eén ticket per pas.',
+    },
+  },
+  {
+    id: 'denieuwevorst',
+    naam: 'Theater De Nieuwe Vorst',
+    stad: 'Tilburg',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://denieuwevorst.nl',
+    agendaUrl: 'https://denieuwevorst.nl/programma',
+    podiumpas: true,
+    // Bron: https://denieuwevorst.nl/bezoekinfo/ticketinfo (6 okt 2026).
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Online met de kaartsoort "Podiumpas" (pasnummer invullen), vanaf 30 dagen voor de voorstelling. Neem je pas mee naar de kassa; reserveringen blijven tot 15 minuten voor aanvang geldig.',
+    },
+  },
+  {
+    id: 'hofnar',
+    naam: 'Theater de Hofnar',
+    stad: 'Valkenswaard',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.hofnar.nl',
+    agendaUrl: 'https://www.hofnar.nl/theater/',
+    // ~120 verzoeken per run (1 overzicht + 1 pagina per productie, min. 1 s
+    // pauze), zie src/sites/hofnar.js: ~3 min, ruim onder dit budget.
+    budgetMinuten: 8,
+    // Per voorstelling: niet bij Yes Jazz, Tonpraoten en kinderbuffetten
+    // (zie src/sites/hofnar.js).
+    podiumpas: true,
+    // Bron: https://www.hofnar.nl/podiumpas/ (6 okt 2026).
+    podiumpasReserveren: {
+      telefoon: '040-207 40 10',
+      toelichting: 'Uitsluitend telefonisch via de kaartverkoopbalie, vanaf 30 dagen voor de voorstelling; online reserveren is niet mogelijk. Kaartje tot een half uur voor aanvang ophalen bij de balie.',
+    },
+  },
+  {
+    id: 'parktheater',
+    naam: 'Parktheater Eindhoven',
+    stad: 'Eindhoven',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.parktheater.nl',
+    agendaUrl: 'https://www.parktheater.nl/programma',
+    // Per voorstelling: alleen in het Parktheater en Pand P, niet boven € 50
+    // en niet bij de genoemde uitzonderingen (zie src/sites/parktheater.js).
+    podiumpas: true,
+    // Gepauzeerd: bij de verkenning (6 okt 2026) kwamen we bij ons 5e
+    // verzoek in 7 minuten in de BunnyCDN-wachtrij (/csq/queue). Niet
+    // omzeilen; geen verzoeken tot het theater antwoordt (gemaild). De
+    // scraper staat klaar. Terugzetten = deze regel weghalen.
+    gepauzeerd: { sinds: '2026-10-06', reden: 'BunnyCDN-wachtrij (/csq/queue)' },
+    // Bron: https://www.parktheater.nl/podiumpas-q3yt (6 okt 2026).
+    podiumpasReserveren: {
+      telefoon: '040-211 11 22',
+      toelichting: 'Telefonisch via de kaartverkoopbalie, vanaf 30 dagen voor de voorstelling; online reserveren is nog niet mogelijk. Pas laten scannen bij de avondkassa (open vanaf een uur voor aanvang).',
+    },
+  },
 ];

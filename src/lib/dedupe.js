@@ -56,3 +56,43 @@ export function ontdubbelShows(shows) {
   }
   return { shows: [...perSleutel.values()], verwijderdPerTheater };
 }
+
+/**
+ * Dezelfde speeldatum bij twee theaters (okt 2026, Noord-Brabant): de
+ * concerten van Willem Twee in de Toonzaal staan ook op de agenda van
+ * Theater aan de Parade (Vicky Chow & Mivos Quartet, 8 okt 2026: "Bestel
+ * via Willem Twee"), een voorstelling op locatie De Nieuwe Vorst ook bij
+ * Schouwburg Concertzaal, en een concert "via Schouwburg Concertzaal" bij
+ * Paradox. Eén bron per speeldatum: het eerste theater van elk paar gaat
+ * voor; bij het tweede valt een voorstelling met dezelfde datum, tijd en
+ * genormaliseerde titel weg. De scrapers filteren dit al zelf (op locatie of
+ * knop); dit is het vangnet, zoals na het incident Amstelveen/De Landing.
+ */
+export const VOORRANG_PAREN = [
+  ['willemtwee', 'theateraandeparade'],
+  ['denieuwevorst', 'schouwburgconcertzaal'],
+  ['schouwburgconcertzaal', 'paradox'],
+];
+
+const zelfdeSpeeldatum = (show) => [show.datum, show.tijd ?? '', normalizeTitle(show.titel ?? '')].join('|');
+
+/** Geeft { shows, verwijderd: [{ theaterId, voorrang, titel, datum, tijd }] }. */
+export function ontdubbelTussenTheaters(shows, paren = VOORRANG_PAREN) {
+  const perTheater = new Map();
+  for (const s of shows) {
+    if (!perTheater.has(s.theaterId)) perTheater.set(s.theaterId, new Set());
+    perTheater.get(s.theaterId).add(zelfdeSpeeldatum(s));
+  }
+  const verwijderd = [];
+  const uit = shows.filter((s) => {
+    for (const [voorrang, ander] of paren) {
+      if (s.theaterId !== ander) continue;
+      if (perTheater.get(voorrang)?.has(zelfdeSpeeldatum(s))) {
+        verwijderd.push({ theaterId: s.theaterId, voorrang, titel: s.titel, datum: s.datum, tijd: s.tijd ?? null });
+        return false;
+      }
+    }
+    return true;
+  });
+  return { shows: uit, verwijderd };
+}

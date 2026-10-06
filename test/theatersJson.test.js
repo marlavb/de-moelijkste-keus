@@ -40,3 +40,16 @@ test('elk theater in config.js heeft een provincie (voor de latere provinciefilt
   const geldig = new Set(['Noord-Holland', 'Zuid-Holland', 'Utrecht', 'Flevoland', 'Limburg', 'Noord-Brabant', 'Gelderland', 'Overijssel', 'Drenthe', 'Groningen', 'Friesland', 'Zeeland']);
   for (const t of THEATERS) assert.ok(geldig.has(t.provincie), `${t.id}: provincie "${t.provincie}"`);
 });
+
+test('de app deelt elke stad uit config.js in onder dezelfde provincie (PROVINCE_BY_CITY, PROVINCE_ORDER)', async () => {
+  const { THEATERS } = await import('../src/lib/config.js');
+  const { readFile } = await import('node:fs/promises');
+  const app = await readFile(new URL('../public/js/app.js', import.meta.url), 'utf-8');
+  const blok = app.match(/const PROVINCE_BY_CITY = \{([\s\S]*?)\n\};/)[1];
+  const perStad = Object.fromEntries([...blok.matchAll(/^\s*(?:'([^']+)'|"([^"]+)"|([\w-]+)):\s*'([^']+)'/gm)].map((m) => [m[1] ?? m[2] ?? m[3], m[4]]));
+  const volgorde = JSON.parse(app.match(/const PROVINCE_ORDER = (\[[^\]]*\]);/)[1].replace(/'/g, '"'));
+  for (const t of THEATERS) {
+    assert.equal(perStad[t.stad], t.provincie, `${t.id}: ${t.stad}`);
+    assert.ok(volgorde.includes(t.provincie), `${t.provincie} staat niet in PROVINCE_ORDER`);
+  }
+});

@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **46** (42 ok, 1 leeg, 3 gepauzeerd)
+- Theaters: **58** (42 ok, 1 leeg, 4 gepauzeerd, 11 onbekend)
 - Voorstellingen (titel per theater): **4498**
 - Speeldata: **6891**
 - Laatste refresh: **6 oktober 2026, 13:03** (Amsterdamse tijd)
@@ -58,7 +58,12 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   en schrijft `public/data/shows.json`, `scrape-status.json` en
   `theaters.json`. Faalt een theater, dan valt het terug op de vorige data van
   dat theater. Theaters, steden, provincies en Podiumpas staan in
-  `src/lib/config.js` (met bron en datum).
+  `src/lib/config.js` (met bron en datum); een theater dat ons weert staat daar
+  op `gepauzeerd` en krijgt geen enkel verzoek. Gedeelde modules per platform:
+  `peppered.js` (Peppered), `wpTheatre.js` (Theater for WordPress) en
+  `cre8ion.js` (The Cre8ion.Lab). Dubbele speeldata gaan eruit binnen een
+  theater en tussen vaste paren theaters met één agenda-overlap
+  (`dedupe.js`).
 - **Nachtelijke run**: `.github/workflows/refresh-data.yml` scrapet, commit de
   data naar `main` en start de deploy. De Cloud Function `startNachtrun` start
   hem elke dag om 05:00 (Amsterdam); de cron van GitHub (03:17 UTC) blijft als
@@ -132,7 +137,7 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v36`
+Service worker: `podiumagenda-v37`
 <!-- AUTO:sw:end -->
 
 ### Theaters
@@ -214,4 +219,21 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 |---|---|---|---|
 | DOK6 | Panningen | deels | ok |
 | De Maaspoort Theater & Events | Venlo | deels | ok |
+
+**Noord-Brabant** (12)
+
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| Theater aan de Parade | 's-Hertogenbosch | – | onbekend |
+| Toonzaal Willem Twee | 's-Hertogenbosch | – | onbekend |
+| Kattendans | Bergeijk | – | onbekend |
+| Parktheater Eindhoven | Eindhoven | – | gepauzeerd sinds 2026-10-06 |
+| Het Speelhuis | Helmond | – | onbekend |
+| De Link | Tilburg | – | onbekend |
+| Paradox | Tilburg | – | onbekend |
+| S.M.E.T. | Tilburg | – | onbekend |
+| Schouwburg Concertzaal | Tilburg | – | onbekend |
+| Theater De Nieuwe Vorst | Tilburg | – | onbekend |
+| Markant Theater Maashorst | Uden | – | onbekend |
+| Theater de Hofnar | Valkenswaard | – | onbekend |
 <!-- AUTO:theaters:end -->

@@ -7,6 +7,7 @@
 
 import { createDutchAbbrevDayParser } from './normalize.js';
 import { vervallenStatus, isVervallen } from './beschikbaarheid.js';
+import { sleep } from './politeness.js';
 
 const DEFAULT_MAX_LISTING_PAGES = 40;
 
@@ -33,6 +34,11 @@ const MONTHS = { jan: 1, feb: 2, mrt: 3, maa: 3, apr: 4, mei: 5, jun: 6, jul: 7,
  * pagina. Pagina 1 niet te laden → exception (het vangnet valt terug);
  * een latere pagina → loggen en door. `leegIsFout`: gooi als pagina 1 geen
  * items heeft (site veranderd of geblokkeerd). Geeft alleen nieuwe items.
+ *
+ * `herpogingPauzeMs`: dan krijgt elke pagina één herpoging, na die pauze en
+ * opnieuw via waitForTurn() (zoals bij ITA). Mislukt ook die, dan gooit het
+ * door en valt het theater terug op de vorige run (vangnet), in plaats van
+ * die pagina stil over te slaan.
  */
 export async function pagineerListing({
   page,
@@ -49,6 +55,8 @@ export async function pagineerListing({
   leesParameter = true,
   leegIsFout = false,
   label = 'items',
+  herpogingPauzeMs = null,
+  signal,
 }) {
   const items = [];
   const gezien = new Set();
@@ -64,21 +72,38 @@ export async function pagineerListing({
       break;
     }
 
-    await waitForTurn();
     let pageItems;
-    try {
-      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      if (pageNum === 1 && leesParameter) {
-        pageParam =
-          (await page.evaluate(() => document.querySelector('select.page-selection')?.getAttribute('name'))) || pageParam;
-        log(`paginaparameter: ${pageParam}`);
+    let overslaan = false;
+    for (let poging = 1; ; poging++) {
+      await waitForTurn();
+      try {
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        if (pageNum === 1 && leesParameter) {
+          pageParam =
+            (await page.evaluate(() => document.querySelector('select.page-selection')?.getAttribute('name'))) || pageParam;
+          log(`paginaparameter: ${pageParam}`);
+        }
+        pageItems = await page.evaluate(extract);
+        break;
+      } catch (err) {
+        if (err?.name === 'ScrapeTimeoutError' || signal?.aborted) throw err;
+        if (herpogingPauzeMs != null) {
+          const melding = `listingpagina ${pageNum} (${url}), poging ${poging}: ${err.message.split('\n')[0]}`;
+          if (poging >= 2) {
+            err.message = melding;
+            throw err;
+          }
+          log(`${melding} — nog één poging over ${herpogingPauzeMs / 1000} s.`);
+          await sleep(herpogingPauzeMs, signal);
+          continue;
+        }
+        if (pageNum === 1) throw err;
+        log(`kon listingpagina ${pageNum} niet laden: ${err.message} — probeer volgende pagina.`);
+        overslaan = true;
+        break;
       }
-      pageItems = await page.evaluate(extract);
-    } catch (err) {
-      if (pageNum === 1) throw err;
-      log(`kon listingpagina ${pageNum} niet laden: ${err.message} — probeer volgende pagina.`);
-      continue;
     }
+    if (overslaan) continue;
 
     if (pageNum === 1 && leegIsFout && pageItems.length === 0) {
       throw new Error(`geen agendakaarten op ${page.url()} — site veranderd of geblokkeerd?`);
@@ -342,4 +367,10 @@ export function createGroupScraper(scrapeAll) {
     const shows = await pending;
     return shows.filter((show) => show.theaterId === ctx.theater.id);
   };
+}
+
+/** Laagste €-bedrag in een prijstekst ("Rang 1 Normaal € 39,-", "€ 15,-–€ 20,-"), of null. */
+export function laagstePrijs(tekst) {
+  const bedragen = [...String(tekst ?? '').matchAll(/€\s*(\d+)(?:[,.](\d{2}|-))?/g)].map((m) => Number(`${m[1]}.${/\d{2}/.test(m[2] ?? '') ? m[2] : '00'}`));
+  return bedragen.length ? Math.min(...bedragen) : null;
 }

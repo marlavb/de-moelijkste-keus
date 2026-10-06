@@ -1,7 +1,7 @@
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre, isBekendGenre } from '../lib/genre.js';
 import { pasTitelConventieToe, isWervend } from '../lib/titels.js';
-import { vervallenStatus } from '../lib/beschikbaarheid.js';
+import { leesStandaardEvents, classifyWpBeschikbaarheid, prijsUitTekst } from '../lib/wpTheatre.js';
 import { blokkeerZwareBronnen } from '../lib/zwareBronnen.js';
 import { gaNaar } from '../lib/diagnose.js';
 
@@ -15,18 +15,6 @@ const AGENDA_PATH = '/theater/programma/';
 // € 0. De class is_free telt niet: die staat ook bij voorstellingen van
 // € 16,50 (waarschijnlijk "kinderen gratis").
 const PODIUMPAS_UITGESLOTEN_GENRES = new Set(['uit-de-regio', 'events', 'educatie']);
-
-// Tekst en class van de ticketknop: "TICKETS", "laatste tickets"
-// (laatstekaarten) = beschikbaar, "Wachtlijst" (waitinglist).
-function classifyBeschikbaarheid(tekst, klasse) {
-  const vervallen = vervallenStatus(tekst);
-  if (vervallen) return vervallen;
-  const t = `${tekst ?? ''} ${klasse ?? ''}`.toLowerCase();
-  if (t.includes('uitverkocht') || t.includes('soldout') || t.includes('sold-out')) return 'uitverkocht';
-  if (t.includes('wachtlijst') || t.includes('waitinglist')) return 'wachtlijst';
-  if (t.includes('ticket') || t.includes('laatstekaarten') || t.includes('bestel')) return 'beschikbaar';
-  return 'onbekend';
-}
 
 /**
  * Haalt de agenda van DOK6 Theater (Panningen) op.
@@ -53,25 +41,7 @@ export async function scrapeDok6({ page, theater, robots, waitForTurn, log, warn
   await waitForTurn();
   await gaNaar(page, theater.agendaUrl, { timeout: 45000 });
 
-  const items = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('div.wp_theatre_event')).map((el) => {
-      const tekst = (sel) => el.querySelector(sel)?.textContent.replace(/\s+/g, ' ').trim() || null;
-      const knop = el.querySelector('.wp_theatre_event_tickets_url');
-      return {
-        klassen: el.className,
-        titel: tekst('.wp_theatre_event_title'),
-        ondertitel: tekst('.wp_theatre_event_subtitle'),
-        href: el.querySelector('.wp_theatre_event_title a')?.getAttribute('href') ?? null,
-        categorieen: Array.from(el.querySelectorAll('.wpt_production_category')).map((li) => li.textContent.trim()),
-        datum: tekst('.startdate_date'),
-        tijd: tekst('.wp_theatre_event_starttime') ?? tekst('.startdate_time'),
-        knopTekst: knop?.textContent.trim() ?? tekst('.wp_theatre_event_tickets'),
-        knopKlasse: knop?.className ?? null,
-        ticketUrl: knop?.getAttribute('href') ?? null,
-        prijs: tekst('.wp_theatre_event_prices'),
-      };
-    })
-  );
+  const items = await leesStandaardEvents(page);
   // Sanity check: een geldige programmapagina heeft speeldata.
   if (items.length === 0) throw new Error(`geen voorstellingen (div.wp_theatre_event) op ${page.url()} — site veranderd of geblokkeerd?`);
 
@@ -106,7 +76,7 @@ export async function scrapeDok6({ page, theater, robots, waitForTurn, log, warn
     const tijd = extractTime(it.tijd);
     const genreRuw = it.categorieen[0] ?? null;
     if (genreRuw && !isBekendGenre(genreRuw)) onbekendeGenres[genreRuw] = (onbekendeGenres[genreRuw] ?? 0) + 1;
-    const prijs = it.prijs ? Number((it.prijs.match(/(\d+)(?:[,.](\d{2}))?/) ?? []).slice(1).join('.') || NaN) : null;
+    const prijs = prijsUitTekst(it.prijs);
     // € 0: geen reguliere voorstelling (tv-opname, prijsuitreiking, …): geen
     // Podiumpas, en de ondertitel is dan geen voorstellingsnaam ("De Cabaret
     // Club op z'n Limburgs" / "tv opnames"), dus niet omdraaien.
@@ -130,7 +100,7 @@ export async function scrapeDok6({ page, theater, robots, waitForTurn, log, warn
       tijd,
       genre: normalizeGenre(genreRuw),
       genreRuw: it.categorieen.join(', ') || null,
-      beschikbaarheid: classifyBeschikbaarheid(it.knopTekst, it.knopKlasse),
+      beschikbaarheid: classifyWpBeschikbaarheid(it.knopTekst, it.knopKlasse),
       beschrijving: ondertitelIsMaker ? null : it.ondertitel,
       maker: ondertitelIsMaker ? it.ondertitel : null,
       prijs: Number.isFinite(prijs) ? prijs : null,

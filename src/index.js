@@ -56,6 +56,17 @@ import { scrapeMaaspoort } from './sites/maaspoort.js';
 import { scrapeDok6 } from './sites/dok6.js';
 import { scrapeKennemerTheater } from './sites/kennemertheater.js';
 import { scrapeCpunt } from './sites/cpunt.js';
+import { scrapeKattendans } from './sites/kattendans.js';
+import { scrapeParadox } from './sites/paradox.js';
+import { scrapeCenakelGroep } from './sites/cenakel.js';
+import { scrapeMarkant } from './sites/markant.js';
+import { scrapeSpeelhuis } from './sites/speelhuis.js';
+import { scrapeSchouwburgConcertzaal } from './sites/schouwburgconcertzaal.js';
+import { scrapeWillemTwee } from './sites/willemtwee.js';
+import { scrapeTheaterAanDeParade } from './sites/theateraandeparade.js';
+import { scrapeDeNieuweVorst } from './sites/denieuwevorst.js';
+import { scrapeHofnar } from './sites/hofnar.js';
+import { scrapeParktheater } from './sites/parktheater.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -104,6 +115,18 @@ const SCRAPERS = {
   dok6: scrapeDok6,
   kennemertheater: scrapeKennemerTheater,
   cpunt: scrapeCpunt,
+  kattendans: scrapeKattendans,
+  paradox: scrapeParadox,
+  delink: scrapeCenakelGroep,
+  smet: scrapeCenakelGroep,
+  markant: scrapeMarkant,
+  speelhuis: scrapeSpeelhuis,
+  schouwburgconcertzaal: scrapeSchouwburgConcertzaal,
+  willemtwee: scrapeWillemTwee,
+  theateraandeparade: scrapeTheaterAanDeParade,
+  denieuwevorst: scrapeDeNieuweVorst,
+  hofnar: scrapeHofnar,
+  parktheater: scrapeParktheater,
 };
 
 // Welk bestand waarvoor dient:

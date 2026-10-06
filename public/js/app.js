@@ -160,6 +160,18 @@ const THEATER_INFO = {
 const THEATER_ZOEKALIASSEN = {
   ita: ['ita', 'internationaal theater amsterdam'],
   dok6: ['dok6 theater'],
+  kattendans: ['kattendans bergeijk'],
+  paradox: ['muziekpodium paradox', 'paradox tilburg'],
+  delink: ['nieuwe muziek tilburg', 'cenakel'],
+  smet: ['smet', 's.m.e.t.', 'kamermuziek tilburg', 'cenakel'],
+  markant: ['markant', 'maashorst', 'markant uden'],
+  speelhuis: ['speelhuis helmond'],
+  schouwburgconcertzaal: ['schouwburg tilburg', 'concertzaal tilburg', 'theaters tilburg'],
+  willemtwee: ['willem twee', 'w2', 'toonzaal', 'den bosch'],
+  theateraandeparade: ['parade', 'theater aan de parade', 'den bosch'],
+  denieuwevorst: ['nieuwe vorst', 'de nieuwe vorst'],
+  hofnar: ['hofnar', 'hofnar valkenswaard'],
+  parktheater: ['parktheater', 'pand p'],
 };
 
 const BESCHIKBAARHEID_LABELS = {
@@ -207,7 +219,7 @@ const STORAGE_KEYS = {
 // provincie-koppen; een stad die niet in de map staat belandt in de
 // PROVINCE_FALLBACK-sectie zodat een nieuwe stad nooit stilzwijgend
 // verdwijnt.
-const PROVINCE_ORDER = ['Noord-Holland', 'Zuid-Holland', 'Utrecht', 'Flevoland', 'Limburg'];
+const PROVINCE_ORDER = ['Noord-Holland', 'Zuid-Holland', 'Utrecht', 'Flevoland', 'Limburg', 'Noord-Brabant'];
 const PROVINCE_FALLBACK = 'Overig';
 const PROVINCE_BY_CITY = {
   Amsterdam: 'Noord-Holland',
@@ -232,6 +244,13 @@ const PROVINCE_BY_CITY = {
   Hoofddorp: 'Noord-Holland',
   Venlo: 'Limburg',
   Panningen: 'Limburg',
+  "'s-Hertogenbosch": 'Noord-Brabant',
+  Eindhoven: 'Noord-Brabant',
+  Helmond: 'Noord-Brabant',
+  Tilburg: 'Noord-Brabant',
+  Uden: 'Noord-Brabant',
+  Valkenswaard: 'Noord-Brabant',
+  Bergeijk: 'Noord-Brabant',
 };
 
 // Desktop-sidebar accordeon-secties (Stad/Theater/Genre) — standaard allemaal
