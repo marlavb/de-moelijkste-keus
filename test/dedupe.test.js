@@ -103,3 +103,31 @@ test('afgelast en gewoon op hetzelfde tijdstip: geen dubbeling, plan koppelt aan
   assert.equal(koppel(plan, indexeerShows([afgelast])).show, afgelast);
   assert.equal(koppel(plan, indexeerShows([afgelast])).soort, 'exact');
 });
+
+test('tussen theaters: Willem Twee gaat voor Parade, De Nieuwe Vorst voor Schouwburg Concertzaal (okt 2026)', async () => {
+  const { ontdubbelTussenTheaters } = await import('../src/lib/dedupe.js');
+  const s = (theaterId, titel, datum = '2026-10-11', tijd = '15:00') => ({ theaterId, titel, datum, tijd });
+  const shows = [
+    s('willemtwee', 'Yogaconcert'),
+    s('theateraandeparade', 'Yogaconcert'), // zelfde titel, datum en tijd
+    s('theateraandeparade', 'Yogaconcert', '2026-10-11', '20:00'), // ander tijdstip: blijft
+    s('theateraandeparade', 'René van Meurs'),
+    s('denieuwevorst', 'So You Think You Know Dance', '2026-10-09', '19:30'),
+    s('schouwburgconcertzaal', 'So you think you know dance', '2026-10-09', '19:30'), // hoofdletters: zelfde
+    s('schouwburgconcertzaal', 'Eric Vloeimans Takes On Licks & Brains', '2026-10-15', '20:00'),
+    s('paradox', 'Eric Vloeimans Takes On Licks & Brains', '2026-10-15', '20:00'),
+    // Geen paar: twee theaters met dezelfde voorstelling op hetzelfde tijdstip blijven allebei.
+    s('delamar', 'Titanique', '2026-11-01', '20:00'),
+    s('carre', 'Titanique', '2026-11-01', '20:00'),
+  ];
+  const { shows: uit, verwijderd } = ontdubbelTussenTheaters(shows);
+  assert.deepEqual(verwijderd.map((v) => `${v.theaterId}<${v.voorrang}:${v.titel}`), [
+    'theateraandeparade<willemtwee:Yogaconcert',
+    'schouwburgconcertzaal<denieuwevorst:So you think you know dance',
+    'paradox<schouwburgconcertzaal:Eric Vloeimans Takes On Licks & Brains',
+  ]);
+  assert.equal(uit.length, shows.length - 3);
+  assert.ok(uit.some((x) => x.theaterId === 'willemtwee' && x.titel === 'Yogaconcert'));
+  assert.ok(uit.some((x) => x.theaterId === 'theateraandeparade' && x.tijd === '20:00'));
+  assert.equal(uit.filter((x) => x.titel === 'Titanique').length, 2);
+});

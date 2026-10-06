@@ -63,6 +63,7 @@ import { scrapeMarkant } from './sites/markant.js';
 import { scrapeSpeelhuis } from './sites/speelhuis.js';
 import { scrapeSchouwburgConcertzaal } from './sites/schouwburgconcertzaal.js';
 import { scrapeWillemTwee } from './sites/willemtwee.js';
+import { scrapeTheaterAanDeParade } from './sites/theateraandeparade.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -119,6 +120,7 @@ const SCRAPERS = {
   speelhuis: scrapeSpeelhuis,
   schouwburgconcertzaal: scrapeSchouwburgConcertzaal,
   willemtwee: scrapeWillemTwee,
+  theateraandeparade: scrapeTheaterAanDeParade,
 };
 
 // Welk bestand waarvoor dient:

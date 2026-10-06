@@ -720,4 +720,22 @@ export const THEATERS = [
       toelichting: 'Mail vanaf 15 dagen voor het concert welk concert je wilt bezoeken; er zijn 5 Podiumpasplaatsen per concert. Laat op de dag zelf je pas zien bij de kassa (open vanaf een uur voor aanvang).',
     },
   },
+  {
+    id: 'theateraandeparade',
+    naam: 'Theater aan de Parade',
+    stad: "'s-Hertogenbosch",
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.theateraandeparade.nl',
+    agendaUrl: 'https://www.theateraandeparade.nl/nl/programma',
+    // Per speeldatum: het prijstype "Podiumpas" in de eigen data van de site
+    // (zie src/sites/theateraandeparade.js).
+    podiumpas: true,
+    // Bron: https://www.theateraandeparade.nl/nl/podiumpas (6 okt 2026);
+    // telefoonnummer van Tickets & Service uit de voettekst van die pagina.
+    podiumpasReserveren: {
+      online: true,
+      telefoon: '073 680 9809',
+      toelichting: 'Online reserveren kan vanaf één maand voor de voorstelling, als je bent ingelogd en je Podiumpas hebt laten registreren; je tickets staan daarna in je mail of account. Eén ticket per pas.',
+    },
+  },
 ];

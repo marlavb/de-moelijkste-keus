@@ -5,7 +5,7 @@
 // het met nep-scrapers te testen is (zie test/scrapeRun.test.js).
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { ontdubbelShows, dubbelSleutel } from './dedupe.js';
+import { ontdubbelShows, dubbelSleutel, ontdubbelTussenTheaters } from './dedupe.js';
 import { volgNavigatie, paginaDiagnose } from './diagnose.js';
 import { pasMeerderheidToe } from './weergaveMeerderheid.js';
 import { pasGenreMeerderheidToe } from './genreMeerderheid.js';
@@ -360,7 +360,10 @@ export async function runRefresh({
   // Vangnet: dubbelingen (theater, datum, tijd, titel) eruit — ook uit
   // teruggevallen en behouden data — en per theater tellen. Veel dubbelingen
   // betekent een kapotte scraper; dat moet opvallen (zie dedupe.js).
-  const { shows: ontdubbeld, verwijderdPerTheater } = ontdubbelShows(verseShows);
+  const { shows: binnenTheater, verwijderdPerTheater } = ontdubbelShows(verseShows);
+  // Dezelfde speeldatum bij twee theaters (vaste paren, zie dedupe.js): één bron.
+  const { shows: ontdubbeld, verwijderd: tussenTheaters } = ontdubbelTussenTheaters(binnenTheater);
+  for (const v of tussenTheaters) log(`[${v.theaterId}] "${v.titel}" ${v.datum} ${v.tijd ?? ''} staat ook bij ${v.voorrang} — daar gelaten.`);
   // Weergavetitel op meerderheid (weergaveMeerderheid.js); brontitel blijft
   // als titelBron.
   const { shows: metWeergave, gewijzigd: titelsOpMeerderheid } = pasMeerderheidToe(ontdubbeld);
@@ -373,6 +376,12 @@ export async function runRefresh({
     if (!st || theater.gepauzeerd) continue;
     st.dubbelingen = verwijderdPerTheater[theater.id] ?? 0;
     st.aantal -= st.dubbelingen;
+    // Bij een ander theater gelaten (ontdubbelTussenTheaters): ook niet meetellen.
+    const elders = tussenTheaters.filter((v) => v.theaterId === theater.id).length;
+    if (elders) {
+      st.bijAnderTheater = elders;
+      st.aantal -= elders;
+    }
   }
   for (const [theaterId, aantal] of Object.entries(verwijderdPerTheater)) {
     log(`[${theaterId}] ${aantal} dubbele voorstelling(en) weggehaald.`);

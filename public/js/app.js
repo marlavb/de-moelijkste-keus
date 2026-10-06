@@ -168,6 +168,7 @@ const THEATER_ZOEKALIASSEN = {
   speelhuis: ['speelhuis helmond'],
   schouwburgconcertzaal: ['schouwburg tilburg', 'concertzaal tilburg', 'theaters tilburg'],
   willemtwee: ['willem twee', 'w2', 'toonzaal', 'den bosch'],
+  theateraandeparade: ['parade', 'theater aan de parade', 'den bosch'],
 };
 
 const BESCHIKBAARHEID_LABELS = {

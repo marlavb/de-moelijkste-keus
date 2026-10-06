@@ -44,7 +44,7 @@ export function laagstePrijs(tekst) {
  * Weglaten: info-items zonder genre met alleen "Meer info" (Taxatiedag).
  */
 export async function scrapeMarkant({ page, theater, robots, waitForTurn, log, warn = log }) {
-  const zwaar = await blokkeerZwareBronnen(page, { ookScripts: true });
+  const zwaar = await blokkeerZwareBronnen(page, { ookScripts: true, ookOverig: true });
   const cards = await scrapePepperedListing({ page, theater, robots, waitForTurn, log, warn, agendaPath: AGENDA_PATH });
   const resolveDate = createRowDateResolver();
   const buildId = createIdBuilder();

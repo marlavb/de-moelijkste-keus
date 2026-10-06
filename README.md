@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **54** (42 ok, 1 leeg, 3 gepauzeerd, 8 onbekend)
+- Theaters: **55** (42 ok, 1 leeg, 3 gepauzeerd, 9 onbekend)
 - Voorstellingen (titel per theater): **4498**
 - Speeldata: **6891**
 - Laatste refresh: **6 oktober 2026, 13:03** (Amsterdamse tijd)
@@ -215,10 +215,11 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | DOK6 | Panningen | deels | ok |
 | De Maaspoort Theater & Events | Venlo | deels | ok |
 
-**Noord-Brabant** (8)
+**Noord-Brabant** (9)
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
+| Theater aan de Parade | 's-Hertogenbosch | – | onbekend |
 | Toonzaal Willem Twee | 's-Hertogenbosch | – | onbekend |
 | Kattendans | Bergeijk | – | onbekend |
 | Het Speelhuis | Helmond | – | onbekend |
