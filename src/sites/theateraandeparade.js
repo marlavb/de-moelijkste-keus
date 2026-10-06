@@ -5,6 +5,9 @@ import { blokkeerZwareBronnen } from '../lib/zwareBronnen.js';
 import { pagineerListing, classifyPepperedButton } from '../lib/peppered.js';
 
 const AGENDA_PATH = '/nl/programma';
+// Eén herpoging per pagina na een minuut (zoals ITA): in de testrun van 6
+// okt 2026 liep pagina 21 tegen de time-out en ontbraken ~10 speeldata.
+const HERPOGING_PAUZE_MS = 60000;
 
 // Podiumpas bij Theater aan de Parade (bron: https://www.theateraandeparade.nl/
 // nl/podiumpas, 6 okt 2026): voorstellingen met een eersterangs ticketprijs
@@ -82,7 +85,7 @@ export function normaalPrijs(item) {
  * "Noodzakelijk kwaad") → "Noodzakelijk kwaad – René van Meurs"; anders de
  * ondertitel als maker, tenzij wervend.
  */
-export async function scrapeTheaterAanDeParade({ page, theater, robots, waitForTurn, log, warn = log }) {
+export async function scrapeTheaterAanDeParade({ page, theater, robots, waitForTurn, log, warn = log, signal }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
     return [];
@@ -103,6 +106,8 @@ export async function scrapeTheaterAanDeParade({ page, theater, robots, waitForT
     leesParameter: false,
     leegIsFout: true,
     label: 'speeldata',
+    herpogingPauzeMs: HERPOGING_PAUZE_MS,
+    signal,
   });
 
   const buildId = createIdBuilder();

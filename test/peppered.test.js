@@ -171,6 +171,48 @@ test('pagineerListing: lege pagina 1 met leegIsFout → exception; eigen paramet
   assert.equal(page.bezocht[1], 'https://t.test/agenda?sf_paged=2');
 });
 
+// Pagina 2 faalt de eerste `fouten` keer met een time-out.
+function haperendePagina(fouten) {
+  const page = nepPagina({ paginas: (url) => (url.includes('page=2') ? kaarten(3, 10) : url.includes('page=') ? [] : kaarten(3)) });
+  const goto = page.goto;
+  let mislukt = 0;
+  page.goto = async (url) => {
+    await goto(url);
+    if (url.includes('page=2') && mislukt < fouten) {
+      mislukt++;
+      throw new Error('page.goto: Timeout 30000ms exceeded.\nCall log: …');
+    }
+  };
+  return page;
+}
+
+test('pagineerListing: zonder herpoging wordt een mislukte pagina overgeslagen', async () => {
+  const { items, logs } = await pagineer(haperendePagina(1), { leesParameter: false });
+  assert.equal(items.length, 3);
+  assert.ok(logs.some((l) => /kon listingpagina 2 niet laden/.test(l)));
+});
+
+test('pagineerListing: herpoging na een pauze, via waitForTurn', async () => {
+  const page = haperendePagina(1);
+  let beurten = 0;
+  const { items, logs } = await pagineer(page, { leesParameter: false, herpogingPauzeMs: 1, waitForTurn: async () => void beurten++ });
+  assert.equal(items.length, 6);
+  assert.deepEqual(page.bezocht.filter((u) => u.includes('page=2')).length, 2);
+  assert.equal(beurten, page.bezocht.length);
+  assert.ok(logs.some((l) => /listingpagina 2 .*poging 1: page\.goto: Timeout 30000ms exceeded\. — nog één poging/.test(l)));
+});
+
+test('pagineerListing: tweede mislukking met herpoging → exception (vangnet), ook bij de time-out van de scraper', async () => {
+  await assert.rejects(pagineer(haperendePagina(2), { leesParameter: false, herpogingPauzeMs: 1 }), /listingpagina 2 .*poging 2: page\.goto: Timeout/);
+  const page = haperendePagina(1);
+  page.goto = async () => {
+    const err = new Error('scraper duurt te lang');
+    err.name = 'ScrapeTimeoutError';
+    throw err;
+  };
+  await assert.rejects(pagineer(page, { leesParameter: false, herpogingPauzeMs: 1 }), { name: 'ScrapeTimeoutError' });
+});
+
 test('dedupeShows: afgelaste en gewone rij op hetzelfde tijdstip blijven allebei', () => {
   const rij = { id: 'hnt-a', theaterId: 'hnt', titel: 'A', datum: '2026-10-01', tijd: '20:00', beschikbaarheid: 'beschikbaar' };
   const out = dedupeShows([{ ...rij, id: 'hnt-a-2', beschikbaarheid: 'afgelast' }, rij]);
