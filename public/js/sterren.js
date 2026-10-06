@@ -1,6 +1,6 @@
 // Sterrencomponent voor de beoordeling van een gezien voorstelling (1 okt
-// 2026): 5 sterren, halve stappen. Eén herbruikbaar onderdeel voor Profiel,
-// het detailscherm en "Ben je geweest?".
+// 2026): 5 sterren, halve stappen. Eén herbruikbaar onderdeel voor Profiel
+// en het detailscherm.
 //
 // - Tik op de linkerhelft van een ster = halve ster, rechterhelft = hele;
 //   tik op de huidige waarde = wissen. Minimum 1 (de linkerhelft van de

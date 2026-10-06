@@ -9,8 +9,8 @@
 // Het item is een momentopname: verdwijnt of verschuift de voorstelling in
 // de agenda, dan blijft het plan staan zoals je het maakte (zie koppel()).
 // Samenvoegen: per sleutel wint de laatste actie (plannen, status wisselen
-// of uit de planning halen). Voorbije plannen gaan naar Gezien of komen in
-// "Ben je geweest?" (zie gezien.js).
+// of uit de planning halen). Voorbije plannen gaan na de speeldag vanzelf
+// naar Gezien, behalve afgelaste en verplaatste (zie gezien.js).
 // `vervallen` ('afgelast'/'verplaatst', sinds 30 sep 2026): gezet zolang de
 // voorstelling nog in de agenda staat (markeerVervallen); na de speeldatum
 // is hij uit de data verdwenen en weten we het anders niet meer. Het is geen

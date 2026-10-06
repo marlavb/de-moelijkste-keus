@@ -104,8 +104,6 @@ import {
   haalUitGezien,
   gezienSleutels as gezienSleutelsVan,
   verwerkVoorbijePlannen,
-  vragenOver,
-  beantwoord,
   laatsteBezoek,
   sorteerGezien,
   isVoorbij,
@@ -440,9 +438,6 @@ const els = {
   favoritesEmpty: document.getElementById('favoritesEmpty'),
   // Gezien (30 sep 2026). Kan ontbreken bij een oudere index.html naast een
   // nieuwere app.js (na een deploy): overal met ?. gebruiken.
-  vraagSection: document.getElementById('vraagSection'),
-  vraagList: document.getElementById('vraagList'),
-  vraagCount: document.getElementById('vraagCount'),
   gezienList: document.getElementById('gezienList'),
   gezienEmpty: document.getElementById('gezienEmpty'),
   gezienCount: document.getElementById('gezienCount'),
@@ -1190,8 +1185,8 @@ function syncProfielForCurrentUser() {
   planKopie();
 }
 
-// Voorbije plannen verwerken (zie gezien.js): kaarten → Gezien, afgelast →
-// weg. Na elke laadronde; idempotent, dus twee keer (of op twee apparaten)
+// Voorbije plannen verwerken (zie gezien.js): na de speeldag naar Gezien,
+// afgelast of verplaatst → weg. Na elke laadronde; idempotent, dus twee keer (of op twee apparaten)
 // kan geen kwaad. Zonder melding: dit gebeurt vanzelf.
 function verwerkPlannen(showIndex = indexeerShows(state.shows)) {
   const r = verwerkVoorbijePlannen(
@@ -1460,7 +1455,7 @@ function renderPlanControls(show) {
   els.detailPlanConflict.hidden = anderen.length === 0;
 }
 
-// ---------- Gezien en "Ben je geweest?" in Profiel ----------
+// ---------- Gezien in Profiel ----------
 
 // Nieuwe stand (planning, Gezien, watchlist) overnemen en alleen bewaren
 // wat veranderd is.
@@ -1540,112 +1535,6 @@ function gezienGenre(item, liveShow) {
   if (liveShow) return getGenreBucket(liveShow);
   const b = [...(item.bezoeken ?? [])].sort((x, y) => `${y.datum}`.localeCompare(`${x.datum}`)).find((x) => x.genre);
   return b?.genre ?? null;
-}
-
-// Sleutel van de voorstelling waarvoor net "Ja" is gezegd: dan staat in het
-// blok "Ben je geweest?" de vraag "Hoe vond je het?" met sterren en "Later".
-let beoordeelNa = null;
-
-function renderBeoordeelVraag() {
-  const item = beoordeelNa && (state.gezien?.gezien ?? []).find((i) => i.sleutel === beoordeelNa);
-  if (!item) {
-    beoordeelNa = null;
-    return null;
-  }
-  const kaart = document.createElement('div');
-  kaart.className = 'beoordeel-vraag';
-  const kop = document.createElement('p');
-  kop.className = 'beoordeel-vraag-kop';
-  kop.textContent = 'Hoe vond je het?';
-  const titel = document.createElement('p');
-  titel.className = 'plan-meta';
-  titel.textContent = item.titel;
-  const later = document.createElement('button');
-  later.type = 'button';
-  later.className = 'vraag-btn';
-  later.textContent = 'Later';
-  const sluit = () => {
-    beoordeelNa = null;
-    renderVragen();
-  };
-  later.addEventListener('click', sluit);
-  const sterren = maakBeoordeling(item.sleutel, {
-    label: `Hoe vond je ${item.titel}?`,
-    naWijziging: (w) => {
-      renderGezienList(); // het cijfer ook in de lijst hieronder
-      if (w) setTimeout(sluit, 600);
-    },
-  });
-  const onder = document.createElement('div');
-  onder.className = 'beoordeel-vraag-onder';
-  onder.append(sterren, later);
-  kaart.append(kop, titel, onder);
-  return kaart;
-}
-
-function renderVragen() {
-  if (!els.vraagSection || !els.vraagList) return;
-  const index = indexeerShows(state.shows);
-  const vragen = vragenOver(state.gepland, { index });
-  const beoordeel = renderBeoordeelVraag();
-  els.vraagSection.hidden = vragen.length === 0 && !beoordeel;
-  if (els.vraagCount) els.vraagCount.textContent = vragen.length ? `${vragen.length} voorstelling${vragen.length === 1 ? '' : 'en'}` : '';
-  els.vraagList.innerHTML = '';
-  if (beoordeel) els.vraagList.appendChild(beoordeel);
-  for (const item of vragen) els.vraagList.appendChild(renderVraagRow(item, index));
-}
-
-function renderVraagRow(item, index) {
-  const row = document.createElement('div');
-  row.className = 'plan-row vraag-row';
-
-  const { day, month } = parseIsoDate(item.datum);
-  const when = document.createElement('div');
-  when.className = 'plan-when';
-  when.innerHTML = `<b>${day}</b><small>${MONTHS[month - 1].slice(0, 3)}</small>`;
-  when.setAttribute('aria-label', formatDateLong(item.datum));
-
-  const info = document.createElement('div');
-  info.className = 'plan-info';
-  const title = document.createElement('span');
-  title.className = 'plan-title';
-  title.textContent = item.titel;
-  const meta = document.createElement('span');
-  meta.className = 'plan-meta';
-  const theaterNaam = planTheaterNaam(item);
-  meta.textContent = item.tijd ? `${theaterNaam} · ${item.tijd}` : theaterNaam;
-  info.append(title, meta);
-  if (item.verplaatst) {
-    const flag = document.createElement('span');
-    flag.className = 'plan-flag';
-    flag.textContent = 'Verplaatst';
-    info.appendChild(flag);
-  }
-
-  const actions = document.createElement('div');
-  actions.className = 'vraag-actions';
-  const knop = (label, ja) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = `vraag-btn${ja ? ' vraag-btn--ja' : ''}`;
-    b.textContent = label;
-    b.setAttribute('aria-label', `${item.titel}: ${ja ? 'ja, ik ben geweest' : 'nee, niet geweest'}`);
-    b.addEventListener('click', () => {
-      pasStandToe(beantwoord(huidigeStand(), item, ja, { index }));
-      // Ja: meteen vragen hoe het was (niet verplicht).
-      if (ja) {
-        const { show } = koppel(item, index);
-        beoordeelNa = watchlistSleutel(show?.titel ?? item.titel, item.theaterId);
-      }
-      renderProfielScreen();
-      renderAgenda();
-    });
-    return b;
-  };
-  actions.append(knop('Ja', true), knop('Nee', false));
-
-  row.append(when, info, actions);
-  return row;
 }
 
 // Eerste voorstelling per sleutel in de agenda (voor de live weergavetitel).
@@ -1776,7 +1665,13 @@ function renderGezienRow(item, liveShow) {
     g.textContent = genre;
     info.appendChild(g);
   }
-  info.appendChild(maakBeoordeling(item.sleutel, { label: `Beoordeling van ${title.textContent}` }));
+  info.appendChild(
+    maakBeoordeling(item.sleutel, {
+      label: `Beoordeling van ${title.textContent}`,
+      // Alleen de sorteerknop bijwerken (de lijst niet: dan blijft de focus).
+      naWijziging: () => renderGezienSorteerknop(state.gezien?.gezien ?? []),
+    })
+  );
   const lijst = document.createElement('ul');
   lijst.className = 'bezoek-lijst bezoek-lijst--compact';
   vulBezoekLijst(lijst, item);
@@ -5786,7 +5681,6 @@ function renderWatchlistItem(production) {
 
 function renderProfielScreen() {
   renderProfielTegels();
-  renderVragen();
   renderGeplandList();
   renderGezienList();
   const productions = watchlistProductions();

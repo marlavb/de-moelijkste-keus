@@ -1508,7 +1508,7 @@ a {
   padding: 8px 20px 32px;
 }
 
-/* Ben je geweest? → Gepland → Gezien, als één blok vóór de watchlist. */
+/* Gepland → Gezien, als één blok vóór de watchlist. */
 .profile-kolom {
   display: flex;
   flex-direction: column;
@@ -2421,44 +2421,6 @@ button.plan-info {
   color: var(--text-2);
 }
 
-/* "Ben je geweest?" (Profiel): een plan zonder kaarten na de speeldatum.
-   Zelfde rij als een plan, met twee knoppen: Ja (gevuld) en Nee (omlijnd). */
-.profile-section--vraag {
-  border-color: var(--accent);
-}
-
-.vraag-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.vraag-btn {
-  position: relative;
-  min-height: 36px;
-  min-width: 52px;
-  padding: 4px 14px;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--control-border);
-  background: var(--surface);
-  color: var(--primary);
-  font: inherit;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.vraag-btn::before {
-  content: "";
-  position: absolute;
-  inset: -4px 0;
-}
-
-.vraag-btn--ja {
-  border-color: var(--primary);
-  background: var(--primary);
-  color: var(--on-primary);
-}
-
 /* Gezien: het item is een knop (opent het detail), bezoeken onder elkaar. */
 button.gezien-info {
   width: 100%;
@@ -2553,33 +2515,6 @@ button.gezien-titel {
 
 .gezien-info {
   cursor: pointer;
-}
-
-/* "Hoe vond je het?" na "Ben je geweest?" → Ja. */
-.beoordeel-vraag {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--divider);
-}
-
-.beoordeel-vraag-kop {
-  margin: 0;
-  font-weight: var(--kop-gewicht);
-  color: var(--primary);
-}
-
-.beoordeel-vraag .plan-meta {
-  margin: 0;
-}
-
-.beoordeel-vraag-onder {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
 }
 
 .section-head .gezien-sorteer {

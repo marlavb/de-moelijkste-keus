@@ -110,33 +110,57 @@ test('voorbij plan met kaarten → Gezien, uit de planning en van de watchlist',
   await ctx.close();
 });
 
-test('voorbij plan zonder kaarten → "Ben je geweest?"; Ja → Gezien; Nee → alleen weg', async () => {
+test('voorbij plan zonder kaarten → vanzelf naar Gezien (bovenaan); geen "Ben je geweest?"; weghalen blijft weg', async () => {
   let g = planIn(legeGepland(), nep('Lemming – reprise – Merijn Scholten', '2026-09-27', 'kleinekomedie'), 1);
   g = planIn(g, nep('Wacht even', '2026-09-28', 'kleinekomedie'), 2);
-  const { ctx, page } = await openApp({ opslag: { 'podiumagenda:gepland': g } });
+  // Al op Gezien: een ouder bezoek aan iets anders (moet onder de nieuwe komen).
+  const oud = { gezien: [{ sleutel: 'oud stuk', titel: 'Oud stuk', bron: 'handmatig', toegevoegdOp: 5, bezoeken: [{ datum: '2026-08-01', tijd: '20:00', theaterId: 'kleinekomedie' }] }], gezienVerwijderd: [] };
+  const { ctx, page } = await openApp({ opslag: { 'podiumagenda:gepland': g, 'podiumagenda:gezien': oud } });
   await page.goto(`${base}#/profiel`);
   await page.waitForTimeout(300);
-  assert.equal(await page.locator('#vraagSection').isVisible(), true);
-  assert.equal(await page.locator('#vraagList .vraag-row').count(), 2);
-  // Nog niet beantwoord: niet bij de gewone planning.
+  assert.equal(await page.getByText('Ben je geweest?').count(), 0);
+  assert.equal(await page.getByText('Zonder kaarten vragen we eerst').count(), 0);
+  assert.equal(await page.locator('#vraagSection').count(), 0);
   assert.equal(await page.locator('#geplandList .plan-row').count(), 0);
-  await page.locator('#vraagList .vraag-row', { hasText: 'Lemming' }).locator('.vraag-btn--ja').click();
-  // Na Ja: "Hoe vond je het?" met sterren en "Later" (niet verplicht).
-  const kaart = page.locator('#vraagList .beoordeel-vraag');
-  assert.equal(await kaart.locator('.beoordeel-vraag-kop').innerText(), 'Hoe vond je het?');
-  assert.equal(await kaart.locator('[role="slider"]').count(), 1);
-  await page.locator('#vraagList .vraag-row', { hasText: 'Wacht even' }).locator('.vraag-btn:not(.vraag-btn--ja)').click();
-  assert.equal(await page.locator('#vraagSection').isVisible(), true); // de beoordeelvraag staat er nog
-  await page.locator('#vraagList .beoordeel-vraag').getByRole('button', { name: 'Later' }).click();
-  assert.equal(await page.locator('#vraagSection').isVisible(), false);
-  const gezien = await lees(page, 'podiumagenda:gezien');
-  assert.deepEqual(gezien.gezien.map((i) => i.titel), ['Lemming – reprise – Merijn Scholten']);
   assert.equal((await lees(page, 'podiumagenda:gepland')).gepland.length, 0);
-  // Herladen: niets dubbel, geen vraag meer.
+  // Nieuwste eerst: Wacht even (28 sep), Lemming (27 sep), Oud stuk (1 aug).
+  const titels = await page.locator('#gezienList .gezien-row .gezien-titel').allInnerTexts();
+  // (Lemming staat ook in de agenda: dan de live weergavetitel.)
+  assert.equal(titels.length, 3);
+  assert.equal(titels[0].trim(), 'Wacht even');
+  assert.match(titels[1], /lemming/i);
+  assert.equal(titels[2].trim(), 'Oud stuk');
+  // Sterren bij het nieuwe item.
+  const rij = page.locator('#gezienList .gezien-row', { hasText: 'Wacht even' });
+  assert.equal(await rij.locator('[role="slider"]').count(), 1);
+  assert.match(await rij.innerText(), /28 september 2026/);
+  // Ten onrechte: weghalen; ook na herladen niet terug.
+  await rij.getByRole('button', { name: 'Wacht even van Gezien halen' }).click();
+  assert.equal(await page.locator('#gezienList .gezien-row', { hasText: 'Wacht even' }).count(), 0);
   await page.reload({ waitUntil: 'networkidle' });
+  await page.goto(`${base}#/profiel`);
   await page.waitForTimeout(300);
-  assert.equal((await lees(page, 'podiumagenda:gezien')).gezien[0].bezoeken.length, 1);
+  assert.equal(await page.locator('#gezienList .gezien-row', { hasText: 'Wacht even' }).count(), 0);
+  const gezien = await lees(page, 'podiumagenda:gezien');
+  assert.deepEqual(gezien.gezien.map((i) => i.titel).sort(), ['Lemming – reprise – Merijn Scholten', 'Oud stuk']);
+  assert.equal(gezien.gezien.find((i) => /lemming/.test(i.sleutel)).bezoeken.length, 1);
+  assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+  await ctx.close();
+});
+
+test('oudere index.html met nog het blok "Ben je geweest?": blijft verborgen, plan gaat toch naar Gezien', async () => {
+  const blok = `<section class="profile-section profile-section--vraag" id="vraagSection" aria-labelledby="vraagHeading" hidden>
+    <div class="section-head"><h2 id="vraagHeading">Ben je geweest?</h2><span id="vraagCount"></span></div>
+    <div id="vraagList" aria-live="polite"></div></section>`;
+  const oud = (html) => html.replace('<div class="profile-kolom">', `<div class="profile-kolom">${blok}`);
+  const g = planIn(legeGepland(), nep('Wacht even', '2026-09-28', 'kleinekomedie'), 1);
+  const { ctx, page } = await openApp({ html: oud, opslag: { 'podiumagenda:gepland': g } });
+  await page.goto(`${base}#/profiel`);
+  await page.waitForTimeout(300);
+  assert.equal(await page.locator('#vraagSection').count(), 1);
   assert.equal(await page.locator('#vraagSection').isVisible(), false);
+  assert.equal((await lees(page, 'podiumagenda:gezien')).gezien.length, 1);
+  assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
   await ctx.close();
 });
 
@@ -188,7 +212,6 @@ test('label "Gezien" in de agenda en filter "Verberg gezien"', async () => {
 test('oudere index.html zonder de nieuwe elementen: geen fouten, tabs werken', async () => {
   const zonder = (html) =>
     html
-      .replace(/<section class="profile-section profile-section--vraag"[\s\S]*?<\/section>/, '')
       .replace(/<section class="profile-section" aria-labelledby="gezienHeading">[\s\S]*?<\/section>/, '')
       .replace(/<button class="watch-btn" type="button" id="detailGezienBtn"[\s\S]*?<\/button>/, '')
       .replace(/<section class="sheet-section">\s*<div class="toggle-row">\s*<span class="toggle-row-label">Verberg gezien<\/span>[\s\S]*?<\/section>/g, '');
@@ -214,10 +237,9 @@ const kopjes = (page) =>
       .map((s) => ({ kop: s.querySelector('h2').textContent, x: Math.round(s.getBoundingClientRect().left), y: Math.round(s.getBoundingClientRect().top) }))
   );
 
-test('Profiel: volgorde Ben je geweest? → Gepland → Gezien → Watchlist; lege tekst Gezien', async () => {
+test('Profiel: volgorde Gepland → Gezien → Watchlist; lege tekst Gezien', async () => {
   for (const viewport of [{ width: 390, height: 900 }, { width: 1280, height: 900 }]) {
     const desktop = viewport.width >= 900;
-    // Zonder vragen: blok "Ben je geweest?" niet zichtbaar.
     let { ctx, page } = await openApp({ viewport });
     await page.goto(`${base}#/profiel`);
     await page.waitForTimeout(300);
@@ -239,15 +261,6 @@ test('Profiel: volgorde Ben je geweest? → Gepland → Gezien → Watchlist; le
     }
     await ctx.close();
 
-    // Met een vraag: die staat bovenaan.
-    const g = planIn(legeGepland(), nep('Wacht even', '2026-09-28', 'kleinekomedie'), 1);
-    ({ ctx, page } = await openApp({ viewport, opslag: { 'podiumagenda:gepland': g } }));
-    await page.goto(`${base}#/profiel`);
-    await page.waitForTimeout(300);
-    k = await kopjes(page);
-    assert.deepEqual(k.map((x) => x.kop), ['Ben je geweest?', 'Gepland', 'Gezien', 'Watchlist'], `${viewport.width}px`);
-    assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
-    await ctx.close();
   }
 });
 
@@ -406,7 +419,7 @@ test('sterren: aria-waarden, toetsenbord, halve/hele ster met tikken, wissen', a
   await ctx.close();
 });
 
-test('beoordeling in de app: na Ja meteen sterren; Profiel, detail en agendalabel "Gezien · ★ 4,5"', async () => {
+test('beoordeling in de app: sterren bij het automatisch gezien plan; Profiel, detail en agendalabel "Gezien · ★ 4,5"', async () => {
   for (const viewport of [{ width: 390, height: 900 }, { width: 1280, height: 900 }]) {
     const s = eenShow;
     const g = planIn(legeGepland(), nep('Lemming – reprise – Merijn Scholten', '2026-09-27', 'kleinekomedie'), 1);
@@ -414,9 +427,8 @@ test('beoordeling in de app: na Ja meteen sterren; Profiel, detail en agendalabe
     const { ctx, page } = await openApp({ viewport, opslag: { 'podiumagenda:gepland': g, 'podiumagenda:gezien': gezienLive } });
     await page.goto(`${base}#/profiel`);
     await page.waitForTimeout(300);
-    await page.locator('#vraagList .vraag-btn--ja').click();
-    // 4,5 via het toetsenbord in "Hoe vond je het?".
-    const slider = page.locator('#vraagList .beoordeel-vraag [role="slider"]');
+    // 4,5 via het toetsenbord bij het item in Gezien.
+    const slider = page.locator('#gezienList .gezien-row', { hasText: 'Lemming' }).locator('[role="slider"]');
     await slider.focus();
     await page.keyboard.press('End');
     await page.keyboard.press('ArrowLeft');
@@ -424,8 +436,6 @@ test('beoordeling in de app: na Ja meteen sterren; Profiel, detail en agendalabe
     assert.match(await page.locator('#melding').innerText(), /Opgeslagen/);
     let opgeslagen = await lees(page, 'podiumagenda:gezien');
     assert.equal(opgeslagen.gezien.find((i) => /lemming/.test(i.sleutel)).beoordeling, 4.5);
-    await page.waitForTimeout(800); // de vraag sluit zichzelf
-    assert.equal(await page.locator('#vraagList .beoordeel-vraag').count(), 0);
     // Profiel → Gezien: cijfer erbij; sorteerknop verschijnt.
     const rij = page.locator('#gezienList .gezien-row', { hasText: 'Lemming' });
     assert.equal(await rij.locator('.beoordeling-cijfer').innerText(), '★ 4,5');
