@@ -31,7 +31,7 @@ export function vervangBlokken(tekst, blokken) {
 }
 
 // Zelfde volgorde als het tabblad Theaters (PROVINCE_ORDER in public/js/app.js).
-const PROVINCIES = ['Noord-Holland', 'Zuid-Holland', 'Utrecht', 'Flevoland', 'Limburg'];
+const PROVINCIES = ['Noord-Holland', 'Zuid-Holland', 'Utrecht', 'Flevoland', 'Limburg', 'Noord-Brabant'];
 
 // Zelf opgemaakt (niet met de nl-NL-notatie van Intl, die per Node-versie
 // verschilt): anders zou elke runner een andere README maken.

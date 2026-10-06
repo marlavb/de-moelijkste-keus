@@ -173,6 +173,24 @@ const GENRE_MAP = {
   'musical / show / variété': 'Musical', // Isala, zoals 'musical/show'
   klassiek: 'Muziek & Concert', // Stoep, Isala
   jazz: 'Muziek & Concert', // Stoep
+
+  // Noord-Brabant (okt 2026; akkoord op debug/noord-brabant-inventarisatie.md §7.8)
+  'cabaret & comedy': 'Cabaret', // Parktheater, Markant, Schouwburg Concertzaal
+  'musical & muziektheater': 'Musical', // Schouwburg Concertzaal, zoals 'musical/show'
+  'circus & variété': 'Overig', // zelfde afweging als 'circus'
+  'sta-concert': 'Muziek & Concert', // Markant
+  college: 'Overig', // Speelhuis, zoals 'theatercollege'
+  'kennis & personality': 'Overig', // Parktheater, zoals 'theatercollege'
+  'personality show': 'Overig', // Kattendans, zoals 'show'
+  entertainment: 'Overig', // Kattendans
+  'toegepast theater': 'Overig', // Kattendans: bedrijfs-/educatief theater, geen genre op zich
+  taal: 'Overig', // De Nieuwe Vorst (schrijfavonden, voordrachten)
+  'lezing / debat': 'Overig', // De Nieuwe Vorst
+  divers: 'Overig', // Speelhuis
+  evenement: 'Overig', // Hofnar
+  event: 'Overig', // Markant
+  carnaval: 'Overig', // Theater aan de Parade
+  'echt bosch': 'Overig', // Theater aan de Parade: lokale reeks, geen genre
 };
 
 // Samengestelde labels komen in allerlei varianten voor ("jeugd & familie",
