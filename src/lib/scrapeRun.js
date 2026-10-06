@@ -390,9 +390,11 @@ export async function runRefresh({
   if (genresOpMeerderheid > 0) log(`${genresOpMeerderheid} voorstelling(en) naar het genre van de productie (genreBron bewaard).`);
   // Maker op productieniveau (makerMeerderheid.js); bronmaker als makerBron.
   const makerConflicten = [];
-  const { shows: freshShows, gewijzigd: makersOpMeerderheid } = pasMakerMeerderheidToe(metGenre, { conflicten: makerConflicten });
+  const makerVerdacht = [];
+  const { shows: freshShows, gewijzigd: makersOpMeerderheid } = pasMakerMeerderheidToe(metGenre, { conflicten: makerConflicten, verdacht: makerVerdacht });
   if (makersOpMeerderheid > 0) log(`${makersOpMeerderheid} voorstelling(en) naar de maker van de productie (makerBron bewaard).`);
   for (const c of makerConflicten) log(`Maker van "${c.sleutel}" niet gelijkgetrokken (gelijke stand): ${c.theaters.map((t) => `${t.theaterId}: ${t.maker}`).join('; ')}.`);
+  for (const v of makerVerdacht) log(`Maker van "${v.sleutel}" niet overgenomen (alleen ${v.theaterId}, verdacht: ${v.reden}): ${v.maker}.`);
   for (const theater of theaters) {
     const st = theaterStatus[theater.id];
     if (!st || theater.gepauzeerd) continue;

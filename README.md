@@ -71,13 +71,20 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   theater en tussen vaste paren theaters met één agenda-overlap
   (`dedupe.js`). Titels: waar een theater per genre een vaste volgorde van
   maker en titel heeft, wordt dat "Titel – Maker"; content warnings,
-  "met o.a. …", leeftijden en ondertitels als "reprise" worden nooit maker
-  maar beschrijving (`titels.js`). Dezelfde productie (zelfde
+  "met o.a. …", leeftijden en ondertitels als "reprise" of "20 jaar …"
+  worden nooit maker maar beschrijving; een paar titels waar een theater
+  artiest en voorstelling omgedraaid heeft, staan per theater in
+  `OMGEDRAAID` (`titels.js`). Dezelfde productie (zelfde
   watchlist-sleutel) krijgt bij elk theater dezelfde weergavetitel, hetzelfde
   genre en dezelfde maker: die van de meeste theaters
   (`weergaveMeerderheid.js`, `genreMeerderheid.js`, `makerMeerderheid.js`);
-  de bronwaarde blijft bewaard. Twee makers met evenveel theaters: dan blijft
-  de maker zoals hij was. Een agendapagina die niet laadt, krijgt
+  de bronwaarde blijft bewaard. Verschillen de makers alleen in wat ná " / "
+  staat (gezelschap of producent), dan wordt het de kern ervóór ("Nina van
+  Tongeren / Theater Bellevue" en "… / Bellevue Producties" → "Nina van
+  Tongeren"). Twee makers met evenveel theaters: dan blijft de maker zoals
+  hij was. Een maker van maar één theater gaat niet naar de andere als hij
+  verdacht is (cijfers, kleine letter vooraan, titel van een andere
+  productie, nooit-maker). Een agendapagina die niet laadt, krijgt
   bij sommige theaters (ITA, Theater aan de Parade) één herpoging na een
   minuut; mislukt die ook, dan geldt de vorige data. Sommige bronnen dienen
   meer theaters tegelijk (één scrape per run): Het Cenakel (De Link,
