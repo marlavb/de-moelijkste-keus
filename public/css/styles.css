@@ -320,6 +320,35 @@ a {
   color: var(--on-primary);
 }
 
+/* Uitverkochte of wachtlijst-datum in het detailscherm: grijs, doorgestreept,
+   niet te kiezen; een klein woord erachter. --text-2 op --soldout-bg: 5,6:1. */
+.chip.chip--vol,
+#screen-detail .chip.chip--vol.is-active {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-color: var(--soldout-bg);
+  background: var(--soldout-bg);
+  color: var(--text-2);
+  font-weight: 500;
+  opacity: 1;
+  cursor: default;
+}
+
+/* De datum waar je zelf staat (via je planning of een directe link). */
+#screen-detail .chip.chip--vol.is-active {
+  border-color: var(--text-2);
+}
+
+.chip-vol-datum {
+  text-decoration: line-through;
+}
+
+.chip-vol-reden {
+  font-size: 12px;
+  font-weight: 600;
+}
+
 /* Agenda list */
 
 .agenda-body {

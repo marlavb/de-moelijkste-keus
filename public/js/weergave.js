@@ -29,3 +29,13 @@ export function isVervallen(showOfStatus) {
   const b = typeof showOfStatus === 'string' ? showOfStatus : showOfStatus?.beschikbaarheid;
   return VERVALLEN.includes(b);
 }
+
+// Vol (okt 2026): uitverkocht of alleen een wachtlijst. Staat niet in de
+// agenda; in het detailscherm een grijs, doorgestreept datumblokje. Een
+// eigen plan of een directe link (watchlist) blijft gewoon werken.
+export const VOL = ['uitverkocht', 'wachtlijst'];
+
+export function isVol(showOfStatus) {
+  const b = typeof showOfStatus === 'string' ? showOfStatus : showOfStatus?.beschikbaarheid;
+  return VOL.includes(b);
+}

@@ -62,7 +62,7 @@ import {
 } from './gedeeld.js';
 import { getGenreBucket, getGenres, matchtGenreFilter } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
-import { weergaveTitel, makerStaatInTitel, isVervallen, VERVALLEN_LABELS } from './weergave.js';
+import { weergaveTitel, makerStaatInTitel, isVervallen, isVol, VERVALLEN_LABELS } from './weergave.js';
 import { renameFavoritesAndPersist, THEATER_MOVES } from './favorites.js';
 import { laadWatchlist, bekendeSleutels, legeWatchlist, watchlistSleutel, voegToe, verwijder, NORMALISATIE_VERSIE } from './watchlist.js';
 import {
@@ -4643,6 +4643,9 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
 
   return state.shows.filter((s) => {
     if (!enabled.has(s.theaterId)) return false;
+    // Uitverkocht of alleen een wachtlijst: nooit in de agenda (okt 2026).
+    // Ook de tellers ("Toon … verder in de toekomst") tellen ze dus niet.
+    if (isVol(s)) return false;
     const cityOk = state.selectedCities.size === 0 || state.selectedCities.has(s.stad);
     const theaterOk = state.selectedTheaters.size === 0 || state.selectedTheaters.has(s.theaterId);
     // Op alle genres van de productie (show.genres); het label toont het
@@ -4651,12 +4654,10 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     const podiumpasOk = !state.podiumpasOnly || s.podiumpas === true;
     const watchlistOk = !state.watchlistOnly || isOpWatchlist(s);
     const gezienOk = !state.hideGezien || !isGezien(s);
-    // 'onbekend' blijft altijd zichtbaar — we weten domweg niet of die vol
-    // is, en dat is iets anders dan bevestigd vol (uitverkocht/wachtlijst).
-    // Afgelast en verplaatst zijn ook niet te boeken: die gaan mee weg.
-    const fullOk =
-      !state.hideFullOnly ||
-      (s.beschikbaarheid !== 'uitverkocht' && s.beschikbaarheid !== 'wachtlijst' && !isVervallen(s));
+    // "Verberg afgelaste voorstellingen" (heette "Verberg volle
+    // voorstellingen"; vol staat sinds okt 2026 nooit meer in de agenda).
+    // 'onbekend' blijft altijd zichtbaar: we weten niet of die vol is.
+    const fullOk = !state.hideFullOnly || !isVervallen(s);
     // Ondergrens geldt altijd, ook met ignoreDateWindow (dat heft alleen de
     // voorwaartse 30-dagen-grens op via "toon meer" — verleden tijd tonen we
     // nooit, dat is geen "meer", dat is gewoon verlopen data).
@@ -5168,13 +5169,36 @@ function renderOtherDates(show) {
   // Zelfde theater als de hoofdregel (daar staat het vinkje al); alleen bij
   // gemengde dekking (bv. De Maaspoort: externe locatie, prijs) per datum.
   const gemengd = new Set(related.map((s) => s.podiumpas === true)).size > 1;
-  for (const s of related) {
-    const wanneer = s.tijd ? `${formatDateShort(s.datum)}, ${s.tijd}` : formatDateShort(s.datum);
-    const label = isVervallen(s) ? `${wanneer} (${s.beschikbaarheid})` : wanneer;
-    els.detailOtherDates.appendChild(
-      makeChip(label, s.id === show.id, () => navigate(`#/show/${encodeURIComponent(s.id)}`), { podiumpas: gemengd && s.podiumpas === true })
-    );
-  }
+  for (const s of related) els.detailOtherDates.appendChild(datumChip(s, { actief: s.id === show.id, gemengd }));
+}
+
+// Eén datumblokje in het detailscherm. Uitverkocht of wachtlijst: grijs,
+// doorgestreept en niet te kiezen (een uitgeschakelde knop: niet focusbaar,
+// wel voorgelezen als "za 18 okt 20:15, uitverkocht").
+function datumChip(s, { actief = false, gemengd = false } = {}) {
+  const wanneer = s.tijd ? `${formatDateShort(s.datum)}, ${s.tijd}` : formatDateShort(s.datum);
+  if (isVol(s)) return makeVolChip(s, wanneer, actief);
+  const label = isVervallen(s) ? `${wanneer} (${s.beschikbaarheid})` : wanneer;
+  return makeChip(label, actief, () => navigate(`#/show/${encodeURIComponent(s.id)}`), { podiumpas: gemengd && s.podiumpas === true });
+}
+
+function makeVolChip(s, wanneer, actief) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.disabled = true;
+  btn.className = `chip chip--vol${actief ? ' is-active' : ''}`;
+  btn.setAttribute('aria-disabled', 'true');
+  if (actief) btn.setAttribute('aria-current', 'true');
+  const dag = WEEKDAYS[dateFromIso(s.datum).getDay()];
+  btn.setAttribute('aria-label', `${dag} ${formatDateShort(s.datum)}${s.tijd ? ` ${s.tijd}` : ''}, ${s.beschikbaarheid}`);
+  const datum = document.createElement('span');
+  datum.className = 'chip-vol-datum';
+  datum.textContent = wanneer;
+  const reden = document.createElement('span');
+  reden.className = 'chip-vol-reden';
+  reden.textContent = s.beschikbaarheid;
+  btn.append(datum, reden);
+  return btn;
 }
 
 function renderRelatedTheaters(show) {
@@ -5214,11 +5238,7 @@ function renderRelatedTheaters(show) {
     row.className = 'filter-row filter-row--wrap';
     row.setAttribute('role', 'group');
     row.setAttribute('aria-label', shows[0].theaterNaam);
-    for (const s of shows) {
-      const wanneer = s.tijd ? `${formatDateShort(s.datum)}, ${s.tijd}` : formatDateShort(s.datum);
-      const label = isVervallen(s) ? `${wanneer} (${s.beschikbaarheid})` : wanneer;
-      row.appendChild(makeChip(label, false, () => navigate(`#/show/${encodeURIComponent(s.id)}`), { podiumpas: gemengd && s.podiumpas === true }));
-    }
+    for (const s of shows) row.appendChild(datumChip(s, { gemengd }));
     group.appendChild(row);
 
     els.detailRelatedTheaters.appendChild(group);

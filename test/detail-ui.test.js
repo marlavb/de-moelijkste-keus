@@ -238,3 +238,187 @@ test('terug vanuit de Agenda: filters en scrollpositie blijven; directe link gaa
   assert.match(tweede.page.url(), /#\/$/);
   await tweede.ctx.close();
 });
+
+// ---------- Uitverkochte en wachtlijst-data (okt 2026) ----------
+
+const vol = (dag, beschikbaarheid, extra = {}) =>
+  proef('delamar', 'DeLaMar', 'Amsterdam', dag, true, { id: `vol-${dag}`, titel: 'Proefstuk Volle Zaal', beschikbaarheid, ...extra });
+const VOL = [
+  vol(3, 'beschikbaar'),
+  vol(4, 'uitverkocht'),
+  vol(5, 'wachtlijst'),
+  vol(6, 'afgelast'),
+  vol(7, 'onbekend'),
+  // Zelfde voorstelling bij een ander theater: alleen vol.
+  proef('dok6', 'DOK6', 'Panningen', 4, true, { id: 'vol-dok6-4', titel: 'Proefstuk Volle Zaal', beschikbaarheid: 'wachtlijst' }),
+  proef('dok6', 'DOK6', 'Panningen', 9, true, { id: 'vol-dok6-9', titel: 'Proefstuk Volle Zaal', beschikbaarheid: 'beschikbaar' }),
+  // Een voorstelling waarvan álle data vol zijn.
+  proef('carre', 'Koninklijk Theater Carré', 'Amsterdam', 4, false, { id: 'helemaal-4', titel: 'Proefstuk Helemaal Vol', beschikbaarheid: 'uitverkocht' }),
+  proef('carre', 'Koninklijk Theater Carré', 'Amsterdam', 5, false, { id: 'helemaal-5', titel: 'Proefstuk Helemaal Vol', beschikbaarheid: 'wachtlijst' }),
+];
+
+async function zoek(page, tekst) {
+  if ((page.viewportSize()?.width ?? 0) >= 900) await page.fill('#sidebarSearchInput', tekst);
+  else {
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(200);
+    if (!(await page.locator('#searchInput').isVisible())) await page.click('#searchToggle');
+    await page.fill('#searchInput', tekst);
+  }
+  await page.waitForTimeout(400);
+}
+
+for (const viewport of [{ width: 390, height: 900 }, { width: 1280, height: 900 }]) {
+  test(`agenda: geen uitverkochte of wachtlijst-data, geen label "Wachtlijst"; helemaal volle voorstelling weg (${viewport.width}px)`, async () => {
+    const { ctx, page } = await openApp({ viewport, extraShows: VOL });
+    // Zonder zoekopdracht: nergens een uitverkocht- of wachtlijstlabel (ook niet uit de echte data).
+    if (await page.locator('.show-more-btn').count()) await page.locator('.show-more-btn').click();
+    await page.waitForTimeout(300);
+    assert.equal(await page.locator('#agendaList .status-badge--wachtlijst, #agendaList .status-badge--uitverkocht').count(), 0);
+    await zoek(page, 'Proefstuk Volle Zaal');
+    const rijen = page.locator('#agendaList .show-row');
+    // beschikbaar, afgelast (met label), onbekend en DOK6 beschikbaar: 4 rijen.
+    assert.equal(await rijen.count(), 4);
+    assert.equal(await page.locator('#agendaList .status-badge--afgelast').count(), 1);
+    await zoek(page, 'Proefstuk Helemaal Vol');
+    assert.equal(await rijen.count(), 0);
+    assert.match(await page.locator('#emptyState').innerText(), /Geen voorstellingen gevonden voor "Proefstuk Helemaal Vol"/);
+    assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+    await ctx.close();
+  });
+}
+
+test('agenda: filters en tellers brengen volle data niet terug; "Verberg afgelaste voorstellingen" verbergt alleen afgelast', async () => {
+  const { ctx, page } = await openApp({ viewport: { width: 1280, height: 900 }, extraShows: VOL });
+  // Watchlist-filter met een volle voorstelling op de watchlist: niets.
+  await page.goto(`${base}#/show/helemaal-4`);
+  await page.waitForTimeout(300);
+  await page.click('#detailWatchBtn');
+  await page.goto(`${base}#/`);
+  await page.waitForTimeout(300);
+  await page.click('#sidebarWatchlistOnlyToggle');
+  await page.waitForTimeout(300);
+  assert.equal(await page.locator('#agendaList .show-row', { hasText: 'Proefstuk Helemaal Vol' }).count(), 0);
+  await page.click('#sidebarWatchlistOnlyToggle');
+  // Teller "Toon … verder in de toekomst" telt alleen wat je dan ook ziet.
+  const teller = (await page.locator('.show-more-btn').count()) ? await page.locator('.show-more-btn').innerText() : null;
+  if (teller) {
+    const n = Number(teller.match(/\d+/)[0]);
+    const zichtbaar = await page.locator('#agendaList .show-row').count();
+    await page.click('.show-more-btn');
+    await page.waitForTimeout(400);
+    assert.equal(await page.locator('#agendaList .show-row').count(), zichtbaar + n);
+    assert.equal(await page.locator('#agendaList .status-badge--wachtlijst, #agendaList .status-badge--uitverkocht').count(), 0);
+  }
+  await zoek(page, 'Proefstuk Volle Zaal');
+  assert.equal(await page.locator('.toggle-row', { has: page.locator('#sidebarHideFullToggle') }).locator('.toggle-row-label').innerText(), 'Verberg afgelaste voorstellingen');
+  await page.click('#sidebarHideFullToggle');
+  await page.waitForTimeout(300);
+  assert.equal(await page.locator('#agendaList .show-row').count(), 3);
+  assert.equal(await page.locator('#agendaList .status-badge--afgelast').count(), 0);
+  assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+  await ctx.close();
+});
+
+// Contrast (WCAG) tussen twee CSS-kleuren "rgb(r, g, b)".
+function contrast(a, b) {
+  const lum = (c) => {
+    const [r, g, bl] = c.match(/\d+/g).map(Number).map((v) => v / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * r + 0.7152 * g + 0.0722 * bl;
+  };
+  const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p);
+  return (x + 0.05) / (y + 0.05);
+}
+
+for (const viewport of [{ width: 390, height: 900 }, { width: 1280, height: 900 }]) {
+  test(`detail: volle data als grijze, doorgestreepte, niet-klikbare blokjes op hun plek (${viewport.width}px)`, async () => {
+    const { ctx, page } = await openApp({ viewport, extraShows: VOL });
+    await page.goto(`${base}#/show/vol-3`);
+    await page.waitForTimeout(400);
+    const chips = page.locator('#detailOtherDates .chip');
+    assert.equal(await chips.count(), 5);
+    const klassen = await chips.evaluateAll((els) => els.map((e) => e.classList.contains('chip--vol')));
+    assert.deepEqual(klassen, [false, true, true, false, false]); // datumvolgorde blijft
+    const uit = chips.nth(1);
+    assert.equal(await uit.getAttribute('aria-disabled'), 'true');
+    assert.equal(await uit.isDisabled(), true);
+    const dag = (n) => ['zo', 'ma', 'di', 'woe', 'do', 'vr', 'za'][new Date(`${morgen(n)}T12:00:00`).getDay()];
+    const datum = (n) => { const [, m, d] = morgen(n).split('-').map(Number); return `${d} ${['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'][m - 1]}`; };
+    assert.equal(await uit.getAttribute('aria-label'), `${dag(4)} ${datum(4)} 20:15, uitverkocht`);
+    assert.equal(await chips.nth(2).getAttribute('aria-label'), `${dag(5)} ${datum(5)} 20:15, wachtlijst`);
+    assert.equal((await uit.locator('.chip-vol-reden').innerText()).trim(), 'uitverkocht');
+    assert.equal((await chips.nth(2).locator('.chip-vol-reden').innerText()).trim(), 'wachtlijst');
+    // Doorgestreept, grijs (--soldout-bg / --text-2), contrast ≥ 3:1.
+    const stijl = await uit.evaluate((e) => {
+      const cs = getComputedStyle(e);
+      const root = getComputedStyle(document.documentElement);
+      const kleur = (v) => { const t = document.createElement('i'); t.style.color = v; document.body.append(t); const c = getComputedStyle(t).color; t.remove(); return c; };
+      return {
+        streep: getComputedStyle(e.querySelector('.chip-vol-datum')).textDecorationLine,
+        kleur: cs.color,
+        achter: cs.backgroundColor,
+        tokenAchter: kleur(root.getPropertyValue('--soldout-bg')),
+        tokenTekst: kleur(root.getPropertyValue('--text-2')),
+      };
+    });
+    assert.equal(stijl.streep, 'line-through');
+    assert.equal(stijl.achter, stijl.tokenAchter);
+    assert.equal(stijl.kleur, stijl.tokenTekst);
+    assert.ok(contrast(stijl.kleur, stijl.achter) >= 3, `contrast ${contrast(stijl.kleur, stijl.achter)}`);
+    // Niet klikbaar en niet focusbaar.
+    await uit.click({ force: true });
+    await page.waitForTimeout(200);
+    assert.match(page.url(), /vol-3$/);
+    const gefocust = [];
+    for (let i = 0; i < 60; i++) {
+      await page.keyboard.press('Tab');
+      gefocust.push(await page.evaluate(() => document.activeElement?.classList.contains('chip--vol') ?? false));
+    }
+    assert.ok(!gefocust.includes(true), 'een vol blokje kreeg focus');
+    // Afgelast werkt zoals voorheen: klikbaar, met "(afgelast)".
+    assert.match(await chips.nth(3).innerText(), /\(afgelast\)/);
+    // Ook te zien bij: DOK6 met één vol blokje en één gewone datum.
+    const dok6 = page.locator('.related-theater-group', { hasText: 'DOK6' });
+    assert.equal(await dok6.locator('.chip--vol').count(), 1);
+    assert.equal(await dok6.locator('.chip--vol').getAttribute('aria-label'), `${dag(4)} ${datum(4)} 20:15, wachtlijst`);
+    assert.equal(await dok6.locator('.chip:not(.chip--vol)').count(), 1);
+    assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+    await ctx.close();
+  });
+}
+
+test('eigen plan op een uitverkochte datum: blijft in Gepland, opent het detail; de datum is daar gemarkeerd', async () => {
+  const plan = zetStatus(planIn(legeGepland(), VOL[1], 1), planIn(legeGepland(), VOL[1], 1).gepland[0].sleutel, 'kaarten', 2);
+  const { ctx, page } = await openApp({ extraShows: VOL, opslag: { 'podiumagenda:gepland': plan } });
+  await page.goto(`${base}#/profiel`);
+  await page.waitForTimeout(300);
+  const rij = page.locator('#geplandList .plan-row', { hasText: 'Proefstuk Volle Zaal' });
+  assert.equal(await rij.count(), 1);
+  assert.equal(await rij.locator('.plan-flag').count(), 0); // geen "Niet meer in de agenda"
+  await rij.locator('.plan-info').click();
+  await page.waitForTimeout(300);
+  assert.match(page.url(), /#\/show\/vol-4$/);
+  const actief = page.locator('#detailOtherDates .chip.is-active');
+  assert.equal(await actief.count(), 1);
+  assert.equal(await actief.evaluate((e) => e.classList.contains('chip--vol')), true);
+  assert.equal(await actief.getAttribute('aria-current'), 'true');
+  // Herladen: het plan blijft staan.
+  await page.reload({ waitUntil: 'networkidle' });
+  await page.waitForTimeout(300);
+  assert.equal((await lees(page, 'podiumagenda:gepland')).gepland.length, 1);
+  assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+  await ctx.close();
+});
+
+test('watchlist met alleen volle data: de rij in Profiel opent nog steeds het detailscherm', async () => {
+  const wl = voegToe(legeWatchlist(), { titel: 'Proefstuk Helemaal Vol', theaterId: 'carre' }, 1);
+  const { ctx, page } = await openApp({ extraShows: VOL, opslag: { 'podiumagenda:watchlist': wl } });
+  await page.goto(`${base}#/profiel`);
+  await page.waitForTimeout(300);
+  await page.locator('#favoritesList .show-row', { hasText: 'Proefstuk Helemaal Vol' }).click();
+  await page.waitForTimeout(300);
+  assert.match(page.url(), /#\/show\/helemaal-4$/);
+  assert.equal(await page.locator('#detailOtherDates .chip--vol').count(), 2);
+  assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+  await ctx.close();
+});

@@ -1,0 +1,104 @@
+// End-to-end voor de aanpassingen van okt 2026 (volle data, terug na een
+// datumwissel, provincievinkje), ingelogd tegen de Firebase-emulators met de
+// echte firestore.rules en de echte agenda (public/data/shows.json).
+// Draai met `npm run test:e2e`. De tests bouwen op elkaar voort.
+
+import { test, before, after } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import { chromium } from 'playwright';
+
+import { controleerEmulators, startServer, wisEmulators, maakAccount, openGebruiker, ga, wachtOpDoc, schermafbeelding } from './hulp.js';
+
+const ACCOUNT = { email: 'dirk@e2e.test', wachtwoord: 'geheim-dirk', naam: 'Dirk Bos' };
+let uid;
+let server;
+let base;
+let browser;
+let ik; // { ctx, page, fouten }
+let shows;
+const vandaag = new Date().toISOString().slice(0, 10);
+const isVol = (s) => s.beschikbaarheid === 'uitverkocht' || s.beschikbaarheid === 'wachtlijst';
+
+before(async () => {
+  controleerEmulators();
+  await wisEmulators();
+  uid = await maakAccount(ACCOUNT);
+  const data = JSON.parse(await readFile(path.join(new URL('../public/', import.meta.url).pathname, 'data/shows.json'), 'utf-8'));
+  shows = (Array.isArray(data) ? data : data.shows).filter((s) => s.datum >= vandaag);
+  ({ server, base } = await startServer());
+  browser = await chromium.launch();
+  ik = await openGebruiker(browser, base, ACCOUNT);
+  // Eenmalig "Kies je gebruikersnaam" na het inloggen: eerst laten gebeuren.
+  await wachtOpDoc(`users/${uid}`, (d) => d?.profielGevraagd === true);
+});
+
+after(async () => {
+  await ik?.ctx.close().catch(() => {});
+  await browser?.close();
+  await new Promise((r) => server.close(r));
+});
+
+/** Producties (theater + titel) met hun komende data, in datumvolgorde. */
+function producties() {
+  const m = new Map();
+  for (const s of shows) {
+    const k = `${s.theaterId}|${s.titel}`;
+    if (!m.has(k)) m.set(k, []);
+    m.get(k).push(s);
+  }
+  for (const l of m.values()) l.sort((a, b) => `${a.datum} ${a.tijd ?? ''}`.localeCompare(`${b.datum} ${b.tijd ?? ''}`));
+  return [...m.values()];
+}
+
+async function zoek(page, tekst) {
+  await page.evaluate(() => window.scrollTo(0, 0));
+  if (!(await page.locator('#searchInput').isVisible())) await page.click('#searchToggle');
+  await page.fill('#searchInput', tekst);
+  await page.waitForTimeout(500);
+}
+
+// ---------- Uitverkochte en wachtlijst-data ----------
+
+test('volle data: niet in de agenda, wel als grijze blokjes in het detail; eigen plan op een wachtlijst-datum blijft (Firestore)', async () => {
+  // Een voorstelling met een gewone datum én een wachtlijst-datum, en een unieke titel.
+  const titels = new Map();
+  for (const s of shows) titels.set(s.titel, (titels.get(s.titel) ?? new Set()).add(s.theaterId));
+  const prod = producties().find(
+    (l) => titels.get(l[0].titel).size === 1 && l.length <= 12 && l.some((s) => s.beschikbaarheid === 'wachtlijst') && l.some((s) => !isVol(s))
+  );
+  assert.ok(prod, 'geen voorstelling met wachtlijst-data in de huidige data');
+  const { page } = ik;
+  await ga(page, base, '#/');
+  await zoek(page, prod[0].titel);
+  const rijen = page.locator('#agendaList .show-row', { hasText: prod[0].titel });
+  assert.equal(await rijen.count(), prod.filter((s) => !isVol(s)).length);
+  assert.equal(await page.locator('#agendaList .status-badge--wachtlijst, #agendaList .status-badge--uitverkocht').count(), 0);
+
+  // Detail: alle data op volgorde, de volle grijs en uitgeschakeld.
+  const open = prod.find((s) => !isVol(s));
+  await ga(page, base, `#/show/${encodeURIComponent(open.id)}`);
+  await page.waitForSelector('#detailOtherDates .chip');
+  const chips = page.locator('#detailOtherDates .chip');
+  assert.equal(await chips.count(), prod.length);
+  const vol = await chips.evaluateAll((els) => els.map((e) => e.classList.contains('chip--vol') && e.disabled && e.getAttribute('aria-disabled') === 'true'));
+  assert.deepEqual(vol, prod.map(isVol));
+  const wl = prod.findIndex((s) => s.beschikbaarheid === 'wachtlijst');
+  assert.match(await chips.nth(wl).getAttribute('aria-label'), /, wachtlijst$/);
+  await chips.nth(wl).scrollIntoViewIfNeeded();
+  await schermafbeelding(page, '9-volle-data');
+
+  // Een eigen plan op de wachtlijst-datum (via een directe link): blijft staan.
+  const wachtlijst = prod[wl];
+  await ga(page, base, `#/show/${encodeURIComponent(wachtlijst.id)}`);
+  await page.click('#detailPlanBtn');
+  await wachtOpDoc(`users/${uid}`, (d) => (d?.gepland ?? []).some((i) => i.datum === wachtlijst.datum && i.theaterId === wachtlijst.theaterId));
+  await ga(page, base, '#/profiel');
+  await page.waitForSelector('#geplandList .plan-row');
+  assert.equal(await page.locator('#geplandList .plan-row .plan-flag').count(), 0);
+  await page.locator('#geplandList .plan-info').first().click();
+  await page.waitForFunction((id) => location.hash === `#/show/${encodeURIComponent(id)}`, wachtlijst.id);
+  assert.equal(await page.locator('#detailOtherDates .chip.is-active.chip--vol').count(), 1);
+  assert.deepEqual(ik.fouten, []);
+});
