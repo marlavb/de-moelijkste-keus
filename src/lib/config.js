@@ -626,4 +626,38 @@ export const THEATERS = [
       toelichting: 'Je krijgt per mail een entreeticket met barcode; alleen de pas tonen bij de kassa is niet genoeg.',
     },
   },
+  // De Link en S.M.E.T. staan op podiumpas.nl als losse locaties; beide
+  // spelen in Het Cenakel en staan in dezelfde agenda (src/sites/cenakel.js,
+  // één scrape per run). Weergavenamen zoals op podiumpas.nl.
+  {
+    id: 'delink',
+    naam: 'De Link',
+    stad: 'Tilburg',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.cenakel.nl',
+    agendaUrl: 'https://www.cenakel.nl/agenda',
+    // Bron: https://delink.nl/tickets-en-kortingspassen/ (6 okt 2026):
+    // "Podiumpashouders bezoeken alle concerten van De Link in het Cenakel
+    // gratis." Alleen de concerten in Het Cenakel (de scraper leest alleen
+    // die agenda).
+    podiumpas: true,
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Reserveer vanaf 30 dagen voor het concert online een zitplaats: kies op de concertpagina bij De Link "Ik heb een Podiumpas". Je krijgt een ticket van € 0; laat ticket én pas zien bij de kassa.',
+    },
+  },
+  {
+    id: 'smet',
+    naam: 'S.M.E.T.',
+    stad: 'Tilburg',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.cenakel.nl',
+    agendaUrl: 'https://www.cenakel.nl/agenda',
+    // Bron: https://podiumpas.nl/waar-te-besteden (6 okt 2026): S.M.E.T.
+    // staat erop, met een link naar de agenda van Het Cenakel. Eigen
+    // voorwaarden niet gevonden (akkoord 6 okt 2026: Podiumpas volgens
+    // podiumpas.nl; voorwaarden worden nagevraagd).
+    podiumpas: true,
+    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+  },
 ];

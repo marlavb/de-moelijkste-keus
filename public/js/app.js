@@ -162,6 +162,8 @@ const THEATER_ZOEKALIASSEN = {
   dok6: ['dok6 theater'],
   kattendans: ['kattendans bergeijk'],
   paradox: ['muziekpodium paradox', 'paradox tilburg'],
+  delink: ['nieuwe muziek tilburg', 'cenakel'],
+  smet: ['smet', 's.m.e.t.', 'kamermuziek tilburg', 'cenakel'],
 };
 
 const BESCHIKBAARHEID_LABELS = {
