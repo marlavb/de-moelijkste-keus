@@ -752,4 +752,23 @@ export const THEATERS = [
       toelichting: 'Online met de kaartsoort "Podiumpas" (pasnummer invullen), vanaf 30 dagen voor de voorstelling. Neem je pas mee naar de kassa; reserveringen blijven tot 15 minuten voor aanvang geldig.',
     },
   },
+  {
+    id: 'hofnar',
+    naam: 'Theater de Hofnar',
+    stad: 'Valkenswaard',
+    provincie: 'Noord-Brabant',
+    baseUrl: 'https://www.hofnar.nl',
+    agendaUrl: 'https://www.hofnar.nl/theater/',
+    // ~120 verzoeken per run (1 overzicht + 1 pagina per productie, min. 1 s
+    // pauze), zie src/sites/hofnar.js: ~3 min, ruim onder dit budget.
+    budgetMinuten: 8,
+    // Per voorstelling: niet bij Yes Jazz, Tonpraoten en kinderbuffetten
+    // (zie src/sites/hofnar.js).
+    podiumpas: true,
+    // Bron: https://www.hofnar.nl/podiumpas/ (6 okt 2026).
+    podiumpasReserveren: {
+      telefoon: '040-207 40 10',
+      toelichting: 'Uitsluitend telefonisch via de kaartverkoopbalie, vanaf 30 dagen voor de voorstelling; online reserveren is niet mogelijk. Kaartje tot een half uur voor aanvang ophalen bij de balie.',
+    },
+  },
 ];

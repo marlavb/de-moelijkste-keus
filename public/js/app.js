@@ -170,6 +170,7 @@ const THEATER_ZOEKALIASSEN = {
   willemtwee: ['willem twee', 'w2', 'toonzaal', 'den bosch'],
   theateraandeparade: ['parade', 'theater aan de parade', 'den bosch'],
   denieuwevorst: ['nieuwe vorst', 'de nieuwe vorst'],
+  hofnar: ['hofnar', 'hofnar valkenswaard'],
 };
 
 const BESCHIKBAARHEID_LABELS = {
