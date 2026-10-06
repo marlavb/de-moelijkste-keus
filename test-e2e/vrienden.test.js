@@ -179,7 +179,7 @@ test('uitnodigen: A plant, nodigt B en C uit; plan, leden en berichten', async (
   planId = plannen[0].pad.split('/')[1];
   assert.deepEqual(plannen[0].data.genodigden, [uid.B, uid.C]);
   assert.equal((await leesDoc(`plannen/${planId}/leden/${uid.B}`)).status, 'uitgenodigd');
-  assert.equal((await leesDoc(`users/${uid.A}`)).gepland[0].planId, planId);
+  await wachtOpDoc(`users/${uid.A}`, (d) => d?.gepland?.[0]?.planId === planId);
 });
 
 test('teller bij B zonder herladen, Berichten met de uitnodiging, titel naar het detailscherm', async () => {
@@ -271,7 +271,8 @@ test('B: "Ik ga toch niet" — eerst Annuleren (niets gebeurt), daarna bevestige
   await B.click('#geplandList .plan-bevestig >> text="Ik ga niet"');
   await wachtOpDoc(`plannen/${planId}/leden/${uid.B}`, (d) => d?.status === 'weg');
   assert.ok((await inbox('A')).some((b) => b.soort === 'weg' && b.van === uid.B));
-  assert.equal(((await leesDoc(`users/${uid.B}`)).gepland ?? []).length, 0);
+  // saveGepland schrijft zonder te wachten: wachten tot het binnen is.
+  await wachtOpDoc(`users/${uid.B}`, (d) => (d?.gepland ?? []).length === 0);
 });
 
 test('A heft het plan op (met bevestiging); C krijgt het opheffingsbericht', async () => {
