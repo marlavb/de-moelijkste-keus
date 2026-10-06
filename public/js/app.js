@@ -660,7 +660,8 @@ async function init() {
 // history-entry met een diepte en, bij vertrek, de scrollpositie. Terug (in
 // de app, browser of vegen) gaat naar waar je vandaan kwam, op dezelfde
 // plek: Profiel, Theaters, Agenda of het vorige detailscherm. Een directe
-// link (diepte 0) gaat met de terugknop naar de Agenda.
+// link (diepte 0) gaat met de terugknop naar de Agenda. Een andere datum
+// van dezelfde voorstelling is geen stap (vervang, zie datumChip).
 let navTeller = 0;
 function navState(extra = {}) {
   return { id: `${Date.now()}-${++navTeller}`, ...extra };
@@ -5179,7 +5180,10 @@ function datumChip(s, { actief = false, gemengd = false } = {}) {
   const wanneer = s.tijd ? `${formatDateShort(s.datum)}, ${s.tijd}` : formatDateShort(s.datum);
   if (isVol(s)) return makeVolChip(s, wanneer, actief);
   const label = isVervallen(s) ? `${wanneer} (${s.beschikbaarheid})` : wanneer;
-  return makeChip(label, actief, () => navigate(`#/show/${encodeURIComponent(s.id)}`), { podiumpas: gemengd && s.podiumpas === true });
+  // Een andere datum van dezelfde voorstelling vervangt de huidige plek in
+  // de geschiedenis (okt 2026): terug gaat dan meteen naar waar je vandaan
+  // kwam (Agenda, Profiel, Berichten, …), niet langs elke bekeken datum.
+  return makeChip(label, actief, () => vervang(`#/show/${encodeURIComponent(s.id)}`), { podiumpas: gemengd && s.podiumpas === true });
 }
 
 function makeVolChip(s, wanneer, actief) {

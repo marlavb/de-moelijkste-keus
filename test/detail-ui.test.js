@@ -192,23 +192,74 @@ for (const viewport of [{ width: 390, height: 700 }, { width: 1280, height: 700 
   });
 }
 
-test('detail → detail (Andere data) → terug → terug: eerst het vorige detail, dan het tabblad', async () => {
-  const { ctx, page } = await openApp({ extraShows: PROEF, opslag: { 'podiumagenda:gezien': zetGezien(legeGezien(), { show: PROEF[0], bron: 'handmatig' }, 1) } });
-  await page.goto(`${base}#/profiel`);
+for (const viewport of [{ width: 390, height: 700 }, { width: 1280, height: 700 }]) {
+  test(`andere datum (Andere data, Ook te zien bij) vervangt de plek: terug gaat meteen naar Profiel, zelfde scroll (${viewport.width}px)`, async () => {
+    const { ctx, page } = await openApp({ viewport, extraShows: PROEF, opslag: { 'podiumagenda:gezien': veelGezien() } });
+    await page.goto(`${base}#/profiel`);
+    await page.waitForTimeout(300);
+    for (const terug of [() => page.click('#detailBack'), () => page.goBack()]) {
+      const doel = page.locator('#gezienList .gezien-titel', { hasText: 'Proefstuk' });
+      await doel.scrollIntoViewIfNeeded();
+      const y = await page.evaluate(() => window.scrollY);
+      const lengte = await page.evaluate(() => history.length);
+      const diepte = await page.evaluate(() => history.state?.diepte ?? 0);
+      await doel.click();
+      await page.waitForTimeout(300);
+      assert.match(page.url(), /proef-maaspoort-3$/);
+      const naDetail = await page.evaluate(() => history.length);
+      assert.ok(naDetail <= lengte + 1);
+      // Twee keer van datum wisselen: eerst Andere data, dan Ook te zien bij.
+      await page.locator('#detailOtherDates .chip').nth(1).click();
+      await page.waitForTimeout(300);
+      assert.match(page.url(), /proef-maaspoort-4$/);
+      assert.equal(await page.evaluate(() => window.scrollY), 0);
+      await page.locator('.related-theater-group', { hasText: 'DeLaMar' }).locator('.chip').first().click();
+      await page.waitForTimeout(300);
+      assert.match(page.url(), /proef-delamar-5$/);
+      assert.equal(await page.locator('#detailTitle').innerText(), 'Proefstuk Vinkje');
+      // Eén stap in de geschiedenis (het detail), niet drie.
+      assert.equal(await page.evaluate(() => history.length), naDetail);
+      assert.equal(await page.evaluate(() => history.state.diepte), diepte + 1);
+      await terug();
+      await page.waitForTimeout(300);
+      assert.match(page.url(), /#\/profiel$/);
+      assert.equal(await page.locator('#screen-profiel').isVisible(), true);
+      assert.ok(Math.abs((await page.evaluate(() => window.scrollY)) - y) <= 2, `scrollpositie ${y}`);
+    }
+    assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+    await ctx.close();
+  });
+}
+
+test('andere datum vanuit de Agenda en vanuit een directe link: terug naar de Agenda op dezelfde plek', async () => {
+  const { ctx, page } = await openApp({ viewport: { width: 390, height: 700 }, extraShows: PROEF });
+  const rij = page.locator('#agendaList .show-row', { hasText: 'Proefstuk Vinkje' }).nth(3);
+  await rij.scrollIntoViewIfNeeded();
+  const y = await page.evaluate(() => window.scrollY);
+  assert.ok(y > 200, `agenda gescrold (${y})`);
+  await rij.click();
   await page.waitForTimeout(300);
-  await page.locator('#gezienList .gezien-titel').first().click();
+  await page.locator('#detailOtherDates .chip:not(.is-active)').first().click();
   await page.waitForTimeout(300);
-  assert.match(page.url(), /proef-maaspoort-3/);
-  await page.locator('#detailOtherDates .chip').nth(1).click();
-  await page.waitForTimeout(300);
-  assert.match(page.url(), /proef-maaspoort-4/);
   await page.click('#detailBack');
   await page.waitForTimeout(300);
-  assert.match(page.url(), /proef-maaspoort-3/);
-  await page.goBack(); // browser-terug doet hetzelfde
-  await page.waitForTimeout(300);
-  assert.match(page.url(), /#\/profiel$/);
+  assert.equal(await page.locator('#screen-agenda').isVisible(), true);
+  assert.ok(Math.abs((await page.evaluate(() => window.scrollY)) - y) <= 2, `scroll ${y}`);
   await ctx.close();
+
+  // Directe link (geen voorgeschiedenis) → andere datum → terug: de Agenda.
+  const tweede = await openApp({ extraShows: PROEF });
+  await tweede.page.goto(`${base}#/show/proef-delamar-5`);
+  await tweede.page.reload({ waitUntil: 'networkidle' });
+  await tweede.page.waitForTimeout(300);
+  await tweede.page.locator('#detailOtherDates .chip:not(.is-active)').first().click();
+  await tweede.page.waitForTimeout(300);
+  assert.match(tweede.page.url(), /proef-delamar-6$/);
+  await tweede.page.click('#detailBack');
+  await tweede.page.waitForTimeout(300);
+  assert.equal(await tweede.page.locator('#screen-agenda').isVisible(), true);
+  assert.match(tweede.page.url(), /#\/$/);
+  await tweede.ctx.close();
 });
 
 test('terug vanuit de Agenda: filters en scrollpositie blijven; directe link gaat naar de Agenda', async () => {

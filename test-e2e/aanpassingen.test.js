@@ -102,3 +102,23 @@ test('volle data: niet in de agenda, wel als grijze blokjes in het detail; eigen
   assert.equal(await page.locator('#detailOtherDates .chip.is-active.chip--vol').count(), 1);
   assert.deepEqual(ik.fouten, []);
 });
+
+// ---------- Terug na een datumwissel ----------
+
+test('terug na een datumwissel: vanuit Gepland naar een andere datum, terug (knop en browser) gaat meteen naar Profiel', async () => {
+  const { page } = ik;
+  for (const terug of [() => page.click('#detailBack'), () => page.goBack()]) {
+    await ga(page, base, '#/profiel');
+    await page.waitForSelector('#geplandList .plan-info');
+    await page.locator('#geplandList .plan-info').first().click();
+    await page.waitForFunction(() => location.hash.startsWith('#/show/'));
+    const eerste = page.url();
+    await page.locator('#detailOtherDates .chip:not(.chip--vol):not(.is-active)').first().click();
+    await page.waitForFunction((u) => location.href !== u, eerste);
+    assert.match(page.url(), /#\/show\//);
+    await terug();
+    await page.waitForFunction(() => location.hash === '#/profiel');
+    assert.equal(await page.locator('#screen-profiel').isVisible(), true);
+  }
+  assert.deepEqual(ik.fouten, []);
+});
