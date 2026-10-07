@@ -1,5 +1,5 @@
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
-import { normalizeGenre, isBekendGenre } from '../lib/genre.js';
+import { normalizeGenreVoor, isBekendGenre } from '../lib/genre.js';
 import { titelUitKopEnOndertitel, pasTitelConventieToe } from '../lib/titels.js';
 import { vervallenStatus } from '../lib/beschikbaarheid.js';
 import { laagstePrijs } from '../lib/peppered.js';
@@ -110,7 +110,15 @@ export async function scrapeOranjerie({ page, theater, robots, waitForTurn, log,
   const opgehaaldOp = new Date().toISOString();
   const shows = [];
   const onbekend = {};
+  const weg = {};
   for (const s of speeldata) {
+    // Besloten verhuur (besluit 7 okt 2026): een verhuring zonder
+    // kaartverkoop (geen link en geen prijs) weglaten; een openbare verhuring
+    // met kaartverkoop (bv. via ticketshop.nl) blijft, als Overig.
+    if (/verhuur|verhuring/i.test(s.genre ?? '') && !s.href && !laagstePrijs(s.prijs)) {
+      weg['besloten verhuur'] = (weg['besloten verhuur'] ?? 0) + 1;
+      continue;
+    }
     const datum = parseDay(s.datum);
     if (!datum) {
       log(`kon datum niet lezen: "${s.datum}" (${s.kop}) — overgeslagen.`);
@@ -130,7 +138,7 @@ export async function scrapeOranjerie({ page, theater, robots, waitForTurn, log,
       podiumpas: theater.podiumpas,
       datum,
       tijd,
-      genre: s.genre ? normalizeGenre(s.genre) ?? 'Overig' : null,
+      genre: s.genre ? normalizeGenreVoor(theater.id, s.genre) ?? 'Overig' : null,
       genreRuw: s.genre,
       beschikbaarheid: oranjerieStatus(label, s.knop),
       beschrijving: null,
@@ -145,6 +153,7 @@ export async function scrapeOranjerie({ page, theater, robots, waitForTurn, log,
     shows.push(show.maker ? pasTitelConventieToe(show, { artiest: show.maker, voorstelling: show.titel, makerWordtLeeg: true }) : show);
   }
   if (Object.keys(onbekend).length) warn(`onbekende brongenres (nu Overig): ${Object.entries(onbekend).map(([k, n]) => `${k} (${n})`).join(', ')}`);
+  if (Object.keys(weg).length) log(`weggelaten: ${Object.entries(weg).map(([k, n]) => `${k} (${n})`).join(', ')}`);
   log(`${zwaar.verzoeken()} verzoek(en) naar de site (plus robots.txt); ${zwaar.geblokkeerd()} afbeeldingen/scripts/fonts niet geladen`);
   return shows;
 }

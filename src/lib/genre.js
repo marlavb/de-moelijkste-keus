@@ -253,6 +253,20 @@ export function isBekendGenre(raw) {
  * wél een bekend genre is, of null als geen enkele tag herkend wordt (in
  * plaats van blind "Overig" te concluderen op basis van niet-genre-tags).
  */
+// Per theater een andere koppeling dan normalizeGenre (besluit 7 okt 2026):
+// "Komedie" is bij De Oranjerie en het Munttheater toneel (blijspel), elders
+// (o.a. Kattendans) blijft het Cabaret.
+export const GENRE_PER_THEATER = {
+  oranjerie: { komedie: 'Toneel' },
+  munttheater: { komedie: 'Toneel' },
+};
+
+/** normalizeGenre, met de uitzonderingen van dit theater (GENRE_PER_THEATER). */
+export function normalizeGenreVoor(theaterId, raw) {
+  const eigen = GENRE_PER_THEATER[theaterId]?.[String(raw ?? '').trim().toLowerCase()];
+  return eigen ?? normalizeGenre(raw);
+}
+
 export function normalizeGenreFromList(rawTags) {
   if (!rawTags || rawTags.length === 0) return null;
   for (const raw of rawTags) {
