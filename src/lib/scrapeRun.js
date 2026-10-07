@@ -16,6 +16,7 @@ import path from 'node:path';
 
 import { todayIsoDate } from './normalize.js';
 import { effectieveCrawlDelayMs, sleep } from './politeness.js';
+import { nachtenSinds } from './nachtrunSignalen.js';
 
 export class ScrapeTimeoutError extends Error {
   name = 'ScrapeTimeoutError';
@@ -263,6 +264,7 @@ export async function runRefresh({
         duurSeconden: 0,
         laatsteSucces: vorige.laatsteSucces ?? null,
         terugvalSinds: null,
+        terugvalReeks: 0,
         fout: null,
         waarschuwing: null,
         gepauzeerd: theater.gepauzeerd,
@@ -333,6 +335,9 @@ export async function runRefresh({
         ? (vorige.laatsteSucces ?? latestOpgehaaldOp(outcome.shows))
         : now().toISOString(),
       terugvalSinds: failed ? (vorige.terugvalSinds ?? now().toISOString()) : null,
+      // Nachten op rij met terugval (nachtrunSignalen.js); een tweede run op
+      // dezelfde dag telt niet dubbel.
+      terugvalReeks: failed ? nachtenSinds(vorige.terugvalSinds ?? now().toISOString(), now()) : 0,
       fout: outcome.fout,
       waarschuwing,
     };

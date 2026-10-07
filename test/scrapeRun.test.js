@@ -277,6 +277,9 @@ test('scrape-status: laatsteSucces en terugvalSinds lopen door over runs', async
   assert.equal(writtenStatus.theaters.b.laatsteSucces, NOW.toISOString());
   assert.equal(writtenStatus.theaters.b.terugvalSinds, null);
   assert.equal(writtenStatus.theaters.z.status, 'ok', 'status van niet-gescrapete theaters blijft staan');
+  // terugvalReeks: 29 sep, 30 sep en 1 okt (NOW) = 3 nachten; b is weer ok.
+  assert.equal(writtenStatus.theaters.a.terugvalReeks, 3);
+  assert.equal(writtenStatus.theaters.b.terugvalReeks, 0);
 });
 
 test('shows.json blijft een platte array, identiek in beide outputs', async () => {
