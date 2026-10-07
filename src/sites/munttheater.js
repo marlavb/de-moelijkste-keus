@@ -143,7 +143,7 @@ export async function scrapeMunttheater({ page, theater, robots, waitForTurn, lo
         podiumpas: theater.podiumpas,
         datum,
         tijd,
-        genre: genreRuw ? normalizeGenreVoor(theater.id, genreRuw) ?? 'Overig' : null,
+        genre: genreRuw ? normalizeGenreVoor(theater.id, genreRuw, `${kop} ${e.performer ?? ''}`) ?? 'Overig' : null,
         genreRuw,
         beschikbaarheid: muntStatus(rijen?.[i]?.knop, e.status),
         beschrijving: null,

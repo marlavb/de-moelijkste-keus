@@ -62,6 +62,11 @@ test('De Oranjerie: besloten verhuring (geen kaartlink, geen prijs) weg; openbar
   assert.equal(normalizeGenreVoor('munttheater', 'komedie'), 'Toneel');
   assert.equal(normalizeGenreVoor('kattendans', 'Komedie'), 'Cabaret');
   assert.equal(normalizeGenreVoor('oranjerie', 'Theaterconcert'), 'Muziektheater');
+  // Stand-up blijft Cabaret (besluit 7 okt 2026).
+  assert.equal(normalizeGenreVoor('munttheater', 'Komedie', 'A Comedy Double with Dave and Hermes Furry Fury!'), 'Cabaret');
+  assert.equal(normalizeGenreVoor('oranjerie', 'Komedie', 'Stand-up avond'), 'Cabaret');
+  assert.equal(normalizeGenreVoor('oranjerie', 'Komedie', 'Een avond met een comedian'), 'Cabaret');
+  assert.equal(normalizeGenreVoor('oranjerie', 'Komedie', 'Boeing Boeing'), 'Toneel');
 
   // Een kopie van de Zeemeermin-kaart (verhuring) zonder link en prijs: besloten.
   const begin = agenda.indexOf('event-type-verhuring');

@@ -255,16 +255,23 @@ export function isBekendGenre(raw) {
  */
 // Per theater een andere koppeling dan normalizeGenre (besluit 7 okt 2026):
 // "Komedie" is bij De Oranjerie en het Munttheater toneel (blijspel), elders
-// (o.a. Kattendans) blijft het Cabaret.
+// (o.a. Kattendans) blijft het Cabaret. Behalve als titel of ondertitel op
+// stand-up wijst (`tenzij`): "A Comedy Double with Dave and Hermes" blijft
+// Cabaret.
+const STAND_UP = /\bcomed(?:y|ian)s?\b|stand[- ]?up/i;
 export const GENRE_PER_THEATER = {
-  oranjerie: { komedie: 'Toneel' },
-  munttheater: { komedie: 'Toneel' },
+  oranjerie: { komedie: { genre: 'Toneel', tenzij: STAND_UP } },
+  munttheater: { komedie: { genre: 'Toneel', tenzij: STAND_UP } },
 };
 
-/** normalizeGenre, met de uitzonderingen van dit theater (GENRE_PER_THEATER). */
-export function normalizeGenreVoor(theaterId, raw) {
+/**
+ * normalizeGenre, met de uitzonderingen van dit theater (GENRE_PER_THEATER).
+ * `tekst`: titel, ondertitel en/of beschrijving, voor de `tenzij`-regel.
+ */
+export function normalizeGenreVoor(theaterId, raw, tekst = '') {
   const eigen = GENRE_PER_THEATER[theaterId]?.[String(raw ?? '').trim().toLowerCase()];
-  return eigen ?? normalizeGenre(raw);
+  if (eigen && !eigen.tenzij?.test(tekst ?? '')) return eigen.genre;
+  return normalizeGenre(raw);
 }
 
 export function normalizeGenreFromList(rawTags) {

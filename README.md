@@ -99,7 +99,7 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   met een eigen tijdbudget. Besloten verhuur (zonder kaartverkoop) laten we
   weg, openbare verhuur blijft als Overig. Een genre kan per theater anders
   gekoppeld zijn (`GENRE_PER_THEATER` in `genre.js`: Komedie is Toneel bij De
-  Oranjerie en het Munttheater, elders Cabaret).
+  Oranjerie en het Munttheater, behalve stand-up; elders Cabaret).
 - **Nachtelijke run**: `.github/workflows/refresh-data.yml` scrapet, commit de
   data naar `main` en start de deploy. De Cloud Function `startNachtrun` start
   hem elke dag om 05:00 (Amsterdam); de cron van GitHub (03:17 UTC) blijft als
