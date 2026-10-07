@@ -1,5 +1,5 @@
 {
-  "bijgewerktOp": "2026-10-07T03:59:15.838Z",
+  "bijgewerktOp": "2026-10-07T07:47:34.893Z",
   "theaters": {
     "ita": {
       "status": "ok",
@@ -137,7 +137,7 @@
       "status": "terugval",
       "aantal": 91,
       "vorigAantal": 91,
-      "duurSeconden": 2,
+      "duurSeconden": 64,
       "laatsteSucces": "2026-10-06T10:37:35.503Z",
       "terugvalSinds": "2026-10-07T03:23:06.474Z",
       "fout": "exception: page.goto: net::ERR_NAME_NOT_RESOLVED at https://www.podiummozaiek.nl/programma/agenda",
