@@ -30,8 +30,8 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
 - **Theaters per provincie**: theaters aan of uit, per theater, per stad of per
   provincie (vinkje met aan/uit/deels). Gepauzeerde theaters staan er met een
   melding.
-- **Watchlist**: voorstellingen die je wilt zien, met de eerstvolgende datum
-  en de stand: "Afgelast", "2 van 5 data afgelast" of "Niet meer in de
+- **Watchlist**: voorstellingen die je wilt zien, één regel per voorstelling,
+  met de eerstvolgende datum en de stand: "Afgelast", "2 van 5 data afgelast" of "Niet meer in de
   agenda". Elk item heeft een eigen knop om het weg te halen; een item dat niet
   meer in de agenda staat opent een eenvoudig scherm (titel, maker, genre) met
   de bladwijzer.
@@ -81,7 +81,14 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   watchlist-sleutel) krijgt bij elk theater dezelfde weergavetitel, hetzelfde
   genre en dezelfde maker: die van de meeste theaters
   (`weergaveMeerderheid.js`, `genreMeerderheid.js`, `makerMeerderheid.js`);
-  de bronwaarde blijft bewaard. Verschillen de makers alleen in wat ná " / "
+  de bronwaarde blijft bewaard. Dezelfde voorstelling met een langere titel
+  bij het ene theater ("KING ME – 250 years of Donald Trump – Greg Shapiro")
+  en een kortere bij het andere ("KING ME – Greg Shapiro") wordt één
+  productie met de kortere titel; ook een titel die alleen de artiest is,
+  met de voorstelling in de beschrijving ("Greg Shapiro", "KING ME | …").
+  Niet bij een generiek begin ("Oudejaars", "Best of", jaartallen)
+  (`productieSamenvoegen.js`); watchlist, Gezien en planning gaan mee naar
+  de samengevoegde productie. Verschillen de makers alleen in wat ná " / "
   staat en is dat een gezelschap of producent (en de kern ervóór niet), dan
   wordt het de kern ("Nina van Tongeren / Theater Bellevue" en "… / Bellevue
   Producties" → "Nina van Tongeren"; "Theater Rotterdam / Glen Faria" blijft

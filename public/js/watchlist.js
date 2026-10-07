@@ -330,6 +330,72 @@ export function infoPerSleutel(shows) {
 }
 
 /**
+ * Watchlist-items die bij elkaar horen, voor één regel in Profiel. De oude
+ * TITEL_MAPPING maakte van één item soms meerdere (bv. "Greg Shapiro" →
+ * "Greg Shapiro – King Me" én "… – 250 years of Donald Trump"); die hebben
+ * dezelfde toegevoegdOp en hetzelfde theater. Oude favorieten
+ * (toegevoegdOp 0) en items zonder theater blijven los. Geeft een lijst
+ * groepen (arrays van items), in de volgorde van de eerste.
+ */
+export function groepeerWatchlist(items) {
+  const groepen = new Map();
+  for (const item of items ?? []) {
+    const k = (item.toegevoegdOp ?? 0) > 0 && item.theaterId ? `${item.toegevoegdOp}|${item.theaterId}` : `s|${item.sleutel}`;
+    if (!groepen.has(k)) groepen.set(k, []);
+    groepen.get(k).push(item);
+  }
+  return [...groepen.values()];
+}
+
+/**
+ * Oude sleutel → nieuwe sleutel uit de data: een voorstelling waarvan de
+ * titel is samengevoegd tot één productie (productieSamenvoegen.js) heeft
+ * zijn oude titel als titelBron. Alleen eenduidige doelen, en alleen als de
+ * oude sleutel zelf niet meer in de data staat. Geldt ook voor sleutels uit
+ * de oude TITEL_MAPPING (die "Greg Shapiro" naar twee sleutels liet gaan).
+ */
+export function samenvoegMapping(shows) {
+  const huidig = new Set();
+  const doelen = new Map();
+  for (const s of shows ?? []) {
+    const nieuw = watchlistSleutel(s.titel, s.theaterId);
+    huidig.add(nieuw);
+    if (!s.titelBron) continue;
+    const oud = watchlistSleutel(s.titelBron, s.theaterId);
+    if (oud === nieuw) continue;
+    if (!doelen.has(oud)) doelen.set(oud, new Set());
+    doelen.get(oud).add(nieuw);
+  }
+  const mapping = new Map();
+  for (const [oud, nieuw] of doelen) if (nieuw.size === 1 && !huidig.has(oud)) mapping.set(oud, [...nieuw][0]);
+  return mapping;
+}
+
+/**
+ * Watchlist-items en tombstones met een oude sleutel naar de samengevoegde
+ * sleutel (samenvoegMapping). Zonder dubbelen (voegSamen: de laatste actie
+ * wint, ook een verwijdering). Idempotent. Geeft { profiel, gewijzigd }.
+ */
+export function pasSamenvoegingToe(profiel, mapping) {
+  if (!mapping?.size) return { profiel, gewijzigd: false };
+  let gewijzigd = false;
+  const watchlist = (profiel?.watchlist ?? []).map((i) => {
+    const naar = mapping.get(i.sleutel);
+    if (!naar) return i;
+    gewijzigd = true;
+    return { ...i, sleutel: naar };
+  });
+  const watchlistVerwijderd = (profiel?.watchlistVerwijderd ?? []).map((t) => {
+    const naar = mapping.get(t.sleutel);
+    if (!naar) return t;
+    gewijzigd = true;
+    return { ...t, sleutel: naar };
+  });
+  if (!gewijzigd) return { profiel, gewijzigd };
+  return { profiel: voegSamen({ watchlist, watchlistVerwijderd }), gewijzigd };
+}
+
+/**
  * Items zonder maker of genre aanvullen uit de agenda (`info`, zie
  * infoPerSleutel). Nooit overschrijven; tijdstempels blijven gelijk;
  * idempotent. Geeft { profiel, gewijzigd }.
@@ -356,12 +422,15 @@ export function vulWatchlistAan(profiel, info) {
  * resultaat afwijkt van `opgeslagen`; alleen dan hoeft er geschreven.
  * Idempotent en zonder vlag: een tweede keer laden levert niets nieuws op.
  */
-export function laadWatchlist({ opgeslagen, favorieten = [], extra = null, bekend = new Map(), mapping = TITEL_MAPPING, info = null }) {
+export function laadWatchlist({ opgeslagen, favorieten = [], extra = null, bekend = new Map(), mapping = TITEL_MAPPING, info = null, samenvoeging = null }) {
   const basis = { watchlist: opgeslagen?.watchlist ?? [], watchlistVerwijderd: opgeslagen?.watchlistVerwijderd ?? [] };
   const { profiel: uitFavorieten, log } = migreerFavorieten(favorieten, bekend);
   // Eerst de titelmapping (die werkt op de oude, v2-sleutels), dan de
   // her-normalisatie van wat overblijft.
-  const genormaliseerd = renormaliseer(pasTitelMappingToe(voegSamen(basis, uitFavorieten, extra ?? leeg()), bekend, mapping));
+  const genormaliseerd = pasSamenvoegingToe(
+    renormaliseer(pasTitelMappingToe(voegSamen(basis, uitFavorieten, extra ?? leeg()), bekend, mapping)),
+    samenvoeging
+  ).profiel;
   // Met de agenda erbij: maker en genre aanvullen (voor het eenvoudige scherm).
   const profiel = info ? vulWatchlistAan(genormaliseerd, info).profiel : genormaliseerd;
   return { profiel, log, gewijzigd: !isGelijk(profiel, basis) };

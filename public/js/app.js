@@ -64,7 +64,7 @@ import { getGenreBucket, getGenres, matchtGenreFilter } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
 import { weergaveTitel, makerStaatInTitel, isVervallen, isVol, VERVALLEN_LABELS, watchlistStand } from './weergave.js';
 import { renameFavoritesAndPersist, THEATER_MOVES } from './favorites.js';
-import { laadWatchlist, bekendeSleutels, legeWatchlist, watchlistSleutel, voegToe, verwijder, NORMALISATIE_VERSIE } from './watchlist.js';
+import { laadWatchlist, bekendeSleutels, legeWatchlist, watchlistSleutel, voegToe, verwijder, NORMALISATIE_VERSIE, samenvoegMapping, groepeerWatchlist } from './watchlist.js';
 import {
   laadGepland,
   legeGepland,
@@ -1198,13 +1198,15 @@ function syncProfielForCurrentUser() {
   const bekend = bekendeSleutels(state.shows);
   // Watchlist- en Gezien-items zonder maker of genre aanvullen uit de agenda (nooit overschrijven).
   const info = infoPerSleutel(state.shows);
-  const lokaal = laadWatchlist({ opgeslagen: loadWatchlistLocal(), favorieten: [...loadFavorites()], bekend, info });
+  // Samengevoegde producties (titelBron → titel): oude sleutels gaan mee.
+  const samenvoeging = samenvoegMapping(state.shows);
+  const lokaal = laadWatchlist({ opgeslagen: loadWatchlistLocal(), favorieten: [...loadFavorites()], bekend, info, samenvoeging });
   if (lokaal.gewijzigd) saveWatchlistLocal(lokaal.profiel);
   const showIndex = indexeerShows(state.shows);
   const lokaalGepland = laadGepland({ opgeslagen: loadGeplandLocal(), index: showIndex });
   if (lokaalGepland.gewijzigd) saveGeplandLocal(lokaalGepland.profiel);
 
-  const lokaalGezien = laadGezien({ opgeslagen: loadGezienLocal(), info, bekend });
+  const lokaalGezien = laadGezien({ opgeslagen: loadGezienLocal(), info, bekend, samenvoeging });
   if (lokaalGezien.gewijzigd) saveGezienLocal(lokaalGezien.profiel);
 
   if (!state.user) {
@@ -1224,6 +1226,7 @@ function syncProfielForCurrentUser() {
     extra: lokaal.profiel,
     bekend,
     info,
+    samenvoeging,
   });
   state.watchlist = cloud.profiel;
   logOudeSlugs(cloud);
@@ -1241,7 +1244,7 @@ function syncProfielForCurrentUser() {
     );
   }
 
-  const cloudGezien = laadGezien({ opgeslagen: state.cloudGezien, extra: lokaalGezien.profiel, info, bekend });
+  const cloudGezien = laadGezien({ opgeslagen: state.cloudGezien, extra: lokaalGezien.profiel, info, bekend, samenvoeging });
   state.gezien = cloudGezien.profiel;
   if (cloudGezien.gewijzigd) {
     state.cloudGezien = cloudGezien.profiel;
@@ -1329,11 +1332,15 @@ function watchlistGegevens(show) {
 // Van de watchlist halen vanuit Profiel of het eenvoudige scherm, met
 // "Ongedaan maken". Via verwijder() (tombstone) en saveWatchlist(): dat
 // synchroniseert met Firestore en werkt de kopie voor vrienden bij.
+// `item` mag ook een lijst zijn: een regel met meerdere items (groepeerWatchlist).
 function haalVanWatchlist(item, naAfloop = () => {}) {
-  state.watchlist = verwijder(state.watchlist, item.sleutel);
+  const items = Array.isArray(item) ? item : [item];
+  for (const i of items) state.watchlist = verwijder(state.watchlist, i.sleutel);
   saveWatchlist();
   toonMelding('Van je watchlist gehaald', () => {
-    state.watchlist = voegToe(state.watchlist, { titel: item.titel, theaterId: item.theaterId, maker: item.maker ?? null, genre: item.genre ?? null });
+    // Samen terug, met één tijdstip: dan blijven ze ook samen op één regel.
+    const nu = Date.now();
+    for (const i of items) state.watchlist = voegToe(state.watchlist, { titel: i.titel, theaterId: i.theaterId, maker: i.maker ?? null, genre: i.genre ?? null }, nu);
     saveWatchlist();
     renderAgenda();
     naAfloop();
@@ -5724,15 +5731,20 @@ function watchlistProductions() {
     perSleutel.get(k).push(s);
   }
   const productions = [];
-  for (const item of state.watchlist?.watchlist ?? []) {
-    const stand = watchlistStand(perSleutel.get(item.sleutel) ?? [], vandaag);
+  // Eén regel per watchlist-item: items die samen uit één item zijn ontstaan
+  // (groepeerWatchlist) staan samen op één regel, met al hun voorstellingen.
+  for (const items of groepeerWatchlist(state.watchlist?.watchlist ?? [])) {
+    const [item] = items;
+    const shows = items.flatMap((i) => perSleutel.get(i.sleutel) ?? []);
+    const stand = watchlistStand(shows, vandaag);
     const soonest = stand.soonest;
     // Theaters waar hij nog doorgaat (of, helemaal afgelast, waar hij stond).
-    const relevant = (perSleutel.get(item.sleutel) ?? []).filter((s) => s.datum >= vandaag && (soonest ? !isVervallen(s) : true));
+    const relevant = shows.filter((s) => s.datum >= vandaag && (soonest ? !isVervallen(s) : true));
     const theaters = new Set(relevant.map((s) => s.theaterId));
     const eerste = stand.eerste;
     productions.push({
       item,
+      items,
       key: item.sleutel,
       stand,
       titel: eerste ? weergaveTitel(eerste) : weergaveTitel({ titel: item.titel, maker: item.maker }),
@@ -5822,6 +5834,12 @@ function renderWatchlistItem(production) {
   actie.setAttribute('aria-label', `${production.titel} als gezien markeren`);
   actie.addEventListener('click', () => {
     const show = production.soonest ?? { titel: production.item.titel, theaterId: production.item.theaterId, maker: production.item.maker, genre: production.item.genre };
+    // De andere items van deze regel (groepeerWatchlist) gaan ook van de watchlist.
+    const anderen = (production.items ?? []).filter((i) => i.sleutel !== showSleutel(show));
+    if (anderen.length) {
+      for (const i of anderen) state.watchlist = verwijder(state.watchlist, i.sleutel);
+      saveWatchlist();
+    }
     markeerGezien(show, () => {
       renderProfielScreen();
       renderAgenda();
@@ -5835,7 +5853,7 @@ function renderWatchlistItem(production) {
   const icoon = svgIcon(BLADWIJZER);
   icoon.setAttribute('fill', 'currentColor');
   weg.appendChild(icoon);
-  weg.addEventListener('click', () => haalVanWatchlist(production.item, renderProfielScreen));
+  weg.addEventListener('click', () => haalVanWatchlist(production.items ?? production.item, renderProfielScreen));
   wrap.append(renderProductionRow(production), actie, weg);
   return wrap;
 }

@@ -443,3 +443,51 @@ test('Alain Clark → Date Night (okt 2026): watchlist-item migreert, alleen als
   const naEind = laadWatchlist({ opgeslagen: { watchlist: [later], watchlistVerwijderd: [] } }).profiel.watchlist.map((i) => i.sleutel);
   assert.equal(naEind.includes('date night'), false);
 });
+
+// ---------- Samengevoegde producties (okt 2026) ----------
+
+import { samenvoegMapping, pasSamenvoegingToe, groepeerWatchlist } from '../public/js/watchlist.js';
+
+const samenData = [
+  { titel: 'KING ME – Greg Shapiro', titelBron: 'Greg Shapiro', theaterId: 'stadsgehoorzaal' },
+  { titel: 'KING ME – Greg Shapiro', titelBron: 'King Me – 250 years of Donald Trump – Greg Shapiro', theaterId: 'kleinekomedie' },
+  { titel: 'KING ME – Greg Shapiro', theaterId: 'stoep' },
+];
+
+test('samenvoegMapping: oude sleutel → samengevoegde sleutel, alleen eenduidig en niet meer in de data', () => {
+  const m = samenvoegMapping(samenData);
+  assert.equal(m.get('greg shapiro'), 'greg shapiro | king me');
+  assert.equal(m.get('250 years of donald trump | greg shapiro | king me'), 'greg shapiro | king me');
+  // Staat de oude sleutel nog in de data, dan niet.
+  assert.equal(samenvoegMapping([...samenData, { titel: 'Greg Shapiro', theaterId: 'x' }]).has('greg shapiro'), false);
+});
+
+test('Greg Shapiro: drie items (TITEL_MAPPING) worden na het samenvoegen één item; tombstone blijft gelden', () => {
+  const t = Date.parse('2026-10-05T12:00:00Z');
+  const opgeslagen = { watchlist: [{ sleutel: 'greg shapiro', titel: 'Greg Shapiro', theaterId: 'stadsgehoorzaal', toegevoegdOp: t, v: NORMALISATIE_VERSIE }], watchlistVerwijderd: [] };
+  // Vóór het samenvoegen (oude data): de TITEL_MAPPING maakt er drie van.
+  const voor = laadWatchlist({ opgeslagen, bekend: new Map([['greg shapiro', 'Greg Shapiro']]) });
+  assert.equal(voor.profiel.watchlist.length, 3);
+  // Eén regel in Profiel: zelfde toegevoegdOp en theater.
+  assert.equal(groepeerWatchlist(voor.profiel.watchlist).length, 1);
+  // Na de nachtrun (samengevoegde data): één item.
+  const bekend = bekendeSleutels(samenData);
+  const na = laadWatchlist({ opgeslagen: voor.profiel, bekend, samenvoeging: samenvoegMapping(samenData) });
+  assert.deepEqual(na.profiel.watchlist.map((i) => i.sleutel), ['greg shapiro | king me']);
+  assert.equal(laadWatchlist({ opgeslagen: na.profiel, bekend, samenvoeging: samenvoegMapping(samenData) }).gewijzigd, false);
+  // Een latere verwijdering op de oude sleutel wint ook na het omzetten.
+  const weg = pasSamenvoegingToe({ watchlist: [{ sleutel: 'greg shapiro', titel: 'Greg Shapiro', theaterId: 'x', toegevoegdOp: 1 }], watchlistVerwijderd: [{ sleutel: 'greg shapiro', verwijderdOp: 2 }] }, samenvoegMapping(samenData));
+  assert.deepEqual(weg.profiel.watchlist, []);
+  assert.deepEqual(weg.profiel.watchlistVerwijderd, [{ sleutel: 'greg shapiro | king me', verwijderdOp: 2 }]);
+});
+
+test('groepeerWatchlist: losse items (andere tijd, favoriet zonder tijd) blijven apart', () => {
+  const g = groepeerWatchlist([
+    { sleutel: 'a', theaterId: 't', toegevoegdOp: 5 },
+    { sleutel: 'b', theaterId: 't', toegevoegdOp: 5 },
+    { sleutel: 'c', theaterId: 't', toegevoegdOp: 6 },
+    { sleutel: 'd', theaterId: 't', toegevoegdOp: 0 },
+    { sleutel: 'e', theaterId: 't', toegevoegdOp: 0 },
+  ]);
+  assert.deepEqual(g.map((x) => x.map((i) => i.sleutel)), [['a', 'b'], ['c'], ['d'], ['e']]);
+});

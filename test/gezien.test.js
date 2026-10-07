@@ -596,3 +596,16 @@ test('Alain Clark → Date Night (okt 2026): Gezien-item migreert met bezoeken e
   const babel = { ...item, sleutel: 'babel', titel: 'Babel', bezoeken: [{ datum: '2026-10-02', theaterId: 'x' }] };
   assert.equal(pasGezienMappingToe({ gezien: [babel] }, new Map()).gewijzigd, false);
 });
+
+test('Gezien: item met een oude productiesleutel gaat mee naar de samengevoegde sleutel, bezoeken en sterren samen', async () => {
+  const { pasGezienSamenvoegingToe } = await import('../public/js/gezien.js');
+  const mapping = new Map([['250 years of donald trump | greg shapiro | king me', 'greg shapiro | king me']]);
+  const oud = { sleutel: '250 years of donald trump | greg shapiro | king me', titel: 'KING ME – 250 years – Greg Shapiro', toegevoegdOp: 10, gewijzigdOp: 10, beoordeling: 4, beoordeeldOp: 11, bezoeken: [{ datum: '2026-10-01', theaterId: 'cpunt' }] };
+  const al = { sleutel: 'greg shapiro | king me', titel: 'KING ME – Greg Shapiro', toegevoegdOp: 5, gewijzigdOp: 5, bezoeken: [{ datum: '2026-09-01', theaterId: 'stoep' }] };
+  const { profiel, gewijzigd } = pasGezienSamenvoegingToe({ gezien: [oud, al], gezienVerwijderd: [] }, mapping);
+  assert.equal(gewijzigd, true);
+  assert.equal(profiel.gezien.length, 1);
+  assert.equal(profiel.gezien[0].bezoeken.length, 2);
+  assert.equal(profiel.gezien[0].beoordeling, 4);
+  assert.equal(pasGezienSamenvoegingToe(profiel, mapping).gewijzigd, false);
+});
