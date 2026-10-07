@@ -3,6 +3,7 @@ import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib
 import { normalizeGenre } from '../lib/genre.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
 import { vervallenStatus } from '../lib/beschikbaarheid.js';
+import { blokkeerZwareBronnen } from '../lib/zwareBronnen.js';
 
 const AGENDA_PATH = '/agenda';
 const MAX_LISTING_PAGES = 60;
@@ -27,33 +28,81 @@ function classifyBeschikbaarheid(statusTekst) {
   return 'onbekend';
 }
 
+/** Eén speeldatum-rij uit het paneel (li.subshow) of van de kaart zelf (één datum); draait in de browser. */
+function leesAgendaKaarten() {
+  const tekst = (el) => el?.textContent.trim().replace(/\s+/g, ' ') || null;
+  return Array.from(document.querySelectorAll('li[data-entry-id]')).map((card) => {
+    const entryId = card.getAttribute('data-entry-id');
+    const rijen = [];
+    const paneel = document.getElementById(`show${entryId}Dates`);
+    if (paneel) {
+      for (const li of paneel.querySelectorAll('li.subshow')) {
+        rijen.push({
+          dagTekst: tekst(li.querySelector('.date .start')),
+          tijdTekst: tekst(li.querySelector('.time .start')),
+          href: li.querySelector('.buttonBox a')?.getAttribute('href') ?? null,
+          // Zoals op de detailpagina: de hele .buttonBox (a, span of button).
+          statusTekst: tekst(li.querySelector('.buttonBox')),
+          venue: tekst(li.querySelector('.locationBox .venue')),
+          plek: tekst(li.querySelector('.locationBox .supertitle')),
+          andereLocatie: li.classList.contains('in-other-location'),
+        });
+      }
+    } else {
+      // Eén speeldatum: datum, tijd en knop staan op de kaart zelf.
+      const dt = card.querySelector('.dateTimeContainer .dateTimeInner');
+      const knop = dt?.querySelector('a.btn, button.btn, span.btn, .status-info:not(.expand-sub)');
+      if (dt) {
+        rijen.push({
+          dagTekst: tekst(dt.querySelector('.datetime .date .start')),
+          tijdTekst: tekst(dt.querySelector('.datetime .time .start')),
+          href: knop?.getAttribute('href') ?? null,
+          statusTekst: tekst(knop),
+          venue: tekst(card.querySelector('.locationBox .venue')),
+          plek: tekst(card.querySelector('.locationBox .supertitle')),
+          andereLocatie: false,
+        });
+      }
+    }
+    return {
+      entryId,
+      titel: card.querySelector('h3.title')?.textContent.trim() ?? null,
+      beschrijving: card.querySelector('.tagline')?.textContent.trim() ?? null,
+      detailHref: card.querySelector('a.desc')?.getAttribute('href') ?? null,
+      genre: card.querySelector('.genres__link')?.textContent.trim() ?? null,
+      maker: card.querySelector('.subtitle')?.textContent.trim() || null,
+      rijen,
+    };
+  });
+}
+
 /**
  * Haalt de volledige agenda van Theater Bellevue op.
  *
  * Structuur (geïnspecteerd op https://www.theaterbellevue.nl/agenda, aug 2026):
- * - De agendapagina is gepagineerd via ?page=N (robots.txt staat dit expliciet
- *   toe met "Allow: /*?page=*", ondanks de algemene "Disallow: /*?*"-regel).
- *   Elke pagina toont acht producties als <li data-entry-id="..."> ("eventCard").
- * - Zo'n kaart toont title/subtitle/genres/tagline en een top-date die óf een
- *   los datum+tijd is (eenmalige voorstelling, met een directe ticketlink),
- *   óf een datumrange is (bv. "wo 9 sep - za 3 apr") voor een reeks
- *   voorstellingen — in dat geval geeft de kaart zelf geen individuele datums.
- *   .subtitle is de maker/artiest (bv. "Greg Shapiro" bij "King Me") — kan
- *   leeg zijn bij een groepsproductie zonder los vermeld hoofdpersoon.
- * - De detailpagina van elke productie (/agenda/<slug>) bevat wél een
- *   volledige lijst van losse voorstellingen als <li class="subshow">, elk
- *   met eigen datum, tijd en ticketknop. Bij sommige voorstellingen is die
- *   knop een JS-call (javascript:vdm_order(...)) in plaats van een echte URL
- *   (eigen boekingswidget) — dan valt reserverenUrl terug op de detailpagina.
- * - Om altijd de losse voorstellingsdatums te pakken (in plaats van alleen de
- *   startdatum van een reeks), bezoeken we voor élke productie de
- *   detailpagina — dat is trager, maar wel de enige betrouwbare bron.
+ * - De agendapagina is gepagineerd (?p54_page=N; robots.txt staat
+ *   "Allow: /*?page=*" toe, zie pagineerListing). Elke pagina toont acht
+ *   producties als <li data-entry-id="..."> ("eventCard").
+ * - Zo'n kaart toont title/subtitle/genres/tagline. .subtitle is de
+ *   maker/artiest (bv. "Greg Shapiro" bij "King Me").
+ * - Sinds okt 2026 (zoals Frascati, zelfde platform): elke kaart met meer
+ *   speeldata heeft op de agendapagina zelf een verborgen paneel
+ *   <div id="show{ID}Dates"> met dezelfde <li class="subshow">-rijen als de
+ *   detailpagina (datum, tijd, .buttonBox, .locationBox). Een kaart met één
+ *   speeldatum toont die op de kaart (.dateTimeContainer). We bezoeken dus
+ *   geen detailpagina's meer: ~24 verzoeken per run i.p.v. ~205 (crawl-delay
+ *   5 s: ~2 min i.p.v. ~17 min). Bij een knop met een JS-call
+ *   (javascript:vdm_order(...)) valt reserverenUrl terug op de detailpagina.
+ * - Tournee (rij in-other-location, of zaal "op tournee") en besloten
+ *   voorstellingen slaan we over, zoals voorheen.
  */
 export async function scrapeBellevue({ page, theater, robots, waitForTurn, log, warn }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
     return [];
   }
+  // Afbeeldingen, fonts en scripts zijn niet nodig: de agenda staat in de HTML.
+  const zwaar = await blokkeerZwareBronnen(page, { ookScripts: true });
 
   const cards = await pagineerListing({
     page,
@@ -66,17 +115,7 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log, 
     maxPages: MAX_LISTING_PAGES,
     label: 'producties',
     sleutelVan: (card) => card.entryId,
-    extract: () => {
-      return Array.from(document.querySelectorAll('li[data-entry-id]')).map((card) => {
-        const entryId = card.getAttribute('data-entry-id');
-        const titel = card.querySelector('h3.title')?.textContent.trim() ?? null;
-        const beschrijving = card.querySelector('.tagline')?.textContent.trim() ?? null;
-        const detailHref = card.querySelector('a.desc')?.getAttribute('href') ?? null;
-        const genre = card.querySelector('.genres__link')?.textContent.trim() ?? null;
-        const maker = card.querySelector('.subtitle')?.textContent.trim() || null;
-        return { entryId, titel, beschrijving, detailHref, genre, maker };
-      });
-    },
+    extract: leesAgendaKaarten,
   });
 
   const buildId = createIdBuilder();
@@ -84,70 +123,49 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log, 
   const shows = [];
   // Twee kaarten met dezelfde detailpagina zouden anders elke voorstelling
   // dubbel opleveren (met een "-2"-id-suffix van buildId).
-  const visitedDetailUrls = new Set();
+  const gezien = new Set();
   let andereLocatie = 0;
   let besloten = 0;
+  let zonderRijen = 0;
 
   for (const card of cards) {
     if (!card.titel || !card.detailHref) continue;
     const detailUrl = new URL(card.detailHref, theater.baseUrl).toString();
-    const detailPath = new URL(detailUrl).pathname;
-    if (visitedDetailUrls.has(detailUrl)) continue;
-    visitedDetailUrls.add(detailUrl);
-
-    if (!robots.isAllowed(detailPath)) {
-      log(`robots.txt verbiedt ${detailPath} — "${card.titel}" overgeslagen.`);
-      continue;
-    }
-
-    await waitForTurn();
-    let subshows;
-    try {
-      await page.goto(detailUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      subshows = await page.evaluate(() => {
-        return Array.from(document.querySelectorAll('li.subshow')).map((li) => {
-          const dagTekst = li.querySelector('.date .start')?.textContent.trim() ?? null;
-          const tijdTekst = li.querySelector('.time .start')?.textContent.trim() ?? null;
-          const href = li.querySelector('.buttonBox a')?.getAttribute('href') ?? null;
-          // .buttonBox bevat ofwel een <a> (bestelbaar/wachtlijst), ofwel een
-          // <span>/<button> (bv. "Geweest", "binnenkort") — pak gewoon de
-          // volledige tekst, ongeacht het element-type.
-          const statusTekst = li.querySelector('.buttonBox')?.textContent.trim().replace(/\s+/g, ' ') ?? null;
-          const venue = li.querySelector('.locationBox .venue')?.textContent.trim() ?? null;
-          return { dagTekst, tijdTekst, href, statusTekst, venue };
-        });
-      });
-    } catch (err) {
-      log(`kon detailpagina niet laden voor "${card.titel}" (${detailUrl}): ${err.message} — overgeslagen.`);
-      continue;
-    }
+    if (gezien.has(detailUrl)) continue;
+    gezien.add(detailUrl);
+    if (card.rijen.length === 0) zonderRijen++;
 
     const parseDay = createDutchAbbrevDayParser();
-    for (const sub of subshows) {
+    for (const sub of card.rijen) {
       if (!sub.dagTekst) continue;
       // Langlopende producties tonen soms ook al voorbije uitvoeringen
       // ("Geweest") in dezelfde lijst — die horen niet in een
       // toekomstgerichte agenda.
       if (sub.statusTekst?.trim().toLowerCase() === 'geweest') continue;
+      // Overzichtsrij van een tournee in het paneel ("Vanaf 20:00", "in 2027
+      // in Haarlem, Rotterdam, …", "binnenkort", zonder link): geen
+      // speeldatum. Op de detailpagina stond die rij niet.
+      if (/^vanaf\b/i.test(sub.tijdTekst ?? '') && !sub.href) continue;
       const datum = parseDay(sub.dagTekst);
       if (!datum) {
         log(`kon datum-label niet parsen: "${sub.dagTekst}" (${card.titel}) — overgeslagen.`);
         continue;
       }
-      // Tournee: Bellevue markeert ook speeldata elders als "in-own-location",
-      // maar zet dan "op tournee" als zaal (met de echte plek erboven, bv.
-      // "Zaal 3 | Het Nationale Theater | Den Haag", en een "kaarten via"-link
-      // naar dat theater). Besloten voorstellingen zijn niet publiek te
+      // Tournee: speeldata elders ("op tournee" als zaal, of een rij
+      // in-other-location). Besloten voorstellingen zijn niet publiek te
       // boeken. Pas ná parseDay, voor de jaar-rollover.
-      if (/tournee/i.test(sub.venue ?? '')) {
+      // In het paneel op de agendapagina heet de zaal niet "op tournee";
+      // daar staat de plek als supertitle ("De Schuur, Haarlem") en een knop
+      // "kaarten via" naar dat theater. Op de detailpagina waren dat precies
+      // de rijen "op tournee" (22 in de nachtrun van 7 okt 2026).
+      const extern = sub.href && /^https?:/.test(sub.href) && !new URL(sub.href).hostname.endsWith('theaterbellevue.nl');
+      if (sub.andereLocatie || /tournee/i.test(sub.venue ?? '') || (extern && /kaarten via/i.test(sub.statusTekst ?? ''))) {
         andereLocatie++;
         continue;
       }
-      const extern = sub.href && /^https?:/.test(sub.href) && !new URL(sub.href).hostname.endsWith('theaterbellevue.nl');
-      if (extern && /kaarten via/i.test(sub.statusTekst ?? '')) {
-        log(`let op: "kaarten via" naar ${new URL(sub.href).hostname} in zaal "${sub.venue}" (${card.titel}, ${datum}) — meegenomen.`);
-      }
-      if (/^besloten$/i.test(sub.statusTekst?.trim() ?? '')) {
+      // Niet publiek te boeken: besloten, of "Niet verkoopbaar" (bv.
+      // Presentatie de Schrijversstudio, alleen op de agendapagina).
+      if (/^(besloten|niet verkoopbaar)$/i.test(sub.statusTekst?.trim() ?? '')) {
         besloten++;
         continue;
       }
@@ -178,7 +196,14 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log, 
     }
   }
 
-  log(`${andereLocatie} speeldatum(s) op tournee en ${besloten} besloten voorstelling(en) overgeslagen.`);
+  // Sanity check: een agenda vol kaarten zonder één speeldatum betekent dat
+  // het paneel niet meer op de agendapagina staat (platform veranderd).
+  if (cards.length > 0 && shows.length === 0) {
+    throw new Error(`${cards.length} producties maar geen enkele speeldatum op de agendapagina's — paneel show{ID}Dates verdwenen?`);
+  }
+  if (zonderRijen > cards.length / 2) warn(`${zonderRijen} van ${cards.length} producties zonder speeldata op de agendapagina — paneel veranderd?`);
+  log(`${andereLocatie} speeldatum(s) op tournee en ${besloten} besloten of niet verkoopbare voorstelling(en) overgeslagen.`);
+  log(`${zwaar.verzoeken()} verzoek(en) naar de site (plus robots.txt); ${zwaar.geblokkeerd()} afbeeldingen/scripts/fonts niet geladen`);
   // Titelconventie cabaret (lib/titels.js): bij dit theater staat de voorstelling in de titel, artiest in het makerveld.
   return shows.map((s) => pasTitelConventieToe(s, { artiest: s.maker, voorstelling: s.titel, makerWordtLeeg: true }));
 }

@@ -11,10 +11,11 @@ export const USER_AGENT = `Mozilla/5.0 (compatible; ${USER_AGENT_TOKEN}/0.1; ${C
 // Tijdbudgetten voor een scrape-run (afgedwongen in lib/scrapeRun.js). Een
 // theater dat zijn budget overschrijdt wordt afgebroken en valt terug op de
 // vorige data. Gebaseerd op de run van 27 sep 2026: Bellevue ~18 min (elke
-// productie een detailpagina met 5s crawl-delay), de rest hooguit ~3 min
-// (Flint). De standaard is ruim 3x dat; een theater dat structureel langer
-// duurt krijgt een eigen `budgetMinuten` hieronder. Het totaalbudget blijft
-// ruim onder de timeout-minutes (90) van refresh-data.yml, zodat er altijd
+// productie een detailpagina met 5s crawl-delay; sinds okt 2026 ~2 min), de
+// rest hooguit ~3 min (Flint). De standaard is ruim 3x dat; een theater dat
+// structureel langer duurt krijgt een eigen `budgetMinuten` hieronder. Het
+// totaalbudget blijft onder de 80-minutengrens van "Nachtrun beoordelen" en
+// ruim onder de timeout-minutes (120) van refresh-data.yml, zodat er altijd
 // iets wordt weggeschreven en gecommit voordat GitHub de job afschiet.
 export const DEFAULT_THEATER_BUDGET_MINUTEN = 10;
 export const RUN_BUDGET_MINUTEN = 75;
@@ -70,7 +71,9 @@ export const THEATERS = [
     baseUrl: 'https://www.theaterbellevue.nl',
     agendaUrl: 'https://www.theaterbellevue.nl/agenda',
     podiumpas: true,
-    budgetMinuten: 40,
+    // Sinds okt 2026 alleen de agendapagina's (~25 × 5 s crawl-delay ≈ 2 min);
+    // was 40 min voor ~180 detailpagina's.
+    budgetMinuten: 15,
   },
   {
     id: 'meervaart',
