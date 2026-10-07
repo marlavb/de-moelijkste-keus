@@ -223,6 +223,8 @@ const GENRE_MAP = {
   dansfeest: 'Overig',
   circus: 'Overig',
   country: 'Muziek & Concert',
+  // TAR (okt 2026).
+  'theatrale installatie': 'Overig',
   spellen: 'Overig', // Parktheater: "Moord in het Parktheater" (interactief spel)
 
   // Limburg (okt 2026; zie debug/limburg-2-inventarisatie.md)

@@ -942,6 +942,23 @@ export const THEATERS = [
     // Eén agendapagina; alleen de speeldata in Huis Oostpool (zie oostpool.js).
     budgetMinuten: 2,
   },
+  {
+    id: 'tar',
+    naam: 'TAR',
+    stad: 'Arnhem',
+    provincie: 'Gelderland',
+    baseUrl: 'https://tar.nl',
+    agendaUrl: 'https://tar.nl/agenda/',
+    // Bron: https://podiumpas.nl/waar-te-besteden (7 okt 2026; verwijst naar
+    // https://tar.nl/nieuws/podiumpas-nu-ook-beschikbaar-bij-theater-a-d-rijn/,
+    // 12 feb 2024). De voorwaarden-link daarin (theateraanderijn.nl/podiumpas)
+    // geeft 404; voorwaarden en manier van reserveren dus onbekend. Geen
+    // uitzonderingen verzonnen: alles true, met een melding (zoals Het Speelhuis).
+    podiumpas: true,
+    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+    // Agendapagina + ~5 keer het lijst-endpoint.
+    budgetMinuten: 2,
+  },
   // Musis en Stadstheater Arnhem: één site en één API (src/sites/musis.js),
   // twee zalen; namen zoals de markers op podiumpas.nl/waar-te-besteden.
   // Bron Podiumpas: https://podiumpas.nl/waar-te-besteden en
