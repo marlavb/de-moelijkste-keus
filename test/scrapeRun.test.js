@@ -277,6 +277,9 @@ test('scrape-status: laatsteSucces en terugvalSinds lopen door over runs', async
   assert.equal(writtenStatus.theaters.b.laatsteSucces, NOW.toISOString());
   assert.equal(writtenStatus.theaters.b.terugvalSinds, null);
   assert.equal(writtenStatus.theaters.z.status, 'ok', 'status van niet-gescrapete theaters blijft staan');
+  // terugvalReeks: 29 sep, 30 sep en 1 okt (NOW) = 3 nachten; b is weer ok.
+  assert.equal(writtenStatus.theaters.a.terugvalReeks, 3);
+  assert.equal(writtenStatus.theaters.b.terugvalReeks, 0);
 });
 
 test('shows.json blijft een platte array, identiek in beide outputs', async () => {
@@ -632,4 +635,19 @@ test('netwerkfout (DNS): één herpoging na de pauze; gelukt → ok, nog een kee
   let j = 0;
   await run({ paths: await setup(), theaters: [theater('x')], scrapers: { x: async () => { j++; throw dns(); } }, deps, budgets: { theaterMs: () => 5000, totalMs: 60000 } });
   assert.equal(j, 1);
+});
+
+test('dalingReeks: telt nachten op rij met een scherpe daling, terug op 0 als het weer goed is', async () => {
+  const veel = Array.from({ length: 40 }, (_, i) => show('a', `2026-11-${String((i % 28) + 1).padStart(2, '0')}`, { titel: `Voorstelling ${i}` }));
+  const paths = await setup({
+    previousShows: veel,
+    previousStatus: { theaters: { a: { status: 'ok', dalingSinds: '2026-09-30T04:30:00.000Z' } } },
+  });
+  const { writtenStatus } = await run({ paths, theaters: [theater('a')], scrapers: { a: async () => veel.slice(0, 5) } });
+  assert.match(writtenStatus.theaters.a.waarschuwing, /scherpe daling/);
+  assert.equal(writtenStatus.theaters.a.dalingSinds, '2026-09-30T04:30:00.000Z');
+  assert.equal(writtenStatus.theaters.a.dalingReeks, 2);
+  const herstel = await run({ paths: await setup({ previousShows: veel, previousStatus: { theaters: { a: { status: 'ok', dalingSinds: '2026-09-30T04:30:00.000Z' } } } }), theaters: [theater('a')], scrapers: { a: async () => veel } });
+  assert.equal(herstel.writtenStatus.theaters.a.dalingReeks, 0);
+  assert.equal(herstel.writtenStatus.theaters.a.dalingSinds, null);
 });

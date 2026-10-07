@@ -107,6 +107,15 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   (handmatig toch draaien: "Run workflow" met `forceer`; alleen een paar
   theaters opnieuw, bv. na een terugval: `alleen` met hun id's, de rest houdt
   zijn data).
+  De run wordt alleen rood als er iets te doen is: een theater twee nachten
+  op rij teruggevallen (`terugvalReeks` in `scrape-status.json`), meer dan
+  drie theaters in één nacht, een scherpe daling bij hetzelfde theater twee
+  nachten op rij (`dalingReeks`), een gefaalde stap of een scrape van meer dan
+  80 minuten. Eén nacht terugval bij hooguit drie theaters, of één nacht een
+  scherpe daling, geeft een waarschuwing. Elke run heeft een samenvatting (looptijd,
+  aantallen, per teruggevallen theater de fout en de reeks). Bij rood komt
+  die in één GitHub-issue "Nachtrun: aandacht nodig" (label `nachtrun`); een
+  groene run zonder terugval sluit het issue weer (`nachtrunSignalen.js`).
 - **App** (`public/`): een PWA zonder build-stap (HTML, CSS, JavaScript-modules,
   service worker). Gehost op **GitHub Pages** via `.github/workflows/deploy.yml`
   bij elke push naar `main`.
