@@ -21,8 +21,8 @@ export const MAX_OPHALEN_PER_RUN = 120;
 // verkocht of zaalverhuur. Extern: de kaartenknop gaat niet naar de eigen
 // Ticketmatic-shop. Zaalverhuur: "verhuur" in genre of ondertitel, of het
 // label "tegast" (Ondernemers Event gemeente Barneveld, Literair Café; 7 okt
-// 2026). Dat "te gast" hier zaalhuur is, staat nergens letterlijk: we kiezen
-// voorzichtig voor false en vragen het na (zie de mail aan het theater).
+// 2026): vermoedelijk zaalhuur, nagevraagd in mail 7 okt 2026. Tot het
+// antwoord false (staat nergens letterlijk op de site).
 const EIGEN_VERKOOP = /^apps\.ticketmatic\.com$/i;
 const EIGEN_SHOP = /\/widgets\/schaffelaartheater\//i;
 const VERHUUR = /\bverhuur\b|^tegast$/i;
@@ -41,6 +41,13 @@ const WEGLATEN_GENRE = /^film$/i;
 // geen hotel 3", "De Grote Jaren 80 Show!") en niet bij het Nationaal
 // Theaterweekend ("Verrassingsvoorstelling …").
 const ARTIEST_EERST = /^(cabaret|show)$/i;
+// Titelregel per productie (Voorstelling – Maker), bron: de productiepagina's
+// van 7 okt 2026. "Peter Pannekoek" / "Demonen (Try-Out)" heeft geen genre;
+// "Tangarine" / "Running in the Family ll" (muziek) is de band met het programma.
+const ARTIEST_TITELS = new Set(['Peter Pannekoek', 'Tangarine']);
+// Een ondertitel die een omschrijving is ("Bouke Rocks Elvis" / "Een avond vol
+// Elvis-magie"): naar de beschrijving, de titel blijft.
+const OMSCHRIJVING = /^een (avond|middag|ode)\b/i;
 const GEEN_ARTIEST = (titel, onder) => /\d|!/.test(titel) || /nationaal theaterweekend/i.test(onder);
 
 // "Roel & Jos Maalderink - Verplaatst": de oude datum (de nieuwe staat op de eigen pagina).
@@ -86,6 +93,9 @@ function leesProductie() {
   const t = (e) => e?.textContent.trim().replace(/\s+/g, ' ') || null;
   const zij = document.querySelector('.production-info-side');
   const kop = [...(zij?.querySelectorAll('h5') ?? [])].find((h) => /locatie/i.test(h.textContent));
+  // Een voorbije productie houdt haar adres, maar de pagina toont dan alleen
+  // het kale sjabloon (geen #production-page): archief, nooit meer ophalen.
+  if (!document.querySelector('#production-page')) return { archief: true, titel: null, onder: null, genres: [], zaal: null, prijs: null, rijen: [] };
   return {
     titel: t(document.querySelector('h1.production-content-title')),
     onder: t(document.querySelector('.production-content-subtitle')),
@@ -136,7 +146,7 @@ export async function scrapeSchaffelaar({ page, theater, robots, waitForTurn, lo
   for (const { url, lastmod } of adressen) {
     const oud = cache.get(url);
     // Een productie waarvan alle speeldata voorbij zijn, krijgt geen nieuwe.
-    if (oud && oud.rijen.length > 0 && oud.rijen.every((r) => (schaffelaarDatum(r.datum)?.datum ?? '9999') < vandaag)) {
+    if (oud && (oud.archief || (oud.rijen.length > 0 && oud.rijen.every((r) => (schaffelaarDatum(r.datum)?.datum ?? '9999') < vandaag)))) {
       voorbij++;
       continue;
     }
@@ -156,13 +166,14 @@ export async function scrapeSchaffelaar({ page, theater, robots, waitForTurn, lo
           const p = await gaNaar(page, url, { timeout: 30000 });
           if (!p || p.status() !== 200) throw new Error(`HTTP ${p?.status() ?? '?'}`);
           const data = await page.evaluate(leesProductie);
-          if (!data.titel) throw new Error('geen titel op de pagina');
+          if (!data.titel && !data.archief) throw new Error('geen titel op de pagina');
           return data;
         },
         { forceer: Boolean(gewijzigd) }
       );
       if (r.oud) log(`${url}: ${r.fout.message} — gegevens van een eerdere run gebruikt.`);
-      producties.push({ url, ...r.data });
+      if (r.data.archief) voorbij++;
+      else producties.push({ url, ...r.data });
     } catch (err) {
       mislukt++;
       log(`${url}: ${err.message} — overgeslagen.`);
@@ -188,7 +199,10 @@ export async function scrapeSchaffelaar({ page, theater, robots, waitForTurn, lo
     for (const g of p.genres) if (!LABELS.test(g) && !isBekendGenre(g)) tel(onbekend, g);
     const genreRuw = p.genres.find((g) => !LABELS.test(g)) ?? null;
     const kenmerk = p.onder?.match(KENMERK)?.[1] ?? p.titel.match(KENMERK)?.[1] ?? null;
-    const onder = p.onder?.replace(KENMERK, '').trim() || null;
+    // "Running in the Family ll": twee kleine L's voor Romeins II.
+    const onderKaal = p.onder?.replace(KENMERK, '').replace(/\s+ll$/, ' II').trim() || null;
+    const omschrijving = onderKaal && OMSCHRIJVING.test(onderKaal) ? onderKaal : null;
+    const onder = omschrijving ? null : onderKaal;
     const verplaatst = VERPLAATST.test(p.titel);
     const titel = p.titel.replace(VERPLAATST, '').replace(KENMERK, '').trim();
     const verhuur = [...p.genres, p.onder ?? ''].some((x) => VERHUUR.test(x));
@@ -219,14 +233,14 @@ export async function scrapeSchaffelaar({ page, theater, robots, waitForTurn, lo
         genre: normalizeGenre(genreRuw),
         genreRuw,
         beschikbaarheid: verplaatst ? 'verplaatst' : schaffelaarStatus(r.knop),
-        beschrijving: kenmerkTekst,
+        beschrijving: [kenmerkTekst, omschrijving].filter(Boolean).join('. ') || null,
         maker: onder,
         prijs,
         reserverenUrl: r.href && /^https?:/.test(r.href) ? r.href : p.url,
         bron: p.url,
         opgehaaldOp,
       };
-      const artiestEerst = ARTIEST_EERST.test(genreRuw ?? '') && onder && !/:\s/.test(titel) && !GEEN_ARTIEST(titel, onder);
+      const artiestEerst = onder && ((ARTIEST_EERST.test(genreRuw ?? '') && !/:\s/.test(titel) && !GEEN_ARTIEST(titel, onder)) || ARTIEST_TITELS.has(titel));
       shows.push(artiestEerst ? pasTitelConventieToe(show, { artiest: titel, voorstelling: onder, makerWordtLeeg: true, alleGenres: true }) : show);
     }
   }

@@ -23,6 +23,8 @@ const sitemap = `<?xml version="1.0" encoding="utf-8"?><urlset>
   <url><loc>${BASIS}/agenda/klaas-van-der-eerden/</loc><lastmod>2026-09-30T12:10:24+00:00</lastmod></url>
   <url><loc>${BASIS}/agenda/de-notenkraker/</loc><lastmod>2026-09-01T12:00:00+00:00</lastmod></url>
   <url><loc>${BASIS}/agenda/oud-concert/</loc><lastmod>2025-01-01T12:00:00+00:00</lastmod></url>
+  <url><loc>${BASIS}/agenda/archief/</loc><lastmod>2024-01-01T12:00:00+00:00</lastmod></url>
+  <url><loc>${BASIS}/agenda/bouke-rocks-elvis/</loc><lastmod>2026-08-01T12:00:00+00:00</lastmod></url>
   <url><loc>${BASIS}/je-bezoek/podiumpas/</loc></url>
 </urlset>`;
 const pagina = (titel, onder, genre, rijen) => `<!doctype html><article id="production-page">
@@ -38,6 +40,9 @@ const PAGINAS = {
     ['zo. 13-12-2026 | 19:30', 'Uitverkocht', ''],
   ]),
   '/agenda/oud-concert/': pagina('Oud concert', 'Iemand', 'muziek', [['za. 11-01-2025 | 20:00', 'Kaarten', '']]),
+  // Voorbije productie: alleen het kale sjabloon, zonder #production-page.
+  '/agenda/archief/': '<!doctype html><div id="header">Agenda</div><p>Terug naar de agenda</p>',
+  '/agenda/bouke-rocks-elvis/': pagina('Bouke Rocks Elvis', 'Een avond vol Elvis-magie', 'show', [['za. 06-02-2027 | 20:00', 'Kaarten', '']]),
 };
 
 async function draai() {
@@ -67,20 +72,21 @@ test('Schaffelaar: sitemap + productiepagina\'s, cabaretconventie, extern zonder
     'Imperfect – Klaas van der Eerden | 2027-03-25 20:00 | beschikbaar | pas true | BDUmedia Grote Zaal | - | Try-out',
     'De Notenkraker | 2026-12-13 14:00 | beschikbaar | pas false | BDUmedia Grote Zaal | Charkiv City Ballet | -',
     'De Notenkraker | 2026-12-13 19:30 | uitverkocht | pas true | BDUmedia Grote Zaal | Charkiv City Ballet | -',
+    'Bouke Rocks Elvis | 2027-02-06 20:00 | beschikbaar | pas true | BDUmedia Grote Zaal | - | Een avond vol Elvis-magie',
   ]);
   assert.equal(shows[0].genre, 'Cabaret');
   assert.equal(shows[0].prijs, 28.5);
   assert.match(shows[0].reserverenUrl, /^https:\/\/apps\.ticketmatic\.com\/widgets\/schaffelaartheater\//);
   // Nieuwste lastmod eerst; /agenda/ zelf en andere pagina's niet.
-  assert.deepEqual(urls, ['/sitemap.xml', '/agenda/klaas-van-der-eerden/', '/agenda/de-notenkraker/', '/agenda/oud-concert/']);
+  assert.deepEqual(urls, ['/sitemap.xml', '/agenda/klaas-van-der-eerden/', '/agenda/de-notenkraker/', '/agenda/bouke-rocks-elvis/', '/agenda/oud-concert/', '/agenda/archief/']);
   assert.ok(logs.some((l) => /podiumpas: false bij extern verkocht \(1\)/.test(l)), logs.join('\n'));
   assert.equal(logs.some((l) => /WARN/.test(l)), false, logs.join('\n'));
 
-  // Tweede run: alleen de sitemap; de voorbije productie wordt niet meer opgehaald.
+  // Tweede run: alleen de sitemap; voorbije producties (ook het archief) worden niet meer opgehaald.
   const tweede = await draai();
   assert.deepEqual(tweede.urls, ['/sitemap.xml']);
   assert.deepEqual(tweede.shows.map(kort), shows.map(kort));
-  assert.ok(tweede.logs.some((l) => /2 uit de cache, 1 voorbij/.test(l)), tweede.logs.join('\n'));
+  assert.ok(tweede.logs.some((l) => /3 uit de cache, 2 voorbij/.test(l)), tweede.logs.join('\n'));
 });
 
 test('Schaffelaar: datum, status en sitemap', () => {
@@ -89,5 +95,5 @@ test('Schaffelaar: datum, status en sitemap', () => {
   assert.equal(schaffelaarStatus('Laatste kaarten'), 'beschikbaar');
   assert.equal(schaffelaarStatus('Uitverkocht'), 'uitverkocht');
   assert.equal(schaffelaarStatus('Geannuleerd'), 'afgelast');
-  assert.deepEqual(agendaUitSitemap(sitemap, BASIS).map((a) => a.url), [`${BASIS}/agenda/klaas-van-der-eerden/`, `${BASIS}/agenda/de-notenkraker/`, `${BASIS}/agenda/oud-concert/`]);
+  assert.equal(agendaUitSitemap(sitemap, BASIS).length, 5);
 });
