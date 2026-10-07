@@ -895,4 +895,36 @@ export const THEATERS = [
     // ~19 agendapagina's × 5 s crawl-delay ≈ 1,5 min.
     budgetMinuten: 5,
   },
+  // Musis en Stadstheater Arnhem: één site en één API (src/sites/musis.js),
+  // twee zalen; namen zoals de markers op podiumpas.nl/waar-te-besteden.
+  // Bron Podiumpas: https://podiumpas.nl/waar-te-besteden en
+  // https://www.musisenstadstheater.nl/nl/jouw-bezoek/podiumpas (7 okt
+  // 2026): reguliere voorstellingen en concerten; niet bij verhuur, gast of
+  // extern verkocht (per voorstelling, zie musis.js). Reserveren online, na
+  // eenmalige registratie van de pas.
+  {
+    id: 'musis',
+    naam: 'Musis Arnhem',
+    stad: 'Arnhem',
+    provincie: 'Gelderland',
+    baseUrl: 'https://www.musisenstadstheater.nl',
+    agendaUrl: 'https://www.musisenstadstheater.nl/nl/agenda',
+    podiumpas: true,
+    // Eerste run ~34 API-pagina's + ~200 detailpagina's (1 s), daarna ~65.
+    budgetMinuten: 8,
+  },
+  {
+    id: 'stadstheater',
+    naam: 'Stadstheater Arnhem',
+    stad: 'Arnhem',
+    provincie: 'Gelderland',
+    baseUrl: 'https://www.musisenstadstheater.nl',
+    agendaUrl: 'https://www.musisenstadstheater.nl/nl/agenda',
+    podiumpas: true,
+    budgetMinuten: 8,
+    // Bron: https://www.musisenstadstheater.nl/nl/verbouwing-stadstheater
+    // (7 okt 2026): het Stadstheater wordt vernieuwd, heropening volgens
+    // planning in 2028; geen speeldata in de agenda. Na de heropening weghalen.
+    melding: 'Gesloten wegens vernieuwing (heropening gepland in 2028). De voorstellingen staan bij Musis Arnhem.',
+  },
 ];

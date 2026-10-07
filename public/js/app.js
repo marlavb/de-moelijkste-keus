@@ -182,6 +182,8 @@ const THEATER_ZOEKALIASSEN = {
   oranjerie: ['oranjerie', 'theater roermond'],
   munttheater: ['munt', 'munttheater weert'],
   orpheus: ['orpheus', 'theater orpheus apeldoorn', 'apeldoorn'],
+  musis: ['musis', 'musis sacrum', 'musis en stadstheater', 'arnhem'],
+  stadstheater: ['stadstheater arnhem', 'musis en stadstheater', 'arnhem'],
 };
 
 const BESCHIKBAARHEID_LABELS = {

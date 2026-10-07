@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **66** (59 ok, 1 terugval, 1 leeg, 4 gepauzeerd, 1 onbekend)
-- Voorstellingen (titel per theater): **6954**
-- Speeldata: **9888**
-- Laatste refresh: **7 oktober 2026, 09:47** (Amsterdamse tijd)
+- Theaters: **68** (60 ok, 1 terugval, 2 leeg, 4 gepauzeerd, 1 onbekend)
+- Voorstellingen (titel per theater): **7238**
+- Speeldata: **10210**
+- Laatste refresh: **7 oktober 2026, 15:02** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -70,7 +70,12 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   `peppered.js` (Peppered), `wpTheatre.js` (Theater for WordPress) en
   `cre8ion.js` (The Cre8ion.Lab). Bellevue en Frascati lezen alle speeldata
   van de agendapagina's zelf (een verborgen paneel per productie), zonder
-  detailpagina's: bij Bellevue ~25 verzoeken (~2 min) in plaats van ~205. Dubbele speeldata gaan eruit binnen een
+  detailpagina's: bij Bellevue ~25 verzoeken (~2 min) in plaats van ~205.
+  Waar zaal of uitsluitingen alleen op een detailpagina staan (Musis Arnhem),
+  komen die uit een cache tussen runs (`detailCache.js`, bestand
+  `cache/detail/<theater>.json`, door de nachtelijke run gecommit): een nieuwe
+  productie meteen, een bekende hooguit één keer per week, verspreid over de
+  week; die gegevens kunnen dus tot een week achterlopen. Dubbele speeldata gaan eruit binnen een
   theater en tussen vaste paren theaters met één agenda-overlap
   (`dedupe.js`). Titels: waar een theater per genre een vaste volgorde van
   maker en titel heeft, wordt dat "Titel – Maker"; content warnings,
@@ -102,7 +107,8 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   minuut; mislukt die ook, dan geldt de vorige data. Sommige bronnen dienen
   meer theaters tegelijk (één scrape per run): Het Cenakel (De Link,
   S.M.E.T.), Theater aan het Vrijthof (ook AINSI, via de zoekindex van de
-  site) en PLT (Heerlen, Kerkrade, Sittard). Theaters zonder Podiumpas staan
+  site), PLT (Heerlen, Kerkrade, Sittard) en Musis en Stadstheater Arnhem
+  (één API; het Stadstheater is tot 2028 dicht en heeft een melding). Theaters zonder Podiumpas staan
   er ook in, met `podiumpas: false` (ITA, de Limburgse theaters behalve De
   Maaspoort en DOK6); de nieuwste theaters draaien achteraan in de run, elk
   met een eigen tijdbudget. Besloten verhuur (zonder kaartverkoop) laten we
@@ -193,7 +199,7 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v40`
+Service worker: `podiumagenda-v41`
 <!-- AUTO:sw:end -->
 
 ### Theaters
@@ -300,9 +306,11 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Markant Theater Maashorst | Uden | deels | ok |
 | Theater de Hofnar | Valkenswaard | deels | ok |
 
-**Gelderland** (1)
+**Gelderland** (3)
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
 | Theater Orpheus | Apeldoorn | – | onbekend |
+| Musis Arnhem | Arnhem | deels | ok |
+| Stadstheater Arnhem | Arnhem | – | leeg |
 <!-- AUTO:theaters:end -->
