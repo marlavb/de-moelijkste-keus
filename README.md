@@ -68,7 +68,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   `src/lib/config.js` (met bron en datum); een theater dat ons weert staat daar
   op `gepauzeerd` en krijgt geen enkel verzoek. Gedeelde modules per platform:
   `peppered.js` (Peppered), `wpTheatre.js` (Theater for WordPress) en
-  `cre8ion.js` (The Cre8ion.Lab). Dubbele speeldata gaan eruit binnen een
+  `cre8ion.js` (The Cre8ion.Lab). Bellevue en Frascati lezen alle speeldata
+  van de agendapagina's zelf (een verborgen paneel per productie), zonder
+  detailpagina's: bij Bellevue ~25 verzoeken (~2 min) in plaats van ~205. Dubbele speeldata gaan eruit binnen een
   theater en tussen vaste paren theaters met één agenda-overlap
   (`dedupe.js`). Titels: waar een theater per genre een vaste volgorde van
   maker en titel heeft, wordt dat "Titel – Maker"; content warnings,

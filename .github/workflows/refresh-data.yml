@@ -64,7 +64,9 @@ jobs:
     needs: vandaag
     if: needs.vandaag.outputs.al_gedaan != 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    # Ruim boven de 80-minutengrens van "Nachtrun beoordelen" (die maakt de
+    # run al rood bij een te lange scrape); 120 min sinds okt 2026 (was 90).
+    timeout-minutes: 120
     steps:
       # ref: main in plaats van de commit waarop de run getriggerd werd: een
       # run die in de concurrency-wachtrij stond, moet de nieuwste main
