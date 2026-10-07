@@ -4,6 +4,7 @@ import { pasTitelConventieToe, isWervend, isGeenMaker, titelUitKopEnOndertitel }
 import { vervallenStatus } from '../lib/beschikbaarheid.js';
 import { blokkeerZwareBronnen } from '../lib/zwareBronnen.js';
 import { gaNaar } from '../lib/diagnose.js';
+import { makerStaatInTitel } from '../../public/js/weergave.js';
 
 const AGENDA_PATH = '/theater/';
 
@@ -30,6 +31,28 @@ const PODIUMPAS_UITGESLOTEN = /\b(yes ?jazz|tonpraoten|kinderbuffet)/i;
 // beschrijving.
 const VOLGORDE_PER_GENRE = { cabaret: 'maker-titel', theatercollege: 'maker-titel', jeugdtheater: 'titel-maker' };
 const REEKS = /^yes ?jazz$/i;
+
+// Muziek (7 okt 2026, na de eerste nachtrun): bijna altijd Artiest /
+// Voorstelling ("Loïs Lane" / "Loïs Lane in concert: 40 jaar", "Tim Knol" /
+// "Wanderings"). Uitzonderingen: een tribute of tagline als teaser ("The
+// Cosmic Carnival" / "A tribute to Fleetwood Mac", "Best of Ireland" / "De
+// grootste hits uit Ierland!") gaat naar de beschrijving; een organisator of
+// ensemble ("Bandjesdag" / "de Hofnar – kunstencentrum", "UNA Proms" /
+// "Harmonie en slagwerkgroep UNA") blijft maker.
+const TAGLINE = /tribute|hit show|grootste hits/i;
+const ORGANISATOR = /kunstencentrum|^harmonie\b/i;
+
+/** Titelvolgorde van een Hofnar-productie (zie titelUitKopEnOndertitel), of null: oude aanpak. */
+export function hofnarVolgorde(genre, teaser) {
+  if (REEKS.test(teaser ?? '')) return 'titel-beschrijving';
+  const g = String(genre ?? '').toLowerCase();
+  if (g === 'muziek' && teaser) {
+    if (TAGLINE.test(teaser)) return 'titel-beschrijving';
+    if (ORGANISATOR.test(teaser)) return 'titel-maker';
+    return 'maker-titel';
+  }
+  return VOLGORDE_PER_GENRE[g] ?? null;
+}
 
 // Geen voorstelling (inventarisatie, akkoord 6 okt 2026): evenementen en
 // festivals.
@@ -167,8 +190,15 @@ export async function scrapeHofnar({ page, theater, robots, waitForTurn, log, wa
         bron: url.toString(),
         opgehaaldOp,
       };
-      const volgorde = REEKS.test(p.teaser ?? '') ? 'titel-beschrijving' : VOLGORDE_PER_GENRE[(p.genre ?? '').toLowerCase()] ?? null;
-      const vast = volgorde ? titelUitKopEnOndertitel(show, { kop: p.titel, ondertitel: p.teaser, volgorde }) : null;
+      const volgorde = hofnarVolgorde(p.genre, p.teaser);
+      // Staat de artiest al in de voorstellingsnaam ("Rhobijn – 40 jaar Rowwen
+      // Hèze"), dan alleen de voorstelling als titel, niet twee keer de artiest.
+      const alInNaam = volgorde === 'maker-titel' && makerStaatInTitel(p.teaser, p.titel);
+      const vast = alInNaam
+        ? { ...show, titel: p.teaser, maker: null, beschrijving: null }
+        : volgorde
+          ? titelUitKopEnOndertitel(show, { kop: p.titel, ondertitel: p.teaser, volgorde })
+          : null;
       shows.push(vast ?? pasTitelConventieToe(show, { artiest: p.titel, voorstelling: p.teaser, makerWordtLeeg: true }));
     }
   }

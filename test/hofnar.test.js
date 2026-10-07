@@ -68,3 +68,19 @@ test('Hofnar: één pagina per productie (niet dubbel), tijden uit de productiep
   // Festival weggelaten.
   assert.equal(shows.some((s) => s.genreRuw === 'Festival'), false);
 });
+
+test('Hofnar Muziek: Artiest / Voorstelling → "Voorstelling – Artiest"; tribute naar beschrijving; organisator blijft maker', async () => {
+  const { hofnarVolgorde } = await import('../src/sites/hofnar.js');
+  const { titelUitKopEnOndertitel } = await import('../src/lib/titels.js');
+  assert.equal(hofnarVolgorde('Muziek', 'Wanderings'), 'maker-titel');
+  assert.equal(hofnarVolgorde('Muziek', 'A tribute to Fleetwood Mac'), 'titel-beschrijving');
+  assert.equal(hofnarVolgorde('Muziek', 'International Hit Show'), 'titel-beschrijving');
+  assert.equal(hofnarVolgorde('Muziek', 'de Hofnar – kunstencentrum'), 'titel-maker');
+  assert.equal(hofnarVolgorde('Muziek', 'Harmonie en slagwerkgroep UNA'), 'titel-maker');
+  assert.equal(hofnarVolgorde('Muziek', 'Yes Jazz'), 'titel-beschrijving');
+  assert.equal(hofnarVolgorde('Toneel', 'Wanderings'), null);
+  assert.equal(hofnarVolgorde('Cabaret', 'De Verbinders'), 'maker-titel');
+  const tim = titelUitKopEnOndertitel({ titel: 'Tim Knol', maker: null, genre: 'Muziek & Concert' }, { kop: 'Tim Knol', ondertitel: 'Wanderings', volgorde: hofnarVolgorde('Muziek', 'Wanderings') });
+  assert.equal(tim.titel, 'Wanderings – Tim Knol');
+  assert.equal(tim.maker, null);
+});
