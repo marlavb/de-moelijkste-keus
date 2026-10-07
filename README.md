@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **65** (42 ok, 1 leeg, 4 gepauzeerd, 18 onbekend)
-- Voorstellingen (titel per theater): **4498**
-- Speeldata: **6891**
-- Laatste refresh: **6 oktober 2026, 13:03** (Amsterdamse tijd)
+- Theaters: **65** (59 ok, 1 terugval, 1 leeg, 4 gepauzeerd)
+- Voorstellingen (titel per theater): **6954**
+- Speeldata: **9888**
+- Laatste refresh: **7 oktober 2026, 05:59** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -198,7 +198,7 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Koninklijk Theater Carré | Amsterdam | nee | ok |
 | Muziekgebouw aan 't IJ | Amsterdam | ja | ok |
 | Plein Theater | Amsterdam | nee | ok |
-| Podium Mozaïek | Amsterdam | ja | ok |
+| Podium Mozaïek | Amsterdam | ja | terugval |
 | Scala Theater | Amsterdam | ja | ok |
 | Stadsschouwburg Amsterdam | Amsterdam | nee | ok |
 | Theater Bellevue | Amsterdam | ja | ok |
@@ -249,30 +249,30 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| Theater Heerlen | Heerlen | – | onbekend |
-| Theater Kerkrade | Kerkrade | – | onbekend |
-| AINSI | Maastricht | – | onbekend |
-| Theater aan het Vrijthof | Maastricht | – | onbekend |
+| Theater Heerlen | Heerlen | nee | ok |
+| Theater Kerkrade | Kerkrade | nee | ok |
+| AINSI | Maastricht | nee | ok |
+| Theater aan het Vrijthof | Maastricht | nee | ok |
 | DOK6 | Panningen | deels | ok |
-| Theater De Oranjerie | Roermond | – | onbekend |
-| Toon Hermans Theater Sittard | Sittard | – | onbekend |
+| Theater De Oranjerie | Roermond | nee | ok |
+| Toon Hermans Theater Sittard | Sittard | nee | ok |
 | De Maaspoort Theater & Events | Venlo | deels | ok |
-| Munttheater | Weert | – | onbekend |
+| Munttheater | Weert | nee | ok |
 
 **Noord-Brabant** (12)
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| Theater aan de Parade | 's-Hertogenbosch | – | onbekend |
-| Toonzaal Willem Twee | 's-Hertogenbosch | – | onbekend |
-| Kattendans | Bergeijk | – | onbekend |
+| Theater aan de Parade | 's-Hertogenbosch | deels | ok |
+| Toonzaal Willem Twee | 's-Hertogenbosch | deels | ok |
+| Kattendans | Bergeijk | deels | ok |
 | Parktheater Eindhoven | Eindhoven | – | gepauzeerd sinds 2026-10-06 |
-| Het Speelhuis | Helmond | – | onbekend |
-| De Link | Tilburg | – | onbekend |
-| Paradox | Tilburg | – | onbekend |
-| S.M.E.T. | Tilburg | – | onbekend |
-| Schouwburg Concertzaal | Tilburg | – | onbekend |
-| Theater De Nieuwe Vorst | Tilburg | – | onbekend |
-| Markant Theater Maashorst | Uden | – | onbekend |
-| Theater de Hofnar | Valkenswaard | – | onbekend |
+| Het Speelhuis | Helmond | ja | ok |
+| De Link | Tilburg | ja | ok |
+| Paradox | Tilburg | deels | ok |
+| S.M.E.T. | Tilburg | ja | ok |
+| Schouwburg Concertzaal | Tilburg | deels | ok |
+| Theater De Nieuwe Vorst | Tilburg | ja | ok |
+| Markant Theater Maashorst | Uden | deels | ok |
+| Theater de Hofnar | Valkenswaard | deels | ok |
 <!-- AUTO:theaters:end -->
