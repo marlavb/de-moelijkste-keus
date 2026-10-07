@@ -265,6 +265,8 @@ export async function runRefresh({
         laatsteSucces: vorige.laatsteSucces ?? null,
         terugvalSinds: null,
         terugvalReeks: 0,
+        dalingSinds: null,
+        dalingReeks: 0,
         fout: null,
         waarschuwing: null,
         gepauzeerd: theater.gepauzeerd,
@@ -338,6 +340,10 @@ export async function runRefresh({
       // Nachten op rij met terugval (nachtrunSignalen.js); een tweede run op
       // dezelfde dag telt niet dubbel.
       terugvalReeks: failed ? nachtenSinds(vorige.terugvalSinds ?? now().toISOString(), now()) : 0,
+      // Zelfde teller voor een scherpe daling (eerste nacht een waarschuwing,
+      // rood pas bij twee nachten op rij).
+      dalingSinds: outcome.waarschuwing ? (vorige.dalingSinds ?? now().toISOString()) : null,
+      dalingReeks: outcome.waarschuwing ? nachtenSinds(vorige.dalingSinds ?? now().toISOString(), now()) : 0,
       fout: outcome.fout,
       waarschuwing,
     };

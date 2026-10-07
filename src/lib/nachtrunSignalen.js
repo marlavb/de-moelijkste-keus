@@ -8,8 +8,10 @@
 // - Groen met waarschuwing: hooguit MAX_TERUGVAL theaters vallen terug en
 //   geen enkel theater ROOD_REEKS of meer nachten op rij.
 // - Rood: een theater ROOD_REEKS+ nachten op rij, meer dan MAX_TERUGVAL
-//   theaters in één nacht, een scherpe daling, een gefaalde stap (scrapen,
-//   datacheck, commit, deploy) of een scrape langer dan MAX_SCRAPE_MINUTEN.
+//   theaters in één nacht, een scherpe daling bij hetzelfde theater
+//   ROOD_REEKS+ nachten op rij (dalingReeks; de eerste nacht is een
+//   waarschuwing), een gefaalde stap (scrapen, datacheck, commit, deploy) of
+//   een scrape langer dan MAX_SCRAPE_MINUTEN.
 
 export const MAX_TERUGVAL = 3;
 export const ROOD_REEKS = 2;
@@ -53,14 +55,14 @@ export function beoordeelNachtrun({ status, scrapeSeconden = null, stappen = {} 
       terugval.push({ id, status: t.status, fout: t.fout ?? null, reeks: Math.max(1, t.terugvalReeks ?? 1) });
     } else if (t.status === 'leeg') aantallen.leeg++;
     else aantallen.ok++;
-    if (t.status !== 'gepauzeerd' && /scherpe daling/i.test(t.waarschuwing ?? '')) dalingen.push({ id, waarschuwing: t.waarschuwing });
+    if (t.status !== 'gepauzeerd' && /scherpe daling/i.test(t.waarschuwing ?? '')) dalingen.push({ id, waarschuwing: t.waarschuwing, reeks: Math.max(1, t.dalingReeks ?? 1) });
   }
   terugval.sort((a, b) => b.reeks - a.reeks || a.id.localeCompare(b.id));
 
   const rood = [];
   for (const t of terugval) if (t.reeks >= ROOD_REEKS) rood.push(`${t.id} valt ${t.reeks} nachten op rij terug`);
   if (terugval.length > MAX_TERUGVAL) rood.push(`${terugval.length} theaters vallen terug (meer dan ${MAX_TERUGVAL})`);
-  for (const d of dalingen) rood.push(`scherpe daling bij ${d.id}`);
+  for (const d of dalingen) if (d.reeks >= ROOD_REEKS) rood.push(`scherpe daling bij ${d.id}, ${d.reeks} nachten op rij`);
   for (const [stap, naam] of Object.entries(STAPPEN)) {
     if (stappen[stap] === 'failure' || stappen[stap] === 'cancelled') rood.push(`stap "${naam}" mislukt`);
   }
@@ -69,7 +71,10 @@ export function beoordeelNachtrun({ status, scrapeSeconden = null, stappen = {} 
   }
 
   if (rood.length) return { niveau: 'rood', redenen: rood, terugval, aantallen, scrapeSeconden };
-  const waarschuwing = terugval.length ? [`${terugval.length} theater(s) teruggevallen (1e nacht)`] : [];
+  const waarschuwing = [
+    ...(terugval.length ? [`${terugval.length} theater(s) teruggevallen (1e nacht)`] : []),
+    ...dalingen.map((d) => `scherpe daling bij ${d.id} (1e nacht): ${d.waarschuwing}`),
+  ];
   return { niveau: waarschuwing.length ? 'waarschuwing' : 'ok', redenen: waarschuwing, terugval, aantallen, scrapeSeconden };
 }
 

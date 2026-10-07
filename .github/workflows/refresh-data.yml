@@ -148,8 +148,9 @@ jobs:
       # Bewust de allerlaatste stap, ná commit en deploy, en altijd (ook na
       # een gefaalde stap). Rood alleen als er iets te doen is: een theater
       # 2+ nachten op rij teruggevallen, meer dan 3 in één nacht, een scherpe
-      # daling, een gefaalde stap of een scrape van meer dan 80 min. Eén
-      # nacht terugval bij hooguit 3 theaters: groen met een waarschuwing.
+      # daling 2+ nachten op rij, een gefaalde stap of een scrape van meer dan
+      # 80 min. Eén nacht terugval (hooguit 3 theaters) of één nacht een
+      # scherpe daling: groen met een waarschuwing.
       # Houdt het issue "Nachtrun: aandacht nodig" bij (aanmaken/bijwerken
       # bij rood, sluiten bij groen zonder terugval). Zie
       # src/lib/nachtrunSignalen.js en scripts/nachtrun-signalen.js.

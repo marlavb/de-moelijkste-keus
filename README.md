@@ -109,9 +109,10 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   zijn data).
   De run wordt alleen rood als er iets te doen is: een theater twee nachten
   op rij teruggevallen (`terugvalReeks` in `scrape-status.json`), meer dan
-  drie theaters in één nacht, een scherpe daling, een gefaalde stap of een
-  scrape van meer dan 80 minuten. Eén nacht terugval bij hooguit drie
-  theaters geeft een waarschuwing. Elke run heeft een samenvatting (looptijd,
+  drie theaters in één nacht, een scherpe daling bij hetzelfde theater twee
+  nachten op rij (`dalingReeks`), een gefaalde stap of een scrape van meer dan
+  80 minuten. Eén nacht terugval bij hooguit drie theaters, of één nacht een
+  scherpe daling, geeft een waarschuwing. Elke run heeft een samenvatting (looptijd,
   aantallen, per teruggevallen theater de fout en de reeks). Bij rood komt
   die in één GitHub-issue "Nachtrun: aandacht nodig" (label `nachtrun`); een
   groene run zonder terugval sluit het issue weer (`nachtrunSignalen.js`).

@@ -48,9 +48,17 @@ test('gepauzeerd telt niet mee, ook niet met een oude reeks; "fout" telt als ter
   assert.equal(f.niveau, 'waarschuwing');
 });
 
-test('rood bij scherpe daling, gefaalde stap of te lange scrape; deploy overgeslagen is geen fout', () => {
-  const daling = beoordeelNachtrun({ status: status({ a: { status: 'ok', waarschuwing: 'scherpe daling: 10 unieke komende voorstellingen, vorige keer 80' } }), stappen: stappenOk });
+test('scherpe daling: 1e nacht waarschuwing, 2e nacht rood; rood bij gefaalde stap of te lange scrape; deploy overgeslagen is geen fout', () => {
+  const dal = (reeks) => ({ status: 'ok', waarschuwing: 'scherpe daling: 10 unieke komende voorstellingen, vorige keer 80', dalingReeks: reeks });
+  // Eerste nacht: waarschuwing (ook zonder veld, oude data); tweede nacht op rij: rood.
+  const eerste = beoordeelNachtrun({ status: status({ a: dal(1) }), stappen: stappenOk });
+  assert.equal(eerste.niveau, 'waarschuwing');
+  assert.match(eerste.redenen[0], /scherpe daling bij a \(1e nacht\)/);
+  assert.equal(issueActie(eerste), 'niets');
+  assert.equal(beoordeelNachtrun({ status: status({ a: { ...dal(1), dalingReeks: undefined } }), stappen: stappenOk }).niveau, 'waarschuwing');
+  const daling = beoordeelNachtrun({ status: status({ a: dal(2) }), stappen: stappenOk });
   assert.equal(daling.niveau, 'rood');
+  assert.match(daling.redenen[0], /scherpe daling bij a, 2 nachten op rij/);
   for (const stap of ['scrape', 'datacheck', 'commit', 'deploy']) {
     assert.equal(beoordeelNachtrun({ status: status(), stappen: { ...stappenOk, [stap]: 'failure' } }).niveau, 'rood', stap);
   }
