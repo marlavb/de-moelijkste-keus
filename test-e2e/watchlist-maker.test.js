@@ -41,7 +41,9 @@ before(async () => {
   await wisEmulators();
   uid = await maakAccount(ACCOUNT);
   const ruw = JSON.parse(await readFile(path.join(new URL('../public/', import.meta.url).pathname, 'data/shows.json'), 'utf-8'));
-  data[0] = Array.isArray(ruw) ? ruw : ruw.shows;
+  // Stand 0: de makers zoals de theaters ze geven (makerBron; de data na
+  // een nachtrun heeft de maker op productieniveau al).
+  data[0] = (Array.isArray(ruw) ? ruw : ruw.shows).map(({ makerBron, ...s }) => (makerBron !== undefined ? { ...s, maker: makerBron } : s));
   data[1] = pasMakerMeerderheidToe(data[0]).shows;
 
   teckelSsu = data[0].find((s) => s.theaterId === 'stadsschouwburgutrecht' && sleutel(s) === 'teckel' && s.datum >= vandaag);
@@ -107,8 +109,7 @@ test('profiel en delen aan (Oké)', async () => {
 
 test('Gezien: Teckel zelf aangevinkt zonder maker; na de maker op productieniveau aangevuld (Firestore, kopie voor vrienden, eenvoudig scherm)', async () => {
   const { page } = ik;
-  stand = 0;
-  await ga(page, base, `#/show/${encodeURIComponent(teckelSsu.id)}`);
+  await nieuweStand(page, 0, `#/show/${encodeURIComponent(teckelSsu.id)}`);
   await page.waitForSelector('#screen-detail:not([hidden])');
   assert.equal(await page.isVisible('#detailMaker'), false);
   await page.click('#detailGezienBtn');
