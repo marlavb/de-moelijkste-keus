@@ -41,6 +41,13 @@ const TR_RESERVEREN = {
   toelichting: 'Via de kassa: telefonisch (ma–vr 14–17 uur), per mail of aan de balie, vanaf 30 dagen voor de voorstelling.',
 };
 
+// Bron: https://www.agnietenhof.nl/kaartverkoopinformatie-jxyz (7 okt 2026)
+const AGNIETENHOF_RESERVEREN = {
+  telefoon: '0344 673 500',
+  email: 'kassa@cultuurbedrijftiel.nl',
+  toelichting: 'Alleen via de kassa: telefonisch, per mail of aan de balie, vanaf 30 dagen voor de voorstelling; tickets tot €50.',
+};
+
 // `provincie` (sinds 30 sep 2026): voor een latere provinciefilter; nog niet
 // in de UI. Bij elk nieuw theater invullen.
 //
@@ -894,6 +901,28 @@ export const THEATERS = [
     podiumpas: true,
     // ~19 agendapagina's × 5 s crawl-delay ≈ 1,5 min.
     budgetMinuten: 5,
+  },
+  // Bron Podiumpas: https://podiumpas.nl/waar-te-besteden en
+  // https://www.agnietenhof.nl/kaartverkoopinformatie-jxyz (7 okt 2026): alleen
+  // via de kassa, tot €50; geen films, STIP, verhuur/extern (zie
+  // src/sites/agnietenhof.js). Op podiumpas.nl als "Cultuurbedrijf Tiel".
+  {
+    id: 'agnietenhof',
+    naam: 'Schouwburg Agnietenhof',
+    stad: 'Tiel',
+    provincie: 'Gelderland',
+    baseUrl: 'https://www.agnietenhof.nl',
+    agendaUrl: 'https://www.agnietenhof.nl/agenda',
+    podiumpas: true,
+    podiumpasReserveren: AGNIETENHOF_RESERVEREN,
+    // 7 okt 2026: de agendapagina geeft onze browser (Playwright) HTTP 403
+    // met een BunnyCDN-botcontrole ("Establishing a secure connection…"),
+    // ook bij één gewone herpoging 's middags. Niet omzeilen; de scraper
+    // staat klaar (getest op een bewaarde agendapagina). Terugzetten = deze
+    // regel weghalen.
+    gepauzeerd: { sinds: '2026-10-07', reden: 'BunnyCDN-botcontrole (403)' },
+    // ~24 agendapagina's + ~20 detailpagina's × 5 s crawl-delay ≈ 4 min.
+    budgetMinuten: 7,
   },
   // Musis en Stadstheater Arnhem: één site en één API (src/sites/musis.js),
   // twee zalen; namen zoals de markers op podiumpas.nl/waar-te-besteden.

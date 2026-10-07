@@ -427,6 +427,8 @@ export function leesPepperedKaarten() {
       prijs: tekst(card.querySelector('.meta .price')),
       zaal: tekst(card.querySelector('.descMetaContainer .venue')),
       maker: card.querySelector('.subtitle')?.textContent.trim() || null,
+      // "production-type-movie" bij films (Agnietenhof).
+      film: card.classList.contains('production-type-movie'),
       rijen,
     };
   });
