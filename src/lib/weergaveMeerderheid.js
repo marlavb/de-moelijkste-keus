@@ -176,7 +176,8 @@ export function pasMeerderheidToe(shows, { beslissingen = null } = {}) {
     const titel = gekozen.get(`${sleutel}\u0001${vormSleutel(s.titel)}`);
     if (!titel || titel === s.titel) return s;
     gewijzigd++;
-    return { ...s, titel, titelBron: s.titel };
+    // Al samengevoegd (productieSamenvoegen.js): de brontitel van toen blijft.
+    return { ...s, titel, titelBron: s.titelBron ?? s.titel };
   });
   return { shows: uit, gewijzigd };
 }

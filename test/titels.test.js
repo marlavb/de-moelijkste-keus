@@ -234,3 +234,15 @@ test('Markant (7 okt 2026): "Alain Clark" / "Date Night" omgedraaid, zelfde prod
   assert.equal(r.maker, 'Alain Clark');
   assert.equal(watchlistSleutel(r.titel, 'markant'), 'date night');
 });
+
+test('Toneelgroep Maastricht (Flint, Het Speelhuis): omgedraaid naar "Bijna een leven"', async () => {
+  const { draaiTitelEnMakerOm } = await import('../src/lib/titels.js');
+  const fl = draaiTitelEnMakerOm({ theaterId: 'flint', titel: 'Toneelgroep Maastricht – Stichting NOX', maker: 'Bijna een leven' });
+  assert.equal(fl.titel, 'Bijna een leven');
+  assert.equal(fl.maker, 'Toneelgroep Maastricht – Stichting NOX');
+  const sp = draaiTitelEnMakerOm({ theaterId: 'speelhuis', titel: 'Toneelgroep Maastricht', maker: 'Bijna een leven' });
+  assert.equal(sp.titel, 'Bijna een leven');
+  assert.equal(sp.maker, 'Toneelgroep Maastricht');
+  // Nhung Dam bij Flint blijft werken.
+  assert.equal(draaiTitelEnMakerOm({ theaterId: 'flint', titel: 'Nhung Dam', maker: 'Legende van de witte slang' }).titel, 'Legende van de witte slang');
+});

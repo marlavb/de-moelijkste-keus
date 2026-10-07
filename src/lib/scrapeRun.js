@@ -10,6 +10,7 @@ import { volgNavigatie, paginaDiagnose } from './diagnose.js';
 import { pasMeerderheidToe } from './weergaveMeerderheid.js';
 import { pasGenreMeerderheidToe } from './genreMeerderheid.js';
 import { pasMakerMeerderheidToe } from './makerMeerderheid.js';
+import { pasProductieSamenvoegingToe } from './productieSamenvoegen.js';
 import { metEnDash, zonderStatusWoord, isGeenMaker, makerZonderVoorvoegsel, draaiTitelEnMakerOm } from './titels.js';
 import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
@@ -375,13 +376,14 @@ export async function runRefresh({
     // centraal op null gezet voor elke andere show, in plaats van dat elke
     // afzonderlijke scraper-module het zelf moet opnemen.
     // Eén scheidingsteken in titels en makers (" - " → " – ", zie titels.js).
-    .map(({ titelBron, genreBron, makerBron, genres, ...s }) => {
+    .map(({ titelBron, genreBron, makerBron, beschrijvingBron, genres, ...s }) => {
       // Behouden voorstellingen van de vorige run: eerst terug naar de
       // brontitel, het brongenre en de bronmaker, zodat ontdubbeling en
       // stemming steeds op de bron werken (genreBron/makerBron kunnen null
       // zijn: "had geen genre/maker").
       if (genreBron !== undefined) s.genre = genreBron;
       if (makerBron !== undefined) s.maker = makerBron;
+      if (beschrijvingBron !== undefined) s.beschrijving = beschrijvingBron;
       // Omgedraaide titel en maker (titels.js, OMGEDRAAID): de scraper doet
       // dit al; hier ook voor behouden data van een theater dat faalde.
       const recht = draaiTitelEnMakerOm({ ...s, titel: titelBron ?? s.titel });
@@ -413,9 +415,16 @@ export async function runRefresh({
   // Dezelfde speeldatum bij twee theaters (vaste paren, zie dedupe.js): één bron.
   const { shows: ontdubbeld, verwijderd: tussenTheaters } = ontdubbelTussenTheaters(binnenTheater);
   for (const v of tussenTheaters) log(`[${v.theaterId}] "${v.titel}" ${v.datum} ${v.tijd ?? ''} staat ook bij ${v.voorrang} — daar gelaten.`);
+  // Dezelfde productie met een langere/kortere titel → één productie
+  // (productieSamenvoegen.js); brontitel als titelBron.
+  const samen = pasProductieSamenvoegingToe(ontdubbeld);
+  if (samen.titelUitBeschrijving.length) log(`${samen.titelUitBeschrijving.length} titel(s) "artiest" → "Voorstelling – Artiest" uit de beschrijving.`);
+  const samenGewijzigd = samen.shows.filter((s, i) => s.titel !== ontdubbeld[i].titel).length;
+  if (samenGewijzigd) log(`${samenGewijzigd} voorstelling(en) samengevoegd met dezelfde productie van dezelfde maker (titelBron bewaard).`);
+  for (const o of samen.overgeslagen) log(`Niet samengevoegd (generiek begin "${o.begin}", maker ${o.maker}): ${o.producties.join('; ')}.`);
   // Weergavetitel op meerderheid (weergaveMeerderheid.js); brontitel blijft
   // als titelBron.
-  const { shows: metWeergave, gewijzigd: titelsOpMeerderheid } = pasMeerderheidToe(ontdubbeld);
+  const { shows: metWeergave, gewijzigd: titelsOpMeerderheid } = pasMeerderheidToe(samen.shows);
   if (titelsOpMeerderheid > 0) log(`${titelsOpMeerderheid} titel(s) naar de weergave van de meeste theaters (titelBron bewaard).`);
   // Genre op productieniveau (genreMeerderheid.js); brongenre als genreBron.
   const { shows: metGenre, gewijzigd: genresOpMeerderheid } = pasGenreMeerderheidToe(metWeergave);

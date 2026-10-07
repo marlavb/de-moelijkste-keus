@@ -651,3 +651,26 @@ test('dalingReeks: telt nachten op rij met een scherpe daling, terug op 0 als he
   assert.equal(herstel.writtenStatus.theaters.a.dalingReeks, 0);
   assert.equal(herstel.writtenStatus.theaters.a.dalingSinds, null);
 });
+
+test('productie samenvoegen: Greg Shapiro wordt één productie; bron (titel en beschrijving) terug bij teruggevallen data', async () => {
+  const paths = await setup();
+  const scrapers = {
+    stadsgehoorzaal: async () => [show('stadsgehoorzaal', '2026-11-04', { titel: 'Greg Shapiro', genre: 'Overig', beschrijving: 'KING ME | 250 years of Donald Trump' })],
+    cpunt: async () => [show('cpunt', '2026-10-23', { titel: 'KING ME – 250 years of Donald Trump – Greg Shapiro', genre: 'Cabaret', volgordeZeker: true })],
+    stoep: async () => [show('stoep', '2026-10-21', { titel: 'KING ME – Greg Shapiro', genre: 'Cabaret', volgordeZeker: true })],
+  };
+  const theaters = [theater('stadsgehoorzaal'), theater('cpunt'), theater('stoep')];
+  const eerste = await run({ paths, theaters, scrapers });
+  for (const t of ['stadsgehoorzaal', 'cpunt', 'stoep']) assert.equal(eerste.written.find((x) => x.theaterId === t).titel, 'KING ME – Greg Shapiro', t);
+  const sgz = eerste.written.find((x) => x.theaterId === 'stadsgehoorzaal');
+  assert.equal(sgz.genre, 'Cabaret');
+  assert.equal(sgz.titelBron, 'Greg Shapiro');
+  assert.equal(sgz.beschrijving, '250 years of Donald Trump');
+  // Tweede run: Stadsgehoorzaal valt terug; de bron gaat terug en wordt opnieuw samengevoegd.
+  const tweede = await run({ paths, theaters, scrapers: { ...scrapers, stadsgehoorzaal: failing } });
+  const sgz2 = tweede.written.find((x) => x.theaterId === 'stadsgehoorzaal');
+  assert.equal(sgz2.titel, 'KING ME – Greg Shapiro');
+  assert.equal(sgz2.titelBron, 'Greg Shapiro');
+  assert.equal(sgz2.beschrijving, '250 years of Donald Trump');
+  assert.equal(sgz2.beschrijvingBron, 'KING ME | 250 years of Donald Trump');
+});

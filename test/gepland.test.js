@@ -143,3 +143,14 @@ test('titel uitgebreid met de voorstellingsnaam: exact gekoppeld, plan bijgewerk
   const twee = indexeerShows([nieuw, { ...nieuw, id: 'x', titel: 'Sara Kroos – Gelukskoekje' }]);
   assert.equal(koppel(plan.gepland[0], twee).soort, 'weg');
 });
+
+test('plan op een titel die is samengevoegd (korter geworden): via titelBron gekoppeld en bijgewerkt', async () => {
+  const { koppel, werkPlannenBij, indexeerShows, geplandSleutel } = await import('../public/js/gepland.js');
+  const show = { id: 'kk', titel: 'KING ME – Greg Shapiro', titelBron: 'King Me – 250 years of Donald Trump – Greg Shapiro', theaterId: 'kleinekomedie', datum: '2026-11-01', tijd: '20:15' };
+  const item = { sleutel: 'oud', titel: 'KING ME – 250 years of Donald Trump – Greg Shapiro', theaterId: 'kleinekomedie', datum: '2026-11-01', tijd: '20:15', status: 'gepland', toegevoegdOp: 1, gewijzigdOp: 1 };
+  const index = indexeerShows([show]);
+  assert.equal(koppel(item, index).soort, 'exact');
+  const r = werkPlannenBij({ gepland: [item], geplandVerwijderd: [] }, index);
+  assert.equal(r.profiel.gepland[0].sleutel, geplandSleutel(show));
+  assert.equal(r.profiel.gepland[0].titel, 'KING ME – Greg Shapiro');
+});

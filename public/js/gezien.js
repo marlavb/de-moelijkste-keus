@@ -372,15 +372,41 @@ export function pasGezienMappingToe(profiel, bekend = new Map(), mapping = GEZIE
 }
 
 /**
+ * Gezien-items en tombstones met een oude productiesleutel naar de
+ * samengevoegde sleutel (samenvoegMapping in watchlist.js). Bezoeken en
+ * sterren gaan mee; staat de nieuwe sleutel er al, dan voegen ze samen.
+ * Idempotent. Geeft { profiel, gewijzigd }.
+ */
+export function pasGezienSamenvoegingToe(profiel, mapping) {
+  if (!mapping?.size) return { profiel, gewijzigd: false };
+  let gewijzigd = false;
+  const gezien = (profiel?.gezien ?? []).map((i) => {
+    const naar = mapping.get(i.sleutel);
+    if (!naar) return i;
+    gewijzigd = true;
+    return { ...i, sleutel: naar };
+  });
+  const gezienVerwijderd = (profiel?.gezienVerwijderd ?? []).map((t) => {
+    const naar = mapping.get(t.sleutel);
+    if (!naar) return t;
+    gewijzigd = true;
+    return { ...t, sleutel: naar };
+  });
+  if (!gewijzigd) return { profiel, gewijzigd };
+  return { profiel: voegGezienSamen({ gezien, gezienVerwijderd }), gewijzigd };
+}
+
+/**
  * Eén laadronde (localStorage of Firestore, eventueel met de lokale lijst
  * erbij). Met `info` (infoPerSleutel) worden items aangevuld met maker en
  * genre; met `bekend` (bekendeSleutels) gaan items via GEZIEN_MAPPING naar
  * een nieuwe sleutel.
  */
-export function laadGezien({ opgeslagen, extra = null, info = null, bekend = null, mapping = GEZIEN_MAPPING }) {
+export function laadGezien({ opgeslagen, extra = null, info = null, bekend = null, mapping = GEZIEN_MAPPING, samenvoeging = null }) {
   const basis = { gezien: opgeslagen?.gezien ?? [], gezienVerwijderd: opgeslagen?.gezienVerwijderd ?? [] };
   const samengevoegd = voegGezienSamen(basis, extra ?? legeGezien());
-  const samen = bekend ? pasGezienMappingToe(samengevoegd, bekend, mapping).profiel : samengevoegd;
+  const gemapt = bekend ? pasGezienMappingToe(samengevoegd, bekend, mapping).profiel : samengevoegd;
+  const samen = pasGezienSamenvoegingToe(gemapt, samenvoeging).profiel;
   const profiel = info ? vulGezienAan(samen, info).profiel : samen;
   return { profiel, gewijzigd: JSON.stringify(profiel) !== JSON.stringify(basis) };
 }
