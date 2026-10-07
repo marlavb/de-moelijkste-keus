@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **69** (59 ok, 1 terugval, 1 leeg, 5 gepauzeerd, 3 onbekend)
-- Voorstellingen (titel per theater): **6953**
-- Speeldata: **9888**
-- Laatste refresh: **7 oktober 2026, 15:07** (Amsterdamse tijd)
+- Theaters: **70** (60 ok, 1 terugval, 1 leeg, 5 gepauzeerd, 3 onbekend)
+- Voorstellingen (titel per theater): **6955**
+- Speeldata: **9900**
+- Laatste refresh: **7 oktober 2026, 15:11** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -74,6 +74,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   Orpheus (Apeldoorn) en Agnietenhof (Tiel) werken net zo; bij Agnietenhof
   krijgt alleen een kaart met meer speeldata (knop "Speeldata", zonder
   paneel) een detailpagina, en films vallen weg.
+  Van Huis Oostpool (Arnhem) nemen we uit de agenda van Theater Oostpool
+  alleen de speeldata in het eigen huis; de tournee staat al bij de andere
+  theaters.
   Waar zaal of uitsluitingen alleen op een detailpagina staan (Musis Arnhem),
   komen die uit een cache tussen runs (`detailCache.js`, bestand
   `cache/detail/<theater>.json`, door de nachtelijke run gecommit): een nieuwe
@@ -309,11 +312,12 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Markant Theater Maashorst | Uden | deels | ok |
 | Theater de Hofnar | Valkenswaard | deels | ok |
 
-**Gelderland** (4)
+**Gelderland** (5)
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
 | Theater Orpheus | Apeldoorn | – | onbekend |
+| Huis Oostpool | Arnhem | ja | ok |
 | Musis Arnhem | Arnhem | – | onbekend |
 | Stadstheater Arnhem | Arnhem | – | onbekend |
 | Schouwburg Agnietenhof | Tiel | – | gepauzeerd sinds 2026-10-07 |

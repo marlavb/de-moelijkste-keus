@@ -924,6 +924,24 @@ export const THEATERS = [
     // ~24 agendapagina's + ~20 detailpagina's × 5 s crawl-delay ≈ 4 min.
     budgetMinuten: 7,
   },
+  {
+    id: 'oostpool',
+    naam: 'Huis Oostpool',
+    stad: 'Arnhem',
+    provincie: 'Gelderland',
+    baseUrl: 'https://www.oostpool.nl',
+    agendaUrl: 'https://www.oostpool.nl/agenda/',
+    // Bron: https://podiumpas.nl/waar-te-besteden en
+    // https://www.oostpool.nl/huistheater/bestel-bezoekinfo/podiumpas/ (7 okt
+    // 2026): Podiumpas geldig in Huis Oostpool; online na registratie.
+    podiumpas: true,
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Online, vanaf 30 dagen voor de voorstelling, nadat je je pas via het formulier op de site hebt geregistreerd (dat duurt een paar werkdagen). Anders aan de deur, als het niet uitverkocht is.',
+    },
+    // Eén agendapagina; alleen de speeldata in Huis Oostpool (zie oostpool.js).
+    budgetMinuten: 2,
+  },
   // Musis en Stadstheater Arnhem: één site en één API (src/sites/musis.js),
   // twee zalen; namen zoals de markers op podiumpas.nl/waar-te-besteden.
   // Bron Podiumpas: https://podiumpas.nl/waar-te-besteden en

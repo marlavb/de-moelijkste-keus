@@ -183,6 +183,7 @@ const THEATER_ZOEKALIASSEN = {
   munttheater: ['munt', 'munttheater weert'],
   orpheus: ['orpheus', 'theater orpheus apeldoorn', 'apeldoorn'],
   agnietenhof: ['agnietenhof', 'schouwburg tiel', 'cultuurbedrijf tiel', 'tiel'],
+  oostpool: ['oostpool', 'theater oostpool', 'huis oostpool arnhem', 'arnhem'],
   musis: ['musis', 'musis sacrum', 'musis en stadstheater', 'arnhem'],
   stadstheater: ['stadstheater arnhem', 'musis en stadstheater', 'arnhem'],
 };
