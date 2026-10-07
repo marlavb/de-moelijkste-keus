@@ -35,6 +35,8 @@ permissions:
   contents: write
   # Nodig om aan het eind de deploy-workflow te triggeren (zie onderaan).
   actions: write
+  # Het issue "Nachtrun: aandacht nodig" (scripts/nachtrun-signalen.js).
+  issues: write
 
 jobs:
   # Is de data vandaag (Amsterdamse datum) al ververst? Dan niets doen: zo
@@ -90,8 +92,13 @@ jobs:
       # schrijft het de uitkomst per theater naar public/data/scrape-status.json.
       # Deze stap zelf slaagt dan gewoon, zodat de data altijd wordt bijgewerkt.
       - name: Agenda's scrapen
+        id: scrape
         # Met `alleen` (handmatige run): alleen die theaters, via --only.
-        run: node src/index.js ${ALLEEN:+--only=$ALLEEN}
+        # De duur gaat naar de beoordeling aan het eind (grens 80 min).
+        run: |
+          start=$(date +%s)
+          node src/index.js ${ALLEEN:+--only=$ALLEEN}
+          echo "SCRAPE_SECONDEN=$(( $(date +%s) - start ))" >> "$GITHUB_ENV"
         env:
           ALLEEN: ${{ inputs.alleen }}
           # Contact-URL in de user-agent (publiek, dus een variabele, geen secret).
@@ -100,6 +107,7 @@ jobs:
       # src/index.js ontdubbelt al vóór het wegschrijven (src/lib/dedupe.js);
       # deze test bewaakt dat vangnet. Faalt hij, dan wordt er niets gecommit.
       - name: Controle op dubbele voorstellingen
+        id: datacheck
         run: node --test test/dedupe.test.js
 
       - name: public/data (shows, scrape-status, theaters) committen en pushen
@@ -131,21 +139,26 @@ jobs:
       # starten we de deploy-workflow hier expliciet, in plaats van erop te
       # vertrouwen dat de push van hierboven 'm vanzelf aanzet.
       - name: Deploy-workflow triggeren
+        id: deploy
         if: steps.commit.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run deploy.yml
 
-      # Bewust de allerlaatste stap, ná commit en deploy: de data is dan al
-      # bijgewerkt, maar de run wordt rood (en GitHub mailt) als er een theater
-      # is teruggevallen op oude data of zonder vangnet faalde. Een "scherpe
-      # daling"-waarschuwing of een echt lege agenda maakt de run niet rood.
-      - name: Controleren op teruggevallen scrapers
-        run: |
-          failed=$(jq -r '.theaters | to_entries[] | select(.value.status == "terugval" or .value.status == "fout") | "\(.key): \(.value.status) — \(.value.fout)"' public/data/scrape-status.json)
-          if [ -n "$failed" ]; then
-            echo "::error title=Scraper(s) gefaald::$(echo "$failed" | wc -l | tr -d ' ') theater(s) teruggevallen of gefaald, zie hieronder en public/data/scrape-status.json"
-            echo "$failed"
-            exit 1
-          fi
-          echo "Alle theaters ok of leeg."
+      # Bewust de allerlaatste stap, ná commit en deploy, en altijd (ook na
+      # een gefaalde stap). Rood alleen als er iets te doen is: een theater
+      # 2+ nachten op rij teruggevallen, meer dan 3 in één nacht, een scherpe
+      # daling, een gefaalde stap of een scrape van meer dan 80 min. Eén
+      # nacht terugval bij hooguit 3 theaters: groen met een waarschuwing.
+      # Houdt het issue "Nachtrun: aandacht nodig" bij (aanmaken/bijwerken
+      # bij rood, sluiten bij groen zonder terugval). Zie
+      # src/lib/nachtrunSignalen.js en scripts/nachtrun-signalen.js.
+      - name: Nachtrun beoordelen
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STAP_SCRAPE: ${{ steps.scrape.outcome }}
+          STAP_DATACHECK: ${{ steps.datacheck.outcome }}
+          STAP_COMMIT: ${{ steps.commit.outcome }}
+          STAP_DEPLOY: ${{ steps.deploy.outcome }}
+        run: node scripts/nachtrun-signalen.js
