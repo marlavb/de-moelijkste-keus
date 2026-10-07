@@ -1,5 +1,5 @@
 import { createIdBuilder, todayIsoDate } from '../lib/normalize.js';
-import { normalizeGenre, isBekendGenre } from '../lib/genre.js';
+import { normalizeGenreVoor, isBekendGenre } from '../lib/genre.js';
 import { titelUitKopEnOndertitel, pasTitelConventieToe } from '../lib/titels.js';
 import { vervallenStatus } from '../lib/beschikbaarheid.js';
 import { laagstePrijs } from '../lib/peppered.js';
@@ -143,7 +143,7 @@ export async function scrapeMunttheater({ page, theater, robots, waitForTurn, lo
         podiumpas: theater.podiumpas,
         datum,
         tijd,
-        genre: genreRuw ? normalizeGenre(genreRuw) ?? 'Overig' : null,
+        genre: genreRuw ? normalizeGenreVoor(theater.id, genreRuw, `${kop} ${e.performer ?? ''}`) ?? 'Overig' : null,
         genreRuw,
         beschikbaarheid: muntStatus(rijen?.[i]?.knop, e.status),
         beschrijving: null,

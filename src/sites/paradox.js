@@ -2,6 +2,21 @@ import { extractTime, createIdBuilder } from '../lib/normalize.js';
 import { blokkeerZwareBronnen } from '../lib/zwareBronnen.js';
 import { gaNaar } from '../lib/diagnose.js';
 import { vervallenStatus } from '../lib/beschikbaarheid.js';
+
+// Paradox zet een status soms als los woord vóór de titel, zonder
+// scheidingsteken: "GEANNULEERD Sasha Berliner Quartet" (7 okt 2026). Alleen
+// in hoofdletters of met een dubbele punt, zodat een titel die met zo'n
+// woord begint ("Afgelast feest") blijft staan.
+const STATUS_VOORAAN = /^(?:(GEANNULEERD|AFGELAST|VERPLAATST)\b|([Gg]eannuleerd|[Aa]fgelast|[Vv]erplaatst)\s*:)[\s:–-]*/;
+
+/** { titel, status } — status 'afgelast'/'verplaatst' als die vooraan de titel stond, anders null. */
+export function paradoxTitelEnStatus(titel) {
+  const t = String(titel ?? '').trim();
+  const m = t.match(STATUS_VOORAAN);
+  if (!m) return { titel: t, status: null };
+  const rest = t.slice(m[0].length).trim();
+  return rest ? { titel: rest, status: vervallenStatus(m[1] ?? m[2]) } : { titel: t, status: null };
+}
 import { classifyWpBeschikbaarheid, prijsUitTekst } from '../lib/wpTheatre.js';
 import { makerZonderVoorvoegsel } from '../lib/titels.js';
 
@@ -198,14 +213,16 @@ export async function scrapeParadox({ page, theater, robots, waitForTurn, log, w
     for (const g of genresKlein) if (!MUZIEKSTIJLEN.has(g)) onbekend[g] = (onbekend[g] ?? 0) + 1;
     const prijs = prijsUitTekst(it.prijs);
     const gratis = it.gratisToegang || prijs === 0 || /gratis/i.test(it.knopTekst ?? '');
-    const beschikbaarheid = it.status
-      ? vervallenStatus(it.status) ?? classifyWpBeschikbaarheid(it.status, null)
-      : gratis
-        ? 'beschikbaar'
-        : classifyWpBeschikbaarheid(it.knopTekst, null);
+    const { titel, status: titelStatus } = paradoxTitelEnStatus(it.titel);
+    const beschikbaarheid = titelStatus
+      ?? (it.status
+        ? vervallenStatus(it.status) ?? classifyWpBeschikbaarheid(it.status, null)
+        : gratis
+          ? 'beschikbaar'
+          : classifyWpBeschikbaarheid(it.knopTekst, null));
     shows.push({
-      id: buildId(theater.id, it.titel, datum, tijd),
-      titel: it.titel,
+      id: buildId(theater.id, titel, datum, tijd),
+      titel,
       theaterId: theater.id,
       theaterNaam: theater.naam,
       stad: theater.stad,

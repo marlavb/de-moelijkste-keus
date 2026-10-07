@@ -65,8 +65,11 @@ test('volle data: in de agenda met label; "Verberg volle voorstellingen" haalt z
   // Een voorstelling met een gewone datum én een wachtlijst-datum, en een unieke titel.
   const titels = new Map();
   for (const s of shows) titels.set(s.titel, (titels.get(s.titel) ?? new Set()).add(s.theaterId));
+  // Zoeken op de titel mag geen andere voorstelling vinden (bv. "X" naast "Y – X").
+  const vindtAnder = (l) =>
+    shows.some((o) => !l.includes(o) && `${o.titel} ${o.titelBron ?? ''} ${o.theaterNaam}`.toLowerCase().includes(l[0].titel.toLowerCase()));
   const prod = producties().find(
-    (l) => titels.get(l[0].titel).size === 1 && l.length <= 12 && l.some((s) => s.beschikbaarheid === 'wachtlijst') && l.some((s) => !isVol(s))
+    (l) => titels.get(l[0].titel).size === 1 && l.length <= 12 && l.some((s) => s.beschikbaarheid === 'wachtlijst') && l.some((s) => !isVol(s)) && !vindtAnder(l)
   );
   assert.ok(prod, 'geen voorstelling met wachtlijst-data in de huidige data');
   const { page } = ik;

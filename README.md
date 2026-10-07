@@ -63,7 +63,8 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   netjes (robots.txt, crawl-delay, eigen user-agent met link naar `bot.html`)
   en schrijft `public/data/shows.json`, `scrape-status.json` en
   `theaters.json`. Faalt een theater, dan valt het terug op de vorige data van
-  dat theater. Theaters, steden, provincies en Podiumpas staan in
+  dat theater; een netwerkfout (DNS, verbinding) krijgt eerst één herpoging
+  na een minuut. Theaters, steden, provincies en Podiumpas staan in
   `src/lib/config.js` (met bron en datum); een theater dat ons weert staat daar
   op `gepauzeerd` en krijgt geen enkel verzoek. Gedeelde modules per platform:
   `peppered.js` (Peppered), `wpTheatre.js` (Theater for WordPress) en
@@ -95,12 +96,17 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   site) en PLT (Heerlen, Kerkrade, Sittard). Theaters zonder Podiumpas staan
   er ook in, met `podiumpas: false` (ITA, de Limburgse theaters behalve De
   Maaspoort en DOK6); de nieuwste theaters draaien achteraan in de run, elk
-  met een eigen tijdbudget.
+  met een eigen tijdbudget. Besloten verhuur (zonder kaartverkoop) laten we
+  weg, openbare verhuur blijft als Overig. Een genre kan per theater anders
+  gekoppeld zijn (`GENRE_PER_THEATER` in `genre.js`: Komedie is Toneel bij De
+  Oranjerie en het Munttheater, behalve stand-up; elders Cabaret).
 - **Nachtelijke run**: `.github/workflows/refresh-data.yml` scrapet, commit de
   data naar `main` en start de deploy. De Cloud Function `startNachtrun` start
   hem elke dag om 05:00 (Amsterdam); de cron van GitHub (03:17 UTC) blijft als
   vangnet. Is de data die dag al ververst, dan stopt een tweede run meteen
-  (handmatig toch draaien: "Run workflow" met `forceer`).
+  (handmatig toch draaien: "Run workflow" met `forceer`; alleen een paar
+  theaters opnieuw, bv. na een terugval: `alleen` met hun id's, de rest houdt
+  zijn data).
 - **App** (`public/`): een PWA zonder build-stap (HTML, CSS, JavaScript-modules,
   service worker). Gehost op **GitHub Pages** via `.github/workflows/deploy.yml`
   bij elke push naar `main`.

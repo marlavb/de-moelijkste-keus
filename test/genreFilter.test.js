@@ -40,3 +40,9 @@ test('genres alleen bij meer dan één echt genre; het filter werkt in beide gev
   assert.equal(matchtGenreFilter(twee[1], new Set(['Musical'])), true);
   assert.equal(matchtGenreFilter(twee[1], new Set(['Familie & Jeugd'])), true);
 });
+
+test('Theater aan de Parade: brongenre "November Music" → Muziek & Concert (bekend, geen waarschuwing)', async () => {
+  const { normalizeGenre, isBekendGenre } = await import('../src/lib/genre.js');
+  assert.equal(normalizeGenre('November Music'), 'Muziek & Concert');
+  assert.equal(isBekendGenre('November Music'), true);
+});

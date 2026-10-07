@@ -50,7 +50,14 @@ before(async () => {
       s.beschikbaarheid === 'beschikbaar' &&
       !s.titel.includes('::') &&
       watchlistSleutel(s.titel, s.theaterId) === watchlistSleutel(s.titel) &&
-      !genres.has(s.titel.toLowerCase())
+      !genres.has(s.titel.toLowerCase()) &&
+      // Zoeken op de titel mag geen andere productie vinden (bv. "Sven Ratzke"
+      // naast "KOPFKINO – Sven Ratzke" sinds de data van 7 okt 2026).
+      !shows.some(
+        (o) =>
+          watchlistSleutel(o.titel, o.theaterId) !== watchlistSleutel(s.titel, s.theaterId) &&
+          `${o.titel} ${o.titelBron ?? ''} ${o.theaterNaam}`.toLowerCase().includes(s.titel.toLowerCase())
+      )
   );
 });
 

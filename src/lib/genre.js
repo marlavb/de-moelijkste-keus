@@ -192,6 +192,7 @@ const GENRE_MAP = {
   event: 'Overig', // Markant
   carnaval: 'Overig', // Theater aan de Parade
   'echt bosch': 'Overig', // Theater aan de Parade: lokale reeks, geen genre
+  'november music': 'Muziek & Concert', // Theater aan de Parade: festival voor nieuwe muziek (7 okt 2026)
   spellen: 'Overig', // Parktheater: "Moord in het Parktheater" (interactief spel)
 
   // Limburg (okt 2026; zie debug/limburg-2-inventarisatie.md)
@@ -253,6 +254,27 @@ export function isBekendGenre(raw) {
  * wél een bekend genre is, of null als geen enkele tag herkend wordt (in
  * plaats van blind "Overig" te concluderen op basis van niet-genre-tags).
  */
+// Per theater een andere koppeling dan normalizeGenre (besluit 7 okt 2026):
+// "Komedie" is bij De Oranjerie en het Munttheater toneel (blijspel), elders
+// (o.a. Kattendans) blijft het Cabaret. Behalve als titel of ondertitel op
+// stand-up wijst (`tenzij`): "A Comedy Double with Dave and Hermes" blijft
+// Cabaret.
+const STAND_UP = /\bcomed(?:y|ian)s?\b|stand[- ]?up/i;
+export const GENRE_PER_THEATER = {
+  oranjerie: { komedie: { genre: 'Toneel', tenzij: STAND_UP } },
+  munttheater: { komedie: { genre: 'Toneel', tenzij: STAND_UP } },
+};
+
+/**
+ * normalizeGenre, met de uitzonderingen van dit theater (GENRE_PER_THEATER).
+ * `tekst`: titel, ondertitel en/of beschrijving, voor de `tenzij`-regel.
+ */
+export function normalizeGenreVoor(theaterId, raw, tekst = '') {
+  const eigen = GENRE_PER_THEATER[theaterId]?.[String(raw ?? '').trim().toLowerCase()];
+  if (eigen && !eigen.tenzij?.test(tekst ?? '')) return eigen.genre;
+  return normalizeGenre(raw);
+}
+
 export function normalizeGenreFromList(rawTags) {
   if (!rawTags || rawTags.length === 0) return null;
   for (const raw of rawTags) {

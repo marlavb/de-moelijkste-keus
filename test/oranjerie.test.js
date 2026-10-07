@@ -55,3 +55,43 @@ test('De Oranjerie: status', () => {
   assert.equal(oranjerieStatus('Geannuleerd', 'btn-geannuleerd'), 'afgelast');
   assert.equal(oranjerieStatus('', 'btn-'), 'onbekend');
 });
+
+test('De Oranjerie: besloten verhuring (geen kaartlink, geen prijs) weg; openbare verhuring blijft; Komedie → Toneel', async () => {
+  const { normalizeGenreVoor } = await import('../src/lib/genre.js');
+  assert.equal(normalizeGenreVoor('oranjerie', 'Komedie'), 'Toneel');
+  assert.equal(normalizeGenreVoor('munttheater', 'komedie'), 'Toneel');
+  assert.equal(normalizeGenreVoor('kattendans', 'Komedie'), 'Cabaret');
+  assert.equal(normalizeGenreVoor('oranjerie', 'Theaterconcert'), 'Muziektheater');
+  // Stand-up blijft Cabaret (besluit 7 okt 2026).
+  assert.equal(normalizeGenreVoor('munttheater', 'Komedie', 'A Comedy Double with Dave and Hermes Furry Fury!'), 'Cabaret');
+  assert.equal(normalizeGenreVoor('oranjerie', 'Komedie', 'Stand-up avond'), 'Cabaret');
+  assert.equal(normalizeGenreVoor('oranjerie', 'Komedie', 'Een avond met een comedian'), 'Cabaret');
+  assert.equal(normalizeGenreVoor('oranjerie', 'Komedie', 'Boeing Boeing'), 'Toneel');
+
+  // Een kopie van de Zeemeermin-kaart (verhuring) zonder link en prijs: besloten.
+  const begin = agenda.indexOf('event-type-verhuring');
+  const kaartStart = agenda.lastIndexOf('<div', agenda.lastIndexOf('event-col', begin));
+  const kaartEind = agenda.indexOf('event-col', begin);
+  const kaart = agenda.slice(kaartStart, kaartEind === -1 ? undefined : agenda.lastIndexOf('<div', kaartEind));
+  const besloten = kaart
+    .replace(/<a href="https:\/\/ticketshop[^"]*" class="event-image"[^>]*>/g, '<a class="event-image">')
+    .replace(/<(span|strong)>€ 20,-<\/\1>/g, '')
+    .replace(/De Kleine Zeemeermin de Musical/gi, 'Besloten personeelsfeest');
+  assert.notEqual(besloten, kaart);
+  const metBesloten = agenda.slice(0, kaartStart) + besloten + agenda.slice(kaartStart);
+  const browser = await chromium.launch();
+  const logs = [];
+  let shows;
+  try {
+    const page = await browser.newPage();
+    await page.route('**/*', (r) => r.fulfill({ status: 200, contentType: 'text/html', body: /\/agenda\/titanique$/.test(r.request().url()) ? titanique : metBesloten }));
+    shows = await scrapeOranjerie({ page, theater, robots: { isAllowed: () => true }, waitForTurn: async () => {}, log: (m) => logs.push(m), warn: () => {} });
+  } finally {
+    await browser.close();
+  }
+  assert.equal(shows.some((s) => /personeelsfeest/i.test(s.titel)), false);
+  assert.ok(logs.some((l) => /weggelaten: besloten verhuur \(1\)/.test(l)), logs.join('\n'));
+  const zeemeermin = shows.find((s) => /Zeemeermin/.test(s.titel));
+  assert.equal(zeemeermin.genre, 'Overig');
+  assert.match(zeemeermin.reserverenUrl, /ticketshop\.nl/);
+});

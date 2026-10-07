@@ -92,3 +92,14 @@ test('Paradox: "Laad meer" faalt → waarschuwing, de eerste concerten blijven',
   assert.equal(shows.length, 5);
   assert.match(waarschuwingen.join('\n'), /HTTP 403/);
 });
+
+test('Paradox: "GEANNULEERD" vooraan de titel → afgelast, woord uit de titel', async () => {
+  const { paradoxTitelEnStatus } = await import('../src/sites/paradox.js');
+  assert.deepEqual(paradoxTitelEnStatus('GEANNULEERD Sasha Berliner Quartet'), { titel: 'Sasha Berliner Quartet', status: 'afgelast' });
+  assert.deepEqual(paradoxTitelEnStatus('VERPLAATST – Emma Smith (UK)'), { titel: 'Emma Smith (UK)', status: 'verplaatst' });
+  assert.deepEqual(paradoxTitelEnStatus('Geannuleerd: Soft Machine (UK)'), { titel: 'Soft Machine (UK)', status: 'afgelast' });
+  // Geen losse status: titel blijft.
+  assert.deepEqual(paradoxTitelEnStatus('Afgelast feest'), { titel: 'Afgelast feest', status: null });
+  assert.deepEqual(paradoxTitelEnStatus('Nik Bärtsch Ronin'), { titel: 'Nik Bärtsch Ronin', status: null });
+  assert.deepEqual(paradoxTitelEnStatus('GEANNULEERD'), { titel: 'GEANNULEERD', status: null });
+});
