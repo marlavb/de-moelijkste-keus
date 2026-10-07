@@ -41,3 +41,25 @@ test('devcache: tweede keer laden komt uit de cache, zonder request naar de site
     server.close();
   }
 });
+
+test('devcache offline (SCRAPE_OFFLINE=1): wat niet in de cache staat, gaat niet naar de site', async () => {
+  let hits = 0;
+  const server = http.createServer((req, res) => {
+    hits++;
+    res.writeHead(200, { 'content-type': 'text/html' });
+    res.end('<html><body><h1>agenda</h1></body></html>');
+  });
+  await new Promise((r) => server.listen(0, '127.0.0.1', r));
+  const url = `http://127.0.0.1:${server.address().port}/nieuw`;
+  const dir = await mkdtemp(path.join(tmpdir(), 'devcache-'));
+  const browser = await chromium.launch();
+  try {
+    const page = await browser.newPage();
+    await installDevCache(page, { dir, log: () => {}, offline: true });
+    await assert.rejects(page.goto(url));
+    assert.equal(hits, 0, 'geen request naar de site');
+  } finally {
+    await browser.close();
+    server.close();
+  }
+});

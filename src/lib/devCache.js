@@ -27,7 +27,11 @@ export function cacheFileFor(dir, url) {
   return path.join(dir, u.hostname, `${hash}.html`);
 }
 
-export async function installDevCache(page, { dir = path.resolve('debug/cache'), log = console.log, now = Date.now } = {}) {
+// Met SCRAPE_OFFLINE=1 (naast SCRAPE_CACHE=1) gaat een pagina die niet in de
+// cache staat niet naar de site maar wordt afgebroken: een herhaalde lokale
+// run doet dan gegarandeerd geen echte verzoeken (7 okt 2026: een tweede
+// Schaffelaar-run haalde de pagina's achter de grens per run echt op).
+export async function installDevCache(page, { dir = path.resolve('debug/cache'), log = console.log, now = Date.now, offline = process.env.SCRAPE_OFFLINE === '1' } = {}) {
   let hits = 0;
   let misses = 0;
   await page.route('**/*', async (route) => {
@@ -48,6 +52,7 @@ export async function installDevCache(page, { dir = path.resolve('debug/cache'),
       // niet in de cache
     }
     misses++;
+    if (offline) return route.abort('internetdisconnected').catch(() => {});
     try {
       const response = await route.fetch();
       const body = await response.text();
@@ -61,6 +66,6 @@ export async function installDevCache(page, { dir = path.resolve('debug/cache'),
       return route.abort().catch(() => {});
     }
   });
-  log(`[devcache] aan (${dir}); pagina's uit de cache worden niet opnieuw opgehaald`);
+  log(`[devcache] aan (${dir}); pagina's uit de cache worden niet opnieuw opgehaald${offline ? '; offline: niets nieuws ophalen' : ''}`);
   return { stats: () => ({ hits, misses }) };
 }

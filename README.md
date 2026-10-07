@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **72** (60 ok, 1 terugval, 1 leeg, 5 gepauzeerd, 5 onbekend)
-- Voorstellingen (titel per theater): **7068**
-- Speeldata: **10015**
-- Laatste refresh: **7 oktober 2026, 15:26** (Amsterdamse tijd)
+- Theaters: **72** (59 ok, 1 terugval, 1 leeg, 5 gepauzeerd, 6 onbekend)
+- Voorstellingen (titel per theater): **6954**
+- Speeldata: **9888**
+- Laatste refresh: **7 oktober 2026, 09:47** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -171,8 +171,9 @@ brew install openjdk@21           # emulators; zet openjdk@21/bin in je PATH
 - App bekijken: `npx serve public` (of `python3 -m http.server 8080 --directory public`).
   Met `?emulator=1` praat de app met lokale emulators in plaats van Firebase.
 - Eén theater scrapen tijdens het bouwen, uit de lokale cache:
-  `SCRAPE_CACHE=1 node src/index.js --only=<id>`. Houd testverkeer naar
-  theatersites klein (zie `CLAUDE.md`).
+  `SCRAPE_CACHE=1 node src/index.js --only=<id>`; met `SCRAPE_OFFLINE=1`
+  erbij gaat er niets naar de site dat niet al in de cache staat. Houd
+  testverkeer naar theatersites klein (zie `CLAUDE.md`).
 
 ### Testen
 
@@ -327,6 +328,6 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Musis Arnhem | Arnhem | – | onbekend |
 | Stadstheater Arnhem | Arnhem | – | onbekend |
 | TAR | Arnhem | – | onbekend |
-| Schaffelaartheater | Barneveld | deels | ok |
+| Schaffelaartheater | Barneveld | – | onbekend |
 | Schouwburg Agnietenhof | Tiel | – | gepauzeerd sinds 2026-10-07 |
 <!-- AUTO:theaters:end -->
