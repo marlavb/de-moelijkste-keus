@@ -20,8 +20,10 @@
 //    begin van die van de andere, gescheiden door " – " of " | " (niet ":"),
 //    dan wordt de langere de kortere: titel = het gemeenschappelijke begin
 //    (plus de artiest als die in de titel stond). De weggelaten ondertitel
-//    gaat naar de beschrijving als die leeg is. Niet bij een generiek begin
-//    (GENERIEK) of een begin korter dan 4 tekens; die gevallen komen in
+//    gaat naar de beschrijving als die leeg is; een weggelaten "première"
+//    komt vooraan in een bestaande beschrijving ("Première. …"). Niet bij een
+//    generiek begin (GENERIEK), een begin korter dan 4 tekens, of een
+//    afwijkend deel dat op "Special" eindigt (APART); die gevallen komen in
 //    `overgeslagen`.
 // Vergelijken gebeurt zoals de watchlist-sleutel: zonder hoofdletters,
 // leestekens, "(6+)", "reprise", "try-out" (zonderRuis per deel).
@@ -36,6 +38,11 @@ import { normalizeTitle } from '../../public/js/productions.js';
 // Alleen " – " (ook "-" en "—") en " | " met spaties eromheen; geen ":".
 const DEEL = /\s+[–—-]\s+|\s+\|\s+/;
 const SCHEIDER = ' – ';
+
+// Een afwijkend deel dat op "Special" eindigt, is een apart evenement
+// ("SoundLAB workshop – Paas Special", Muziekgebouw): niet samenvoegen.
+export const APART = /\bspecial$/i;
+const PREMIERE = /^premi[eè]re$/i;
 
 // Een begin dat niets zegt over de voorstelling: niet samenvoegen.
 export const GENERIEK = /^(?:oudejaars\S*(?: \d{4})?|best of|live|concert|try ?out|premiere|reprise|\d{4}|\d{4} \d{4})$/;
@@ -162,6 +169,12 @@ export function samenvoegen(shows) {
     }
     const houden = ruw.slice(0, tot);
     const weg = ruw.slice(tot).join(SCHEIDER);
+    if (APART.test(weg)) {
+      const k = `${norm(maker)}\u0001special`;
+      if (!overgeslagen.has(k)) overgeslagen.set(k, { maker: norm(maker), begin: houden.join(SCHEIDER), producties: new Set() });
+      overgeslagen.get(k).producties.add(`${s.titel} (apart evenement: "${weg}")`);
+      return s;
+    }
     const titel = [...houden, ...(makerInTitel ? [maker] : [])].join(SCHEIDER);
     const k = `${norm(maker)}\u0001${houden.map(norm).filter(Boolean).join(' ')}`;
     if (!perDoel.has(k)) perDoel.set(k, { maker, naar: titel, van: [] });
@@ -169,6 +182,10 @@ export function samenvoegen(shows) {
     const nieuw = metBron(s, titel);
     if (weg && !s.beschrijving) {
       nieuw.beschrijving = weg;
+      nieuw.beschrijvingBron = s.beschrijvingBron ?? s.beschrijving ?? null;
+    } else if (PREMIERE.test(weg)) {
+      // Première (De Kleine Komedie): zichtbaar houden, vooraan in de beschrijving.
+      nieuw.beschrijving = `Première. ${s.beschrijving}`;
       nieuw.beschrijvingBron = s.beschrijvingBron ?? s.beschrijving ?? null;
     }
     return nieuw;

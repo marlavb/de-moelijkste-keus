@@ -93,3 +93,19 @@ test('wel samenvoegen: première/ondertitel binnen dezelfde maker, makerveld; ma
   assert.equal(b.shows[1].titel, 'Herfstklanken Concert – Balkon 2');
   assert.match(b.overgeslagen[0].producties[0], /zelfde speeldatum/);
 });
+
+test('première: samengevoegd, "Première." vooraan in de bestaande beschrijving; "… Special" is een apart evenement', () => {
+  const r = samenvoegen([
+    s('kleinekomedie', 'Bonobo – première – Flip Noorman', { volgordeZeker: true, beschrijving: 'Flip Noorman zingt.' }),
+    s('bellevue', 'Bonobo – Flip Noorman', { volgordeZeker: true }),
+    s('muziekgebouw', 'SoundLAB workshop', { maker: 'Voor kinderen (7+) met volwassenen' }),
+    s('muziekgebouw', 'SoundLAB workshop – Paas Special', { maker: 'Voor kinderen (7+) met volwassenen' }),
+    s('muziekgebouw', 'SoundLAB workshop – Syntherklaas Special', { maker: 'Voor kinderen (7+) met volwassenen' }),
+  ]);
+  assert.equal(r.shows[0].titel, 'Bonobo – Flip Noorman');
+  assert.equal(r.shows[0].beschrijving, 'Première. Flip Noorman zingt.');
+  assert.equal(r.shows[0].beschrijvingBron, 'Flip Noorman zingt.');
+  assert.equal(r.shows[3].titel, 'SoundLAB workshop – Paas Special');
+  assert.equal(r.shows[4].titel, 'SoundLAB workshop – Syntherklaas Special');
+  assert.ok(r.overgeslagen.some((o) => o.producties.some((p) => /Paas Special/.test(p))));
+});

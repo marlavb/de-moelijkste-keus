@@ -88,12 +88,17 @@ export function isGeenMaker(tekst) {
 // - "Alain Clark" / "Date Night": Omval heeft titel "Date Night", maker
 //   "Alain Clark"; Griffioen "Date Night – Alain Clark".
 export const OMGEDRAAID = {
-  flint: ['Nhung Dam'],
   cpunt: ['Nhung Dam'],
   stoep: ['Alain Clark'],
   maaspoort: ['Alain Clark'],
   // Markant (nieuw in de nachtrun van 7 okt 2026): zelfde fout.
   markant: ['Alain Clark'],
+  // "Bijna een leven" van Toneelgroep Maastricht (en Stichting NOX): Flint en
+  // Het Speelhuis zetten het gezelschap als titel en de voorstelling als
+  // ondertitel; Bellevue, De Meervaart, Aan de Slinger, Theater aan het Spui
+  // en De Maaspoort hebben titel "Bijna een leven" (7 okt 2026).
+  flint: ['Nhung Dam', 'Toneelgroep Maastricht – Stichting NOX'],
+  speelhuis: ['Toneelgroep Maastricht'],
 };
 
 // Alleen de artiest als titel, de voorstelling niet in titel of makerveld
