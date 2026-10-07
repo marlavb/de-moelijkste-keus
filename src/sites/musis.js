@@ -38,6 +38,15 @@ const LABELS = /^(gelrepas|roze jaar|matinee|podcast|serie|abonnement|kids|\d+\+
 // is `performer` de maker ("Komt voor de bakker" / "Musiccare & MVT Arnhem").
 const ARTIEST_EERST = /^(cabaret|show|comedy|klassiek|orkestraal|kamermuziek|koormuziek|piano|pop|singer-songwriter|jazz|wereldmuziek|concert)$/i;
 
+// Uitzondering (bron: de API van 7 okt 2026): is `performer` een ensemble en
+// de titel niet, dan staat het al goed om ("Messiah van Handel" / "Toonkunst
+// Arnhem", "Arnhem, mijn stadje." / "Arnhems Promenade Orkest"): titel =
+// voorstelling, performer = maker → "Messiah van Handel – Toonkunst Arnhem".
+// Niet bij een programmanaam met "shows" ("DAAN" / "Crooner - The Acoustic
+// Trio shows").
+const ensembleAlsMaker = (performer, titel) => Boolean(performer) && ENSEMBLE.test(performer) && !/\bshows?\b/i.test(performer) && !ENSEMBLE.test(titel);
+const ENSEMBLE = /orkest|orchestra|koor\b|choir|ensemble|kwartet|quartet|trio\b|octet|sinfoni|philharmoni|toonkunst|baroque|harmonie|blazers|consort|vocale|cappella|scholars|camerata/i;
+
 // Geen voorstelling: een serie of abonnement ("Serie: Kijk op theater"), een
 // combiticket (beide voorstellingen staan ook los in de agenda), een
 // rondleiding, workshop of masterclass.
@@ -173,7 +182,8 @@ async function scrapeAllMusis({ page, theater, robots, waitForTurn, log, warn })
 
   for (const e of events) {
     const prod = e.production ?? {};
-    const titel = zonderVerplaatst(prod.title?.trim() ?? '');
+    // Ook een losse punt aan het eind ("Arnhem, mijn stadje.").
+    const titel = zonderVerplaatst(prod.title?.trim() ?? '').replace(/([^.])\.$/, '$1');
     if (!titel) continue;
     if (WEGLATEN.test(titel) || WEGLATEN_PERFORMER.test(prod.performer?.trim() ?? '')) {
       tel(weg, 'serie/combiticket/rondleiding/workshop');
@@ -229,8 +239,11 @@ async function scrapeAllMusis({ page, theater, robots, waitForTurn, log, warn })
       bron: detailUrl,
       opgehaaldOp,
     };
-    const artiestEerst = tags.some((t) => ARTIEST_EERST.test(t)) && !/:\s/.test(titel);
-    shows.push(artiestEerst && show.maker ? pasTitelConventieToe(show, { artiest: titel, voorstelling: performer, makerWordtLeeg: true, alleGenres: true }) : show);
+    const ensemble = !omschrijving && ensembleAlsMaker(performer, titel);
+    const artiestEerst = tags.some((t) => ARTIEST_EERST.test(t)) && !/:\s/.test(titel) && !ensemble;
+    if (artiestEerst && show.maker) shows.push(pasTitelConventieToe(show, { artiest: titel, voorstelling: performer, makerWordtLeeg: true, alleGenres: true }));
+    else if (ensemble && tags.some((t) => ARTIEST_EERST.test(t))) shows.push(pasTitelConventieToe(show, { artiest: performer, voorstelling: titel, makerWordtLeeg: true, alleGenres: true }));
+    else shows.push(show);
   }
   const lijst = (o) => Object.entries(o).map(([x, n]) => `${x} (${n})`).join(', ');
   if (Object.keys(weg).length) log(`weggelaten: ${lijst(weg)}`);
