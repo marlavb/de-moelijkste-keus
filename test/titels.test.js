@@ -206,3 +206,31 @@ test('algemene ondertitels ("In Concert", "Theatertour") zijn nooit maker', asyn
   for (const t of ['In Concert', 'Theaterconcert', 'Theatertour', 'Live']) assert.equal(isGeenMaker(t), true, t);
   for (const t of ['Concertgebouworkest', 'Live Rock Band', 'Tourist LeMC']) assert.equal(isGeenMaker(t), false, t);
 });
+
+test('ICE: "Live in Theater" is daar de voorstellingsnaam (gerichte uitzondering, zoals vóór 10581df)', async () => {
+  const { pasTitelConventieToe, isGeenMaker, isVoorstellingsnaam } = await import('../src/lib/titels.js');
+  const { watchlistSleutel } = await import('../public/js/watchlist.js');
+  // Schouwburg Concertzaal: kop "ICE", ondertitel "Live in Theater", genre cabaret.
+  const show = { titel: 'Live in Theater', maker: 'ICE', genre: 'Overig', genreRuw: 'special, cabaret & comedy', theaterId: 'schouwburgconcertzaal' };
+  const na = pasTitelConventieToe(show, { artiest: 'ICE', voorstelling: 'Live in Theater', makerWordtLeeg: true });
+  assert.equal(na.titel, 'Live in Theater – ICE');
+  assert.equal(na.maker, null);
+  // Zelfde productie als Markant en PLT ("Live in Theater (reprise) – ICE").
+  assert.equal(watchlistSleutel(na.titel, 'schouwburgconcertzaal'), watchlistSleutel('Live in Theater (reprise) – ICE', 'markant'));
+  // Alleen bij ICE: bij een andere artiest blijft "Live in het theater" een ondertitel.
+  assert.equal(isVoorstellingsnaam('ICE', 'Live in het theater'), true);
+  assert.equal(isVoorstellingsnaam('Ice', 'Live in Theater'), true);
+  assert.equal(isVoorstellingsnaam('Jan Jansen', 'Live in Theater'), false);
+  const ander = pasTitelConventieToe({ ...show, maker: 'Jan Jansen' }, { artiest: 'Jan Jansen', voorstelling: 'Live in Theater', makerWordtLeeg: true });
+  assert.equal(ander.titel, 'Live in Theater');
+  assert.equal(isGeenMaker('Live in het theater'), true);
+});
+
+test('Markant (7 okt 2026): "Alain Clark" / "Date Night" omgedraaid, zelfde productie als de andere theaters', async () => {
+  const { draaiTitelEnMakerOm } = await import('../src/lib/titels.js');
+  const { watchlistSleutel } = await import('../public/js/watchlist.js');
+  const r = draaiTitelEnMakerOm({ theaterId: 'markant', titel: 'Alain Clark', maker: 'Date Night', datum: '2026-10-21' });
+  assert.equal(r.titel, 'Date Night');
+  assert.equal(r.maker, 'Alain Clark');
+  assert.equal(watchlistSleutel(r.titel, 'markant'), 'date night');
+});

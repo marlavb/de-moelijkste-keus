@@ -56,6 +56,21 @@ const GEEN_MAKER = [
   /^(?:in concert|(?:theater)?concert|(?:theater)?tour|live)$/i,
 ];
 
+// Uitzonderingen op de nooit-maker-lijst: bij deze artiest is de tekst de
+// naam van de voorstelling, geen ondertitel. ICE: "Live in Theater"
+// (Schouwburg Concertzaal: kop "ICE", ondertitel "Live in Theater"; elders
+// "Live in Theater (reprise) – ICE"). Was vóór 10581df "Live in Theater –
+// ICE", daarna titel "Live in Theater" met maker "ICE" (7 okt 2026).
+export const VOORSTELLINGSNAAM_BIJ_ARTIEST = {
+  ice: [/^live in (?:het )?theater$/i],
+};
+
+/** Is `tekst` bij deze artiest de voorstellingsnaam (uitzondering op isGeenMaker)? */
+export function isVoorstellingsnaam(artiest, tekst) {
+  const regels = VOORSTELLINGSNAAM_BIJ_ARTIEST[kaal(artiest)] ?? [];
+  return regels.some((re) => re.test(String(tekst ?? '').trim()));
+}
+
 export function isGeenMaker(tekst) {
   const t = String(tekst ?? '').trim();
   return Boolean(t) && GEEN_MAKER.some((re) => re.test(t));
@@ -77,6 +92,8 @@ export const OMGEDRAAID = {
   cpunt: ['Nhung Dam'],
   stoep: ['Alain Clark'],
   maaspoort: ['Alain Clark'],
+  // Markant (nieuw in de nachtrun van 7 okt 2026): zelfde fout.
+  markant: ['Alain Clark'],
 };
 
 // Alleen de artiest als titel, de voorstelling niet in titel of makerveld
@@ -137,7 +154,7 @@ export function pasTitelConventieToe(show, { artiest, voorstelling, makerWordtLe
   // De wervende-zin-regel kijkt naar de oorspronkelijke tekst (ook naar een
   // slotpunt); pas daarna een losse punt aan het eind weghalen ("Kintsugi." →
   // "Kintsugi"). "…", "?" en "!" blijven staan.
-  if (isWervend(a) || isWervend(ruw) || isGeenMaker(a) || isGeenMaker(ruw)) return show;
+  if (isWervend(a) || isWervend(ruw) || isGeenMaker(a) || (isGeenMaker(ruw) && !isVoorstellingsnaam(a, ruw))) return show;
   const v = ruw.replace(/(?<!\.)\.$/, '');
   if (!v) return show;
   const ka = kaal(a);
