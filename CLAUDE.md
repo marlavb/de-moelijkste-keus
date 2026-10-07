@@ -9,8 +9,9 @@ dezelfde dag stopt meteen. De workflow commit de data zelf.
 
 ## Git
 
-- Vóór elke commit: `git restore public/data/shows.json public/data/scrape-status.json public/data/theaters.json`
-  als een lokale testrun die heeft overschreven. Commit lokaal gegenereerde
+- Vóór elke commit: `git restore public/data/shows.json public/data/scrape-status.json public/data/theaters.json cache/detail`
+  als een lokale testrun die heeft overschreven (`cache/detail/` is de cache van
+  detailpagina's tussen runs; een nieuw lokaal bestand daar: `git clean -n cache/detail`). Commit lokaal gegenereerde
   data alleen in een bewust, apart datacommit (en zeg dat in de message).
 - Altijd `git diff --stat` (of `git diff --cached --stat`) vóór het committen.
 - Pushen altijd via `npm run safe-push` (eventueel `-- <git push-argumenten>`):
@@ -45,6 +46,10 @@ Houd het testverkeer daarom zo klein mogelijk:
 - Tijdens het bouwen: `SCRAPE_CACHE=1 node src/index.js --only=<id>`. Pagina's
   komen dan uit `debug/cache/` (lokaal, niet in git); elke pagina wordt hooguit
   één keer per dag echt opgehaald. In CI wordt de cache altijd genegeerd.
+  Een herhaalde run die niets nieuws mag ophalen: `SCRAPE_CACHE=1
+  SCRAPE_OFFLINE=1` (pagina's buiten de cache worden afgebroken). Let op bij
+  scrapers met een grens per run (Musis, Schaffelaar): een tweede run haalt
+  anders de pagina's achter die grens echt op.
 - Hooguit één volledige testrun (zonder cache) per theater per dag.
 - Verkenningsscripts gebruiken ook de crawl-delay: `loadRobotsRules` +
   `createPoliteWaiter` en `waitForTurn()` vóór elke request.
@@ -70,8 +75,10 @@ Houd het testverkeer daarom zo klein mogelijk:
   podiumpas.nl/waar-te-besteden. Kun je het niet vaststellen, zeg dat en
   kies niet stilletjes.
 - Zet bij elke keuze in de code of config de bron-URL en de datum.
-- Uitgesloten voorstellingen (film, verhuur, gast, prijs > €50, …) blijven in
+- Uitgesloten voorstellingen (verhuur, gast, prijs > €50, …) blijven in
   de data met `podiumpas: false`, zoals bij Aan de Slinger en Corrosia.
+- Films worden weggelaten (geen voorstellingen), zoals bij PLT, Agnietenhof
+  en Schaffelaar.
 - Theaternamen in `config.js` letterlijk zoals op podiumpas.nl.
 
 ## Scrapers

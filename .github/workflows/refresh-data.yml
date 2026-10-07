@@ -112,7 +112,7 @@ jobs:
         id: datacheck
         run: node --test test/dedupe.test.js
 
-      - name: public/data (shows, scrape-status, theaters) committen en pushen
+      - name: public/data (shows, scrape-status, theaters) en cache/detail committen en pushen
         id: commit
         run: |
           git config user.name "github-actions[bot]"
@@ -123,10 +123,16 @@ jobs:
           # hem daarop terug: onze data is de nieuwste, de rest komt van main.
           tmp=$(mktemp -d)
           cp public/data/shows.json public/data/scrape-status.json public/data/theaters.json "$tmp/"
+          # Cache van detailpagina's tussen runs (src/lib/detailCache.js).
+          if [ -d cache/detail ]; then cp -r cache/detail "$tmp/detail"; fi
           git fetch --quiet origin main
           git reset --quiet --hard origin/main
           cp "$tmp/shows.json" "$tmp/scrape-status.json" "$tmp/theaters.json" public/data/
           git add public/data/shows.json public/data/scrape-status.json public/data/theaters.json
+          if [ -d "$tmp/detail" ]; then
+            mkdir -p cache && rm -rf cache/detail && cp -r "$tmp/detail" cache/detail
+            git add cache/detail
+          fi
           if git diff --cached --quiet; then
             echo "Geen wijzigingen in de data — niets te committen."
             echo "changed=false" >> "$GITHUB_OUTPUT"

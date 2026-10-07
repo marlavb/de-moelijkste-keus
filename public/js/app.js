@@ -181,6 +181,13 @@ const THEATER_ZOEKALIASSEN = {
   pltsittard: ['plt', 'toon hermans', 'plt sittard'],
   oranjerie: ['oranjerie', 'theater roermond'],
   munttheater: ['munt', 'munttheater weert'],
+  orpheus: ['orpheus', 'theater orpheus apeldoorn', 'apeldoorn'],
+  agnietenhof: ['agnietenhof', 'schouwburg tiel', 'cultuurbedrijf tiel', 'tiel'],
+  oostpool: ['oostpool', 'theater oostpool', 'huis oostpool arnhem', 'arnhem'],
+  tar: ['tar', 'theater a/d rijn', 'theater aan de rijn', 'arnhem'],
+  schaffelaar: ['schaffelaar', 'schaffelaar theater', 'barneveld'],
+  musis: ['musis', 'musis sacrum', 'musis en stadstheater', 'arnhem'],
+  stadstheater: ['stadstheater arnhem', 'musis en stadstheater', 'arnhem'],
 };
 
 const BESCHIKBAARHEID_LABELS = {
@@ -228,7 +235,7 @@ const STORAGE_KEYS = {
 // provincie-koppen; een stad die niet in de map staat belandt in de
 // PROVINCE_FALLBACK-sectie zodat een nieuwe stad nooit stilzwijgend
 // verdwijnt.
-const PROVINCE_ORDER = ['Noord-Holland', 'Zuid-Holland', 'Utrecht', 'Flevoland', 'Limburg', 'Noord-Brabant'];
+const PROVINCE_ORDER = ['Noord-Holland', 'Zuid-Holland', 'Utrecht', 'Flevoland', 'Gelderland', 'Limburg', 'Noord-Brabant'];
 const PROVINCE_FALLBACK = 'Overig';
 const PROVINCE_BY_CITY = {
   Amsterdam: 'Noord-Holland',
@@ -266,6 +273,10 @@ const PROVINCE_BY_CITY = {
   Uden: 'Noord-Brabant',
   Valkenswaard: 'Noord-Brabant',
   Bergeijk: 'Noord-Brabant',
+  Arnhem: 'Gelderland',
+  Apeldoorn: 'Gelderland',
+  Barneveld: 'Gelderland',
+  Tiel: 'Gelderland',
 };
 
 // Desktop-sidebar accordeon-secties (Stad/Theater/Genre) — standaard allemaal

@@ -71,6 +71,12 @@ import { scrapeVrijthofGroep } from './sites/vrijthof.js';
 import { scrapePltGroep } from './sites/plt.js';
 import { scrapeOranjerie } from './sites/oranjerie.js';
 import { scrapeMunttheater } from './sites/munttheater.js';
+import { scrapeOrpheus } from './sites/orpheus.js';
+import { scrapeAgnietenhof } from './sites/agnietenhof.js';
+import { scrapeOostpool } from './sites/oostpool.js';
+import { scrapeTar } from './sites/tar.js';
+import { scrapeSchaffelaar } from './sites/schaffelaar.js';
+import { scrapeMusisGroep } from './sites/musis.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -138,6 +144,13 @@ const SCRAPERS = {
   pltsittard: scrapePltGroep,
   oranjerie: scrapeOranjerie,
   munttheater: scrapeMunttheater,
+  orpheus: scrapeOrpheus,
+  agnietenhof: scrapeAgnietenhof,
+  oostpool: scrapeOostpool,
+  tar: scrapeTar,
+  schaffelaar: scrapeSchaffelaar,
+  musis: scrapeMusisGroep,
+  stadstheater: scrapeMusisGroep,
 };
 
 // Welk bestand waarvoor dient:

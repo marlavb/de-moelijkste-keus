@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **65** (59 ok, 1 terugval, 1 leeg, 4 gepauzeerd)
+- Theaters: **72** (59 ok, 1 terugval, 1 leeg, 5 gepauzeerd, 6 onbekend)
 - Voorstellingen (titel per theater): **6954**
 - Speeldata: **9888**
 - Laatste refresh: **7 oktober 2026, 09:47** (Amsterdamse tijd)
@@ -70,7 +70,24 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   `peppered.js` (Peppered), `wpTheatre.js` (Theater for WordPress) en
   `cre8ion.js` (The Cre8ion.Lab). Bellevue en Frascati lezen alle speeldata
   van de agendapagina's zelf (een verborgen paneel per productie), zonder
-  detailpagina's: bij Bellevue ~25 verzoeken (~2 min) in plaats van ~205. Dubbele speeldata gaan eruit binnen een
+  detailpagina's: bij Bellevue ~25 verzoeken (~2 min) in plaats van ~205.
+  Orpheus (Apeldoorn) en Agnietenhof (Tiel) werken net zo; bij Agnietenhof
+  krijgt alleen een kaart met meer speeldata (knop "Speeldata", zonder
+  paneel) een detailpagina, en films vallen weg.
+  Van Huis Oostpool (Arnhem) nemen we uit de agenda van Theater Oostpool
+  alleen de speeldata in het eigen huis; de tournee staat al bij de andere
+  theaters.
+  TAR (Arnhem) leest de agendapagina en daarna het eigen lijst-endpoint van
+  de site (zoals de knop "meer laden"); Happy Hour, residenties en workshops
+  laten we weg.
+  Waar zaal, uitsluitingen of speeldata alleen op een detailpagina staan
+  (Musis Arnhem; Schaffelaartheater, waar robots.txt de agenda-API verbiedt
+  en we de productie-adressen uit sitemap.xml halen, hooguit 120 nieuwe
+  pagina's per nacht),
+  komen die uit een cache tussen runs (`detailCache.js`, bestand
+  `cache/detail/<theater>.json`, door de nachtelijke run gecommit): een nieuwe
+  productie meteen, een bekende hooguit één keer per week, verspreid over de
+  week; die gegevens kunnen dus tot een week achterlopen. Dubbele speeldata gaan eruit binnen een
   theater en tussen vaste paren theaters met één agenda-overlap
   (`dedupe.js`). Titels: waar een theater per genre een vaste volgorde van
   maker en titel heeft, wordt dat "Titel – Maker"; content warnings,
@@ -102,7 +119,8 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   minuut; mislukt die ook, dan geldt de vorige data. Sommige bronnen dienen
   meer theaters tegelijk (één scrape per run): Het Cenakel (De Link,
   S.M.E.T.), Theater aan het Vrijthof (ook AINSI, via de zoekindex van de
-  site) en PLT (Heerlen, Kerkrade, Sittard). Theaters zonder Podiumpas staan
+  site), PLT (Heerlen, Kerkrade, Sittard) en Musis en Stadstheater Arnhem
+  (één API; het Stadstheater is tot 2028 dicht en heeft een melding). Theaters zonder Podiumpas staan
   er ook in, met `podiumpas: false` (ITA, de Limburgse theaters behalve De
   Maaspoort en DOK6); de nieuwste theaters draaien achteraan in de run, elk
   met een eigen tijdbudget. Besloten verhuur (zonder kaartverkoop) laten we
@@ -153,8 +171,9 @@ brew install openjdk@21           # emulators; zet openjdk@21/bin in je PATH
 - App bekijken: `npx serve public` (of `python3 -m http.server 8080 --directory public`).
   Met `?emulator=1` praat de app met lokale emulators in plaats van Firebase.
 - Eén theater scrapen tijdens het bouwen, uit de lokale cache:
-  `SCRAPE_CACHE=1 node src/index.js --only=<id>`. Houd testverkeer naar
-  theatersites klein (zie `CLAUDE.md`).
+  `SCRAPE_CACHE=1 node src/index.js --only=<id>`; met `SCRAPE_OFFLINE=1`
+  erbij gaat er niets naar de site dat niet al in de cache staat. Houd
+  testverkeer naar theatersites klein (zie `CLAUDE.md`).
 
 ### Testen
 
@@ -193,7 +212,7 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v40`
+Service worker: `podiumagenda-v41`
 <!-- AUTO:sw:end -->
 
 ### Theaters
@@ -299,4 +318,16 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Theater De Nieuwe Vorst | Tilburg | ja | ok |
 | Markant Theater Maashorst | Uden | deels | ok |
 | Theater de Hofnar | Valkenswaard | deels | ok |
+
+**Gelderland** (7)
+
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| Theater Orpheus | Apeldoorn | – | onbekend |
+| Huis Oostpool | Arnhem | – | onbekend |
+| Musis Arnhem | Arnhem | – | onbekend |
+| Stadstheater Arnhem | Arnhem | – | onbekend |
+| TAR | Arnhem | – | onbekend |
+| Schaffelaartheater | Barneveld | – | onbekend |
+| Schouwburg Agnietenhof | Tiel | – | gepauzeerd sinds 2026-10-07 |
 <!-- AUTO:theaters:end -->

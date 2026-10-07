@@ -193,6 +193,38 @@ const GENRE_MAP = {
   carnaval: 'Overig', // Theater aan de Parade
   'echt bosch': 'Overig', // Theater aan de Parade: lokale reeks, geen genre
   'november music': 'Muziek & Concert', // Theater aan de Parade: festival voor nieuwe muziek (7 okt 2026)
+  // Theater Orpheus (okt 2026)
+  'jazz & wereldmuziek': 'Muziek & Concert',
+  staconcert: 'Muziek & Concert',
+  gigant: 'Muziek & Concert', // GIGANT: pop- en singer-songwriterreeks in de Grote Kerk
+  'circus & fysiek theater': 'Overig',
+  // Musis en Stadstheater Arnhem (okt 2026): muziekstijlen als tags.
+  pop: 'Muziek & Concert',
+  rock: 'Muziek & Concert',
+  metal: 'Muziek & Concert',
+  blues: 'Muziek & Concert',
+  folk: 'Muziek & Concert',
+  'soul, funk': 'Muziek & Concert',
+  disco: 'Muziek & Concert',
+  'singer-songwriter': 'Muziek & Concert',
+  vocaal: 'Muziek & Concert',
+  nederlandstalig: 'Muziek & Concert',
+  wereldmuziek: 'Muziek & Concert',
+  piano: 'Muziek & Concert',
+  orkestraal: 'Muziek & Concert',
+  kamermuziek: 'Muziek & Concert',
+  koormuziek: 'Muziek & Concert',
+  'oude muziek': 'Muziek & Concert',
+  'modern klassiek': 'Muziek & Concert',
+  orgel: 'Muziek & Concert',
+  blaasmuziek: 'Muziek & Concert',
+  'familie - jeugd gratis': 'Familie & Jeugd',
+  'fysiek & beeldend': 'Overig',
+  dansfeest: 'Overig',
+  circus: 'Overig',
+  country: 'Muziek & Concert',
+  // TAR (okt 2026).
+  'theatrale installatie': 'Overig',
   spellen: 'Overig', // Parktheater: "Moord in het Parktheater" (interactief spel)
 
   // Limburg (okt 2026; zie debug/limburg-2-inventarisatie.md)

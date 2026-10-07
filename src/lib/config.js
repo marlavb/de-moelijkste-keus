@@ -41,6 +41,19 @@ const TR_RESERVEREN = {
   toelichting: 'Via de kassa: telefonisch (ma–vr 14–17 uur), per mail of aan de balie, vanaf 30 dagen voor de voorstelling.',
 };
 
+// Bron: https://www.agnietenhof.nl/kaartverkoopinformatie-jxyz (7 okt 2026)
+const AGNIETENHOF_RESERVEREN = {
+  telefoon: '0344 673 500',
+  email: 'kassa@cultuurbedrijftiel.nl',
+  toelichting: 'Alleen via de kassa: telefonisch, per mail of aan de balie, vanaf 30 dagen voor de voorstelling; tickets tot €50.',
+};
+
+// Bron: https://schaffelaartheater.nl/je-bezoek/podiumpas/ (7 okt 2026)
+const SCHAFFELAAR_RESERVEREN = {
+  email: 'kassa@schaffelaartheater.nl',
+  toelichting: 'Uitsluitend per mail, vanaf 30 dagen voor de voorstelling; 1 ticket per pas, af te halen aan de avondkassa (een uur voor aanvang open). Niet bij uitverkochte voorstellingen.',
+};
+
 // `provincie` (sinds 30 sep 2026): voor een latere provinciefilter; nog niet
 // in de UI. Bij elk nieuw theater invullen.
 //
@@ -879,5 +892,130 @@ export const THEATERS = [
     agendaUrl: 'https://www.munttheater.nl/agenda',
     budgetMinuten: 5,
     podiumpas: false,
+  },
+  {
+    id: 'orpheus',
+    naam: 'Theater Orpheus',
+    stad: 'Apeldoorn',
+    provincie: 'Gelderland',
+    baseUrl: 'https://www.orpheus.nl',
+    agendaUrl: 'https://www.orpheus.nl/voorstellingen',
+    // Bron: https://podiumpas.nl/waar-te-besteden en
+    // https://www.orpheus.nl/podiumpas-7v18 (7 okt 2026): tickets tot €50,
+    // reserveren vanaf 30 dagen; uitsluitingen per voorstelling (zie
+    // src/sites/orpheus.js: prijs > €50, extern verkocht en gratis → false).
+    podiumpas: true,
+    // ~19 agendapagina's × 5 s crawl-delay ≈ 1,5 min.
+    budgetMinuten: 5,
+  },
+  // Bron Podiumpas: https://podiumpas.nl/waar-te-besteden en
+  // https://www.agnietenhof.nl/kaartverkoopinformatie-jxyz (7 okt 2026): alleen
+  // via de kassa, tot €50; geen films, STIP, verhuur/extern (zie
+  // src/sites/agnietenhof.js). Op podiumpas.nl als "Cultuurbedrijf Tiel".
+  {
+    id: 'agnietenhof',
+    naam: 'Schouwburg Agnietenhof',
+    stad: 'Tiel',
+    provincie: 'Gelderland',
+    baseUrl: 'https://www.agnietenhof.nl',
+    agendaUrl: 'https://www.agnietenhof.nl/agenda',
+    podiumpas: true,
+    podiumpasReserveren: AGNIETENHOF_RESERVEREN,
+    // 7 okt 2026: de agendapagina geeft onze browser (Playwright) HTTP 403
+    // met een BunnyCDN-botcontrole ("Establishing a secure connection…"),
+    // ook bij één gewone herpoging 's middags. Niet omzeilen; de scraper
+    // staat klaar (getest op een bewaarde agendapagina). Terugzetten = deze
+    // regel weghalen.
+    gepauzeerd: { sinds: '2026-10-07', reden: 'BunnyCDN-botcontrole (403)' },
+    // ~24 agendapagina's + ~20 detailpagina's × 5 s crawl-delay ≈ 4 min.
+    budgetMinuten: 7,
+  },
+  {
+    id: 'oostpool',
+    naam: 'Huis Oostpool',
+    stad: 'Arnhem',
+    provincie: 'Gelderland',
+    baseUrl: 'https://www.oostpool.nl',
+    agendaUrl: 'https://www.oostpool.nl/agenda/',
+    // Bron: https://podiumpas.nl/waar-te-besteden en
+    // https://www.oostpool.nl/huistheater/bestel-bezoekinfo/podiumpas/ (7 okt
+    // 2026): Podiumpas geldig in Huis Oostpool; online na registratie.
+    podiumpas: true,
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Online, vanaf 30 dagen voor de voorstelling, nadat je je pas via het formulier op de site hebt geregistreerd (dat duurt een paar werkdagen). Anders aan de deur, als het niet uitverkocht is.',
+    },
+    // Eén agendapagina; alleen de speeldata in Huis Oostpool (zie oostpool.js).
+    budgetMinuten: 2,
+  },
+  {
+    id: 'tar',
+    naam: 'TAR',
+    stad: 'Arnhem',
+    provincie: 'Gelderland',
+    baseUrl: 'https://tar.nl',
+    agendaUrl: 'https://tar.nl/agenda/',
+    // Bron: https://podiumpas.nl/waar-te-besteden (7 okt 2026; verwijst naar
+    // https://tar.nl/nieuws/podiumpas-nu-ook-beschikbaar-bij-theater-a-d-rijn/,
+    // 12 feb 2024). De voorwaarden-link daarin (theateraanderijn.nl/podiumpas)
+    // geeft 404; voorwaarden en manier van reserveren dus onbekend. Geen
+    // uitzonderingen verzonnen: alles true, met een melding (zoals Het Speelhuis).
+    podiumpas: true,
+    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+    // Agendapagina + ~5 keer het lijst-endpoint.
+    budgetMinuten: 2,
+  },
+  {
+    id: 'schaffelaar',
+    naam: 'Schaffelaartheater',
+    stad: 'Barneveld',
+    provincie: 'Gelderland',
+    baseUrl: 'https://schaffelaartheater.nl',
+    agendaUrl: 'https://schaffelaartheater.nl/agenda/',
+    // Bron: https://podiumpas.nl/waar-te-besteden en
+    // https://schaffelaartheater.nl/je-bezoek/podiumpas/ (7 okt 2026): alleen
+    // per mail; niet bij uitverkocht, extern verkocht of zaalverhuur (zie
+    // src/sites/schaffelaar.js).
+    podiumpas: true,
+    podiumpasReserveren: SCHAFFELAAR_RESERVEREN,
+    // De agenda-API staat onder /umbraco/ en is door robots.txt verboden; we
+    // vragen het theater om toestemming (7 okt 2026). Tot dan sitemap +
+    // detailpagina's via de detailcache: status en nieuwe speeldata kunnen
+    // tot een week achterlopen. Hooguit MAX_OPHALEN_PER_RUN (120) pagina's
+    // per nacht (~3 min); het budget is ruimer, zodat de scraper altijd
+    // zelf stopt en de cache bewaart in plaats van een time-out te krijgen.
+    budgetMinuten: 6,
+  },
+  // Musis en Stadstheater Arnhem: één site en één API (src/sites/musis.js),
+  // twee zalen; namen zoals de markers op podiumpas.nl/waar-te-besteden.
+  // Bron Podiumpas: https://podiumpas.nl/waar-te-besteden en
+  // https://www.musisenstadstheater.nl/nl/jouw-bezoek/podiumpas (7 okt
+  // 2026): reguliere voorstellingen en concerten; niet bij verhuur, gast of
+  // extern verkocht (per voorstelling, zie musis.js). Reserveren online, na
+  // eenmalige registratie van de pas.
+  {
+    id: 'musis',
+    naam: 'Musis Arnhem',
+    stad: 'Arnhem',
+    provincie: 'Gelderland',
+    baseUrl: 'https://www.musisenstadstheater.nl',
+    agendaUrl: 'https://www.musisenstadstheater.nl/nl/agenda',
+    podiumpas: true,
+    // Eerste run ~34 API-pagina's + ~200 detailpagina's (1 s), daarna ~65.
+    budgetMinuten: 8,
+  },
+  {
+    id: 'stadstheater',
+    naam: 'Stadstheater Arnhem',
+    stad: 'Arnhem',
+    provincie: 'Gelderland',
+    baseUrl: 'https://www.musisenstadstheater.nl',
+    agendaUrl: 'https://www.musisenstadstheater.nl/nl/agenda',
+    podiumpas: true,
+    budgetMinuten: 8,
+    // Bron: https://www.musisenstadstheater.nl/nl/verbouwing-stadstheater
+    // (7 okt 2026): het Stadstheater wordt vernieuwd, heropening volgens
+    // planning in 2028; geen speeldata in de agenda. Na de heropening weghalen.
+    melding: 'Gesloten wegens vernieuwing (heropening gepland in 2028). De voorstellingen staan bij Musis Arnhem.',
   },
 ];
