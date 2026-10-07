@@ -880,4 +880,19 @@ export const THEATERS = [
     budgetMinuten: 5,
     podiumpas: false,
   },
+  {
+    id: 'orpheus',
+    naam: 'Theater Orpheus',
+    stad: 'Apeldoorn',
+    provincie: 'Gelderland',
+    baseUrl: 'https://www.orpheus.nl',
+    agendaUrl: 'https://www.orpheus.nl/voorstellingen',
+    // Bron: https://podiumpas.nl/waar-te-besteden en
+    // https://www.orpheus.nl/podiumpas-7v18 (7 okt 2026): tickets tot €50,
+    // reserveren vanaf 30 dagen; uitsluitingen per voorstelling (zie
+    // src/sites/orpheus.js: prijs > €50, extern verkocht en gratis → false).
+    podiumpas: true,
+    // ~19 agendapagina's × 5 s crawl-delay ≈ 1,5 min.
+    budgetMinuten: 5,
+  },
 ];

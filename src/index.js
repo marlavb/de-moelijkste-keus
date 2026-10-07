@@ -71,6 +71,7 @@ import { scrapeVrijthofGroep } from './sites/vrijthof.js';
 import { scrapePltGroep } from './sites/plt.js';
 import { scrapeOranjerie } from './sites/oranjerie.js';
 import { scrapeMunttheater } from './sites/munttheater.js';
+import { scrapeOrpheus } from './sites/orpheus.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -138,6 +139,7 @@ const SCRAPERS = {
   pltsittard: scrapePltGroep,
   oranjerie: scrapeOranjerie,
   munttheater: scrapeMunttheater,
+  orpheus: scrapeOrpheus,
 };
 
 // Welk bestand waarvoor dient:

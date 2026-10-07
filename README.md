@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **65** (59 ok, 1 terugval, 1 leeg, 4 gepauzeerd)
+- Theaters: **66** (59 ok, 1 terugval, 1 leeg, 4 gepauzeerd, 1 onbekend)
 - Voorstellingen (titel per theater): **6954**
 - Speeldata: **9888**
 - Laatste refresh: **7 oktober 2026, 09:47** (Amsterdamse tijd)
@@ -299,4 +299,10 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Theater De Nieuwe Vorst | Tilburg | ja | ok |
 | Markant Theater Maashorst | Uden | deels | ok |
 | Theater de Hofnar | Valkenswaard | deels | ok |
+
+**Gelderland** (1)
+
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| Theater Orpheus | Apeldoorn | – | onbekend |
 <!-- AUTO:theaters:end -->

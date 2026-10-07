@@ -193,6 +193,11 @@ const GENRE_MAP = {
   carnaval: 'Overig', // Theater aan de Parade
   'echt bosch': 'Overig', // Theater aan de Parade: lokale reeks, geen genre
   'november music': 'Muziek & Concert', // Theater aan de Parade: festival voor nieuwe muziek (7 okt 2026)
+  // Theater Orpheus (okt 2026)
+  'jazz & wereldmuziek': 'Muziek & Concert',
+  staconcert: 'Muziek & Concert',
+  gigant: 'Muziek & Concert', // GIGANT: pop- en singer-songwriterreeks in de Grote Kerk
+  'circus & fysiek theater': 'Overig',
   spellen: 'Overig', // Parktheater: "Moord in het Parktheater" (interactief spel)
 
   // Limburg (okt 2026; zie debug/limburg-2-inventarisatie.md)

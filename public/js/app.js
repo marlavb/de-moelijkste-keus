@@ -181,6 +181,7 @@ const THEATER_ZOEKALIASSEN = {
   pltsittard: ['plt', 'toon hermans', 'plt sittard'],
   oranjerie: ['oranjerie', 'theater roermond'],
   munttheater: ['munt', 'munttheater weert'],
+  orpheus: ['orpheus', 'theater orpheus apeldoorn', 'apeldoorn'],
 };
 
 const BESCHIKBAARHEID_LABELS = {

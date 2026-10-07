@@ -395,6 +395,7 @@ export function leesPepperedKaarten() {
           venue: tekst(li.querySelector('.locationBox .venue')),
           plek: tekst(li.querySelector('.locationBox .supertitle')),
           andereLocatie: li.classList.contains('in-other-location'),
+          prijsTekst: tekst(li.querySelector('.priceBox .popover-content')),
         });
       }
     } else {
@@ -410,6 +411,7 @@ export function leesPepperedKaarten() {
           venue: tekst(card.querySelector('.locationBox .venue')),
           plek: tekst(card.querySelector('.locationBox .supertitle')),
           andereLocatie: false,
+          prijsTekst: null,
         });
       }
     }
@@ -421,6 +423,9 @@ export function leesPepperedKaarten() {
       genre: card.querySelector('.genres__link')?.textContent.trim() ?? null,
       genres: Array.from(card.querySelectorAll('.genres__link')).map((a) => a.textContent.trim()),
       knop: tekst(card.querySelector('.dateTimeContainer .btn, .dateTimeContainer .status-info')),
+      // Prijs en zaal op de kaart zelf (o.a. Orpheus: "€ 39,50–€ 49,50", "Hanoszaal").
+      prijs: tekst(card.querySelector('.meta .price')),
+      zaal: tekst(card.querySelector('.descMetaContainer .venue')),
       maker: card.querySelector('.subtitle')?.textContent.trim() || null,
       rijen,
     };
