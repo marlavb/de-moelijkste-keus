@@ -10,6 +10,13 @@ import { THEATERS } from '../lib/config.js';
 const API_PATH = '/api/events';
 const MAX_PAGINAS = 80;
 
+// Hooguit zoveel detailpagina's per run ophalen. De eerste nacht (~290
+// producties) gaat de cache in twee stappen vol; daarna ~40 per nacht. Zo
+// stopt de scraper zelf en bewaart hij de cache, in plaats van een time-out
+// (die zou de cache niet bewaren, en dan begint elke nacht opnieuw).
+// Producties zonder detailgegevens slaan we die nacht over.
+export const MAX_OPHALEN_PER_RUN = 180;
+
 // Podiumpas bij Musis en Stadstheater (bron:
 // https://www.musisenstadstheater.nl/nl/jouw-bezoek/podiumpas, 7 okt 2026):
 // geldig voor reguliere voorstellingen en concerten; uitgesloten zijn
@@ -92,11 +99,13 @@ function leesDetail() {
  * zaal en de uitsluitingen staan alleen op de detailpagina per productie
  * (/nl/agenda/<slug>/<eventId>); die komen uit de detailcache: nieuwe
  * producties meteen, bekende hooguit één keer per week (zie detailCache.js).
- * Eerste run ~34 + ~200 verzoeken (~4 min), daarna ~34 + ~30.
+ * Eerste nacht 34 + 180 verzoeken (~3,5 min; grens per run), tweede nacht
+ * 34 + ~110, daarna 34 + ~40 (~1,5 min).
  */
 async function scrapeAllMusis({ page, theater, robots, waitForTurn, log, warn }) {
   if (!robots.isAllowed(API_PATH)) throw new Error(`robots.txt verbiedt ${API_PATH} — niet scrapen`);
-  const zwaar = await blokkeerZwareBronnen(page, { ookScripts: true });
+  // ookOverig: ook iframes (YouTube-video's op ~1 op 3 detailpagina's).
+  const zwaar = await blokkeerZwareBronnen(page, { ookScripts: true, ookOverig: true });
   const vandaag = new Date().toISOString().slice(0, 10);
   const events = [];
   for (let p = 1; p <= MAX_PAGINAS; p++) {
@@ -120,14 +129,23 @@ async function scrapeAllMusis({ page, theater, robots, waitForTurn, log, warn })
   for (const e of events) if (e.production?.slug && !perSlug.has(e.production.slug)) perSlug.set(e.production.slug, e.id);
   const details = new Map();
   let mislukt = 0;
+  let opgehaald = 0;
+  let uitgesteld = 0;
   for (const [slug, eventId] of perSlug) {
     const p = events.find((e) => e.production.slug === slug)?.production ?? {};
     if (WEGLATEN.test(p.title ?? '') || WEGLATEN_PERFORMER.test(p.performer?.trim() ?? '')) continue;
     const sleutel = `${theater.baseUrl}/nl/agenda/${slug}`;
     const detailUrl = `${sleutel}/${eventId}`;
     if (!robots.isAllowed(new URL(detailUrl).pathname)) continue;
+    if (cache.moetOphalen(sleutel) && opgehaald >= MAX_OPHALEN_PER_RUN) {
+      const oud = cache.get(sleutel);
+      if (oud) details.set(slug, oud);
+      else uitgesteld++;
+      continue;
+    }
     try {
       const r = await cache.haal(sleutel, async () => {
+        opgehaald++;
         await waitForTurn();
         const res = await gaNaar(page, detailUrl, { timeout: 30000 });
         if (!res || res.status() !== 200) throw new Error(`HTTP ${res?.status() ?? '?'}`);
@@ -141,7 +159,8 @@ async function scrapeAllMusis({ page, theater, robots, waitForTurn, log, warn })
     }
   }
   await cache.bewaar();
-  log(`detailpagina's: ${cache.stats.nieuw} nieuw, ${cache.stats.ververst} ververst, ${cache.stats.uitCache} uit de cache, ${mislukt} mislukt`);
+  log(`detailpagina's: ${cache.stats.nieuw} nieuw, ${cache.stats.ververst} ververst, ${cache.stats.uitCache} uit de cache, ${uitgesteld} uitgesteld (grens ${MAX_OPHALEN_PER_RUN}), ${mislukt} mislukt`);
+  if (uitgesteld > 0) warn(`${uitgesteld} producties nog zonder detailpagina (grens ${MAX_OPHALEN_PER_RUN} per run); die ontbreken tot de volgende nacht.`);
   if (mislukt > perSlug.size / 4) warn(`${mislukt} van ${perSlug.size} detailpagina's mislukt.`);
 
   const buildId = createIdBuilder();
@@ -163,7 +182,7 @@ async function scrapeAllMusis({ page, theater, robots, waitForTurn, log, warn })
     const d = details.get(prod.slug);
     const plek = musisPlek(d?.plek);
     if (!plek) {
-      tel(weg, d ? `andere plek (${d.plek ?? 'onbekend'})` : 'geen detailpagina');
+      tel(weg, d ? `andere plek (${d.plek ?? 'onbekend'})` : 'nog geen detailpagina');
       continue;
     }
     const lid = THEATERS.find((t) => t.id === plek.theaterId);
