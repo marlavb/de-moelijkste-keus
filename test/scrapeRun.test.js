@@ -601,3 +601,35 @@ test('omgedraaide titel en maker (OMGEDRAAID): ook in teruggevallen data recht, 
   assert.equal(fl2.titel, 'Legende van de witte slang');
   assert.equal(fl2.maker, 'Nhung Dam');
 });
+
+test('netwerkfout (DNS): één herpoging na de pauze; gelukt → ok, nog een keer mis → terugval', async () => {
+  const { isNetwerkfout, ScrapeTimeoutError } = await import('../src/lib/scrapeRun.js');
+  const dns = () => new Error('page.goto: net::ERR_NAME_NOT_RESOLVED at https://www.podiummozaiek.nl/programma/agenda');
+  assert.equal(isNetwerkfout(dns()), true);
+  assert.equal(isNetwerkfout(Object.assign(new Error('fetch failed'), { cause: { code: 'EAI_AGAIN' } })), true);
+  assert.equal(isNetwerkfout(new ScrapeTimeoutError('timeout na 5 s')), false);
+  assert.equal(isNetwerkfout(Object.assign(new Error('geweigerd'), { name: 'ScrapeBlockedError' })), false);
+  assert.equal(isNetwerkfout(new Error('agendacontainer ontbreekt')), false);
+
+  const pauzes = [];
+  const deps = { ...fakeDeps(), netwerkHerpogingMs: 60000, sleep: async (ms) => pauzes.push(ms) };
+  // Eerste poging DNS-fout, tweede lukt.
+  let n = 0;
+  const paths = await setup({ previousShows: [show('mozaiek', '2027-01-22')] });
+  const gelukt = await run({ paths, theaters: [theater('mozaiek')], scrapers: { mozaiek: async () => { if (n++ === 0) throw dns(); return [show('mozaiek', '2027-01-23')]; } }, deps, budgets: { theaterMs: () => 120000, totalMs: 600000 } });
+  assert.equal(n, 2);
+  assert.deepEqual(pauzes, [60000]);
+  assert.equal(gelukt.writtenStatus.theaters.mozaiek.status, 'ok');
+  // Twee keer mis: terugval, niet vaker dan één herpoging.
+  let m = 0;
+  const mis = await run({ paths: await setup({ previousShows: [show('mozaiek', '2027-01-22')] }), theaters: [theater('mozaiek')], scrapers: { mozaiek: async () => { m++; throw dns(); } }, deps, budgets: { theaterMs: () => 120000, totalMs: 600000 } });
+  assert.equal(m, 2);
+  assert.equal(mis.writtenStatus.theaters.mozaiek.status, 'terugval');
+  // Geen netwerkfout, of te weinig budget na de pauze: geen herpoging.
+  let k = 0;
+  await run({ paths: await setup(), theaters: [theater('x')], scrapers: { x: async () => { k++; throw new Error('agendacontainer ontbreekt'); } }, deps });
+  assert.equal(k, 1);
+  let j = 0;
+  await run({ paths: await setup(), theaters: [theater('x')], scrapers: { x: async () => { j++; throw dns(); } }, deps, budgets: { theaterMs: () => 5000, totalMs: 60000 } });
+  assert.equal(j, 1);
+});

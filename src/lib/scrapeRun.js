@@ -15,10 +15,25 @@ import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
 
 import { todayIsoDate } from './normalize.js';
-import { effectieveCrawlDelayMs } from './politeness.js';
+import { effectieveCrawlDelayMs, sleep } from './politeness.js';
 
 export class ScrapeTimeoutError extends Error {
   name = 'ScrapeTimeoutError';
+}
+
+// Netwerkfout vóór de site zelf (DNS, verbinding): één gewone herpoging na
+// een minuut, binnen het eigen tijdbudget. Op 7 okt 2026 viel Podium
+// Mozaïek terug door een kortstondige DNS-storing (ERR_NAME_NOT_RESOLVED om
+// 05:23); een paar uur later was het domein gewoon bereikbaar. Geen
+// herpoging bij een time-out of een blokkade (die respecteren we).
+export const NETWERK_HERPOGING_MS = 60_000;
+const NETWERKFOUT = /ERR_NAME_NOT_RESOLVED|ERR_INTERNET_DISCONNECTED|ERR_NETWORK_CHANGED|ERR_ADDRESS_UNREACHABLE|ERR_CONNECTION_(?:REFUSED|RESET|CLOSED|TIMED_OUT|FAILED)|ENOTFOUND|EAI_AGAIN|ECONNRESET|ECONNREFUSED/;
+// Na de pauze moet er nog zoveel budget over zijn om het zinvol te proberen.
+const MIN_BUDGET_HERPOGING_MS = 30_000;
+
+export function isNetwerkfout(error) {
+  if (!error || error instanceof ScrapeTimeoutError || error.name === 'ScrapeBlockedError') return false;
+  return NETWERKFOUT.test(`${error.message ?? error} ${error.cause?.code ?? ''}`);
 }
 
 // De site weert ons (bv. een Cloudflare-challenge): de melding gaat zonder
@@ -263,13 +278,19 @@ export async function runRefresh({
       result = { error: new ScrapeTimeoutError(`niet gestart: totaalbudget van ${formatSeconds(budgets.totalMs)} op`) };
     } else {
       theaterLog(`start scrape (${theater.agendaUrl})`);
-      result = await runWithDeadline({
-        theater,
-        scraper: scrapers[theater.id],
-        deps,
-        budgetMs: Math.min(budgets.theaterMs(theater), remainingMs),
-        log: theaterLog,
-      });
+      const theaterBudgetMs = Math.min(budgets.theaterMs(theater), remainingMs);
+      result = await runWithDeadline({ theater, scraper: scrapers[theater.id], deps, budgetMs: theaterBudgetMs, log: theaterLog });
+      // Netwerkfout: één herpoging na een minuut, als het budget het toelaat.
+      const pauzeMs = deps.netwerkHerpogingMs ?? NETWERK_HERPOGING_MS;
+      const restMs = theaterBudgetMs - (Date.now() - startedAt) - pauzeMs;
+      if (isNetwerkfout(result.error) && restMs >= Math.min(MIN_BUDGET_HERPOGING_MS, theaterBudgetMs / 2)) {
+        theaterLog(`netwerkfout (${summarizeError(result.error)}) — nog één poging over ${Math.round(pauzeMs / 1000)} s.`);
+        await (deps.sleep ?? sleep)(pauzeMs);
+        const eerste = result;
+        result = await runWithDeadline({ theater, scraper: scrapers[theater.id], deps, budgetMs: Math.min(restMs, runDeadline - Date.now()), log: theaterLog });
+        result.warnings = [...(eerste.warnings ?? []), ...(result.warnings ?? [])];
+        theaterLog(result.error ? 'herpoging mislukt.' : 'herpoging gelukt.');
+      }
     }
     const duurSeconden = Math.round((Date.now() - startedAt) / 1000);
 

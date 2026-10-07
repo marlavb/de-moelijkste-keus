@@ -9,6 +9,10 @@ on:
         description: 'Ook verversen als de data vandaag al ververst is'
         type: boolean
         default: false
+      alleen:
+        description: 'Alleen deze theaters (id''s met komma, bv. mozaiek); de rest houdt zijn data. Telt als forceer.'
+        type: string
+        default: ''
   schedule:
     # Vangnet als de Cloud Function niet start. 03:17 UTC = 04:17 (winter) /
     # 05:17 (zomer) in Amsterdam. Bewust een scheve minuut: GitHub stelt
@@ -51,7 +55,7 @@ jobs:
       - name: Vandaag al ververst?
         id: controle
         env:
-          FORCEER: ${{ inputs.forceer == true }}
+          FORCEER: ${{ inputs.forceer == true || inputs.alleen != '' }}
         run: node scripts/refresh-vandaag.js
 
   refresh:
@@ -86,8 +90,10 @@ jobs:
       # schrijft het de uitkomst per theater naar public/data/scrape-status.json.
       # Deze stap zelf slaagt dan gewoon, zodat de data altijd wordt bijgewerkt.
       - name: Agenda's scrapen
-        run: node src/index.js
+        # Met `alleen` (handmatige run): alleen die theaters, via --only.
+        run: node src/index.js ${ALLEEN:+--only=$ALLEEN}
         env:
+          ALLEEN: ${{ inputs.alleen }}
           # Contact-URL in de user-agent (publiek, dus een variabele, geen secret).
           SCRAPER_CONTACT: ${{ vars.SCRAPER_CONTACT }}
 
