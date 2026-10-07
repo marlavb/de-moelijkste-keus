@@ -1,4 +1,4 @@
-import { pagineerListing } from '../lib/peppered.js';
+import { pagineerListing, leesPepperedKaarten } from '../lib/peppered.js';
 import { createDutchAbbrevDayParser, extractTime, createIdBuilder } from '../lib/normalize.js';
 import { normalizeGenre } from '../lib/genre.js';
 import { pasTitelConventieToe } from '../lib/titels.js';
@@ -26,54 +26,6 @@ function classifyBeschikbaarheid(statusTekst) {
   if (tekst.includes('uitverkocht') || tekst.includes('volgeboekt')) return 'uitverkocht';
   if (tekst.includes('kaarten') || tekst.includes('tickets') || tekst.includes('aanmelden')) return 'beschikbaar';
   return 'onbekend';
-}
-
-/** Eén speeldatum-rij uit het paneel (li.subshow) of van de kaart zelf (één datum); draait in de browser. */
-function leesAgendaKaarten() {
-  const tekst = (el) => el?.textContent.trim().replace(/\s+/g, ' ') || null;
-  return Array.from(document.querySelectorAll('li[data-entry-id]')).map((card) => {
-    const entryId = card.getAttribute('data-entry-id');
-    const rijen = [];
-    const paneel = document.getElementById(`show${entryId}Dates`);
-    if (paneel) {
-      for (const li of paneel.querySelectorAll('li.subshow')) {
-        rijen.push({
-          dagTekst: tekst(li.querySelector('.date .start')),
-          tijdTekst: tekst(li.querySelector('.time .start')),
-          href: li.querySelector('.buttonBox a')?.getAttribute('href') ?? null,
-          // Zoals op de detailpagina: de hele .buttonBox (a, span of button).
-          statusTekst: tekst(li.querySelector('.buttonBox')),
-          venue: tekst(li.querySelector('.locationBox .venue')),
-          plek: tekst(li.querySelector('.locationBox .supertitle')),
-          andereLocatie: li.classList.contains('in-other-location'),
-        });
-      }
-    } else {
-      // Eén speeldatum: datum, tijd en knop staan op de kaart zelf.
-      const dt = card.querySelector('.dateTimeContainer .dateTimeInner');
-      const knop = dt?.querySelector('a.btn, button.btn, span.btn, .status-info:not(.expand-sub)');
-      if (dt) {
-        rijen.push({
-          dagTekst: tekst(dt.querySelector('.datetime .date .start')),
-          tijdTekst: tekst(dt.querySelector('.datetime .time .start')),
-          href: knop?.getAttribute('href') ?? null,
-          statusTekst: tekst(knop),
-          venue: tekst(card.querySelector('.locationBox .venue')),
-          plek: tekst(card.querySelector('.locationBox .supertitle')),
-          andereLocatie: false,
-        });
-      }
-    }
-    return {
-      entryId,
-      titel: card.querySelector('h3.title')?.textContent.trim() ?? null,
-      beschrijving: card.querySelector('.tagline')?.textContent.trim() ?? null,
-      detailHref: card.querySelector('a.desc')?.getAttribute('href') ?? null,
-      genre: card.querySelector('.genres__link')?.textContent.trim() ?? null,
-      maker: card.querySelector('.subtitle')?.textContent.trim() || null,
-      rijen,
-    };
-  });
 }
 
 /**
@@ -115,7 +67,7 @@ export async function scrapeBellevue({ page, theater, robots, waitForTurn, log, 
     maxPages: MAX_LISTING_PAGES,
     label: 'producties',
     sleutelVan: (card) => card.entryId,
-    extract: leesAgendaKaarten,
+    extract: leesPepperedKaarten,
   });
 
   const buildId = createIdBuilder();

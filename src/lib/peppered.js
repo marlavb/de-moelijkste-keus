@@ -369,6 +369,64 @@ export function createGroupScraper(scrapeAll) {
   };
 }
 
+/**
+ * Alle kaarten van een Peppered-agendapagina met hun speeldata (draait in de
+ * browser, als `extract` voor pagineerListing). Per kaart de rijen uit het
+ * verborgen paneel show{ID}Dates (li.subshow), of bij één speeldatum de
+ * datum/tijd/knop van de kaart zelf (.dateTimeContainer). Zonder paneel en
+ * zonder datum op de kaart (bv. Agnietenhof: knop "Speeldata") blijft
+ * `rijen` leeg; dan is een detailpagina nodig. Sinds okt 2026 (Bellevue,
+ * Orpheus, Agnietenhof).
+ */
+export function leesPepperedKaarten() {
+  const tekst = (el) => el?.textContent.trim().replace(/\s+/g, ' ') || null;
+  return Array.from(document.querySelectorAll('li[data-entry-id]')).map((card) => {
+    const entryId = card.getAttribute('data-entry-id');
+    const rijen = [];
+    const paneel = document.getElementById(`show${entryId}Dates`);
+    if (paneel) {
+      for (const li of paneel.querySelectorAll('li.subshow')) {
+        rijen.push({
+          dagTekst: tekst(li.querySelector('.date .start')),
+          tijdTekst: tekst(li.querySelector('.time .start')),
+          href: li.querySelector('.buttonBox a')?.getAttribute('href') ?? null,
+          // Zoals op de detailpagina: de hele .buttonBox (a, span of button).
+          statusTekst: tekst(li.querySelector('.buttonBox')),
+          venue: tekst(li.querySelector('.locationBox .venue')),
+          plek: tekst(li.querySelector('.locationBox .supertitle')),
+          andereLocatie: li.classList.contains('in-other-location'),
+        });
+      }
+    } else {
+      // Eén speeldatum: datum, tijd en knop staan op de kaart zelf.
+      const dt = card.querySelector('.dateTimeContainer .dateTimeInner');
+      const knop = dt?.querySelector('a.btn, button.btn, span.btn, .status-info:not(.expand-sub)');
+      if (dt) {
+        rijen.push({
+          dagTekst: tekst(dt.querySelector('.datetime .date .start')),
+          tijdTekst: tekst(dt.querySelector('.datetime .time .start')),
+          href: knop?.getAttribute('href') ?? null,
+          statusTekst: tekst(knop),
+          venue: tekst(card.querySelector('.locationBox .venue')),
+          plek: tekst(card.querySelector('.locationBox .supertitle')),
+          andereLocatie: false,
+        });
+      }
+    }
+    return {
+      entryId,
+      titel: card.querySelector('h3.title')?.textContent.trim() ?? null,
+      beschrijving: card.querySelector('.tagline')?.textContent.trim() ?? null,
+      detailHref: card.querySelector('a.desc')?.getAttribute('href') ?? null,
+      genre: card.querySelector('.genres__link')?.textContent.trim() ?? null,
+      genres: Array.from(card.querySelectorAll('.genres__link')).map((a) => a.textContent.trim()),
+      knop: tekst(card.querySelector('.dateTimeContainer .btn, .dateTimeContainer .status-info')),
+      maker: card.querySelector('.subtitle')?.textContent.trim() || null,
+      rijen,
+    };
+  });
+}
+
 /** Laagste €-bedrag in een prijstekst ("Rang 1 Normaal € 39,-", "€ 15,-–€ 20,-"), of null. */
 export function laagstePrijs(tekst) {
   const bedragen = [...String(tekst ?? '').matchAll(/€\s*(\d+)(?:[,.](\d{2}|-))?/g)].map((m) => Number(`${m[1]}.${/\d{2}/.test(m[2] ?? '') ? m[2] : '00'}`));

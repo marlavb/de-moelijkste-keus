@@ -9,8 +9,9 @@ dezelfde dag stopt meteen. De workflow commit de data zelf.
 
 ## Git
 
-- Vóór elke commit: `git restore public/data/shows.json public/data/scrape-status.json public/data/theaters.json`
-  als een lokale testrun die heeft overschreven. Commit lokaal gegenereerde
+- Vóór elke commit: `git restore public/data/shows.json public/data/scrape-status.json public/data/theaters.json cache/detail`
+  als een lokale testrun die heeft overschreven (`cache/detail/` is de cache van
+  detailpagina's tussen runs; een nieuw lokaal bestand daar: `git clean -n cache/detail`). Commit lokaal gegenereerde
   data alleen in een bewust, apart datacommit (en zeg dat in de message).
 - Altijd `git diff --stat` (of `git diff --cached --stat`) vóór het committen.
 - Pushen altijd via `npm run safe-push` (eventueel `-- <git push-argumenten>`):

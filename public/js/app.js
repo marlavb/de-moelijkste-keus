@@ -228,7 +228,7 @@ const STORAGE_KEYS = {
 // provincie-koppen; een stad die niet in de map staat belandt in de
 // PROVINCE_FALLBACK-sectie zodat een nieuwe stad nooit stilzwijgend
 // verdwijnt.
-const PROVINCE_ORDER = ['Noord-Holland', 'Zuid-Holland', 'Utrecht', 'Flevoland', 'Limburg', 'Noord-Brabant'];
+const PROVINCE_ORDER = ['Noord-Holland', 'Zuid-Holland', 'Utrecht', 'Flevoland', 'Gelderland', 'Limburg', 'Noord-Brabant'];
 const PROVINCE_FALLBACK = 'Overig';
 const PROVINCE_BY_CITY = {
   Amsterdam: 'Noord-Holland',
@@ -266,6 +266,10 @@ const PROVINCE_BY_CITY = {
   Uden: 'Noord-Brabant',
   Valkenswaard: 'Noord-Brabant',
   Bergeijk: 'Noord-Brabant',
+  Arnhem: 'Gelderland',
+  Apeldoorn: 'Gelderland',
+  Barneveld: 'Gelderland',
+  Tiel: 'Gelderland',
 };
 
 // Desktop-sidebar accordeon-secties (Stad/Theater/Genre) — standaard allemaal
