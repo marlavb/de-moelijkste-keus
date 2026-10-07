@@ -75,6 +75,7 @@ import { scrapeOrpheus } from './sites/orpheus.js';
 import { scrapeAgnietenhof } from './sites/agnietenhof.js';
 import { scrapeOostpool } from './sites/oostpool.js';
 import { scrapeTar } from './sites/tar.js';
+import { scrapeSchaffelaar } from './sites/schaffelaar.js';
 import { scrapeMusisGroep } from './sites/musis.js';
 
 const SCRAPERS = {
@@ -147,6 +148,7 @@ const SCRAPERS = {
   agnietenhof: scrapeAgnietenhof,
   oostpool: scrapeOostpool,
   tar: scrapeTar,
+  schaffelaar: scrapeSchaffelaar,
   musis: scrapeMusisGroep,
   stadstheater: scrapeMusisGroep,
 };

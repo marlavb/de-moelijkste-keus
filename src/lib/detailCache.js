@@ -73,6 +73,11 @@ export async function openDetailCache(theaterId, { dir = DETAIL_CACHE_DIR, nu = 
       gezienDezeRun.add(url);
       return items.get(url)?.data ?? null;
     },
+    /** Wanneer deze URL het laatst is opgehaald (ms), of null. */
+    opgehaaldOp(url) {
+      const op = Date.parse(items.get(url)?.opgehaaldOp ?? '');
+      return Number.isNaN(op) ? null : op;
+    },
     gezien(url) {
       gezienDezeRun.add(url);
       if (items.has(url)) stats.uitCache++;
@@ -85,11 +90,12 @@ export async function openDetailCache(theaterId, { dir = DETAIL_CACHE_DIR, nu = 
     },
     /**
      * Uit de cache als dat mag, anders `ophalen()` en bewaren. Mislukt het
-     * ophalen en is er een oudere versie, dan die (met `oud: true`).
+     * ophalen en is er een oudere versie, dan die (met `oud: true`). Met
+     * `forceer` altijd ophalen (bv. de pagina is sindsdien gewijzigd).
      */
-    async haal(url, ophalen) {
+    async haal(url, ophalen, { forceer = false } = {}) {
       const e = items.get(url);
-      if (e && !moetVerversen(e, url, nu())) {
+      if (e && !forceer && !moetVerversen(e, url, nu())) {
         gezienDezeRun.add(url);
         stats.uitCache++;
         return { data: e.data, uitCache: true };

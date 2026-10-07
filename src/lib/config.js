@@ -48,6 +48,12 @@ const AGNIETENHOF_RESERVEREN = {
   toelichting: 'Alleen via de kassa: telefonisch, per mail of aan de balie, vanaf 30 dagen voor de voorstelling; tickets tot €50.',
 };
 
+// Bron: https://schaffelaartheater.nl/je-bezoek/podiumpas/ (7 okt 2026)
+const SCHAFFELAAR_RESERVEREN = {
+  email: 'kassa@schaffelaartheater.nl',
+  toelichting: 'Uitsluitend per mail, vanaf 30 dagen voor de voorstelling; 1 ticket per pas, af te halen aan de avondkassa (een uur voor aanvang open). Niet bij uitverkochte voorstellingen.',
+};
+
 // `provincie` (sinds 30 sep 2026): voor een latere provinciefilter; nog niet
 // in de UI. Bij elk nieuw theater invullen.
 //
@@ -958,6 +964,27 @@ export const THEATERS = [
     melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
     // Agendapagina + ~5 keer het lijst-endpoint.
     budgetMinuten: 2,
+  },
+  {
+    id: 'schaffelaar',
+    naam: 'Schaffelaartheater',
+    stad: 'Barneveld',
+    provincie: 'Gelderland',
+    baseUrl: 'https://schaffelaartheater.nl',
+    agendaUrl: 'https://schaffelaartheater.nl/agenda/',
+    // Bron: https://podiumpas.nl/waar-te-besteden en
+    // https://schaffelaartheater.nl/je-bezoek/podiumpas/ (7 okt 2026): alleen
+    // per mail; niet bij uitverkocht, extern verkocht of zaalverhuur (zie
+    // src/sites/schaffelaar.js).
+    podiumpas: true,
+    podiumpasReserveren: SCHAFFELAAR_RESERVEREN,
+    // De agenda-API staat onder /umbraco/ en is door robots.txt verboden; we
+    // vragen het theater om toestemming (7 okt 2026). Tot dan sitemap +
+    // detailpagina's via de detailcache: status en nieuwe speeldata kunnen
+    // tot een week achterlopen. Hooguit MAX_OPHALEN_PER_RUN (120) pagina's
+    // per nacht (~3 min); het budget is ruimer, zodat de scraper altijd
+    // zelf stopt en de cache bewaart in plaats van een time-out te krijgen.
+    budgetMinuten: 6,
   },
   // Musis en Stadstheater Arnhem: één site en één API (src/sites/musis.js),
   // twee zalen; namen zoals de markers op podiumpas.nl/waar-te-besteden.
