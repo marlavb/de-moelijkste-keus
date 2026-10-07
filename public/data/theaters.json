@@ -309,6 +309,144 @@
       "naam": "Cpunt",
       "stad": "Hoofddorp",
       "podiumpas": false
+    },
+    "kattendans": {
+      "naam": "Kattendans",
+      "stad": "Bergeijk",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "online": true,
+        "telefoon": "0497-571318",
+        "toelichting": "Online met het prijstype \"podiumpas\" (pasnummer invullen), of telefonisch, vanaf 30 dagen voor de voorstelling. Kaartje tot een half uur voor aanvang ophalen bij de theaterkassa."
+      }
+    },
+    "paradox": {
+      "naam": "Paradox",
+      "stad": "Tilburg",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "email": "info@paradoxtilburg.nl",
+        "toelichting": "Je krijgt per mail een entreeticket met barcode; alleen de pas tonen bij de kassa is niet genoeg."
+      }
+    },
+    "delink": {
+      "naam": "De Link",
+      "stad": "Tilburg",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "online": true,
+        "toelichting": "Reserveer vanaf 30 dagen voor het concert online een zitplaats: kies op de concertpagina bij De Link \"Ik heb een Podiumpas\". Je krijgt een ticket van € 0; laat ticket én pas zien bij de kassa."
+      }
+    },
+    "smet": {
+      "naam": "S.M.E.T.",
+      "stad": "Tilburg",
+      "podiumpas": true,
+      "melding": "Podiumpas-voorwaarden nog niet bekend — vraag het theater."
+    },
+    "markant": {
+      "naam": "Markant Theater Maashorst",
+      "stad": "Uden",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "0413 230 230",
+        "toelichting": "Bel het Informatiepunt (optie 1) vanaf 30 dagen voor de voorstelling; online reserveren is niet mogelijk. Ticket ophalen en pas laten scannen bij het Informatiepunt, vanaf een uur voor aanvang."
+      }
+    },
+    "speelhuis": {
+      "naam": "Het Speelhuis",
+      "stad": "Helmond",
+      "podiumpas": true,
+      "melding": "Podiumpas-voorwaarden nog niet bekend — vraag het theater."
+    },
+    "schouwburgconcertzaal": {
+      "naam": "Schouwburg Concertzaal",
+      "stad": "Tilburg",
+      "podiumpas": true,
+      "melding": "Podiumpas-voorwaarden nog niet bekend — vraag het theater."
+    },
+    "willemtwee": {
+      "naam": "Toonzaal Willem Twee",
+      "stad": "'s-Hertogenbosch",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "email": "podiumpas@willem-twee.nl",
+        "toelichting": "Mail vanaf 15 dagen voor het concert welk concert je wilt bezoeken; er zijn 5 Podiumpasplaatsen per concert. Laat op de dag zelf je pas zien bij de kassa (open vanaf een uur voor aanvang)."
+      }
+    },
+    "theateraandeparade": {
+      "naam": "Theater aan de Parade",
+      "stad": "'s-Hertogenbosch",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "online": true,
+        "telefoon": "073 680 9809",
+        "toelichting": "Online reserveren kan vanaf één maand voor de voorstelling, als je bent ingelogd en je Podiumpas hebt laten registreren; je tickets staan daarna in je mail of account. Eén ticket per pas."
+      }
+    },
+    "denieuwevorst": {
+      "naam": "Theater De Nieuwe Vorst",
+      "stad": "Tilburg",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "online": true,
+        "toelichting": "Online met de kaartsoort \"Podiumpas\" (pasnummer invullen), vanaf 30 dagen voor de voorstelling. Neem je pas mee naar de kassa; reserveringen blijven tot 15 minuten voor aanvang geldig."
+      }
+    },
+    "hofnar": {
+      "naam": "Theater de Hofnar",
+      "stad": "Valkenswaard",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "040-207 40 10",
+        "toelichting": "Uitsluitend telefonisch via de kaartverkoopbalie, vanaf 30 dagen voor de voorstelling; online reserveren is niet mogelijk. Kaartje tot een half uur voor aanvang ophalen bij de balie."
+      }
+    },
+    "parktheater": {
+      "naam": "Parktheater Eindhoven",
+      "stad": "Eindhoven",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "040-211 11 22",
+        "toelichting": "Telefonisch via de kaartverkoopbalie, vanaf 30 dagen voor de voorstelling; online reserveren is nog niet mogelijk. Pas laten scannen bij de avondkassa (open vanaf een uur voor aanvang)."
+      },
+      "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
+      "meldingLink": "https://www.parktheater.nl/programma"
+    },
+    "vrijthof": {
+      "naam": "Theater aan het Vrijthof",
+      "stad": "Maastricht",
+      "podiumpas": false
+    },
+    "ainsi": {
+      "naam": "AINSI",
+      "stad": "Maastricht",
+      "podiumpas": false
+    },
+    "pltheerlen": {
+      "naam": "Theater Heerlen",
+      "stad": "Heerlen",
+      "podiumpas": false
+    },
+    "pltkerkrade": {
+      "naam": "Theater Kerkrade",
+      "stad": "Kerkrade",
+      "podiumpas": false
+    },
+    "pltsittard": {
+      "naam": "Toon Hermans Theater Sittard",
+      "stad": "Sittard",
+      "podiumpas": false
+    },
+    "oranjerie": {
+      "naam": "Theater De Oranjerie",
+      "stad": "Roermond",
+      "podiumpas": false
+    },
+    "munttheater": {
+      "naam": "Munttheater",
+      "stad": "Weert",
+      "podiumpas": false
     }
   }
 }
