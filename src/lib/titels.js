@@ -125,7 +125,10 @@ export function draaiTitelEnMakerOm(show, lijst = OMGEDRAAID, bijArtiest = VOORS
   if (extra && (!show.datum || show.datum <= extra.tot)) return { ...show, titel: extra.voorstelling, maker: titel };
   const titels = lijst[show?.theaterId];
   const maker = typeof show?.maker === 'string' ? show.maker.trim() : '';
-  if (!titels || !maker || !titels.includes(titel)) return show;
+  // Streepje, en-dash of "|" maken niet uit: Flint geeft "Toneelgroep
+  // Maastricht - Stichting NOX", de lijst heeft de en-dash (8 okt 2026: de
+  // regel werkte daardoor niet in de nachtrun).
+  if (!titels || !maker || !titels.some((t) => metEnDash(t) === metEnDash(titel))) return show;
   return { ...show, titel: maker, maker: titel };
 }
 

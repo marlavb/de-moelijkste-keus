@@ -243,6 +243,9 @@ test('Toneelgroep Maastricht (Flint, Het Speelhuis): omgedraaid naar "Bijna een 
   const sp = draaiTitelEnMakerOm({ theaterId: 'speelhuis', titel: 'Toneelgroep Maastricht', maker: 'Bijna een leven' });
   assert.equal(sp.titel, 'Bijna een leven');
   assert.equal(sp.maker, 'Toneelgroep Maastricht');
+  // Flint geeft een gewoon streepje (nachtrun 8 okt 2026): telt ook.
+  assert.equal(draaiTitelEnMakerOm({ theaterId: 'flint', titel: 'Toneelgroep Maastricht - Stichting NOX', maker: 'Bijna een leven' }).titel, 'Bijna een leven');
+  assert.equal(draaiTitelEnMakerOm({ theaterId: 'flint', titel: 'Toneelgroep Maastricht | Stichting NOX', maker: 'Bijna een leven' }).titel, 'Bijna een leven');
   // Nhung Dam bij Flint blijft werken.
   assert.equal(draaiTitelEnMakerOm({ theaterId: 'flint', titel: 'Nhung Dam', maker: 'Legende van de witte slang' }).titel, 'Legende van de witte slang');
 });
