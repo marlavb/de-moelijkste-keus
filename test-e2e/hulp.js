@@ -163,3 +163,29 @@ export async function schermafbeelding(page, naam) {
   await mkdir(SCHERMAFBEELDINGEN, { recursive: true });
   await page.screenshot({ path: path.join(SCHERMAFBEELDINGEN, `${naam}.png`) });
 }
+
+// Gewone waarde → Firestore REST-waarde (voor schrijfDoc).
+function naarRest(v) {
+  if (v === null) return { nullValue: null };
+  if (v instanceof Date) return { timestampValue: v.toISOString() };
+  if (typeof v === 'string') return { stringValue: v };
+  if (typeof v === 'boolean') return { booleanValue: v };
+  if (typeof v === 'number') return Number.isInteger(v) ? { integerValue: String(v) } : { doubleValue: v };
+  if (Array.isArray(v)) return { arrayValue: { values: v.map(naarRest) } };
+  return { mapValue: { fields: Object.fromEntries(Object.entries(v).map(([k, w]) => [k, naarRest(w)])) } };
+}
+
+/** Eén document schrijven zonder rules (als beheerder), bv. een situatie van vóór een deploy. */
+export async function schrijfDoc(pad, data) {
+  const r = await fetch(`${DOCS}/${pad}`, {
+    method: 'PATCH',
+    headers: { 'content-type': 'application/json', Authorization: 'Bearer owner' },
+    body: JSON.stringify({ fields: naarRest(data).mapValue.fields }),
+  });
+  if (!r.ok) throw new Error(`schrijfDoc ${pad}: ${r.status}`);
+}
+
+/** Eén document weghalen zonder rules (als beheerder). */
+export async function wisDoc(pad) {
+  await fetch(`${DOCS}/${pad}`, { method: 'DELETE', headers: { Authorization: 'Bearer owner' } });
+}

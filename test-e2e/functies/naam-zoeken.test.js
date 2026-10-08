@@ -11,7 +11,9 @@ import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 
-import { controleerEmulators, startServer, wisEmulators, maakAccount, leesDoc, openGebruiker, ga, wachtOpTekst, wachtOpDoc, schermafbeelding } from '../hulp.js';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+import { controleerEmulators, startServer, wisEmulators, maakAccount, leesDoc, schrijfDoc, wisDoc, openGebruiker, ga, wachtOpTekst, wachtOpDoc, schermafbeelding, PROJECT } from '../hulp.js';
 
 const ACCOUNTS = {
   A: { email: 'anna@naam.e2e.test', wachtwoord: 'geheim-anna', naam: 'Anna de Vries', gebruikersnaam: 'anna' },
@@ -107,6 +109,57 @@ test('een woord zonder geldige gebruikersnaam: uitleg; geen e-mailadressen of ui
     return (await roepFunctie('zoekOpNaam', { naam: 'Anna de Vries' })).data;
   });
   assert.deepEqual(antwoord, { treffers: [{ gebruikersnaam: 'anna', naam: 'Anna de Vries' }, { gebruikersnaam: 'anna2', naam: 'Anna de Vries' }] });
+});
+
+// ---------- Bestaande gebruikers van vóór de deploy (8 okt 2026) ----------
+// Erik (E) had al een profiel en is al vriend van B, maar opende de app niet
+// sinds de deploy: geen naamvoorkeur, niet in de index. Zo zag het eruit
+// toen "Erik van de Winkel" niets opleverde. Het vulscript lost dat op.
+
+test('vriend die de app nooit opende: eerst niet gevonden; na het vulscript "Al vrienden" zonder knop', async () => {
+  const E = await maakAccount({ email: 'erik@naam.e2e.test', wachtwoord: 'geheim-erik', naam: 'Erik van de Winkel' });
+  const nu = new Date();
+  await schrijfDoc(`usernames/erik`, { uid: E, gebruikersnaam: 'erik', naam: 'Erik van de Winkel' });
+  await schrijfDoc(`profielen/${E}`, { gebruikersnaam: 'erik', gebruikersnaamLaag: 'erik', naam: 'Erik van de Winkel', aangemaaktOp: nu, gewijzigdOp: nu, v: 1 });
+  await schrijfDoc(`vrienden/${uid.B}/lijst/${E}`, { uid: E, sinds: nu, via: 'verzoek' });
+  await schrijfDoc(`vrienden/${E}/lijst/${uid.B}`, { uid: uid.B, sinds: nu, via: 'verzoek' });
+  // In de emulator draait de profieltrigger wél; de toestand van vóór de deploy is: niets in de index.
+  const lid = await wachtOpDoc(`naamIndexLid/${E}`, (d) => d !== null, 30000);
+  await wisDoc(`naamIndex/${lid.sleutel}/vermeldingen/${E}`);
+  await wisDoc(`naamIndexLid/${E}`);
+  assert.equal(await leesDoc(`naamvoorkeur/${E}`), null);
+
+  const B = ik.B.page;
+  await zoek(B, 'Erik van de Winkel');
+  await wachtOpTekst(B, '#vriendZoekResultaat', /^Niemand gevonden met deze naam\.$/);
+
+  // Het echte script, tegen de emulator.
+  const { stdout } = await promisify(execFile)('node', ['functions/scripts/naamindex-vullen.js', '--echt'], {
+    cwd: new URL('../../', import.meta.url).pathname,
+    env: { ...process.env, GCLOUD_PROJECT: PROJECT },
+  });
+  assert.match(stdout, /"gezet": 1/);
+  assert.equal((await leesDoc(`naamvoorkeur/${E}`)).vindbaar, true);
+
+  await zoek(B, 'erik van de winkel');
+  await wachtOpTekst(B, '#vriendZoekResultaat', /@erik · Erik van de Winkel\s*Al vrienden/);
+  assert.equal(await B.locator('#vriendZoekResultaat button').count(), 0, 'geen knop bij een vriend');
+  await schermafbeelding(B, 'naam-zoeken-al-vrienden');
+});
+
+test('openstaand verzoek: "Verzoek verstuurd" zonder knop; geblokkeerd blijft onzichtbaar', async () => {
+  const B = ik.B.page;
+  // B stuurde @anna eerder een verzoek (hierboven).
+  await zoek(B, 'Anna de Vries');
+  await B.waitForSelector('.vriend-zoek-lijst');
+  const anna = B.locator('.vriend-zoek-lijst .vriend-rij', { hasText: '@anna ·' });
+  assert.match(await anna.textContent(), /Verzoek verstuurd/);
+  assert.equal(await anna.locator('button').count(), 0);
+  // anna2 blokkeert B: dan alleen @anna.
+  await schrijfDoc(`blokkades/${uid.D}/lijst/${uid.B}`, { uid: uid.B, gebruikersnaam: 'bob', naam: 'Bob Jansen', sinds: new Date() });
+  await zoek(B, 'Anna de Vries');
+  await B.waitForSelector('.vriend-zoek-lijst');
+  assert.deepEqual(await B.locator('.vriend-zoek-lijst .vriend-rij-tekst').allTextContents(), ['@anna · Anna de Vries']);
 });
 
 test('geen fouten in de pagina', () => {
