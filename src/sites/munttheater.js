@@ -1,6 +1,6 @@
 import { createIdBuilder, todayIsoDate } from '../lib/normalize.js';
 import { normalizeGenreVoor, isBekendGenre } from '../lib/genre.js';
-import { titelUitKopEnOndertitel, pasTitelConventieToe } from '../lib/titels.js';
+import { titelUitKopEnOndertitel, pasTitelConventieToe, draaiTitelEnMakerOm } from '../lib/titels.js';
 import { vervallenStatus } from '../lib/beschikbaarheid.js';
 import { laagstePrijs } from '../lib/peppered.js';
 import { blokkeerZwareBronnen } from '../lib/zwareBronnen.js';
@@ -154,8 +154,12 @@ export async function scrapeMunttheater({ page, theater, robots, waitForTurn, lo
         opgehaaldOp,
       };
       const volgorde = MAKER_EERST.test(genreRuw ?? '') ? 'maker-titel' : 'titel-maker';
-      const show = titelUitKopEnOndertitel(basis, { kop, ondertitel: e.performer, volgorde });
-      shows.push(show.maker ? pasTitelConventieToe(show, { artiest: show.maker, voorstelling: show.titel, makerWordtLeeg: true }) : show);
+      const uitKop = titelUitKopEnOndertitel(basis, { kop, ondertitel: e.performer, volgorde });
+      // Alleen de artiest als titel (VOORSTELLING_BIJ_ARTIEST, bv. "ICE"): de
+      // voorstelling erbij, en dan "Voorstelling – Artiest" ook buiten cabaret.
+      const show = draaiTitelEnMakerOm(uitKop);
+      const bijArtiest = show.titel !== uitKop.titel;
+      shows.push(show.maker ? pasTitelConventieToe(show, { artiest: show.maker, voorstelling: show.titel, makerWordtLeeg: true, alleGenres: bijArtiest }) : show);
     }
   }
   log(`${urls.length} producties in de sitemap, ${geladen} geladen, ${mislukt} mislukt, ${shows.length} komende speeldata`);

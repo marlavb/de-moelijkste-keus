@@ -249,3 +249,9 @@ test('Toneelgroep Maastricht (Flint, Het Speelhuis): omgedraaid naar "Bijna een 
   // Nhung Dam bij Flint blijft werken.
   assert.equal(draaiTitelEnMakerOm({ theaterId: 'flint', titel: 'Nhung Dam', maker: 'Legende van de witte slang' }).titel, 'Legende van de witte slang');
 });
+
+test('VOORSTELLING_BIJ_ARTIEST Munttheater: "ICE" → voorstelling "Live in Theater"', async () => {
+  const { draaiTitelEnMakerOm } = await import('../src/lib/titels.js');
+  assert.deepEqual(draaiTitelEnMakerOm({ theaterId: 'munttheater', titel: 'ICE', maker: null, datum: '2026-10-30' }), { theaterId: 'munttheater', titel: 'Live in Theater', maker: 'ICE', datum: '2026-10-30' });
+  assert.equal(draaiTitelEnMakerOm({ theaterId: 'munttheater', titel: 'ICE', maker: null, datum: '2027-09-01' }).titel, 'ICE', 'na de einddatum niet');
+});

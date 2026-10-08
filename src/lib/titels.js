@@ -109,7 +109,13 @@ export const OMGEDRAAID = {
 //   kunstlinie.nl/programma/alain-clark/: "Alain Clark – Date Night",
 //   bekeken 6 okt 2026) en Stadsgehoorzaal (agenda: "Alain Clark" met
 //   ondertitel "Date Night", 30 sep 2026).
+// - ICE, "Live in Theater" (okt 2026): het Munttheater geeft alleen "ICE"
+//   (genre Show, beschrijving "Live in theater"); vijf andere theaters
+//   "Live in Theater – ICE" (Schouwburg Concertzaal, Markant, PLT, …;
+//   nachtrun 8 okt 2026). De Munttheater-scraper zet daarna "Voorstelling –
+//   Artiest", zodat het één productie wordt.
 export const VOORSTELLING_BIJ_ARTIEST = {
+  munttheater: { ICE: { voorstelling: 'Live in Theater', tot: '2027-07-31' } },
   kunstlinie: { 'Alain Clark': { voorstelling: 'Date Night', tot: '2026-12-31' } },
   stadsgehoorzaal: { 'Alain Clark': { voorstelling: 'Date Night', tot: '2026-12-31' } },
 };
