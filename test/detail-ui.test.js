@@ -44,7 +44,7 @@ after(async () => {
 });
 
 async function openApp({ opslag = {}, html, viewport = { width: 390, height: 900 }, extraShows = [], alleenShows = null } = {}) {
-  const ctx = await browser.newContext({ viewport, serviceWorkers: 'block' });
+  const ctx = await browser.newContext({ viewport, serviceWorkers: 'block', timezoneId: TIJDZONE });
   // Vaste testdata in plaats van de echte agenda (die verandert elke nacht).
   if (alleenShows) await ctx.route(/data\/shows\.json/, (r) => r.fulfill({ contentType: 'application/json', body: JSON.stringify(alleenShows) }));
   else if (extraShows.length) {
@@ -76,7 +76,7 @@ const lees = (page, key) => page.evaluate((k) => JSON.parse(localStorage.getItem
 const nep = (titel, datum, theaterId, tijd = '20:15') => ({ titel, datum, theaterId, theaterNaam: 'Oude naam', stad: 'Amsterdam', tijd, reserverenUrl: '' });
 
 
-const morgen = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
+const morgen = (n) => dagenVerder(n);
 const proef = (theaterId, theaterNaam, stad, dag, podiumpas, extra = {}) => ({
   id: `proef-${theaterId}-${dag}`, titel: 'Proefstuk Vinkje', theaterId, theaterNaam, stad, podiumpas, datum: morgen(dag), tijd: '20:15',
   genre: 'Toneel', genreRuw: 'Toneel', beschikbaarheid: 'beschikbaar', beschrijving: null, maker: null, reserverenUrl: 'https://example.invalid/', bron: '', opgehaaldOp: new Date().toISOString(), ...extra,
@@ -140,6 +140,7 @@ test('eenvoudig Gezien-scherm: vinkje achter de theaternaam als het bewaarde bez
 // ---------- Terug naar waar je vandaan kwam (1 okt 2026) ----------
 
 import { zetGezien, legeGezien } from '../public/js/gezien.js';
+import { TIJDZONE, dagenVerder } from './datum.js';
 
 // Veel Gezien-items, zodat Profiel kan scrollen; de laatste staat nog in de agenda.
 function veelGezien() {

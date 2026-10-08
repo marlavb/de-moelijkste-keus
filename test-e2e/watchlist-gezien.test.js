@@ -12,6 +12,7 @@ import { chromium } from 'playwright';
 
 import { controleerEmulators, startServer, wisEmulators, maakAccount, openGebruiker, ga, wachtOpTekst, wachtOpDoc, schermafbeelding } from './hulp.js';
 import { watchlistSleutel } from '../public/js/watchlist.js';
+import { vandaag as vandaagAmsterdam } from '../test/datum.js';
 
 const ACCOUNT = { email: 'gerda@e2e.test', wachtwoord: 'geheim-gerda', naam: 'Gerda Smit' };
 let uid;
@@ -30,7 +31,7 @@ before(async () => {
   await wisEmulators();
   uid = await maakAccount(ACCOUNT);
   const data = JSON.parse(await readFile(path.join(new URL('../public/', import.meta.url).pathname, 'data/shows.json'), 'utf-8'));
-  const vandaag = new Date().toISOString().slice(0, 10);
+  const vandaag = vandaagAmsterdam();
   show = (Array.isArray(data) ? data : data.shows).find((s) => s.datum > vandaag && s.beschikbaarheid === 'beschikbaar' && !watchlistSleutel(s.titel, s.theaterId).includes('::'));
   sleutel = watchlistSleutel(show.titel, show.theaterId);
   ({ server, base } = await startServer());

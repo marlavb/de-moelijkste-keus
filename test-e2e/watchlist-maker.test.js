@@ -18,9 +18,10 @@ import { controleerEmulators, startServer, wisEmulators, maakAccount, openGebrui
 import { watchlistSleutel } from '../public/js/watchlist.js';
 import { weergaveTitel, watchlistStand } from '../public/js/weergave.js';
 import { pasMakerMeerderheidToe } from '../src/lib/makerMeerderheid.js';
+import { vandaag as vandaagAmsterdam } from '../test/datum.js';
 
 const ACCOUNT = { email: 'wim@e2e.test', wachtwoord: 'geheim-wim', naam: 'Wim Kok', gebruikersnaam: 'wim' };
-const vandaag = new Date().toISOString().slice(0, 10);
+const vandaag = vandaagAmsterdam();
 let uid;
 let server;
 let base;
