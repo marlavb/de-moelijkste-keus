@@ -55,7 +55,7 @@ function fakeDeps({ crawlDelayMs = 0 } = {}) {
   };
 }
 
-async function run({ paths, theaters, scrapers, deps = fakeDeps(), budgets }) {
+async function run({ paths, theaters, scrapers, deps = fakeDeps(), budgets, logs = [] }) {
   const annotations = [];
   const result = await runRefresh({
     theaters,
@@ -65,7 +65,7 @@ async function run({ paths, theaters, scrapers, deps = fakeDeps(), budgets }) {
     budgets: budgets ?? { theaterMs: () => 5000, totalMs: 60000 },
     minDate: MIN_DATE,
     now: () => NOW,
-    log: () => {},
+    log: (m) => logs.push(m),
     annotate: (level, title, message) => annotations.push({ level, title, message }),
   });
   const written = JSON.parse(await readFile(paths.showsOutputs[1], 'utf-8'));
@@ -673,4 +673,23 @@ test('productie samenvoegen: Greg Shapiro wordt één productie; bron (titel en 
   assert.equal(sgz2.titelBron, 'Greg Shapiro');
   assert.equal(sgz2.beschrijving, '250 years of Donald Trump');
   assert.equal(sgz2.beschrijvingBron, 'KING ME | 250 years of Donald Trump');
+});
+
+test('log: aantal samengevoegde producties en speeldata, ook bij 0 (8 okt 2026)', async () => {
+  const paths = await setup();
+  const kingMe = (id, titel, datum, maker = 'Greg Shapiro') => ({ ...show(id, datum), id: `${id}-${datum}`, titel, maker, genre: 'Cabaret' });
+  const logs = [];
+  await run({
+    paths,
+    logs,
+    theaters: [theater('a'), theater('b')],
+    scrapers: {
+      a: async () => [kingMe('a', 'KING ME – 250 years of Donald Trump', '2026-11-01')],
+      b: async () => [kingMe('b', 'KING ME', '2026-11-02')],
+    },
+  });
+  assert.ok(logs.some((l) => /^Productie-samenvoeging: 1 productie\(s\), 1 speeldata samengevoegd/.test(l)), logs.join('\n'));
+  const leeg = [];
+  await run({ paths: await setup(), logs: leeg, theaters: [theater('a')], scrapers: { a: async () => [show('a', '2026-11-01')] } });
+  assert.ok(leeg.some((l) => /^Productie-samenvoeging: 0 productie\(s\), 0 speeldata/.test(l)), leeg.join('\n'));
 });

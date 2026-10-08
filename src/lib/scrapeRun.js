@@ -420,7 +420,8 @@ export async function runRefresh({
   const samen = pasProductieSamenvoegingToe(ontdubbeld);
   if (samen.titelUitBeschrijving.length) log(`${samen.titelUitBeschrijving.length} titel(s) "artiest" → "Voorstelling – Artiest" uit de beschrijving.`);
   const samenGewijzigd = samen.shows.filter((s, i) => s.titel !== ontdubbeld[i].titel).length;
-  if (samenGewijzigd) log(`${samenGewijzigd} voorstelling(en) samengevoegd met dezelfde productie van dezelfde maker (titelBron bewaard).`);
+  // Altijd loggen (ook 0), zodat nachten te vergelijken zijn (8 okt 2026).
+  log(`Productie-samenvoeging: ${samen.samengevoegd.length} productie(s), ${samenGewijzigd} speeldata samengevoegd met dezelfde productie van dezelfde maker (titelBron bewaard).`);
   for (const o of samen.overgeslagen) log(`Niet samengevoegd (generiek begin "${o.begin}", maker ${o.maker}): ${o.producties.join('; ')}.`);
   // Weergavetitel op meerderheid (weergaveMeerderheid.js); brontitel blijft
   // als titelBron.
