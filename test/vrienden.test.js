@@ -63,3 +63,27 @@ test('een net gemaakte link zonder bevestigde servertijd (aangemaaktOp null) is 
   }
   assert.equal(isLinkVerlopen({}), false);
 });
+
+// ---------- Zoeken op volledige naam (okt 2026) ----------
+
+import { isNaamInvoer, zoekOpNaam, VriendFout as Fout } from '../public/js/vrienden.js';
+
+test('isNaamInvoer: met een spatie is het een naam, anders een gebruikersnaam', () => {
+  assert.equal(isNaamInvoer('Anna de Vries'), true);
+  assert.equal(isNaamInvoer('  anna  '), false);
+  assert.equal(isNaamInvoer('@anna'), false);
+  assert.equal(isNaamInvoer(''), false);
+});
+
+test('zoekOpNaam: roept de callable met de naam aan, geeft de treffers; fouten van de functie als VriendFout', async () => {
+  const geroepen = [];
+  const treffers = await zoekOpNaam({ roep: async (naam, data) => (geroepen.push([naam, data]), { data: { treffers: [{ gebruikersnaam: 'anna', naam: 'Anna de Vries' }] } }), invoer: ' Anna de Vries ' });
+  assert.deepEqual(geroepen, [['zoekOpNaam', { naam: 'Anna de Vries' }]]);
+  assert.deepEqual(treffers, [{ gebruikersnaam: 'anna', naam: 'Anna de Vries' }]);
+  const fout = (code) => async () => {
+    throw Object.assign(new Error('x'), { code });
+  };
+  await assert.rejects(zoekOpNaam({ roep: fout('functions/invalid-argument'), invoer: 'a b' }), (e) => e instanceof Fout && e.code === 'ongeldig');
+  await assert.rejects(zoekOpNaam({ roep: fout('functions/resource-exhausted'), invoer: 'a b' }), (e) => e instanceof Fout && e.code === 'limiet');
+  await assert.rejects(zoekOpNaam({ roep: fout('functions/unavailable'), invoer: 'a b' }), (e) => !(e instanceof Fout));
+});

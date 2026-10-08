@@ -10,7 +10,7 @@
     "alias-kandidaten": "node scripts/alias-kandidaten.js",
     "test:rules": "npm --prefix firebase test",
     "firebase": "firebase/node_modules/.bin/firebase",
-    "test:e2e": "npm --prefix firebase run e2e",
+    "test:e2e": "npm --prefix firebase run e2e && node scripts/nep-geheimen.js && npm --prefix firebase run e2e-functies",
     "test:functions": "node scripts/test-functions.js"
   },
   "keywords": [],

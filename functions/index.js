@@ -4,13 +4,18 @@
 //                       (zie facturering.js); DRY_RUN staat standaard aan.
 //   startNachtrun     — start refresh-data.yml om 05:00 Europe/Amsterdam
 //                       (Cloud Scheduler, zie nachtrun.js).
+//   zoekOpNaam        — callable: vrienden zoeken op volledige naam
+//                       (zie naamzoeken.js).
+//   naamIndexProfiel, naamIndexVoorkeur — houden de zoekindex bij na een
+//                       wijziging van profielen/{uid} of naamvoorkeur/{uid}.
 // Geheimen (Secret Manager): GMAIL_USER, GMAIL_APP_PASSWORD,
 // GITHUB_DISPATCH_TOKEN. Nooit in de repo.
 // Instellingen (functions/.env): BUDGET_TOPIC, DRY_RUN; in de emulator
 // (functions/.env.local) een lokale SMTP-vanger in plaats van Gmail.
 
 import { setGlobalOptions } from 'firebase-functions/v2';
-import { onDocumentCreated } from 'firebase-functions/v2/firestore';
+import { onDocumentCreated, onDocumentWritten } from 'firebase-functions/v2/firestore';
+import { onCall, HttpsError } from 'firebase-functions/v2/https';
 import { onMessagePublished } from 'firebase-functions/v2/pubsub';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { defineSecret, defineString, defineInt, defineBoolean } from 'firebase-functions/params';
@@ -23,6 +28,7 @@ import nodemailer from 'nodemailer';
 import { verwerkUitnodiging, ruimOp } from './uitnodiging.js';
 import { verwerkBudgetBericht } from './facturering.js';
 import { startRefresh } from './nachtrun.js';
+import { zoekOpNaam as zoekOpNaamKern, indexeerNaam, ruimZoekTellersOp, ZOEK_LIMIET } from './naamzoeken.js';
 
 setGlobalOptions({ region: 'europe-west4', maxInstances: 2 });
 initializeApp();
@@ -113,3 +119,25 @@ export const startNachtrun = onSchedule(
     if (status !== 'gestart') logger.error('startNachtrun', { status, uitkomst: 'niet gestart; de cron van GitHub is het vangnet' });
   }
 );
+
+// Vrienden zoeken op volledige naam: alleen ingelogd, hooguit ZOEK_LIMIET
+// keer per dag per gebruiker. Geeft alleen gebruikersnaam en naam terug.
+// Geen namen in de log: alleen de status en het aantal treffers.
+export const zoekOpNaam = onCall({ maxInstances: 2, timeoutSeconds: 20, memory: '256MiB' }, async (req) => {
+  if (!req.auth?.uid) throw new HttpsError('unauthenticated', 'Log in om te zoeken.');
+  const db = getFirestore();
+  const r = await zoekOpNaamKern({ db, uid: req.auth.uid, invoer: req.data?.naam });
+  logger.info('zoekOpNaam', { status: r.status, treffers: r.treffers?.length ?? 0 });
+  if (r.status === 'ongeldig') throw new HttpsError('invalid-argument', 'Vul een voornaam en achternaam in.');
+  if (r.status === 'limiet') throw new HttpsError('resource-exhausted', `Je hebt vandaag al ${ZOEK_LIMIET} keer op naam gezocht. Probeer het morgen weer.`);
+  await ruimZoekTellersOp({ db }).catch((err) => logger.warn('zoekTellers opruimen mislukt', { code: err?.code ?? null }));
+  return { treffers: r.treffers };
+});
+
+// De zoekindex volgt het profiel en de voorkeur "Vindbaar op naam".
+const indexeer = (bron) => async (event) => {
+  const status = await indexeerNaam({ db: getFirestore(), uid: event.params.uid });
+  logger.info('naamIndex', { bron, status });
+};
+export const naamIndexProfiel = onDocumentWritten({ document: 'profielen/{uid}', retry: false, maxInstances: 2 }, indexeer('profiel'));
+export const naamIndexVoorkeur = onDocumentWritten({ document: 'naamvoorkeur/{uid}', retry: false, maxInstances: 2 }, indexeer('voorkeur'));

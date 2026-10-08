@@ -41,12 +41,17 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
 - **Gezien met sterren**: je bezoekgeschiedenis, 1 tot 5 sterren in halve
   stappen, sorteren op laatste bezoek of beoordeling. Een item zonder maker
   of genre (bv. zelf aangevinkt) wordt aangevuld zodra de voorstelling in de
-  agenda staat; een bestaande maker blijft staan.
+  agenda staat; een bestaande maker blijft staan. Komt een voorstelling op
+  Gezien (zelf aangevinkt, of vanuit Gepland na de speeldag), dan gaat hij
+  van de watchlist ("Ook van je watchlist gehaald · Ongedaan maken"); zet je
+  hem daarna opnieuw op de watchlist, dan blijft hij staan. Wat op beide
+  stond van vóór je laatste bezoek, wordt bij het laden opgeruimd.
 - **Profiel** (na inloggen met Google): gebruikersnaam en naam. Alles
   hierboven werkt ook zonder inloggen (alleen op dat apparaat); ingelogd
   synchroniseert het tussen je apparaten.
-- **Vrienden**: zoeken op gebruikersnaam, verzoeken, eenmalige
-  uitnodigingslink, blokkeren.
+- **Vrienden**: zoeken op gebruikersnaam of op volledige naam (exact; alleen
+  wie "Vindbaar op naam" aan heeft, standaard aan, uit te zetten in
+  Profiel), verzoeken, eenmalige uitnodigingslink, blokkeren.
 - **Delen**: je Gezien (met sterren) en Watchlist voor vrienden, per onderdeel
   aan of uit.
 - **Uitnodigen**: een vriend uitnodigen voor een geplande voorstelling; zij
@@ -154,7 +159,12 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
     `uitnodigingsmail` (mail bij een uitnodiging), `stopFacturering` (stopt de
     facturering bij overschrijding van het budget; staat in DRY_RUN) en
     `startNachtrun` (Cloud Scheduler, start de nachtelijke run via de GitHub
-    API). Geheimen staan in Secret Manager, nooit in de repo.
+    API), `zoekOpNaam` (callable: vrienden zoeken op volledige naam, 20 keer
+    per dag, hooguit 10 treffers, alleen gebruikersnaam en naam terug) en
+    `naamIndexProfiel`/`naamIndexVoorkeur` (houden de zoekindex
+    `naamIndex/{hash van de naam}` bij na een wijziging van het profiel of
+    van `naamvoorkeur`; clients kunnen de index niet lezen). Geheimen staan
+    in Secret Manager, nooit in de repo.
 
 ## Lokaal ontwikkelen
 
@@ -181,7 +191,7 @@ brew install openjdk@21           # emulators; zet openjdk@21/bin in je PATH
 |---|---|
 | `npm test` | unit-tests en UI-tests (Playwright, nep-Firebase, geen netwerk) |
 | `npm run test:rules` | `firestore.rules` tegen de Firestore-emulator |
-| `npm run test:e2e` | de app end-to-end met Auth- en Firestore-emulators en de echte rules |
+| `npm run test:e2e` | de app end-to-end met Auth- en Firestore-emulators en de echte rules; daarna een ronde met de Functions-emulator (`test-e2e/functies/`, zoeken op naam) |
 | `npm run test:functions` | de Cloud Functions met emulators, een nep-SMTP-server en een nep-GitHub-API |
 
 De emulators gebruiken altijd het project `demo-podiumagenda`, nooit het echte.
@@ -212,7 +222,7 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v41`
+Service worker: `podiumagenda-v42`
 <!-- AUTO:sw:end -->
 
 ### Theaters

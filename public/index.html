@@ -404,7 +404,7 @@
           </button>
           <div>
             <h1 class="app-title">Vrienden</h1>
-            <p class="app-subtitle">Voeg vrienden toe met hun gebruikersnaam of een uitnodigingslink.</p>
+            <p class="app-subtitle">Voeg vrienden toe met hun gebruikersnaam, hun naam of een uitnodigingslink.</p>
           </div>
         </div>
       </header>
@@ -413,25 +413,23 @@
         <section class="vrienden-blok" id="vriendToevoegen" aria-labelledby="vriendToevoegenKop">
           <h2 class="vrienden-kop" id="vriendToevoegenKop">Vriend toevoegen</h2>
           <form class="vriend-zoek" id="vriendZoekForm" novalidate>
-            <label class="veld-label" for="vriendZoekInput">Gebruikersnaam</label>
+            <label class="veld-label" for="vriendZoekInput">Gebruikersnaam of naam</label>
             <div class="vriend-zoek-rij">
               <div class="veld-invoer">
-                <span class="veld-voorvoegsel" aria-hidden="true">@</span>
                 <input
                   class="veld-input"
                   id="vriendZoekInput"
                   type="text"
                   autocomplete="off"
-                  autocapitalize="none"
                   autocorrect="off"
                   spellcheck="false"
-                  maxlength="21"
+                  maxlength="60"
                   aria-describedby="vriendZoekUitleg"
                 />
               </div>
               <button class="knop-klein knop-klein--primair" type="submit" id="vriendZoekKnop">Zoeken</button>
             </div>
-            <p class="veld-uitleg" id="vriendZoekUitleg">Typ de gebruikersnaam precies zoals je vriend hem gekozen heeft.</p>
+            <p class="veld-uitleg" id="vriendZoekUitleg">Typ de gebruikersnaam precies, of iemands volledige naam (voor- en achternaam).</p>
           </form>
           <div class="vriend-zoek-resultaat" id="vriendZoekResultaat" aria-live="polite"></div>
         </section>
@@ -637,10 +635,11 @@
                 type="text"
                 autocomplete="name"
                 maxlength="60"
-                aria-describedby="profielNaamUitleg profielNaamFout"
+                aria-describedby="profielNaamUitleg profielNaamVindbaar profielNaamFout"
               />
             </div>
             <p class="veld-uitleg" id="profielNaamUitleg">Vrienden zien deze naam, en wie je gebruikersnaam precies intypt ook.</p>
+            <p class="veld-uitleg" id="profielNaamVindbaar">Anderen kunnen je vinden op deze naam (uit te zetten in Profiel).</p>
             <p class="veld-fout" id="profielNaamFout" hidden></p>
           </div>
           <p class="profiel-status" id="profielStatus" role="alert" hidden></p>

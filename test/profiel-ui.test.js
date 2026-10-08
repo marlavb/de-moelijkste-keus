@@ -210,3 +210,41 @@ test('instelscherm direct openen terwijl het profiel nog laadt of mislukt: meldi
   assert.deepEqual(fouten, []);
   await ctx.close();
 });
+
+// ---------- Vindbaar op naam (okt 2026) ----------
+
+const PROFIEL_ANNA = {
+  'profielen/u1': { gebruikersnaam: 'anna', gebruikersnaamLaag: 'anna', naam: 'Anna de Vries', aangemaaktOp: 1, gewijzigdOp: 1, v: 1 },
+  'usernames/anna': { uid: 'u1', gebruikersnaam: 'anna', naam: 'Anna de Vries' },
+};
+
+test('Vindbaar op naam: bestaand profiel zonder voorkeur → eenmalig { vindbaar: true } (aan, zonder melding); uitzetten en de regel bij je naam', async () => {
+  const { ctx, page, fouten } = await openApp({ gebruiker: ANNA, docs: PROFIEL_ANNA });
+  await page.waitForSelector('#vindbaarSchakelaar');
+  assert.equal(await page.getAttribute('#vindbaarSchakelaar', 'aria-checked'), 'true');
+  assert.equal((await opslag(page, 'naamvoorkeur/u1')).vindbaar, true);
+  assert.equal(await page.locator('.profiel-vindbaar .vrienden-melding').count(), 0, 'geen aparte melding bij de migratie');
+  assert.match(await page.textContent('.profiel-vindbaar'), /Wie je volledige naam \(Anna de Vries\) precies intypt/);
+
+  await page.click('#vindbaarSchakelaar');
+  await page.waitForTimeout(250);
+  assert.equal((await opslag(page, 'naamvoorkeur/u1')).vindbaar, false);
+  assert.equal(await page.getAttribute('#vindbaarSchakelaar', 'aria-checked'), 'false');
+  assert.match(await page.textContent('.profiel-vindbaar'), /Opgeslagen: je bent niet meer vindbaar op je naam/);
+
+  // Bij je naam wijzigen: de regel past zich aan.
+  await page.click('button[aria-label="Gebruikersnaam en naam wijzigen"]');
+  await page.waitForTimeout(300);
+  assert.equal(await page.textContent('#profielNaamVindbaar'), 'Je bent niet vindbaar op deze naam (aan te zetten in Profiel).');
+  assert.deepEqual(fouten, []);
+  await ctx.close();
+});
+
+test('Vindbaar op naam: een bestaande voorkeur (uit) wordt niet overschreven', async () => {
+  const { ctx, page, fouten } = await openApp({ gebruiker: ANNA, docs: { ...PROFIEL_ANNA, 'naamvoorkeur/u1': { vindbaar: false, gewijzigdOp: 1 } } });
+  await page.waitForSelector('#vindbaarSchakelaar');
+  assert.equal(await page.getAttribute('#vindbaarSchakelaar', 'aria-checked'), 'false');
+  assert.deepEqual(await opslag(page, 'naamvoorkeur/u1'), { vindbaar: false, gewijzigdOp: 1 });
+  assert.deepEqual(fouten, []);
+  await ctx.close();
+});

@@ -181,7 +181,7 @@ test('handmatig op het detailscherm: van de watchlist, melding, ongedaan maken',
   await page.click('#detailGezienBtn');
   assert.equal(await page.locator('#detailGezienLabel').innerText(), '✓ Gezien');
   assert.equal(await page.locator('#detailGezienBtn').getAttribute('aria-pressed'), 'true');
-  assert.match(await page.locator('#melding').innerText(), /Gezien · van je watchlist gehaald/);
+  assert.match(await page.locator('#melding').innerText(), /Ook van je watchlist gehaald/);
   assert.equal((await lees(page, 'podiumagenda:watchlist')).watchlist.length, 0);
   assert.equal((await lees(page, 'podiumagenda:gezien')).gezien[0].bron, 'handmatig');
   await page.click('#melding .melding-actie');

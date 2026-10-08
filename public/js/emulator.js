@@ -1,5 +1,5 @@
 // Testmodus voor de end-to-end-tests (npm run test:e2e): de app verbindt dan
-// met de Firebase-emulators (Auth en Firestore) op deze computer, project
+// met de Firebase-emulators (Auth, Firestore en Functions) op deze computer, project
 // demo-podiumagenda. Alleen op localhost/127.0.0.1 én met ?emulator=1 (die
 // keuze blijft voor dit tabblad bewaard, zodat hash-links en een geopende
 // uitnodigingslink in de testmodus blijven). Op de live site kan dit nooit:
@@ -8,6 +8,7 @@
 export const EMULATOR_PROJECT = 'demo-podiumagenda';
 export const EMULATOR_AUTH = 'http://127.0.0.1:9099';
 export const EMULATOR_FIRESTORE = { host: '127.0.0.1', port: 8085 };
+export const EMULATOR_FUNCTIONS = { host: '127.0.0.1', port: 5011 };
 const LOKAAL = new Set(['localhost', '127.0.0.1']);
 const SLEUTEL = 'podiumagenda:emulator';
 

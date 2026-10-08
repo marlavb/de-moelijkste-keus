@@ -105,6 +105,8 @@ export const writeBatch = () => {
   };
 };
 export const serverTimestamp = () => Date.now();
+// Callable Cloud Functions (zoekOpNaam): een test zet window.__nepFunctie.
+export const roepFunctie = async (naam, data) => { offline(); return window.__nepFunctie ? window.__nepFunctie(naam, data) : { data: { treffers: [] } }; };
 export const runTransaction = async (_db, fn) => {
   offline();
   const schrijf = [];

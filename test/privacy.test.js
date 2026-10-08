@@ -12,6 +12,7 @@ test('privacy.html: wat we opslaan, wie wat ziet, verwijderen, plaatshouder voor
   const html = await lees('privacy.html');
   for (const kop of ['Zonder inloggen', 'Met inloggen (Google)', 'Wie ziet wat?', 'Verwijderen']) assert.match(html, new RegExp(`<h2>${kop.replace(/[()?]/g, '\\$&')}</h2>`));
   assert.match(html, /gebruikersnaam en je volledige naam/);
+  assert.match(html, /<strong>Zoeken op naam<\/strong>: .*je zet het uit in Profiel → Vindbaar op naam\./);
   assert.match(html, /Je e-mailadres<\/strong> ziet niemand anders/);
   assert.match(html, /Je planning<\/strong> \(Gepland\) ziet niemand anders/);
   assert.match(html, /Account verwijderen/);

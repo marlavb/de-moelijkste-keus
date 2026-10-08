@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "firebase emulators:exec --config ../firebase.json --only firestore --project demo-podiumagenda \"node --test --test-concurrency=1 tests/*.test.js\"",
-    "e2e": "firebase emulators:exec --config ../firebase.json --only auth,firestore --project demo-podiumagenda \"node --test --test-concurrency=1 ../test-e2e/*.test.js\""
+    "e2e": "firebase emulators:exec --config ../firebase.json --only auth,firestore --project demo-podiumagenda \"node --test --test-concurrency=1 ../test-e2e/*.test.js\"",
+    "e2e-functies": "firebase emulators:exec --config ../firebase.json --only auth,firestore,functions --project demo-podiumagenda \"node --test --test-concurrency=1 ../test-e2e/functies/*.test.js\""
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^5.0.2",
