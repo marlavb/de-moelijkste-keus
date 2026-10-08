@@ -19,7 +19,6 @@ const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/cs
 let server;
 let base;
 let browser;
-let eenShow; // een toekomstige voorstelling uit de echte data
 
 before(async () => {
   server = createServer(async (req, res) => {
@@ -37,9 +36,6 @@ before(async () => {
   await new Promise((r) => server.listen(0, '127.0.0.1', r));
   base = `http://127.0.0.1:${server.address().port}/`;
   browser = await chromium.launch();
-  const shows = JSON.parse(await readFile(path.join(ROOT, 'data/shows.json'), 'utf-8'));
-  const vandaag = new Date().toISOString().slice(0, 10);
-  eenShow = shows.find((s) => s.datum > vandaag && s.beschikbaarheid === 'beschikbaar' && !s.titel.includes('::'));
 });
 
 after(async () => {
@@ -47,9 +43,11 @@ after(async () => {
   await new Promise((r) => server.close(r));
 });
 
-async function openApp({ opslag = {}, html, viewport = { width: 390, height: 900 }, extraShows = [] } = {}) {
+async function openApp({ opslag = {}, html, viewport = { width: 390, height: 900 }, extraShows = [], alleenShows = null } = {}) {
   const ctx = await browser.newContext({ viewport, serviceWorkers: 'block' });
-  if (extraShows.length) {
+  // Vaste testdata in plaats van de echte agenda (die verandert elke nacht).
+  if (alleenShows) await ctx.route(/data\/shows\.json/, (r) => r.fulfill({ contentType: 'application/json', body: JSON.stringify(alleenShows) }));
+  else if (extraShows.length) {
     const echt = JSON.parse(await readFile(path.join(ROOT, 'data/shows.json'), 'utf-8'));
     await ctx.route(/data\/shows\.json/, (r) => r.fulfill({ contentType: 'application/json', body: JSON.stringify([...extraShows, ...echt]) }));
   }
@@ -263,15 +261,24 @@ test('andere datum vanuit de Agenda en vanuit een directe link: terug naar de Ag
   await tweede.ctx.close();
 });
 
+// Vaste agenda voor de scrolltest: 40 voorstellingen, één per dag (8 okt
+// 2026: met de echte data viel rij 12 net onder de onderbalk; Playwright
+// scrolde bij het klikken zelf verder en de test vergeleek met de positie
+// van daarvóór).
+const VAST = Array.from({ length: 40 }, (_, i) =>
+  proef('delamar', 'DeLaMar', 'Amsterdam', i + 1, true, { id: `vast-${i + 1}`, titel: `Vaste voorstelling ${String(i + 1).padStart(2, '0')}` })
+);
+
 test('terug vanuit de Agenda: filters en scrollpositie blijven; directe link gaat naar de Agenda', async () => {
-  const { ctx, page } = await openApp({ viewport: { width: 390, height: 700 } });
-  await page.evaluate(() => window.scrollTo(0, 900));
+  const { ctx, page } = await openApp({ viewport: { width: 390, height: 700 }, alleenShows: VAST });
+  const rij = page.locator('#agendaList .show-row').nth(12);
+  // Rij midden in beeld, en klikken via de DOM: geen automatische scroll bij het klikken.
+  await rij.evaluate((el) => el.scrollIntoView({ block: 'center' }));
   await page.waitForTimeout(100);
   const y = await page.evaluate(() => window.scrollY);
-  const rij = page.locator('#agendaList .show-row').nth(12);
-  await rij.scrollIntoViewIfNeeded();
-  const y2 = await page.evaluate(() => window.scrollY);
-  await rij.click();
+  assert.ok(y > 300, `de agenda scrolt (${y})`);
+  const y2 = y;
+  await rij.evaluate((el) => el.click());
   await page.waitForTimeout(300);
   await page.click('#detailBack');
   await page.waitForTimeout(300);
@@ -280,8 +287,8 @@ test('terug vanuit de Agenda: filters en scrollpositie blijven; directe link gaa
   await ctx.close();
 
   // Directe link naar een voorstelling (geen voorgeschiedenis): terug → Agenda.
-  const tweede = await openApp({});
-  await tweede.page.goto(`${base}#/show/${encodeURIComponent(eenShow.id)}`);
+  const tweede = await openApp({ alleenShows: VAST });
+  await tweede.page.goto(`${base}#/show/${encodeURIComponent(VAST[3].id)}`);
   await tweede.page.reload({ waitUntil: 'networkidle' });
   await tweede.page.waitForTimeout(300);
   await tweede.page.click('#detailBack');

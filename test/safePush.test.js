@@ -75,3 +75,34 @@ test('pre-push-controle en safe-push --dry-run met nep-gh', () => {
   assert.equal(kapot.status, 1);
   assert.match(kapot.stderr, /kon niet vaststellen/);
 });
+
+// ---------- Testpoort (8 okt 2026): stoppen bij de eerste falende suite ----------
+
+import { draaiPoort, SUITES } from '../scripts/testpoort.js';
+
+test('testpoort: alle vier de suites, in volgorde', () => {
+  assert.deepEqual(SUITES.map(([c, a]) => [c, ...a].join(' ')), ['npm test', 'npm run test:rules', 'npm run test:functions', 'npm run test:e2e']);
+});
+
+test('testpoort: beslist op de exitcode; stopt bij de eerste die faalt, de rest draait niet', () => {
+  const gedraaid = [];
+  const voerUit = (cmd, args) => (gedraaid.push(args.join(' ')), args.includes('test:rules') ? 1 : 0);
+  assert.deepEqual(draaiPoort({ voerUit, log: () => {} }), { ok: false, mislukt: 'npm run test:rules' });
+  assert.deepEqual(gedraaid, ['test', 'run test:rules']);
+  assert.deepEqual(draaiPoort({ voerUit: () => 0, log: () => {} }), { ok: true, mislukt: null });
+  // Een suite die niet eens start (status null) telt als mislukt.
+  assert.equal(draaiPoort({ suites: [['bestaat-niet-xyz', []]], log: () => {} }).ok, false);
+});
+
+test('pre-push-hook: refresh rustig maar een suite faalt → geweigerd; groen → toegestaan; net getest door safe-push → geen tests', () => {
+  const rustig = nepGh({});
+  const hook = new URL('../.githooks/pre-push', import.meta.url).pathname;
+  const haak = (suites, extra = {}) =>
+    spawnSync('sh', [hook], { env: { ...process.env, SAFE_PUSH_GH: rustig, TESTPOORT_SUITES_VOOR_TESTS: JSON.stringify(suites), ...extra }, encoding: 'utf-8' });
+  const faalt = haak([[process.execPath, ['-e', 'process.exit(0)']], [process.execPath, ['-e', 'process.exit(3)']]]);
+  assert.equal(faalt.status, 1);
+  assert.match(faalt.stderr, /Push geweigerd: ".*process\.exit\(3\)" faalt/);
+  assert.equal(haak([[process.execPath, ['-e', 'process.exit(0)']]]).status, 0);
+  const head = spawnSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf-8' }).stdout.trim();
+  assert.equal(haak([[process.execPath, ['-e', 'process.exit(1)']]], { PODIUM_GETEST: head }).status, 0, 'getest door safe-push: niet nog eens');
+});

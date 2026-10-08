@@ -16,11 +16,16 @@ dezelfde dag stopt meteen. De workflow commit de data zelf.
 - Altijd `git diff --stat` (of `git diff --cached --stat`) vóór het committen.
 - Pushen altijd via `npm run safe-push` (eventueel `-- <git push-argumenten>`):
   dat weigert zolang een `refresh-data`-run loopt of in de wachtrij staat
-  (ook als `gh` het niet kan vaststellen), en doet daarna `git pull --ff-only`
-  en `git push`. `npm run safe-push -- --dry-run` doet alleen de controle.
-  Nooit omheen werken; bij een weigering wachten tot de run klaar is.
-- Dezelfde controle zit in de pre-push-hook `.githooks/pre-push`; activeer die
-  in een nieuwe clone met `git config core.hooksPath .githooks`.
+  (ook als `gh` het niet kan vaststellen), doet dan `git pull --ff-only`,
+  draait alle testsuites (`scripts/testpoort.js`: unit, rules, functions,
+  e2e; stopt bij de eerste die faalt, op de exitcode) en pas dan `git push`.
+  Duurt dus ~10 minuten. `npm run safe-push -- --dry-run` doet alleen de
+  refresh-controle. Nooit omheen werken (ook geen `--no-verify`); bij een
+  weigering eerst de run afwachten of de test repareren.
+- Dezelfde controles zitten in de pre-push-hook `.githooks/pre-push`; activeer
+  die in een nieuwe clone met `git config core.hooksPath .githooks`.
+  Waarom de testpoort: op 8 okt 2026 ging een push door terwijl een test
+  faalde (de controle keek naar tekst in de uitvoer, niet naar de exitcode).
   Waarom: op 29 sep 2026 is er gepusht terwijl een (uitgestelde) nachtelijke
   run liep, ondanks de afspraak. De workflow zet vlak voor zijn eigen push de
   data op de nieuwste `main`, maar een push midden in een run blijft risico.

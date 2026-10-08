@@ -3,16 +3,18 @@
 // Trump – Greg Shapiro", De Stoep "KING ME – Greg Shapiro"). Eén keer op de
 // watchlist gezet werden het drie items (oude TITEL_MAPPING). Nu: één regel
 // in Profiel, en na de nachtrun (productieSamenvoegen.js) één item, ook in
-// Firestore en in de kopie voor vrienden. De agenda komt uit
-// public/data/shows.json, in twee standen via de browser geserveerd:
-//   0. zoals hij nu is (nog niet samengevoegd);
+// Firestore en in de kopie voor vrienden. De agenda is vaste testdata (de
+// bronrecords zoals de theaters ze gaven, overgenomen uit de data van 8 okt
+// 2026, met datums vanaf vandaag), in twee standen via de browser geserveerd:
+//   0. de bron (nog niet samengevoegd);
 //   1. zoals de nachtrun hem maakt (samenvoegen, weergave en genre op meerderheid).
+// Sinds de nachtrun van 8 okt staat in public/data/shows.json alleen nog
+// "KING ME – Greg Shapiro" (met de oude titel in titelBron); daarom niet meer
+// de echte data.
 // Draai met `npm run test:e2e`. De tests bouwen op elkaar voort.
 
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
 import { chromium } from 'playwright';
 
 import { controleerEmulators, startServer, wisEmulators, maakAccount, openGebruiker, ga, wachtOpDoc, schermafbeelding } from './hulp.js';
@@ -21,7 +23,6 @@ import { pasMeerderheidToe } from '../src/lib/weergaveMeerderheid.js';
 import { pasGenreMeerderheidToe } from '../src/lib/genreMeerderheid.js';
 
 const ACCOUNT = { email: 'greet@e2e.test', wachtwoord: 'geheim-greet', naam: 'Greet Smit', gebruikersnaam: 'greet' };
-const vandaag = new Date().toISOString().slice(0, 10);
 let uid;
 let server;
 let base;
@@ -31,22 +32,38 @@ const data = {};
 let stand = 0;
 let sgz; // Stadsgehoorzaal "Greg Shapiro"
 
+const dag = (n) => {
+  const d = new Date();
+  d.setDate(d.getDate() + n);
+  return d.toISOString().slice(0, 10);
+};
+// De bron per theater (titel, genre en beschrijving zoals de theaters ze gaven).
+const voorstelling = (theaterId, theaterNaam, stad, n, titel, extra = {}) => ({
+  id: `kingme-${theaterId}`, titel, theaterId, theaterNaam, stad, datum: dag(n), tijd: '20:30', maker: null,
+  genre: 'Cabaret', genreRuw: 'Cabaret', volgordeZeker: true, beschikbaarheid: 'beschikbaar', podiumpas: true,
+  beschrijving: null, reserverenUrl: 'https://example.invalid/', bron: '', opgehaaldOp: new Date().toISOString(), ...extra,
+});
+const BRON = [
+  voorstelling('stoep', 'Theater de Stoep', 'Spijkenisse', 13, 'KING ME – Greg Shapiro'),
+  voorstelling('cpunt', 'Cpunt', 'Hoofddorp', 15, 'KING ME – 250 years of Donald Trump – Greg Shapiro', { beschrijving: '250 years of Donald Trump' }),
+  voorstelling('kleinekomedie', 'De Kleine Komedie', 'Amsterdam', 20, 'King Me – 250 years of Donald Trump – Greg Shapiro'),
+  voorstelling('stadsgehoorzaal', 'Stadsgehoorzaal', 'Vlaardingen', 25, 'Greg Shapiro', { genre: 'Overig', genreRuw: 'Overig', beschrijving: 'KING ME | 250 years of Donald Trump' }),
+  voorstelling('stadsschouwburgutrecht', 'Stadsschouwburg Utrecht', 'Utrecht', 28, 'KING ME – 250 Years of Donald Trump – Greg Shapiro'),
+  voorstelling('omval', 'Theater de Omval', 'Diemen', 29, 'King Me – Greg Shapiro'),
+  voorstelling('griffioen', 'VU Griffioen', 'Amsterdam', 40, 'KING ME – Greg Shapiro', { beschrijving: 'KING ME' }),
+  // Iets anders in de agenda, zodat Profiel en de zoekfunctie niet leeg zijn.
+  voorstelling('delamar', 'DeLaMar', 'Amsterdam', 10, 'Prikkelarme kermis – Sara Kroos', { id: 'ander-1' }),
+];
+
 before(async () => {
   controleerEmulators();
   await wisEmulators();
   uid = await maakAccount(ACCOUNT);
-  const ruw = JSON.parse(await readFile(path.join(new URL('../public/', import.meta.url).pathname, 'data/shows.json'), 'utf-8'));
-  data[0] = Array.isArray(ruw) ? ruw : ruw.shows;
-  // Zoals scrapeRun: terug naar de bron, samenvoegen, weergave en genre op meerderheid.
-  const bron = data[0].map(({ titelBron, genreBron, beschrijvingBron, genres, ...s }) => ({
-    ...s,
-    titel: titelBron ?? s.titel,
-    ...(genreBron !== undefined ? { genre: genreBron } : {}),
-    ...(beschrijvingBron !== undefined ? { beschrijving: beschrijvingBron } : {}),
-  }));
-  data[1] = pasGenreMeerderheidToe(pasMeerderheidToe(pasProductieSamenvoegingToe(bron).shows).shows).shows;
-  sgz = data[0].find((s) => s.theaterId === 'stadsgehoorzaal' && s.titel === 'Greg Shapiro' && s.datum >= vandaag);
-  assert.ok(sgz, 'Stadsgehoorzaal "Greg Shapiro" staat niet (meer) in de data');
+  data[0] = BRON;
+  // Zoals scrapeRun: samenvoegen, weergave en genre op meerderheid.
+  data[1] = pasGenreMeerderheidToe(pasMeerderheidToe(pasProductieSamenvoegingToe(structuredClone(BRON)).shows).shows).shows;
+  assert.deepEqual([...new Set(data[1].filter((s) => /shapiro/i.test(s.titel)).map((s) => s.titel))], ['KING ME – Greg Shapiro'], 'de nachtrun voegt alles samen');
+  sgz = data[0].find((s) => s.theaterId === 'stadsgehoorzaal');
   ({ server, base } = await startServer());
   browser = await chromium.launch();
   ik = await openGebruiker(browser, base, ACCOUNT);
@@ -59,11 +76,14 @@ after(async () => {
   await new Promise((r) => server.close(r));
 });
 
+// Eerst herladen met de nieuwe stand, dan naar de route: een onbekend id in
+// de oude stand stuurt de app anders door naar de Agenda.
 async function nieuweStand(page, n, hash) {
   stand = n;
-  await ga(page, base, hash);
   await page.reload();
   await page.waitForSelector('.nav-item', { state: 'attached' });
+  await page.waitForTimeout(500);
+  await ga(page, base, hash);
 }
 
 const gebruiker = (t) => wachtOpDoc(`users/${uid}`, t);
@@ -86,6 +106,8 @@ test('huidige data: "Greg Shapiro" op de watchlist wordt drie items (oude mappin
   await page.waitForSelector('#screen-detail:not([hidden])');
   await page.click('#detailWatchIcon');
   await page.waitForSelector('#detailWatchIcon.is-on');
+  // Eerst opgeslagen, dan pas herladen.
+  await gebruiker((x) => x?.watchlist?.length >= 1);
   await nieuweStand(page, 0, '#/profiel');
   const d = await gebruiker((x) => x?.watchlist?.length === 3);
   assert.deepEqual(d.watchlist.map((i) => i.sleutel).sort(), ['250 years of donald trump | greg shapiro | king me', 'greg shapiro', 'greg shapiro | king me']);

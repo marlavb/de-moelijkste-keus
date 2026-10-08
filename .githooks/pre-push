@@ -1,4 +1,11 @@
 #!/bin/sh
-# Weigert elke push zolang refresh-data loopt of wacht (zie CLAUDE.md).
+# Weigert elke push zolang refresh-data loopt of wacht, of zolang een
+# testsuite faalt (zie CLAUDE.md). Via `npm run safe-push` zijn de tests voor
+# deze commit al gedraaid (PODIUM_GETEST); dan alleen de refresh-controle.
 # Actief via: git config core.hooksPath .githooks
-exec node "$(git rev-parse --show-toplevel)/scripts/refresh-check.js"
+top="$(git rev-parse --show-toplevel)"
+node "$top/scripts/refresh-check.js" || exit 1
+if [ -n "$PODIUM_GETEST" ] && [ "$PODIUM_GETEST" = "$(git rev-parse HEAD)" ]; then
+  exit 0
+fi
+cd "$top" && exec node scripts/testpoort.js

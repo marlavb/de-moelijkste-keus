@@ -206,7 +206,8 @@ De emulators gebruiken altijd het project `demo-podiumagenda`, nooit het echte.
 - **Functions**: na groene `test:functions`:
   `npm run firebase -- deploy --only functions`.
 - Pushen naar `main` altijd via `npm run safe-push`: die weigert zolang de
-  nachtelijke run loopt of wacht.
+  nachtelijke run loopt of wacht, en zolang een van de testsuites faalt
+  (`scripts/testpoort.js`; ook in de pre-push-hook).
 
 ## Werkafspraken
 
