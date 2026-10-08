@@ -155,7 +155,8 @@ for (const viewport of [{ width: 390, height: 700 }, { width: 1280, height: 700 
     const opslag = {
       'podiumagenda:gezien': veelGezien(),
       'podiumagenda:gepland': planIn(legeGepland(), PROEF[2], 1),
-      'podiumagenda:watchlist': voegToe(legeWatchlist(), { titel: PROEF[4].titel, theaterId: PROEF[4].theaterId }, 1),
+      // Na het Gezien-moment (1) opnieuw op de watchlist: blijft staan (ruimWatchlistOp).
+      'podiumagenda:watchlist': voegToe(legeWatchlist(), { titel: PROEF[4].titel, theaterId: PROEF[4].theaterId }, 2),
     };
     const { ctx, page } = await openApp({ viewport, extraShows: PROEF, opslag });
     await page.goto(`${base}#/profiel`);

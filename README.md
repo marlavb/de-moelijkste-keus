@@ -41,7 +41,11 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
 - **Gezien met sterren**: je bezoekgeschiedenis, 1 tot 5 sterren in halve
   stappen, sorteren op laatste bezoek of beoordeling. Een item zonder maker
   of genre (bv. zelf aangevinkt) wordt aangevuld zodra de voorstelling in de
-  agenda staat; een bestaande maker blijft staan.
+  agenda staat; een bestaande maker blijft staan. Komt een voorstelling op
+  Gezien (zelf aangevinkt, of vanuit Gepland na de speeldag), dan gaat hij
+  van de watchlist ("Ook van je watchlist gehaald · Ongedaan maken"); zet je
+  hem daarna opnieuw op de watchlist, dan blijft hij staan. Wat op beide
+  stond van vóór je laatste bezoek, wordt bij het laden opgeruimd.
 - **Profiel** (na inloggen met Google): gebruikersnaam en naam. Alles
   hierboven werkt ook zonder inloggen (alleen op dat apparaat); ingelogd
   synchroniseert het tussen je apparaten.
@@ -212,7 +216,7 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v41`
+Service worker: `podiumagenda-v42`
 <!-- AUTO:sw:end -->
 
 ### Theaters

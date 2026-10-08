@@ -276,6 +276,51 @@ export function planNaarGezien({ gepland, gezien, watchlist }, item, show, now =
 }
 
 /**
+ * Handmatig op Gezien zetten (detailscherm, watchlist in Profiel): bezoek
+ * erbij als de speeldatum voorbij is, en van de watchlist af als hij erop
+ * staat (tombstone; via de gewone opslag ook in Firestore en in de kopie
+ * voor vrienden). Geeft { gezien, watchlist, watchItem } terug; watchItem is
+ * het weggehaalde item (voor "Ongedaan maken") of null.
+ * Alleen bij deze overgang: zet je de voorstelling daarna opnieuw op de
+ * watchlist, dan blijft hij staan (zie ruimWatchlistOp).
+ */
+export function markeerHandmatig({ gezien, watchlist }, show, bezoek = null, now = Date.now()) {
+  const sleutel = watchlistSleutel(show.titel, show.theaterId);
+  const watchItem = (watchlist?.watchlist ?? []).find((i) => i.sleutel === sleutel) ?? null;
+  return {
+    gezien: zetGezien(gezien, { show, bron: 'handmatig', bezoek }, now),
+    watchlist: watchItem ? verwijderVanWatchlist(watchlist, sleutel, now) : watchlist,
+    watchItem,
+  };
+}
+
+/** Het laatste moment waarop een item op Gezien kwam of een bezoek kreeg. */
+export const laatsteGezienMoment = (item) => laatsteActie(item);
+
+/**
+ * Opruiming (okt 2026, idempotent, bij elke laadronde): een voorstelling die
+ * op Gezien staat, hoort niet ook op de watchlist, tenzij je hem daarna
+ * opnieuw op de watchlist hebt gezet (toegevoegdOp later dan het laatste
+ * Gezien-moment, om nog eens te gaan). Werkt op de sleutels na het laden,
+ * dus ook voor samengevoegde producties (samenvoegMapping, waaronder een
+ * titel die alleen de artiest was). Weghalen gaat met een tombstone, zodat
+ * het over apparaten heen klopt. Bij elke laadronde in plaats van eenmalig
+ * met een vlag: het resultaat is hetzelfde als bij de overgang zelf, en een
+ * ander apparaat met een oude watchlist wordt ook rechtgezet.
+ * Geeft { watchlist, weg: [sleutels], gewijzigd }.
+ */
+export function ruimWatchlistOp({ watchlist, gezien }, now = Date.now()) {
+  const moment = new Map((gezien?.gezien ?? []).map((i) => [i.sleutel, laatsteGezienMoment(i)]));
+  const weg = (watchlist?.watchlist ?? [])
+    .filter((i) => moment.has(i.sleutel) && (i.toegevoegdOp ?? 0) <= moment.get(i.sleutel))
+    .map((i) => i.sleutel);
+  if (weg.length === 0) return { watchlist, weg, gewijzigd: false };
+  let uit = watchlist;
+  for (const k of weg) uit = verwijderVanWatchlist(uit, k, now);
+  return { watchlist: uit, weg, gewijzigd: true };
+}
+
+/**
  * Verwerkt voorbije plannen (bij het openen van de app en na een sync), na
  * de speeldag in Amsterdam:
  * - afgelast of verplaatst → stil uit de planning, niet naar Gezien (op die

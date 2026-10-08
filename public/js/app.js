@@ -100,10 +100,11 @@ import {
 import {
   laadGezien,
   legeGezien,
-  zetGezien,
   haalUitGezien,
   gezienSleutels as gezienSleutelsVan,
   verwerkVoorbijePlannen,
+  markeerHandmatig,
+  ruimWatchlistOp,
   laatsteBezoek,
   sorteerGezien,
   isVoorbij,
@@ -1225,6 +1226,7 @@ function syncProfielForCurrentUser() {
     state.gepland = lokaalGepland.profiel;
     state.gezien = lokaalGezien.profiel;
     logOudeSlugs(lokaal);
+    ruimWatchlist();
     verwerkPlannen(showIndex);
     return;
   }
@@ -1261,8 +1263,19 @@ function syncProfielForCurrentUser() {
     state.cloudGezien = cloudGezien.profiel;
     setDoc(ref, cloudGezien.profiel, { merge: true }).catch((err) => console.error('Kon Gezien niet synchroniseren:', err));
   }
+  ruimWatchlist();
   verwerkPlannen(showIndex);
   planKopie();
+}
+
+// Wat op Gezien staat, van de watchlist af (zie ruimWatchlistOp in
+// gezien.js): behalve wat daarna opnieuw op de watchlist is gezet.
+// Zonder melding; idempotent.
+function ruimWatchlist() {
+  const r = ruimWatchlistOp({ watchlist: state.watchlist, gezien: state.gezien });
+  if (!r.gewijzigd) return;
+  state.watchlist = r.watchlist;
+  saveWatchlist();
 }
 
 // Voorbije plannen verwerken (zie gezien.js): na de speeldag naar Gezien,
@@ -5166,17 +5179,18 @@ function toggleGezien(show) {
  */
 function markeerGezien(show, naAfloop = () => {}) {
   const sleutel = showSleutel(show);
-  const watchItem = (state.watchlist?.watchlist ?? []).find((i) => i.sleutel === sleutel) ?? null;
   // Voorbije speeldatum (staat nog in de data tot de nachtelijke run):
   // meteen het bezoek bewaren, alsof het uit de planning kwam.
   const bezoek = show.datum && isVoorbij(show.datum) ? bezoekUitShow(show) : null;
-  state.gezien = zetGezien(state.gezien, { show, bron: 'handmatig', bezoek });
+  const r = markeerHandmatig({ gezien: state.gezien, watchlist: state.watchlist }, show, bezoek);
+  const { watchItem } = r;
+  state.gezien = r.gezien;
   saveGezien();
   if (watchItem) {
-    state.watchlist = verwijder(state.watchlist, sleutel);
+    state.watchlist = r.watchlist;
     saveWatchlist();
   }
-  toonMelding(watchItem ? 'Gezien · van je watchlist gehaald' : 'Gezien', () => {
+  toonMelding(watchItem ? 'Ook van je watchlist gehaald' : 'Gezien', () => {
     state.gezien = haalUitGezien(state.gezien, sleutel);
     saveGezien();
     if (watchItem) {
