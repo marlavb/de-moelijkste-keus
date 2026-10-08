@@ -49,8 +49,10 @@ const GEEN_MAKER = [
   /^vanaf \d{1,2} jaar$/i,
   /^\(?\s*(?:reprise|try[- ]?out|premi[eè]re|grand finale|live in (?:het )?theater)\s*\)?$/i,
   // Een jubileum-ondertitel ("20 jaar 3JS", Flint; "20 jaar onmeunig druk",
-  // Miss Montreal), okt 2026.
-  /^\d+\s+jaar\s/i,
+  // Miss Montreal), okt 2026. Ook alleen "40 jaar" (Munttheater geeft dat als
+  // performer bij "Loïs Lane in concert"; DOK6, Markant e.a. bij Pater
+  // Moeskroen) en "40 jarig jubileum tour" (Parade), 8 okt 2026.
+  /^\d+\s+(?:jaar|jarig)(?:\s|$)/i,
   // Algemene ondertitels zonder naam: "In Concert" (Flint, Meervaart),
   // "Theaterconcert", "Theatertour" (okt 2026).
   /^(?:in concert|(?:theater)?concert|(?:theater)?tour|live)$/i,

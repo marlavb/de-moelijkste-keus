@@ -250,6 +250,12 @@ test('Toneelgroep Maastricht (Flint, Het Speelhuis): omgedraaid naar "Bijna een 
   assert.equal(draaiTitelEnMakerOm({ theaterId: 'flint', titel: 'Nhung Dam', maker: 'Legende van de witte slang' }).titel, 'Legende van de witte slang');
 });
 
+test('jubileum zonder naam is geen maker: "40 jaar", "40 jarig jubileum tour" (8 okt 2026)', async () => {
+  const { isGeenMaker } = await import('../src/lib/titels.js');
+  for (const t of ['40 jaar', '50 jaar', '40 jarig jubileum tour', '20 jaar 3JS']) assert.equal(isGeenMaker(t), true, t);
+  for (const t of ['Pater Moeskroen', 'Jaarmarkt', 'Loïs Lane']) assert.equal(isGeenMaker(t), false, t);
+});
+
 test('VOORSTELLING_BIJ_ARTIEST Munttheater: "ICE" → voorstelling "Live in Theater"', async () => {
   const { draaiTitelEnMakerOm } = await import('../src/lib/titels.js');
   assert.deepEqual(draaiTitelEnMakerOm({ theaterId: 'munttheater', titel: 'ICE', maker: null, datum: '2026-10-30' }), { theaterId: 'munttheater', titel: 'Live in Theater', maker: 'ICE', datum: '2026-10-30' });

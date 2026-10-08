@@ -59,3 +59,25 @@ test('Munttheater: hulpfuncties', () => {
   assert.equal(muntStatus('Uitverkocht'), 'uitverkocht');
   assert.equal(muntStatus('Kaarten', 'https://schema.org/EventCancelled'), 'afgelast');
 });
+
+// ICE en Loïs Lane (8 okt 2026): de Tineke-pagina met andere JSON-LD-gegevens.
+test('Munttheater: "ICE" → "Live in Theater – ICE" (VOORSTELLING_BIJ_ARTIEST); jubileum als performer → "Loïs Lane in concert: 40 jaar"', async () => {
+  const tineke = lees('munttheater-tineke.html');
+  const ice = tineke.replaceAll('Tineke Schouten', 'ICE').replaceAll('Femme Vitaal', 'Live in theater');
+  const lois = tineke.replaceAll('Tineke Schouten', 'Loïs Lane in concert').replaceAll('Femme Vitaal', '40 jaar');
+  const browser = await chromium.launch();
+  let shows;
+  try {
+    const page = await browser.newPage();
+    await page.route('**/*', (r) => {
+      const url = r.request().url();
+      if (url.endsWith('/sitemap.xml')) return r.fulfill({ status: 200, contentType: 'application/xml', body: sitemap });
+      return r.fulfill({ status: 200, contentType: 'text/html', body: url.endsWith('/agenda/contra') ? ice : lois });
+    });
+    shows = await scrapeMunttheater({ page, theater, robots: { isAllowed: () => true }, waitForTurn: async () => {}, log: () => {}, warn: () => {}, vandaag: '2026-10-06' });
+  } finally {
+    await browser.close();
+  }
+  const titels = [...new Set(shows.map((s) => `${s.titel} | ${s.maker ?? '-'} | ${s.beschrijving ?? '-'}`))].sort();
+  assert.deepEqual(titels, ['Live in Theater – ICE | - | Live in theater', 'Loïs Lane in concert: 40 jaar | - | -']);
+});

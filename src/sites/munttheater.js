@@ -154,7 +154,13 @@ export async function scrapeMunttheater({ page, theater, robots, waitForTurn, lo
         opgehaaldOp,
       };
       const volgorde = MAKER_EERST.test(genreRuw ?? '') ? 'maker-titel' : 'titel-maker';
-      const uitKop = titelUitKopEnOndertitel(basis, { kop, ondertitel: e.performer, volgorde });
+      // Een jubileum als performer ("Loïs Lane in concert" / "40 jaar") hoort
+      // bij de titel, zoals op de eigen pagina: "Loïs Lane in concert: 40 jaar"
+      // (zelfde productie als bij de Hofnar), 8 okt 2026.
+      const jubileum = /^\d+\s+(?:jaar|jarig)(?:\s|$)/i.test(e.performer ?? '');
+      const uitKop = jubileum
+        ? { ...basis, titel: `${kop}: ${e.performer.trim()}`, maker: null }
+        : titelUitKopEnOndertitel(basis, { kop, ondertitel: e.performer, volgorde });
       // Alleen de artiest als titel (VOORSTELLING_BIJ_ARTIEST, bv. "ICE"): de
       // voorstelling erbij, en dan "Voorstelling – Artiest" ook buiten cabaret.
       const show = draaiTitelEnMakerOm(uitKop);
