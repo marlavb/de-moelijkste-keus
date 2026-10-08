@@ -1,0 +1,2361 @@
+{
+ "theaterId": "schaffelaar",
+ "items": {
+  "https://schaffelaartheater.nl/agenda/3js/": {
+   "opgehaaldOp": "2026-10-08T03:45:05.425Z",
+   "data": {
+    "titel": "3JS",
+    "onder": "20 jaar 3JS",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 33,50",
+    "rijen": [
+     {
+      "datum": "vr. 12-03-2027 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12135&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=5cd48f043188f5985bd0872ad8367e6dc81ce5cf23e3d1e9ecc892d01d209491"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/a-tribute-to-john-denver/": {
+   "opgehaaldOp": "2026-10-08T03:46:42.456Z",
+   "data": {
+    "titel": "A Tribute to John Denver",
+    "onder": null,
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 34,50",
+    "rijen": [
+     {
+      "datum": "vr. 07-05-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12093&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=3cc1f2730cc8aaaade012a34c7ad5d09944404baf4a0078fb0f6515102cf8e3d"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/abba-the-music/": {
+   "opgehaaldOp": "2026-10-08T03:45:21.062Z",
+   "data": {
+    "titel": "ABBA The Music",
+    "onder": "From Waterloo to Dancing Queen",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 37,50",
+    "rijen": [
+     {
+      "datum": "za. 13-03-2027 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12133&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=f6d56704583174f332cdeb620347625fec5418a89e723042880a36cf9529ac54"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/aimabele-schoften/": {
+   "opgehaaldOp": "2026-10-08T03:45:07.348Z",
+   "data": {
+    "titel": "Aimabele Schoften",
+    "onder": "Wijncabaret: Grand Cru",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kleine Zaal-kaart € 0,00 Normaal € 23,00",
+    "rijen": [
+     {
+      "datum": "vr. 26-03-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12116&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=f27725df9fc70316ccaca9833006e93bd470d2c79864ac97341e400ac83bf189"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/anansi-de-spin-en-de-gulzige-tijger-3/": {
+   "opgehaaldOp": "2026-10-08T03:46:01.385Z",
+   "data": {
+    "titel": "Anansi de Spin en de Gulzige Tijger (3+)",
+    "onder": null,
+    "genres": [
+     "familie",
+     "schaffelbende"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Volwassenen € 8,50 Kind 0 t/m 12 jaar € 0,00",
+    "rijen": [
+     {
+      "datum": "ma. 28-12-2026 | 10:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12191&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=86bb973d3535e1daa16ab3caa7dc861e20069e32e72d86744f6de12fd5542d28"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/bannink-brecht-en-bach/": {
+   "opgehaaldOp": "2026-10-08T03:45:04.405Z",
+   "data": {
+    "titel": "Bannink, Brecht en Bach",
+    "onder": "Het Kofferbak Collectief",
+    "genres": [
+     "dinsdagmiddagmatinee",
+     "muziek"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 8,50",
+    "rijen": [
+     {
+      "datum": "di. 25-05-2027 | 14:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12066&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=f0fb593211fe8bfdc6cfa6b85234d18c9080c3b1dd5bef17bc1527c859ab2c75"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/barnevelds-shantykoor-het-roer-om/": {
+   "opgehaaldOp": "2026-10-08T03:46:30.396Z",
+   "data": {
+    "titel": "Barnevelds Shantykoor Het Roer Om",
+    "onder": "Het Roer Om 20 jaar",
+    "genres": [
+     "vanbarneveldsebodem",
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": "vr. 22-01-2027 | 19:45",
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/bart/": {
+   "opgehaaldOp": "2026-10-08T03:45:17.354Z",
+   "data": {
+    "titel": "Bart",
+    "onder": "Ontsteking",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 22,50 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "za. 13-02-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12155&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=d3de5530c1decad5f5f5786ae8711e99bae3fef0c799ac6a0e5408538a413af6"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/bastiaan-ragas/": {
+   "opgehaaldOp": "2026-10-08T03:45:57.353Z",
+   "data": {
+    "titel": "Bastiaan Ragas",
+    "onder": "Jezus, Waarom?",
+    "genres": [
+     "show"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 30,50",
+    "rijen": [
+     {
+      "datum": "do. 11-03-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12134&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=ce9c7a87434a50a75f0c9cd8bc24ec2eaf9543a9b27717618a3293b1355ac88a"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/beach-boys-best-reprise/": {
+   "opgehaaldOp": "2026-10-08T03:45:15.484Z",
+   "data": {
+    "titel": "Beach Boys' Best (Reprise)",
+    "onder": "Legendary Albums Live",
+    "genres": [],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 38,50",
+    "rijen": [
+     {
+      "datum": "di. 29-12-2026 | 20:00",
+      "knop": "Uitverkocht",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12181&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=3d766a10e8d3342b2aefc74d217b541e664b67154b12f9b25f4a666c243a056c"
+     },
+     {
+      "datum": "wo. 30-12-2026 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12183&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=4eeb08da547dcaaeb916faefd4643308e23510a9b1ba47e2e1a4d1e2d3b79f4d"
+     },
+     {
+      "datum": "do. 20-05-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12342&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=75e1fcfb999b98a3594c8ca522d7bd80dd715af9c16a3879f7a55cd332c67b1d"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/bee-gees-by-maincourse/": {
+   "opgehaaldOp": "2026-10-08T03:45:49.403Z",
+   "data": {
+    "titel": "Bee Gees by MainCourse",
+    "onder": "Fame, Family & Tragedy!",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 38,50",
+    "rijen": [
+     {
+      "datum": "za. 27-03-2027 | 20:00",
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/beperkt-houdbaar/": {
+   "opgehaaldOp": "2026-10-08T03:45:27.385Z",
+   "data": {
+    "titel": "Beperkt Houdbaar",
+    "onder": null,
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 24,50",
+    "rijen": [
+     {
+      "datum": "do. 26-11-2026 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12161&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=1dc62ee442f232f6bf3cb9321e5665fda0c6337607c8201b717d9bd803baaf4e"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/berit-companjen/": {
+   "opgehaaldOp": "2026-10-08T03:45:41.422Z",
+   "data": {
+    "titel": "Berit Companjen",
+    "onder": "Zei ik dat hardop?",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 23,50 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "vr. 12-03-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12131&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=e94fb8bb522b47e1498de1973c5a660862f878237fe3f3b608abf34acee84a93"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/best-of-ireland/": {
+   "opgehaaldOp": "2026-10-08T03:46:00.411Z",
+   "data": {
+    "titel": "Best of Ireland",
+    "onder": "De grootste hits uit Ierland!",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 33,50",
+    "rijen": [
+     {
+      "datum": "za. 13-02-2027 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12156&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=ee8c52c324e3a365ded1be34411da58e41a32f6a6012e333c613285db8e5bf12"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/bettina-holwerda/": {
+   "opgehaaldOp": "2026-10-08T03:44:58.329Z",
+   "data": {
+    "titel": "Bettina Holwerda",
+    "onder": "Laat Maar",
+    "genres": [
+     "show"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 34,50",
+    "rijen": [
+     {
+      "datum": "za. 06-02-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12163&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=68c405e927fd3182892bd605b8a87f81d3452b67e31bfebb97670f59947577ed"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/boban-braspenning/": {
+   "opgehaaldOp": "2026-10-08T03:46:43.444Z",
+   "data": {
+    "titel": "Boban Braspenning",
+    "onder": "BRUTO",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 23,50 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "do. 17-12-2026 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12175&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=dfed6ccc57e3a3286e8f31f9946db6ed9741e4e6c1dbcc1c117e6b0687e89ed7"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/boeing-boeing/": {
+   "opgehaaldOp": "2026-10-08T03:45:09.340Z",
+   "data": {
+    "titel": "Boeing Boeing",
+    "onder": "Loiza Lamers, Rian Gerritsen e.a.",
+    "genres": [
+     "comedy"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/bokkers/": {
+   "opgehaaldOp": "2026-10-08T03:45:20.372Z",
+   "data": {
+    "titel": "Bökkers",
+    "onder": "Hier!",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 37,50",
+    "rijen": [
+     {
+      "datum": "do. 13-05-2027 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12084&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=0face46231c275a27042138bb9c6ab17ab16b476e92ada88e83f2cb277742c95"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/bouke-rocks-elvis/": {
+   "opgehaaldOp": "2026-10-08T03:45:00.366Z",
+   "data": {
+    "titel": "Bouke Rocks Elvis",
+    "onder": "Een avond vol Elvis-magie",
+    "genres": [
+     "show",
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 44,50",
+    "rijen": [
+     {
+      "datum": "vr. 23-10-2026 | 20:00",
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/buurman-en-buurman-bouwen-een-feestje-4/": {
+   "opgehaaldOp": "2026-10-08T03:46:52.093Z",
+   "data": {
+    "titel": "Buurman en Buurman bouwen een feestje (4+)",
+    "onder": null,
+    "genres": [],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 22,50",
+    "rijen": [
+     {
+      "datum": "zo. 11-10-2026 | 13:30 - 14:30",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12091&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=d585b9d8927144fd10dea732a903f9acafc1bcce7462a090e0c9e27924bdc757"
+     },
+     {
+      "datum": "zo. 11-10-2026 | 15:30 - 16:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12094&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=2663e5474b4229c6094047b5d8fccd8e9c9bda31471c86af143116cb03ef5b0e"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/celine-janssen/": {
+   "opgehaaldOp": "2026-10-08T03:46:32.370Z",
+   "data": {
+    "titel": "Céline Janssen",
+    "onder": "Opera op reis",
+    "genres": [
+     "show"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kleine Zaal-kaart € 0,00 Normaal € 19,50",
+    "rijen": [
+     {
+      "datum": "vr. 07-05-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12090&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=0420a69a5bfc42ca37362c1fe8c9c5222ffdfd1e44398816ef49a13dc3f1a463"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/celtic-steps/": {
+   "opgehaaldOp": "2026-10-08T03:45:58.364Z",
+   "data": {
+    "titel": "Celtic Steps",
+    "onder": "An Irish Christmas",
+    "genres": [],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 43,00",
+    "rijen": [
+     {
+      "datum": "vr. 11-12-2026 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12169&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=013fb6e7446eba84fc1c7a8afd3e7078e3620b583dc12162480ac1f5240104f1"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/charl-zingt-shaffy/": {
+   "opgehaaldOp": "2026-10-08T03:45:39.367Z",
+   "data": {
+    "titel": "Charl zingt Shaffy",
+    "onder": "Charl Delemarre",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 28,50",
+    "rijen": [
+     {
+      "datum": "zo. 18-10-2026 | 14:30 - 16:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12029&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=252547fd577b37d12a3bc9aaf46d6e5a84229f967ab6b887e74fd4069c95d07a"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/daan-van-der-hoeven/": {
+   "opgehaaldOp": "2026-10-08T03:45:14.387Z",
+   "data": {
+    "titel": "Daan van der Hoeven",
+    "onder": "Mensenmens",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 26,50",
+    "rijen": [
+     {
+      "datum": "vr. 08-01-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12195&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=cf78eb5f760b63b0b93e318da1e07d2dcad470bf7cf35bb0570e84e607b7cddc"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/david-van-rosmalen/": {
+   "opgehaaldOp": "2026-10-08T03:45:02.386Z",
+   "data": {
+    "titel": "David van Rosmalen",
+    "onder": "Als ik jou was",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 22,50 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "za. 06-02-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12165&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=c752ea81c32d4cce810b7f250e12cc007025c2ee1706315ece836b83ca2aa1d3"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/de-gouden-herinnering/": {
+   "opgehaaldOp": "2026-10-08T03:45:08.414Z",
+   "data": {
+    "titel": "De Gouden Herinnering",
+    "onder": "Een zolder vol verhalen",
+    "genres": [
+     "muziek",
+     "dinsdagmiddagmatinee"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 8,50",
+    "rijen": [
+     {
+      "datum": "di. 27-10-2026 | 14:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12115&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=b86c6ef0c50ba73c3b6f59516fc8bd523a21da832a6442c682de079f5ac30cf8"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/de-grote-jaren-80-show/": {
+   "opgehaaldOp": "2026-10-08T03:45:38.353Z",
+   "data": {
+    "titel": "De Grote Jaren 80 Show!",
+    "onder": "Angela Groothuizen en Erik van der Hoff",
+    "genres": [
+     "show"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 39,50",
+    "rijen": [
+     {
+      "datum": "za. 27-02-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12136&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=0e48ffd17a5f3b32e1995bec10c4059db5055311c5798e1869f0b818509b7079"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/de-grote-oudejaars-kwis-2026/": {
+   "opgehaaldOp": "2026-10-08T03:45:42.349Z",
+   "data": {
+    "titel": "De Grote Oudejaars Kwis 2026",
+    "onder": "Rob Urgert & Joep van Deudekom",
+    "genres": [
+     "special"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 29,50",
+    "rijen": [
+     {
+      "datum": "za. 12-12-2026 | 20:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12171&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=a0b62b0bc528a1b8fc52e66bbac07aadb1cc0aeae355eeed4013e3433e30d1e8"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/de-helden/": {
+   "opgehaaldOp": "2026-10-08T03:45:12.376Z",
+   "data": {
+    "titel": "De Helden",
+    "onder": "Muzikale ode aan grootse stemmen",
+    "genres": [
+     "muziek",
+     "dinsdagmiddagmatinee"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 8,50",
+    "rijen": [
+     {
+      "datum": "di. 24-11-2026 | 14:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12159&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=3effca5bd7856d8e0333a8dfefb8ba8499189a46d8a4d7ce19c62a05c09f1b60"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/de-magische-sneeuwbol/": {
+   "opgehaaldOp": "2026-10-08T03:46:50.355Z",
+   "data": {
+    "titel": "De magische sneeuwbol",
+    "onder": "De Harmonie & Balletschool Désirée Nillesen",
+    "genres": [],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 15,00 Kind 0 t/m 12 jaar € 10,00",
+    "rijen": [
+     {
+      "datum": "za. 19-12-2026 | 19:15",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12245&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=f72082c88851c8e1e877034aa6712fbf29514005a47675c048f48e134a032a62"
+     },
+     {
+      "datum": "zo. 20-12-2026 | 14:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12246&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=91b8a6df30cc719abfa180477abe149c724289981894d2ee836c11c344c07542"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/de-notenkraker/": {
+   "opgehaaldOp": "2026-10-08T03:45:47.372Z",
+   "data": {
+    "titel": "De Notenkraker",
+    "onder": "Charkiv City Ballet",
+    "genres": [
+     "dans"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 42,50",
+    "rijen": [
+     {
+      "datum": "zo. 13-12-2026 | 15:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12173&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=25cbe90c1e7e228de3412916d112408c6556a6f774575219d6959f4e1d501255"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/de-ridder-zonder-billen-3/": {
+   "opgehaaldOp": "2026-10-08T03:46:20.463Z",
+   "data": {
+    "titel": "De ridder zonder billen (3+)",
+    "onder": null,
+    "genres": [
+     "familie",
+     "schaffelbende"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kind 0 t/m 12 jaar € 0,00 Volwassenen € 8,50",
+    "rijen": [
+     {
+      "datum": "za. 24-04-2027 | 10:00",
+      "knop": "Uitverkocht",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12099&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=298e842e5c6278c8ff5e3e74552e187918cc4e12a691d9ee2ad7ec9bb06f9924"
+     },
+     {
+      "datum": "za. 24-04-2027 | 11:30",
+      "knop": "Uitverkocht",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12212&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=bff62b482fe227fcf20c5bd6d4cf609757b84ead4ef7999c08ccc15e2df153f0"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/de-verbouwing/": {
+   "opgehaaldOp": "2026-10-08T03:46:02.405Z",
+   "data": {
+    "titel": "De Verbouwing",
+    "onder": "Isa Hoes en Edwin Jonker",
+    "genres": [
+     "toneel"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 36,00",
+    "rijen": [
+     {
+      "datum": "do. 04-02-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12170&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=05a3dbc6b7746ac44ea8ed4c2a65f212456930e262550ce9affdaf5679465552"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/de-waanzinnige-boomhut-van-78-verdiepingen-6/": {
+   "opgehaaldOp": "2026-10-08T03:45:03.329Z",
+   "data": {
+    "titel": "De waanzinnige boomhut van 78 verdiepingen (6+)",
+    "onder": "Meneer Monster",
+    "genres": [
+     "familie"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 21,50",
+    "rijen": [
+     {
+      "datum": "di. 22-12-2026 | 14:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12179&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=198111335b6ec7aa322ca7077fa395abc828a3fa2007c73531365bc1dd90f74b"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/de-wondertuin-2/": {
+   "opgehaaldOp": "2026-10-08T03:46:07.428Z",
+   "data": {
+    "titel": "De Wondertuin (2+)",
+    "onder": null,
+    "genres": [
+     "schaffelbende",
+     "familie"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kind 0 t/m 12 jaar € 0,00 Volwassenen € 8,50",
+    "rijen": [
+     {
+      "datum": "za. 20-03-2027 | 10:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12126&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=990eac680151aadaaeca917750c78a5fe0d955e5d9ac20db3e960142c95712e3"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/dikkie-dik-dirk-scheele-2/": {
+   "opgehaaldOp": "2026-10-08T03:46:48.170Z",
+   "data": {
+    "titel": "Dikkie Dik & Dirk Scheele (2+)",
+    "onder": "Zing, spring, miauw!",
+    "genres": [
+     "schaffelbende",
+     "familie"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/esther-van-der-voort/": {
+   "opgehaaldOp": "2026-10-08T03:46:14.371Z",
+   "data": {
+    "titel": "Esther van der Voort",
+    "onder": "Mama is Boos (Reprise)",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 26,00",
+    "rijen": [
+     {
+      "datum": "za. 20-02-2027 | 20:00",
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/evergreen-top-1000/": {
+   "opgehaaldOp": "2026-10-08T03:45:36.421Z",
+   "data": {
+    "titel": "Evergreen Top 1000",
+    "onder": "Golden Songs",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 30,50",
+    "rijen": [
+     {
+      "datum": "do. 04-03-2027 | 20:00",
+      "knop": "Uitverkocht",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12138&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=827f4e292d2fe8d3c0176b8e4be7b0331eeb7768e5406a73e9cb1949d2698ff9"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/feestpiet-diago/": {
+   "opgehaaldOp": "2026-10-08T03:46:43.967Z",
+   "data": {
+    "titel": "Feestpiet Diago",
+    "onder": null,
+    "genres": [],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kind 0 t/m 12 jaar € 12,50 Normaal € 12,50",
+    "rijen": [
+     {
+      "datum": "zo. 29-11-2026 | 14:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12344&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=9e534b78c3deef7cc856b407e22d168fb36f442c044ead42d0fe34c488cb6128"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/gewoon-zoals-je-bent-2/": {
+   "opgehaaldOp": "2026-10-08T03:46:27.406Z",
+   "data": {
+    "titel": "Gewoon zoals je bent (2+)",
+    "onder": null,
+    "genres": [
+     "schaffelbende",
+     "familie"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Volwassenen € 8,50 Kind 0 t/m 12 jaar € 0,00",
+    "rijen": [
+     {
+      "datum": "di. 23-02-2027 | 10:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12144&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=7745f22584a5ec2474b4268abc73bab4dab1fbc9f92269493de478fdeb6f35c8"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/girls-on-fire-3-try-out/": {
+   "opgehaaldOp": "2026-10-08T03:45:18.368Z",
+   "data": {
+    "titel": "Girls on Fire 3 (Try Out)",
+    "onder": null,
+    "genres": [
+     "show"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 36,00",
+    "rijen": [
+     {
+      "datum": "za. 24-10-2026 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12111&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=b8167f7e1ecc15dab43b874fc2001e34202fd52c4de6ee472f791978ee87e69d"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/guido-weijers/": {
+   "opgehaaldOp": "2026-10-08T03:45:23.360Z",
+   "data": {
+    "titel": "Guido Weijers",
+    "onder": "Oudejaarsconference 2026",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 34,50",
+    "rijen": [
+     {
+      "datum": "wo. 18-11-2026 | 20:00",
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/harmonie-en-crescendo/": {
+   "opgehaaldOp": "2026-10-08T03:45:55.355Z",
+   "data": {
+    "titel": "Harmonie en Crescendo",
+    "onder": null,
+    "genres": [
+     "vanbarneveldsebodem",
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 19,95",
+    "rijen": [
+     {
+      "datum": "vr. 30-10-2026 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12119&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=94a8b15d3fa319d0967212222640a06c35fe8db1b45866197893ab455490b4bf"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/huisgenoten/": {
+   "opgehaaldOp": "2026-10-08T03:46:45.321Z",
+   "data": {
+    "titel": "Huisgenoten",
+    "onder": "De nieuwe romantische comedy",
+    "genres": [
+     "comedy"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 36,00",
+    "rijen": [
+     {
+      "datum": "za. 10-04-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12101&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=7d88dfcab3dec84dad9b14b1ae2820ccdd0364bd8117f7322e6f7b55f2cc4a9f"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/huub-stapel/": {
+   "opgehaaldOp": "2026-10-08T03:44:59.380Z",
+   "data": {
+    "titel": "Huub Stapel",
+    "onder": "Mannen komen van Mars, vrouwen van Venus",
+    "genres": [
+     "show"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 35,00",
+    "rijen": [
+     {
+      "datum": "do. 15-10-2026 | 20:00 - 22:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12096&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=6308d8c8c99ef83ef4f345250b6cae1e10091eb86d3816945879bdcd72cf3196"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/iris-rulkens/": {
+   "opgehaaldOp": "2026-10-08T03:45:46.365Z",
+   "data": {
+    "titel": "Iris Rulkens",
+    "onder": "Van Harte",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 29,50",
+    "rijen": [
+     {
+      "datum": "do. 27-05-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12077&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=da346bfc08b978e9b6eb67b2e8618521797f0576769091d9bf4684f21992dc0d"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/jan-beuving/": {
+   "opgehaaldOp": "2026-10-08T03:46:26.399Z",
+   "data": {
+    "titel": "Jan Beuving",
+    "onder": "Dekpunt",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kleine Zaal-kaart € 8,50 Normaal € 26,50",
+    "rijen": [
+     {
+      "datum": "do. 28-01-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12174&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=ed18a10713b8af0f8d51e4aa63eb8f1be0c9bbc52d8132f52765807668141e4a"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/jandino/": {
+   "opgehaaldOp": "2026-10-08T03:45:34.370Z",
+   "data": {
+    "titel": "Jandino",
+    "onder": "De Grote Jubileumshow",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 32,50",
+    "rijen": [
+     {
+      "datum": "do. 25-02-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12141&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=6dec95dd2ea1df927d57d2efc4b1273653181347cfdb0c47cf43ee141fffb0d7"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/janne-schra-de-vogels-6/": {
+   "opgehaaldOp": "2026-10-08T03:46:24.278Z",
+   "data": {
+    "titel": "Janne Schra & De Vogels (6+)",
+    "onder": "Kleuren moeten ook slapen",
+    "genres": [
+     "familie",
+     "schaffelbende"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kind 0 t/m 12 jaar € 0,00 Volwassenen € 8,50",
+    "rijen": [
+     {
+      "datum": "za. 01-05-2027 | 14:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12095&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=283e5d23664108bbae69aafcdb6506489d858885de534541ddd7abe435cb28b0"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/janneke-wittekoek/": {
+   "opgehaaldOp": "2026-10-08T03:45:01.353Z",
+   "data": {
+    "titel": "Janneke Wittekoek",
+    "onder": "De Vrouwenhart Show",
+    "genres": [
+     "special"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 29,00",
+    "rijen": [
+     {
+      "datum": "di. 03-11-2026 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12121&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=fc688bcb09c8727bc2ab861c7811456b58bc0248fb42cee77673614a113d5e76"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/johnny-de-mol/": {
+   "opgehaaldOp": "2026-10-08T03:46:38.373Z",
+   "data": {
+    "titel": "Johnny de Mol",
+    "onder": "Goed dat jij bestaat!",
+    "genres": [
+     "show"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 39,50",
+    "rijen": [
+     {
+      "datum": "vr. 05-02-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12172&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=96bbcf516afcf50458b893e82477b3f34fcff71375ad8c61488384111f102f79"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/joosen-en-de-jager/": {
+   "opgehaaldOp": "2026-10-08T03:46:18.407Z",
+   "data": {
+    "titel": "Joosen en de Jager",
+    "onder": "Niks aan het handje",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 22,50 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "vr. 05-03-2027 | 20:15",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12140&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=08e9eb521cea2b043ea498bb925927fdcf8eefa6a39f80d6b88d2b0cc5fba774"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/juf-roos-gaat-op-vakantie-2/": {
+   "opgehaaldOp": "2026-10-08T03:45:06.489Z",
+   "data": {
+    "titel": "Juf Roos gaat op vakantie (2+)",
+    "onder": null,
+    "genres": [
+     "familie"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 23,50",
+    "rijen": [
+     {
+      "datum": "zo. 09-05-2027 | 14:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12087&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=41e3152c3e796cf184480165b1aa82221ec76473b3ab9d69c753d9a35adcf777"
+     },
+     {
+      "datum": "zo. 09-05-2027 | 16:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12089&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=8cb3fe495f0a13d9d9a7cba033f16b3aeb02de5144791aea441c3965db32c5f5"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/juliet/": {
+   "opgehaaldOp": "2026-10-08T03:45:28.346Z",
+   "data": {
+    "titel": "Juliet",
+    "onder": "Ik beloof je eeuwige twijfel",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kleine Zaal-kaart € 0,00 Normaal € 22,50",
+    "rijen": [
+     {
+      "datum": "vr. 16-10-2026 | 20:15 - 21:45",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12105&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=5a11d1064895126b6bca1cfee24a371301118d242c92dabb0a631bb896e69ea4"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/klaas-van-der-eerden/": {
+   "opgehaaldOp": "2026-10-08T03:45:13.353Z",
+   "data": {
+    "titel": "Klaas van der Eerden",
+    "onder": "Imperfect (Try Out)",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 28,50",
+    "rijen": [
+     {
+      "datum": "do. 25-03-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12120&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=9a7a03b01b99a93794de021fa0a73990af3d38800df5b02359edb3a1e19063e3"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/leonard-cohen-tribute-band/": {
+   "opgehaaldOp": "2026-10-08T03:46:16.424Z",
+   "data": {
+    "titel": "Leonard Cohen Tribute Band",
+    "onder": "Tonight will be fine",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 29,50 Kleine Zaal-kaart € 8,50",
+    "rijen": [
+     {
+      "datum": "za. 20-02-2027 | 20:15",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12153&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=a7802e9122c20a4c4aba3ae064064c62c723d16833787be6dcf0bc15d3f58cce"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/literair-cafe-barneveld/": {
+   "opgehaaldOp": "2026-10-08T03:46:45.966Z",
+   "data": {
+    "titel": "Literair Café Barneveld",
+    "onder": "m.m.v. Jan Post en Nico Knibbe over recht, gerechtigheid & geloof",
+    "genres": [
+     "tegast"
+    ],
+    "zaal": "Foyer",
+    "prijs": "Normaal € 10,00",
+    "rijen": [
+     {
+      "datum": "wo. 14-10-2026 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12347&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=92f8f5c2b53efd3c04e18ee2498bb6f3a45ced979a6d9cb10864d14cd9ed5cd8"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/maarten-van-rossem/": {
+   "opgehaaldOp": "2026-10-08T03:46:41.422Z",
+   "data": {
+    "titel": "Maarten van Rossem",
+    "onder": "Theaterlezing",
+    "genres": [
+     "special"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 29,00",
+    "rijen": [
+     {
+      "datum": "vr. 19-03-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12130&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=bce740cb0fa0baad97c55582999a3c04d4ebd113e0563c89e708c21ac87d0dd6"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/maartje-en-kine/": {
+   "opgehaaldOp": "2026-10-08T03:46:17.415Z",
+   "data": {
+    "titel": "Maartje en Kine",
+    "onder": "De Bingo Show",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 25,00 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "do. 08-04-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12106&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=9adb8121fb815140b17f906eea1ea258bfaca03ecb27c3c86ac7b6cef805b73f"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/marlijn-weerdenburg/": {
+   "opgehaaldOp": "2026-10-08T03:46:23.376Z",
+   "data": {
+    "titel": "Marlijn Weerdenburg",
+    "onder": "Geworteld",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 25,00 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "vr. 15-01-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12180&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=23f1fcf6b73f45ac8cfb15917704faeaa28c2fae6a746190904b2b30872de242"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/martijn-koning/": {
+   "opgehaaldOp": "2026-10-08T03:46:08.418Z",
+   "data": {
+    "titel": "Martijn Koning",
+    "onder": "Overprikkeld",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 23,00",
+    "rijen": [
+     {
+      "datum": "za. 23-01-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12176&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=d4e58616e56cf530bc988bfc3395cf1dd9073fcdd16dbd8819ad8002f915ef61"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/meester-mark/": {
+   "opgehaaldOp": "2026-10-08T03:44:57.559Z",
+   "data": {
+    "titel": "Meester Mark",
+    "onder": "Later word ik 7 (Try Out)",
+    "genres": [
+     "special"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kleine Zaal-kaart € 0,00 Normaal € 23,50",
+    "rijen": [
+     {
+      "datum": "za. 10-10-2026 | 20:15 - 21:45",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12088&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=113e5662d72ad725a67f22450802bb096be2700c92b9da6cad2ded7eaea5ccd1"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/micheline-van-hautem-erwin-van-ligten/": {
+   "opgehaaldOp": "2026-10-08T03:45:59.404Z",
+   "data": {
+    "titel": "Micheline van Hautem & Erwin van Ligten",
+    "onder": "Guide Micheline - Ma Douce France",
+    "genres": [
+     "dinsdagmiddagmatinee",
+     "muziek"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 8,50",
+    "rijen": [
+     {
+      "datum": "di. 23-02-2027 | 14:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12147&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=88a08d227070caa2c65181ceea8e711afb1462f0eec77cffb90a03a321116d73"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/musicalgroep-rivka/": {
+   "opgehaaldOp": "2026-10-08T03:45:22.427Z",
+   "data": {
+    "titel": "Musicalgroep Rivka",
+    "onder": "Kroongetuigen",
+    "genres": [],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Voorverkoop € 16,00 Normaal € 18,50 Genodigden € 0,00",
+    "rijen": [
+     {
+      "datum": "vr. 09-10-2026 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12032&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=4f192bbaa4b4a1a26fead99be0ca46a1cdb2ed86f42611d5790719b2ae5b1169"
+     },
+     {
+      "datum": "za. 10-10-2026 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12033&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=bcaa6508e94cd5e2b205cea61be7c690c4ea5e4573351b0ff2d892e2199e5b7c"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/nasrdin-dchar/": {
+   "opgehaaldOp": "2026-10-08T03:45:37.347Z",
+   "data": {
+    "titel": "Nasrdin Dchar",
+    "onder": "Wat als...",
+    "genres": [
+     "toneel"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 28,00",
+    "rijen": [
+     {
+      "datum": "za. 08-05-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12086&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=5470cd03c1a354bcea3c5ad43ff210d07fd64fdfa5325504f623a66b32b38c51"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/nathalie-baartman/": {
+   "opgehaaldOp": "2026-10-08T03:45:31.380Z",
+   "data": {
+    "titel": "Nathalie Baartman",
+    "onder": "Deer",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kleine Zaal-kaart € 0,00 Normaal € 22,50",
+    "rijen": [
+     {
+      "datum": "vr. 06-11-2026 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12125&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=704e339d2cdb8b887eef8ae0ea0705f508c94099264b92602c6316ccfba62451"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/nick-schilder/": {
+   "opgehaaldOp": "2026-10-08T03:46:04.362Z",
+   "data": {
+    "titel": "Nick Schilder",
+    "onder": "The Singer Songwriter Show",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 38,50",
+    "rijen": [
+     {
+      "datum": "vr. 20-11-2026 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12150&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=4dfe4d7fcaf039359f56a0b3cee59c4ca999ce24642d3a99cc6e920e0b04f494"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/niels-geusebroek/": {
+   "opgehaaldOp": "2026-10-08T03:46:03.411Z",
+   "data": {
+    "titel": "Niels Geusebroek",
+    "onder": "Because of You",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kleine Zaal-kaart € 0,00 Normaal € 24,50",
+    "rijen": [
+     {
+      "datum": "do. 25-02-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12142&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=ecfe385ba916e2e0030957b11b149bba88b5dfd5845e3cfdffb982a0f1c3a799"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/nieuwjaarsconcert-harmonie/": {
+   "opgehaaldOp": "2026-10-08T03:45:44.384Z",
+   "data": {
+    "titel": "Nieuwjaarsconcert Harmonie",
+    "onder": null,
+    "genres": [
+     "vanbarneveldsebodem",
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 19,95",
+    "rijen": [
+     {
+      "datum": "za. 16-01-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12182&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=2aee27f780c30ef42953b12d3558c7c59ab2ebc5cf66fec383b7984e48cb4f1f"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/nijntje-op-de-fiets-2/": {
+   "opgehaaldOp": "2026-10-08T03:46:33.463Z",
+   "data": {
+    "titel": "Nijntje op de fiets (2+)",
+    "onder": null,
+    "genres": [],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kind 0 t/m 12 jaar € 0,00 Volwassenen € 8,50",
+    "rijen": [
+     {
+      "datum": "ma. 28-12-2026 | 10:00",
+      "knop": "Uitverkocht",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12192&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=78549277ed0f5d6f0d6a79b97481be93bc6605490e9b273270a5c2d86980ec59"
+     },
+     {
+      "datum": "ma. 28-12-2026 | 11:30",
+      "knop": "Uitverkocht",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12193&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=c9d3b44e1732cdfbdc98bf2a301a5f7a95e12c4d06034390f0044764158732b0"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/ocobar/": {
+   "opgehaaldOp": "2026-10-08T03:45:29.373Z",
+   "data": {
+    "titel": "Ocobar",
+    "onder": "Best of Clapton",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 28,00",
+    "rijen": [
+     {
+      "datum": "vr. 06-11-2026 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12123&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=71fd00f228d9b342e68ba0bcd29c81cb9650d0548349217516d7d615b10c33b8"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/ondernemers-event-gemeente-barneveld-2026/": {
+   "opgehaaldOp": "2026-10-08T03:46:51.323Z",
+   "data": {
+    "titel": "Ondernemers Event gemeente Barneveld 2026",
+    "onder": null,
+    "genres": [
+     "tegast"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Entree € 53,95 10-persoons statafel € 953,75 8-persoons statafel € 763,00 6-persoons statafel € 599,50",
+    "rijen": [
+     {
+      "datum": "do. 19-11-2026 | 19:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12196&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=330489f8fe4c6b8150d7711f833a9e904f0c3f07f61b662d6b986d5aaa9e464a"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/opvoeden-hoe-dan/": {
+   "opgehaaldOp": "2026-10-08T03:45:45.378Z",
+   "data": {
+    "titel": "Opvoeden, hoe dan...!?",
+    "onder": "Ilse van den Heuvel & Marieke van Ginneken",
+    "genres": [
+     "special"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 29,50",
+    "rijen": [
+     {
+      "datum": "do. 28-01-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12177&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=d382ff2e4ee54d8ba8c9bfe7c2abaa77006af7b0bd89e94cda85f421a5e29268"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/peter-heerschop/": {
+   "opgehaaldOp": "2026-10-08T03:45:50.364Z",
+   "data": {
+    "titel": "Peter Heerschop",
+    "onder": "Lieve Marianne",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 29,50",
+    "rijen": [
+     {
+      "datum": "vr. 21-05-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12081&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=53a820b38fa6c6e0cdd56be977f15d2c0b44b1d94ad252038334f78333f8e16c"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/peter-pannekoek/": {
+   "opgehaaldOp": "2026-10-08T03:46:49.252Z",
+   "data": {
+    "titel": "Peter Pannekoek",
+    "onder": "Demonen (Try-Out)",
+    "genres": [],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 29,50",
+    "rijen": [
+     {
+      "datum": "do. 15-04-2027 | 20:00",
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/phil-good/": {
+   "opgehaaldOp": "2026-10-08T03:45:51.438Z",
+   "data": {
+    "titel": "Phil Good",
+    "onder": "Musical Meets Movie",
+    "genres": [
+     "muziek",
+     "vanbarneveldsebodem"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 19,50",
+    "rijen": [
+     {
+      "datum": "za. 07-11-2026 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12128&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=7d6462f9dc594a9e826af5fea3eebd29e7b16d83b32e6e2895ac14677cba4a8e"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/pieter-jouke/": {
+   "opgehaaldOp": "2026-10-08T03:46:21.419Z",
+   "data": {
+    "titel": "Pieter Jouke",
+    "onder": "Uit Stilstand",
+    "genres": [],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 23,50 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "za. 09-01-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12187&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=9f4d89096f4ac433c60d122c1fbce504df1b5eeafe0354dc406d61a0bbf9b541"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/pink-floyd-project/": {
+   "opgehaaldOp": "2026-10-08T03:45:10.438Z",
+   "data": {
+    "titel": "Pink Floyd Project",
+    "onder": "The Wall",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 42,50",
+    "rijen": [
+     {
+      "datum": "za. 21-11-2026 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12154&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=8aeada00c5f924b3476ecf0e935eae876c860a1ee8cfeb7c9f2b3c18de2cfce5"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/pip-utton/": {
+   "opgehaaldOp": "2026-10-08T03:46:40.117Z",
+   "data": {
+    "titel": "Pip Utton",
+    "onder": "Trump",
+    "genres": [
+     "toneel"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 21,00 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "za. 13-03-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12127&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=e0cecf467ed55ac27d5446619050a706839c8a5e372b221860e4e40ccc6a0876"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/queen-must-go-on/": {
+   "opgehaaldOp": "2026-10-08T03:46:15.409Z",
+   "data": {
+    "titel": "Queen Must Go On",
+    "onder": "All About the Hits",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 38,50",
+    "rijen": [
+     {
+      "datum": "wo. 23-12-2026 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12178&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=d64fde761d901560c772747f91da446ea23c660b39934a6d6874405ee9b75da1"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/quinn-en-aaron/": {
+   "opgehaaldOp": "2026-10-08T03:45:24.335Z",
+   "data": {
+    "titel": "Quinn en Aaron",
+    "onder": "Shorts De Theatershow",
+    "genres": [
+     "familie"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 22,50",
+    "rijen": [
+     {
+      "datum": "di. 23-02-2027 | 18:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12148&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=16068e416d98177b140fbb6bab6929d9ec1b4e8f47a78d8be56f963b066f33de"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/rabokidsclub-bios-3/": {
+   "opgehaaldOp": "2026-10-08T03:44:55.228Z",
+   "data": {
+    "titel": "Rabokidsclub - bios",
+    "onder": "Dikkertje Dap",
+    "genres": [
+     "film"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kind 0 t/m 12 jaar € 7,50 Normaal € 7,50",
+    "rijen": [
+     {
+      "datum": "di. 20-10-2026 | 13:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12346&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=1dcd4d9b2c96084b2899d17e4361fe751337aa00c4cc12e0ea3c6d18666effb1"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/remy-evers/": {
+   "opgehaaldOp": "2026-10-08T03:45:19.386Z",
+   "data": {
+    "titel": "Remy Evers",
+    "onder": "Graag gedaan",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kleine Zaal-kaart € 0,00 Normaal € 22,50",
+    "rijen": [
+     {
+      "datum": "vr. 30-04-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12097&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=5e08b0ccc6df8f778850f627d26251c79afdb4f78396616c94a597233f250402"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/richard-de-leth/": {
+   "opgehaaldOp": "2026-10-08T03:46:39.426Z",
+   "data": {
+    "titel": "Richard de Leth",
+    "onder": "Er is meer",
+    "genres": [
+     "special"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 30,50 Korting € 27,45",
+    "rijen": [
+     {
+      "datum": "vr. 04-12-2026 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12164&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=dcd17a98390548ad856774ffab34a8a310ab948cdbe986a4f54a15c78f03ad15"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/ricky-koole/": {
+   "opgehaaldOp": "2026-10-08T03:46:10.413Z",
+   "data": {
+    "titel": "Ricky Koole",
+    "onder": "Rare Leeftijd",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 25,00 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "vr. 04-12-2026 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12166&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=e4f75562145a5cba2ab36c8f582f457d9425eed3c7db7b128bd0f3d1036938ae"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/rob-scheepers/": {
+   "opgehaaldOp": "2026-10-08T03:46:19.442Z",
+   "data": {
+    "titel": "Rob Scheepers",
+    "onder": "Op z'n scherpst",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 29,50",
+    "rijen": [
+     {
+      "datum": "vr. 13-11-2026 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12137&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=60da7b88aa1328e70e8ae7f88f0a845ce2581a94e7bdcbe1a3322b98efd45069"
+     },
+     {
+      "datum": "za. 14-11-2026 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12139&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=170efa1bc28812137f4e89da239ac15136f0e285e7c02ea0a73def2a3fda4355"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/roel-jos-maalderink-verplaatst/": {
+   "opgehaaldOp": "2026-10-08T03:46:54.311Z",
+   "data": {
+    "titel": "Roel & Jos Maalderink - Verplaatst",
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/roel-jos-maalderink/": {
+   "opgehaaldOp": "2026-10-08T03:46:36.390Z",
+   "data": {
+    "titel": "Roel & Jos Maalderink",
+    "onder": "Verbroedering",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kleine Zaal-kaart € 0,00 Entree € 23,50",
+    "rijen": [
+     {
+      "datum": "vr. 22-01-2027 | 20:15 - 21:45",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12083&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=351eb6b0efb5783c368b3807d8de781875a5b929cf8660e1c8ef6ae6df8b2423"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/ronald-snijders/": {
+   "opgehaaldOp": "2026-10-08T03:46:09.371Z",
+   "data": {
+    "titel": "Ronald Snijders",
+    "onder": "Leven met humor",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 22,50 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "do. 01-04-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12110&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=daacaf8d310d00a933aa9dbe115e5450a3399cc012586efaa605ebdff2956ef4"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/rundfunk/": {
+   "opgehaaldOp": "2026-10-08T03:46:25.442Z",
+   "data": {
+    "titel": "Rundfunk",
+    "onder": "Wagyu (Try Out)",
+    "genres": [],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 29,50",
+    "rijen": [
+     {
+      "datum": "wo. 09-12-2026 | 20:00",
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/ruud-smulders/": {
+   "opgehaaldOp": "2026-10-08T03:46:06.359Z",
+   "data": {
+    "titel": "Ruud Smulders",
+    "onder": "RÜDSICHTSLOS",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 24,00 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "vr. 20-11-2026 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12152&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=f38dafdd08d8648ad8ef99e9ea3be1b6a650cda53460305247eecbf86adf97e9"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/sherlock-holmes/": {
+   "opgehaaldOp": "2026-10-08T03:46:29.480Z",
+   "data": {
+    "titel": "Sherlock Holmes",
+    "onder": null,
+    "genres": [],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 47,50",
+    "rijen": [
+     {
+      "datum": "do. 17-12-2026 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12062&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=e4175d3e2c835c480139e6ae76f3d4b5b8fc81b0ddcf558fb3e6c1e47f20121f"
+     },
+     {
+      "datum": "vr. 18-12-2026 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12063&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=a6e535cdc0e7be6079c26c38baa71f2983cf24a79d9df90ddd926914cdc173a9"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/slagerij-van-kampen/": {
+   "opgehaaldOp": "2026-10-08T03:45:56.088Z",
+   "data": {
+    "titel": "Slagerij van Kampen",
+    "onder": "Rhythm of Freedom",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 33,50",
+    "rijen": [
+     {
+      "datum": "za. 09-01-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12189&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=bc0b67dd8f4d1bdc02aaf23f568d103c458320d19d38a349e1ebea4bc13699b7"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/slapstick/": {
+   "opgehaaldOp": "2026-10-08T03:45:40.356Z",
+   "data": {
+    "titel": "Släpstick",
+    "onder": "Schërzo",
+    "genres": [
+     "show"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 30,50",
+    "rijen": [
+     {
+      "datum": "vr. 12-02-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12160&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=7debe6152d16860359b7ba807482d23872cd31298db400b3ea010e3d60a57434"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/someone-like-her/": {
+   "opgehaaldOp": "2026-10-08T03:45:32.351Z",
+   "data": {
+    "titel": "Someone Like Her",
+    "onder": "Tribute to Adele (Reprise)",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 39,50",
+    "rijen": [
+     {
+      "datum": "vr. 26-02-2027 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12143&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=34328a9b864fae77239812561c9f82f87cca73bf9c8c72834125cda062e31de2"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/stedsj-throwback/": {
+   "opgehaaldOp": "2026-10-08T03:46:53.346Z",
+   "data": {
+    "titel": "Stédsj throwback",
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/stef-bos/": {
+   "opgehaaldOp": "2026-10-08T03:45:43.365Z",
+   "data": {
+    "titel": "Stef Bos",
+    "onder": "Bloemlezing 2026",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 35,00",
+    "rijen": [
+     {
+      "datum": "vr. 16-10-2026 | 20:00 - 21:50",
+      "knop": "Wachtlijst",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12103&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=0422baac1cc63a05837d9a110383a3f7f9a93468eb184027b92c7929fc26f1aa"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/tangarine/": {
+   "opgehaaldOp": "2026-10-08T03:46:31.373Z",
+   "data": {
+    "titel": "Tangarine",
+    "onder": "Running in the Family ll",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 31,50",
+    "rijen": [
+     {
+      "datum": "do. 12-11-2026 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12132&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=94e1d470087c40186d792980d552c51493358563f73d57af791224375cebd42c"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/tbs-met-job-knoester/": {
+   "opgehaaldOp": "2026-10-08T03:46:35.423Z",
+   "data": {
+    "titel": "TBS met Job Knoester",
+    "onder": null,
+    "genres": [
+     "special"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 28,50",
+    "rijen": [
+     {
+      "datum": "do. 01-04-2027 | 20:00 - 21:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12037&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=45afd67ec2a6b4ce92e6da2c0b3c76a3056f59057de0c212b74ee5923c6c4996"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/the-dutch-eagles/": {
+   "opgehaaldOp": "2026-10-08T03:45:35.349Z",
+   "data": {
+    "titel": "The Dutch Eagles",
+    "onder": "Life in the Fast Lane",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 36,50",
+    "rijen": [
+     {
+      "datum": "do. 18-02-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12158&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=77f11f809a9e5551f0e31227503e3a9b474f0c6ebedbee01e80c8e5159248e8b"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/the-dutch-tenors/": {
+   "opgehaaldOp": "2026-10-08T03:45:54.432Z",
+   "data": {
+    "titel": "The Dutch Tenors",
+    "onder": "Rise Up",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 35,50",
+    "rijen": [
+     {
+      "datum": "do. 11-02-2027 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12167&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=003f96de99c5cc1cbaff529407f707c7e684a39f698dcdec9c16986cd57f46db"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/the-early-beatles/": {
+   "opgehaaldOp": "2026-10-08T03:45:52.381Z",
+   "data": {
+    "titel": "The Early Beatles",
+    "onder": null,
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 25,00 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "do. 15-10-2026 | 20:15 - 22:05",
+      "knop": "Uitverkocht",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12098&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=1c05ccb85976f70d2876aedebfd59d08abd9515b4622b5b33801e3faa8d14b6c"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/the-johnny-cash-experience/": {
+   "opgehaaldOp": "2026-10-08T03:45:30.365Z",
+   "data": {
+    "titel": "The Johnny Cash Experience",
+    "onder": "The Story of The Man in Black",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 29,50",
+    "rijen": [
+     {
+      "datum": "vr. 16-04-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12100&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=38a12473231ba978fdbce94a74032889e61f0af8b50996616f766bcd29742770"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/the-simon-garfunkel-story/": {
+   "opgehaaldOp": "2026-10-08T03:45:25.392Z",
+   "data": {
+    "titel": "The Simon & Garfunkel Story",
+    "onder": null,
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 35,00",
+    "rijen": [
+     {
+      "datum": "vr. 02-04-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12112&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=bd4ce53ddc828955f6c1fcd189e456470f3e1bb58465c8122960b11b055b1926"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/the-story-of-george-michael/": {
+   "opgehaaldOp": "2026-10-08T03:46:34.109Z",
+   "data": {
+    "titel": "The Story of George Michael",
+    "onder": "Charly Luske",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 37,50",
+    "rijen": [
+     {
+      "datum": "do. 07-01-2027 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12194&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=59624c87511511c5260b82167687d6f3feba99a5e9c04e24fb7a60c047810ad7"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/this-is-tina-a-tribute-to-tina-turner/": {
+   "opgehaaldOp": "2026-10-08T03:46:12.367Z",
+   "data": {
+    "titel": "This is TINA! A Tribute to Tina Turner",
+    "onder": "Simply the Best",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 33,50",
+    "rijen": [
+     {
+      "datum": "vr. 19-02-2027 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12149&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=d7c2778011d998a699e05e83c6e48433a513e5d81cd1c8214294f2980f0a3d52"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/tineke-schouten-2/": {
+   "opgehaaldOp": "2026-10-08T03:46:47.502Z",
+   "data": {
+    "titel": "Tineke Schouten",
+    "onder": "Femme Vitaal (Reprise)",
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/tis-hier-geen-hotel-3-reprise/": {
+   "opgehaaldOp": "2026-10-08T03:45:11.428Z",
+   "data": {
+    "titel": "Tis hier geen hotel 3 (Reprise)",
+    "onder": "Hanneke Drenth en Dianne Liesker",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 29,00",
+    "rijen": [
+     {
+      "datum": "do. 18-03-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12129&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=37ad4f77aa17f15b5052419d1638b1437553cae502a04653583b6a6a078b64b8"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/toneelgroep-wik/": {
+   "opgehaaldOp": "2026-10-08T03:45:26.434Z",
+   "data": {
+    "titel": "Toneelgroep WIK",
+    "onder": null,
+    "genres": [],
+    "zaal": "Kleine Zaal",
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": "vr. 09-04-2027 | 20:15",
+      "knop": "Verkoop start later dit seizoen",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12102&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=a98a3c5ec23bf2ebf09ab247531319b5c83b1f1be77dc97ec127d42aedc09451"
+     },
+     {
+      "datum": "za. 10-04-2027 | 20:15",
+      "knop": "Verkoop start later dit seizoen",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12104&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=8860d7bbd63646ea7d57ae3dfc17a337a31686bcc708794131df1e97c5d36f4e"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/top-2000-live/": {
+   "opgehaaldOp": "2026-10-08T03:45:48.085Z",
+   "data": {
+    "titel": "Top 2000 Live",
+    "onder": "Listen to the Music",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 35,00",
+    "rijen": [
+     {
+      "datum": "do. 14-01-2027 | 20:00",
+      "knop": "Uitverkocht",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12190&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=983e7cdcd558ff923eaf056605e1b4881d77718a6e9ea77ca1873d760da06550"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/treasure/": {
+   "opgehaaldOp": "2026-10-08T03:46:37.109Z",
+   "data": {
+    "titel": "Treasure",
+    "onder": "A Tribute to Bruno Mars",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 45,50",
+    "rijen": [
+     {
+      "datum": "vr. 27-11-2026 | 20:00",
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/two-wieners/": {
+   "opgehaaldOp": "2026-10-08T03:46:11.408Z",
+   "data": {
+    "titel": "Two Wieners",
+    "onder": "The Everly Brothers Unplugged",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Normaal € 24,00 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "vr. 19-03-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12122&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=2c0d60e65958a649547b4999266039122abc1455938b513af37cdbbe803c1dbf"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/valentina-toth/": {
+   "opgehaaldOp": "2026-10-08T03:44:56.384Z",
+   "data": {
+    "titel": "Valentina Tóth",
+    "onder": "Revue Revanche",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 26,50",
+    "rijen": [
+     {
+      "datum": "vr. 14-05-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12082&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=a2c4750822bb71abfae73e5fe75ef16f66a916bcbde5c50e2e97554b5c711421"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/verrassingsvoorstelling-familie-2/": {
+   "opgehaaldOp": "2026-10-08T03:45:53.436Z",
+   "data": {
+    "titel": "Verrassingsvoorstelling Familie (2+)",
+    "onder": "Nationaal Theaterweekend",
+    "genres": [
+     "familie"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 10,00",
+    "rijen": [
+     {
+      "datum": "vr. 29-01-2027 | 16:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12067&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=087a36e2ab6573616aedf7076a3ef450685bf71890dece1074e8eac2acc07d8d"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/verrassingsvoorstelling-muziek/": {
+   "opgehaaldOp": "2026-10-08T03:45:16.330Z",
+   "data": {
+    "titel": "Verrassingsvoorstelling Muziek",
+    "onder": "Nationaal Theaterweekend",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Regulier € 13,50",
+    "rijen": [
+     {
+      "datum": "za. 30-01-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12071&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=ca7a39b6a4896b0ca870aede69b5e02cdfebedd474b10695fab47a192f8356e5"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/verrassingsvoorstelling-vrijdag-cabaret/": {
+   "opgehaaldOp": "2026-10-08T03:45:33.341Z",
+   "data": {
+    "titel": "Verrassingsvoorstelling Vrijdag Cabaret",
+    "onder": "Nationaal Theaterweekend",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kleine Zaal-kaart € 0,00 Regulier € 13,50",
+    "rijen": [
+     {
+      "datum": "vr. 29-01-2027 | 20:15",
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/verrassingsvoorstelling-zaterdag-show/": {
+   "opgehaaldOp": "2026-10-08T03:46:05.368Z",
+   "data": {
+    "titel": "Verrassingsvoorstelling Zaterdag Show",
+    "onder": "Nationaal Theaterweekend",
+    "genres": [
+     "show"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Regulier € 13,50 Kleine Zaal-kaart € 0,00",
+    "rijen": [
+     {
+      "datum": "za. 30-01-2027 | 20:15",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12069&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=03c5a02974197bba6f31006edd5668fbcac58e89342246b8de2ac4c58c706275"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/vlad-en-veronika/": {
+   "opgehaaldOp": "2026-10-08T03:46:22.104Z",
+   "data": {
+    "titel": "Vlad en Veronika",
+    "onder": "Revelation",
+    "genres": [
+     "dans"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Dansscholen € 14,75 Normaal € 29,50",
+    "rijen": [
+     {
+      "datum": "do. 29-10-2026 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12117&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=2b2f65c91c6f8368e9e48175b5e24df383e24aaba8e65fffadeb91e71167cfa7"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/wildebras/": {
+   "opgehaaldOp": "2026-10-08T03:46:13.434Z",
+   "data": {
+    "titel": "Wildebras",
+    "onder": "Overleven in De Jungle (6+)",
+    "genres": [
+     "familie"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 22,50",
+    "rijen": [
+     {
+      "datum": "di. 20-10-2026 | 19:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12107&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=b58fb840719fdb6889708822851071945df55aa56575450d52c489bb90946d9a"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/zachtjes-gaan-de-paardenvoetjes-2/": {
+   "opgehaaldOp": "2026-10-08T03:46:28.455Z",
+   "data": {
+    "titel": "Zachtjes gaan de paardenvoetjes (2+)",
+    "onder": null,
+    "genres": [
+     "schaffelbende",
+     "familie"
+    ],
+    "zaal": "Kleine Zaal",
+    "prijs": "Kind 0 t/m 12 jaar € 0,00 Volwassenen € 8,50",
+    "rijen": [
+     {
+      "datum": "za. 21-11-2026 | 10:00",
+      "knop": "Uitverkocht",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12157&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=60b32521bfa8c73d8baf747ae3c40955cbc8386940154f7d3c7d2dbaac3f7c53"
+     },
+     {
+      "datum": "za. 21-11-2026 | 11:30",
+      "knop": "Uitverkocht",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12244&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=3094863073454a6f13f8e169038761edfdadaaa1905f7ed962380401d280f5d4"
+     }
+    ]
+   }
+  }
+ }
+}

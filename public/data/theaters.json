@@ -447,6 +447,58 @@
       "naam": "Munttheater",
       "stad": "Weert",
       "podiumpas": false
+    },
+    "orpheus": {
+      "naam": "Theater Orpheus",
+      "stad": "Apeldoorn",
+      "podiumpas": true
+    },
+    "agnietenhof": {
+      "naam": "Schouwburg Agnietenhof",
+      "stad": "Tiel",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "0344 673 500",
+        "email": "kassa@cultuurbedrijftiel.nl",
+        "toelichting": "Alleen via de kassa: telefonisch, per mail of aan de balie, vanaf 30 dagen voor de voorstelling; tickets tot €50."
+      },
+      "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
+      "meldingLink": "https://www.agnietenhof.nl/agenda"
+    },
+    "oostpool": {
+      "naam": "Huis Oostpool",
+      "stad": "Arnhem",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "online": true,
+        "toelichting": "Online, vanaf 30 dagen voor de voorstelling, nadat je je pas via het formulier op de site hebt geregistreerd (dat duurt een paar werkdagen). Anders aan de deur, als het niet uitverkocht is."
+      }
+    },
+    "tar": {
+      "naam": "TAR",
+      "stad": "Arnhem",
+      "podiumpas": true,
+      "melding": "Podiumpas-voorwaarden nog niet bekend — vraag het theater."
+    },
+    "schaffelaar": {
+      "naam": "Schaffelaartheater",
+      "stad": "Barneveld",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "email": "kassa@schaffelaartheater.nl",
+        "toelichting": "Uitsluitend per mail, vanaf 30 dagen voor de voorstelling; 1 ticket per pas, af te halen aan de avondkassa (een uur voor aanvang open). Niet bij uitverkochte voorstellingen."
+      }
+    },
+    "musis": {
+      "naam": "Musis Arnhem",
+      "stad": "Arnhem",
+      "podiumpas": true
+    },
+    "stadstheater": {
+      "naam": "Stadstheater Arnhem",
+      "stad": "Arnhem",
+      "podiumpas": true,
+      "melding": "Gesloten wegens vernieuwing (heropening gepland in 2028). De voorstellingen staan bij Musis Arnhem."
     }
   }
 }
