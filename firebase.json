@@ -29,6 +29,7 @@
         "node_modules",
         ".git",
         "test",
+        "scripts",
         "*.local",
         "firebase-debug.log",
         "firebase-debug.*.log"

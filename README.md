@@ -163,7 +163,10 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
     per dag, hooguit 10 treffers, alleen gebruikersnaam en naam terug) en
     `naamIndexProfiel`/`naamIndexVoorkeur` (houden de zoekindex
     `naamIndex/{hash van de naam}` bij na een wijziging van het profiel of
-    van `naamvoorkeur`; clients kunnen de index niet lezen). Geheimen staan
+    van `naamvoorkeur`; clients kunnen de index niet lezen). Bestaande
+    profielen zijn eenmalig in de index gezet met
+    `functions/scripts/naamindex-vullen.js` (Admin SDK; zonder `--echt`
+    alleen een telling). Geheimen staan
     in Secret Manager, nooit in de repo.
 
 ## Lokaal ontwikkelen
@@ -222,7 +225,7 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v42`
+Service worker: `podiumagenda-v43`
 <!-- AUTO:sw:end -->
 
 ### Theaters

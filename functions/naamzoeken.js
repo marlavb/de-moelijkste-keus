@@ -118,6 +118,33 @@ export async function zoekOpNaam({ db, uid, invoer, nu = Date.now() }) {
   return { status: 'ok', treffers: treffers.slice(0, MAX_TREFFERS) };
 }
 
+/**
+ * Eenmalig (okt 2026): alle bestaande profielen in de index, los van het
+ * openen van de app. Wie nog geen voorkeur heeft, krijgt { vindbaar: true }
+ * (standaard aan); een bestaande voorkeur blijft staan (ook "uit"). Daarna
+ * indexeerNaam per profiel. Idempotent. Met `proef` wordt niets geschreven.
+ * Geeft tellingen terug, nooit namen.
+ */
+export async function vulNaamIndex({ db, proef = false, nu = Date.now() }) {
+  const telling = { profielen: 0, voorkeurGezet: 0, gezet: 0, verwijderd: 0, ongewijzigd: 0, nietVindbaar: 0, geenVolledigeNaam: 0 };
+  const profielen = await db.collection('profielen').get();
+  for (const p of profielen.docs) {
+    telling.profielen++;
+    const uid = p.id;
+    const voorkeur = await db.doc(`naamvoorkeur/${uid}`).get();
+    if (!voorkeur.exists) {
+      telling.voorkeurGezet++;
+      if (!proef) await db.doc(`naamvoorkeur/${uid}`).set({ vindbaar: true, gewijzigdOp: Timestamp.fromMillis(nu) });
+    } else if (voorkeur.data().vindbaar === false) {
+      telling.nietVindbaar++;
+    }
+    if (!naamSleutel(p.data().naam)) telling.geenVolledigeNaam++;
+    if (proef) continue;
+    telling[await indexeerNaam({ db, uid, nu })]++;
+  }
+  return telling;
+}
+
 /** zoekTellers ouder dan TELLER_DAGEN weghalen (hooguit 50 per keer). */
 export async function ruimZoekTellersOp({ db, nu = Date.now() }) {
   const grens = amsterdamDatum(nu - TELLER_DAGEN * DAG_MS);
