@@ -69,7 +69,11 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   en schrijft `public/data/shows.json`, `scrape-status.json` en
   `theaters.json`. Faalt een theater, dan valt het terug op de vorige data van
   dat theater; een netwerkfout (DNS, verbinding) krijgt eerst één herpoging
-  na een minuut. Theaters, steden, provincies en Podiumpas staan in
+  na een minuut. Is robots.txt onbereikbaar (5xx, time-out of netwerkfout,
+  ook na één herpoging), dan geldt volgens RFC 9309 "alles verboden": het
+  theater wordt die nacht overgeslagen, de vorige data blijft staan en de
+  nachtrun meldt "robots.txt niet bereikbaar (HTTP 500)". Een 404 betekent
+  "geen regels". Theaters, steden, provincies en Podiumpas staan in
   `src/lib/config.js` (met bron en datum); een theater dat ons weert staat daar
   op `gepauzeerd` en krijgt geen enkel verzoek. Gedeelde modules per platform:
   `peppered.js` (Peppered), `wpTheatre.js` (Theater for WordPress) en

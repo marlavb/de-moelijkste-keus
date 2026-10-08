@@ -116,8 +116,10 @@ export function evaluateOutcome({ theaterId, shows, error, previousShows, minDat
   const vorigAantal = uniekAantal(previous);
 
   if (error) {
+    // Time-out, blokkade of onbereikbare robots.txt: geen bug in de scraper,
+    // dus zonder "exception:"-voorvoegsel.
     const fout =
-      error instanceof ScrapeTimeoutError || error?.name === 'ScrapeBlockedError'
+      error instanceof ScrapeTimeoutError || error?.name === 'ScrapeBlockedError' || error?.name === 'RobotsOnbereikbaarError'
         ? summarizeError(error)
         : `exception: ${summarizeError(error)}`;
     if (vorigAantal > 0) return { status: 'terugval', shows: previous, fout, vorigAantal };
@@ -204,7 +206,8 @@ async function runWithDeadline({ theater, scraper, deps, budgetMs, log }) {
   } catch (error) {
     // Wat stond er op de pagina? (sanity check gefaald, time-out van een
     // request, …) Niet na de deadline: dan is de pagina al weg.
-    if (!signal.aborted && page) {
+    // (Bij een onbereikbare robots.txt is er nog niets geladen.)
+    if (!signal.aborted && page && error?.name !== 'RobotsOnbereikbaarError') {
       const diagnose = await paginaDiagnose(page, nav).catch(() => null);
       if (diagnose) log(diagnose);
     }

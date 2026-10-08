@@ -366,6 +366,48 @@ test('geblokkeerd: fout zonder "exception:"-voorvoegsel, en terugval', async () 
   assert.equal(status.theaters.a.fout, 'geblokkeerd (Cloudflare-challenge)');
 });
 
+test('robots.txt onbereikbaar (HTTP 500): theater overgeslagen, vorige data blijft, waarschuwing zonder "exception:"', async () => {
+  const { RobotsOnbereikbaarError } = await import('../src/lib/robots.js');
+  const paths = await setup({ previousShows: [show('a', '2026-10-05'), show('b', '2026-10-06')] });
+  let gescrapet = false;
+  const deps = {
+    ...fakeDeps(),
+    loadRobots: async (t) => {
+      if (t.id === 'a') throw new RobotsOnbereikbaarError('robots.txt niet bereikbaar (HTTP 500)');
+      return { robotsUrl: 'robots', crawlDelayMs: 0, isAllowed: () => true };
+    },
+  };
+  const logs = [];
+  const { written, status, annotations } = await run({
+    paths,
+    theaters: [theater('a'), theater('b')],
+    scrapers: {
+      a: async () => {
+        gescrapet = true;
+        return [];
+      },
+      b: async () => [show('b', '2026-10-07')],
+    },
+    deps,
+    logs,
+  });
+  assert.equal(gescrapet, false, 'geen enkele request naar de agenda');
+  assert.equal(status.theaters.a.status, 'terugval');
+  assert.equal(status.theaters.a.fout, 'robots.txt niet bereikbaar (HTTP 500)');
+  assert.deepEqual(written.filter((s) => s.theaterId === 'a').map((s) => s.datum), ['2026-10-05']);
+  assert.equal(status.theaters.b.status, 'ok');
+  assert.deepEqual(annotations.map((a) => a.title), ['Terugval a']);
+  assert.match(annotations[0].message, /robots\.txt niet bereikbaar \(HTTP 500\)/);
+  assert.equal(logs.some((l) => /DIAGNOSE/.test(l)), false, 'geen lege paginadiagnose');
+});
+
+test('robots.txt onbereikbaar door DNS (ENOTFOUND in de melding) → telt als netwerkfout voor de herpoging', async () => {
+  const { isNetwerkfout } = await import('../src/lib/scrapeRun.js');
+  const { RobotsOnbereikbaarError } = await import('../src/lib/robots.js');
+  assert.equal(isNetwerkfout(new RobotsOnbereikbaarError('robots.txt niet bereikbaar (fetch failed: ENOTFOUND)')), true);
+  assert.equal(isNetwerkfout(new RobotsOnbereikbaarError('robots.txt niet bereikbaar (HTTP 500)')), false);
+});
+
 test('dubbelingen: weggehaald vóór het wegschrijven, geteld in de status, warning bij meer dan een handvol', async () => {
   // b viel terug op vorige data die zelf al dubbel was; a levert 30 kopieën.
   const vorigB = [show('b', '2026-10-06'), show('b', '2026-10-06', { id: 'b-2026-10-06-2' })];
