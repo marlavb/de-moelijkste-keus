@@ -23,11 +23,14 @@ const PRODUCTIES = {
   serie: prod('serie', 'Serie: Kijk op theater', null, ['Serie']),
   tar: prod('tar', 'Residentie', 'TAR', ['Toneel']),
   toonkunst: prod('toonkunst', 'Arnhem, mijn stadje.', 'Arnhems Promenade Orkest', ['Orkestraal']),
+  icoon: prod('icoon', 'Eusebius | Icoon 2 | Faust', 'Geerten Liefting', ['Klassiek']),
+  latry: prod('latry', 'Eusebius | Icoon 4 | Sterorganist Olivier Latry', 'Olivier Latry', ['Klassiek']),
+  ijs: prod('ijs', 'Jaco Benckhuijsen & Adam Quartet', 'IJs', ['Klassiek']),
 };
 const ev = (id, slug, startsAt, soldOut = false) => ({ id, production: PRODUCTIES[slug], startsAt, soldOut });
 const EVENTS = [
   [ev(1, 'blauwdruk', '2026-12-11T19:00:00+01:00'), ev(2, 'blauwdruk', '2026-12-12T20:00:00+01:00'), ev(3, 'rekhalzen', '2026-11-05T20:15:00+01:00', true)],
-  [ev(4, '40up', '2026-12-11T20:00:00+01:00'), ev(5, 'kerk', '2027-03-26T19:30:00+01:00'), ev(6, 'serie', '2026-11-01T14:00:00+01:00'), ev(7, 'tar', '2026-11-02T20:00:00+01:00'), ev(8, 'toonkunst', '2027-01-10T15:00:00+01:00')],
+  [ev(4, '40up', '2026-12-11T20:00:00+01:00'), ev(5, 'kerk', '2027-03-26T19:30:00+01:00'), ev(6, 'serie', '2026-11-01T14:00:00+01:00'), ev(7, 'tar', '2026-11-02T20:00:00+01:00'), ev(8, 'toonkunst', '2027-01-10T15:00:00+01:00'), ev(9, 'icoon', '2027-02-01T20:00:00+01:00'), ev(10, 'latry', '2027-02-08T20:00:00+01:00'), ev(11, 'ijs', '2027-02-15T20:00:00+01:00')],
 ];
 const DETAIL = {
   blauwdruk: ['Musis, Parkzaal', 'https://tix.musisenstadstheater.nl/nl/tickets/1', ''],
@@ -36,6 +39,9 @@ const DETAIL = {
   kerk: ['Eusebiuskerk, Externe locatie', 'https://tix.musisenstadstheater.nl/nl/tickets/5', ''],
   tar: ['Theater a/d Rijn, Externe locatie', 'https://tix.musisenstadstheater.nl/nl/tickets/7', ''],
   toonkunst: ['Musis, Muzenzaal', 'https://tix.musisenstadstheater.nl/nl/tickets/8', ''],
+  icoon: ['Eusebiuskerk, Externe locatie', 'https://tix.musisenstadstheater.nl/nl/tickets/9', ''],
+  latry: ['Eusebiuskerk, Externe locatie', 'https://tix.musisenstadstheater.nl/nl/tickets/10', ''],
+  ijs: ['Musis, Parkzaal', 'https://tix.musisenstadstheater.nl/nl/tickets/11', ''],
 };
 const detailHtml = ([plek, ticket, notitie]) => `<!doctype html><div class="info-box event">
   <div class="h5">vr 11 december 2026 - 20:00</div><h1>X</h1>
@@ -81,7 +87,14 @@ test('Musis: API + detailpagina (zaal, extern, gast), titelconventie, kerk als l
     'Allerzielen – Nederlandse Bachvereniging | 2027-03-26 19:30 | beschikbaar | pas true | - | Eusebiuskerk | Arnhem',
     // Ensemble als performer: niet omdraaien, wel "Voorstelling – Maker"; punt aan het eind weg.
     'Arnhem, mijn stadje – Arnhems Promenade Orkest | 2027-01-10 15:00 | beschikbaar | pas true | Muzenzaal | -',
+    // Titel in delen (concertreeks): al de voorstelling, uitvoerder erachter (8 okt 2026).
+    'Eusebius | Icoon 2 | Faust – Geerten Liefting | 2027-02-01 20:00 | beschikbaar | pas true | - | Eusebiuskerk | Arnhem',
+    // Uitvoerder staat al in de titel: niet nog eens erachter, wel als maker.
+    'Eusebius | Icoon 4 | Sterorganist Olivier Latry | 2027-02-08 20:00 | beschikbaar | pas true | - | Eusebiuskerk | Arnhem',
+    // "IJs" is geen deel van "Benckhuijsen": gewoon de klassiek-regel.
+    'IJs – Jaco Benckhuijsen & Adam Quartet | 2027-02-15 20:00 | beschikbaar | pas true | Parkzaal | -',
   ]);
+  assert.equal(musis.find((s) => /Icoon 4/.test(s.titel)).maker, 'Olivier Latry');
   assert.equal(musis[0].maker, 'Collectief Blauwdruk');
   assert.equal(musis[0].genre, 'Toneel');
   assert.equal(musis[2].genre, 'Cabaret');
@@ -90,7 +103,7 @@ test('Musis: API + detailpagina (zaal, extern, gast), titelconventie, kerk als l
   assert.ok(musis.every((s) => s.theaterId === 'musis' && s.theaterNaam === 'Musis Arnhem'));
   // Eén detailpagina per productie, niet voor de serie.
   const details = urls.filter((u) => u.startsWith('/nl/agenda/'));
-  assert.equal(details.length, 6);
+  assert.equal(details.length, 9);
   assert.ok(!details.some((u) => u.includes('/serie/')));
   assert.ok(logs.some((l) => /weggelaten: .*serie\/combiticket\/rondleiding\/workshop \(1\).*Theater a\/d Rijn/.test(l)), logs.join('\n'));
   assert.equal(logs.some((l) => /WARN/.test(l)), false, logs.join('\n'));

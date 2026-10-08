@@ -44,6 +44,10 @@ const ARTIEST_EERST = /^(cabaret|show|comedy|klassiek|orkestraal|kamermuziek|koo
 // voorstelling, performer = maker → "Messiah van Handel – Toonkunst Arnhem".
 // Niet bij een programmanaam met "shows" ("DAAN" / "Crooner - The Acoustic
 // Trio shows").
+// Een titel in delen ("Eusebius | Icoon 2 | Faust", een concertreeks in de
+// Eusebiuskerk) is al de voorstelling; `performer` is de uitvoerder
+// ("Geerten Liefting"). Ook niet omdraaien (8 okt 2026).
+const isReeksTitel = (titel) => /\s\|\s/.test(titel);
 const ensembleAlsMaker = (performer, titel) => Boolean(performer) && ENSEMBLE.test(performer) && !/\bshows?\b/i.test(performer) && !ENSEMBLE.test(titel);
 const ENSEMBLE = /orkest|orchestra|koor\b|choir|ensemble|kwartet|quartet|trio\b|octet|sinfoni|philharmoni|toonkunst|baroque|harmonie|blazers|consort|vocale|cappella|scholars|camerata/i;
 
@@ -215,6 +219,10 @@ async function scrapeAllMusis({ page, theater, robots, waitForTurn, log, warn })
     const detailUrl = `${theater.baseUrl}/nl/agenda/${prod.slug}/${e.id}`;
     const performer = prod.performer?.trim() || null;
     const omschrijving = performer && (isWervend(performer) || OMSCHRIJVING.test(performer));
+    // Staat de uitvoerder al (als hele woorden) in de titel ("… | Sterorganist
+    // Olivier Latry" / "Olivier Latry"), dan niet omdraaien en niet nog eens
+    // in de titel; het makerveld blijft. "IJs" telt niet in "Benckhuijsen".
+    const alInTitel = Boolean(performer) && new RegExp(`(^|[\\s|–-])${performer.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|[\\s|–-])`, 'i').test(titel);
     const show = {
       id: buildId(plek.theaterId, titel, datum, tijd),
       titel,
@@ -239,8 +247,8 @@ async function scrapeAllMusis({ page, theater, robots, waitForTurn, log, warn })
       bron: detailUrl,
       opgehaaldOp,
     };
-    const ensemble = !omschrijving && ensembleAlsMaker(performer, titel);
-    const artiestEerst = tags.some((t) => ARTIEST_EERST.test(t)) && !/:\s/.test(titel) && !ensemble;
+    const ensemble = !omschrijving && !alInTitel && (ensembleAlsMaker(performer, titel) || isReeksTitel(titel));
+    const artiestEerst = tags.some((t) => ARTIEST_EERST.test(t)) && !/:\s/.test(titel) && !ensemble && !alInTitel && !isReeksTitel(titel);
     if (artiestEerst && show.maker) shows.push(pasTitelConventieToe(show, { artiest: titel, voorstelling: performer, makerWordtLeeg: true, alleGenres: true }));
     else if (ensemble && tags.some((t) => ARTIEST_EERST.test(t))) shows.push(pasTitelConventieToe(show, { artiest: performer, voorstelling: titel, makerWordtLeeg: true, alleGenres: true }));
     else shows.push(show);

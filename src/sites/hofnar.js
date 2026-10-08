@@ -192,10 +192,11 @@ export async function scrapeHofnar({ page, theater, robots, waitForTurn, log, wa
       };
       const volgorde = hofnarVolgorde(p.genre, p.teaser);
       // Staat de artiest al in de voorstellingsnaam ("Rhobijn – 40 jaar Rowwen
-      // Hèze"), dan alleen de voorstelling als titel, niet twee keer de artiest.
+      // Hèze", "Loïs Lane in concert: 40 jaar"), dan alleen de voorstelling als
+      // titel, niet twee keer de artiest; de artiest blijft maker (8 okt 2026).
       const alInNaam = volgorde === 'maker-titel' && makerStaatInTitel(p.teaser, p.titel);
       const vast = alInNaam
-        ? { ...show, titel: p.teaser, maker: null, beschrijving: null }
+        ? { ...show, titel: p.teaser, maker: p.titel, beschrijving: null }
         : volgorde
           ? titelUitKopEnOndertitel(show, { kop: p.titel, ondertitel: p.teaser, volgorde })
           : null;
