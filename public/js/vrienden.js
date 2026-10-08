@@ -86,9 +86,34 @@ const verzoekRef = (fs, db, van, naar) => fs.doc(db, 'vriendverzoeken', verzoekI
  */
 export async function zoekGebruiker({ db, fs, invoer }) {
   const g = controleerGebruikersnaam(invoer);
-  if (!g.ok) throw new VriendFout('ongeldig', 'Vul een volledige gebruikersnaam in.');
+  if (!g.ok) throw new VriendFout('ongeldig', 'Vul een volledige gebruikersnaam of een voor- en achternaam in.');
   const snap = await fs.getDoc(fs.doc(db, 'usernames', g.laag));
   return snap.exists() ? { uid: snap.data().uid, gebruikersnaam: snap.data().gebruikersnaam, naam: snap.data().naam } : null;
+}
+
+// ---------- Zoeken op volledige naam (okt 2026) ----------
+
+// Een gebruikersnaam heeft geen spaties; een volledige naam wel ("Anna de Vries").
+export const isNaamInvoer = (invoer) => /\s/.test(String(invoer ?? '').trim());
+
+/**
+ * Zoekt via de Cloud Function zoekOpNaam (alleen exacte volledige naam, van
+ * wie vindbaar is; geen blokkades; hooguit 10). `roep(naam, data)` roept een
+ * callable aan (roepFunctie in firebase.js). Geeft [{ gebruikersnaam, naam }]
+ * (zonder uid: die komt bij het sturen van een verzoek uit usernames).
+ * Fouten: VriendFout 'ongeldig' of 'limiet'; netwerk komt ongewijzigd door.
+ */
+export async function zoekOpNaam({ roep, invoer }) {
+  try {
+    const r = await roep('zoekOpNaam', { naam: String(invoer ?? '').trim() });
+    return Array.isArray(r?.data?.treffers) ? r.data.treffers : [];
+  } catch (err) {
+    const code = String(err?.code ?? '').replace(/^functions\//, '');
+    if (code === 'invalid-argument') throw new VriendFout('ongeldig', 'Vul een voor- en achternaam in, of een gebruikersnaam.');
+    if (code === 'resource-exhausted') throw new VriendFout('limiet', 'Je hebt vandaag al vaak op naam gezocht. Probeer het morgen weer, of zoek op gebruikersnaam.');
+    if (code === 'unauthenticated') throw new VriendFout('niet-mogelijk', 'Log opnieuw in om te zoeken.');
+    throw err;
+  }
 }
 
 // ---------- Verzoeken ----------

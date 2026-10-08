@@ -19,6 +19,7 @@ import {
   getCountFromServer,
   runTransaction,
   serverTimestamp,
+  roepFunctie,
 } from './firebase.js';
 import {
   bewaarProfiel,
@@ -31,6 +32,8 @@ import {
 } from './profiel.js';
 import {
   zoekGebruiker,
+  zoekOpNaam,
+  isNaamInvoer,
   stuurVerzoek,
   accepteer,
   haalVerzoekWeg,
@@ -1954,6 +1957,7 @@ async function handleAuthChange(user) {
   state.profiel = undefined;
   state.profielFout = false;
   state.profielGevraagd = false;
+  state.vindbaar = undefined;
   state.vrienden = null;
   state.vriendenStatus = 'leeg';
   state.inkomendAantal = null;
@@ -2091,6 +2095,7 @@ async function laadEigenProfiel() {
     const profiel = await laadProfiel({ db, fs: firestoreFns, uid: user.uid });
     if (state.user !== user) return;
     state.profiel = profiel;
+    if (profiel) laadVindbaar();
   } catch (err) {
     if (state.user !== user) return;
     console.error('Kon het profiel niet laden:', err);
@@ -2157,6 +2162,12 @@ function renderProfielInstellen() {
   toonVeldFout(els.profielGebruikersnaam, els.profielGebruikersnaamFout, null);
   toonVeldFout(els.profielNaam, els.profielNaamFout, null);
   toonProfielStatus(null);
+  const vindbaarUitleg = document.getElementById('profielNaamVindbaar');
+  if (vindbaarUitleg) {
+    vindbaarUitleg.textContent = state.vindbaar === false
+      ? 'Je bent niet vindbaar op deze naam (aan te zetten in Profiel).'
+      : 'Anderen kunnen je vinden op deze naam (uit te zetten in Profiel).';
+  }
 }
 
 function toonVeldFout(input, el, tekst) {
@@ -2194,6 +2205,7 @@ async function onProfielOpslaan(e) {
     if (state.user !== user) return;
     state.profiel = { ...(state.profiel ?? {}), ...profiel };
     state.profielFout = false;
+    if (state.vindbaar === undefined) laadVindbaar();
     renderAuthBox();
     if (state.delen === undefined) laadDelen().then(() => renderProfielTegels());
     startBerichtenTeller();
@@ -2249,6 +2261,94 @@ function renderProfielRegel() {
   }
   regel.append(tekst, knop);
   return regel;
+}
+
+// ---------- Vindbaar op naam (okt 2026) ----------
+
+// naamvoorkeur/{uid}: { vindbaar, gewijzigdOp }; geen document = vindbaar.
+// De Cloud Functions houden daarmee de zoekindex bij (functions/naamzoeken.js).
+// Eenmalige migratie, bij het laden van een bestaand profiel: staat er nog
+// geen voorkeur, dan zetten we { vindbaar: true } (standaard aan, zonder
+// aparte melding). Dat schrijven laat de trigger naamIndexVoorkeur de
+// gebruiker in de index zetten; nieuwe profielen komen er via de trigger op
+// profielen/{uid} ook vanzelf in.
+let vindbaarMelding = null;
+
+async function laadVindbaar() {
+  const user = state.user;
+  if (!user || !state.profiel) return;
+  const ref = doc(db, 'naamvoorkeur', user.uid);
+  try {
+    const snap = await getDoc(ref);
+    if (state.user !== user) return;
+    if (snap.exists()) {
+      state.vindbaar = snap.data().vindbaar !== false;
+    } else {
+      state.vindbaar = true;
+      await setDoc(ref, { vindbaar: true, gewijzigdOp: serverTimestamp() });
+    }
+  } catch (err) {
+    if (state.user !== user) return;
+    console.error('Kon "Vindbaar op naam" niet laden:', err);
+  }
+  renderAuthBox();
+}
+
+async function zetVindbaar(aan, knop) {
+  const user = state.user;
+  if (!user) return;
+  knop.disabled = true;
+  try {
+    await setDoc(doc(db, 'naamvoorkeur', user.uid), { vindbaar: aan, gewijzigdOp: serverTimestamp() });
+    if (state.user !== user) return;
+    state.vindbaar = aan;
+    vindbaarMelding = { tekst: aan ? 'Opgeslagen: anderen kunnen je vinden op je naam.' : 'Opgeslagen: je bent niet meer vindbaar op je naam.', soort: 'succes' };
+  } catch (err) {
+    console.error('"Vindbaar op naam" opslaan mislukt:', err);
+    vindbaarMelding = { tekst: VERBINDING_FOUT, soort: 'fout' };
+  }
+  renderAuthBox();
+  document.getElementById('vindbaarSchakelaar')?.focus();
+}
+
+// In Profiel, onder je gebruikersnaam: de schakelaar "Vindbaar op naam".
+function renderVindbaarRegel() {
+  if (!state.user || !state.profiel || state.vindbaar === undefined) return null;
+  const blok = document.createElement('div');
+  blok.className = 'profiel-vindbaar';
+  const rij = document.createElement('div');
+  rij.className = 'delen-rij';
+  const label = vriendenTekst('label', 'delen-label', 'Vindbaar op naam');
+  label.htmlFor = 'vindbaarSchakelaar';
+  const schakelaar = document.createElement('button');
+  schakelaar.type = 'button';
+  schakelaar.id = 'vindbaarSchakelaar';
+  schakelaar.className = 'switch' + (state.vindbaar ? ' is-on' : '');
+  schakelaar.setAttribute('role', 'switch');
+  schakelaar.setAttribute('aria-checked', String(state.vindbaar));
+  schakelaar.setAttribute('aria-describedby', 'vindbaarUitleg');
+  schakelaar.addEventListener('click', () => zetVindbaar(!state.vindbaar, schakelaar));
+  label.addEventListener('click', (e) => {
+    e.preventDefault();
+    schakelaar.click();
+  });
+  rij.append(label, schakelaar);
+  const uitleg = vriendenTekst(
+    'p',
+    'vrienden-leeg',
+    state.vindbaar
+      ? `Wie je volledige naam (${state.profiel.naam}) precies intypt bij Vrienden, kan je vinden en een verzoek sturen.`
+      : 'Je bent alleen te vinden op je gebruikersnaam of via een uitnodigingslink.'
+  );
+  uitleg.id = 'vindbaarUitleg';
+  blok.append(rij, uitleg);
+  if (vindbaarMelding) {
+    const p = vriendenTekst('p', `vrienden-melding vrienden-melding--${vindbaarMelding.soort}`, vindbaarMelding.tekst);
+    p.setAttribute('role', vindbaarMelding.soort === 'fout' ? 'alert' : 'status');
+    blok.appendChild(p);
+    vindbaarMelding = null;
+  }
+  return blok;
 }
 
 // ---------- Gedeelde plannen (zie plannen.js) ----------
@@ -3739,7 +3839,7 @@ function renderVriendenScherm() {
     vriendenSectie(
       'Vrienden',
       data.vrienden.map((p) => vriendRij(p, [], { soort: 'vriend' })),
-      'Nog geen vrienden. Voeg iemand toe met de gebruikersnaam, of deel je uitnodigingslink.'
+      'Nog geen vrienden. Zoek iemand op gebruikersnaam of naam, of deel je uitnodigingslink.'
     )
   );
   if (data.geblokkeerd.length) {
@@ -4224,7 +4324,7 @@ async function onLinkAccepteren() {
   renderVriendLink();
 }
 
-// ---------- Vriend zoeken op exacte gebruikersnaam ----------
+// ---------- Vriend zoeken op exacte gebruikersnaam of volledige naam ----------
 
 function zetZoekResultaat(inhoud) {
   if (!els.vriendZoekResultaat) return;
@@ -4242,10 +4342,15 @@ async function onVriendZoeken(e) {
   e.preventDefault();
   if (!magVrienden()) return;
   const user = state.user;
+  const invoer = els.vriendZoekInput.value;
   zetZoekResultaat(zoekMelding('Zoeken…'));
+  // Met een spatie: zoeken op volledige naam (Cloud Function); anders op gebruikersnaam.
+  const opNaam = isNaamInvoer(invoer);
   let gevonden;
   try {
-    gevonden = await zoekGebruiker({ db, fs: firestoreFns, invoer: els.vriendZoekInput.value });
+    gevonden = opNaam
+      ? await zoekOpNaam({ roep: roepFunctie, invoer })
+      : await zoekGebruiker({ db, fs: firestoreFns, invoer });
   } catch (err) {
     if (state.user !== user) return;
     if (!(err instanceof VriendFout)) console.error('Zoeken mislukt:', err);
@@ -4253,24 +4358,40 @@ async function onVriendZoeken(e) {
     return;
   }
   if (state.user !== user) return;
-  if (!gevonden) {
-    zetZoekResultaat(zoekMelding('Niemand gevonden met deze gebruikersnaam.'));
+  const treffers = opNaam ? gevonden : gevonden ? [gevonden] : [];
+  if (treffers.length === 0) {
+    zetZoekResultaat(zoekMelding(opNaam ? 'Niemand gevonden met deze naam.' : 'Niemand gevonden met deze gebruikersnaam.'));
     return;
   }
-  if (gevonden.uid === user.uid) {
+  if (!opNaam && gevonden.uid === user.uid) {
     zetZoekResultaat(zoekMelding('Dat ben je zelf.'));
     return;
   }
+  const lijst = document.createElement('div');
+  lijst.className = 'vriend-zoek-lijst';
+  for (const t of treffers) lijst.appendChild(zoekKaart(t));
+  zetZoekResultaat(lijst);
+}
+
+// Is deze persoon al vriend, of loopt er een verzoek? Op uid, of (bij een
+// treffer op naam, zonder uid) op gebruikersnaam.
+function relatieMet(persoon, lijst) {
+  const laag = String(persoon.gebruikersnaam ?? '').toLowerCase();
+  return (lijst ?? []).some((v) => (persoon.uid && v.uid === persoon.uid) || String(v.gebruikersnaam ?? '').toLowerCase() === laag);
+}
+
+// Eén treffer: "@naam · Volledige naam" met de passende knop of stand.
+function zoekKaart(gevonden) {
   const data = state.vrienden;
   const kaart = document.createElement('div');
   kaart.className = 'vriend-rij vriend-rij--kaart';
   const acties = document.createElement('div');
   acties.className = 'vriend-rij-acties';
-  if (data?.vrienden.some((v) => v.uid === gevonden.uid)) {
+  if (relatieMet(gevonden, data?.vrienden)) {
     acties.appendChild(vriendenTekst('span', 'vriend-status', 'Al vrienden'));
-  } else if (data?.uitgaand.some((v) => v.uid === gevonden.uid)) {
+  } else if (relatieMet(gevonden, data?.uitgaand)) {
     acties.appendChild(vriendenTekst('span', 'vriend-status', 'Verzoek verstuurd'));
-  } else if (data?.inkomend.some((v) => v.uid === gevonden.uid)) {
+  } else if (relatieMet(gevonden, data?.inkomend)) {
     // stuurVerzoek accepteert dan het bestaande verzoek.
     acties.append(
       vriendenTekst('span', 'vriend-status', 'Heeft jou een verzoek gestuurd'),
@@ -4290,7 +4411,7 @@ async function onVriendZoeken(e) {
     );
   }
   kaart.append(persoonTekst(gevonden), acties);
-  zetZoekResultaat(kaart);
+  return kaart;
 }
 
 async function onVerzoekSturen(gevonden, knop) {
@@ -4298,6 +4419,12 @@ async function onVerzoekSturen(gevonden, knop) {
   knop.disabled = true;
   const naam = `@${gevonden.gebruikersnaam}`;
   try {
+    // Een treffer op naam heeft geen uid: die komt uit usernames (exacte gebruikersnaam).
+    if (!gevonden.uid) {
+      const metUid = await zoekGebruiker({ db, fs: firestoreFns, invoer: gevonden.gebruikersnaam });
+      if (!metUid) throw new VriendFout('niet-mogelijk', 'Verzoek kan niet worden verstuurd.');
+      gevonden = metUid;
+    }
     const uitkomst = await stuurVerzoek({ db, fs: firestoreFns, ik: user.uid, mijnProfiel: state.profiel, ander: gevonden });
     if (state.user !== user) return;
     zetZoekResultaat(
@@ -4400,6 +4527,8 @@ function renderAuthBox() {
   els.authBox.appendChild(box);
   const profielRegel = renderProfielRegel();
   if (profielRegel) els.authBox.appendChild(profielRegel);
+  const vindbaar = renderVindbaarRegel();
+  if (vindbaar) els.authBox.appendChild(vindbaar);
 
   if (state.authError) {
     const err = document.createElement('p');

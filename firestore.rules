@@ -632,5 +632,37 @@ service cloud.firestore {
     match /mailTellers/{dag} {
       allow read, write: if false;
     }
+
+    // ---- Vrienden zoeken op naam (okt 2026) ----
+    // naamvoorkeur/{uid}: { vindbaar: bool, gewijzigdOp }. Alleen voor
+    // jezelf; geen document = vindbaar (standaard). Zoeken gaat alleen via de
+    // Cloud Function zoekOpNaam (functions/naamzoeken.js); die en de triggers
+    // naamIndexProfiel/naamIndexVoorkeur schrijven de index met de Admin SDK.
+    match /naamvoorkeur/{uid} {
+      allow get: if ingelogd() && request.auth.uid == uid;
+      allow list: if false;
+      allow create, update: if ingelogd()
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['vindbaar', 'gewijzigdOp'])
+        && request.resource.data.keys().hasAll(['vindbaar', 'gewijzigdOp'])
+        && request.resource.data.vindbaar is bool
+        && request.resource.data.gewijzigdOp == request.time;
+      allow delete: if ingelogd() && request.auth.uid == uid;
+    }
+
+    // De zoekindex en de zoektellers: voor clients onleesbaar en
+    // onschrijfbaar (ook geen eigen regel), zodat niemand namen kan opsommen.
+    match /naamIndex/{sleutel} {
+      allow read, write: if false;
+      match /vermeldingen/{uid} {
+        allow read, write: if false;
+      }
+    }
+    match /naamIndexLid/{uid} {
+      allow read, write: if false;
+    }
+    match /zoekTellers/{dag} {
+      allow read, write: if false;
+    }
   }
 }

@@ -160,7 +160,7 @@ test('weigeren en intrekken', async () => {
 test('zoeken op exacte gebruikersnaam en een verzoek sturen; nette meldingen', async () => {
   const { ctx, page, fouten } = await openApp({ hash: '#/vrienden' });
   await zoek(page, 'bo');
-  assert.match(await tekst(page, '#vriendZoekResultaat'), /Vul een volledige gebruikersnaam in/);
+  assert.match(await tekst(page, '#vriendZoekResultaat'), /Vul een volledige gebruikersnaam of een voor- en achternaam in/);
   await zoek(page, 'bobb');
   assert.match(await tekst(page, '#vriendZoekResultaat'), /Niemand gevonden met deze gebruikersnaam/);
   await zoek(page, 'anna_v');
@@ -180,6 +180,35 @@ test('zoeken op exacte gebruikersnaam en een verzoek sturen; nette meldingen', a
   await zoek(page, 'bob');
   assert.match(await tekst(page, '#vriendZoekResultaat'), /Verzoek verstuurd/);
   assert.equal(await page.locator('#vriendZoekResultaat button').count(), 0);
+  assert.deepEqual(fouten, []);
+  await ctx.close();
+});
+
+test('zoeken op volledige naam (callable): lijst met "@naam · Naam", verzoek via usernames; neutrale tekst; limiet', async () => {
+  const { ctx, page, fouten } = await openApp({ docs: { ...BASIS, ...VRIENDEN_BOB }, hash: '#/vrienden' });
+  await page.evaluate(() => {
+    window.__geroepen = [];
+    window.__nepFunctie = async (naam, data) => {
+      window.__geroepen.push([naam, data]);
+      if (/limiet/.test(data.naam)) throw Object.assign(new Error('x'), { code: 'functions/resource-exhausted' });
+      if (/^carol smit$/i.test(data.naam)) return { data: { treffers: [{ gebruikersnaam: 'carol', naam: 'Carol Smit' }, { gebruikersnaam: 'bob', naam: 'Carol Smit' }] } };
+      return { data: { treffers: [] } };
+    };
+  });
+  await zoek(page, '  Carol Smit ');
+  assert.deepEqual(await page.evaluate(() => window.__geroepen), [['zoekOpNaam', { naam: 'Carol Smit' }]]);
+  assert.deepEqual(await page.locator('#vriendZoekResultaat .vriend-rij-tekst').allTextContents(), ['@carol · Carol Smit', '@bob · Carol Smit']);
+  // Al vrienden (op gebruikersnaam herkend, de treffer heeft geen uid).
+  assert.match(await tekst(page, '#vriendZoekResultaat'), /Al vrienden/);
+  await page.click('button[aria-label="Vriendschapsverzoek sturen aan @carol"]');
+  await even(page);
+  assert.match(await tekst(page, '#vriendZoekResultaat'), /Verzoek verstuurd aan @carol/);
+  assert.equal((await opslag(page, 'vriendverzoeken/u1_u3')).naar, 'u3');
+
+  await zoek(page, 'Niemand Bekend');
+  assert.equal(await tekst(page, '#vriendZoekResultaat'), 'Niemand gevonden met deze naam.');
+  await zoek(page, 'Zoek limiet');
+  assert.match(await tekst(page, '#vriendZoekResultaat'), /vandaag al vaak op naam gezocht/);
   assert.deepEqual(fouten, []);
   await ctx.close();
 });

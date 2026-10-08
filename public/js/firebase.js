@@ -1,5 +1,6 @@
 // Firebase via CDN (geen build-stap, zelfde aanpak als de rest van de app).
-// We gebruiken alleen Auth + Firestore — bewust geen Analytics SDK.
+// We gebruiken alleen Auth + Firestore + Functions (één callable,
+// zoekOpNaam) — bewust geen Analytics SDK.
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js';
 import {
   getAuth,
@@ -28,7 +29,8 @@ import {
   serverTimestamp,
   connectFirestoreEmulator,
 } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js';
-import { gebruikEmulator, EMULATOR_PROJECT, EMULATOR_AUTH, EMULATOR_FIRESTORE } from './emulator.js';
+import { getFunctions, httpsCallable, connectFunctionsEmulator } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-functions.js';
+import { gebruikEmulator, EMULATOR_PROJECT, EMULATOR_AUTH, EMULATOR_FIRESTORE, EMULATOR_FUNCTIONS } from './emulator.js';
 
 // Deze config-waarden zijn bewust publiek zichtbaar in de broncode — dat is
 // normaal voor Firebase-webapps (ze identificeren het project, ze zijn geen
@@ -60,10 +62,15 @@ const app = initializeApp(
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
+// Cloud Functions in europe-west4 (zie functions/index.js).
+const functies = getFunctions(app, 'europe-west4');
+/** Een callable Cloud Function aanroepen: roepFunctie('zoekOpNaam', { naam }) → { data }. */
+export const roepFunctie = (naam, data) => httpsCallable(functies, naam)(data);
 
 if (EMULATOR) {
   connectAuthEmulator(auth, EMULATOR_AUTH, { disableWarnings: true });
   connectFirestoreEmulator(db, EMULATOR_FIRESTORE.host, EMULATOR_FIRESTORE.port);
+  connectFunctionsEmulator(functies, EMULATOR_FUNCTIONS.host, EMULATOR_FUNCTIONS.port);
   // Inloggen zonder Google-popup, alleen voor de tests.
   window.__e2eLogin = (email, wachtwoord) => signInWithEmailAndPassword(auth, email, wachtwoord);
 }

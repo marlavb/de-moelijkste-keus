@@ -1609,6 +1609,23 @@ a {
 }
 
 /* Profiel: gebruikersnaam onder het inlogblok (vrienden, stap 1). */
+.profiel-vindbaar {
+  margin-top: 8px;
+  padding: 4px 16px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+}
+
+.profiel-vindbaar .delen-rij {
+  border-bottom: none;
+}
+
+.profiel-vindbaar .vrienden-leeg,
+.profiel-vindbaar .vrienden-melding {
+  margin: 0;
+}
+
 .profiel-regel {
   display: flex;
   align-items: center;
@@ -1930,6 +1947,13 @@ a {
 
 .vriend-zoek-resultaat:empty {
   display: none;
+}
+
+/* Meerdere treffers (zoeken op naam): onder elkaar. */
+.vriend-zoek-lijst {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .vrienden-melding {
