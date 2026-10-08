@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **72** (59 ok, 1 terugval, 1 leeg, 5 gepauzeerd, 6 onbekend)
-- Voorstellingen (titel per theater): **6954**
-- Speeldata: **9888**
-- Laatste refresh: **7 oktober 2026, 09:47** (Amsterdamse tijd)
+- Theaters: **72** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout)
+- Voorstellingen (titel per theater): **7485**
+- Speeldata: **10537**
+- Laatste refresh: **8 oktober 2026, 05:50** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -241,7 +241,7 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Koninklijk Theater Carré | Amsterdam | nee | ok |
 | Muziekgebouw aan 't IJ | Amsterdam | ja | ok |
 | Plein Theater | Amsterdam | nee | ok |
-| Podium Mozaïek | Amsterdam | ja | terugval |
+| Podium Mozaïek | Amsterdam | ja | ok |
 | Scala Theater | Amsterdam | ja | ok |
 | Stadsschouwburg Amsterdam | Amsterdam | nee | ok |
 | Theater Bellevue | Amsterdam | ja | ok |
@@ -323,11 +323,11 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| Theater Orpheus | Apeldoorn | – | onbekend |
-| Huis Oostpool | Arnhem | – | onbekend |
-| Musis Arnhem | Arnhem | – | onbekend |
-| Stadstheater Arnhem | Arnhem | – | onbekend |
-| TAR | Arnhem | – | onbekend |
-| Schaffelaartheater | Barneveld | – | onbekend |
+| Theater Orpheus | Apeldoorn | deels | ok |
+| Huis Oostpool | Arnhem | ja | ok |
+| Musis Arnhem | Arnhem | deels | ok |
+| Stadstheater Arnhem | Arnhem | – | leeg |
+| TAR | Arnhem | – | fout |
+| Schaffelaartheater | Barneveld | deels | ok |
 | Schouwburg Agnietenhof | Tiel | – | gepauzeerd sinds 2026-10-07 |
 <!-- AUTO:theaters:end -->
