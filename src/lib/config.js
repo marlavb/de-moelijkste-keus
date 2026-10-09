@@ -959,8 +959,9 @@ export const THEATERS = [
     // https://tar.nl/nieuws/podiumpas-nu-ook-beschikbaar-bij-theater-a-d-rijn/,
     // 12 feb 2024). De voorwaarden-link daarin (theateraanderijn.nl/podiumpas)
     // geeft 404; voorwaarden en manier van reserveren dus onbekend. Geen
-    // uitzonderingen verzonnen: alles true, met een melding (zoals Het Speelhuis).
-    podiumpas: true,
+    // uitzonderingen verzonnen: podiumpas null = nog niet bekend (okt 2026;
+    // de app toont "Podiumpas?"), met een melding.
+    podiumpas: null,
     // Bij het opheffen van de pauze weer terugzetten:
     // melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
     // (Een eigen melding gaat vóór de standaardmelding voor gepauzeerde

@@ -1054,6 +1054,12 @@ a {
   margin-bottom: 4px;
 }
 
+/* "Podiumpas: nog niet bekend": neutraal, zelfde vorm. */
+.podiumpas-notice--onbekend {
+  background: var(--soldout-bg);
+  color: var(--text-2);
+}
+
 .podiumpas-notice a {
   color: var(--notice-link);
   font-weight: 600;
@@ -1245,6 +1251,18 @@ a {
 
 .podiumpas-badge--no {
   background: var(--soldout-bg);
+  color: var(--text-2);
+}
+
+/* Podiumpas nog niet bekend (podiumpas: null): neutraal, geen pas-icoon. */
+.podiumpas-badge--onbekend {
+  background: var(--soldout-bg);
+  color: var(--text-2);
+}
+
+.podiumpas-onbekend {
+  font-size: 12px;
+  font-weight: 600;
   color: var(--text-2);
 }
 

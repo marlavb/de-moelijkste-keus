@@ -388,6 +388,7 @@ const els = {
   sheetTheaterFilters: document.getElementById('sheetTheaterFilters'),
   sheetGenreFilters: document.getElementById('sheetGenreFilters'),
   podiumpasToggle: document.getElementById('podiumpasToggle'),
+  detailPodiumpasOnbekend: document.getElementById('detailPodiumpasOnbekend'),
   watchlistOnlyToggle: document.getElementById('watchlistOnlyToggle'),
   hideFullToggle: document.getElementById('hideFullToggle'),
   sidebarCityFilters: document.getElementById('sidebarCityFilters'),
@@ -4651,7 +4652,16 @@ function theaterStad(id) {
 // Bostheater (theatervoorstellingen wel, concerten niet) zou "eerste show"
 // willekeurig zijn en verschuiven naarmate de speellijst opschuift.
 function theaterHasPodiumpas(id) {
-  return state.shows.some((s) => s.theaterId === id && s.podiumpas === true);
+  return state.shows.some((s) => s.theaterId === id && (s.podiumpas === true || s.podiumpas === null));
+}
+
+/** Podiumpas van een theater voor het label in "Mijn theaters": 'ja' als er
+ * een voorstelling mét pas is, 'onbekend' als het bij geen enkele zeker is
+ * maar bij een deel nog niet bekend (podiumpas: null, okt 2026), anders 'nee'. */
+function theaterPodiumpasStand(id) {
+  const eigen = state.shows.filter((s) => s.theaterId === id);
+  if (eigen.some((s) => s.podiumpas === true)) return 'ja';
+  return eigen.some((s) => s.podiumpas === null) ? 'onbekend' : 'nee';
 }
 
 /** Podiumpas-only cascadeert net als de stad-selectie: als de toggle aan
@@ -4892,7 +4902,9 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     // Op alle genres van de productie (show.genres); het label toont het
     // weergavegenre (show.genre).
     const genreOk = matchtGenreFilter(s, state.selectedGenres);
-    const podiumpasOk = !state.podiumpasOnly || s.podiumpas === true;
+    // Onbekend (podiumpas: null) blijft zichtbaar met het filter aan: het kan
+    // best meetellen (TAR, De Reggehof, kerkconcerten; okt 2026).
+    const podiumpasOk = !state.podiumpasOnly || s.podiumpas === true || s.podiumpas === null;
     const watchlistOk = !state.watchlistOnly || isOpWatchlist(s);
     const gezienOk = !state.hideGezien || !isGezien(s);
     // 'onbekend' blijft altijd zichtbaar — we weten domweg niet of die vol
@@ -5040,6 +5052,7 @@ function renderShowRow(show) {
   tagsRow.appendChild(genreTag);
 
   if (show.podiumpas === true) tagsRow.appendChild(makePodiumpasIcon());
+  else if (show.podiumpas === null) tagsRow.appendChild(makePodiumpasOnbekend());
 
   const badge = makeStatusBadge(show.beschikbaarheid);
   if (badge) tagsRow.appendChild(badge);
@@ -5079,6 +5092,15 @@ function makePodiumpasIcon() {
   wrap.title = 'Dit theater accepteert de Podiumpas';
   wrap.appendChild(svgIcon('<polyline points="4 12 9 17 20 6" />'));
   return wrap;
+}
+
+/** Neutraal label "Podiumpas?": of de pas hier geldt, is nog niet bekend. */
+function makePodiumpasOnbekend() {
+  const el = document.createElement('span');
+  el.className = 'podiumpas-onbekend';
+  el.textContent = 'Podiumpas?';
+  el.title = 'Of de Podiumpas hier geldt, is nog niet bekend';
+  return el;
 }
 
 /** Geeft een badge-element terug, of null als er niets te tonen valt. */
@@ -5210,10 +5232,30 @@ function renderPodiumpasNotice(show) {
   return !info.online;
 }
 
+// "Podiumpas: nog niet bekend" (podiumpas: null), met de toelichting van de
+// voorstelling (podiumpasNoot) of anders de melding van het theater.
+function renderPodiumpasOnbekend(show) {
+  const box = els.detailPodiumpasOnbekend;
+  box.replaceChildren();
+  box.hidden = show.podiumpas !== null;
+  if (show.podiumpas !== null) return;
+  const kop = document.createElement('strong');
+  kop.textContent = 'Podiumpas: nog niet bekend';
+  box.append(kop);
+  const uitleg = show.podiumpasNoot ?? state.theaterInfo[show.theaterId]?.melding ?? null;
+  if (uitleg) {
+    const extra = document.createElement('span');
+    extra.className = 'podiumpas-notice__toelichting';
+    extra.textContent = uitleg;
+    box.append(extra);
+  }
+}
+
 function renderDetail(show) {
   els.detailGenre.textContent = getGenreBucket(show);
   els.detailTheater.textContent = show.theaterNaam;
   els.detailPodiumpasBadge.hidden = show.podiumpas !== true;
+  renderPodiumpasOnbekend(show);
   els.detailTitle.textContent = show.titel;
   // De maker niet nog eens tonen als hij al in de titel staat.
   els.detailMaker.textContent = show.maker ?? '';
@@ -5606,7 +5648,7 @@ function buildTheaterCard(id) {
   // Bostheater, waar podiumpas per show verschilt) zou "eerste show" hier
   // willekeurig zijn — zelfde afweging als theaterHasPodiumpas() bij de
   // sidebar-filterchip.
-  const heeftPodiumpas = theaterHasPodiumpas(id);
+  const podiumpasStand = theaterPodiumpasStand(id);
   const isOn = state.enabledTheaters[id] !== false;
 
   const card = document.createElement('div');
@@ -5620,8 +5662,8 @@ function buildTheaterCard(id) {
   addressEl.className = 'theater-card-address';
   addressEl.textContent = adres;
   const podiumpasEl = document.createElement('span');
-  podiumpasEl.className = 'podiumpas-badge' + (heeftPodiumpas ? '' : ' podiumpas-badge--no');
-  podiumpasEl.textContent = heeftPodiumpas ? 'Podiumpas' : 'Geen Podiumpas';
+  podiumpasEl.className = 'podiumpas-badge' + { ja: '', onbekend: ' podiumpas-badge--onbekend', nee: ' podiumpas-badge--no' }[podiumpasStand];
+  podiumpasEl.textContent = { ja: 'Podiumpas', onbekend: 'Podiumpas?', nee: 'Geen Podiumpas' }[podiumpasStand];
   info.append(nameEl, addressEl);
   // Zonder voorstellingen valt er niets aan/uit te zetten en zegt het
   // Podiumpas-label niets — dan alleen naam en melding.

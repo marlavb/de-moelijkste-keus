@@ -96,6 +96,9 @@ test('Podiumpas per voorstelling, zoals het tabblad Theaters: gemengd = deels, c
   assert.equal(podiumpasVan('bos', shows), 'deels');
   assert.equal(podiumpasVan('alles', shows), 'ja');
   assert.equal(podiumpasVan('niets', shows), 'nee');
+  // Podiumpas nog niet bekend (null): "onbekend"; met één zekere erbij "deels".
+  assert.equal(podiumpasVan('vraag', [{ theaterId: 'vraag', podiumpas: null }, { theaterId: 'vraag', podiumpas: false }]), 'onbekend');
+  assert.equal(podiumpasVan('vraag', [{ theaterId: 'vraag', podiumpas: null }, { theaterId: 'vraag', podiumpas: true }]), 'deels');
   // Geen voorstellingen (leeg of gepauzeerd): geen label, ook als config.js podiumpas: true heeft.
   assert.equal(podiumpasVan('isala', shows), '–');
   const b = maakBlokken({
