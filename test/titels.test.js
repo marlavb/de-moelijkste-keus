@@ -272,7 +272,11 @@ test('labelUitTitel: try-out, reprise en (voor)première achter de titel naar de
   assert.deepEqual(labelUitTitel(null), { tekst: null, label: null });
 });
 
-test('labelsUitTitel: ook een label vóór " – " (okt 2026, alle theaters)', async () => {
+test('labelsUitTitel: alle labels, ook vóór " – " en meer in één titel (okt 2026, alle theaters)', async () => {
+  const { labelsUitTitel: alle } = await import('../src/lib/titels.js');
+  assert.deepEqual(alle('Vanzelfsprekend (try-out) & Sint Juttemis (try-out) – Roué Verveer & Peter van Ewijk'), { tekst: 'Vanzelfsprekend & Sint Juttemis – Roué Verveer & Peter van Ewijk', labels: ['try-out'] });
+  assert.deepEqual(alle('Wagyu (try out) – Rundfunk'), { tekst: 'Wagyu – Rundfunk', labels: ['try out'] });
+  assert.deepEqual(alle('Raga & Rasa (voorpremière)'), { tekst: 'Raga & Rasa', labels: ['voorpremière'] });
   const { labelsUitTitel } = await import('../src/lib/titels.js');
   assert.deepEqual(labelsUitTitel('Rhobijn (reprise) – Rowwen Hèze'), { tekst: 'Rhobijn – Rowwen Hèze', labels: ['reprise'] });
   assert.deepEqual(labelsUitTitel('Draagkracht ( Premiere )'), { tekst: 'Draagkracht', labels: ['premiere'] });
