@@ -1176,7 +1176,11 @@ export const THEATERS = [
       toelichting: 'Alleen tickets tot €50 — de prijs controleren we niet automatisch. Alleen per mail (naam, adres, pasnummer, voorstelling), vanaf 30 dagen voor de voorstelling; het ticket komt per mail. Niet bij verhuur of voorstellingen waarvoor Grand Theatre de kaartverkoop niet doet.',
     },
     // Eigen pauze (inventarisatie): robots.txt gaf op 8 en 9 okt 2026 HTTP 500
-    // (kapotte robots-plugin van Kirby).
+    // (kapotte robots-plugin van Kirby: "Class 'Bnomei\Robotstxt' not found").
     crawlDelaySeconden: 5,
+    // Een onbereikbare robots.txt = alles verboden (RFC 9309, robots-5xx); de
+    // run zou hem elke nacht overslaan en rood worden. Daarom gepauzeerd tot
+    // hun robots.txt weer werkt (Marla mailt).
+    gepauzeerd: { sinds: '2026-10-08', reden: 'robots.txt geeft HTTP 500 (kapotte plugin) sinds 8 okt' },
   },
 ];
