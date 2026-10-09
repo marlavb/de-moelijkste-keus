@@ -100,6 +100,9 @@ Houd het testverkeer daarom zo klein mogelijk:
   `crawlDelaySeconden` in `config.js` (nu ITA, 4 s).
 - Faalt een scrape, dan staat er een `DIAGNOSE:`-regel in de log (HTTP-status,
   URL, paginatitel, begin van de body); kijk daar eerst naar.
+- Scala (Amsterdam) blijft bewust zonder tijden: avondvullend programma
+  (korte voorstellingen achter elkaar, geen vaste aanvangstijd per
+  voorstelling). Niet "repareren".
 
 ## Watchlist-sleutels
 
