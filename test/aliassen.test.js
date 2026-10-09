@@ -100,3 +100,25 @@ test('latere export: nieuwe keuzes erbij, opnieuw beoordeelde groep vervangt de 
   assert.deepEqual(twee.lijst, lijst);
   assert.equal(twee.overzicht.nieuw.length + twee.overzicht.gewijzigd.length + twee.overzicht.verwijderd.length, 0);
 });
+
+test('zelfde titel in twee groepen → één productie (met maker); twee verschillende makers → niet', () => {
+  const exp = {
+    aliassen: [
+      keuze('populisme de musical', 'samenvoegen', 'populisme | sem konijn', { titel: 'Populisme de Musical', maker: 'Sem Konijn', weergave: 'Populisme de Musical' }),
+      keuze('sem konijn', 'andere naam', 'populisme | sem konijn', { titel: 'Populisme de Musical', maker: 'Sem Konijn', weergave: 'Populisme de Musical – Sem Konijn' }),
+      keuze('sem konijn', 'andere naam', 'populisme', { titel: 'Populisme de Musical', maker: 'Sem Konijn', weergave: 'Populisme de Musical – Sem Konijn' }),
+      keuze('pn', 'andere naam', 'patrick nederkoorn', { titel: 'Nieuw programma', maker: 'Patrick Nederkoorn', weergave: 'Nieuw programma – Patrick Nederkoorn' }),
+      keuze('sg', 'andere naam', 'sezgin gulec', { titel: 'Nieuw programma', maker: 'Sezgin Güleç', weergave: 'Nieuw programma – Sezgin Güleç' }),
+    ],
+    nietSamenvoegen: [],
+  };
+  const { lijst, overzicht } = voegExportSamen({ aliassen: {}, nietSamenvoegen: [] }, exp);
+  assert.equal(lijst.aliassen['populisme | sem konijn'].titel, 'Populisme de Musical – Sem Konijn');
+  assert.equal(lijst.aliassen.populisme.titel, 'Populisme de Musical – Sem Konijn');
+  assert.deepEqual(overzicht.conflicten, []);
+  assert.equal(overzicht.eenProductie.length, 1);
+  assert.equal(lijst.aliassen['patrick nederkoorn'].titel, 'Nieuw programma – Patrick Nederkoorn');
+  assert.equal(lijst.aliassen['sezgin gulec'].titel, 'Nieuw programma – Sezgin Güleç');
+  // Eén productie: één watchlist-sleutel.
+  assert.equal(watchlistSleutel(lijst.aliassen.populisme.titel), watchlistSleutel(lijst.aliassen['populisme | sem konijn'].titel));
+});

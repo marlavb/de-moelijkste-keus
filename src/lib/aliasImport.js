@@ -7,10 +7,14 @@
 // - Een bron die in twee groepen naar een ander doel wijst ("Theater
 //   Oostpool" als losse titel, naar "The Nether" én "Millennial II") is niet
 //   eenduidig: die bron komt niet in de lijst (conflict in het overzicht).
+// - Groepen met dezelfde titel en geen botsende makers worden één productie
+//   ("Populisme de Musical" en "Populisme de Musical – Sem Konijn").
 // - Een keten (doel is zelf een bron met een ander doel) wordt opgelost naar
 //   het laatste doel.
 
 import { doelSleutel, makerInTitel } from './aliassen.js';
+
+const kaal = (t) => String(t ?? '').replace(/\s*&\s*/g, ' en ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\p{L}\p{N}]+/gu, '');
 
 /**
  * De titel die een keuze oplevert: de weergave ("Titel – Maker" of "Titel").
@@ -32,7 +36,7 @@ export function voegExportSamen(bestaand, exp) {
     aliassen: { ...(bestaand?.aliassen ?? {}) },
     nietSamenvoegen: [...(bestaand?.nietSamenvoegen ?? [])],
   };
-  const overzicht = { nieuw: [], gewijzigd: [], verwijderd: [], gelijk: 0, conflicten: [], ketens: [] };
+  const overzicht = { nieuw: [], gewijzigd: [], verwijderd: [], gelijk: 0, conflicten: [], eenProductie: [], ketens: [] };
   const oud = structuredClone(lijst.aliassen);
 
   // Groepen in deze export: hun oude keuzes en niet-samenvoegen eruit.
@@ -41,7 +45,26 @@ export function voegExportSamen(bestaand, exp) {
   lijst.nietSamenvoegen = lijst.nietSamenvoegen.filter((g) => !groepen.has(g.groep));
   for (const g of exp.nietSamenvoegen ?? []) lijst.nietSamenvoegen.push({ groep: g.groep, sleutels: g.sleutels });
 
-  const keuzes = (exp.aliassen ?? []).map((a) => ({ ...a, doel: doelVan(a) }));
+  // Groepen met dezelfde titel (zonder hoofdletters, accenten en leestekens)
+  // worden één productie: één doel, met de maker als één groep die gaf
+  // ("Populisme de Musical" en "Populisme de Musical – Sem Konijn"). Twee
+  // verschillende makers ("Nieuw programma" van Patrick Nederkoorn en van
+  // Sezgin Güleç): niet, dat zijn twee producties.
+  const keuzes = (exp.aliassen ?? []).map((a) => ({ ...a, doel: doelVan(a), kern: kaal(a.canoniek.titel) }));
+  const perKern = new Map();
+  for (const k of keuzes) {
+    if (!perKern.has(k.kern)) perKern.set(k.kern, []);
+    perKern.get(k.kern).push(k);
+  }
+  for (const ks of perKern.values()) {
+    const makers = new Set(ks.map((k) => k.canoniek.maker).filter(Boolean).map(kaal));
+    if (new Set(ks.map((k) => k.doel.titel)).size < 2 || makers.size > 1) continue;
+    const gekozen = ks.find((k) => makerInTitel(k.doel.titel, k.doel.maker))?.doel ?? ks.find((k) => k.doel.maker)?.doel ?? ks[0].doel;
+    for (const k of ks) {
+      if (k.doel.titel !== gekozen.titel) overzicht.eenProductie.push(`${k.groep}: "${k.doel.titel}" → "${gekozen.titel}"`);
+      k.doel = gekozen;
+    }
+  }
 
   // Per bron: alle doelen gelijk, anders conflict.
   const perBron = new Map();
