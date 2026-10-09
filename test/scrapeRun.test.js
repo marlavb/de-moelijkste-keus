@@ -773,3 +773,26 @@ test('slogan of cast als maker → vóór de beschrijving (R1); niet dubbel; sta
   const { written: weer } = await run({ paths: paths2, theaters: [theater('a')], scrapers: { a: failing } });
   assert.deepEqual(kort(weer), kort(written));
 });
+
+test('reeksnaam vooraan de titel (reeksVoorvoegsels) → beschrijving, met titelBron; ook in teruggevallen data (R4)', async () => {
+  const paths = await setup();
+  const reeksVoorvoegsels = { a: ['Herfststukjes', 'November Music'] };
+  const scraper = async () => [
+    show('a', '2026-10-07', { titel: 'Herfststukjes: Het Koffertje (try-out)', beschrijving: 'Over een koffer.' }),
+    show('a', '2026-10-08', { titel: 'November Music: GoGo Penguin', beschrijving: 'Deel van November Music.' }),
+    show('a', '2026-10-09', { titel: 'Herfststukjes', beschrijving: null }),
+  ];
+  const draai = async (p, scrapers) => runRefresh({ theaters: [theater('a')], scrapers, deps: fakeDeps(), paths: p, budgets: { totalMs: 60_000, theaterMs: () => 30_000 }, minDate: MIN_DATE, now: () => NOW, log: () => {}, annotate: () => {}, reeksVoorvoegsels });
+  await draai(paths, { a: scraper });
+  const written = JSON.parse(await readFile(paths.showsOutputs[1], 'utf-8'));
+  const kort = (r) => r.map((s) => [s.titel, s.beschrijving, s.titelBron]);
+  assert.deepEqual(kort(written), [
+    ['Het Koffertje', 'Herfststukjes · try-out · Over een koffer.', 'Herfststukjes: Het Koffertje (try-out)'],
+    ['GoGo Penguin', 'Deel van November Music.', 'November Music: GoGo Penguin'],
+    ['Herfststukjes', null, undefined],
+  ]);
+  const paths2 = await setup({ previousShows: written });
+  await draai(paths2, { a: failing });
+  const weer = JSON.parse(await readFile(paths2.showsOutputs[1], 'utf-8'));
+  assert.deepEqual(kort(weer), kort(written));
+});

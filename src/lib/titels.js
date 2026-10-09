@@ -255,6 +255,23 @@ export function labelUitTitel(tekst) {
 const LABEL_OVERAL = /\s*\(\s*((?:voor)?premi[eè]re|try[- ]?out|reprise)\s*\)/gi;
 
 /**
+ * Reeksnaam vooraan de titel ("Herfststukjes: Het Koffertje 4+" → titel "Het
+ * Koffertje 4+", reeks "Herfststukjes"), voor de reeksen die een theater in
+ * config.js als `reeksVoorvoegsels` heeft (titels-ronde-1, R4, 9 okt 2026).
+ * Alleen met dubbele punt en als er daarna nog iets staat. Geeft { tekst,
+ * reeks } (reeks null als er niets weg is).
+ */
+export function reeksUitTitel(tekst, voorvoegsels = []) {
+  const t = String(tekst ?? '');
+  for (const v of voorvoegsels ?? []) {
+    const re = new RegExp(`^\\s*(${v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})\\s*:\\s*(\\S.*)$`, 'i');
+    const m = t.match(re);
+    if (m) return { tekst: m[2].trim(), reeks: m[1] };
+  }
+  return { tekst: t, reeks: null };
+}
+
+/**
  * Alle labels "(try-out)", "(try out)", "(reprise)", "(première)",
  * "(voorpremière)" uit een titel, waar ze ook staan ("Rhobijn (reprise) –
  * Rowwen Hèze" → "Rhobijn – Rowwen Hèze"; "Vanzelfsprekend (try-out) & Sint

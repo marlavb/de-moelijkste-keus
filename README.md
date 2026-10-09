@@ -145,7 +145,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   "(première)" en "(voorpremière)" gaan overal uit de titel naar de
   beschrijving, bij elk theater (de titel mét label blijft als `titelBron`,
   zodat oude watchlist-, Gezien- en plansleutels en die van vrienden
-  meegaan); een paar titels waar
+  meegaan); een reeksnaam vooraan de titel ("Herfststukjes: …", "November
+  Music: …", per theater in `config.js` als `reeksVoorvoegsels`) gaat op
+  dezelfde manier naar de beschrijving; een paar titels waar
   een theater artiest en voorstelling omgedraaid heeft of alleen de artiest
   noemt, staan per theater in `OMGEDRAAID` en `VOORSTELLING_BIJ_ARTIEST`
   (`titels.js`); watchlist en Gezien gaan dan mee naar de nieuwe titel

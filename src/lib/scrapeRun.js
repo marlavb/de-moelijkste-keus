@@ -11,7 +11,8 @@ import { pasMeerderheidToe } from './weergaveMeerderheid.js';
 import { pasGenreMeerderheidToe } from './genreMeerderheid.js';
 import { pasMakerMeerderheidToe } from './makerMeerderheid.js';
 import { pasProductieSamenvoegingToe } from './productieSamenvoegen.js';
-import { metEnDash, zonderStatusWoord, isGeenMaker, isSloganOfCast, makerZonderVoorvoegsel, draaiTitelEnMakerOm, labelsUitTitel } from './titels.js';
+import { metEnDash, zonderStatusWoord, isGeenMaker, isSloganOfCast, makerZonderVoorvoegsel, draaiTitelEnMakerOm, labelsUitTitel, reeksUitTitel } from './titels.js';
+import { THEATERS } from './config.js';
 import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
 
@@ -244,6 +245,9 @@ export async function runRefresh({
   now = () => new Date(),
   log = console.log,
   annotate = annotateForGithub,
+  // Per theater de reeksnamen vooraan de titel (config.js, reeksVoorvoegsels);
+  // ook voor theaters die deze run niet meedoen.
+  reeksVoorvoegsels = Object.fromEntries(THEATERS.filter((t) => t.reeksVoorvoegsels).map((t) => [t.id, t.reeksVoorvoegsels])),
 }) {
   const previousShows = await readJson(paths.previousShows, []);
   const previousStatus = await readJson(paths.status, { theaters: {} });
@@ -416,8 +420,12 @@ export async function runRefresh({
       // in watchlist.js; gepland.js zoekt ook via titelBron), en werkt de
       // volgende run weer vanaf de brontitel.
       const metLabel = kaal(metEnDash(bron));
-      const { tekst: titel, labels } = labelsUitTitel(metLabel);
+      // Reeksnaam vooraan ("Herfststukjes: …", config.js) op dezelfde manier
+      // naar de beschrijving, ook met titelBron.
+      const { tekst: zonderReeks, reeks } = reeksUitTitel(metLabel, reeksVoorvoegsels[s.theaterId]);
+      const { tekst: titel, labels } = labelsUitTitel(zonderReeks);
       const nieuw = labels.filter((l) => !new RegExp(`(^|[^\\p{L}])${l}([^\\p{L}]|$)`, 'iu').test(beschrijving ?? ''));
+      if (reeks && !(beschrijving ?? '').toLowerCase().includes(reeks.toLowerCase())) nieuw.unshift(reeks);
       if (nieuw.length) beschrijving = [nieuw.join(' · '), beschrijving].filter(Boolean).join(' · ');
       return { ...s, titel, prijs: s.prijs ?? null, maker, beschrijving, ...(titel !== metLabel ? { titelBron: metLabel } : {}) };
     });

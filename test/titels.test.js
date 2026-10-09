@@ -307,3 +307,17 @@ test('slogan of cast nooit als maker (R1, 9 okt 2026), met de valse treffers uit
   // Een ondertitel met "!" blijft voor de titelconventie gewoon bruikbaar.
   assert.equal(isGeenMaker('Hoe dan!'), false);
 });
+
+test('reeksUitTitel: reeksnaam met dubbele punt vooraan weg (R4, 9 okt 2026)', async () => {
+  const { reeksUitTitel } = await import('../src/lib/titels.js');
+  const v = ['Herfststukjes', 'Voorjaarsvakantie', 'Opera & Brunch', 'CELLOFEST', 'Lunchconcert'];
+  assert.deepEqual(reeksUitTitel('Herfststukjes: Het Koffertje 4+', v), { tekst: 'Het Koffertje 4+', reeks: 'Herfststukjes' });
+  assert.deepEqual(reeksUitTitel('Voorjaarsvakantie:Het Grooote genieten (4+)', v), { tekst: 'Het Grooote genieten (4+)', reeks: 'Voorjaarsvakantie' });
+  assert.deepEqual(reeksUitTitel('Opera & Brunch: Heroines', v), { tekst: 'Heroines', reeks: 'Opera & Brunch' });
+  // Zonder titel erachter, zonder dubbele punt of niet vooraan: blijft.
+  for (const t of ['CELLOFEST', 'Lunchconcert', 'lunchconcert', 'CELLOFEST: ', 'Herfststukjes voor peuters', 'Het Koffertje – Herfststukjes: x']) {
+    assert.deepEqual(reeksUitTitel(t, v), { tekst: t, reeks: null }, t);
+  }
+  // Andere theaters (zonder lijst): niets.
+  assert.deepEqual(reeksUitTitel('Herfststukjes: Het Koffertje 4+'), { tekst: 'Herfststukjes: Het Koffertje 4+', reeks: null });
+});
