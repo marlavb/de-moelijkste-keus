@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 
-import { scrapeDeMuze } from '../src/sites/demuze.js';
+import { scrapeDeMuze, verwerkDeMuze } from '../src/sites/demuze.js';
 import { THEATERS } from '../src/lib/config.js';
 
 const lees = (naam) => readFileSync(new URL(`./fixtures/${naam}`, import.meta.url), 'utf-8');
@@ -47,3 +47,12 @@ test('De Muze: twee pagina’s, carrousel overgeslagen, films en besloten voorst
   assert.ok(logs.includes('weggelaten: film (1), besloten (1)'), logs.join('\n'));
 });
 
+
+test('De Muze: "Verenigingen & Organisaties" → Podiumpas onbekend (null) met toelichting; boven €50 false', () => {
+  const theater = THEATERS.find((t) => t.id === 'demuze');
+  const kaart = (titel, categorie, prijs, dag) => ({ href: `https://demuze.nl/programma/x-${dag}/?speeldata=2026-10-${dag}-20-15`, titel, categorie, prijs, knop: 'Tickets', ticket: null, tekst: null });
+  const shows = verwerkDeMuze([kaart('Crescendo Najaarsconcert', 'Verenigingen & Organisaties', '€15,00', 25), kaart('Stef Bos', 'Theater', '€35,00', 26), kaart('Groot Concert', 'Theater', '€55,00', 27)], { theater });
+  assert.deepEqual(shows.map((s) => [s.titel, s.podiumpas]), [['Crescendo Najaarsconcert', null], ['Stef Bos', true], ['Groot Concert', false]]);
+  assert.match(shows[0].podiumpasNoot, /verenigingen en organisaties nog niet bekend/);
+  assert.equal('podiumpasNoot' in shows[1], false);
+});

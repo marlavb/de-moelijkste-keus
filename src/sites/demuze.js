@@ -15,6 +15,12 @@ export const PODIUMPAS_MAX_PRIJS = 50;
 // Categorie op de kaart: films laten we weg (zoals bij PLT, Agnietenhof).
 const FILM = /^film$/i;
 
+// Categorie "Verenigingen & Organisaties" (koren, harmonieën, eigen
+// organisaties; misschien verhuur): de Podiumpas-pagina zegt er niets over,
+// dus podiumpas null = nog niet bekend (9 okt 2026).
+const VERENIGINGEN = /^verenigingen\s*&\s*organisaties$/i;
+export const VERENIGINGEN_NOOT = 'Podiumpas-voorwaarden voor voorstellingen van verenigingen en organisaties nog niet bekend — vraag het theater.';
+
 // Niet openbaar: "Een besloten voorstelling voor genodigde …".
 const BESLOTEN = /\bbesloten (voorstelling|bijeenkomst|avond)\b/i;
 
@@ -111,6 +117,9 @@ export function verwerkDeMuze(kaarten, { theater, log = () => {}, opgehaaldOp = 
     if (prijs != null && prijs > PODIUMPAS_MAX_PRIJS) {
       podiumpas = false;
       tel(geenPas, `prijs > €${PODIUMPAS_MAX_PRIJS}`);
+    } else if (VERENIGINGEN.test(k.categorie ?? '')) {
+      podiumpas = null;
+      tel(geenPas, 'verenigingen & organisaties: onbekend (null)');
     }
     const knop = k.knop ?? '';
     const beschikbaarheid = vervallenStatus(knop) ?? (/uitverkocht/i.test(knop) ? 'uitverkocht' : /wachtlijst/i.test(knop) ? 'wachtlijst' : /tickets|bestel|reserveer/i.test(knop) ? 'beschikbaar' : 'onbekend');
@@ -134,6 +143,7 @@ export function verwerkDeMuze(kaarten, { theater, log = () => {}, opgehaaldOp = 
       beschrijving: [festival, k.tekst].filter(Boolean).join(' · ') || null,
       maker: null,
       prijs,
+      ...(podiumpas === null ? { podiumpasNoot: VERENIGINGEN_NOOT } : {}),
       reserverenUrl: k.ticket && /^https:\/\/tickets\./.test(k.ticket) ? k.ticket : bron,
       bron,
       opgehaaldOp,
@@ -141,6 +151,6 @@ export function verwerkDeMuze(kaarten, { theater, log = () => {}, opgehaaldOp = 
   }
   const lijst = (o) => Object.entries(o).map(([x, n]) => `${x} (${n})`).join(', ');
   if (Object.keys(weg).length) log(`weggelaten: ${lijst(weg)}`);
-  if (Object.keys(geenPas).length) log(`podiumpas false: ${lijst(geenPas)}`);
+  if (Object.keys(geenPas).length) log(`podiumpas false of onbekend: ${lijst(geenPas)}`);
   return shows;
 }
