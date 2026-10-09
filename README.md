@@ -22,10 +22,12 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
 
 - **Agenda**: alle komende voorstellingen per dag, zoeken op titel en theater,
   standaard de komende 30 dagen ("Toon … verder in de toekomst").
-- **Filters**: stad, theater, genre, alleen Podiumpas, alleen watchlist,
+- **Filters**: stad, theater, genre, alleen Podiumpas (ook "Podiumpas?":
+  nog niet bekend of de pas geldt), alleen watchlist,
   "Verberg volle voorstellingen" (uitverkocht, wachtlijst, afgelast) en
   "Verberg gezien". De keuze wordt onthouden.
-- **Detailscherm**: info, reserveren, Podiumpas per speeldatum, andere data en
+- **Detailscherm**: info, reserveren, Podiumpas per speeldatum ("Podiumpas:
+  nog niet bekend" met de toelichting als dat zo is), andere data en
   "Ook te zien bij" (volle data grijs en doorgestreept), in je agenda zetten.
 - **Theaters per provincie**: theaters aan of uit, per theater, per stad of per
   provincie (vinkje met aan/uit/deels). Gepauzeerde theaters staan er met een
@@ -131,7 +133,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   site), PLT (Heerlen, Kerkrade, Sittard) en Musis en Stadstheater Arnhem
   (één API; het Stadstheater is tot 2028 dicht en heeft een melding). Theaters zonder Podiumpas staan
   er ook in, met `podiumpas: false` (ITA, de Limburgse theaters behalve De
-  Maaspoort en DOK6); de nieuwste theaters draaien achteraan in de run, elk
+  Maaspoort en DOK6); waar de voorwaarden niet vast te stellen zijn, staat
+  `podiumpas: null` (nog niet bekend; per voorstelling eventueel met
+  `podiumpasNoot`); de nieuwste theaters draaien achteraan in de run, elk
   met een eigen tijdbudget. Besloten verhuur (zonder kaartverkoop) laten we
   weg, openbare verhuur blijft als Overig. Een genre kan per theater anders
   gekoppeld zijn (`GENRE_PER_THEATER` in `genre.js`: Komedie is Toneel bij De
@@ -230,16 +234,17 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v43`
+Service worker: `podiumagenda-v44`
 <!-- AUTO:sw:end -->
 
 ### Theaters
 
 Status uit de laatste refresh: `ok`, `leeg` (geen komende voorstellingen) of
 `gepauzeerd` (het theater weert ons; we omzeilen dat niet). Podiumpas per
-voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
-`–` (geen voorstellingen in de data). De app toont `ja` en `deels` als
-"Podiumpas".
+voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen),
+`onbekend` (bij geen enkele zeker, bij een deel nog niet bekend) of `–` (geen
+voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
+`onbekend` als "Podiumpas?".
 
 <!-- AUTO:theaters:start -->
 **Noord-Holland** (25)

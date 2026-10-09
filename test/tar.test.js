@@ -46,7 +46,7 @@ test('TAR: agenda + lijst-endpoint, Happy Hour/residenties/workshops weg, maker,
   assert.deepEqual(urls, ['https://tar.nl/agenda/', 'https://tar.nl/wp-json/tar/v1/list?post=38&block=2&offset=8&size=8']);
   assert.match(shows[0].beschrijving, /^Première/);
   assert.match(shows[0].reserverenUrl, /^https:\/\/apps\.ticketmatic\.com\//);
-  assert.ok(shows.every((s) => s.podiumpas));
+  assert.ok(shows.every((s) => s.podiumpas === null), 'TAR: Podiumpas nog niet bekend (null)');
   assert.ok(logs.some((l) => l === 'weggelaten: Happy Hour (3), workshop (4)'), logs.join('\n'));
   assert.equal(logs.some((l) => /WARN/.test(l)), false, logs.join('\n'));
 });

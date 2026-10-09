@@ -507,3 +507,39 @@ test('watchlist met alleen volle data: de rij in Profiel opent nog steeds het de
   assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
   await ctx.close();
 });
+
+// Podiumpas nog niet bekend (podiumpas: null, 9 okt 2026): met het
+// Podiumpas-filter aan zichtbaar, met het neutrale label "Podiumpas?" (geen
+// pas-icoon); op het detailscherm "Podiumpas: nog niet bekend" met de
+// toelichting; in "Mijn theaters" het label "Podiumpas?".
+test('Podiumpas onbekend (null): zichtbaar met filter aan, label "Podiumpas?", toelichting op het detailscherm', async () => {
+  const shows = [
+    proef('reggehof', 'De Reggehof', 'Goor', 2, null, { titel: 'Proef Onbekend', podiumpasNoot: 'Geldt de Podiumpas ook hier? Nog niet bekend — vraag het theater.' }),
+    proef('delamar', 'DeLaMar', 'Amsterdam', 3, true, { titel: 'Proef Met Pas' }),
+    proef('carre', 'Carré', 'Amsterdam', 4, false, { titel: 'Proef Zonder Pas' }),
+  ];
+  const { ctx, page } = await openApp({ alleenShows: shows, opslag: { 'podiumagenda:filters': { podiumpasOnly: true } } });
+  const titels = await page.locator('.show-row .show-title-text').allTextContents();
+  assert.deepEqual(titels.map((t) => t.trim()).sort(), ['Proef Met Pas', 'Proef Onbekend']);
+  const onbekend = page.locator('.show-row', { hasText: 'Proef Onbekend' });
+  assert.equal(await onbekend.locator('.podiumpas-onbekend').textContent(), 'Podiumpas?');
+  assert.equal(await onbekend.locator('.podiumpas-icon').count(), 0, 'geen pas-icoon');
+  assert.equal(await page.locator('.show-row', { hasText: 'Proef Met Pas' }).locator('.podiumpas-onbekend').count(), 0);
+
+  await page.goto(`${base}#/show/proef-reggehof-2`);
+  await page.waitForTimeout(300);
+  assert.equal(await page.locator('#detailPodiumpasBadge').isVisible(), false);
+  assert.equal(await page.locator('#detailPodiumpasOnbekend').isVisible(), true);
+  assert.match(await page.locator('#detailPodiumpasOnbekend').textContent(), /^Podiumpas: nog niet bekendGeldt de Podiumpas ook hier\?/);
+  await page.goto(`${base}#/show/proef-delamar-3`);
+  await page.waitForTimeout(300);
+  assert.equal(await page.locator('#detailPodiumpasOnbekend').isVisible(), false);
+
+  await page.goto(`${base}#/theaters`);
+  await page.waitForTimeout(300);
+  const kaart = page.locator('.theater-card', { hasText: 'De Reggehof' });
+  assert.equal(await kaart.locator('.podiumpas-badge').textContent(), 'Podiumpas?');
+  assert.equal(await page.locator('.theater-card', { hasText: 'DeLaMar' }).locator('.podiumpas-badge').textContent(), 'Podiumpas');
+  assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+  await ctx.close();
+});

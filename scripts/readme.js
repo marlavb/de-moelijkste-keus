@@ -57,14 +57,18 @@ const cel = (t) => String(t ?? '').replace(/\|/g, '\\|');
 // Podiumpas: dezelfde bron als het tabblad Theaters in de app, namelijk
 // `podiumpas` per voorstelling in shows.json (niet het veld in config.js,
 // dat bij gemengde theaters niet per voorstelling klopt). ja = alle
-// voorstellingen, deels = een deel, nee = geen. Zonder voorstellingen in de
-// data toont de app geen Podiumpas-label; hier dan "–".
-// (De app zelf toont "Podiumpas" bij ja of deels, en "Geen Podiumpas" bij nee.)
+// voorstellingen, deels = een deel, nee = geen, onbekend = bij geen enkele
+// zeker, bij een deel nog niet bekend (podiumpas: null, okt 2026). Zonder
+// voorstellingen in de data toont de app geen Podiumpas-label; hier dan "–".
+// (De app zelf toont "Podiumpas" bij ja of deels, "Podiumpas?" bij onbekend
+// en "Geen Podiumpas" bij nee.)
 export function podiumpasVan(theaterId, shows) {
   const eigen = shows.filter((s) => s.theaterId === theaterId);
   if (eigen.length === 0) return '–';
   const ja = eigen.filter((s) => s.podiumpas === true).length;
-  return ja === eigen.length ? 'ja' : ja === 0 ? 'nee' : 'deels';
+  if (ja === eigen.length) return 'ja';
+  if (ja > 0) return 'deels';
+  return eigen.some((s) => s.podiumpas === null) ? 'onbekend' : 'nee';
 }
 
 function statusVan(theater, status) {
