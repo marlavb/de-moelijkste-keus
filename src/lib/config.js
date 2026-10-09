@@ -703,8 +703,9 @@ export const THEATERS = [
     // Bron: https://podiumpas.nl/waar-te-besteden (6 okt 2026). De eigen
     // pagina https://theaterspeelhuis.nl/podiumpas (6 okt 2026) noemt geen
     // voorwaarden: Podiumpas bij alle voorstellingen behalve gratis (zie
-    // src/sites/speelhuis.js); voorwaarden worden nagevraagd.
-    podiumpas: true,
+    // src/sites/speelhuis.js); voorwaarden worden nagevraagd. Daarom
+    // podiumpas null = nog niet bekend (9 okt 2026, zoals TAR en De Reggehof).
+    podiumpas: null,
     melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
   },
   {
@@ -717,8 +718,8 @@ export const THEATERS = [
     // Bron: https://podiumpas.nl/waar-te-besteden (6 okt 2026); de eigen site
     // noemt de pas niet (6 okt 2026). Podiumpas bij alle voorstellingen
     // behalve gratis (zie src/sites/schouwburgconcertzaal.js); voorwaarden
-    // worden nagevraagd.
-    podiumpas: true,
+    // worden nagevraagd. Daarom podiumpas null = nog niet bekend (9 okt 2026).
+    podiumpas: null,
     melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
   },
   {

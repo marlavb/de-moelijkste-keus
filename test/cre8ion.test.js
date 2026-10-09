@@ -53,10 +53,10 @@ test('Het Speelhuis: dataLayer-datum met jaar, zaal, status, titels, Podiumpas z
   assert.equal(marie.zaal, 'Pleinzaal');
   assert.equal(marie.beschikbaarheid, 'wachtlijst');
   assert.equal(marie.genre, 'Cabaret');
-  // Geen prijsgrens (voorwaarden onbekend): ook € 48,50 heeft Podiumpas.
+  // Voorwaarden onbekend (9 okt 2026): podiumpas null, ook bij € 48,50.
   const voorHaar = shows.find((s) => s.titel === 'Voor Haar');
   assert.equal(voorHaar.prijs, 48.5);
-  assert.equal(voorHaar.podiumpas, true);
+  assert.equal(voorHaar.podiumpas, null);
   assert.equal(voorHaar.maker, null, 'beschrijvende ondertitel is geen maker');
   // Titelvolgorde: Dans, College en Divers vast Maker / Titel → "Voorstelling – Maker".
   assert.ok(shows.some((s) => s.titel === 'Danslokaal 14 – Conny Janssen Danst'), titels(shows));
@@ -78,7 +78,7 @@ test('Schouwburg Concertzaal: titel – maker, locaties, weglaten (De Nieuwe Vor
   assert.equal(kordaat.zaal, 'Schouwburg');
   assert.equal(kordaat.beschikbaarheid, 'wachtlijst');
   assert.equal(kordaat.genre, 'Cabaret');
-  assert.equal(kordaat.podiumpas, true);
+  assert.equal(kordaat.podiumpas, null, 'voorwaarden onbekend');
   // Toneel: titel = voorstelling, maker = gezelschap.
   const kamer = shows.find((s) => s.titel === 'IK BEN KAMER 15');
   assert.equal(kamer.maker, 'Speels Collectief');
