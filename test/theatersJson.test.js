@@ -29,10 +29,30 @@ test('config: elk podiumpasReserveren heeft een manier om te reserveren', () => 
     // online: true = reserveren via de eigen website (tarief "Podiumpas").
     assert.ok(r.online || r.telefoon || r.email || r.formulier, t.id);
     if (r.online) assert.ok(r.toelichting, `${t.id}: online zonder toelichting`);
-    assert.ok(t.podiumpas, `${t.id}: reserveerinfo zonder podiumpas`);
+    assert.notEqual(t.podiumpas, false, `${t.id}: reserveerinfo zonder podiumpas`);
   }
-  const size = JSON.stringify(buildTheatersJson(THEATERS)).length;
-  assert.ok(size < 15000, `theaters.json blijft klein (${size} bytes)`);
+});
+
+// theaters.json laadt de app bij elke start (network-first). Een vaste grens
+// (15 000 bytes, sep 2026, bij ~40 theaters) groeit niet mee met het aantal
+// theaters; nu: gemiddeld hooguit 400 bytes per theater, een harde
+// bovengrens van 60 000 bytes, en geen losse tekst die uit de hand loopt
+// (9 okt 2026: 80 theaters, ~15,6 KB, ~195 bytes per theater, langste
+// tekst ~270 tekens).
+const MAX_GEMIDDELD_PER_THEATER = 400;
+const MAX_BYTES = 60_000;
+const MAX_TEKST = 400;
+test('theaters.json blijft klein: gemiddeld per theater, harde bovengrens, geen lange losse tekst', () => {
+  const json = JSON.stringify(buildTheatersJson(THEATERS));
+  const bytes = Buffer.byteLength(json, 'utf-8');
+  assert.ok(bytes <= MAX_BYTES, `theaters.json ${bytes} bytes (max ${MAX_BYTES})`);
+  const gemiddeld = bytes / THEATERS.length;
+  assert.ok(gemiddeld <= MAX_GEMIDDELD_PER_THEATER, `gemiddeld ${Math.round(gemiddeld)} bytes per theater (max ${MAX_GEMIDDELD_PER_THEATER})`);
+  for (const t of THEATERS) {
+    for (const [veld, tekst] of [['melding', t.melding], ['toelichting', t.podiumpasReserveren?.toelichting]]) {
+      if (tekst) assert.ok(tekst.length <= MAX_TEKST, `${t.id}: ${veld} is ${tekst.length} tekens (max ${MAX_TEKST})`);
+    }
+  }
 });
 
 test('elk theater in config.js heeft een provincie (voor de latere provinciefilter)', async () => {
