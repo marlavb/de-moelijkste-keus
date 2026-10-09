@@ -48,12 +48,12 @@ test('Schouwburg Hengelo: twee lijstpagina’s + periode via detailpagina; Podiu
     'Ode aan Rob de Nijs | Puur de Nijs | 2026-10-15 20:30 | beschikbaar | pas true | Middenzaal',
     'Cinekid Festival | - | 2026-10-15 11:00 | onbekend | pas false | Wolvecampfoyer',
     'An evening with Dominic Seldis | Dominic Seldis & Jan-Willem Rozenboom | 2026-10-16 20:30 | uitverkocht | pas false | Kulturhus Borne | Borne',
-    "Wat 'n Spul | Hengelose Revue | 2027-01-29 20:00 | beschikbaar | pas false | Rabozaal",
-    "Wat 'n Spul | Hengelose Revue | 2027-01-30 20:00 | beschikbaar | pas false | Rabozaal",
-    "Wat 'n Spul | Hengelose Revue | 2027-01-31 14:00 | beschikbaar | pas false | Rabozaal",
-    "Wat 'n Spul | Hengelose Revue | 2027-02-03 20:00 | beschikbaar | pas false | Rabozaal",
-    "Wat 'n Spul | Hengelose Revue | 2027-02-04 20:00 | beschikbaar | pas false | Rabozaal",
-    "Wat 'n Spul | Hengelose Revue | 2027-02-05 20:00 | beschikbaar | pas false | Rabozaal",
+    "Wat 'n Spul | Hengelose Revue | 2027-01-29 20:00 | beschikbaar | pas null | Rabozaal",
+    "Wat 'n Spul | Hengelose Revue | 2027-01-30 20:00 | beschikbaar | pas null | Rabozaal",
+    "Wat 'n Spul | Hengelose Revue | 2027-01-31 14:00 | beschikbaar | pas null | Rabozaal",
+    "Wat 'n Spul | Hengelose Revue | 2027-02-03 20:00 | beschikbaar | pas null | Rabozaal",
+    "Wat 'n Spul | Hengelose Revue | 2027-02-04 20:00 | beschikbaar | pas null | Rabozaal",
+    "Wat 'n Spul | Hengelose Revue | 2027-02-05 20:00 | beschikbaar | pas null | Rabozaal",
     'Alle kinderen stinken (6+) | Patrick Duijtshoff en Judith van den Berg | 2026-10-10 15:00 | beschikbaar | pas true | Middenzaal',
     'Demonen – Peter Pannekoek | - | 2027-09-09 20:00 | beschikbaar | pas false | ?',
   ]);
@@ -61,6 +61,8 @@ test('Schouwburg Hengelo: twee lijstpagina’s + periode via detailpagina; Podiu
   assert.equal(thijs.beschrijving, 'voorpremière');
   assert.equal(shows.find((s) => s.titel === 'Cinekid Festival').beschrijving, 'i.s.m. Tetem');
   assert.equal(shows.find((s) => s.titel === "Wat 'n Spul").prijs, 21.5);
+  assert.match(shows.find((s) => s.titel === "Wat 'n Spul").podiumpasNoot, /regionale voorstellingen\? Nog niet bekend/);
+  assert.equal(shows.filter((s) => 'podiumpasNoot' in s).length, 6, 'alleen bij Regionaal');
   assert.match(shows[0].reserverenUrl, /^https:\/\/bestellen\.schouwburghengelo\.nl\/bestel\/\d+$/);
   assert.ok(logs.some((l) => /weggelaten: De kunst van leven tot het laatst \(1\)/.test(l)), logs.join('\n'));
   assert.equal(logs.some((l) => /WARN/.test(l)), false, logs.join('\n'));

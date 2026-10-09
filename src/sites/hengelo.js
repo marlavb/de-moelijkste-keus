@@ -32,10 +32,11 @@ const GEEN_MAKER = /^(i\.?s\.?m\.?|presenteert|presents?)\s/i;
 const WEGLATEN_GENRE = /^workshop$/i;
 const WEGLATEN_TITEL = /^de kunst van leven tot het laatst$/i;
 
-// "Alleen professionele voorstellingen" (bron hierboven): genre "Regionaal"
-// is amateurwerk uit de regio (Hengelose Revue, koren, Federatie
-// Amateurkunst; 9 okt 2026), dus geen Podiumpas.
-const AMATEUR_GENRE = /^regionaal$/i;
+// "Alleen professionele voorstellingen" (bron hierboven). Of genre
+// "Regionaal" (Hengelose Revue, koren, Federatie Amateurkunst) daaronder
+// valt, zegt het theater niet: podiumpas null = nog niet bekend (9 okt 2026).
+const REGIONAAL_GENRE = /^regionaal$/i;
+export const REGIONAAL_NOOT = 'Geldt de Podiumpas ook voor regionale voorstellingen? Nog niet bekend — vraag het theater.';
 
 const MAANDEN = { jan: 1, feb: 2, mrt: 3, maa: 3, apr: 4, mei: 5, jun: 6, jul: 7, aug: 8, sep: 9, okt: 10, nov: 11, dec: 12 };
 
@@ -222,12 +223,12 @@ export function verwerkHengelo(tegels, { theater, log = () => {}, opgehaaldOp = 
     if (!plek || !PAS_ZAAL.test(plek)) {
       podiumpas = false;
       tel(geenPas, plek ?? 'zaal onbekend');
-    } else if (genreRuw && AMATEUR_GENRE.test(genreRuw)) {
-      podiumpas = false;
-      tel(geenPas, 'regionaal (amateur)');
     } else if (prijs != null && prijs > PODIUMPAS_MAX_PRIJS) {
       podiumpas = false;
       tel(geenPas, `prijs > €${PODIUMPAS_MAX_PRIJS}`);
+    } else if (genreRuw && REGIONAAL_GENRE.test(genreRuw)) {
+      podiumpas = null;
+      tel(geenPas, 'regionaal: onbekend (null)');
     }
 
     const kop = metEnDash(tg.kop);
@@ -269,6 +270,7 @@ export function verwerkHengelo(tegels, { theater, log = () => {}, opgehaaldOp = 
       beschrijving,
       maker,
       prijs,
+      ...(podiumpas === null ? { podiumpasNoot: REGIONAAL_NOOT } : {}),
       ...(eigen ? { zaal: plek } : { locatie: `${plek} | ${PLAATS[plek.toLowerCase()] ?? theater.stad}` }),
       reserverenUrl: tg.bestel && /^https?:/.test(tg.bestel) ? tg.bestel : bron,
       bron,
@@ -283,7 +285,7 @@ export function verwerkHengelo(tegels, { theater, log = () => {}, opgehaaldOp = 
   }
   const lijst = (o) => Object.entries(o).map(([x, n]) => `${x} (${n})`).join(', ');
   if (Object.keys(weg).length) log(`weggelaten: ${lijst(weg)}`);
-  if (Object.keys(geenPas).length) log(`podiumpas false: ${lijst(geenPas)}`);
+  if (Object.keys(geenPas).length) log(`podiumpas false of onbekend: ${lijst(geenPas)}`);
   if (Object.keys(onbekend).length) log(`onbekende genres: ${lijst(onbekend)}`);
   if (twijfel.length) log(`volgorde titel/maker niet uit de URL af te leiden (kop = titel, onder = maker): ${twijfel.length}× — ${twijfel.slice(0, 5).join('; ')}`);
   return shows;
