@@ -65,3 +65,38 @@ test('config/aliassen.json: geldig, geen ketens, elke bron een echte sleutel', (
   }
   assert.equal(watchlistSleutel('Dekpunt – Jan Beuving'), 'dekpunt | jan beuving');
 });
+
+test('latere export: nieuwe keuzes erbij, opnieuw beoordeelde groep vervangt de oude, keuze wint van R2/R3, niet samenvoegen haalt R2/R3 weg', () => {
+  const bestaand = {
+    aliassen: {
+      'dekpunt | jan beuving en tom dicke': { titel: 'Dekpunt – Jan Beuving & Tom Dicke', maker: 'Jan Beuving & Tom Dicke', groep: 'dekpunt', regel: 'keuze' },
+      'dekpunt': { titel: 'Dekpunt – Jan Beuving & Tom Dicke', maker: 'Jan Beuving & Tom Dicke', groep: 'dekpunt', regel: 'keuze' },
+      'nienke plas': { titel: 'Appeltje Eitje – Nienke Plas', maker: null, groep: 'appeltje', regel: 'R2' },
+      'theater oostpool | the drama': { titel: 'The Drama', maker: null, groep: 'the drama', regel: 'R3' },
+      'katwijk': { titel: 'KATWIJK', maker: null, groep: 'k', regel: 'keuze' },
+    },
+    nietSamenvoegen: [],
+  };
+  const exp = {
+    aliassen: [
+      // Dekpunt opnieuw beoordeeld: alleen deze bron, ander doel.
+      keuze('dekpunt', 'andere naam', 'dekpunt | jan beuving en tom dicke', { titel: 'Dekpunt', maker: 'Jan Beuving', weergave: 'Dekpunt – Jan Beuving' }),
+      keuze('appeltje', 'samenvoegen', 'nienke plas', { titel: 'Appeltje Eitje', maker: 'Nienke Plas', weergave: 'Appeltje Eitje – Nienke Plas' }),
+      keuze('nieuw', 'samenvoegen', 'x', { titel: 'Y', maker: null, weergave: 'Y' }),
+    ],
+    nietSamenvoegen: [{ groep: 'the drama', sleutels: ['theater oostpool | the drama', 'the drama'] }],
+  };
+  const { lijst, overzicht } = voegExportSamen(bestaand, exp);
+  assert.equal(lijst.aliassen['dekpunt | jan beuving en tom dicke'].titel, 'Dekpunt – Jan Beuving');
+  assert.equal(lijst.aliassen.dekpunt, undefined);
+  assert.equal(lijst.aliassen['nienke plas'].regel, 'keuze');
+  assert.equal(lijst.aliassen['theater oostpool | the drama'], undefined);
+  assert.equal(lijst.aliassen.katwijk.titel, 'KATWIJK');
+  assert.equal(lijst.aliassen.x.titel, 'Y');
+  assert.deepEqual(lijst.nietSamenvoegen.map((g) => g.groep), ['the drama']);
+  assert.deepEqual({ nieuw: overzicht.nieuw.length, gewijzigd: overzicht.gewijzigd.length, verwijderd: overzicht.verwijderd.length, gelijk: overzicht.gelijk }, { nieuw: 1, gewijzigd: 2, verwijderd: 2, gelijk: 1 });
+  // Dezelfde export nog eens: niets verandert.
+  const twee = voegExportSamen(lijst, exp);
+  assert.deepEqual(twee.lijst, lijst);
+  assert.equal(twee.overzicht.nieuw.length + twee.overzicht.gewijzigd.length + twee.overzicht.verwijderd.length, 0);
+});
