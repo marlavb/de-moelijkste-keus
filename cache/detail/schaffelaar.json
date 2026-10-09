@@ -20,6 +20,25 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/4-cellisten-in-concert/": {
+   "opgehaaldOp": "2026-10-09T03:45:03.793Z",
+   "data": {
+    "titel": "4 cellisten in concert",
+    "onder": "Koffieconcert",
+    "genres": [
+     "klassiekekoffieconcerten"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": "di. 12-01-2027 | 10:30",
+      "knop": "Dit concert is volgeboekt",
+      "href": "https://www.koffieconcerten.nl/concert.php?concert=barneveld-4-cellisten-in-concert-2027-01-12-1030u"
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/a-tribute-to-john-denver/": {
    "opgehaaldOp": "2026-10-08T03:46:42.456Z",
    "data": {
@@ -35,6 +54,30 @@
       "datum": "vr. 07-05-2027 | 20:00",
       "knop": "Kaarten",
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12093&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=3cc1f2730cc8aaaade012a34c7ad5d09944404baf4a0078fb0f6515102cf8e3d"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/abba-the-music-reprise/": {
+   "opgehaaldOp": "2026-10-09T03:45:41.786Z",
+   "data": {
+    "titel": "ABBA The Music (Reprise)",
+    "onder": "Thank You For The Music",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
      }
     ]
    }
@@ -77,6 +120,28 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/aletta-smits/": {
+   "opgehaaldOp": "2026-10-09T03:45:26.694Z",
+   "data": {
+    "titel": "Aletta Smits",
+    "onder": "Het puberbrein – een handleiding",
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/anansi-de-spin-en-de-gulzige-tijger-3/": {
    "opgehaaldOp": "2026-10-08T03:46:01.385Z",
    "data": {
@@ -93,6 +158,62 @@
       "datum": "ma. 28-12-2026 | 10:30",
       "knop": "Kaarten",
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12191&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=86bb973d3535e1daa16ab3caa7dc861e20069e32e72d86744f6de12fd5542d28"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/ayoub/": {
+   "opgehaaldOp": "2026-10-09T03:46:18.694Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/balletschool-desiree-nillesen-livestream/": {
+   "opgehaaldOp": "2026-10-09T03:45:35.664Z",
+   "data": {
+    "titel": "Balletschool Désirée Nillesen - Livestream",
+    "onder": "Pinokkio - Livestream",
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/balletschool-desiree-nillesen/": {
+   "opgehaaldOp": "2026-10-09T03:45:36.695Z",
+   "data": {
+    "titel": "Balletschool Désirée Nillesen",
+    "onder": "Pinokkio",
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
      }
     ]
    }
@@ -115,6 +236,40 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12066&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=f0fb593211fe8bfdc6cfa6b85234d18c9080c3b1dd5bef17bc1527c859ab2c75"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/barnevelds-kamerorkest-1/": {
+   "opgehaaldOp": "2026-10-09T03:45:56.709Z",
+   "data": {
+    "titel": "Barnevelds Kamerorkest",
+    "onder": "Van Alles Wat",
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/barnevelds-philharmonisch-orkest/": {
+   "opgehaaldOp": "2026-10-09T03:46:42.587Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/barnevelds-shantykoor-het-roer-om/": {
@@ -200,6 +355,85 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12342&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=75e1fcfb999b98a3594c8ca522d7bd80dd715af9c16a3879f7a55cd332c67b1d"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/beach-boys-best/": {
+   "opgehaaldOp": "2026-10-09T03:45:17.238Z",
+   "data": {
+    "titel": "Beach Boys' Best",
+    "onder": "Legendary Albums Live",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 28,50",
+    "rijen": [
+     {
+      "datum": "wo. 21-10-2026 | 20:00",
+      "knop": "Uitverkocht",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=11991&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=dbe26cb439f671be38c9d78405a33b1624f7d0b1045c1602d8689e9325a27984"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/beach-boys-verplaatst/": {
+   "opgehaaldOp": "2026-10-09T03:45:38.665Z",
+   "data": {
+    "titel": "Beach Boys - verplaatst!",
+    "onder": null,
+    "genres": [
+     "muziek"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/bee-gees-by-maincourse-2026-1/": {
+   "opgehaaldOp": "2026-10-09T03:45:37.668Z",
+   "data": {
+    "titel": "Bee Gees by MainCourse - 2026",
+    "onder": "You should be dancing (Reprise)",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/bee-gees-by-maincourse-2026/": {
+   "opgehaaldOp": "2026-10-09T03:46:13.605Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/bee-gees-by-maincourse/": {
@@ -297,6 +531,30 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/blauwe-vinkjes/": {
+   "opgehaaldOp": "2026-10-09T03:45:48.788Z",
+   "data": {
+    "titel": "Blauwe Vinkjes",
+    "onder": "Poeha",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/boban-braspenning/": {
    "opgehaaldOp": "2026-10-08T03:46:43.444Z",
    "data": {
@@ -379,6 +637,37 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/brothers-in-band/": {
+   "opgehaaldOp": "2026-10-09T03:46:25.674Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/buddy-vedder-shelley-bos-al-het-blauw-van-de-hemel/": {
+   "opgehaaldOp": "2026-10-09T03:45:02.651Z",
+   "data": {
+    "titel": "Al het blauw van de hemel",
+    "onder": "Buddy Vedder & Shelley Bos",
+    "genres": [
+     "muziektheater"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 43,00",
+    "rijen": [
+     {
+      "datum": "do. 30-09-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12339&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=3915d350ec70adcee61fe19daa23efff0753d149285038e2c5269455ee6c38b0"
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/buurman-en-buurman-bouwen-een-feestje-4/": {
    "opgehaaldOp": "2026-10-08T03:46:52.093Z",
    "data": {
@@ -397,6 +686,25 @@
       "datum": "zo. 11-10-2026 | 15:30 - 16:30",
       "knop": "Kaarten",
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12094&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=2663e5474b4229c6094047b5d8fccd8e9c9bda31471c86af143116cb03ef5b0e"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/carnaval-der-dieren-op-2-vleugels/": {
+   "opgehaaldOp": "2026-10-09T03:45:22.824Z",
+   "data": {
+    "titel": "Carnaval der Dieren op 2 vleugels",
+    "onder": "Koffieconcert",
+    "genres": [
+     "klassiekekoffieconcerten"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": "di. 13-10-2026 | 10:30",
+      "knop": "Dit concert is volgeboekt",
+      "href": "https://www.koffieconcerten.nl/concert.php?concert=barneveld-carnaval-der-dieren-op-2-vleugels-2026-10-13-1030u"
      }
     ]
    }
@@ -456,6 +764,88 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/child-of-destiny-geannuleerd/": {
+   "opgehaaldOp": "2026-10-09T03:45:54.751Z",
+   "data": {
+    "titel": "Child of Destiny - geannuleerd",
+    "onder": "The Dutch Experience",
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/chris-verlaan/": {
+   "opgehaaldOp": "2026-10-09T03:46:07.700Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/christian-farla/": {
+   "opgehaaldOp": "2026-10-09T03:46:33.687Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/coming-on-strong/": {
+   "opgehaaldOp": "2026-10-09T03:45:09.874Z",
+   "data": {
+    "titel": "Coming on Strong!",
+    "onder": "Onze Earring",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/crazy-little-things/": {
+   "opgehaaldOp": "2026-10-09T03:46:35.705Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
   "https://schaffelaartheater.nl/agenda/daan-van-der-hoeven/": {
    "opgehaaldOp": "2026-10-08T03:45:14.387Z",
    "data": {
@@ -471,6 +861,128 @@
       "datum": "vr. 08-01-2027 | 20:00",
       "knop": "Kaarten",
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12195&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=cf78eb5f760b63b0b93e318da1e07d2dcad470bf7cf35bb0570e84e607b7cddc"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/dance-centre-amersfoort/": {
+   "opgehaaldOp": "2026-10-09T03:45:33.746Z",
+   "data": {
+    "titel": "Dance Centre Amersfoort",
+    "onder": "‘POP ICONS’",
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/dance-floor-1/": {
+   "opgehaaldOp": "2026-10-09T03:45:29.663Z",
+   "data": {
+    "titel": "Dance Floor",
+    "onder": "TIME!",
+    "genres": [
+     "dans",
+     "tegast"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/dance-floor/": {
+   "opgehaaldOp": "2026-10-09T03:45:31.692Z",
+   "data": {
+    "titel": "Dance Floor",
+    "onder": "TIME!",
+    "genres": [
+     "tegast"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/dance-studio-imove/": {
+   "opgehaaldOp": "2026-10-09T03:45:50.681Z",
+   "data": {
+    "titel": "Dance Studio Imove",
+    "onder": "Dancing through decades",
+    "genres": [
+     "tegast"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/dansstudio-caroline/": {
+   "opgehaaldOp": "2026-10-09T03:45:40.698Z",
+   "data": {
+    "titel": "Dansstudio Caroline",
+    "onder": "Jubileumshow – 5 jaar Dansstudio Caroline",
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
      }
     ]
    }
@@ -510,6 +1022,35 @@
       "datum": "di. 27-10-2026 | 14:30",
       "knop": "Kaarten",
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12115&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=b86c6ef0c50ba73c3b6f59516fc8bd523a21da832a6442c682de079f5ac30cf8"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/de-grote-dino-show-2/": {
+   "opgehaaldOp": "2026-10-09T03:45:43.717Z",
+   "data": {
+    "titel": "De Grote Dino Show (2+)",
+    "onder": null,
+    "genres": [
+     "familie"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
      }
     ]
    }
@@ -594,6 +1135,47 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/de-mega-sint-show-2026/": {
+   "opgehaaldOp": "2026-10-09T03:45:11.733Z",
+   "data": {
+    "titel": "De Mega Sint Show 2026",
+    "onder": "Chaos in de cadeaufabriek",
+    "genres": [],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": "do. 03-12-2026 | 19:00",
+      "knop": "Externe verkoop",
+      "href": "https://ticketshop.nl/de-mega-sint-show-2026/schaffelaar-theater/2026-12-03/19:00"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/de-meute/": {
+   "opgehaaldOp": "2026-10-09T03:45:47.807Z",
+   "data": {
+    "titel": "De Meute",
+    "onder": "We hebben het gezellig",
+    "genres": [
+     "musical"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/de-notenkraker/": {
    "opgehaaldOp": "2026-10-08T03:45:47.372Z",
    "data": {
@@ -611,6 +1193,18 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12173&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=25cbe90c1e7e228de3412916d112408c6556a6f774575219d6959f4e1d501255"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/de-pianobazen/": {
+   "opgehaaldOp": "2026-10-09T03:46:39.612Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/de-ridder-zonder-billen-3/": {
@@ -696,6 +1290,30 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/def-americans/": {
+   "opgehaaldOp": "2026-10-09T03:46:41.434Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/dial-m-for-murder/": {
+   "opgehaaldOp": "2026-10-09T03:46:11.704Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
   "https://schaffelaartheater.nl/agenda/dikkie-dik-dirk-scheele-2/": {
    "opgehaaldOp": "2026-10-08T03:46:48.170Z",
    "data": {
@@ -724,6 +1342,121 @@
       "href": null
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/dominic-seldis/": {
+   "opgehaaldOp": "2026-10-09T03:46:04.591Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/donna-s-hot-stuff/": {
+   "opgehaaldOp": "2026-10-09T03:46:16.580Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/doornroosje-de-musical-4/": {
+   "opgehaaldOp": "2026-10-09T03:45:53.794Z",
+   "data": {
+    "titel": "Doornroosje De Musical (4+)",
+    "onder": "Sita Vermeulen, Natascha Molly e.a.",
+    "genres": [
+     "familie"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/dr-juriaan/": {
+   "opgehaaldOp": "2026-10-09T03:46:54.664Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/dreaming-of-a-white-christmas/": {
+   "opgehaaldOp": "2026-10-09T03:45:25.815Z",
+   "data": {
+    "titel": "Dreaming of a White Christmas",
+    "onder": "Koffieconcert",
+    "genres": [
+     "klassiekekoffieconcerten"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": "di. 15-12-2026 | 10:30",
+      "knop": "Dit concert is volgeboekt",
+      "href": "https://www.koffieconcerten.nl/concert.php?concert=barneveld-dreaming-of-a-white-christmas-2026-12-15-1030u"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/dwight-dissels/": {
+   "opgehaaldOp": "2026-10-09T03:46:06.434Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/ernest-beuving/": {
+   "opgehaaldOp": "2026-10-09T03:46:46.660Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/ernst-en-bobbie-3/": {
+   "opgehaaldOp": "2026-10-09T03:46:23.675Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/esther-van-der-voort/": {
@@ -764,6 +1497,54 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/fanfare-korps-nationale-reserve/": {
+   "opgehaaldOp": "2026-10-09T03:46:45.663Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/fay-sings-barbra-streisand/": {
+   "opgehaaldOp": "2026-10-09T03:45:59.686Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/feestelijke-seizoensopening-26-27/": {
+   "opgehaaldOp": "2026-10-09T03:45:18.783Z",
+   "data": {
+    "titel": "Feestelijke Seizoensopening 26|27",
+    "onder": null,
+    "genres": [
+     "special"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/feestpiet-diago/": {
    "opgehaaldOp": "2026-10-08T03:46:43.967Z",
    "data": {
@@ -779,6 +1560,78 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12344&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=9e534b78c3deef7cc856b407e22d168fb36f442c044ead42d0fe34c488cb6128"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/francis-van-broekhuizen/": {
+   "opgehaaldOp": "2026-10-09T03:45:30.846Z",
+   "data": {
+    "titel": "Francis van Broekhuizen",
+    "onder": "Magical Opera",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 34,50",
+    "rijen": [
+     {
+      "datum": "za. 20-03-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12124&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=7889c46b4bbe20d3d38c235f326184d0ba05178bfa0579f0b27517df4591ffac"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/fred-van-leer/": {
+   "opgehaaldOp": "2026-10-09T03:45:13.792Z",
+   "data": {
+    "titel": "Fred van Leer",
+    "onder": "Ik weet het eigenlijk niet",
+    "genres": [],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 37,50",
+    "rijen": [
+     {
+      "datum": "do. 22-10-2026 | 20:00",
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/frontm3n/": {
+   "opgehaaldOp": "2026-10-09T03:45:46.770Z",
+   "data": {
+    "titel": "Frontm3n",
+    "onder": "An Exclusive Acoustic Night",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/geef-me-de-5/": {
+   "opgehaaldOp": "2026-10-09T03:46:58.347Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/gewoon-zoals-je-bent-2/": {
@@ -820,6 +1673,18 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/golden-earring-undercover/": {
+   "opgehaaldOp": "2026-10-09T03:46:09.697Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
   "https://schaffelaartheater.nl/agenda/guido-weijers/": {
    "opgehaaldOp": "2026-10-08T03:45:23.360Z",
    "data": {
@@ -857,6 +1722,98 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12119&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=94a8b15d3fa319d0967212222640a06c35fe8db1b45866197893ab455490b4bf"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/henry-van-loon/": {
+   "opgehaaldOp": "2026-10-09T03:46:49.576Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/her-majesty/": {
+   "opgehaaldOp": "2026-10-09T03:46:32.577Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/het-hele-dorp-wist-het/": {
+   "opgehaaldOp": "2026-10-09T03:46:15.696Z",
+   "data": {
+    "titel": "Het hele dorp wist het",
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/het-zwanenmeer/": {
+   "opgehaaldOp": "2026-10-09T03:46:52.682Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/horeca-arrangement-bij-sing-en-swing-mamma-mia/": {
+   "opgehaaldOp": "2026-10-09T03:45:21.701Z",
+   "data": {
+    "titel": "Horeca arrangement bij Sing en swing Mamma Mia",
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/hotel-vol-liefde/": {
+   "opgehaaldOp": "2026-10-09T03:46:48.700Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/huisgenoten/": {
@@ -897,6 +1854,30 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/ice/": {
+   "opgehaaldOp": "2026-10-09T03:45:10.857Z",
+   "data": {
+    "titel": "ICE",
+    "onder": null,
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/iris-rulkens/": {
    "opgehaaldOp": "2026-10-08T03:45:46.365Z",
    "data": {
@@ -914,6 +1895,18 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12077&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=da346bfc08b978e9b6eb67b2e8618521797f0576769091d9bf4684f21992dc0d"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/isabelle-beernaert/": {
+   "opgehaaldOp": "2026-10-09T03:46:29.705Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/jan-beuving/": {
@@ -974,6 +1967,18 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/janneke-de-bijl/": {
+   "opgehaaldOp": "2026-10-09T03:46:31.681Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
   "https://schaffelaartheater.nl/agenda/janneke-wittekoek/": {
    "opgehaaldOp": "2026-10-08T03:45:01.353Z",
    "data": {
@@ -991,6 +1996,42 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12121&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=fc688bcb09c8727bc2ab861c7811456b58bc0248fb42cee77673614a113d5e76"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/jay-francis-1/": {
+   "opgehaaldOp": "2026-10-09T03:45:42.842Z",
+   "data": {
+    "titel": "Jay Francis",
+    "onder": "Evolutie (Reprise)",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/joep-en-rob/": {
+   "opgehaaldOp": "2026-10-09T03:46:02.700Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/johnny-de-mol/": {
@@ -1074,6 +2115,42 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/karin-bloemen-met-band/": {
+   "opgehaaldOp": "2026-10-09T03:46:28.714Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/kiki-schippers/": {
+   "opgehaaldOp": "2026-10-09T03:45:45.670Z",
+   "data": {
+    "titel": "Kiki Schippers",
+    "onder": "Praktische bezwaren",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/klaas-van-der-eerden/": {
    "opgehaaldOp": "2026-10-08T03:45:13.353Z",
    "data": {
@@ -1091,6 +2168,18 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12120&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=9a7a03b01b99a93794de021fa0a73990af3d38800df5b02359edb3a1e19063e3"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/leading-ladies-live/": {
+   "opgehaaldOp": "2026-10-09T03:47:01.677Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/leonard-cohen-tribute-band/": {
@@ -1112,6 +2201,28 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/lieve-hemel/": {
+   "opgehaaldOp": "2026-10-09T03:46:51.693Z",
+   "data": {
+    "titel": "Lieve Hemel",
+    "onder": "Oude verhalen, nieuwe betekenissen. Een inspirerende muzikale theatervoorstelling met Joris Linssen",
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/literair-cafe-barneveld/": {
    "opgehaaldOp": "2026-10-08T03:46:45.966Z",
    "data": {
@@ -1129,6 +2240,18 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12347&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=92f8f5c2b53efd3c04e18ee2498bb6f3a45ced979a6d9cb10864d14cd9ed5cd8"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/maaike-ouboter-lievelingsliedjes/": {
+   "opgehaaldOp": "2026-10-09T03:46:38.694Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/maarten-van-rossem/": {
@@ -1188,6 +2311,18 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/marlon-kicken-2/": {
+   "opgehaaldOp": "2026-10-09T03:46:43.580Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
   "https://schaffelaartheater.nl/agenda/martijn-koning/": {
    "opgehaaldOp": "2026-10-08T03:46:08.418Z",
    "data": {
@@ -1207,6 +2342,52 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/matthijn-buwalda-de-rest-mag-je-hebben/": {
+   "opgehaaldOp": "2026-10-09T03:45:08.734Z",
+   "data": {
+    "titel": "Matthijn Buwalda – De rest mag je hebben",
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/meau/": {
+   "opgehaaldOp": "2026-10-09T03:46:19.696Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/mees-kees-7/": {
+   "opgehaaldOp": "2026-10-09T03:46:56.575Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
   "https://schaffelaartheater.nl/agenda/meester-mark/": {
    "opgehaaldOp": "2026-10-08T03:44:57.559Z",
    "data": {
@@ -1222,6 +2403,64 @@
       "datum": "za. 10-10-2026 | 20:15 - 21:45",
       "knop": "Kaarten",
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12088&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=113e5662d72ad725a67f22450802bb096be2700c92b9da6cad2ded7eaea5ccd1"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/meezingfeest-barneveld-zingt/": {
+   "opgehaaldOp": "2026-10-09T03:46:40.691Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/meezingochtend/": {
+   "opgehaaldOp": "2026-10-09T03:46:26.246Z",
+   "data": {
+    "titel": "Meezingochtend",
+    "onder": "met Mathilde Keij",
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/mell-vf/": {
+   "opgehaaldOp": "2026-10-09T03:46:12.784Z",
+   "data": {
+    "titel": "Mell VF",
+    "onder": "Echoes of my Mind",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
      }
     ]
    }
@@ -1246,6 +2485,49 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/motel-westcoast-20-years/": {
+   "opgehaaldOp": "2026-10-09T03:45:32.648Z",
+   "data": {
+    "titel": "Motel Westcoast 20 Years!",
+    "onder": "De allergrootste hits van de Amerikaanse Westcoast",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 35,00",
+    "rijen": [
+     {
+      "datum": "do. 08-04-2027 | 20:00",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12113&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=981ba3bcd995b7653c6f6b73679c96c0f353742a4854ddc6c21f08e1dc88e89f"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/movie-sing-swing/": {
+   "opgehaaldOp": "2026-10-09T03:45:19.789Z",
+   "data": {
+    "titel": "Movie Sing & Swing",
+    "onder": "Mamma Mia!",
+    "genres": [
+     "special"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/musicalgroep-rivka/": {
    "opgehaaldOp": "2026-10-08T03:45:22.427Z",
    "data": {
@@ -1266,6 +2548,18 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12033&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=bcaa6508e94cd5e2b205cea61be7c690c4ea5e4573351b0ff2d892e2199e5b7c"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/nabil/": {
+   "opgehaaldOp": "2026-10-09T03:46:03.620Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/nasrdin-dchar/": {
@@ -1344,6 +2638,30 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/nienke-plas/": {
+   "opgehaaldOp": "2026-10-09T03:46:47.797Z",
+   "data": {
+    "titel": "Nienke Plas",
+    "onder": "Medeplichtig",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/nieuwjaarsconcert-harmonie/": {
    "opgehaaldOp": "2026-10-08T03:45:44.384Z",
    "data": {
@@ -1386,6 +2704,49 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/nonsens/": {
+   "opgehaaldOp": "2026-10-09T03:45:55.693Z",
+   "data": {
+    "titel": "Nonsens",
+    "onder": "Linda Verstraten, Mylène d'Anjou e.a.",
+    "genres": [
+     "musical"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/nostalgische-melodieen/": {
+   "opgehaaldOp": "2026-10-09T03:45:23.779Z",
+   "data": {
+    "titel": "Nostalgische Melodieën",
+    "onder": "Koffieconcert",
+    "genres": [
+     "klassiekekoffieconcerten"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": "di. 10-11-2026 | 10:30",
+      "knop": "Dit concert is volgeboekt",
+      "href": "https://www.koffieconcerten.nl/concert.php?concert=barneveld-nostalgische-melodie%C3%ABn-2026-11-10-1030u"
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/ocobar/": {
    "opgehaaldOp": "2026-10-08T03:45:29.373Z",
    "data": {
@@ -1403,6 +2764,76 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12123&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=71fd00f228d9b342e68ba0bcd29c81cb9650d0548349217516d7d615b10c33b8"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/ogene/": {
+   "opgehaaldOp": "2026-10-09T03:46:55.581Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/oncosalon-barneveld-informatieavond-kind-en-gezin/": {
+   "opgehaaldOp": "2026-10-09T03:45:28.703Z",
+   "data": {
+    "titel": "OncoSalon Barneveld - informatieavond Kind en Gezin",
+    "onder": "o.l.v. Brigitte Bruin van KASAM",
+    "genres": [
+     "oncosalon"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/oncosalon-barneveld-informatieavond/": {
+   "opgehaaldOp": "2026-10-09T03:45:39.665Z",
+   "data": {
+    "titel": "OncoSalon Barneveld - informatieavond",
+    "onder": "Terugkeer naar werk: de rol van de Bedrijfsarts Consulent Oncologie (BACO)",
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/oncosalon-barneveld/": {
+   "opgehaaldOp": "2026-10-09T03:46:21.608Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/ondernemers-event-gemeente-barneveld-2026/": {
@@ -1424,6 +2855,73 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/ons-pap-wil-bij-de-revue/": {
+   "opgehaaldOp": "2026-10-09T03:46:17.736Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/ontroerende-adagio-s/": {
+   "opgehaaldOp": "2026-10-09T03:45:06.806Z",
+   "data": {
+    "titel": "Ontroerende Adagio's",
+    "onder": "Koffieconcert",
+    "genres": [
+     "klassiekekoffieconcerten"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/opera-highlights/": {
+   "opgehaaldOp": "2026-10-09T03:45:24.780Z",
+   "data": {
+    "titel": "Opera Highlights",
+    "onder": "Koffieconcert",
+    "genres": [
+     "klassiekekoffieconcerten"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": "di. 13-04-2027 | 10:30",
+      "knop": "Extern reserveren",
+      "href": "https://www.koffieconcerten.nl/concert.php?concert=barneveld-opera-highlights-2027-04-13-1030u"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/opvliegers-op-safari/": {
+   "opgehaaldOp": "2026-10-09T03:46:27.679Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
   "https://schaffelaartheater.nl/agenda/opvoeden-hoe-dan/": {
    "opgehaaldOp": "2026-10-08T03:45:45.378Z",
    "data": {
@@ -1439,6 +2937,37 @@
       "datum": "do. 28-01-2027 | 20:00",
       "knop": "Kaarten",
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12177&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=d382ff2e4ee54d8ba8c9bfe7c2abaa77006af7b0bd89e94cda85f421a5e29268"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/pa/": {
+   "opgehaaldOp": "2026-10-09T03:46:01.618Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/passieconcert-erbarme-dich/": {
+   "opgehaaldOp": "2026-10-09T03:45:04.804Z",
+   "data": {
+    "titel": "Passieconcert - Erbarme Dich",
+    "onder": "Koffieconcert",
+    "genres": [
+     "klassiekekoffieconcerten"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": "di. 09-03-2027 | 10:30",
+      "knop": "Dit concert is volgeboekt",
+      "href": "https://www.koffieconcerten.nl/concert.php?concert=barneveld-passieconcert--erbarme-dich-2027-03-09-1030u"
      }
     ]
    }
@@ -1479,6 +3008,30 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/peter-van-rooijen/": {
+   "opgehaaldOp": "2026-10-09T03:45:49.794Z",
+   "data": {
+    "titel": "Peter van Rooijen",
+    "onder": "Doei buitenwereld! (Try Out)",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/phil-good/": {
    "opgehaaldOp": "2026-10-08T03:45:51.438Z",
    "data": {
@@ -1497,6 +3050,18 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12128&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=7d6462f9dc594a9e826af5fea3eebd29e7b16d83b32e6e2895ac14677cba4a8e"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/piet-van-eeghen/": {
+   "opgehaaldOp": "2026-10-09T03:46:57.607Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/pieter-jouke/": {
@@ -1592,6 +3157,28 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/rabokidsclub-bios-2/": {
+   "opgehaaldOp": "2026-10-09T03:45:27.686Z",
+   "data": {
+    "titel": "Rabokidsclub - bios",
+    "onder": "Pandabeer in Afrika",
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/rabokidsclub-bios-3/": {
    "opgehaaldOp": "2026-10-08T03:44:55.228Z",
    "data": {
@@ -1611,6 +3198,18 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/rayen-panday/": {
+   "opgehaaldOp": "2026-10-09T03:46:00.675Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
   "https://schaffelaartheater.nl/agenda/remy-evers/": {
    "opgehaaldOp": "2026-10-08T03:45:19.386Z",
    "data": {
@@ -1626,6 +3225,30 @@
       "datum": "vr. 30-04-2027 | 20:15",
       "knop": "Kaarten",
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12097&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=5e08b0ccc6df8f778850f627d26251c79afdb4f78396616c94a597233f250402"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/rhythm-of-the-dance/": {
+   "opgehaaldOp": "2026-10-09T03:46:50.796Z",
+   "data": {
+    "titel": "Rhythm of the Dance",
+    "onder": "The Christmas Show",
+    "genres": [
+     "show"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
      }
     ]
    }
@@ -1668,6 +3291,18 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/rob-emiel/": {
+   "opgehaaldOp": "2026-10-09T03:46:30.686Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
   "https://schaffelaartheater.nl/agenda/rob-scheepers/": {
    "opgehaaldOp": "2026-10-08T03:46:19.442Z",
    "data": {
@@ -1690,6 +3325,42 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12139&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=170efa1bc28812137f4e89da239ac15136f0e285e7c02ea0a73def2a3fda4355"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/rock4/": {
+   "opgehaaldOp": "2026-10-09T03:45:44.777Z",
+   "data": {
+    "titel": "Rock4",
+    "onder": "Queen, A Night At The Opera",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/roel-c-verburg/": {
+   "opgehaaldOp": "2026-10-09T03:45:07.697Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/roel-jos-maalderink-verplaatst/": {
@@ -1788,6 +3459,30 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/schaffelaar-next-gen-hollywood-11-16-jaar/": {
+   "opgehaaldOp": "2026-10-09T03:45:57.654Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/schaffelaar-next-gen-pubquiz-15-25-jaar/": {
+   "opgehaaldOp": "2026-10-09T03:45:58.653Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
   "https://schaffelaartheater.nl/agenda/sherlock-holmes/": {
    "opgehaaldOp": "2026-10-08T03:46:29.480Z",
    "data": {
@@ -1808,6 +3503,18 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12063&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=a6e535cdc0e7be6079c26c38baa71f2983cf24a79d9df90ddd926914cdc173a9"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/simone-kleinsma-paul-groot/": {
+   "opgehaaldOp": "2026-10-09T03:46:24.703Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/slagerij-van-kampen/": {
@@ -1867,6 +3574,25 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/spetterende-vioolmuziek/": {
+   "opgehaaldOp": "2026-10-09T03:45:05.539Z",
+   "data": {
+    "titel": "Spetterende vioolmuziek",
+    "onder": "Koffieconcert",
+    "genres": [
+     "klassiekekoffieconcerten"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": "di. 09-02-2027 | 10:30",
+      "knop": "Dit concert is volgeboekt",
+      "href": "https://www.koffieconcerten.nl/concert.php?concert=barneveld-spetterende-vioolmuziek-2027-02-09-1030u"
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/stedsj-throwback/": {
    "opgehaaldOp": "2026-10-08T03:46:53.346Z",
    "data": {
@@ -1908,6 +3634,66 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/steven-brunswijk/": {
+   "opgehaaldOp": "2026-10-09T03:46:34.700Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/steven-kazan-6/": {
+   "opgehaaldOp": "2026-10-09T03:46:05.773Z",
+   "data": {
+    "titel": "Steven Kazàn (6+)",
+    "onder": "Hoe dan!",
+    "genres": [
+     "familie"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/steyn-de-leeuwe/": {
+   "opgehaaldOp": "2026-10-09T03:45:52.768Z",
+   "data": {
+    "titel": "Steyn de Leeuwe",
+    "onder": "Moonlight Motel",
+    "genres": [
+     "toneel"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/tangarine/": {
    "opgehaaldOp": "2026-10-08T03:46:31.373Z",
    "data": {
@@ -1942,6 +3728,64 @@
       "datum": "do. 01-04-2027 | 20:00 - 21:30",
       "knop": "Kaarten",
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12037&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=45afd67ec2a6b4ce92e6da2c0b3c76a3056f59057de0c212b74ee5923c6c4996"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/the-best-of-britain/": {
+   "opgehaaldOp": "2026-10-09T03:46:08.703Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/the-cosmic-carnival/": {
+   "opgehaaldOp": "2026-10-09T03:45:14.834Z",
+   "data": {
+    "titel": "The Cosmic Carnival",
+    "onder": "50 Years of Rumours",
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/the-dancehouse/": {
+   "opgehaaldOp": "2026-10-09T03:45:34.666Z",
+   "data": {
+    "titel": "The Dancehouse",
+    "onder": "CHAPTER V - RESTART",
+    "genres": [
+     "dans"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
      }
     ]
    }
@@ -2003,6 +3847,30 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/the-fortunate-sons/": {
+   "opgehaaldOp": "2026-10-09T03:45:51.781Z",
+   "data": {
+    "titel": "The Fortunate Sons",
+    "onder": "The Best of CCR",
+    "genres": [
+     "muziek"
+    ],
+    "zaal": null,
+    "prijs": null,
+    "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/the-johnny-cash-experience/": {
    "opgehaaldOp": "2026-10-08T03:45:30.365Z",
    "data": {
@@ -2020,6 +3888,18 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12100&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=38a12473231ba978fdbce94a74032889e61f0af8b50996616f766bcd29742770"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/the-kilkennys/": {
+   "opgehaaldOp": "2026-10-09T03:47:00.690Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/the-simon-garfunkel-story/": {
@@ -2041,6 +3921,18 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/the-story-of-boybands/": {
+   "opgehaaldOp": "2026-10-09T03:46:59.680Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
   "https://schaffelaartheater.nl/agenda/the-story-of-george-michael/": {
    "opgehaaldOp": "2026-10-08T03:46:34.109Z",
    "data": {
@@ -2060,6 +3952,25 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/thijs-kemperink/": {
+   "opgehaaldOp": "2026-10-09T03:45:15.677Z",
+   "data": {
+    "titel": "Thijs Kemperink",
+    "onder": "Tot het uiterste gedreven",
+    "genres": [
+     "cabaret"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 25,50",
+    "rijen": [
+     {
+      "datum": "vr. 09-04-2027 | 20:00",
+      "knop": "Laatste kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12108&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=7081a9e22225b266893b0164a4f3a20906aa1cd2fe3282adb36994a00af50111"
+     }
+    ]
+   }
+  },
   "https://schaffelaartheater.nl/agenda/this-is-tina-a-tribute-to-tina-turner/": {
    "opgehaaldOp": "2026-10-08T03:46:12.367Z",
    "data": {
@@ -2075,6 +3986,61 @@
       "datum": "vr. 19-02-2027 | 20:00",
       "knop": "Laatste kaarten",
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12149&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=d7c2778011d998a699e05e83c6e48433a513e5d81cd1c8214294f2980f0a3d52"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/thjum-arts/": {
+   "opgehaaldOp": "2026-10-09T03:46:10.695Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/tijdloos-melodieen-van-toen-herinneringen-voor-nu/": {
+   "opgehaaldOp": "2026-10-09T03:46:14.579Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/tim-kroezen/": {
+   "opgehaaldOp": "2026-10-09T03:46:20.704Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/timzingt/": {
+   "opgehaaldOp": "2026-10-09T03:45:16.668Z",
+   "data": {
+    "titel": "TimZingt",
+    "onder": "Grijs",
+    "genres": [
+     "tegast"
+    ],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Vanaf € 34,50",
+    "rijen": [
+     {
+      "datum": "za. 07-11-2026 | 20:00",
+      "knop": "Externe verkoop",
+      "href": "https://www.truetickets.nl/e/20113/tickets"
      }
     ]
    }
@@ -2099,6 +4065,18 @@
       "href": null
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/tineke-schouten/": {
+   "opgehaaldOp": "2026-10-09T03:45:12.691Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/tis-hier-geen-hotel-3-reprise/": {
@@ -2161,6 +4139,35 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/top-2000-songs-stories-2e-editie/": {
+   "opgehaaldOp": "2026-10-09T03:45:20.695Z",
+   "data": {
+    "titel": "Top 2000 | Songs & Stories - 2e editie",
+    "onder": "NGK De Ontmoeting Voorthuizen/Barneveld",
+    "genres": [],
+    "zaal": "BDUmedia Grote Zaal",
+    "prijs": "Normaal € 5,00",
+    "rijen": [
+     {
+      "datum": "za. 02-01-2027 | 19:30",
+      "knop": "Kaarten",
+      "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12211&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=2750e5ba573bd8eaba7c2b93a35a35a4e05769da5c3fcdbfe735f13031c95fde"
+     }
+    ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/top-2000-songs-stories/": {
+   "opgehaaldOp": "2026-10-09T03:46:44.580Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
   "https://schaffelaartheater.nl/agenda/treasure/": {
    "opgehaaldOp": "2026-10-08T03:46:37.109Z",
    "data": {
@@ -2199,6 +4206,18 @@
     ]
    }
   },
+  "https://schaffelaartheater.nl/agenda/u2-the-music/": {
+   "opgehaaldOp": "2026-10-09T03:46:53.671Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
   "https://schaffelaartheater.nl/agenda/valentina-toth/": {
    "opgehaaldOp": "2026-10-08T03:44:56.384Z",
    "data": {
@@ -2216,6 +4235,30 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12082&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=a2c4750822bb71abfae73e5fe75ef16f66a916bcbde5c50e2e97554b5c711421"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/van-dik-hout/": {
+   "opgehaaldOp": "2026-10-09T03:46:22.678Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/veldhuis-kemper/": {
+   "opgehaaldOp": "2026-10-09T03:46:37.701Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/verrassingsvoorstelling-familie-2/": {
@@ -2311,6 +4354,18 @@
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12117&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=2b2f65c91c6f8368e9e48175b5e24df383e24aaba8e65fffadeb91e71167cfa7"
      }
     ]
+   }
+  },
+  "https://schaffelaartheater.nl/agenda/waylon/": {
+   "opgehaaldOp": "2026-10-09T03:46:36.681Z",
+   "data": {
+    "archief": true,
+    "titel": null,
+    "onder": null,
+    "genres": [],
+    "zaal": null,
+    "prijs": null,
+    "rijen": []
    }
   },
   "https://schaffelaartheater.nl/agenda/wildebras/": {
