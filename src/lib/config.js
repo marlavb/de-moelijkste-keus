@@ -1133,7 +1133,13 @@ export const THEATERS = [
       online: true,
       toelichting: 'Online: klik op "bestel", kies het ticket "Podiumpas" (€0), en vul je pasnummer in; neem de pas mee.',
     },
-    melding: 'Uitzonderingen voor de Podiumpas nog niet bekend — vraag het theater.',
+    // Bij het opheffen van de pauze weer terugzetten (een eigen melding gaat
+    // vóór de standaardmelding voor gepauzeerde theaters):
+    // melding: 'Uitzonderingen voor de Podiumpas nog niet bekend — vraag het theater.',
+    // DIAGNOSE 9 okt 2026 (eerste run in GitHub Actions): HTTP 403, titel
+    // "Just a moment...", __cf_chl_rt_tk in de URL: een Cloudflare-challenge.
+    // Lokaal (8 en 9 okt) geen challenge. Niet omzeilen (CLAUDE.md).
+    gepauzeerd: { sinds: '2026-10-09', reden: 'Cloudflare-challenge (403) sinds 9 okt' },
   },
   {
     id: 'demuze',
