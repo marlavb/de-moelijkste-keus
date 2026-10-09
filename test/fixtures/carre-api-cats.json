@@ -1,0 +1,202 @@
+{
+ "node": {
+  "id": "01KKBHZQ7FH5DVSHN0H32HV2KT",
+  "kind": "production-page",
+  "production_id": "17129",
+  "data": {
+   "heading": "Cats - Het Meesterwerk",
+   "url": "/voorstelling/cats"
+  }
+ },
+ "productions": {
+  "17129": {
+   "id": "17129",
+   "data": {
+    "custom_order_flow": true,
+    "name": "Cats"
+   },
+   "events": [
+    {
+     "id": "36573",
+     "start_date": "2026-10-15T20:00:00+02:00",
+     "end_date": "2026-10-15T22:30:00+02:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36573&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36573%26upsellids%3D35945%252C35924%252C35915%252C35937&saleschannelid=2&skinid=1&withauthentication=no&signature=662c54c70300cdf27d314a0418561af6c32e91abcab45780f9b50ef29927c438",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-03-16T14:00:00+01:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Laatste kans",
+      "statusID": "last_chance"
+     }
+    },
+    {
+     "id": "36583",
+     "start_date": "2026-10-16T20:00:00+02:00",
+     "end_date": "2026-10-16T22:30:00+02:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36583&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36583%26upsellids%3D35946%252C35925%252C35916%252C35938&saleschannelid=2&skinid=1&withauthentication=no&signature=84d7d63d582915ba658f7a54567f34d63e3bc9b7b763a79de035f7aa9b4b6a38",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-03-16T14:00:00+01:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Laatste kans",
+      "statusID": "last_chance"
+     }
+    },
+    {
+     "id": "36585",
+     "start_date": "2026-10-17T20:00:00+02:00",
+     "end_date": "2026-10-17T22:30:00+02:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36585&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36585%26upsellids%3D35947%252C35926%252C35917%252C35939&saleschannelid=2&skinid=1&withauthentication=no&signature=838740d1cda17acff4604062d396f2152f448d5b0d242d57999e6a258ddc6a04",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-03-16T14:00:00+01:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Laatste kans",
+      "statusID": "last_chance"
+     }
+    },
+    {
+     "id": "36586",
+     "start_date": "2026-10-18T14:00:00+02:00",
+     "end_date": "2026-10-18T16:30:00+02:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36586&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36586%26upsellids%3D35954%252C35932%252C35953&saleschannelid=2&skinid=1&withauthentication=no&signature=eb4cb08e291d34de135a07ad7908c93f30b12a95423aa8ba885cb16651835e39",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-03-16T14:00:00+01:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Wachtlijst",
+      "statusID": "waiting_list"
+     }
+    },
+    {
+     "id": "36587",
+     "start_date": "2026-10-19T19:30:00+02:00",
+     "end_date": "2026-10-19T22:00:00+02:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36587&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36587%26upsellids%3D35940&saleschannelid=2&skinid=1&withauthentication=no&signature=5b4a386de78ba19cee893a44dcf9236d14f42442613f7a04464d0cfb4d0f1c82",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-03-16T14:00:00+01:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Laatste kans",
+      "statusID": "last_chance"
+     }
+    },
+    {
+     "id": "36588",
+     "start_date": "2026-10-21T20:00:00+02:00",
+     "end_date": "2026-10-21T22:30:00+02:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36588&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36588%26upsellids%3D35949%252C35927%252C35918%252C35941&saleschannelid=2&skinid=1&withauthentication=no&signature=4828161407028218175698d5cff2bdd9bbd5dff57918066b906a4e4301cc9213",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-03-16T14:00:00+01:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": null,
+      "statusID": null
+     }
+    },
+    {
+     "id": "36589",
+     "start_date": "2026-10-22T20:00:00+02:00",
+     "end_date": "2026-10-22T22:30:00+02:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36589&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36589%26upsellids%3D35950%252C35928%252C35919%252C35942&saleschannelid=2&skinid=1&withauthentication=no&signature=355ca2ab9926b3887eecebae81c0c72fde642981441549182bdca5f1df5840e3",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-03-16T14:00:00+01:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": null,
+      "statusID": null
+     }
+    },
+    {
+     "id": "36590",
+     "start_date": "2026-10-23T15:00:00+02:00",
+     "end_date": "2026-10-23T17:30:00+02:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36590&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36590%26upsellids%3D35956%252C35923%252C35955&saleschannelid=2&skinid=1&withauthentication=no&signature=300beb7a547c922e1c6a17cbebffe653351cbab77bab9a824784a4844d963f4c",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-03-16T14:00:00+01:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": null,
+      "statusID": null
+     }
+    },
+    {
+     "id": "36591",
+     "start_date": "2026-10-23T20:00:00+02:00",
+     "end_date": "2026-10-23T22:30:00+02:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36591&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36591%26upsellids%3D35951%252C35929%252C35920%252C35943&saleschannelid=2&skinid=1&withauthentication=no&signature=63307829f54d071dd4ce10fc3e6e0089e0085a965dea4f8d24058f7652397102",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-03-16T14:00:00+01:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Laatste kans",
+      "statusID": "last_chance"
+     }
+    },
+    {
+     "id": "36642",
+     "start_date": "2026-10-24T15:00:00+02:00",
+     "end_date": "2026-10-24T17:30:00+02:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36642&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36642%26upsellids%3D35952%252C35959%252C35930%252C35931%252C35921%252C35944%252C35960&saleschannelid=2&skinid=1&withauthentication=no&signature=645c184cd3cd31c4dfc29d72d2dcccbdf24f2d70a5674eaed68d97023d16d008",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-03-16T14:00:00+01:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Laatste kans",
+      "statusID": "last_chance"
+     }
+    },
+    {
+     "id": "36643",
+     "start_date": "2026-10-24T20:00:00+02:00",
+     "end_date": "2026-10-24T22:30:00+02:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36643&flow=basketwithcheckout&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Fcarre.nl%2Fagenda&saleschannelid=2&skinid=1&withauthentication=no&signature=01503b414633a205427c64446fe210f24c4e62e7fac6be9b2f4342d4697b5db9",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-03-16T14:00:00+01:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": null,
+      "statusID": null
+     }
+    },
+    {
+     "id": "36644",
+     "start_date": "2026-10-25T14:00:00+01:00",
+     "end_date": "2026-10-25T16:30:00+01:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36644&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36644%26upsellids%3D35958%252C35933%252C35957&saleschannelid=2&skinid=1&withauthentication=no&signature=4cf1aa83075ea48a56eb7dbdc093c2a355096f2ad02c625fc295db79d46d152c",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-03-16T14:00:00+01:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Laatste kans",
+      "statusID": "last_chance"
+     }
+    }
+   ]
+  }
+ }
+}

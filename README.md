@@ -89,6 +89,11 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   (Houten) vallen films (tag "Film", "Vroege Film: …") ook weg.
   Karavaan (Theater de Drukkerij, Alkmaar) haalt elke nacht alle ~10
   detailpagina's op voor de aanvangstijd en "uitverkocht" (geen detailcache).
+  Carré leest de agenda (titels, producties) en per productie de JSON van
+  `/api/render/voorstelling/<slug>`, die de site zelf ook gebruikt: elke
+  speeldatum met tijd, status (wachtlijst, uitverkocht, afgelast, "bel ons")
+  en de Ticketmatic-link, met een detailcache (`cache/detail/carre.json`;
+  binnen 7 dagen elke nacht, de rest wekelijks).
   Van Huis Oostpool (Arnhem) nemen we uit de agenda van Theater Oostpool
   alleen de speeldata in het eigen huis; de tournee staat al bij de andere
   theaters.

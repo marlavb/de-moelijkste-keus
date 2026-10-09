@@ -1,0 +1,172 @@
+{
+ "node": {
+  "id": "01HVH3JRRGH7N101KN0W86NSGZ",
+  "kind": "production-page",
+  "production_id": "16514",
+  "data": {
+   "heading": "JOCHEM MYJER - NET ALSOF",
+   "url": "/voorstelling/jochem-myjer-net-alsof"
+  }
+ },
+ "productions": {
+  "16514": {
+   "id": "16514",
+   "data": {
+    "custom_order_flow": true,
+    "name": "Jochem Myjer"
+   },
+   "events": [
+    {
+     "id": "36560",
+     "start_date": "2026-10-10T20:00:00+02:00",
+     "end_date": "2026-10-10T22:00:00+02:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36560&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36560%26upsellids%3D36629%252C36609%252C36599%252C36619&saleschannelid=2&skinid=1&withauthentication=no&signature=fcd6c18c388d4e2c0c8582c36799cdde10be9b1970f82fbcd0a5cdd349c82253",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-06-23T09:00:00+02:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Wachtlijst",
+      "statusID": "waiting_list"
+     }
+    },
+    {
+     "id": "36561",
+     "start_date": "2026-10-11T20:00:00+02:00",
+     "end_date": "2026-10-11T22:00:00+02:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36561&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36561%26upsellids%3D36630%252C36610%252C36600%252C36620&saleschannelid=2&skinid=1&withauthentication=no&signature=e1b92c74c3439f72ca84b9c2d2011a881b802bb9bf511dc34ca7aadcc6746b7a",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-06-23T09:00:00+02:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Wachtlijst",
+      "statusID": "waiting_list"
+     }
+    },
+    {
+     "id": "36563",
+     "start_date": "2026-10-26T20:00:00+01:00",
+     "end_date": "2026-10-26T22:00:00+01:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36563&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36563%26upsellids%3D36631%252C36611%252C36601%252C36621&saleschannelid=2&skinid=1&withauthentication=no&signature=d3619770e7a8398ba1d00cac0ab48457486c201c1ae91025c440f2b067704207",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-06-23T09:00:00+02:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Wachtlijst",
+      "statusID": "waiting_list"
+     }
+    },
+    {
+     "id": "36564",
+     "start_date": "2026-10-27T20:00:00+01:00",
+     "end_date": "2026-10-27T22:00:00+01:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36564&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36564%26upsellids%3D36632%252C36612%252C36602%252C36622&saleschannelid=2&skinid=1&withauthentication=no&signature=d9d10991325ba325ba4110cd4623a9e8b8b5bcd85d690b14edae2501584747c1",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-06-23T09:00:00+02:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Wachtlijst",
+      "statusID": "waiting_list"
+     }
+    },
+    {
+     "id": "36566",
+     "start_date": "2026-11-02T20:00:00+01:00",
+     "end_date": "2026-11-02T22:00:00+01:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36566&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36566%26upsellids%3D36633%252C36613%252C36603%252C36623&saleschannelid=2&skinid=1&withauthentication=no&signature=417487bd83cef700d857bb73138301b7cb9edeaa857fb0e7331a5a845c97d4be",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-06-23T09:00:00+02:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Wachtlijst",
+      "statusID": "waiting_list"
+     }
+    },
+    {
+     "id": "36565",
+     "start_date": "2026-11-03T20:00:00+01:00",
+     "end_date": "2026-11-03T22:00:00+01:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36565&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36565%26upsellids%3D36634%252C36614%252C36604%252C36624&saleschannelid=2&skinid=1&withauthentication=no&signature=b5fa10890ace2b6fcb7a00b3720a6aa96ac7a46320c012e89069e2eda3247d45",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-06-23T09:00:00+02:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Wachtlijst",
+      "statusID": "waiting_list"
+     }
+    },
+    {
+     "id": "36567",
+     "start_date": "2026-11-09T20:00:00+01:00",
+     "end_date": "2026-11-09T22:00:00+01:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36567&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36567%26upsellids%3D36635%252C36615%252C36605%252C36625&saleschannelid=2&skinid=1&withauthentication=no&signature=ef5b03f88ab71ae2bc1d40eb88777d5f025ed833ccec34a288db8dd481a23e3a",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-06-23T09:00:00+02:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Wachtlijst",
+      "statusID": "waiting_list"
+     }
+    },
+    {
+     "id": "36568",
+     "start_date": "2026-11-10T20:00:00+01:00",
+     "end_date": "2026-11-10T22:00:00+01:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36568&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36568%26upsellids%3D36636%252C36616%252C36606%252C36626&saleschannelid=2&skinid=1&withauthentication=no&signature=9e4f3a75391ad5e17298e9673d1e7ce1e4b5bd08563abc837f333185db9fd0cc",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-06-23T09:00:00+02:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Wachtlijst",
+      "statusID": "waiting_list"
+     }
+    },
+    {
+     "id": "36569",
+     "start_date": "2026-11-21T20:00:00+01:00",
+     "end_date": "2026-11-21T22:05:00+01:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36569&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36569%26upsellids%3D36637%252C36617%252C36607%252C36627&saleschannelid=2&skinid=1&withauthentication=no&signature=d11603ed8c2ff10edf60cd079dee9d6d8b0b68a0fe109950466a9dc81f1b5bc9",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-06-23T09:00:00+02:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Wachtlijst",
+      "statusID": "waiting_list"
+     }
+    },
+    {
+     "id": "36570",
+     "start_date": "2026-11-22T19:00:00+01:00",
+     "end_date": "2026-11-22T21:05:00+01:00",
+     "sales_url": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36570&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36570%26upsellids%3D36641%252C36639%252C36638%252C36640&saleschannelid=2&skinid=1&withauthentication=no&signature=00996b9ddee4462ec4075623f57da4ea9577003f09c341379ab20865118a72d4",
+     "sales_status": "on_sale",
+     "sales_start_date": "2026-06-23T09:00:00+02:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Wachtlijst",
+      "statusID": "waiting_list"
+     }
+    }
+   ]
+  }
+ }
+}
