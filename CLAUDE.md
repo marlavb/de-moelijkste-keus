@@ -102,7 +102,12 @@ Houd het testverkeer daarom zo klein mogelijk:
   URL, paginatitel, begin van de body); kijk daar eerst naar.
 - Scala (Amsterdam) blijft bewust zonder tijden: avondvullend programma
   (korte voorstellingen achter elkaar, geen vaste aanvangstijd per
-  voorstelling). Niet "repareren".
+  voorstelling). Niet "repareren". Dit is het enige theater dat bewust
+  zonder tijden blijft.
+- Tijden van een detailpagina of API (okt 2026): Carré via
+  `/api/render/voorstelling/<slug>` (JSON, met detailcache
+  `cache/detail/carre.json`), Karavaan via de detailpagina's (elke nacht
+  alle ~10, zonder cache).
 
 ## Watchlist-sleutels
 
