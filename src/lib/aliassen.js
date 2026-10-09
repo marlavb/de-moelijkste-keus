@@ -57,6 +57,13 @@ export function pasAliasToe({ titel, maker, theaterId }, lijst) {
   let nieuweMaker = inTitel ? null : maker;
   // Een maker buiten de titel (bij "andere naam" ingevuld) vult een leeg veld.
   if (!nieuweMaker && alias.maker && !makerInTitel(alias.titel, alias.maker)) nieuweMaker = alias.maker;
+  // Omgedraaid (de maker was de voorstellingsnaam, Cpunt "Firma Mes" /
+  // "Wapens"): dan is de oude titel de maker, als die niet in de nieuwe titel
+  // staat. Zonder leeftijdsdelen ("Joes – 3 t/m 8 jaar" → "Joes").
+  if (inTitel && !nieuweMaker && !makerInTitel(alias.titel, alias.maker)) {
+    const rest = String(titel).split(' – ').filter((d) => !/^\(?\d/.test(d.trim()) && !` ${kaal(alias.titel)} `.includes(` ${kaal(zonderRuis(d))} `));
+    if (rest.length) nieuweMaker = rest.join(' – ');
+  }
   return { titel: alias.titel, maker: nieuweMaker, alias };
 }
 

@@ -19,6 +19,10 @@ test('pasAliasToe: titel, maker niet dubbel, voorstellingsnaam uit het makerveld
   // De voorstellingsnaam (met label) als maker: staat al in de titel.
   assert.equal(pasAliasToe({ titel: 'Janne Schra & De Vogels', maker: 'Kleuren moeten ook slapen (reprise)', theaterId: 'x' }, lijst).maker, 'Janne Schra & De Vogels');
   assert.equal(pasAliasToe({ titel: 'Janne Schra & De Vogels', maker: null, theaterId: 'x' }, lijst).maker, 'Janne Schra & De Vogels');
+  // Omgedraaid (Cpunt "Firma Mes" / "Wapens"): de oude titel wordt de maker.
+  const wapens = { aliassen: { 'firma mes': { titel: 'Wapens', maker: null, regel: 'keuze' }, [watchlistSleutel('Joes – 3 t/m 8 jaar')]: { titel: 'Deze ridder zegt NEE (3+)', maker: null, regel: 'keuze' } } };
+  assert.equal(pasAliasToe({ titel: 'Firma Mes', maker: 'Wapens', theaterId: 'cpunt' }, wapens).maker, 'Firma Mes');
+  assert.equal(pasAliasToe({ titel: 'Joes – 3 t/m 8 jaar', maker: 'Deze ridder zegt NEE', theaterId: 'dok6' }, wapens).maker, 'Joes');
   // Een andere maker blijft staan.
   assert.equal(pasAliasToe({ titel: 'Janne Schra & De Vogels', maker: 'regie: Iemand', theaterId: 'x' }, lijst).maker, 'regie: Iemand');
   assert.deepEqual(pasAliasToe({ titel: 'Iets anders', maker: 'M', theaterId: 'x' }, lijst), { titel: 'Iets anders', maker: 'M', alias: null });
