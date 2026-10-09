@@ -66,3 +66,13 @@ export function datumMetJaar(tekst) {
   if (!m || !MAANDEN[m[2]]) return null;
   return `${m[3]}-${String(MAANDEN[m[2]]).padStart(2, '0')}-${m[1].padStart(2, '0')}`;
 }
+
+/**
+ * Productie-URL's uit sitemap.xml van een Cre8ion-site (alleen /agenda/<slug>,
+ * niet koop-ticket). De agenda zelf laadt via /mvc/, dat robots.txt verbiedt
+ * (Munttheater, MIMIK); de sitemap en de productiepagina's mogen wel.
+ */
+export function productieUrls(xml) {
+  const urls = [...String(xml).matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)].map((m) => m[1]);
+  return [...new Set(urls.filter((u) => /\/agenda\/[^/?#]+$/.test(u) && !/\/agenda\/koop-ticket$/.test(u)))];
+}

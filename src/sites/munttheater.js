@@ -5,6 +5,7 @@ import { vervallenStatus } from '../lib/beschikbaarheid.js';
 import { laagstePrijs } from '../lib/peppered.js';
 import { blokkeerZwareBronnen } from '../lib/zwareBronnen.js';
 import { gaNaar } from '../lib/diagnose.js';
+import { productieUrls } from '../lib/cre8ion.js';
 
 const SITEMAP_PATH = '/sitemap.xml';
 const MAX_PRODUCTIES = 250;
@@ -13,11 +14,8 @@ const MAX_PRODUCTIES = 250;
 const GENRE_WEG = /^educatie$|\beducatie\b/i;
 const MAKER_EERST = /^(cabaret|show|muziek|komedie|speciaal)$/i;
 
-/** Productie-URL's uit de sitemap (alleen /agenda/<slug>, niet koop-ticket). */
-export function productieUrls(xml) {
-  const urls = [...String(xml).matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)].map((m) => m[1]);
-  return [...new Set(urls.filter((u) => /\/agenda\/[^/?#]+$/.test(u) && !/\/agenda\/koop-ticket$/.test(u)))];
-}
+// Productie-URL's uit de sitemap: gedeeld met MIMIK (lib/cre8ion.js).
+export { productieUrls } from '../lib/cre8ion.js';
 
 /**
  * Genre uit de labels bovenaan ("Muziek", soms ook een reeks als
