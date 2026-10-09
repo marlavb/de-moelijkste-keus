@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **73** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout, 1 onbekend)
+- Theaters: **74** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout, 2 onbekend)
 - Voorstellingen (titel per theater): **7573**
 - Speeldata: **10629**
 - Laatste refresh: **9 oktober 2026, 05:49** (Amsterdamse tijd)
@@ -88,6 +88,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   De Tamboer (Hoogeveen) is een Phoenix LiveView-site: `?resultaten=30` in
   de URL geeft alle speeldata in één verzoek (de knop "Bekijk meer" werkt
   via een websocket); een Cloudflare-challenge of 403 geldt als blokkade.
+  De Muze (Noordwijk) leest de WordPress-lijstpagina's; films en besloten
+  voorstellingen vallen weg, de prijs staat op elke kaart (Podiumpas tot
+  €50, reserveren alleen via kassa, mail of telefoon).
   Waar zaal, uitsluitingen of speeldata alleen op een detailpagina staan
   (Musis Arnhem; Schaffelaartheater, waar robots.txt de agenda-API verbiedt
   en we de productie-adressen uit sitemap.xml halen, hooguit 120 nieuwe
@@ -271,7 +274,7 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Cpunt | Hoofddorp | nee | ok |
 | Zaantheater | Zaandam | ja | ok |
 
-**Zuid-Holland** (12)
+**Zuid-Holland** (13)
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
@@ -282,6 +285,7 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Zaal 3 | Den Haag | ja | ok |
 | Theater Ins Blau | Leiden | ja | ok |
 | Theater Koningshof | Maassluis | deels | ok |
+| De Muze | Noordwijk | – | onbekend |
 | Maas theater en dans | Rotterdam | ja | ok |
 | Theater Rotterdam (TR25 Schouwburg) | Rotterdam | ja | ok |
 | Theater Rotterdam (TR8 William Boothlaan) | Rotterdam | ja | ok |

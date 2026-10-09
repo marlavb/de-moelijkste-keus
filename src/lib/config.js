@@ -1039,4 +1039,20 @@ export const THEATERS = [
     },
     melding: 'Uitzonderingen voor de Podiumpas nog niet bekend — vraag het theater.',
   },
+  {
+    id: 'demuze',
+    naam: 'De Muze',
+    stad: 'Noordwijk',
+    provincie: 'Zuid-Holland',
+    baseUrl: 'https://demuze.nl',
+    agendaUrl: 'https://demuze.nl/programma/',
+    // Bron: https://demuze.nl/podiumpas/ (8 okt 2026): tickets tot €50 (niet
+    // bijbetalen), vanaf 30 dagen; reserveren nog niet online.
+    podiumpas: true,
+    podiumpasReserveren: {
+      telefoon: '071 – 364 62 26',
+      email: 'kassa@demuze.nl',
+      toelichting: 'Nog niet online: mail je pasnummer en de voorstelling naar de kassa, bel, of kom langs; vanaf 30 dagen voor de voorstelling, tickets tot €50.',
+    },
+  },
 ];

@@ -282,6 +282,7 @@ const PROVINCE_BY_CITY = {
   Barneveld: 'Gelderland',
   Tiel: 'Gelderland',
   Hoogeveen: 'Drenthe',
+  Noordwijk: 'Zuid-Holland',
 };
 
 // Desktop-sidebar accordeon-secties (Stad/Theater/Genre) — standaard allemaal
