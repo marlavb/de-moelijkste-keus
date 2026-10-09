@@ -97,3 +97,14 @@ test('Schaffelaar: datum, status en sitemap', () => {
   assert.equal(schaffelaarStatus('Geannuleerd'), 'afgelast');
   assert.equal(agendaUitSitemap(sitemap, BASIS).length, 5);
 });
+
+test('Schaffelaar: OncoSalon-informatieavonden weg, klassieke koffieconcerten als Muziek & Concert (9 okt 2026)', async () => {
+  const { schaffelaarWeglaten } = await import('../src/sites/schaffelaar.js');
+  const { normalizeGenre, isBekendGenre } = await import('../src/lib/genre.js');
+  assert.equal(schaffelaarWeglaten({ titel: 'OncoSalon Barneveld - informatieavond Kind en Gezin', genres: ['oncosalon'] }), 'informatieavond');
+  assert.equal(schaffelaarWeglaten({ titel: 'OncoSalon Barneveld - informatieavond', genres: [] }), 'informatieavond');
+  assert.equal(schaffelaarWeglaten({ titel: 'Rabokidsclub - bios', genres: ['film'] }), 'film');
+  assert.equal(schaffelaarWeglaten({ titel: 'Opera Highlights', genres: ['klassiekekoffieconcerten'] }), null);
+  assert.equal(isBekendGenre('klassiekekoffieconcerten'), true);
+  assert.equal(normalizeGenre('klassiekekoffieconcerten'), 'Muziek & Concert');
+});

@@ -1026,4 +1026,91 @@ export const THEATERS = [
     // planning in 2028; geen speeldata in de agenda. Na de heropening weghalen.
     melding: 'Gesloten wegens vernieuwing (heropening gepland in 2028). De voorstellingen staan bij Musis Arnhem.',
   },
+  // Overijssel (okt 2026; inventarisatie debug/overijssel-groningen-inventarisatie.md).
+  // Namen letterlijk zoals op podiumpas.nl/waar-te-besteden; Odeon en De
+  // Spiegel staan daar (kaartdata) als losse locaties van Zwolse Theaters.
+  {
+    id: 'meenthe',
+    naam: 'Rabo Theater De Meenthe',
+    stad: 'Steenwijk',
+    provincie: 'Overijssel',
+    baseUrl: 'https://www.demeenthe.nl',
+    agendaUrl: 'https://www.demeenthe.nl/theater/voorstellingen/',
+    // Bron: https://www.demeenthe.nl/informatie/podiumpas/ (8 okt 2026):
+    // reguliere voorstellingen en concerten in het theater; uitsluitingen per
+    // voorstelling in src/sites/meenthe.js. Kerkconcerten: podiumpas null
+    // (nog niet bekend; de pagina zegt "in het theater").
+    podiumpas: true,
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Online, vanaf 30 dagen voor de voorstelling; ticket ophalen op de dag zelf met je Podiumpas. Niet bij regionale voorstellingen, de evenementenhal, het Schrijversfestival, Vrijdagavond Vestzakconcerten, Passie voor Bach en producties van derden.',
+    },
+    melding: 'Geldt de Podiumpas ook voor concerten in de kerk? Nog niet bekend — vraag het theater.',
+  },
+  {
+    id: 'reggehof',
+    naam: 'De Reggehof',
+    stad: 'Goor',
+    provincie: 'Overijssel',
+    baseUrl: 'https://www.reggehof.nl',
+    agendaUrl: 'https://www.reggehof.nl/programma',
+    // Bron: https://podiumpas.nl/waar-te-besteden (8 okt 2026). Op de eigen
+    // site staat niets over de Podiumpas (menu, /theater en een detailpagina
+    // doorzocht, 8 okt 2026). Geen uitzonderingen verzonnen: podiumpas null
+    // = nog niet bekend (de app toont "Podiumpas?"), met een melding.
+    podiumpas: null,
+    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+  },
+  {
+    id: 'hengelo',
+    naam: 'Schouwburg Hengelo',
+    stad: 'Hengelo',
+    provincie: 'Overijssel',
+    baseUrl: 'https://www.schouwburghengelo.nl',
+    agendaUrl: 'https://www.schouwburghengelo.nl/theaterprogramma',
+    // Bron: https://www.schouwburghengelo.nl/bezoek/podiumpas (8 okt 2026):
+    // alleen in de Middenzaal en Rabozaal (per voorstelling in
+    // src/sites/hengelo.js), tot €50: true bij onbekende prijs (de lijst
+    // heeft geen prijs) met de melding, false boven €50; Regionaal null.
+    podiumpas: true,
+    podiumpasReserveren: {
+      online: true,
+      telefoon: '074 255 67 89',
+      email: 'info@schouwburghengelo.nl',
+      toelichting: 'Online of via de theaterkassa (ma–vr 12–16 uur), vanaf 30 dagen voor de voorstelling; houd de barcode van je pas (PP$…) bij de hand. Alleen in de Middenzaal en Rabozaal, tickets tot €50, niet bij verhuur of kaartverkoop door derden.',
+    },
+    melding: 'Podiumpas alleen tot €50 — controleer de prijs. Alleen in de Middenzaal en Rabozaal.',
+  },
+  {
+    id: 'odeon',
+    naam: 'Schouwburg Odeon',
+    stad: 'Zwolle',
+    provincie: 'Overijssel',
+    baseUrl: 'https://www.zwolsetheaters.nl',
+    agendaUrl: 'https://www.zwolsetheaters.nl/programma',
+    // Bron: https://www.zwolsetheaters.nl/voordeel/podiumpas (8 okt 2026):
+    // alles behalve gastprogrammering, tot €50 (per voorstelling in
+    // src/sites/zwolse.js).
+    podiumpas: true,
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Online bij de voorstelling, vanaf 30 dagen; kaart ophalen aan de kassa van de schouwburg (vanaf een uur tot een half uur voor aanvang). Niet bij gastprogrammering en rangen boven €50.',
+    },
+    // Programma + API + detailpagina's (grens 150 per run, 1 s).
+    budgetMinuten: 8,
+  },
+  {
+    id: 'despiegel',
+    naam: 'Theater de Spiegel',
+    stad: 'Zwolle',
+    provincie: 'Overijssel',
+    baseUrl: 'https://www.zwolsetheaters.nl',
+    agendaUrl: 'https://www.zwolsetheaters.nl/programma',
+    podiumpas: true,
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Online bij de voorstelling, vanaf 30 dagen; kaart ophalen aan de kassa van het theater (vanaf een uur tot een half uur voor aanvang). Niet bij gastprogrammering en rangen boven €50.',
+    },
+    budgetMinuten: 8,
+  },
 ];

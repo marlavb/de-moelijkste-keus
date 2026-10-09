@@ -69,3 +69,29 @@ export async function installDevCache(page, { dir = path.resolve('debug/cache'),
   log(`[devcache] aan (${dir}); pagina's uit de cache worden niet opnieuw opgehaald${offline ? '; offline: niets nieuws ophalen' : ''}`);
   return { stats: () => ({ hits, misses }) };
 }
+
+/**
+ * Dezelfde lokale cache voor verzoeken die geen paginanavigatie zijn (een
+ * POST naar een API via page.request, bv. Zwolse Theaters): die gaan niet
+ * door page.route en dus niet door installDevCache. `sleutel` is de URL plus
+ * eventueel de body. Zonder SCRAPE_CACHE=1 (of in CI) gewoon `ophalen()`.
+ * Met SCRAPE_OFFLINE=1 en niets in de cache: een fout, geen verzoek
+ * (9 okt 2026: een "offline" run deed zo toch 39 API-verzoeken).
+ */
+export async function metDevCache(url, sleutel, ophalen, { dir = path.resolve('debug/cache'), env = process.env, now = Date.now } = {}) {
+  if (!devCacheEnabled(env)) return ophalen();
+  const u = new URL(url);
+  const hash = createHash('sha1').update(`${u.toString()}\n${sleutel ?? ''}`).digest('hex').slice(0, 16);
+  const file = path.join(dir, u.hostname, `${hash}.json`);
+  try {
+    const info = await stat(file);
+    if (now() - info.mtimeMs < MAX_AGE_MS) return JSON.parse(await readFile(file, 'utf-8'));
+  } catch {
+    // niet in de cache
+  }
+  if (env.SCRAPE_OFFLINE === '1') throw new Error(`offline (SCRAPE_OFFLINE=1) en niet in de cache: ${url}`);
+  const data = await ophalen();
+  await mkdir(path.dirname(file), { recursive: true });
+  await writeFile(file, JSON.stringify(data), 'utf-8');
+  return data;
+}

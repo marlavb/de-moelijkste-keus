@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **72** (64 ok, 2 leeg, 6 gepauzeerd)
+- Theaters: **77** (64 ok, 2 leeg, 6 gepauzeerd, 5 onbekend)
 - Voorstellingen (titel per theater): **7573**
 - Speeldata: **10629**
 - Laatste refresh: **9 oktober 2026, 05:49** (Amsterdamse tijd)
@@ -78,8 +78,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   "geen regels". Theaters, steden, provincies en Podiumpas staan in
   `src/lib/config.js` (met bron en datum); een theater dat ons weert staat daar
   op `gepauzeerd` en krijgt geen enkel verzoek. Gedeelde modules per platform:
-  `peppered.js` (Peppered), `wpTheatre.js` (Theater for WordPress) en
-  `cre8ion.js` (The Cre8ion.Lab). Bellevue en Frascati lezen alle speeldata
+  `peppered.js` (Peppered), `wpTheatre.js` (Theater for WordPress),
+  `cre8ion.js` (The Cre8ion.Lab) en `xcom.js` (X-com met Itix: het
+  JSON-endpoint `/shows.php`, bij Rabo Theater De Meenthe en De Reggehof). Bellevue en Frascati lezen alle speeldata
   van de agendapagina's zelf (een verborgen paneel per productie), zonder
   detailpagina's: bij Bellevue ~25 verzoeken (~2 min) in plaats van ~205.
   Orpheus (Apeldoorn) en Agnietenhof (Tiel) werken net zo; bij Agnietenhof
@@ -91,10 +92,25 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   TAR (Arnhem) leest de agendapagina en daarna het eigen lijst-endpoint van
   de site (zoals de knop "meer laden"); Happy Hour, residenties en workshops
   laten we weg.
+  Overijssel (okt 2026): De Meenthe (Steenwijk) geeft per speeldatum zaal,
+  genre en Itix-status in JSON; regionale voorstellingen, de evenementenhal en
+  een paar reeksen krijgen geen Podiumpas, kerkconcerten staan erin met een
+  locatie. De Reggehof (Goor) geeft HTML-blokken in JSON, genre via de
+  genrefilters van de site; "zitten" en "staan" worden één voorstelling, en
+  een uitverkocht-status is er niet (robots.txt van de Itix-host verbiedt
+  die). Schouwburg Hengelo leest de lijstpagina's (één tegel per speeldatum);
+  de Podiumpas geldt alleen in de Middenzaal en Rabozaal, voor professionele
+  voorstellingen (niet "Regionaal") tot €50, en welke regel de voorstelling
+  is en welke de artiest, volgt uit de URL. Een tegel met een periode ("t/m")
+  krijgt de speeldata van de detailpagina. Zwolse Theaters (Schouwburg Odeon
+  en Theater de Spiegel) haalt de lijst via de eigen API van de site (per 10)
+  en per productie de detailpagina (datum, tijd, prijs en status per
+  speeldatum; samengevoegde speeldata worden zo per dag gesplitst), via de
+  detailcache met een grens van 150 per nacht.
   Waar zaal, uitsluitingen of speeldata alleen op een detailpagina staan
   (Musis Arnhem; Schaffelaartheater, waar robots.txt de agenda-API verbiedt
   en we de productie-adressen uit sitemap.xml halen, hooguit 120 nieuwe
-  pagina's per nacht),
+  pagina's per nacht; Zwolse Theaters; Schouwburg Hengelo, alleen periodes),
   komen die uit een cache tussen runs (`detailCache.js`, bestand
   `cache/detail/<theater>.json`, door de nachtelijke run gecommit): een nieuwe
   productie meteen, een bekende hooguit één keer per week, verspreid over de
@@ -130,8 +146,10 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   minuut; mislukt die ook, dan geldt de vorige data. Sommige bronnen dienen
   meer theaters tegelijk (één scrape per run): Het Cenakel (De Link,
   S.M.E.T.), Theater aan het Vrijthof (ook AINSI, via de zoekindex van de
-  site), PLT (Heerlen, Kerkrade, Sittard) en Musis en Stadstheater Arnhem
-  (één API; het Stadstheater is tot 2028 dicht en heeft een melding). Theaters zonder Podiumpas staan
+  site), PLT (Heerlen, Kerkrade, Sittard), Musis en Stadstheater Arnhem
+  (één API; het Stadstheater is tot 2028 dicht en heeft een melding) en
+  Zwolse Theaters (Schouwburg Odeon en Theater de Spiegel; andere plekken in
+  Zwolle bij Odeon, met locatie). Theaters zonder Podiumpas staan
   er ook in, met `podiumpas: false` (ITA, de Limburgse theaters behalve De
   Maaspoort en DOK6); waar de voorwaarden niet vast te stellen zijn, staat
   `podiumpas: null` (nog niet bekend; per voorstelling eventueel met
@@ -193,7 +211,8 @@ brew install openjdk@21           # emulators; zet openjdk@21/bin in je PATH
   Met `?emulator=1` praat de app met lokale emulators in plaats van Firebase.
 - Eén theater scrapen tijdens het bouwen, uit de lokale cache:
   `SCRAPE_CACHE=1 node src/index.js --only=<id>`; met `SCRAPE_OFFLINE=1`
-  erbij gaat er niets naar de site dat niet al in de cache staat. Houd
+  erbij gaat er niets naar de site dat niet al in de cache staat (ook niet
+  een API-verzoek dat geen paginanavigatie is: `metDevCache`). Houd
   testverkeer naar theatersites klein (zie `CLAUDE.md`).
 
 ### Testen
@@ -353,4 +372,14 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | TAR | Arnhem | – | gepauzeerd sinds 2026-10-08 |
 | Schaffelaartheater | Barneveld | deels | ok |
 | Schouwburg Agnietenhof | Tiel | – | gepauzeerd sinds 2026-10-07 |
+
+**Overijssel** (5)
+
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| De Reggehof | Goor | – | onbekend |
+| Schouwburg Hengelo | Hengelo | – | onbekend |
+| Rabo Theater De Meenthe | Steenwijk | – | onbekend |
+| Schouwburg Odeon | Zwolle | – | onbekend |
+| Theater de Spiegel | Zwolle | – | onbekend |
 <!-- AUTO:theaters:end -->
