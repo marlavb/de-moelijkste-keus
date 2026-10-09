@@ -11,7 +11,8 @@
 // de maker erin als die er hoort ("Dekpunt – Jan Beuving"); `maker` is de
 // maker van de productie: staat hij als laatste titeldeel, dan gaat een
 // gelijke maker uit het makerveld (niet dubbel); staat hij er niet in, dan
-// vult hij een leeg makerveld.
+// vult hij een leeg makerveld. `makerVast` (bij "andere naam"): het
+// makerveld wordt precies `maker` (leeg als die in de titel staat).
 // `regel`: 'keuze' (afgevinkt), 'R2' (ontbrekende maker) of 'R3' (maker in de
 // titel), voor de voorstellen zonder twijfel.
 
@@ -34,7 +35,7 @@ const kaal = (t) => String(t ?? '').replace(/\s*&\s*/g, ' en ').toLowerCase().no
 export function makerInTitel(titel, maker) {
   if (!maker) return false;
   const delen = String(titel).split(' – ');
-  return delen.length > 1 && kaal(delen.at(-1)) === kaal(maker);
+  return delen.length > 1 && kaal(zonderRuis(delen.at(-1))) === kaal(zonderRuis(maker));
 }
 
 /** De doelsleutel van een alias (de watchlist-sleutel van de nieuwe titel). */
@@ -52,6 +53,9 @@ export function pasAliasToe({ titel, maker, theaterId }, lijst) {
   // ("Maarten Heijmans & Xander Vrienten" / "Wachtend op de dood"). Zonder
   // label of leeftijd: "Femme Vitaal (reprise)" staat in "Femme Vitaal –
   // Tineke Schouten", "Voor Haar" in "Voor Haar, de Frans Halsema Musical".
+  // "Andere naam": de maker is wat er is ingevuld (ook leeg); staat hij in de
+  // titel, dan blijft het makerveld leeg ("Darkride" zonder maker).
+  if (alias.makerVast) return { titel: alias.titel, maker: makerInTitel(alias.titel, alias.maker) ? null : alias.maker ?? null, alias };
   const m = kaal(zonderRuis(maker ?? ''));
   const inTitel = maker && m.length >= 4 && ` ${kaal(alias.titel)} `.includes(` ${m} `);
   let nieuweMaker = inTitel ? null : maker;

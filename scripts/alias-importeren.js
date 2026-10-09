@@ -18,7 +18,19 @@ if (!bestand) {
 }
 
 const exp = JSON.parse(readFileSync(bestand, 'utf-8'));
-const { lijst, overzicht } = voegExportSamen(leesAliassen(), exp);
+// Hele titels per sleutel in de huidige data: een voorstelmaker die elders de
+// titel van een andere productie is, nemen we niet over (aliasImport.js).
+const { watchlistSleutel, zonderRuis } = await import('../public/js/watchlist.js');
+const kaal = (t) => zonderRuis(String(t ?? '')).toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+const titels = new Map();
+for (const s of JSON.parse(readFileSync('public/data/shows.json', 'utf-8'))) {
+  for (const t of [s.titel, s.titelBron, s.titelVoorAlias].filter(Boolean)) {
+    if (!titels.has(kaal(t))) titels.set(kaal(t), new Set());
+    titels.get(kaal(t)).add(watchlistSleutel(s.titel, s.theaterId));
+  }
+}
+const isTitelElders = (maker, doel) => [...(titels.get(kaal(maker)) ?? [])].some((k) => k !== doel);
+const { lijst, overzicht } = voegExportSamen(leesAliassen(), exp, { isTitelElders });
 const toon = (kop, regels) => {
   console.log(`\n${kop}: ${regels.length}`);
   for (const r of regels) console.log(`  - ${r}`);

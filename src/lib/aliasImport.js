@@ -13,24 +13,28 @@
 //   het laatste doel.
 
 import { doelSleutel, makerInTitel } from './aliassen.js';
+import { watchlistSleutel } from '../../public/js/watchlist.js';
 
 const kaal = (t) => String(t ?? '').replace(/\s*&\s*/g, ' en ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\p{L}\p{N}]+/gu, '');
 
 /**
  * De titel die een keuze oplevert: de weergave ("Titel – Maker" of "Titel").
- * Bij "samenvoegen" met een maker buiten de titel kwam die maker uit het
- * voorstel (de meeste theaters); die laat de alias aan de makermeerderheid
- * over ("CATS" kreeg anders "Het meesterwerk"). Een maker die bij "andere
- * naam" is ingevuld, telt wel.
+ * - "andere naam": de maker zoals ingevuld, ook leeg (`makerVast`: het
+ *   makerveld wordt precies dat; staat de maker in de titel, dan leeg).
+ * - "samenvoegen": de maker van het voorstel, ook als die niet in de titel
+ *   staat (vult een leeg makerveld), behalve als hij elders de hele titel van
+ *   een andere productie is: "CATS" met voorstelmaker "Het meesterwerk", dat
+ *   bij een theater de titel is (`isTitelElders(maker, doelSleutel)`).
  */
-function doelVan(a) {
+function doelVan(a, isTitelElders) {
   const c = a.canoniek;
   const titel = c.weergave ?? (c.maker ? `${c.titel} – ${c.maker}` : c.titel);
-  const maker = c.maker && (a.keuze === 'andere naam' || makerInTitel(titel, c.maker)) ? c.maker : null;
+  if (a.keuze === 'andere naam') return { titel, maker: c.maker ?? null, makerVast: true };
+  const maker = c.maker && (makerInTitel(titel, c.maker) || !isTitelElders(c.maker, watchlistSleutel(titel))) ? c.maker : null;
   return { titel, maker };
 }
 
-export function voegExportSamen(bestaand, exp) {
+export function voegExportSamen(bestaand, exp, { isTitelElders = () => false } = {}) {
   const lijst = {
     ...bestaand,
     aliassen: { ...(bestaand?.aliassen ?? {}) },
@@ -50,7 +54,7 @@ export function voegExportSamen(bestaand, exp) {
   // ("Populisme de Musical" en "Populisme de Musical – Sem Konijn"). Twee
   // verschillende makers ("Nieuw programma" van Patrick Nederkoorn en van
   // Sezgin Güleç): niet, dat zijn twee producties.
-  const keuzes = (exp.aliassen ?? []).map((a) => ({ ...a, doel: doelVan(a), kern: kaal(a.canoniek.titel) }));
+  const keuzes = (exp.aliassen ?? []).map((a) => ({ ...a, doel: doelVan(a, isTitelElders), kern: kaal(a.canoniek.titel) }));
   const perKern = new Map();
   for (const k of keuzes) {
     if (!perKern.has(k.kern)) perKern.set(k.kern, []);
@@ -79,7 +83,7 @@ export function voegExportSamen(bestaand, exp) {
       delete lijst.aliassen[bron];
       continue;
     }
-    lijst.aliassen[bron] = { titel: ks[0].doel.titel, maker: ks[0].doel.maker, groep: ks[0].groep, regel: 'keuze' };
+    lijst.aliassen[bron] = { titel: ks[0].doel.titel, maker: ks[0].doel.maker, ...(ks[0].doel.makerVast ? { makerVast: true } : {}), groep: ks[0].groep, regel: 'keuze' };
   }
 
   // Een nietSamenvoegen-groep: geen R2/R3-alias op zijn sleutels.
@@ -93,7 +97,7 @@ export function voegExportSamen(bestaand, exp) {
   for (const [bron, a] of Object.entries(lijst.aliassen)) {
     const o = oud[bron];
     if (!o) overzicht.nieuw.push(`${bron} → "${a.titel}"`);
-    else if (o.titel !== a.titel || o.maker !== a.maker) overzicht.gewijzigd.push(`${bron}: "${o.titel}" → "${a.titel}"`);
+    else if (o.titel !== a.titel || o.maker !== a.maker || Boolean(o.makerVast) !== Boolean(a.makerVast)) overzicht.gewijzigd.push(`${bron}: "${o.titel}" (maker ${o.maker ?? '–'}) → "${a.titel}" (maker ${a.maker ?? '–'}${a.makerVast ? ', vast' : ''})`);
     else overzicht.gelijk++;
   }
   for (const bron of Object.keys(oud)) if (!lijst.aliassen[bron]) overzicht.verwijderd.push(`${bron} (was "${oud[bron].titel}")`);
@@ -116,7 +120,7 @@ export function losKettingenOp(lijst, overzicht = { ketens: [] }) {
     }
     if (doel !== a) {
       overzicht.ketens.push(`${bron}: "${a.titel}" → "${doel.titel}"`);
-      aliassen[bron] = { ...a, titel: doel.titel, maker: doel.maker };
+      aliassen[bron] = { ...a, titel: doel.titel, maker: doel.maker, ...(doel.makerVast ? { makerVast: true } : {}) };
     }
   }
   return lijst;

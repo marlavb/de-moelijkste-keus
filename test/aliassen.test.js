@@ -32,7 +32,7 @@ test('pasAliasToe: titel, maker niet dubbel, voorstellingsnaam uit het makerveld
 
 const keuze = (groep, keuze, bron, canoniek) => ({ groep, keuze, bron, bronTitels: [], theaters: [], canoniek });
 
-test('export omzetten: andere naam met maker, samenvoegen zonder voorstelmaker, conflict eruit', () => {
+test('export omzetten: andere naam met vaste maker, voorstelmaker behalve als die elders titel is (CATS), conflict eruit', () => {
   const exp = {
     aliassen: [
       keuze('dekpunt', 'andere naam', 'dekpunt | jan beuving en tom dicke', { titel: 'Dekpunt', maker: 'Jan Beuving', weergave: 'Dekpunt – Jan Beuving' }),
@@ -46,14 +46,25 @@ test('export omzetten: andere naam met maker, samenvoegen zonder voorstelmaker, 
     ],
     nietSamenvoegen: [],
   };
-  const { lijst: uit, overzicht } = voegExportSamen({ aliassen: {}, nietSamenvoegen: [] }, exp);
-  assert.deepEqual(uit.aliassen['dekpunt | jan beuving en tom dicke'], { titel: 'Dekpunt – Jan Beuving', maker: 'Jan Beuving', groep: 'dekpunt', regel: 'keuze' });
+  exp.aliassen.push(
+    keuze('drama', 'samenvoegen', 'theater oostpool | the drama', { titel: 'The Drama', maker: 'Theater Oostpool', weergave: 'The Drama' }),
+    keuze('darkride', 'andere naam', 'darkride', { titel: 'Darkride', maker: null, weergave: 'Darkride' }),
+  );
+  // "Het meesterwerk" is bij een theater de titel (van wat CATS werd).
+  const isTitelElders = (m) => m === 'Het meesterwerk';
+  const { lijst: uit, overzicht } = voegExportSamen({ aliassen: {}, nietSamenvoegen: [] }, exp, { isTitelElders });
+  assert.deepEqual(uit.aliassen['dekpunt | jan beuving en tom dicke'], { titel: 'Dekpunt – Jan Beuving', maker: 'Jan Beuving', makerVast: true, groep: 'dekpunt', regel: 'keuze' });
+  assert.equal(uit.aliassen['theater oostpool | the drama'].maker, 'Theater Oostpool');
+  assert.deepEqual(uit.aliassen.darkride, { titel: 'Darkride', maker: null, makerVast: true, groep: 'darkride', regel: 'keuze' });
+  // Vaste maker: leeg blijft leeg, ook als de bron er een had.
+  assert.equal(pasAliasToe({ titel: 'Darkride', maker: '75-jarig jubileum van de Efteling', theaterId: 'x' }, uit).maker, null);
+  assert.equal(pasAliasToe({ titel: 'Dekpunt – Jan Beuving & Tom Dicke', maker: 'regie: X', theaterId: 'x' }, uit).maker, null);
   assert.equal(uit.aliassen.katwijk.titel, 'KATWIJK – Compagnie Red Yellow & Blue');
   assert.equal(uit.aliassen['het meesterwerk'].maker, null);
   assert.equal(uit.aliassen['god is een snotje'].maker, 'Kim Karssen');
   assert.equal(uit.aliassen['theater oostpool'], undefined);
   assert.equal(overzicht.conflicten.length, 1);
-  assert.equal(overzicht.nieuw.length, 4);
+  assert.equal(overzicht.nieuw.length, 6);
   assert.deepEqual(controleer(uit), []);
 });
 
