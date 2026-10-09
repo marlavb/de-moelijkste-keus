@@ -128,7 +128,9 @@ export async function scrapeSchouwburgConcertzaal({ page, theater, robots, waitF
       stad: theater.stad,
       ...(eigen ? {} : { locatie: plek }),
       zaal: eigen ? plek : null,
-      podiumpas: theater.podiumpas && !gratis,
+      // Gratis: geen pas nodig (false); anders die van het theater (true, of
+      // null = nog niet bekend).
+      podiumpas: gratis ? false : theater.podiumpas,
       datum,
       tijd,
       genre: normalizeGenreFromList(it.tags) ?? normalizeGenre(it.tags[0] ?? it.dl?.genre ?? null),

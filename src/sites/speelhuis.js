@@ -137,7 +137,9 @@ export async function scrapeSpeelhuis({ page, theater, robots, waitForTurn, log,
       stad: theater.stad,
       ...(eigen ? {} : { locatie: zaalTekst }),
       zaal: eigen && zaalTekst ? zaalTekst.replace(/\s*-\s*Het Speelhuis\s*$/i, '') || null : null,
-      podiumpas: theater.podiumpas && !gratis,
+      // Gratis: geen pas nodig (false); anders die van het theater (true, of
+      // null = nog niet bekend).
+      podiumpas: gratis ? false : theater.podiumpas,
       datum,
       tijd,
       genre: genre ?? (genreRuw ? 'Overig' : null),
