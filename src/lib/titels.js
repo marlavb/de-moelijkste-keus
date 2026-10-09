@@ -78,6 +78,59 @@ export function isGeenMaker(tekst) {
   return Boolean(t) && GEEN_MAKER.some((re) => re.test(t));
 }
 
+// Slogan of cast in het makerveld (titels-ronde-1, R1, 9 okt 2026): "Slijm is
+// terug!", "De enige echte officiële Queen musical!", "Aladdin de Musical",
+// "Mark Rietman e.a.", "Soy Kroon als Frans Halsema", "Hilke Bierman, Jeannine
+// La Rose, Nicole Berendsen", "’s Werelds beroemdste detective in een nieuw
+// moordmysterie". Alleen voor het makerveld (scrapeRun): niet in
+// GEEN_MAKER, want een ondertitel met "!" is in een cabarettitel vaak de
+// voorstellingsnaam ("Hoe dan! – Steven Kazàn", pasTitelConventieToe).
+// Bewust níet (gecontroleerd op alle makers van 9 okt 2026):
+// - "!" in één woord ("LUDIQUE!", "Romani!", "DJANGAN!") of na een
+//   gezelschapswoord ("Ensemble Gamut!"), en "!" tussen haakjes ("Bart
+//   Krieger (Kunst Toko BAM!)");
+// - "Musical" in een naam ("Nationaal Jeugd Musical Theater", "Stichting
+//   Musical Stella Duce", "Scherzi Musicali");
+// - "als" met hoofdletter ("Theater Als Het Ware"); "en" zonder komma's
+//   ("Van Vleuten en Van Muiswinkel");
+// - komma's tussen haakjes ("Chapter 58 (Antti Uimonen, Flore Muuse, …)"),
+//   met "/" ("Iduna Paalman, Zephyr Brüggen / Bellevue Producties, Het
+//   Nationale Theater") of tussen gezelschappen ("Holland Opera, Duda Paiva
+//   Company, New European Ensemble"; "NITE, Club Guy & Roni, Het Muziek,
+//   HIIIT"); "!" naast een gezelschapsnaam ("Theater Rotterdam, ZO! Gospel
+//   Choir, Glen Faria & Priscilla Vaudelle").
+const GEZELSCHAP = /\b(ensemble|trio|kwartet|quartet|kwintet|quintet|band|orkest|orchestra|koor|choir|collectief|company|compagnie|opera|theater|producties|gezelschap|toneelgroep)\b/i;
+// Met hoofdletter, als naam: "Theater Rotterdam, ZO! Gospel Choir" blijft,
+// "Jij HOORT in het theater!" niet.
+const GEZELSCHAP_NAAM = /\b(Ensemble|Trio|Kwartet|Quartet|Kwintet|Quintet|Band|Orkest|Orchestra|Koor|Choir|Collectief|Company|Compagnie|Opera|Theater|Producties|Gezelschap|Toneelgroep|Chœur|Choeur)\b/;
+// Een deel dat een gezelschap is: met gezelschapswoord of een afkorting
+// ("NITE, Club Guy & Roni, Het Muziek, HIIIT").
+const isGezelschapsdeel = (d) => GEZELSCHAP.test(d) || /^[A-Z]{3,}$/.test(d.trim());
+// Woorden die in een naam met een kleine letter mogen ("Pieter Hulst en
+// Willem de Voogd", "Anke van 't Hof").
+const NAAMWOORD = new Set(['van', 'de', 'der', 'den', 'het', 'ten', 'ter', 'te', 'du', 'la', 'le', 'da', 'di', 'von', 'el', 'en', 'y', 'dos', 'das', 'do', 'e', 'des', 'del', 'of', 'and', 'the', 'und', 'met', 'o.l.v.', 'i.s.m.', 'feat.', 'ft.', 'x', 'vs', 'vs.', 'by', 'door', 'with', 'plus', 'zu', 'al', 'bin', 'ibn', "'t", '’t']);
+
+export function isSloganOfCast(tekst) {
+  const t = String(tekst ?? '').trim();
+  if (!t) return false;
+  const buitenHaakjes = t.replace(/\([^)]*\)/g, ' ').replace(/\s+/g, ' ').trim();
+  if (/\boffici[eë]le\b/i.test(t)) return true;
+  if (/\p{L}-?musical(?!\p{L})/iu.test(t) || /\bmusical\s*!?$/i.test(buitenHaakjes) || /^(?:een|de|het)\s.*\bmusical\b/i.test(t)) return true;
+  if (/(?:^|\s)e\.\s?a\.?(?:\s|$)/i.test(t)) return true;
+  if (/\sals\s+\p{Lu}/u.test(t)) return true;
+  if (/!/.test(buitenHaakjes) && buitenHaakjes.split(' ').length >= 2 && !GEZELSCHAP_NAAM.test(buitenHaakjes)) return true;
+  const delen = buitenHaakjes.split(',');
+  if (delen.length >= 3 && !t.includes('/') && delen.filter(isGezelschapsdeel).length < 2) return true;
+  // Een zin: vijf woorden of meer, waarvan drie met een kleine letter die in
+  // een naam niet voorkomen ("’s Werelds beroemdste detective in een nieuw
+  // moordmysterie", "Ik heb je lief, drie generaties lang"). Zonder deze
+  // regel won zo'n slogan na het weghalen van de cast de makermeerderheid.
+  const woorden = buitenHaakjes.split(' ');
+  const klein = woorden.filter((w) => /^\p{Ll}/u.test(w) && !NAAMWOORD.has(w.toLowerCase()));
+  if (woorden.length >= 5 && klein.length >= 3 && !GEZELSCHAP_NAAM.test(buitenHaakjes)) return true;
+  return false;
+}
+
 // Titel en maker omgedraaid bij de bron (okt 2026): de artiest staat als
 // titel en de voorstelling als ondertitel/maker, buiten cabaret (waar
 // pasTitelConventieToe dat al oplost). Per theater, per letterlijke

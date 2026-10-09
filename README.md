@@ -138,7 +138,10 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   (`dedupe.js`). Titels: waar een theater per genre een vaste volgorde van
   maker en titel heeft, wordt dat "Titel – Maker"; content warnings,
   "met o.a. …", leeftijden en ondertitels als "reprise", "20 jaar …" of
-"In Concert" worden nooit maker maar beschrijving; "(try-out)", "(reprise)",
+"In Concert" worden nooit maker maar beschrijving; een slogan of cast in
+  het makerveld ook niet ("Slijm is terug!", "… de Musical", "Mark Rietman
+  e.a.", "Soy Kroon als …", een rij van drie namen of meer, een hele zin;
+  `isSloganOfCast`): die gaat vóór de beschrijving; "(try-out)", "(reprise)",
   "(première)" en "(voorpremière)" gaan overal uit de titel naar de
   beschrijving, bij elk theater (de titel mét label blijft als `titelBron`,
   zodat oude watchlist-, Gezien- en plansleutels en die van vrienden

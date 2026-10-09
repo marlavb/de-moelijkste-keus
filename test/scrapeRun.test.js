@@ -752,3 +752,24 @@ test('log: aantal samengevoegde producties en speeldata, ook bij 0 (8 okt 2026)'
   await run({ paths: await setup(), logs: leeg, theaters: [theater('a')], scrapers: { a: async () => [show('a', '2026-11-01')] } });
   assert.ok(leeg.some((l) => /^Productie-samenvoeging: 0 productie\(s\), 0 speeldata/.test(l)), leeg.join('\n'));
 });
+
+test('slogan of cast als maker → vóór de beschrijving (R1); niet dubbel; stabiel over twee runs', async () => {
+  const paths = await setup();
+  const scraper = async () => [
+    show('a', '2026-10-07', { titel: 'De Nog Grotere Slijmmusical', maker: 'Slijm is terug!', beschrijving: 'Groter dan ooit.' }),
+    show('a', '2026-10-08', { titel: 'Sherlock Holmes', maker: 'Mark Rietman, Ferdi Stofmeel e.a.', beschrijving: null }),
+    show('a', '2026-10-09', { titel: 'Best of Ireland', maker: 'De grootste hits uit Ierland!', beschrijving: 'De grootste hits uit Ierland! En meer.' }),
+    show('a', '2026-10-10', { titel: 'Het Zesde Zintuig', maker: 'Van Vleuten en Van Muiswinkel', beschrijving: null }),
+  ];
+  const { written } = await run({ paths, theaters: [theater('a')], scrapers: { a: scraper } });
+  const kort = (r) => r.map((s) => [s.titel, s.maker, s.beschrijving]);
+  assert.deepEqual(kort(written), [
+    ['De Nog Grotere Slijmmusical', null, 'Slijm is terug! · Groter dan ooit.'],
+    ['Sherlock Holmes', null, 'Mark Rietman, Ferdi Stofmeel e.a.'],
+    ['Best of Ireland', null, 'De grootste hits uit Ierland! En meer.'],
+    ['Het Zesde Zintuig', 'Van Vleuten en Van Muiswinkel', null],
+  ]);
+  const paths2 = await setup({ previousShows: written });
+  const { written: weer } = await run({ paths: paths2, theaters: [theater('a')], scrapers: { a: failing } });
+  assert.deepEqual(kort(weer), kort(written));
+});

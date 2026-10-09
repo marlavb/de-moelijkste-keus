@@ -11,7 +11,7 @@ import { pasMeerderheidToe } from './weergaveMeerderheid.js';
 import { pasGenreMeerderheidToe } from './genreMeerderheid.js';
 import { pasMakerMeerderheidToe } from './makerMeerderheid.js';
 import { pasProductieSamenvoegingToe } from './productieSamenvoegen.js';
-import { metEnDash, zonderStatusWoord, isGeenMaker, makerZonderVoorvoegsel, draaiTitelEnMakerOm, labelsUitTitel } from './titels.js';
+import { metEnDash, zonderStatusWoord, isGeenMaker, isSloganOfCast, makerZonderVoorvoegsel, draaiTitelEnMakerOm, labelsUitTitel } from './titels.js';
 import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
 
@@ -400,6 +400,10 @@ export async function runRefresh({
       let beschrijving = s.beschrijving ?? null;
       if (maker && isGeenMaker(maker)) {
         beschrijving = beschrijving ?? maker;
+        maker = null;
+      } else if (maker && isSloganOfCast(maker)) {
+        // Slogan of cast (titels.js): vóór de beschrijving, tenzij die het al heeft.
+        if (!(beschrijving ?? '').toLowerCase().includes(maker.toLowerCase())) beschrijving = [maker, beschrijving].filter(Boolean).join(' · ');
         maker = null;
       } else if (maker) {
         maker = makerZonderVoorvoegsel(maker);
