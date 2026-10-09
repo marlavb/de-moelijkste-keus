@@ -45,7 +45,7 @@ test('De Meenthe: twee pagina’s, Podiumpas-uitsluitingen, kerkconcert met loca
   assert.deepEqual(shows.map(kort), [
     'Percossa | 2026-10-09 20:00 | Musical | beschikbaar | pas true | Eleq Theaterzaal',
     'Dennis Hendriks Band | 2026-10-09 21:30 | Muziek & Concert | afgelast | pas false | Dyka Vestzaktheater',
-    'Marietta Petkova | 2026-10-11 15:30 | Muziek & Concert | beschikbaar | pas true | De Grote Kerk Blokzijl | Blokzijl',
+    'Marietta Petkova | 2026-10-11 15:30 | Muziek & Concert | beschikbaar | pas null | De Grote Kerk Blokzijl | Blokzijl',
     '[on]geduldig – Anuar | 2026-10-30 20:00 | Cabaret | beschikbaar | pas true | Eleq Theaterzaal',
     'Beach Boys Best | 2026-10-22 20:00 | Overig | beschikbaar | pas false | Evenementenhal',
     'Waylon | 2026-10-21 20:00 | Muziek & Concert | beschikbaar | pas true | Eleq Theaterzaal',
@@ -57,6 +57,8 @@ test('De Meenthe: twee pagina’s, Podiumpas-uitsluitingen, kerkconcert met loca
     'Wagyu – Rundfunk | 2027-01-27 20:00 | Cabaret | beschikbaar | pas true | Eleq Theaterzaal',
     'Tapas2000 | 2026-12-21 18:30 | Overig | beschikbaar | pas false | Dyka Vestzaktheater',
   ]);
+  assert.equal(shows.find((s) => s.titel === 'Marietta Petkova').podiumpasNoot, 'Geldt de Podiumpas ook voor concerten in de kerk? Nog niet bekend — vraag het theater.');
+  assert.equal(shows.filter((s) => 'podiumpasNoot' in s).length, 1, 'alleen bij het kerkconcert');
   const dennis = shows.find((s) => s.titel === 'Dennis Hendriks Band');
   assert.equal(dennis.beschrijving, 'Vrijdagavond Vestzakconcert');
   assert.equal(shows.find((s) => s.titel === 'Percossa').reserverenUrl, 'https://www.demeenthe.nl/theater/voorstellingen/percossa-bommetje/09-10-2026-20-00/');

@@ -19,8 +19,9 @@ const GEEN_PAS_REEKS = /vrijdagavond vestzakconcert|schrijversfestival|passie vo
 
 // De eigen zalen in het gebouw aan het Stationsplein. Alles daarbuiten
 // (Grote Kerk Steenwijk, De Grote Kerk Blokzijl) is een kerkconcert: mee met
-// `locatie`; of de Podiumpas daar geldt, is nog niet bekend ("in het
-// theater"; zie de melding in config.js).
+// `locatie`. Of de Podiumpas daar geldt, is niet onderbouwd (de pagina zegt
+// "in het theater"): podiumpas null = nog niet bekend (9 okt 2026).
+export const KERK_NOOT = 'Geldt de Podiumpas ook voor concerten in de kerk? Nog niet bekend — vraag het theater.';
 const EIGEN_ZAAL = /^(eleq theaterzaal|dyka vestzaktheater|evenementenhal|1\.7 intermezzo|de meenthe|foyer)$/i;
 
 // Geen voorstelling: een passe-partout voor een hele serie (de concerten
@@ -107,6 +108,9 @@ export function verwerkMeenthe(items, { theater, log = () => {}, opgehaaldOp = n
     if (reden) {
       podiumpas = false;
       tel(geenPas, reden);
+    } else if (!eigen && podiumpas !== false) {
+      podiumpas = null;
+      tel(geenPas, 'kerkconcert: onbekend (null)');
     }
 
     const bron = it.url ? new URL(it.url, theater.baseUrl).toString() : theater.agendaUrl;
@@ -126,6 +130,7 @@ export function verwerkMeenthe(items, { theater, log = () => {}, opgehaaldOp = n
       maker: null,
       prijs: null,
       ...(eigen ? { zaal: zaalRuw } : { locatie: `${zaalRuw} | ${zaalRuw.match(/blokzijl/i) ? 'Blokzijl' : theater.stad}` }),
+      ...(podiumpas === null ? { podiumpasNoot: KERK_NOOT } : {}),
       reserverenUrl: bron,
       bron,
       opgehaaldOp,
@@ -140,7 +145,7 @@ export function verwerkMeenthe(items, { theater, log = () => {}, opgehaaldOp = n
   }
   const lijst = (o) => Object.entries(o).map(([x, n]) => `${x} (${n})`).join(', ');
   if (Object.keys(weg).length) log(`weggelaten: ${lijst(weg)}`);
-  if (Object.keys(geenPas).length) log(`podiumpas false: ${lijst(geenPas)}`);
+  if (Object.keys(geenPas).length) log(`podiumpas false of onbekend: ${lijst(geenPas)}`);
   if (Object.keys(onbekend).length) log(`onbekende genres: ${lijst(onbekend)}`);
   if (Object.keys(codes).length) log(`titelcode weggehaald: ${lijst(codes)}`);
   if (Object.keys(statussen).length) log(`onbekende Itix-statussen (als "onbekend"): ${lijst(statussen)}`);

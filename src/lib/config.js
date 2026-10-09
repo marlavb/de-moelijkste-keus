@@ -1030,13 +1030,14 @@ export const THEATERS = [
     agendaUrl: 'https://www.demeenthe.nl/theater/voorstellingen/',
     // Bron: https://www.demeenthe.nl/informatie/podiumpas/ (8 okt 2026):
     // reguliere voorstellingen en concerten in het theater; uitsluitingen per
-    // voorstelling in src/sites/meenthe.js. Kerkconcerten: nog niet bekend.
+    // voorstelling in src/sites/meenthe.js. Kerkconcerten: podiumpas null
+    // (nog niet bekend; de pagina zegt "in het theater").
     podiumpas: true,
     podiumpasReserveren: {
       online: true,
       toelichting: 'Online, vanaf 30 dagen voor de voorstelling; ticket ophalen op de dag zelf met je Podiumpas. Niet bij regionale voorstellingen, de evenementenhal, het Schrijversfestival, Vrijdagavond Vestzakconcerten, Passie voor Bach en producties van derden.',
     },
-    melding: 'Podiumpas-voorwaarden voor de kerkconcerten (Grote Kerk Steenwijk, Blokzijl) nog niet bekend — vraag het theater.',
+    melding: 'Geldt de Podiumpas ook voor concerten in de kerk? Nog niet bekend — vraag het theater.',
   },
   {
     id: 'reggehof',
