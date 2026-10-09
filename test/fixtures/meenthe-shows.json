@@ -1,0 +1,511 @@
+{
+ "pages": 2,
+ "currentPage": 1,
+ "entities": 15,
+ "raw": [
+  {
+   "id": 27374,
+   "type": "theater",
+   "itix_id": 5890,
+   "title": "Percossa",
+   "subtitle": "Bommetje!",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 22012,
+     "title": "Musical & Show"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 22012,
+     "title": "musical---show"
+    }
+   ],
+   "series": [],
+   "location_title": "Eleq Theaterzaal",
+   "location_title_name": "eleq-theaterzaal",
+   "genre_title": "Musical & Show",
+   "itix_from_raw": 1791568800,
+   "itix_from_formatted_date": "20261009",
+   "itix_show_status": "reserveren",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/percossa-bommetje/09-10-2026-20-00/",
+   "image": ""
+  },
+  {
+   "id": 33771,
+   "type": "theater",
+   "itix_id": 6097,
+   "title": "Dennis Hendriks Band",
+   "subtitle": "Vrijdagavond Vestzakconcert",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 3067,
+     "title": "Muziek"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 3067,
+     "title": "muziek"
+    }
+   ],
+   "series": [],
+   "location_title": "Dyka Vestzaktheater",
+   "location_title_name": "dyka-vestzaktheater",
+   "genre_title": "Muziek",
+   "itix_from_raw": 1791574200,
+   "itix_from_formatted_date": "20261009",
+   "itix_show_status": "geannuleerd",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/dennis-hendriks-band-vrijdagavond-vestzakconcert/09-10-2026-21-30/",
+   "image": ""
+  },
+  {
+   "id": 33566,
+   "type": "theater",
+   "itix_id": 6062,
+   "title": "Marietta Petkova",
+   "subtitle": "Blokzijl Klassiek",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 3067,
+     "title": "Muziek"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 3067,
+     "title": "muziek"
+    }
+   ],
+   "series": [],
+   "location_title": "De Grote Kerk Blokzijl",
+   "location_title_name": "de-grote-kerk-blokzijl",
+   "genre_title": "Muziek",
+   "itix_from_raw": 1791725400,
+   "itix_from_formatted_date": "20261011",
+   "itix_show_status": "reserveren",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/marietta-petkova-blokzijl-klassiek/11-10-2026-15-30/",
+   "image": ""
+  },
+  {
+   "id": 33561,
+   "type": "theater",
+   "itix_id": 6060,
+   "title": "Klassiek in de Clemens 26-27",
+   "subtitle": "passe partout (hele serie)",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 5002,
+     "title": "Klassiek"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 5002,
+     "title": "klassiek"
+    }
+   ],
+   "series": [],
+   "location_title": "Grote Kerk Steenwijk",
+   "location_title_name": "grote-kerk-steenwijk",
+   "genre_title": "Klassiek",
+   "itix_from_raw": 1791727200,
+   "itix_from_formatted_date": "20261011",
+   "itix_show_status": "reserveren",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/passie-voor-bach-26-27-passe-partout-hele-serie/11-10-2026-16-00/",
+   "image": ""
+  },
+  {
+   "id": 27353,
+   "type": "theater",
+   "itix_id": 5896,
+   "title": "Anuar",
+   "subtitle": "[on]geduldig",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 3065,
+     "title": "Cabaret"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 3065,
+     "title": "cabaret"
+    }
+   ],
+   "series": [],
+   "location_title": "Eleq Theaterzaal",
+   "location_title_name": "eleq-theaterzaal",
+   "genre_title": "Cabaret",
+   "itix_from_raw": 1793386800,
+   "itix_from_formatted_date": "20261030",
+   "itix_show_status": "reserveren",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/anuar-on-geduldig/30-10-2026-20-00/",
+   "image": ""
+  },
+  {
+   "id": 26516,
+   "type": "theater",
+   "itix_id": 5699,
+   "title": "Beach Boys Best",
+   "subtitle": "Live in de Hal",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 10885,
+     "title": "evenement"
+    },
+    {
+     "id": 3067,
+     "title": "Muziek"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 10885,
+     "title": "evenement"
+    },
+    {
+     "id": 3067,
+     "title": "muziek"
+    }
+   ],
+   "series": [],
+   "location_title": "Evenementenhal",
+   "location_title_name": "evenementenhal",
+   "genre_title": "evenement",
+   "itix_from_raw": 1792692000,
+   "itix_from_formatted_date": "20261022",
+   "itix_show_status": "reserveren",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/beach-boys-best-staconcert/22-10-2026-20-00/",
+   "image": ""
+  },
+  {
+   "id": 26912,
+   "type": "theater",
+   "itix_id": 5912,
+   "title": "Mega Bricks",
+   "subtitle": "3500m2 lego",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 10885,
+     "title": "evenement"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 10885,
+     "title": "evenement"
+    }
+   ],
+   "series": [],
+   "location_title": "Evenementenhal",
+   "location_title_name": "evenementenhal",
+   "genre_title": "evenement",
+   "itix_from_raw": 1795251600,
+   "itix_from_formatted_date": "20261121",
+   "itix_show_status": "geen_webverkoop",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/mega-bricks-3500m2-lego/21-11-2026-10-00/",
+   "image": ""
+  },
+  {
+   "id": 27357,
+   "type": "theater",
+   "itix_id": 5895,
+   "title": "Waylon (R)",
+   "subtitle": "Time Jumper",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 3067,
+     "title": "Muziek"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 3067,
+     "title": "muziek"
+    }
+   ],
+   "series": [],
+   "location_title": "Eleq Theaterzaal",
+   "location_title_name": "eleq-theaterzaal",
+   "genre_title": "Muziek",
+   "itix_from_raw": 1792605600,
+   "itix_from_formatted_date": "20261021",
+   "itix_show_status": "reserveren",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/waylon-time-jumper/21-10-2026-20-00/",
+   "image": ""
+  },
+  {
+   "id": 27348,
+   "type": "theater",
+   "itix_id": 5897,
+   "title": "Met stickers beplakte gitaarkisten",
+   "subtitle": "Gerard R. Buisman 3x anders – een muzikale hommage",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 3068,
+     "title": "Regionaal"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 3068,
+     "title": "regionaal"
+    }
+   ],
+   "series": [],
+   "location_title": "Eleq Theaterzaal",
+   "location_title_name": "eleq-theaterzaal",
+   "genre_title": "Regionaal",
+   "itix_from_raw": 1793473200,
+   "itix_from_formatted_date": "20261031",
+   "itix_show_status": "reserveren",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/met-stickers-beplakte-gitaarkisten-gerard-r-buisman-3x-anders-een-muzikale-hommage/31-10-2026-20-00/",
+   "image": ""
+  },
+  {
+   "id": 33676,
+   "type": "theater",
+   "itix_id": 6072,
+   "title": "Fred van Leer",
+   "subtitle": "Ik weet het eigenlijk niet",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 22012,
+     "title": "Musical & Show"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 22012,
+     "title": "musical---show"
+    }
+   ],
+   "series": [],
+   "location_title": "Eleq Theaterzaal",
+   "location_title_name": "eleq-theaterzaal",
+   "genre_title": "Musical & Show",
+   "itix_from_raw": 1793818800,
+   "itix_from_formatted_date": "20261104",
+   "itix_show_status": "uitverkocht",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/fred-van-leer-ik-weet-het-eigenlijk-niet-1/04-11-2026-20-00/",
+   "image": ""
+  },
+  {
+   "id": 27362,
+   "type": "theater",
+   "itix_id": 5894,
+   "title": "CaDansa",
+   "subtitle": "Balfolk Festival",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 10885,
+     "title": "evenement"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 10885,
+     "title": "evenement"
+    }
+   ],
+   "series": [],
+   "location_title": "De Meenthe",
+   "location_title_name": "de-meenthe",
+   "genre_title": "evenement",
+   "itix_from_raw": 1792054800,
+   "itix_from_formatted_date": "20261015",
+   "itix_show_status": "geen_webverkoop",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/cadansa-balfolk-festival/15-10-2026-11-00/",
+   "image": ""
+  },
+  {
+   "id": 33578,
+   "type": "theater",
+   "itix_id": 5898,
+   "title": "Fest der Blasmusik",
+   "subtitle": "dagprogramma",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 10885,
+     "title": "evenement"
+    },
+    {
+     "id": 3067,
+     "title": "Muziek"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 10885,
+     "title": "evenement"
+    },
+    {
+     "id": 3067,
+     "title": "muziek"
+    }
+   ],
+   "series": [],
+   "location_title": "De Meenthe",
+   "location_title_name": "de-meenthe",
+   "genre_title": "evenement",
+   "itix_from_raw": 1793444400,
+   "itix_from_formatted_date": "20261031",
+   "itix_show_status": "reserveren",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/blaaskapellenfestival-fest-der-blasmusik-dagprogramma/31-10-2026-12-00/",
+   "image": ""
+  },
+  {
+   "id": 27115,
+   "type": "theater",
+   "itix_id": 5953,
+   "title": "Esther van der Voort (R)",
+   "subtitle": "Mama is boos",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 3065,
+     "title": "Cabaret"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 3065,
+     "title": "cabaret"
+    }
+   ],
+   "series": [],
+   "location_title": "Eleq Theaterzaal",
+   "location_title_name": "eleq-theaterzaal",
+   "genre_title": "Cabaret",
+   "itix_from_raw": 1800039600,
+   "itix_from_formatted_date": "20270115",
+   "itix_show_status": "uitverkocht",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/esther-van-der-voort-reprise-mama-is-boos/15-01-2027-20-00/",
+   "image": ""
+  },
+  {
+   "id": 27095,
+   "type": "theater",
+   "itix_id": 5959,
+   "title": "Rundfunk (T)",
+   "subtitle": "Wagyu",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 3065,
+     "title": "Cabaret"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 3065,
+     "title": "cabaret"
+    }
+   ],
+   "series": [],
+   "location_title": "Eleq Theaterzaal",
+   "location_title_name": "eleq-theaterzaal",
+   "genre_title": "Cabaret",
+   "itix_from_raw": 1801076400,
+   "itix_from_formatted_date": "20270127",
+   "itix_show_status": "reserveren",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/rundfunk-t-wagyu/27-01-2027-20-00/",
+   "image": ""
+  },
+  {
+   "id": 26160,
+   "type": "theater",
+   "itix_id": 5616,
+   "title": "Tapas2000",
+   "subtitle": "2026",
+   "quote": "",
+   "ticket_url": "",
+   "label": "",
+   "genre_select": [
+    {
+     "id": 10885,
+     "title": "evenement"
+    },
+    {
+     "id": 3070,
+     "title": "Special"
+    }
+   ],
+   "genre_select_name": [
+    {
+     "id": 10885,
+     "title": "evenement"
+    },
+    {
+     "id": 3070,
+     "title": "special"
+    }
+   ],
+   "series": [],
+   "location_title": "Dyka Vestzaktheater",
+   "location_title_name": "dyka-vestzaktheater",
+   "genre_title": "evenement",
+   "itix_from_raw": 1797874200,
+   "itix_from_formatted_date": "20261221",
+   "itix_show_status": "reserveren",
+   "show_web_status": "",
+   "url": "/theater/voorstellingen/tapas2000-2031/21-12-2026-18-30/",
+   "image": ""
+  }
+ ]
+}

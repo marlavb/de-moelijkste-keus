@@ -219,6 +219,11 @@ const GENRE_MAP = {
   orgel: 'Muziek & Concert',
   blaasmuziek: 'Muziek & Concert',
   'familie - jeugd gratis': 'Familie & Jeugd',
+
+  // Rabo Theater De Meenthe (Steenwijk, 9 okt 2026).
+  'kind en jeugd': 'Familie & Jeugd',
+  lezing: 'Overig',
+  regionaal: 'Overig',
   'fysiek & beeldend': 'Overig',
   dansfeest: 'Overig',
   circus: 'Overig',

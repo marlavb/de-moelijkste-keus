@@ -1018,4 +1018,24 @@ export const THEATERS = [
     // planning in 2028; geen speeldata in de agenda. Na de heropening weghalen.
     melding: 'Gesloten wegens vernieuwing (heropening gepland in 2028). De voorstellingen staan bij Musis Arnhem.',
   },
+  // Overijssel (okt 2026; inventarisatie debug/overijssel-groningen-inventarisatie.md).
+  // Namen letterlijk zoals op podiumpas.nl/waar-te-besteden; Odeon en De
+  // Spiegel staan daar (kaartdata) als losse locaties van Zwolse Theaters.
+  {
+    id: 'meenthe',
+    naam: 'Rabo Theater De Meenthe',
+    stad: 'Steenwijk',
+    provincie: 'Overijssel',
+    baseUrl: 'https://www.demeenthe.nl',
+    agendaUrl: 'https://www.demeenthe.nl/theater/voorstellingen/',
+    // Bron: https://www.demeenthe.nl/informatie/podiumpas/ (8 okt 2026):
+    // reguliere voorstellingen en concerten in het theater; uitsluitingen per
+    // voorstelling in src/sites/meenthe.js. Kerkconcerten: nog niet bekend.
+    podiumpas: true,
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Online, vanaf 30 dagen voor de voorstelling; ticket ophalen op de dag zelf met je Podiumpas. Niet bij regionale voorstellingen, de evenementenhal, het Schrijversfestival, Vrijdagavond Vestzakconcerten, Passie voor Bach en producties van derden.',
+    },
+    melding: 'Podiumpas-voorwaarden voor de kerkconcerten (Grote Kerk Steenwijk, Blokzijl) nog niet bekend — vraag het theater.',
+  },
 ];

@@ -77,6 +77,7 @@ import { scrapeOostpool } from './sites/oostpool.js';
 import { scrapeTar } from './sites/tar.js';
 import { scrapeSchaffelaar } from './sites/schaffelaar.js';
 import { scrapeMusisGroep } from './sites/musis.js';
+import { scrapeMeenthe } from './sites/meenthe.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -151,6 +152,7 @@ const SCRAPERS = {
   schaffelaar: scrapeSchaffelaar,
   musis: scrapeMusisGroep,
   stadstheater: scrapeMusisGroep,
+  meenthe: scrapeMeenthe,
 };
 
 // Welk bestand waarvoor dient:

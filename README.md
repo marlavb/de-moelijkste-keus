@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **72** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout)
+- Theaters: **73** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout, 1 onbekend)
 - Voorstellingen (titel per theater): **7485**
 - Speeldata: **10537**
 - Laatste refresh: **8 oktober 2026, 05:50** (Amsterdamse tijd)
@@ -72,8 +72,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   na een minuut. Theaters, steden, provincies en Podiumpas staan in
   `src/lib/config.js` (met bron en datum); een theater dat ons weert staat daar
   op `gepauzeerd` en krijgt geen enkel verzoek. Gedeelde modules per platform:
-  `peppered.js` (Peppered), `wpTheatre.js` (Theater for WordPress) en
-  `cre8ion.js` (The Cre8ion.Lab). Bellevue en Frascati lezen alle speeldata
+  `peppered.js` (Peppered), `wpTheatre.js` (Theater for WordPress),
+  `cre8ion.js` (The Cre8ion.Lab) en `xcom.js` (X-com met Itix: het
+  JSON-endpoint `/shows.php`, bij Rabo Theater De Meenthe). Bellevue en Frascati lezen alle speeldata
   van de agendapagina's zelf (een verborgen paneel per productie), zonder
   detailpagina's: bij Bellevue ~25 verzoeken (~2 min) in plaats van ~205.
   Orpheus (Apeldoorn) en Agnietenhof (Tiel) werken net zo; bij Agnietenhof
@@ -85,6 +86,10 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   TAR (Arnhem) leest de agendapagina en daarna het eigen lijst-endpoint van
   de site (zoals de knop "meer laden"); Happy Hour, residenties en workshops
   laten we weg.
+  Overijssel (okt 2026): De Meenthe (Steenwijk) geeft per speeldatum zaal,
+  genre en Itix-status in JSON; regionale voorstellingen, de evenementenhal en
+  een paar reeksen krijgen geen Podiumpas, kerkconcerten staan erin met een
+  locatie.
   Waar zaal, uitsluitingen of speeldata alleen op een detailpagina staan
   (Musis Arnhem; Schaffelaartheater, waar robots.txt de agenda-API verbiedt
   en we de productie-adressen uit sitemap.xml halen, hooguit 120 nieuwe
@@ -226,7 +231,7 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v43`
+Service worker: `podiumagenda-v44`
 <!-- AUTO:sw:end -->
 
 ### Theaters
@@ -344,4 +349,10 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | TAR | Arnhem | – | fout |
 | Schaffelaartheater | Barneveld | deels | ok |
 | Schouwburg Agnietenhof | Tiel | – | gepauzeerd sinds 2026-10-07 |
+
+**Overijssel** (1)
+
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| Rabo Theater De Meenthe | Steenwijk | – | onbekend |
 <!-- AUTO:theaters:end -->
