@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **72** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout)
+- Theaters: **73** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout, 1 onbekend)
 - Voorstellingen (titel per theater): **7573**
 - Speeldata: **10629**
 - Laatste refresh: **9 oktober 2026, 05:49** (Amsterdamse tijd)
@@ -85,6 +85,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   TAR (Arnhem) leest de agendapagina en daarna het eigen lijst-endpoint van
   de site (zoals de knop "meer laden"); Happy Hour, residenties en workshops
   laten we weg.
+  De Tamboer (Hoogeveen) is een Phoenix LiveView-site: `?resultaten=30` in
+  de URL geeft alle speeldata in één verzoek (de knop "Bekijk meer" werkt
+  via een websocket); een Cloudflare-challenge of 403 geldt als blokkade.
   Waar zaal, uitsluitingen of speeldata alleen op een detailpagina staan
   (Musis Arnhem; Schaffelaartheater, waar robots.txt de agenda-API verbiedt
   en we de productie-adressen uit sitemap.xml halen, hooguit 120 nieuwe
@@ -226,7 +229,7 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v43`
+Service worker: `podiumagenda-v44`
 <!-- AUTO:sw:end -->
 
 ### Theaters
@@ -332,6 +335,12 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Theater De Nieuwe Vorst | Tilburg | ja | ok |
 | Markant Theater Maashorst | Uden | deels | ok |
 | Theater de Hofnar | Valkenswaard | deels | ok |
+
+**Drenthe** (1)
+
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| De Tamboer | Hoogeveen | – | onbekend |
 
 **Gelderland** (7)
 

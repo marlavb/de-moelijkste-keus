@@ -1018,4 +1018,25 @@ export const THEATERS = [
     // planning in 2028; geen speeldata in de agenda. Na de heropening weghalen.
     melding: 'Gesloten wegens vernieuwing (heropening gepland in 2028). De voorstellingen staan bij Musis Arnhem.',
   },
+  // Groningen, Drenthe en De Muze (okt 2026; inventarisatie
+  // debug/overijssel-groningen-inventarisatie.md). Namen letterlijk zoals op
+  // podiumpas.nl/waar-te-besteden.
+  {
+    id: 'tamboer',
+    naam: 'De Tamboer',
+    stad: 'Hoogeveen',
+    provincie: 'Drenthe',
+    baseUrl: 'https://detamboer.nl',
+    agendaUrl: 'https://detamboer.nl/programma',
+    // Bron: https://detamboer.nl/klantenservice/veelgestelde-vragen (8 okt
+    // 2026): online bestellen met het tickettype "Podiumpas" (€0, pasnummer
+    // invullen). Uitzonderingen (te gast, Het Podium, festivals, prijsgrens)
+    // staan er niet: niets verzonnen, alles true met een melding.
+    podiumpas: true,
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Online: klik op "bestel", kies het ticket "Podiumpas" (€0), en vul je pasnummer in; neem de pas mee.',
+    },
+    melding: 'Uitzonderingen voor de Podiumpas nog niet bekend — vraag het theater.',
+  },
 ];

@@ -219,6 +219,9 @@ const GENRE_MAP = {
   orgel: 'Muziek & Concert',
   blaasmuziek: 'Muziek & Concert',
   'familie - jeugd gratis': 'Familie & Jeugd',
+
+  // De Tamboer (Hoogeveen, 9 okt 2026), zoals circustheater.
+  'cirque nouveau': 'Overig',
   'fysiek & beeldend': 'Overig',
   dansfeest: 'Overig',
   circus: 'Overig',
