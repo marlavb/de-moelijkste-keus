@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **73** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout, 1 onbekend)
+- Theaters: **74** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout, 2 onbekend)
 - Voorstellingen (titel per theater): **7485**
 - Speeldata: **10537**
 - Laatste refresh: **8 oktober 2026, 05:50** (Amsterdamse tijd)
@@ -74,7 +74,7 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   op `gepauzeerd` en krijgt geen enkel verzoek. Gedeelde modules per platform:
   `peppered.js` (Peppered), `wpTheatre.js` (Theater for WordPress),
   `cre8ion.js` (The Cre8ion.Lab) en `xcom.js` (X-com met Itix: het
-  JSON-endpoint `/shows.php`, bij Rabo Theater De Meenthe). Bellevue en Frascati lezen alle speeldata
+  JSON-endpoint `/shows.php`, bij Rabo Theater De Meenthe en De Reggehof). Bellevue en Frascati lezen alle speeldata
   van de agendapagina's zelf (een verborgen paneel per productie), zonder
   detailpagina's: bij Bellevue ~25 verzoeken (~2 min) in plaats van ~205.
   Orpheus (Apeldoorn) en Agnietenhof (Tiel) werken net zo; bij Agnietenhof
@@ -89,7 +89,10 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   Overijssel (okt 2026): De Meenthe (Steenwijk) geeft per speeldatum zaal,
   genre en Itix-status in JSON; regionale voorstellingen, de evenementenhal en
   een paar reeksen krijgen geen Podiumpas, kerkconcerten staan erin met een
-  locatie.
+  locatie. De Reggehof (Goor) geeft HTML-blokken in JSON, genre via de
+  genrefilters van de site; "zitten" en "staan" worden één voorstelling, en
+  een uitverkocht-status is er niet (robots.txt van de Itix-host verbiedt
+  die).
   Waar zaal, uitsluitingen of speeldata alleen op een detailpagina staan
   (Musis Arnhem; Schaffelaartheater, waar robots.txt de agenda-API verbiedt
   en we de productie-adressen uit sitemap.xml halen, hooguit 120 nieuwe
@@ -350,9 +353,10 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Schaffelaartheater | Barneveld | deels | ok |
 | Schouwburg Agnietenhof | Tiel | – | gepauzeerd sinds 2026-10-07 |
 
-**Overijssel** (1)
+**Overijssel** (2)
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
+| De Reggehof | Goor | – | onbekend |
 | Rabo Theater De Meenthe | Steenwijk | – | onbekend |
 <!-- AUTO:theaters:end -->

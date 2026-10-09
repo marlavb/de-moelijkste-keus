@@ -1038,4 +1038,18 @@ export const THEATERS = [
     },
     melding: 'Podiumpas-voorwaarden voor de kerkconcerten (Grote Kerk Steenwijk, Blokzijl) nog niet bekend — vraag het theater.',
   },
+  {
+    id: 'reggehof',
+    naam: 'De Reggehof',
+    stad: 'Goor',
+    provincie: 'Overijssel',
+    baseUrl: 'https://www.reggehof.nl',
+    agendaUrl: 'https://www.reggehof.nl/programma',
+    // Bron: https://podiumpas.nl/waar-te-besteden (8 okt 2026). Op de eigen
+    // site staat niets over de Podiumpas (menu, /theater en een detailpagina
+    // doorzocht, 8 okt 2026). Geen uitzonderingen verzonnen: alles true, met
+    // een melding (zoals TAR).
+    podiumpas: true,
+    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+  },
 ];

@@ -183,6 +183,22 @@ export function pasTitelConventieToe(show, { artiest, voorstelling, makerWordtLe
   return { ...show, titel: `${v}${SCHEIDER}${a}`, maker: makerWordtLeeg ? null : show.maker, volgordeZeker: true };
 }
 
+const LABEL_ACHTERAAN = /\s*\(\s*((?:voor)?premi[eè]re|try[- ]?out|reprise)\s*\)\s*$/i;
+
+/**
+ * Een label tussen haakjes achter de titel ("Imperfect (try-out)",
+ * "Tot het uiterste gedreven (voorpremière)", "Muiters (reprise)") hoort in
+ * de beschrijving, niet in de titel: anders matcht de voorstelling niet met
+ * andere theaters en speeldata (okt 2026, Overijssel). Geeft { tekst, label }.
+ */
+export function labelUitTitel(tekst) {
+  if (typeof tekst !== 'string') return { tekst, label: null };
+  const m = LABEL_ACHTERAAN.exec(tekst);
+  if (!m) return { tekst, label: null };
+  const kaal = tekst.slice(0, m.index).trim();
+  return kaal ? { tekst: kaal, label: m[1] } : { tekst, label: null };
+}
+
 /**
  * Eén scheidingsteken overal: een streepje of een verticale streep met
  * spaties eromheen (" - ", " | ") wordt een en-dash (" – "), bv.
