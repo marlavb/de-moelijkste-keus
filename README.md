@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **80** (70 ok, 2 leeg, 8 gepauzeerd)
+- Theaters: **81** (70 ok, 2 leeg, 8 gepauzeerd, 1 onbekend)
 - Voorstellingen (titel per theater): **8480**
 - Speeldata: **11754**
 - Laatste refresh: **9 oktober 2026, 12:53** (Amsterdamse tijd)
@@ -108,7 +108,13 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   en Theater de Spiegel) haalt de lijst via de eigen API van de site (per 10)
   en per productie de detailpagina (datum, tijd, prijs en status per
   speeldatum; samengevoegde speeldata worden zo per dag gesplitst), via de
-  detailcache met een grens van 150 per nacht.
+  detailcache met een grens van 150 per nacht. MIMIK (Deventer, zelfde
+  platform als Munttheater; de agenda via /mvc/ verbiedt robots.txt) leest
+  sitemap.xml en de productiepagina's via de detailcache: hooguit 80 per
+  nacht (opbouw over 3 nachten), daarna nieuwe adressen meteen, producties
+  in de komende 7 dagen dagelijks en de rest wekelijks; films (ook Sneak
+  Preview) vallen weg; Podiumpas bij de theatercategorieën van MIMIK zelf,
+  reserveren alleen via hun formulier.
   De Tamboer (Hoogeveen) is een Phoenix LiveView-site: `?resultaten=30` in
   de URL geeft alle speeldata in één verzoek (de knop "Bekijk meer" werkt
   via een websocket); een Cloudflare-challenge of 403 geldt als blokkade.
@@ -270,7 +276,7 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v46`
+Service worker: `podiumagenda-v47`
 <!-- AUTO:sw:end -->
 
 ### Theaters
@@ -403,10 +409,11 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 |---|---|---|---|
 | Grand Theatre | Groningen | – | gepauzeerd sinds 2026-10-08 |
 
-**Overijssel** (5)
+**Overijssel** (6)
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
+| MIMIK | Deventer | – | onbekend |
 | De Reggehof | Goor | onbekend | ok |
 | Schouwburg Hengelo | Hengelo | deels | ok |
 | Rabo Theater De Meenthe | Steenwijk | deels | ok |

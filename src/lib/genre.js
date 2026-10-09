@@ -225,6 +225,10 @@ const GENRE_MAP = {
   lezing: 'Overig',
   regionaal: 'Overig',
 
+  // MIMIK (Deventer, 9 okt 2026): theater voor kinderen; voordracht.
+  junior: 'Familie & Jeugd',
+  woordkunst: 'Overig',
+
   // Schaffelaartheater (9 okt 2026): klassieke koffieconcerten.
   klassiekekoffieconcerten: 'Muziek & Concert',
 

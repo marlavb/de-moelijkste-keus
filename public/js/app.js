@@ -285,6 +285,7 @@ const PROVINCE_BY_CITY = {
   Hengelo: 'Overijssel',
   Goor: 'Overijssel',
   Steenwijk: 'Overijssel',
+  Deventer: 'Overijssel',
   Hoogeveen: 'Drenthe',
   Noordwijk: 'Zuid-Holland',
   Groningen: 'Groningen',
