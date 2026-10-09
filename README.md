@@ -85,7 +85,8 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   detailpagina's: bij Bellevue ~25 verzoeken (~2 min) in plaats van ~205.
   Orpheus (Apeldoorn) en Agnietenhof (Tiel) werken net zo; bij Agnietenhof
   krijgt alleen een kaart met meer speeldata (knop "Speeldata", zonder
-  paneel) een detailpagina, en films vallen weg.
+  paneel) een detailpagina, en films vallen weg. Bij Aan de Slinger
+  (Houten) vallen films (tag "Film", "Vroege Film: …") ook weg.
   Van Huis Oostpool (Arnhem) nemen we uit de agenda van Theater Oostpool
   alleen de speeldata in het eigen huis; de tournee staat al bij de andere
   theaters.

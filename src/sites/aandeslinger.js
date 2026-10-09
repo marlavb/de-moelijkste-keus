@@ -13,6 +13,19 @@ const AGENDA_PATH = '/programma';
 // een check op de eerste (belangrijkste) tag van elke kaart.
 const PODIUMPAS_EXCLUDED_TAGS = new Set(['film', 'gastbespeling']);
 
+/**
+ * Waarom een kaart geen voorstelling is ('cursus', 'film'), of null. Films
+ * ("Vroege Film: Calle Málaga", tag "Film") laten we weg zoals bij PLT,
+ * Agnietenhof en Schaffelaar (titels-ronde-1, 9 okt 2026); tot dan stonden ze
+ * erin met podiumpas: false.
+ */
+export function aandeslingerWeglaten({ tags = [], titel = '' }) {
+  const firstTag = tags[0]?.trim().toLowerCase();
+  if (firstTag === 'cursus') return 'cursus';
+  if (firstTag === 'film' || /^vroege film\s*:/i.test(titel.trim())) return 'film';
+  return null;
+}
+
 function classifyBeschikbaarheid(soldOut, message) {
   const tekst = (message ?? '').trim().toLowerCase();
   const vervallen = vervallenStatus(tekst);
@@ -44,7 +57,8 @@ function classifyBeschikbaarheid(soldOut, message) {
  *   null. Let op: bij de paar filmvertoningen die hier ook doorheen lopen
  *   (zie Film-tag) bevat .subtitle een castlijst ("Met: Olivia Wilde, ...")
  *   in plaats van een theatermaker — we tonen dat gewoon zoals het er staat.
- * - Twee soorten kaarten horen niet in de output:
+ * - Drie soorten kaarten horen niet in de output (de derde: films, tag
+ *   "Film", "Vroege Film: …", sinds 9 okt 2026; zie aandeslingerWeglaten):
  *   1. "Cursus"-getagde kaarten (Theaterschool-lessen als "TS - Theaterklas
  *      6-8 (maandag) - 2026") — geen publieksvoorstelling, zelfde soort
  *      filtering als Bostheater's randprogrammering.
@@ -93,12 +107,9 @@ export async function scrapeAanDeSlinger({ page, theater, robots, waitForTurn, l
 
   log(`${rawItems.length} kaarten gevonden op de programmapagina`);
 
-  const relevantItems = rawItems.filter((item) => {
-    if (!item.titel || !item.dagTekst) return false; // promotiekaarten zonder datum
-    const firstTag = item.tags[0]?.trim().toLowerCase();
-    if (firstTag === 'cursus') return false;
-    return true;
-  });
+  const relevantItems = rawItems.filter((item) => item.titel && item.dagTekst && !aandeslingerWeglaten(item)); // promotiekaarten zonder datum
+  const films = rawItems.filter((item) => aandeslingerWeglaten(item) === 'film').length;
+  if (films) log(`${films} film(s) weggelaten (geen voorstellingen).`);
 
   const parseDay = createDutchDayParser();
   const buildId = createIdBuilder();
