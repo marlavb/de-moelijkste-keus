@@ -2,6 +2,8 @@
 // Allow/Disallow-patronen (met * wildcards en $ end-anchor) en Crawl-delay te
 // respecteren, zonder externe dependency.
 
+import { devCacheEnabled, leesRobotsUitCache, bewaarRobotsInCache } from './devCache.js';
+
 function parseRobotsText(text) {
   const lines = text
     .split('\n')
@@ -146,11 +148,25 @@ export async function fetchFollowingCookies(url, { headers = {}, signal, fetchIm
  * Haalt robots.txt op voor een site en geeft een klein object terug waarmee
  * je paden kunt checken en de opgegeven crawl-delay kunt opvragen.
  * `log` (optioneel) meldt wanneer de behoudende terugval gebruikt wordt.
+ * Met SCRAPE_CACHE=1 (lokaal, devCache.js) komt robots.txt uit de lokale
+ * cache; met SCRAPE_OFFLINE=1 erbij wordt hij nooit echt opgehaald: staat hij
+ * niet in de cache, dan "geen regels" met een waarschuwing in de log.
  */
-export async function loadRobotsRules(baseUrl, userAgent, userAgentToken, { signal, log, fetchImpl } = {}) {
+export async function loadRobotsRules(baseUrl, userAgent, userAgentToken, { signal, log, fetchImpl, env = process.env, cacheDir } = {}) {
   const robotsUrl = new URL('/robots.txt', baseUrl).toString();
   let groups = [];
   let unknownReason = null;
+
+  const cache = devCacheEnabled(env);
+  const offline = cache && env.SCRAPE_OFFLINE === '1';
+  if (cache) {
+    const tekst = await leesRobotsUitCache(robotsUrl, { dir: cacheDir, offline });
+    if (tekst !== null) return regelsVan(robotsUrl, parseRobotsText(tekst), null, userAgentToken, log);
+    if (offline) {
+      log?.(`WAARSCHUWING: offline (SCRAPE_OFFLINE=1) en ${robotsUrl} niet in de cache — niet opgehaald, behandeld als "geen regels".`);
+      return regelsVan(robotsUrl, [], null, userAgentToken, log);
+    }
+  }
 
   // Eén retry op een netwerkfout, time-out of 5xx (niet op een 4xx): een
   // ontbrekend robots.txt-bestand interpreteren we als "alles toegestaan",
@@ -177,7 +193,9 @@ export async function loadRobotsRules(baseUrl, userAgent, userAgentToken, { sign
       }
       if (res.ok) {
         if (new URL(finalUrl).pathname === '/robots.txt') {
-          groups = parseRobotsText(await res.text());
+          const tekst = await res.text();
+          groups = parseRobotsText(tekst);
+          if (cache) await bewaarRobotsInCache(robotsUrl, tekst, { dir: cacheDir });
         } else {
           // Na de redirects staan we niet meer op /robots.txt: we hebben iets
           // anders binnengekregen (een inlogpagina, een foutpagina, …) — dat
@@ -203,7 +221,10 @@ export async function loadRobotsRules(baseUrl, userAgent, userAgentToken, { sign
     }
   }
   if (onbereikbaar) throw onbereikbaar;
+  return regelsVan(robotsUrl, groups, unknownReason, userAgentToken, log);
+}
 
+function regelsVan(robotsUrl, groups, unknownReason, userAgentToken, log) {
   const group = selectGroup(groups, userAgentToken);
   const crawlDelayMs = group?.crawlDelay
     ? group.crawlDelay * 1000

@@ -134,3 +134,56 @@ test('403 (4xx) → geen regels, zoals RFC 9309 voor "unavailable"', async () =>
   assert.equal(rules.crawlDelayMs, 0);
   assert.equal(rules.isAllowed('/agenda'), true);
 });
+
+// Lokale cache (SCRAPE_CACHE=1) en offline (SCRAPE_OFFLINE=1), 10 okt 2026:
+// een offline run haalde robots.txt nog echt op.
+test('offline: robots.txt niet in de cache → geen verzoek, "geen regels" met een waarschuwing', async () => {
+  const { mkdtemp, rm } = await import('node:fs/promises');
+  const { tmpdir } = await import('node:os');
+  const path = (await import('node:path')).default;
+  const dir = await mkdtemp(path.join(tmpdir(), 'robots-cache-'));
+  try {
+    let verzoeken = 0;
+    const fetchImpl = async () => { verzoeken++; return response(200, { body: ROBOTS }); };
+    const logs = [];
+    const rules = await loadRobotsRules('https://site.test', 'UA', 'bot', { fetchImpl, log: (m) => logs.push(m), env: { SCRAPE_CACHE: '1', SCRAPE_OFFLINE: '1' }, cacheDir: dir });
+    assert.equal(verzoeken, 0);
+    assert.equal(rules.isAllowed('/agenda?x=1'), true);
+    assert.equal(rules.crawlDelayMs, 0);
+    assert.ok(logs.some((l) => /^WAARSCHUWING: offline .*niet in de cache/.test(l)), logs.join('\n'));
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('cache: eerste keer echt opgehaald en bewaard; daarna (ook offline, ook oud) uit de cache, zonder verzoek', async () => {
+  const { mkdtemp, rm, utimes } = await import('node:fs/promises');
+  const { tmpdir } = await import('node:os');
+  const path = (await import('node:path')).default;
+  const { robotsCacheBestand } = await import('../src/lib/devCache.js');
+  const dir = await mkdtemp(path.join(tmpdir(), 'robots-cache-'));
+  try {
+    let verzoeken = 0;
+    const fetchImpl = async () => { verzoeken++; return response(200, { body: ROBOTS }); };
+    const laad = (env) => loadRobotsRules('https://site.test', 'UA', 'bot', { fetchImpl, env, cacheDir: dir });
+    const eerste = await laad({ SCRAPE_CACHE: '1' });
+    assert.equal(verzoeken, 1);
+    assert.equal(eerste.crawlDelayMs, 5000);
+    const tweede = await laad({ SCRAPE_CACHE: '1' });
+    assert.equal(verzoeken, 1);
+    assert.equal(tweede.isAllowed('/agenda?x=1'), false);
+    // Een week oud: online opnieuw ophalen, offline gewoon de oude regels.
+    const week = (Date.now() - 7 * 86_400_000) / 1000;
+    await utimes(robotsCacheBestand(dir, 'https://site.test/robots.txt'), week, week);
+    const offline = await laad({ SCRAPE_CACHE: '1', SCRAPE_OFFLINE: '1' });
+    assert.equal(verzoeken, 1);
+    assert.equal(offline.crawlDelayMs, 5000);
+    await laad({ SCRAPE_CACHE: '1' });
+    assert.equal(verzoeken, 2);
+    // In CI telt de cache nooit.
+    await laad({ SCRAPE_CACHE: '1', SCRAPE_OFFLINE: '1', CI: 'true' });
+    assert.equal(verzoeken, 3);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});

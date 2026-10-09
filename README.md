@@ -249,7 +249,9 @@ brew install openjdk@21           # emulators; zet openjdk@21/bin in je PATH
 - Eén theater scrapen tijdens het bouwen, uit de lokale cache:
   `SCRAPE_CACHE=1 node src/index.js --only=<id>`; met `SCRAPE_OFFLINE=1`
   erbij gaat er niets naar de site dat niet al in de cache staat (ook niet
-  een API-verzoek dat geen paginanavigatie is: `metDevCache`). Houd
+  een API-verzoek dat geen paginanavigatie is: `metDevCache`, en ook
+  robots.txt niet: die komt uit de cache, of telt als "geen regels" met een
+  waarschuwing in de log). Houd
   testverkeer naar theatersites klein (zie `CLAUDE.md`).
 
 ### Testen
