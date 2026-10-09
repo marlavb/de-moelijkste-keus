@@ -26,6 +26,7 @@ import {
 } from './hulp.js';
 import { watchlistSleutel } from '../public/js/watchlist.js';
 import { geplandSleutel } from '../public/js/gepland.js';
+import { TIJDZONE, vandaag as vandaagAmsterdam } from '../test/datum.js';
 
 const ACCOUNTS = {
   A: { email: 'anna@e2e.test', wachtwoord: 'geheim-anna', naam: 'Anna de Vries', gebruikersnaam: 'anna' },
@@ -46,7 +47,7 @@ before(async () => {
   for (const [k, a] of Object.entries(ACCOUNTS)) uid[k] = await maakAccount(a);
   const data = JSON.parse(await readFile(path.join(new URL('../public/', import.meta.url).pathname, 'data/shows.json'), 'utf-8'));
   const alle = Array.isArray(data) ? data : data.shows;
-  const vandaag = new Date().toISOString().slice(0, 10);
+  const vandaag = vandaagAmsterdam();
   const gezien = new Set();
   shows = [];
   for (const s of alle) {
@@ -360,7 +361,7 @@ test('Mail in Profiel: uitzetten en weer aanzetten (mailvoorkeur, echte rules)',
 test('na de speeldag: gedeeld plan zonder kaarten gaat vanzelf naar Gezien (met @anna); weghalen blijft weg', async () => {
   // Een voorstelling die zo snel mogelijk speelt (kleine klokverschuiving).
   const data = JSON.parse(await readFile(path.join(new URL('../public/', import.meta.url).pathname, 'data/shows.json'), 'utf-8'));
-  const vandaag = new Date().toISOString().slice(0, 10);
+  const vandaag = vandaagAmsterdam();
   const bezet = new Set(shows.map((s) => watchlistSleutel(s.titel, s.theaterId)));
   const s = (Array.isArray(data) ? data : data.shows)
     .filter((x) => x.datum > vandaag && x.tijd && x.beschikbaarheid === 'beschikbaar' && !bezet.has(watchlistSleutel(x.titel, x.theaterId)))
@@ -385,7 +386,7 @@ test('na de speeldag: gedeeld plan zonder kaarten gaat vanzelf naar Gezien (met 
   // C op een tweede apparaat, de dag na de speeldag (10:00 in Amsterdam).
   const [j, m, d] = s.datum.split('-').map(Number);
   const morgen = new Date(Date.UTC(j, m - 1, d + 1, 8, 0));
-  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block', timezoneId: TIJDZONE });
   await ctx.clock.install({ time: morgen });
   await ctx.clock.resume();
   const page = await ctx.newPage();

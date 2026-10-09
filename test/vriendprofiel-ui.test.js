@@ -13,6 +13,7 @@ import { chromium } from 'playwright';
 
 import { nepFirebase } from './nepFirebase.js';
 import { watchlistSleutel } from '../public/js/watchlist.js';
+import { TIJDZONE, amsterdamTijdstip, vandaag as vandaagAmsterdam } from './datum.js';
 
 const ROOT = new URL('../public/', import.meta.url).pathname;
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
@@ -22,6 +23,7 @@ let base;
 let browser;
 let show;
 let eerstvolgende; // id van de eerstvolgende speeldatum van die voorstelling (wat de app opent)
+let eerstvolgendeOp; // datum → id van de eerstvolgende speeldatum vanaf die dag
 let docs;
 
 const profiel = (gebruikersnaam, naam) => ({ gebruikersnaam, gebruikersnaamLaag: gebruikersnaam.toLowerCase(), naam, aangemaaktOp: 1, gewijzigdOp: 1, v: 1 });
@@ -31,12 +33,14 @@ const VEEL = Array.from({ length: 30 }, (_, i) => ({ sleutel: `oud ${i}`, titel:
 before(async () => {
   const data = JSON.parse(await readFile(path.join(ROOT, 'data/shows.json'), 'utf-8'));
   const shows = Array.isArray(data) ? data : data.shows;
-  const vandaag = new Date().toISOString().slice(0, 10);
+  const vandaag = vandaagAmsterdam();
   show = shows.find((s) => s.datum > vandaag);
   const sleutel = watchlistSleutel(show.titel, show.theaterId);
-  eerstvolgende = shows
-    .filter((s) => s.datum >= vandaag && watchlistSleutel(s.titel, s.theaterId) === sleutel)
-    .sort((a, b) => `${a.datum} ${a.tijd ?? ''}`.localeCompare(`${b.datum} ${b.tijd ?? ''}`))[0].id;
+  eerstvolgendeOp = (datum) =>
+    shows
+      .filter((s) => s.datum >= datum && watchlistSleutel(s.titel, s.theaterId) === sleutel)
+      .sort((a, b) => `${a.datum} ${a.tijd ?? ''}`.localeCompare(`${b.datum} ${b.tijd ?? ''}`))[0].id;
+  eerstvolgende = eerstvolgendeOp(vandaag);
   docs = {
     'users/u1': { profielGevraagd: true },
     'profielen/u1': profiel('Anna_V', 'Anna de Vries'),
@@ -76,13 +80,15 @@ after(async () => {
   await new Promise((r) => server.close(r));
 });
 
-async function openApp({ beginDocs = docs, hash = '#/vrienden', offline = false, hoogte = 844 } = {}) {
-  const ctx = await browser.newContext({ viewport: { width: 390, height: hoogte }, serviceWorkers: 'block' });
+// `nu` (ms): de klok van de browser staat vast op dat tijdstip.
+async function openApp({ beginDocs = docs, hash = '#/vrienden', offline = false, hoogte = 844, nu = null } = {}) {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: hoogte }, serviceWorkers: 'block', timezoneId: TIJDZONE });
   await ctx.route(/^https?:\/\/(?!127\.0\.0\.1)/, (r) => r.abort());
   await ctx.route(`${base}js/firebase.js`, (r) => r.fulfill({ contentType: 'text/javascript', body: nepFirebase({ gebruiker: ANNA, docs: beginDocs }) }));
   if (offline) await ctx.addInitScript(() => { window.__nepOffline = true; });
   await ctx.addInitScript(() => { try { localStorage.removeItem('podiumagenda:gezienSortering'); } catch {} });
   const page = await ctx.newPage();
+  if (nu !== null) await page.clock.setFixedTime(nu);
   const fouten = [];
   page.on('pageerror', (e) => fouten.push(e.message));
   await page.goto(`${base}${hash}`);
@@ -156,6 +162,22 @@ test('item in de agenda opent het detailscherm; terug: profiel, Vrienden, Profie
   assert.deepEqual(fouten, []);
   await ctx.close();
 });
+
+// Vlak na middernacht en laat op de avond (Amsterdamse tijd): de app en de
+// test moeten dezelfde "vandaag" gebruiken. Op 9 okt 2026 om 00:11 faalde de
+// test hierboven, omdat hij de UTC-datum (nog 8 okt) nam.
+for (const tijd of ['00:30', '23:30']) {
+  test(`item in de agenda opent de eerstvolgende speeldatum, ook om ${tijd}`, async () => {
+    const datum = vandaagAmsterdam();
+    const nu = amsterdamTijdstip(datum, tijd);
+    const { ctx, page, fouten } = await openApp({ hash: '#/vriend/u2', nu });
+    await page.click('#vriendInhoud section:nth-of-type(2) .vriend-titel-rij');
+    await even(page);
+    assert.equal(hash(page), `#/show/${encodeURIComponent(eerstvolgendeOp(vandaagAmsterdam(nu)))}`);
+    assert.deepEqual(fouten, []);
+    await ctx.close();
+  });
+}
 
 test('item niet in de agenda: eenvoudig scherm met titel, maker, genre en de sterren van de vriend', async () => {
   const { ctx, page, fouten } = await openApp({ hash: '#/vriend/u2' });

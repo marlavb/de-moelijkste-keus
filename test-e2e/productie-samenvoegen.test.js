@@ -21,6 +21,7 @@ import { controleerEmulators, startServer, wisEmulators, maakAccount, openGebrui
 import { pasProductieSamenvoegingToe } from '../src/lib/productieSamenvoegen.js';
 import { pasMeerderheidToe } from '../src/lib/weergaveMeerderheid.js';
 import { pasGenreMeerderheidToe } from '../src/lib/genreMeerderheid.js';
+import { dagenVerder } from '../test/datum.js';
 
 const ACCOUNT = { email: 'greet@e2e.test', wachtwoord: 'geheim-greet', naam: 'Greet Smit', gebruikersnaam: 'greet' };
 let uid;
@@ -32,11 +33,7 @@ const data = {};
 let stand = 0;
 let sgz; // Stadsgehoorzaal "Greg Shapiro"
 
-const dag = (n) => {
-  const d = new Date();
-  d.setDate(d.getDate() + n);
-  return d.toISOString().slice(0, 10);
-};
+const dag = (n) => dagenVerder(n);
 // De bron per theater (titel, genre en beschrijving zoals de theaters ze gaven).
 const voorstelling = (theaterId, theaterNaam, stad, n, titel, extra = {}) => ({
   id: `kingme-${theaterId}`, titel, theaterId, theaterNaam, stad, datum: dag(n), tijd: '20:30', maker: null,

@@ -13,6 +13,7 @@ import { nepFirebase } from './nepFirebase.js';
 
 import { planIn, zetStatus, legeGepland } from '../public/js/gepland.js';
 import { voegToe, legeWatchlist, watchlistSleutel } from '../public/js/watchlist.js';
+import { TIJDZONE, dagenVerder, vandaag as vandaagAmsterdam } from './datum.js';
 
 const ROOT = new URL('../public/', import.meta.url).pathname;
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
@@ -38,7 +39,7 @@ before(async () => {
   base = `http://127.0.0.1:${server.address().port}/`;
   browser = await chromium.launch();
   const shows = JSON.parse(await readFile(path.join(ROOT, 'data/shows.json'), 'utf-8'));
-  const vandaag = new Date().toISOString().slice(0, 10);
+  const vandaag = vandaagAmsterdam();
   // Een voorstelling met een gewone sleutel (niet theatergebonden, zoals
   // "Cabaret" op de uitsluitlijst) en een titel die geen genrenaam is: de
   // agendarijen worden op titeltekst gefilterd, en "Cabaret" trof ook de rij
@@ -67,7 +68,7 @@ after(async () => {
 });
 
 async function openApp({ opslag = {}, html, viewport = { width: 390, height: 900 }, extraShows = [] } = {}) {
-  const ctx = await browser.newContext({ viewport, serviceWorkers: 'block' });
+  const ctx = await browser.newContext({ viewport, serviceWorkers: 'block', timezoneId: TIJDZONE });
   if (extraShows.length) {
     const echt = JSON.parse(await readFile(path.join(ROOT, 'data/shows.json'), 'utf-8'));
     await ctx.route(/data\/shows\.json/, (r) => r.fulfill({ contentType: 'application/json', body: JSON.stringify([...extraShows, ...echt]) }));
@@ -273,7 +274,7 @@ test('Profiel: volgorde Gepland → Gezien → Watchlist; lege tekst Gezien', as
 
 // ---------- Volledige bezoekgegevens en detailschermen (1 okt 2026) ----------
 
-const gisteren = (() => { const d = new Date(); d.setDate(d.getDate() - 1); return d.toISOString().slice(0, 10); })();
+const gisteren = dagenVerder(-1);
 
 function gezienProfiel() {
   // Twee bezoeken aan een voorstelling die niet meer in de agenda staat, met
@@ -369,7 +370,7 @@ test('Handmatig aanvinken op een voorbije speeldatum bewaart meteen het bezoek',
 // ---------- Sterrencomponent (1 okt 2026) ----------
 
 test('sterren: aria-waarden, toetsenbord, halve/hele ster met tikken, wissen', async () => {
-  const ctx = await browser.newContext({ viewport: { width: 390, height: 300 }, serviceWorkers: 'block' });
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 300 }, serviceWorkers: 'block', timezoneId: TIJDZONE });
   await ctx.route(`${base}sterren-proef.html`, (r) =>
     r.fulfill({
       contentType: 'text/html',

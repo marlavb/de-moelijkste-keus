@@ -10,6 +10,7 @@ import path from 'node:path';
 import { chromium } from 'playwright';
 
 import { controleerEmulators, startServer, wisEmulators, maakAccount, openGebruiker, ga, wachtOpDoc, schermafbeelding } from './hulp.js';
+import { vandaag as vandaagAmsterdam } from '../test/datum.js';
 
 const ACCOUNT = { email: 'dirk@e2e.test', wachtwoord: 'geheim-dirk', naam: 'Dirk Bos' };
 let uid;
@@ -18,7 +19,7 @@ let base;
 let browser;
 let ik; // { ctx, page, fouten }
 let shows;
-const vandaag = new Date().toISOString().slice(0, 10);
+const vandaag = vandaagAmsterdam();
 const isVol = (s) => s.beschikbaarheid === 'uitverkocht' || s.beschikbaarheid === 'wachtlijst';
 
 before(async () => {

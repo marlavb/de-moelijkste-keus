@@ -138,8 +138,15 @@ test('vriend die de app nooit opende: eerst niet gevonden; na het vulscript "Al 
     cwd: new URL('../../', import.meta.url).pathname,
     env: { ...process.env, GCLOUD_PROJECT: PROJECT },
   });
-  assert.match(stdout, /"gezet": 1/);
+  // Het script zet de voorkeur; die schrijfactie start óók de trigger
+  // naamIndexVoorkeur, die tegelijk met het script indexeert. Wie van de twee
+  // de index zet, wisselt (dan telt het script "gezet" of "ongewijzigd"; 9 okt
+  // 2026 faalde de test daarop). Dus niet op die telling, maar wachten tot
+  // Erik in de index staat (hooguit 10 s).
+  assert.match(stdout, /"voorkeurGezet": 1/);
   assert.equal((await leesDoc(`naamvoorkeur/${E}`)).vindbaar, true);
+  await wachtOpDoc(`naamIndex/${lid.sleutel}/vermeldingen/${E}`, (d) => d !== null, 10000);
+  assert.equal((await wachtOpDoc(`naamIndexLid/${E}`, (d) => d !== null, 10000)).sleutel, lid.sleutel);
 
   await zoek(B, 'erik van de winkel');
   await wachtOpTekst(B, '#vriendZoekResultaat', /@erik · Erik van de Winkel\s*Al vrienden/);

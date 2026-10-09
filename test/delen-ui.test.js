@@ -12,6 +12,7 @@ import { chromium } from 'playwright';
 
 import { nepFirebase } from './nepFirebase.js';
 import { watchlistSleutel } from '../public/js/watchlist.js';
+import { TIJDZONE, vandaag as vandaagAmsterdam } from './datum.js';
 
 const ROOT = new URL('../public/', import.meta.url).pathname;
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
@@ -25,7 +26,7 @@ let docs; // beginstand: profiel, watchlist met die voorstelling, één gezien v
 before(async () => {
   const data = JSON.parse(await readFile(path.join(ROOT, 'data/shows.json'), 'utf-8'));
   const shows = Array.isArray(data) ? data : data.shows;
-  const vandaag = new Date().toISOString().slice(0, 10);
+  const vandaag = vandaagAmsterdam();
   show = shows.find((s) => s.datum > vandaag);
   const sleutel = watchlistSleutel(show.titel, show.theaterId);
   docs = {
@@ -69,7 +70,7 @@ after(async () => {
 });
 
 async function openApp({ gebruiker = ANNA, beginDocs = docs, hash = '#/profiel', offline = false } = {}) {
-  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block', timezoneId: TIJDZONE });
   await ctx.route(/^https?:\/\/(?!127\.0\.0\.1)/, (r) => r.abort());
   await ctx.route(`${base}js/firebase.js`, (r) => r.fulfill({ contentType: 'text/javascript', body: nepFirebase({ gebruiker, docs: beginDocs }) }));
   if (offline) await ctx.addInitScript(() => { window.__nepOffline = true; });

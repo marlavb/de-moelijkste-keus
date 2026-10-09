@@ -6,6 +6,7 @@
 import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
+import { TIJDZONE } from '../test/datum.js';
 
 export const PROJECT = 'demo-podiumagenda';
 const FIRESTORE = 'http://127.0.0.1:8085';
@@ -102,7 +103,7 @@ export async function alleIn(collectie) {
  * de testlogin (alleen in de emulatormodus). Deelmenu en klembord zijn nep.
  */
 export async function openGebruiker(browser, base, account = null, hash = '#/profiel') {
-  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block', timezoneId: TIJDZONE });
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
   await ctx.addInitScript(() => {
     window.__gedeeld = [];

@@ -11,6 +11,7 @@ import path from 'node:path';
 import { chromium } from 'playwright';
 
 import { nepFirebase } from './nepFirebase.js';
+import { TIJDZONE } from './datum.js';
 
 const ROOT = new URL('../public/', import.meta.url).pathname;
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
@@ -44,7 +45,7 @@ after(async () => {
 });
 
 async function openApp({ gebruiker = null, docs = {}, viewport = { width: 390, height: 844 } } = {}) {
-  const ctx = await browser.newContext({ viewport, serviceWorkers: 'block' });
+  const ctx = await browser.newContext({ viewport, serviceWorkers: 'block', timezoneId: TIJDZONE });
   await ctx.route(/^https?:\/\/(?!127\.0\.0\.1)/, (r) => r.abort());
   await ctx.route(`${base}js/firebase.js`, (r) => r.fulfill({ contentType: 'text/javascript', body: nepFirebase({ gebruiker, docs }) }));
   const page = await ctx.newPage();
