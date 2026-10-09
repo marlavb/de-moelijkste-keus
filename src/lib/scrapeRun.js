@@ -407,10 +407,15 @@ export async function runRefresh({
       // "(première)", "(try-out)", "(reprise)" achter (een deel van) de titel
       // naar de beschrijving: anders matcht de voorstelling niet met andere
       // theaters en speeldata (titels.js, labelsUitTitel; okt 2026).
-      const { tekst: titel, labels } = labelsUitTitel(kaal(metEnDash(bron)));
+      // De titel mét label blijft als titelBron: dan zet de app een oude
+      // watchlist-, Gezien- of plansleutel om naar de nieuwe (samenvoegMapping
+      // in watchlist.js; gepland.js zoekt ook via titelBron), en werkt de
+      // volgende run weer vanaf de brontitel.
+      const metLabel = kaal(metEnDash(bron));
+      const { tekst: titel, labels } = labelsUitTitel(metLabel);
       const nieuw = labels.filter((l) => !new RegExp(`(^|[^\\p{L}])${l}([^\\p{L}]|$)`, 'iu').test(beschrijving ?? ''));
       if (nieuw.length) beschrijving = [nieuw.join(' · '), beschrijving].filter(Boolean).join(' · ');
-      return { ...s, titel, prijs: s.prijs ?? null, maker, beschrijving };
+      return { ...s, titel, prijs: s.prijs ?? null, maker, beschrijving, ...(titel !== metLabel ? { titelBron: metLabel } : {}) };
     });
   const purgedCount = mergedShows.length - verseShows.length;
   if (purgedCount > 0) {

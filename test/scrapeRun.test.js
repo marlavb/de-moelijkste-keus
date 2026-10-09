@@ -415,10 +415,14 @@ test('label in de titel ("(reprise)", "(try-out)") centraal naar de beschrijving
     { ...show('a', '2026-10-08'), titel: 'Kintsugi (try-out)', beschrijving: 'Al een try-out.' },
   ];
   const { written } = await run({ paths, theaters: [theater('a')], scrapers: { a: scraper } });
-  assert.deepEqual(written.map((s) => [s.titel, s.beschrijving]), [
-    ['Rhobijn – Rowwen Hèze', 'reprise'],
-    ['Kintsugi', 'Al een try-out.'],
+  assert.deepEqual(written.map((s) => [s.titel, s.beschrijving, s.titelBron]), [
+    ['Rhobijn – Rowwen Hèze', 'reprise', 'Rhobijn (reprise) – Rowwen Hèze'],
+    ['Kintsugi', 'Al een try-out.', 'Kintsugi (try-out)'],
   ]);
+  // Volgende run, theater faalt: de behouden data blijft hetzelfde (vanaf titelBron).
+  const paths2 = await setup({ previousShows: written });
+  const { written: weer } = await run({ paths: paths2, theaters: [theater('a')], scrapers: { a: failing } });
+  assert.deepEqual(weer.map((s) => [s.titel, s.beschrijving, s.titelBron]), written.map((s) => [s.titel, s.beschrijving, s.titelBron]));
 });
 
 test('dubbelingen: weggehaald vóór het wegschrijven, geteld in de status, warning bij meer dan een handvol', async () => {
