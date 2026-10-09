@@ -491,3 +491,42 @@ test('groepeerWatchlist: losse items (andere tijd, favoriet zonder tijd) blijven
   ]);
   assert.deepEqual(g.map((x) => x.map((i) => i.sleutel)), [['a', 'b'], ['c'], ['d'], ['e']]);
 });
+
+// Labels uit titels (okt 2026, labels-alle-theaters): een item met de oude
+// titel komt één keer uit bij de nieuwe; voor "(try out)"/"(voorpremière)",
+// waar de sleutel echt verandert, via titelBron (samenvoegMapping).
+test('label uit de titel: "Grip (reprise) – Rayen Panday" komt één keer uit bij "Grip – Rayen Panday"', async () => {
+  const { labelsUitTitel } = await import('../src/lib/titels.js');
+  const oud = 'Grip (reprise) – Rayen Panday';
+  const nieuw = labelsUitTitel(oud).tekst;
+  assert.equal(nieuw, 'Grip – Rayen Panday');
+  const shows = [{ titel: nieuw, titelBron: oud, theaterId: 'kunstlinie' }, { titel: nieuw, theaterId: 'markant' }];
+  const opgeslagen = {
+    watchlist: [
+      { sleutel: watchlistSleutel(oud, 'kunstlinie'), titel: oud, theaterId: 'kunstlinie', toegevoegdOp: 10, v: NORMALISATIE_VERSIE },
+      { sleutel: watchlistSleutel(nieuw, 'markant'), titel: nieuw, theaterId: 'markant', toegevoegdOp: 20, v: NORMALISATIE_VERSIE },
+    ],
+    watchlistVerwijderd: [],
+  };
+  const { profiel } = laadWatchlist({ opgeslagen, samenvoeging: samenvoegMapping(shows) });
+  assert.deepEqual(profiel.watchlist.map((i) => i.sleutel), ['grip | rayen panday']);
+  assert.equal(watchlistSleutel(oud), watchlistSleutel(nieuw), 'de sleutel was al gelijk (zonderRuis)');
+});
+
+test('label uit de titel waar de sleutel wél verandert ("(try out)"): via titelBron naar de nieuwe sleutel, zonder dubbel', async () => {
+  const oud = 'Wagyu (try out) – Rundfunk';
+  const nieuw = 'Wagyu – Rundfunk';
+  assert.notEqual(watchlistSleutel(oud), watchlistSleutel(nieuw));
+  const shows = [{ titel: nieuw, titelBron: oud, theaterId: 'hofnar' }, { titel: nieuw, theaterId: 'griffioen' }];
+  const opgeslagen = {
+    watchlist: [
+      { sleutel: watchlistSleutel(oud), titel: oud, theaterId: 'hofnar', toegevoegdOp: 10, v: NORMALISATIE_VERSIE },
+      { sleutel: watchlistSleutel(nieuw), titel: nieuw, theaterId: 'griffioen', toegevoegdOp: 20, v: NORMALISATIE_VERSIE },
+    ],
+    watchlistVerwijderd: [],
+  };
+  const eerst = laadWatchlist({ opgeslagen, samenvoeging: samenvoegMapping(shows) });
+  assert.deepEqual(eerst.profiel.watchlist.map((i) => i.sleutel), [watchlistSleutel(nieuw)]);
+  const tweede = laadWatchlist({ opgeslagen: eerst.profiel, samenvoeging: samenvoegMapping(shows) });
+  assert.equal(tweede.gewijzigd, false, 'idempotent');
+});

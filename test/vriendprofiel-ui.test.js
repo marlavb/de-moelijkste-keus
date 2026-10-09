@@ -13,7 +13,7 @@ import { chromium } from 'playwright';
 
 import { nepFirebase } from './nepFirebase.js';
 import { watchlistSleutel } from '../public/js/watchlist.js';
-import { TIJDZONE, amsterdamTijdstip, vandaag as vandaagAmsterdam } from './datum.js';
+import { TIJDZONE, amsterdamTijdstip, dagenVerder, vandaag as vandaagAmsterdam } from './datum.js';
 
 const ROOT = new URL('../public/', import.meta.url).pathname;
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
@@ -81,9 +81,10 @@ after(async () => {
 });
 
 // `nu` (ms): de klok van de browser staat vast op dat tijdstip.
-async function openApp({ beginDocs = docs, hash = '#/vrienden', offline = false, hoogte = 844, nu = null } = {}) {
+async function openApp({ beginDocs = docs, hash = '#/vrienden', offline = false, hoogte = 844, nu = null, shows = null } = {}) {
   const ctx = await browser.newContext({ viewport: { width: 390, height: hoogte }, serviceWorkers: 'block', timezoneId: TIJDZONE });
   await ctx.route(/^https?:\/\/(?!127\.0\.0\.1)/, (r) => r.abort());
+  if (shows) await ctx.route(/data\/shows\.json/, (r) => r.fulfill({ contentType: 'application/json', body: JSON.stringify(shows) }));
   await ctx.route(`${base}js/firebase.js`, (r) => r.fulfill({ contentType: 'text/javascript', body: nepFirebase({ gebruiker: ANNA, docs: beginDocs }) }));
   if (offline) await ctx.addInitScript(() => { window.__nepOffline = true; });
   await ctx.addInitScript(() => { try { localStorage.removeItem('podiumagenda:gezienSortering'); } catch {} });
@@ -291,6 +292,24 @@ test('alles uit de kopie van een vriend verschijnt als gewone tekst (geen HTML, 
 test('een kapotte vriend-link (losse %) geeft geen fout maar gaat naar Vrienden', async () => {
   const { ctx, page, fouten } = await openApp({ hash: '#/vriend/%E0%A4%A' });
   assert.equal(hash(page), '#/vrienden');
+  assert.deepEqual(fouten, []);
+  await ctx.close();
+});
+
+// Een vriend deelt een item met een oude sleutel van een titel met een label
+// dat sinds okt 2026 uit de titel gaat ("Wagyu (try out) – Rundfunk"): via
+// titelBron komt het bij de nieuwe titel uit, in de agenda.
+test('vriend deelt een item met een oude label-sleutel: gevonden in de agenda via titelBron', async () => {
+  const datum = dagenVerder(5);
+  const shows = [{ id: `hofnar-wagyu-${datum}-2000`, titel: 'Wagyu – Rundfunk', titelBron: 'Wagyu (try out) – Rundfunk', theaterId: 'hofnar', theaterNaam: 'De Hofnar', stad: 'Valkenswaard', datum, tijd: '20:00', genre: 'Cabaret', beschikbaarheid: 'beschikbaar', podiumpas: true, reserverenUrl: 'https://example.invalid/', bron: '' }];
+  const oud = watchlistSleutel('Wagyu (try out) – Rundfunk', 'hofnar');
+  assert.notEqual(oud, watchlistSleutel('Wagyu – Rundfunk', 'hofnar'), 'de sleutel verandert echt');
+  const beginDocs = { ...docs, 'gedeeld/u2/onderdelen/watchlist': kopie([{ sleutel: oud, titel: 'Wagyu (try out) – Rundfunk' }]) };
+  const { ctx, page, fouten } = await openApp({ beginDocs, hash: '#/vriend/u2', shows });
+  assert.match(await tekst(page, '#vriendInhoud section:nth-of-type(2)'), /in de agenda/);
+  await page.click('#vriendInhoud section:nth-of-type(2) .vriend-titel-rij');
+  await even(page);
+  assert.equal(hash(page), `#/show/${encodeURIComponent(shows[0].id)}`);
   assert.deepEqual(fouten, []);
   await ctx.close();
 });

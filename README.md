@@ -132,7 +132,11 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   (`dedupe.js`). Titels: waar een theater per genre een vaste volgorde van
   maker en titel heeft, wordt dat "Titel – Maker"; content warnings,
   "met o.a. …", leeftijden en ondertitels als "reprise", "20 jaar …" of
-  "In Concert" worden nooit maker maar beschrijving; een paar titels waar
+"In Concert" worden nooit maker maar beschrijving; "(try-out)", "(reprise)",
+  "(première)" en "(voorpremière)" gaan overal uit de titel naar de
+  beschrijving, bij elk theater (de titel mét label blijft als `titelBron`,
+  zodat oude watchlist-, Gezien- en plansleutels en die van vrienden
+  meegaan); een paar titels waar
   een theater artiest en voorstelling omgedraaid heeft of alleen de artiest
   noemt, staan per theater in `OMGEDRAAID` en `VOORSTELLING_BIJ_ARTIEST`
   (`titels.js`); watchlist en Gezien gaan dan mee naar de nieuwe titel
@@ -266,7 +270,7 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v45`
+Service worker: `podiumagenda-v46`
 <!-- AUTO:sw:end -->
 
 ### Theaters

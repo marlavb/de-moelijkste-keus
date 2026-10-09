@@ -199,6 +199,30 @@ export function labelUitTitel(tekst) {
   return kaal ? { tekst: kaal, label: m[1] } : { tekst, label: null };
 }
 
+const LABEL_OVERAL = /\s*\(\s*((?:voor)?premi[eè]re|try[- ]?out|reprise)\s*\)/gi;
+
+/**
+ * Alle labels "(try-out)", "(try out)", "(reprise)", "(première)",
+ * "(voorpremière)" uit een titel, waar ze ook staan ("Rhobijn (reprise) –
+ * Rowwen Hèze" → "Rhobijn – Rowwen Hèze"; "Vanzelfsprekend (try-out) & Sint
+ * Juttemis (try-out) – …" → beide weg). Centraal in de run toegepast op alle
+ * theaters (okt 2026). Blijft er niets over, dan de oorspronkelijke tekst.
+ * Geeft { tekst, labels } (kleine letters, in volgorde, zonder dubbele).
+ */
+export function labelsUitTitel(tekst) {
+  if (typeof tekst !== 'string') return { tekst, labels: [] };
+  const labels = [];
+  const kaal = tekst
+    .replace(LABEL_OVERAL, (_, label) => {
+      const l = label.toLowerCase();
+      if (!labels.includes(l)) labels.push(l);
+      return '';
+    })
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+  return kaal ? { tekst: kaal, labels } : { tekst, labels: [] };
+}
+
 /**
  * Eén scheidingsteken overal: een streepje of een verticale streep met
  * spaties eromheen (" - ", " | ") wordt een en-dash (" – "), bv.

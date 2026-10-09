@@ -408,6 +408,23 @@ test('robots.txt onbereikbaar door DNS (ENOTFOUND in de melding) → telt als ne
   assert.equal(isNetwerkfout(new RobotsOnbereikbaarError('robots.txt niet bereikbaar (HTTP 500)')), false);
 });
 
+test('label in de titel ("(reprise)", "(try-out)") centraal naar de beschrijving, bij elk theater (okt 2026)', async () => {
+  const paths = await setup();
+  const scraper = async () => [
+    { ...show('a', '2026-10-07'), titel: 'Rhobijn (reprise) – Rowwen Hèze', beschrijving: null },
+    { ...show('a', '2026-10-08'), titel: 'Kintsugi (try-out)', beschrijving: 'Al een try-out.' },
+  ];
+  const { written } = await run({ paths, theaters: [theater('a')], scrapers: { a: scraper } });
+  assert.deepEqual(written.map((s) => [s.titel, s.beschrijving, s.titelBron]), [
+    ['Rhobijn – Rowwen Hèze', 'reprise', 'Rhobijn (reprise) – Rowwen Hèze'],
+    ['Kintsugi', 'Al een try-out.', 'Kintsugi (try-out)'],
+  ]);
+  // Volgende run, theater faalt: de behouden data blijft hetzelfde (vanaf titelBron).
+  const paths2 = await setup({ previousShows: written });
+  const { written: weer } = await run({ paths: paths2, theaters: [theater('a')], scrapers: { a: failing } });
+  assert.deepEqual(weer.map((s) => [s.titel, s.beschrijving, s.titelBron]), written.map((s) => [s.titel, s.beschrijving, s.titelBron]));
+});
+
 test('dubbelingen: weggehaald vóór het wegschrijven, geteld in de status, warning bij meer dan een handvol', async () => {
   // b viel terug op vorige data die zelf al dubbel was; a levert 30 kopieën.
   const vorigB = [show('b', '2026-10-06'), show('b', '2026-10-06', { id: 'b-2026-10-06-2' })];

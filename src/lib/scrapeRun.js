@@ -11,7 +11,7 @@ import { pasMeerderheidToe } from './weergaveMeerderheid.js';
 import { pasGenreMeerderheidToe } from './genreMeerderheid.js';
 import { pasMakerMeerderheidToe } from './makerMeerderheid.js';
 import { pasProductieSamenvoegingToe } from './productieSamenvoegen.js';
-import { metEnDash, zonderStatusWoord, isGeenMaker, makerZonderVoorvoegsel, draaiTitelEnMakerOm } from './titels.js';
+import { metEnDash, zonderStatusWoord, isGeenMaker, makerZonderVoorvoegsel, draaiTitelEnMakerOm, labelsUitTitel } from './titels.js';
 import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
 
@@ -404,7 +404,18 @@ export async function runRefresh({
       } else if (maker) {
         maker = makerZonderVoorvoegsel(maker);
       }
-      return { ...s, titel: kaal(metEnDash(bron)), prijs: s.prijs ?? null, maker, beschrijving };
+      // "(première)", "(try-out)", "(reprise)" achter (een deel van) de titel
+      // naar de beschrijving: anders matcht de voorstelling niet met andere
+      // theaters en speeldata (titels.js, labelsUitTitel; okt 2026).
+      // De titel mét label blijft als titelBron: dan zet de app een oude
+      // watchlist-, Gezien- of plansleutel om naar de nieuwe (samenvoegMapping
+      // in watchlist.js; gepland.js zoekt ook via titelBron), en werkt de
+      // volgende run weer vanaf de brontitel.
+      const metLabel = kaal(metEnDash(bron));
+      const { tekst: titel, labels } = labelsUitTitel(metLabel);
+      const nieuw = labels.filter((l) => !new RegExp(`(^|[^\\p{L}])${l}([^\\p{L}]|$)`, 'iu').test(beschrijving ?? ''));
+      if (nieuw.length) beschrijving = [nieuw.join(' · '), beschrijving].filter(Boolean).join(' · ');
+      return { ...s, titel, prijs: s.prijs ?? null, maker, beschrijving, ...(titel !== metLabel ? { titelBron: metLabel } : {}) };
     });
   const purgedCount = mergedShows.length - verseShows.length;
   if (purgedCount > 0) {
