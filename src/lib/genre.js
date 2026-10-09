@@ -222,6 +222,10 @@ const GENRE_MAP = {
 
   // De Tamboer (Hoogeveen, 9 okt 2026), zoals circustheater.
   'cirque nouveau': 'Overig',
+
+  // Grand Theatre (Groningen, 9 okt 2026).
+  'music and concerts': 'Muziek & Concert',
+  kinderprogramma: 'Familie & Jeugd',
   'fysiek & beeldend': 'Overig',
   dansfeest: 'Overig',
   circus: 'Overig',

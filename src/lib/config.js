@@ -1055,4 +1055,24 @@ export const THEATERS = [
       toelichting: 'Nog niet online: mail je pasnummer en de voorstelling naar de kassa, bel, of kom langs; vanaf 30 dagen voor de voorstelling, tickets tot €50.',
     },
   },
+  {
+    id: 'grandtheatre',
+    naam: 'Grand Theatre',
+    stad: 'Groningen',
+    provincie: 'Groningen',
+    baseUrl: 'https://www.grandtheatregroningen.nl',
+    agendaUrl: 'https://www.grandtheatregroningen.nl/nl/programma',
+    // Bron: https://www.grandtheatregroningen.nl/nl/info/podiumpas (8 okt
+    // 2026): alle voorstellingen in alle zalen, tot €50, niet bij verhuur of
+    // als GT de kaartverkoop niet doet (per voorstelling in
+    // src/sites/grandtheatre.js); reserveren alleen per mail.
+    podiumpas: true,
+    podiumpasReserveren: {
+      email: 'kassa@grandtheatregroningen.nl',
+      toelichting: 'Alleen per mail (naam, adres, pasnummer, voorstelling), vanaf 30 dagen voor de voorstelling; het ticket komt per mail. Tot €50; niet bij verhuur of voorstellingen waarvoor Grand Theatre de kaartverkoop niet doet.',
+    },
+    // Eigen pauze (inventarisatie): robots.txt gaf op 8 en 9 okt 2026 HTTP 500
+    // (kapotte robots-plugin van Kirby).
+    crawlDelaySeconden: 5,
+  },
 ];

@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **74** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout, 2 onbekend)
+- Theaters: **75** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout, 3 onbekend)
 - Voorstellingen (titel per theater): **7573**
 - Speeldata: **10629**
 - Laatste refresh: **9 oktober 2026, 05:49** (Amsterdamse tijd)
@@ -90,7 +90,11 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   via een websocket); een Cloudflare-challenge of 403 geldt als blokkade.
   De Muze (Noordwijk) leest de WordPress-lijstpagina's; films en besloten
   voorstellingen vallen weg, de prijs staat op elke kaart (Podiumpas tot
-  €50, reserveren alleen via kassa, mail of telefoon).
+  €50, reserveren alleen via kassa, mail of telefoon). Grand Theatre
+  (Groningen) staat op één pagina; verhuur en voorstellingen met een
+  ticketlink buiten de eigen kaartverkoop krijgen geen Podiumpas
+  (reserveren alleen per mail). Zijn robots.txt gaf op 8 en 9 okt 2026
+  HTTP 500, en dan slaat de run hem over.
   Waar zaal, uitsluitingen of speeldata alleen op een detailpagina staan
   (Musis Arnhem; Schaffelaartheater, waar robots.txt de agenda-API verbiedt
   en we de productie-adressen uit sitemap.xml halen, hooguit 120 nieuwe
@@ -357,4 +361,10 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | TAR | Arnhem | – | fout |
 | Schaffelaartheater | Barneveld | deels | ok |
 | Schouwburg Agnietenhof | Tiel | – | gepauzeerd sinds 2026-10-07 |
+
+**Groningen** (1)
+
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| Grand Theatre | Groningen | – | onbekend |
 <!-- AUTO:theaters:end -->
