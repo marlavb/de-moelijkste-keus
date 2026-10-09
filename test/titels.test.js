@@ -261,3 +261,13 @@ test('VOORSTELLING_BIJ_ARTIEST Munttheater: "ICE" → voorstelling "Live in Thea
   assert.deepEqual(draaiTitelEnMakerOm({ theaterId: 'munttheater', titel: 'ICE', maker: null, datum: '2026-10-30' }), { theaterId: 'munttheater', titel: 'Live in Theater', maker: 'ICE', datum: '2026-10-30' });
   assert.equal(draaiTitelEnMakerOm({ theaterId: 'munttheater', titel: 'ICE', maker: null, datum: '2027-09-01' }).titel, 'ICE', 'na de einddatum niet');
 });
+
+test('labelUitTitel: try-out, reprise en (voor)première achter de titel naar de beschrijving (okt 2026)', async () => {
+  const { labelUitTitel } = await import('../src/lib/titels.js');
+  assert.deepEqual(labelUitTitel('Imperfect (try-out)'), { tekst: 'Imperfect', label: 'try-out' });
+  assert.deepEqual(labelUitTitel('Tot het uiterste gedreven (voorpremière)'), { tekst: 'Tot het uiterste gedreven', label: 'voorpremière' });
+  assert.deepEqual(labelUitTitel('BEUK (4+) (reprise)'), { tekst: 'BEUK (4+)', label: 'reprise' });
+  assert.deepEqual(labelUitTitel('(reprise)'), { tekst: '(reprise)', label: null }, 'niets over: blijft staan');
+  assert.deepEqual(labelUitTitel('Space Academy (8+)'), { tekst: 'Space Academy (8+)', label: null });
+  assert.deepEqual(labelUitTitel(null), { tekst: null, label: null });
+});

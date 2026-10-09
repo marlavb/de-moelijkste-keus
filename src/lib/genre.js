@@ -224,6 +224,10 @@ const GENRE_MAP = {
   'kind en jeugd': 'Familie & Jeugd',
   lezing: 'Overig',
   regionaal: 'Overig',
+
+  // Schouwburg Hengelo (9 okt 2026).
+  theaterspecial: 'Overig',
+  diversen: 'Overig',
   'fysiek & beeldend': 'Overig',
   dansfeest: 'Overig',
   circus: 'Overig',

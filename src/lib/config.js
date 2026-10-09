@@ -1052,4 +1052,23 @@ export const THEATERS = [
     podiumpas: true,
     melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
   },
+  {
+    id: 'hengelo',
+    naam: 'Schouwburg Hengelo',
+    stad: 'Hengelo',
+    provincie: 'Overijssel',
+    baseUrl: 'https://www.schouwburghengelo.nl',
+    agendaUrl: 'https://www.schouwburghengelo.nl/theaterprogramma',
+    // Bron: https://www.schouwburghengelo.nl/bezoek/podiumpas (8 okt 2026):
+    // alleen in de Middenzaal en Rabozaal (per voorstelling in
+    // src/sites/hengelo.js), tot €50; de prijs staat niet in de lijst.
+    podiumpas: true,
+    podiumpasReserveren: {
+      online: true,
+      telefoon: '074 255 67 89',
+      email: 'info@schouwburghengelo.nl',
+      toelichting: 'Online of via de theaterkassa (ma–vr 12–16 uur), vanaf 30 dagen voor de voorstelling; houd de barcode van je pas (PP$…) bij de hand. Alleen in de Middenzaal en Rabozaal, tickets tot €50, niet bij verhuur of kaartverkoop door derden.',
+    },
+    melding: 'Podiumpas alleen in de Middenzaal en Rabozaal en tot €50; de prijs staat niet in de agenda — controleer hem bij het reserveren.',
+  },
 ];

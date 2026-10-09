@@ -79,6 +79,7 @@ import { scrapeSchaffelaar } from './sites/schaffelaar.js';
 import { scrapeMusisGroep } from './sites/musis.js';
 import { scrapeMeenthe } from './sites/meenthe.js';
 import { scrapeReggehof } from './sites/reggehof.js';
+import { scrapeHengelo } from './sites/hengelo.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -155,6 +156,7 @@ const SCRAPERS = {
   stadstheater: scrapeMusisGroep,
   meenthe: scrapeMeenthe,
   reggehof: scrapeReggehof,
+  hengelo: scrapeHengelo,
 };
 
 // Welk bestand waarvoor dient:

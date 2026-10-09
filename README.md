@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **74** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout, 2 onbekend)
+- Theaters: **75** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout, 3 onbekend)
 - Voorstellingen (titel per theater): **7485**
 - Speeldata: **10537**
 - Laatste refresh: **8 oktober 2026, 05:50** (Amsterdamse tijd)
@@ -92,11 +92,15 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   locatie. De Reggehof (Goor) geeft HTML-blokken in JSON, genre via de
   genrefilters van de site; "zitten" en "staan" worden één voorstelling, en
   een uitverkocht-status is er niet (robots.txt van de Itix-host verbiedt
-  die).
+  die). Schouwburg Hengelo leest de lijstpagina's (één tegel per speeldatum);
+  de Podiumpas geldt alleen in de Middenzaal en Rabozaal, voor professionele
+  voorstellingen (niet "Regionaal") tot €50, en welke regel de voorstelling
+  is en welke de artiest, volgt uit de URL. Een tegel met een periode ("t/m")
+  krijgt de speeldata van de detailpagina.
   Waar zaal, uitsluitingen of speeldata alleen op een detailpagina staan
   (Musis Arnhem; Schaffelaartheater, waar robots.txt de agenda-API verbiedt
   en we de productie-adressen uit sitemap.xml halen, hooguit 120 nieuwe
-  pagina's per nacht),
+  pagina's per nacht; Schouwburg Hengelo, alleen periodes),
   komen die uit een cache tussen runs (`detailCache.js`, bestand
   `cache/detail/<theater>.json`, door de nachtelijke run gecommit): een nieuwe
   productie meteen, een bekende hooguit één keer per week, verspreid over de
@@ -353,10 +357,11 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Schaffelaartheater | Barneveld | deels | ok |
 | Schouwburg Agnietenhof | Tiel | – | gepauzeerd sinds 2026-10-07 |
 
-**Overijssel** (2)
+**Overijssel** (3)
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
 | De Reggehof | Goor | – | onbekend |
+| Schouwburg Hengelo | Hengelo | – | onbekend |
 | Rabo Theater De Meenthe | Steenwijk | – | onbekend |
 <!-- AUTO:theaters:end -->
