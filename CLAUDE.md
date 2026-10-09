@@ -116,17 +116,32 @@ Houd het testverkeer daarom zo klein mogelijk:
 - Het oude `favorites`-veld (localStorage en Firestore) blijft onaangeroerd
   als back-up.
 
-## Aliaslijst voor spellingsverschillen (geparkeerd, 29 sep 2026)
+## Aliaslijst (stap B actief sinds 9 okt 2026)
 
-- Stap A staat erin: `npm run alias-kandidaten` (`scripts/alias-kandidaten.js`,
-  logica in `src/lib/aliasKandidaten.js`) schrijft kandidaat-paren van
-  watchlist-sleutels naar `debug/alias-kandidaten.md` (niet committen), als
-  afvinklijst met voorstel en ⚠ bij twijfel. Er wordt niets samengevoegd.
-- Stap B (aangevinkte paren als vaste aliaslijst in de normalisatie,
-  `NORMALISATIE_VERSIE` 4, telling van nieuwe kandidaten per nachtelijke run
-  als notice) en stap C (weergavetitel op meerderheid, met `titelBron`)
-  wachten op de afvinklijst van de gebruiker. Niet zelf beginnen.
-- Bekende kandidaat voor stap B (1 okt 2026): Jordy van Loon, "Louis Davids –
-  De Grote Kleine Man". Cpunt geeft titel "Jordy van Loon" (sleutel
-  `jordy van loon`), Kennemer Theater "Louis Davids - De Grote, Kleine Man"
-  (sleutel `de grote kleine man | louis davids`). Nog geen alias.
+- De lijst staat in `config/aliassen.json` (bron-sleutel → { titel, maker },
+  plus "nietSamenvoegen"; logica in `src/lib/aliassen.js`) en wordt centraal
+  toegepast in de nabewerking, na labels, R1, R4 en R5, ook op behouden data.
+  Niet met de hand bewerken. Geen `NORMALISATIE_VERSIE`-ophoging: oude
+  sleutels gaan mee via `titelBron`/`titelVoorAlias` → `samenvoegMapping`
+  (ook gepland.js en `kopieSleutel` voor vrienden).
+- Werkwijze bij nieuwe keuzes, altijd in deze volgorde:
+  1. `npm run alias-afvinkpagina` → `debug/alias-afvinken.html` (groepen die
+     al in de lijst staan, tellen als beoordeeld; filter "Nog te doen");
+  2. de gebruiker vinkt af en exporteert (`alias-keuzes-<datum>.json`);
+  3. `npm run alias-importeren -- <export> --droog`, daarna zonder `--droog`
+     (overzicht: nieuw, gewijzigd, verwijderd, conflicten);
+  4. voor/na op de huidige data (lokale nabewerking, geen scrape): titels,
+     makers, watchlist-sleutels, en gebruikersitems alleen lezen;
+  5. pas na akkoord van de gebruiker committen en pushen.
+- Regels: bij "andere naam" is de ingevulde maker vast (ook leeg); bij
+  "samenvoegen" telt de voorstelmaker, behalve als die elders de titel van een
+  andere productie is (CATS / "Het meesterwerk"); een bron met twee doelen gaat
+  niet in de lijst; groepen met dezelfde titel en geen botsende makers worden
+  één productie.
+- R2/R3 (`npm run alias-voorstel`) alleen uit de voorstellen zonder twijfel,
+  met de bewakers in `src/lib/aliasVoorstel.js`; nooit voor "nietSamenvoegen",
+  een afgevinkte keuze gaat voor.
+- Stap A blijft: `npm run alias-kandidaten` (`debug/alias-kandidaten.md`).
+- Bekende kandidaat (1 okt 2026): Jordy van Loon, "Louis Davids – De Grote
+  Kleine Man" (Cpunt `jordy van loon`, Kennemer Theater `de grote kleine man |
+  louis davids`). Nog geen alias.
