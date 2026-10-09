@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **80** (70 ok, 2 leeg, 6 gepauzeerd, 1 fout, 1 onbekend)
+- Theaters: **80** (70 ok, 2 leeg, 8 gepauzeerd)
 - Voorstellingen (titel per theater): **8480**
 - Speeldata: **11754**
 - Laatste refresh: **9 oktober 2026, 12:53** (Amsterdamse tijd)
@@ -383,7 +383,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| De Tamboer | Hoogeveen | – | fout |
+| De Tamboer | Hoogeveen | – | gepauzeerd sinds 2026-10-09 |
 
 **Gelderland** (7)
 
@@ -401,7 +401,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| Grand Theatre | Groningen | – | onbekend |
+| Grand Theatre | Groningen | – | gepauzeerd sinds 2026-10-08 |
 
 **Overijssel** (5)
 
