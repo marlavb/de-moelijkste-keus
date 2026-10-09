@@ -132,7 +132,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   (`dedupe.js`). Titels: waar een theater per genre een vaste volgorde van
   maker en titel heeft, wordt dat "Titel – Maker"; content warnings,
   "met o.a. …", leeftijden en ondertitels als "reprise", "20 jaar …" of
-  "In Concert" worden nooit maker maar beschrijving; een paar titels waar
+"In Concert" worden nooit maker maar beschrijving; "(try-out)", "(reprise)"
+  of "(première)" achter (een deel van) een titel gaat bij elk theater naar de
+  beschrijving; een paar titels waar
   een theater artiest en voorstelling omgedraaid heeft of alleen de artiest
   noemt, staan per theater in `OMGEDRAAID` en `VOORSTELLING_BIJ_ARTIEST`
   (`titels.js`); watchlist en Gezien gaan dan mee naar de nieuwe titel

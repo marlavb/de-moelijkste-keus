@@ -11,7 +11,7 @@ import { pasMeerderheidToe } from './weergaveMeerderheid.js';
 import { pasGenreMeerderheidToe } from './genreMeerderheid.js';
 import { pasMakerMeerderheidToe } from './makerMeerderheid.js';
 import { pasProductieSamenvoegingToe } from './productieSamenvoegen.js';
-import { metEnDash, zonderStatusWoord, isGeenMaker, makerZonderVoorvoegsel, draaiTitelEnMakerOm } from './titels.js';
+import { metEnDash, zonderStatusWoord, isGeenMaker, makerZonderVoorvoegsel, draaiTitelEnMakerOm, labelsUitTitel } from './titels.js';
 import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
 
@@ -404,7 +404,13 @@ export async function runRefresh({
       } else if (maker) {
         maker = makerZonderVoorvoegsel(maker);
       }
-      return { ...s, titel: kaal(metEnDash(bron)), prijs: s.prijs ?? null, maker, beschrijving };
+      // "(première)", "(try-out)", "(reprise)" achter (een deel van) de titel
+      // naar de beschrijving: anders matcht de voorstelling niet met andere
+      // theaters en speeldata (titels.js, labelsUitTitel; okt 2026).
+      const { tekst: titel, labels } = labelsUitTitel(kaal(metEnDash(bron)));
+      const nieuw = labels.filter((l) => !new RegExp(`(^|[^\\p{L}])${l}([^\\p{L}]|$)`, 'iu').test(beschrijving ?? ''));
+      if (nieuw.length) beschrijving = [nieuw.join(' · '), beschrijving].filter(Boolean).join(' · ');
+      return { ...s, titel, prijs: s.prijs ?? null, maker, beschrijving };
     });
   const purgedCount = mergedShows.length - verseShows.length;
   if (purgedCount > 0) {

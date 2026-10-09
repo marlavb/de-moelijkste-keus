@@ -200,6 +200,23 @@ export function labelUitTitel(tekst) {
 }
 
 /**
+ * Zoals labelUitTitel, maar voor elk deel van een titel met " – "
+ * ("Rhobijn (reprise) – Rowwen Hèze" → "Rhobijn – Rowwen Hèze", label
+ * "reprise"). Centraal in de run toegepast op alle theaters (okt 2026).
+ * Geeft { tekst, labels } (labels in volgorde, zonder dubbele).
+ */
+export function labelsUitTitel(tekst) {
+  if (typeof tekst !== 'string') return { tekst, labels: [] };
+  const labels = [];
+  const delen = tekst.split(SCHEIDER).map((deel) => {
+    const r = labelUitTitel(deel);
+    if (r.label && !labels.includes(r.label.toLowerCase())) labels.push(r.label.toLowerCase());
+    return r.tekst;
+  });
+  return { tekst: delen.join(SCHEIDER), labels };
+}
+
+/**
  * Eén scheidingsteken overal: een streepje of een verticale streep met
  * spaties eromheen (" - ", " | ") wordt een en-dash (" – "), bv.
  * "Oudejaarsconference 2026 | Try-out" (De Maaspoort) → "… – Try-out".

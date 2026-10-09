@@ -271,3 +271,12 @@ test('labelUitTitel: try-out, reprise en (voor)première achter de titel naar de
   assert.deepEqual(labelUitTitel('Space Academy (8+)'), { tekst: 'Space Academy (8+)', label: null });
   assert.deepEqual(labelUitTitel(null), { tekst: null, label: null });
 });
+
+test('labelsUitTitel: ook een label vóór " – " (okt 2026, alle theaters)', async () => {
+  const { labelsUitTitel } = await import('../src/lib/titels.js');
+  assert.deepEqual(labelsUitTitel('Rhobijn (reprise) – Rowwen Hèze'), { tekst: 'Rhobijn – Rowwen Hèze', labels: ['reprise'] });
+  assert.deepEqual(labelsUitTitel('Draagkracht ( Premiere )'), { tekst: 'Draagkracht', labels: ['premiere'] });
+  assert.deepEqual(labelsUitTitel('Scheepers op z\'n scherpst – Rob Scheepers (reprise)'), { tekst: 'Scheepers op z\'n scherpst – Rob Scheepers', labels: ['reprise'] });
+  assert.deepEqual(labelsUitTitel('Grip – Rayen Panday'), { tekst: 'Grip – Rayen Panday', labels: [] });
+  assert.deepEqual(labelsUitTitel('(reprise)'), { tekst: '(reprise)', labels: [] });
+});
