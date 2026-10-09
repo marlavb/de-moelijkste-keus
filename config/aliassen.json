@@ -85,6 +85,12 @@
    "groep": "alex roeka",
    "regel": "keuze"
   },
+  "alle 13 goed": {
+   "titel": "Orkest De Ereprijs & Marien Jongewaard – Alle 13 goed",
+   "maker": "Alle 13 goed",
+   "groep": "alle 13 goed",
+   "regel": "R3"
+  },
   "alles onder controle": {
    "titel": "Alles Onder Controle – Van Vleuten en Van Muiswinkel",
    "maker": "Van Vleuten en Van Muiswinkel",
@@ -229,6 +235,12 @@
    "groep": "bloedheet tranen",
    "regel": "keuze"
   },
+  "boi akih": {
+   "titel": "BOI AKIH – De Messiah van Händel",
+   "maker": "De Messiah van Händel",
+   "groep": "boi akih",
+   "regel": "R2"
+  },
   "bokkers": {
    "titel": "Hier! – Bökkers",
    "maker": "Bökkers",
@@ -253,11 +265,23 @@
    "groep": "bouwen een feestje",
    "regel": "keuze"
   },
+  "britt for president | de warme winkel": {
+   "titel": "Britt for President",
+   "maker": "De Warme Winkel",
+   "groep": "britt for president",
+   "regel": "R3"
+  },
   "brothers": {
    "titel": "Brothers – Ashton Brothers",
    "maker": "Ashton Brothers",
    "groep": "ashton brothers",
    "regel": "keuze"
+  },
+  "brute passie": {
+   "titel": "Skagen – Brute Passie",
+   "maker": "Brute Passie",
+   "groep": "brute passie",
+   "regel": "R2"
   },
   "buysse en joosten": {
    "titel": "Guyland",
@@ -355,6 +379,12 @@
    "groep": "howling road",
    "regel": "keuze"
   },
+  "de erfenis | toneelgroep maastricht": {
+   "titel": "De erfenis",
+   "maker": "Toneelgroep Maastricht",
+   "groep": "de erfenis",
+   "regel": "R3"
+  },
   "de frans halsema musical": {
    "titel": "Voor Haar, de Frans Halsema Musical",
    "maker": null,
@@ -390,6 +420,12 @@
    "maker": "Jandino Asporaat",
    "groep": "de grote jubileumshow",
    "regel": "keuze"
+  },
+  "de lieve vrede": {
+   "titel": "De Lieve Vrede – Piet van Eeghen",
+   "maker": "Piet van Eeghen",
+   "groep": "de lieve vrede",
+   "regel": "R2"
   },
   "de poezieboys en theatergroep echo": {
    "titel": "ARENDS",
@@ -445,11 +481,23 @@
    "groep": "de verleiders",
    "regel": "keuze"
   },
+  "de warme winkel | judith westbroek zoekt een kamer": {
+   "titel": "Judith Westbroek zoekt een kamer",
+   "maker": "De Warme Winkel",
+   "groep": "judith westbroek zoekt een kamer",
+   "regel": "R3"
+  },
   "de zaak a": {
    "titel": "JoepTube (8+)",
    "maker": null,
    "groep": "de zaak a",
    "regel": "keuze"
+  },
+  "debussy s la mer | philzuid": {
+   "titel": "Debussy's La Mer",
+   "maker": "Philzuid",
+   "groep": "debussy s la mer",
+   "regel": "R3"
   },
   "dekpunt | jan beuving": {
    "titel": "Dekpunt – Jan Beuving",
@@ -493,6 +541,12 @@
    "groep": "tsjernobyl",
    "regel": "keuze"
   },
+  "dorona alberti": {
+   "titel": "20 Years & More… Unplugged – Dorona Alberti",
+   "maker": "Dorona Alberti",
+   "groep": "dorona alberti",
+   "regel": "R3"
+  },
   "een tijd van liefde | orkater": {
    "titel": "Een tijd van liefde",
    "maker": null,
@@ -516,6 +570,12 @@
    "maker": "Ayoub Kharkhach",
    "groep": "en verbied de vogels om te fluiten",
    "regel": "keuze"
+  },
+  "evergreen top 1000 live | golden songs": {
+   "titel": "Evergreen Top 1000 Live!",
+   "maker": "Golden Songs",
+   "groep": "evergreen top 1000 live",
+   "regel": "R3"
   },
   "evi hanssen": {
    "titel": "Bloedheet & tranen – Evi Hanssen",
@@ -637,6 +697,12 @@
    "groep": "the bodyguard",
    "regel": "keuze"
   },
+  "gelukkig maar": {
+   "titel": "GELUKKIG MAAR – Myrte Siebinga",
+   "maker": "Myrte Siebinga",
+   "groep": "gelukkig maar",
+   "regel": "R2"
+  },
   "gerard van maasakkers": {
    "titel": "Solo",
    "maker": null,
@@ -709,6 +775,12 @@
    "groep": "had je kenne weten",
    "regel": "keuze"
   },
+  "hassan el fad": {
+   "titel": "HASSAN JIDANE – Hassan El Fad",
+   "maker": "Hassan El Fad",
+   "groep": "hassan el fad",
+   "regel": "R2"
+  },
   "her majesty | neil young en crazy horse": {
    "titel": "Her Majesty",
    "maker": null,
@@ -751,6 +823,12 @@
    "groep": "het nationale ballet",
    "regel": "keuze"
   },
+  "het nationale theater | richard iii": {
+   "titel": "Richard III",
+   "maker": "Het Nationale Theater",
+   "groep": "richard iii",
+   "regel": "R3"
+  },
   "het zuidelijk toneel": {
    "titel": "Vondels Angels",
    "maker": null,
@@ -774,6 +852,12 @@
    "maker": null,
    "groep": "het zwanenmeer",
    "regel": "keuze"
+  },
+  "hexagon ensemble": {
+   "titel": "Sweet Memories – Hexagon Ensemble",
+   "maker": "Hexagon Ensemble",
+   "groep": "hexagon ensemble",
+   "regel": "R2"
   },
   "hier": {
    "titel": "Hier! – Bökkers",
@@ -852,6 +936,12 @@
    "maker": null,
    "groep": "what we leave behind",
    "regel": "keuze"
+  },
+  "jan willem rozenboom": {
+   "titel": "Grip op Bach – Jan-Willem Rozenboom",
+   "maker": "Jan-Willem Rozenboom",
+   "groep": "jan willem rozenboom",
+   "regel": "R2"
   },
   "janice blok": {
    "titel": "Had je kenne weten – Janice Blok",
@@ -1069,6 +1159,12 @@
    "groep": "marcel hensema",
    "regel": "keuze"
   },
+  "marcel van roosmalen": {
+   "titel": "Ik mag niet klagen – Marcel van Roosmalen",
+   "maker": "Marcel van Roosmalen",
+   "groep": "marcel van roosmalen",
+   "regel": "R3"
+  },
   "marco schuitmaker": {
    "titel": "Recht uit het hart – Marco Schuitmaker",
    "maker": "Marco Schuitmaker",
@@ -1189,6 +1285,12 @@
    "groep": "niels geusebroek",
    "regel": "keuze"
   },
+  "nienke plas": {
+   "titel": "Appeltje Eitje – Nienke Plas",
+   "maker": "Nienke Plas",
+   "groep": "nienke plas",
+   "regel": "R2"
+  },
   "nite": {
    "titel": "Oersoep",
    "maker": null,
@@ -1243,11 +1345,23 @@
    "groep": "aaf brandt corstius lies visschedijk",
    "regel": "keuze"
   },
+  "overleven in de jungle": {
+   "titel": "Wildebras – Overleven In De Jungle (6+)",
+   "maker": "Overleven In De Jungle (6+)",
+   "groep": "overleven in de jungle",
+   "regel": "R2"
+  },
   "panama pictures": {
    "titel": "Don't despair",
    "maker": null,
    "groep": "panama pictures",
    "regel": "keuze"
+  },
+  "peter pannekoek": {
+   "titel": "Demonen – Peter Pannekoek",
+   "maker": "Peter Pannekoek",
+   "groep": "peter pannekoek",
+   "regel": "R2"
   },
   "pieter jouke": {
    "titel": "Uit Stilstand – Pieter Jouke",
@@ -1284,6 +1398,18 @@
    "maker": null,
    "groep": "boeing boeing",
    "regel": "keuze"
+  },
+  "pynarello en jochem stavenuiter": {
+   "titel": "Koffie & klassiek – Pynarello & Jochem Stavenuiter",
+   "maker": "Pynarello & Jochem Stavenuiter",
+   "groep": "pynarello jochem stavenuiter",
+   "regel": "R2"
+  },
+  "raga en rasa": {
+   "titel": "Raga & Rasa – Nederlands Blazers Ensemble",
+   "maker": "Nederlands Blazers Ensemble",
+   "groep": "raga rasa",
+   "regel": "R2"
   },
   "rayen panday | wonderful christmastime": {
    "titel": "Wonderful Christmastime – Rayen Panday & Friends",
@@ -1345,6 +1471,12 @@
    "groep": "isabelle kafando",
    "regel": "keuze"
   },
+  "romeo en julia | theater oostpool": {
+   "titel": "Romeo en Julia",
+   "maker": "Theater Oostpool",
+   "groep": "romeo en julia",
+   "regel": "R3"
+  },
   "rouge": {
    "titel": "ROUGE – Isabelle Beernaert (BE)",
    "maker": "Isabelle Beernaert (BE)",
@@ -1404,6 +1536,24 @@
    "maker": "Sven Ratzke",
    "groep": "sven ratzke",
    "regel": "keuze"
+  },
+  "talent on the move": {
+   "titel": "Talent on the move – Holland Dance Festival",
+   "maker": "Holland Dance Festival",
+   "groep": "talent on the move",
+   "regel": "R2"
+  },
+  "taylor swift tribute band": {
+   "titel": "Love Story – Taylor Swift Tribute Band",
+   "maker": "Taylor Swift Tribute Band",
+   "groep": "taylor swift tribute band",
+   "regel": "R2"
+  },
+  "the drama | theater oostpool": {
+   "titel": "The Drama",
+   "maker": "Theater Oostpool",
+   "groep": "the drama",
+   "regel": "R3"
   },
   "the dutch eagles": {
    "titel": "Life in the Fast Lane – The Dutch Eagles",
@@ -1506,6 +1656,12 @@
    "maker": "Lovella Telesford",
    "groep": "lovella telesford",
    "regel": "keuze"
+  },
+  "wina s wereld": {
+   "titel": "Wina's Wereld – Wina Ricardo",
+   "maker": "Wina Ricardo",
+   "groep": "wina s wereld",
+   "regel": "R2"
   },
   "ziel en zalig": {
    "titel": "Ziel & Zalig – Joost Spijkers",

@@ -10,6 +10,7 @@
     "alias-kandidaten": "node scripts/alias-kandidaten.js",
     "alias-afvinkpagina": "node scripts/alias-afvinkpagina.js",
     "alias-importeren": "node scripts/alias-importeren.js",
+    "alias-voorstel": "node scripts/alias-voorstel.js",
     "test:rules": "npm --prefix firebase test",
     "firebase": "firebase/node_modules/.bin/firebase",
     "test:e2e": "npm --prefix firebase run e2e && node scripts/nep-geheimen.js && npm --prefix firebase run e2e-functies",

@@ -263,7 +263,12 @@ brew install openjdk@21           # emulators; zet openjdk@21/bin in je PATH
   staan, tellen als beoordeeld); de export daarvan gaat erin met
   `npm run alias-importeren -- <alias-keuzes-….json>` (eerst eventueel met
   `--droog`): nieuwe keuzes erbij, een opnieuw beoordeelde groep vervangt de
-  oude, met een overzicht van wat er verandert.
+  oude, met een overzicht van wat er verandert. `npm run alias-voorstel`
+  zet daarnaast R2 (ontbrekende maker: "Nienke Plas" → "Appeltje Eitje –
+  Nienke Plas") en R3 (maker uit de titel: "Theater Oostpool – The Drama" →
+  "The Drama") uit de voorstellen zonder twijfel in de lijst; alleen als de
+  titeldelen kloppen en de maker een bekende maker is, nooit voor "niet
+  samenvoegen", en een afgevinkte keuze gaat altijd voor.
 
 ### Testen
 
