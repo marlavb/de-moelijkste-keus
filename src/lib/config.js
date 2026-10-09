@@ -1069,7 +1069,9 @@ export const THEATERS = [
     podiumpas: true,
     podiumpasReserveren: {
       email: 'kassa@grandtheatregroningen.nl',
-      toelichting: 'Alleen per mail (naam, adres, pasnummer, voorstelling), vanaf 30 dagen voor de voorstelling; het ticket komt per mail. Tot €50; niet bij verhuur of voorstellingen waarvoor Grand Theatre de kaartverkoop niet doet.',
+      // "Tot €50" vooraan: de prijs staat alleen op de detailpagina en wordt
+      // niet automatisch gecontroleerd (9 okt 2026).
+      toelichting: 'Alleen tickets tot €50 — de prijs controleren we niet automatisch. Alleen per mail (naam, adres, pasnummer, voorstelling), vanaf 30 dagen voor de voorstelling; het ticket komt per mail. Niet bij verhuur of voorstellingen waarvoor Grand Theatre de kaartverkoop niet doet.',
     },
     // Eigen pauze (inventarisatie): robots.txt gaf op 8 en 9 okt 2026 HTTP 500
     // (kapotte robots-plugin van Kirby).
