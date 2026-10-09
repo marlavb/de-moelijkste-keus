@@ -120,7 +120,9 @@ export async function scrapeMimik({ page, theater, robots, waitForTurn, log, war
   // Sanity check: de sitemap noemt de producties.
   if (urls.length === 0) throw new Error("geen productiepagina's (/agenda/…) in sitemap.xml — site veranderd of geblokkeerd?");
 
-  const cache = await openDetailCache('mimik');
+  // Dezelfde klok als de planning hieronder (anders in de test: echte tijd
+  // in de cache, testtijd in de planning).
+  const cache = await openDetailCache('mimik', { nu });
   const binnenkort = new Date(Date.parse(`${vandaag}T00:00:00Z`) + DAGELIJKS_BINNEN_DAGEN * DAG).toISOString().slice(0, 10);
   const leeftijd = (url) => nu() - (cache.opgehaaldOp(url) ?? 0);
   // Per adres: moet hij opgehaald, en met welke voorrang?
