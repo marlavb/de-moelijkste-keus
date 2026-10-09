@@ -225,6 +225,9 @@ const GENRE_MAP = {
   lezing: 'Overig',
   regionaal: 'Overig',
 
+  // Schaffelaartheater (9 okt 2026): klassieke koffieconcerten.
+  klassiekekoffieconcerten: 'Muziek & Concert',
+
   // Schouwburg Hengelo (9 okt 2026).
   theaterspecial: 'Overig',
   diversen: 'Overig',

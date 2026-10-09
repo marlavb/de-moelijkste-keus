@@ -30,8 +30,17 @@ const VERHUUR = /\bverhuur\b|^tegast$/i;
 // Labels, geen genre (reeksen van het theater).
 const LABELS = /^(schaffelbende|dinsdagmiddagmatinee|vanbarneveldsebodem|tegast)$/i;
 
-// Geen voorstelling: film (Rabokidsclub - bios).
+// Geen voorstelling: film (Rabokidsclub - bios), en de informatieavonden van
+// OncoSalon Barneveld (genre "oncosalon" of zonder genre; 9 okt 2026).
 const WEGLATEN_GENRE = /^film$/i;
+const INFORMATIEAVOND = /^oncosalon\b/i;
+
+/** Waarom een productie geen voorstelling is ('film', 'informatieavond'), of null. */
+export function schaffelaarWeglaten(p) {
+  if (p.genres.some((g) => WEGLATEN_GENRE.test(g))) return 'film';
+  if (INFORMATIEAVOND.test(p.titel ?? '') || p.genres.some((g) => INFORMATIEAVOND.test(g))) return 'informatieavond';
+  return null;
+}
 
 // Bij cabaret en show is de titel de artiest en de ondertitel het programma
 // ("Klaas van der Eerden" / "Imperfect (Try Out)", "Johnny de Mol" / "Goed
@@ -192,8 +201,9 @@ export async function scrapeSchaffelaar({ page, theater, robots, waitForTurn, lo
   const tel = (o, k) => (o[k] = (o[k] ?? 0) + 1);
   const weg = {};
   for (const p of producties) {
-    if (p.genres.some((g) => WEGLATEN_GENRE.test(g))) {
-      tel(weg, 'film');
+    const reden = schaffelaarWeglaten(p);
+    if (reden) {
+      tel(weg, reden);
       continue;
     }
     for (const g of p.genres) if (!LABELS.test(g) && !isBekendGenre(g)) tel(onbekend, g);
