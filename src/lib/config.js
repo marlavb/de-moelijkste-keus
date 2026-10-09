@@ -1071,4 +1071,36 @@ export const THEATERS = [
     },
     melding: 'Podiumpas alleen in de Middenzaal en Rabozaal en tot €50; de prijs staat niet in de agenda — controleer hem bij het reserveren.',
   },
+  {
+    id: 'odeon',
+    naam: 'Schouwburg Odeon',
+    stad: 'Zwolle',
+    provincie: 'Overijssel',
+    baseUrl: 'https://www.zwolsetheaters.nl',
+    agendaUrl: 'https://www.zwolsetheaters.nl/programma',
+    // Bron: https://www.zwolsetheaters.nl/voordeel/podiumpas (8 okt 2026):
+    // alles behalve gastprogrammering, tot €50 (per voorstelling in
+    // src/sites/zwolse.js).
+    podiumpas: true,
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Online bij de voorstelling, vanaf 30 dagen; kaart ophalen aan de kassa van de schouwburg (vanaf een uur tot een half uur voor aanvang). Niet bij gastprogrammering en rangen boven €50.',
+    },
+    // Programma + API + detailpagina's (grens 150 per run, 1 s).
+    budgetMinuten: 8,
+  },
+  {
+    id: 'despiegel',
+    naam: 'Theater de Spiegel',
+    stad: 'Zwolle',
+    provincie: 'Overijssel',
+    baseUrl: 'https://www.zwolsetheaters.nl',
+    agendaUrl: 'https://www.zwolsetheaters.nl/programma',
+    podiumpas: true,
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Online bij de voorstelling, vanaf 30 dagen; kaart ophalen aan de kassa van het theater (vanaf een uur tot een half uur voor aanvang). Niet bij gastprogrammering en rangen boven €50.',
+    },
+    budgetMinuten: 8,
+  },
 ];

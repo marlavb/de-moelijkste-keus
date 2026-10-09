@@ -63,3 +63,26 @@ test('devcache offline (SCRAPE_OFFLINE=1): wat niet in de cache staat, gaat niet
     server.close();
   }
 });
+
+test('metDevCache: zonder SCRAPE_CACHE gewoon ophalen; met cache één keer; offline zonder cache een fout, geen verzoek', async () => {
+  const { metDevCache } = await import('../src/lib/devCache.js');
+  const { mkdtemp, rm } = await import('node:fs/promises');
+  const os = await import('node:os');
+  const pathMod = await import('node:path');
+  const dir = await mkdtemp(pathMod.join(os.tmpdir(), 'devcache-json-'));
+  let n = 0;
+  const ophalen = async () => ({ keer: ++n });
+  try {
+    assert.deepEqual(await metDevCache('https://site.test/api', 'a', ophalen, { dir, env: {} }), { keer: 1 });
+    const aan = { SCRAPE_CACHE: '1' };
+    assert.deepEqual(await metDevCache('https://site.test/api', 'a', ophalen, { dir, env: aan }), { keer: 2 });
+    assert.deepEqual(await metDevCache('https://site.test/api', 'a', ophalen, { dir, env: aan }), { keer: 2 }, 'uit de cache');
+    const offline = { SCRAPE_CACHE: '1', SCRAPE_OFFLINE: '1' };
+    assert.deepEqual(await metDevCache('https://site.test/api', 'a', ophalen, { dir, env: offline }), { keer: 2 });
+    await assert.rejects(metDevCache('https://site.test/api', 'b', ophalen, { dir, env: offline }), /offline/);
+    assert.equal(n, 2, 'offline: geen verzoek');
+    assert.deepEqual(await metDevCache('https://site.test/api', 'b', ophalen, { dir, env: { ...aan, CI: 'true' } }), { keer: 3 }, 'CI: nooit uit de cache');
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});

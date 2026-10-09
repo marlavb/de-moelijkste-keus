@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **75** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout, 3 onbekend)
+- Theaters: **77** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout, 5 onbekend)
 - Voorstellingen (titel per theater): **7485**
 - Speeldata: **10537**
 - Laatste refresh: **8 oktober 2026, 05:50** (Amsterdamse tijd)
@@ -96,11 +96,15 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   de Podiumpas geldt alleen in de Middenzaal en Rabozaal, voor professionele
   voorstellingen (niet "Regionaal") tot €50, en welke regel de voorstelling
   is en welke de artiest, volgt uit de URL. Een tegel met een periode ("t/m")
-  krijgt de speeldata van de detailpagina.
+  krijgt de speeldata van de detailpagina. Zwolse Theaters (Schouwburg Odeon
+  en Theater de Spiegel) haalt de lijst via de eigen API van de site (per 10)
+  en per productie de detailpagina (datum, tijd, prijs en status per
+  speeldatum; samengevoegde speeldata worden zo per dag gesplitst), via de
+  detailcache met een grens van 150 per nacht.
   Waar zaal, uitsluitingen of speeldata alleen op een detailpagina staan
   (Musis Arnhem; Schaffelaartheater, waar robots.txt de agenda-API verbiedt
   en we de productie-adressen uit sitemap.xml halen, hooguit 120 nieuwe
-  pagina's per nacht; Schouwburg Hengelo, alleen periodes),
+  pagina's per nacht; Zwolse Theaters; Schouwburg Hengelo, alleen periodes),
   komen die uit een cache tussen runs (`detailCache.js`, bestand
   `cache/detail/<theater>.json`, door de nachtelijke run gecommit): een nieuwe
   productie meteen, een bekende hooguit één keer per week, verspreid over de
@@ -136,8 +140,10 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   minuut; mislukt die ook, dan geldt de vorige data. Sommige bronnen dienen
   meer theaters tegelijk (één scrape per run): Het Cenakel (De Link,
   S.M.E.T.), Theater aan het Vrijthof (ook AINSI, via de zoekindex van de
-  site), PLT (Heerlen, Kerkrade, Sittard) en Musis en Stadstheater Arnhem
-  (één API; het Stadstheater is tot 2028 dicht en heeft een melding). Theaters zonder Podiumpas staan
+  site), PLT (Heerlen, Kerkrade, Sittard), Musis en Stadstheater Arnhem
+  (één API; het Stadstheater is tot 2028 dicht en heeft een melding) en
+  Zwolse Theaters (Schouwburg Odeon en Theater de Spiegel; andere plekken in
+  Zwolle bij Odeon, met locatie). Theaters zonder Podiumpas staan
   er ook in, met `podiumpas: false` (ITA, de Limburgse theaters behalve De
   Maaspoort en DOK6); de nieuwste theaters draaien achteraan in de run, elk
   met een eigen tijdbudget. Besloten verhuur (zonder kaartverkoop) laten we
@@ -197,7 +203,8 @@ brew install openjdk@21           # emulators; zet openjdk@21/bin in je PATH
   Met `?emulator=1` praat de app met lokale emulators in plaats van Firebase.
 - Eén theater scrapen tijdens het bouwen, uit de lokale cache:
   `SCRAPE_CACHE=1 node src/index.js --only=<id>`; met `SCRAPE_OFFLINE=1`
-  erbij gaat er niets naar de site dat niet al in de cache staat. Houd
+  erbij gaat er niets naar de site dat niet al in de cache staat (ook niet
+  een API-verzoek dat geen paginanavigatie is: `metDevCache`). Houd
   testverkeer naar theatersites klein (zie `CLAUDE.md`).
 
 ### Testen
@@ -357,11 +364,13 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Schaffelaartheater | Barneveld | deels | ok |
 | Schouwburg Agnietenhof | Tiel | – | gepauzeerd sinds 2026-10-07 |
 
-**Overijssel** (3)
+**Overijssel** (5)
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
 | De Reggehof | Goor | – | onbekend |
 | Schouwburg Hengelo | Hengelo | – | onbekend |
 | Rabo Theater De Meenthe | Steenwijk | – | onbekend |
+| Schouwburg Odeon | Zwolle | – | onbekend |
+| Theater de Spiegel | Zwolle | – | onbekend |
 <!-- AUTO:theaters:end -->

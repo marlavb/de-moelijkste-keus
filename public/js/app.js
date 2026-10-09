@@ -281,6 +281,7 @@ const PROVINCE_BY_CITY = {
   Apeldoorn: 'Gelderland',
   Barneveld: 'Gelderland',
   Tiel: 'Gelderland',
+  Zwolle: 'Overijssel',
   Hengelo: 'Overijssel',
   Goor: 'Overijssel',
   Steenwijk: 'Overijssel',
