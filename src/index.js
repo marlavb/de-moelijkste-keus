@@ -81,6 +81,9 @@ import { scrapeMeenthe } from './sites/meenthe.js';
 import { scrapeReggehof } from './sites/reggehof.js';
 import { scrapeHengelo } from './sites/hengelo.js';
 import { scrapeZwolseGroep } from './sites/zwolse.js';
+import { scrapeTamboer } from './sites/tamboer.js';
+import { scrapeDeMuze } from './sites/demuze.js';
+import { scrapeGrandTheatre } from './sites/grandtheatre.js';
 
 const SCRAPERS = {
   delamar: scrapeDelamar,
@@ -160,6 +163,9 @@ const SCRAPERS = {
   hengelo: scrapeHengelo,
   odeon: scrapeZwolseGroep,
   despiegel: scrapeZwolseGroep,
+  tamboer: scrapeTamboer,
+  demuze: scrapeDeMuze,
+  grandtheatre: scrapeGrandTheatre,
 };
 
 // Welk bestand waarvoor dient:

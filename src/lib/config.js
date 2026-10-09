@@ -1043,7 +1043,7 @@ export const THEATERS = [
     podiumpas: true,
     podiumpasReserveren: {
       online: true,
-      toelichting: 'Online, vanaf 30 dagen voor de voorstelling; ticket ophalen op de dag zelf met je Podiumpas. Niet bij regionale voorstellingen, de evenementenhal, het Schrijversfestival, Vrijdagavond Vestzakconcerten, Passie voor Bach en producties van derden.',
+      toelichting: 'Online, vanaf 30 dagen; ticket ophalen op de dag zelf. Niet bij regionale voorstellingen, de evenementenhal en producties van derden.',
     },
     melding: 'Geldt de Podiumpas ook voor concerten in de kerk? Nog niet bekend — vraag het theater.',
   },
@@ -1077,9 +1077,9 @@ export const THEATERS = [
       online: true,
       telefoon: '074 255 67 89',
       email: 'info@schouwburghengelo.nl',
-      toelichting: 'Online of via de theaterkassa (ma–vr 12–16 uur), vanaf 30 dagen voor de voorstelling; houd de barcode van je pas (PP$…) bij de hand. Alleen in de Middenzaal en Rabozaal, tickets tot €50, niet bij verhuur of kaartverkoop door derden.',
+      toelichting: 'Online of via de kassa (ma–vr 12–16 uur), vanaf 30 dagen. Alleen Midden- en Rabozaal, tot €50.',
     },
-    melding: 'Podiumpas alleen tot €50 — controleer de prijs. Alleen in de Middenzaal en Rabozaal.',
+    melding: 'Podiumpas alleen tot €50 — controleer de prijs.',
   },
   {
     id: 'odeon',
@@ -1094,7 +1094,7 @@ export const THEATERS = [
     podiumpas: true,
     podiumpasReserveren: {
       online: true,
-      toelichting: 'Online bij de voorstelling, vanaf 30 dagen; kaart ophalen aan de kassa van de schouwburg (vanaf een uur tot een half uur voor aanvang). Niet bij gastprogrammering en rangen boven €50.',
+      toelichting: 'Online, vanaf 30 dagen. Niet bij gastprogrammering en boven €50.',
     },
     // Programma + API + detailpagina's (grens 150 per run, 1 s).
     budgetMinuten: 8,
@@ -1109,8 +1109,67 @@ export const THEATERS = [
     podiumpas: true,
     podiumpasReserveren: {
       online: true,
-      toelichting: 'Online bij de voorstelling, vanaf 30 dagen; kaart ophalen aan de kassa van het theater (vanaf een uur tot een half uur voor aanvang). Niet bij gastprogrammering en rangen boven €50.',
+      toelichting: 'Online, vanaf 30 dagen. Niet bij gastprogrammering en boven €50.',
     },
     budgetMinuten: 8,
+  },
+  // Groningen, Drenthe en De Muze (okt 2026; inventarisatie
+  // debug/overijssel-groningen-inventarisatie.md). Namen letterlijk zoals op
+  // podiumpas.nl/waar-te-besteden.
+  {
+    id: 'tamboer',
+    naam: 'De Tamboer',
+    stad: 'Hoogeveen',
+    provincie: 'Drenthe',
+    baseUrl: 'https://detamboer.nl',
+    agendaUrl: 'https://detamboer.nl/programma',
+    // Bron: https://detamboer.nl/klantenservice/veelgestelde-vragen (8 okt
+    // 2026): online bestellen met het tickettype "Podiumpas" (€0, pasnummer
+    // invullen). Uitzonderingen (te gast, Het Podium, festivals, prijsgrens)
+    // staan er niet: niets verzonnen, alles true met een melding.
+    podiumpas: true,
+    podiumpasReserveren: {
+      online: true,
+      toelichting: 'Online: kies bij "bestel" het ticket "Podiumpas" (€0) en vul je pasnummer in.',
+    },
+    melding: 'Uitzonderingen voor de Podiumpas nog niet bekend — vraag het theater.',
+  },
+  {
+    id: 'demuze',
+    naam: 'De Muze',
+    stad: 'Noordwijk',
+    provincie: 'Zuid-Holland',
+    baseUrl: 'https://demuze.nl',
+    agendaUrl: 'https://demuze.nl/programma/',
+    // Bron: https://demuze.nl/podiumpas/ (8 okt 2026): tickets tot €50 (niet
+    // bijbetalen), vanaf 30 dagen; reserveren nog niet online.
+    podiumpas: true,
+    podiumpasReserveren: {
+      telefoon: '071 – 364 62 26',
+      email: 'kassa@demuze.nl',
+      toelichting: 'Nog niet online: mail of bel de kassa, of kom langs; vanaf 30 dagen, tickets tot €50.',
+    },
+  },
+  {
+    id: 'grandtheatre',
+    naam: 'Grand Theatre',
+    stad: 'Groningen',
+    provincie: 'Groningen',
+    baseUrl: 'https://www.grandtheatregroningen.nl',
+    agendaUrl: 'https://www.grandtheatregroningen.nl/nl/programma',
+    // Bron: https://www.grandtheatregroningen.nl/nl/info/podiumpas (8 okt
+    // 2026): alle voorstellingen in alle zalen, tot €50, niet bij verhuur of
+    // als GT de kaartverkoop niet doet (per voorstelling in
+    // src/sites/grandtheatre.js); reserveren alleen per mail.
+    podiumpas: true,
+    podiumpasReserveren: {
+      email: 'kassa@grandtheatregroningen.nl',
+      // "Tot €50" vooraan: de prijs staat alleen op de detailpagina en wordt
+      // niet automatisch gecontroleerd (9 okt 2026).
+      toelichting: 'Alleen tickets tot €50 — de prijs controleren we niet automatisch. Per mail (pasnummer en voorstelling), vanaf 30 dagen. Niet bij verhuur of externe kaartverkoop.',
+    },
+    // Eigen pauze (inventarisatie): robots.txt gaf op 8 en 9 okt 2026 HTTP 500
+    // (kapotte robots-plugin van Kirby).
+    crawlDelaySeconden: 5,
   },
 ];

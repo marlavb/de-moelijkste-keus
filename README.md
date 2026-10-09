@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **77** (64 ok, 2 leeg, 6 gepauzeerd, 5 onbekend)
+- Theaters: **80** (64 ok, 2 leeg, 6 gepauzeerd, 8 onbekend)
 - Voorstellingen (titel per theater): **7573**
 - Speeldata: **10629**
 - Laatste refresh: **9 oktober 2026, 05:49** (Amsterdamse tijd)
@@ -95,18 +95,31 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   Overijssel (okt 2026): De Meenthe (Steenwijk) geeft per speeldatum zaal,
   genre en Itix-status in JSON; regionale voorstellingen, de evenementenhal en
   een paar reeksen krijgen geen Podiumpas, kerkconcerten staan erin met een
-  locatie. De Reggehof (Goor) geeft HTML-blokken in JSON, genre via de
+  locatie en Podiumpas onbekend (`null`: de pagina zegt "in het theater"). De Reggehof (Goor) geeft HTML-blokken in JSON, genre via de
   genrefilters van de site; "zitten" en "staan" worden één voorstelling, en
   een uitverkocht-status is er niet (robots.txt van de Itix-host verbiedt
-  die). Schouwburg Hengelo leest de lijstpagina's (één tegel per speeldatum);
-  de Podiumpas geldt alleen in de Middenzaal en Rabozaal, voor professionele
-  voorstellingen (niet "Regionaal") tot €50, en welke regel de voorstelling
+  die); Podiumpas onbekend (`null`), want alleen podiumpas.nl noemt het
+  theater. Schouwburg Hengelo leest de lijstpagina's (één tegel per speeldatum);
+  de Podiumpas geldt alleen in de Middenzaal en Rabozaal, tot €50 (de lijst
+  heeft geen prijs: true met een melding; boven €50 false), "Regionaal" is
+  onbekend (`null`), en welke regel de voorstelling
   is en welke de artiest, volgt uit de URL. Een tegel met een periode ("t/m")
   krijgt de speeldata van de detailpagina. Zwolse Theaters (Schouwburg Odeon
   en Theater de Spiegel) haalt de lijst via de eigen API van de site (per 10)
   en per productie de detailpagina (datum, tijd, prijs en status per
   speeldatum; samengevoegde speeldata worden zo per dag gesplitst), via de
   detailcache met een grens van 150 per nacht.
+  De Tamboer (Hoogeveen) is een Phoenix LiveView-site: `?resultaten=30` in
+  de URL geeft alle speeldata in één verzoek (de knop "Bekijk meer" werkt
+  via een websocket); een Cloudflare-challenge of 403 geldt als blokkade.
+  De Muze (Noordwijk) leest de WordPress-lijstpagina's; films en besloten
+  voorstellingen vallen weg, de prijs staat op elke kaart (Podiumpas tot
+  €50, reserveren alleen via kassa, mail of telefoon); bij de categorie
+  "Verenigingen & Organisaties" is de Podiumpas onbekend (`null`). Grand Theatre
+  (Groningen) staat op één pagina; verhuur en voorstellingen met een
+  ticketlink buiten de eigen kaartverkoop krijgen geen Podiumpas
+  (reserveren alleen per mail). Zijn robots.txt gaf op 8 en 9 okt 2026
+  HTTP 500, en dan slaat de run hem over.
   Waar zaal, uitsluitingen of speeldata alleen op een detailpagina staan
   (Musis Arnhem; Schaffelaartheater, waar robots.txt de agenda-API verbiedt
   en we de productie-adressen uit sitemap.xml halen, hooguit 120 nieuwe
@@ -253,7 +266,7 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v44`
+Service worker: `podiumagenda-v45`
 <!-- AUTO:sw:end -->
 
 ### Theaters
@@ -296,7 +309,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Cpunt | Hoofddorp | nee | ok |
 | Zaantheater | Zaandam | ja | ok |
 
-**Zuid-Holland** (12)
+**Zuid-Holland** (13)
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
@@ -307,6 +320,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Zaal 3 | Den Haag | ja | ok |
 | Theater Ins Blau | Leiden | ja | ok |
 | Theater Koningshof | Maassluis | deels | ok |
+| De Muze | Noordwijk | – | onbekend |
 | Maas theater en dans | Rotterdam | ja | ok |
 | Theater Rotterdam (TR25 Schouwburg) | Rotterdam | ja | ok |
 | Theater Rotterdam (TR8 William Boothlaan) | Rotterdam | ja | ok |
@@ -361,6 +375,12 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Markant Theater Maashorst | Uden | deels | ok |
 | Theater de Hofnar | Valkenswaard | deels | ok |
 
+**Drenthe** (1)
+
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| De Tamboer | Hoogeveen | – | onbekend |
+
 **Gelderland** (7)
 
 | Theater | Stad | Podiumpas | Status |
@@ -372,6 +392,12 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | TAR | Arnhem | – | gepauzeerd sinds 2026-10-08 |
 | Schaffelaartheater | Barneveld | deels | ok |
 | Schouwburg Agnietenhof | Tiel | – | gepauzeerd sinds 2026-10-07 |
+
+**Groningen** (1)
+
+| Theater | Stad | Podiumpas | Status |
+|---|---|---|---|
+| Grand Theatre | Groningen | – | onbekend |
 
 **Overijssel** (5)
 
