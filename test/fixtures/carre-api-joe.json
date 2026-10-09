@@ -1,0 +1,52 @@
+{
+ "node": {
+  "id": "01K9F73V7P8R0SWPVKZRFKT7R7",
+  "kind": "production-page",
+  "production_id": "17049",
+  "data": {
+   "heading": "Joe Jackson - Hope and Fury Tour 2026",
+   "url": "/voorstelling/joe-jackson-2026"
+  }
+ },
+ "productions": {
+  "17049": {
+   "id": "17049",
+   "data": {
+    "custom_order_flow": true,
+    "name": "Joe Jackson"
+   },
+   "events": [
+    {
+     "id": "35133",
+     "start_date": "2026-12-01T20:00:00+01:00",
+     "end_date": "2026-12-02T00:00:00+01:00",
+     "sales_url": "https://www.ticketmaster.nl/event/866530431",
+     "sales_status": "on_sale",
+     "sales_start_date": "2025-11-14T10:00:00+01:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Laatste kans",
+      "statusID": "last_chance"
+     }
+    },
+    {
+     "id": "35134",
+     "start_date": "2026-12-02T20:00:00+01:00",
+     "end_date": "2026-12-03T00:00:00+01:00",
+     "sales_url": "https://www.ticketmaster.nl/event/356984950",
+     "sales_status": "on_sale",
+     "sales_start_date": "2025-11-14T10:00:00+01:00",
+     "venue_id": "10008",
+     "hall_id": "1",
+     "data": {
+      "eventtype": "Voorstelling",
+      "status": "Laatste kans",
+      "statusID": "last_chance"
+     }
+    }
+   ]
+  }
+ }
+}

@@ -62,8 +62,9 @@ const DUBBEL_WARNING_MIN = 5;
 const MAX_JAREN_VOORUIT = 2;
 // Aandeel voorstellingen zonder tijd: waarschuwen als dat met minstens 20
 // procentpunt stijgt t.o.v. de vorige run (en er genoeg voorstellingen zijn).
-// Een theater dat structureel geen tijden geeft (Carré, Karavaan: 100%)
-// stijgt niet en waarschuwt dus niet. De Kleine Komedie gaf in sep 2026
+// Een theater dat structureel geen tijden geeft (Scala, avondvullend: 100%)
+// stijgt niet en waarschuwt dus niet (Carré en Karavaan hebben sinds 9 okt
+// 2026 wel tijden). De Kleine Komedie gaf in sep 2026
 // bij 28% van de voorstellingen geen tijd, en dat viel niemand op.
 const ZONDER_TIJD_STIJGING = 0.2;
 const ZONDER_TIJD_MIN_AANTAL = 10;
