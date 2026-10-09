@@ -1,0 +1,1783 @@
+{
+ "uitleg": "Aliaslijst: zie src/lib/aliassen.js. Niet met de hand bewerken: npm run alias-importeren -- <export>.",
+ "aliassen": {
+  "100 mannen later": {
+   "titel": "100 Mannen Later – Fajah Lourens",
+   "maker": "Fajah Lourens",
+   "makerVast": true,
+   "groep": "100 mannen later",
+   "regel": "keuze"
+  },
+  "100 mannen later | fajah lourens": {
+   "titel": "100 Mannen Later – Fajah Lourens",
+   "maker": "Fajah Lourens",
+   "makerVast": true,
+   "groep": "100 mannen later",
+   "regel": "keuze"
+  },
+  "3 t m 8 jaar | joes": {
+   "titel": "Deze ridder zegt NEE (3+)",
+   "maker": "Joes",
+   "groep": "deze ridder zegt nee",
+   "regel": "keuze"
+  },
+  "40 jaar rowwen heze": {
+   "titel": "Rhobijn",
+   "maker": null,
+   "groep": "rhobijn",
+   "regel": "keuze"
+  },
+  "a mystical journey into the world of wonders | darkride": {
+   "titel": "Darkride",
+   "maker": null,
+   "makerVast": true,
+   "groep": "darkride",
+   "regel": "keuze"
+  },
+  "a tribute to the queen of disco": {
+   "titel": "Donna's Hot Stuff",
+   "maker": null,
+   "makerVast": true,
+   "groep": "a tribute to the queen of disco",
+   "regel": "keuze"
+  },
+  "a tribute to the queen of disco | donna s hot stuff": {
+   "titel": "Donna's Hot Stuff",
+   "maker": null,
+   "makerVast": true,
+   "groep": "a tribute to the queen of disco",
+   "regel": "keuze"
+  },
+  "aaf brandt corstius en lies visschedijk": {
+   "titel": "Over de Liefde – Aaf Brandt Corstius & Lies Visschedijk",
+   "maker": "Aaf Brandt Corstius & Lies Visschedijk",
+   "makerVast": true,
+   "groep": "aaf brandt corstius lies visschedijk",
+   "regel": "keuze"
+  },
+  "aaf brandt corstius en lies visschedijk | over de liefde": {
+   "titel": "Over de Liefde – Aaf Brandt Corstius & Lies Visschedijk",
+   "maker": "Aaf Brandt Corstius & Lies Visschedijk",
+   "makerVast": true,
+   "groep": "aaf brandt corstius lies visschedijk",
+   "regel": "keuze"
+  },
+  "aai poesje aai poesje": {
+   "titel": "Aai Poesje Aai Poesje – Elfie Tromp",
+   "maker": "Elfie Tromp",
+   "groep": "aai poesje aai poesje",
+   "regel": "keuze"
+  },
+  "abbatoir ferme | galapagos": {
+   "titel": "Galapagos",
+   "maker": "Abattoir Fermé",
+   "groep": "galapagos",
+   "regel": "keuze"
+  },
+  "ai en ik": {
+   "titel": "AI&IK – ERAN&CO",
+   "maker": "ERAN&CO",
+   "groep": "eran co",
+   "regel": "keuze"
+  },
+  "alex klaasen e a": {
+   "titel": "Stoornis of my Life",
+   "maker": "Van Alex Klaasen",
+   "groep": "stoornis of my life",
+   "regel": "keuze"
+  },
+  "alex roeka": {
+   "titel": "OP DRIFT – Alex Roeka",
+   "maker": "Alex Roeka",
+   "groep": "alex roeka",
+   "regel": "keuze"
+  },
+  "alle 13 goed": {
+   "titel": "Orkest De Ereprijs & Marien Jongewaard – Alle 13 goed",
+   "maker": "Alle 13 goed",
+   "groep": "alle 13 goed",
+   "regel": "R3"
+  },
+  "alles onder controle": {
+   "titel": "Alles Onder Controle – Van Vleuten en Van Muiswinkel",
+   "maker": "Van Vleuten en Van Muiswinkel",
+   "groep": "van vleuten en van muiswinkel",
+   "regel": "keuze"
+  },
+  "andre manuel": {
+   "titel": "De Eenzame Ziel – André Manuel",
+   "maker": "André Manuel",
+   "groep": "andre manuel",
+   "regel": "keuze"
+  },
+  "aqueerius": {
+   "titel": "Beyond the Ball",
+   "maker": null,
+   "groep": "beyond the ball",
+   "regel": "keuze"
+  },
+  "aqueerius | beyond the ball": {
+   "titel": "Beyond the Ball",
+   "maker": null,
+   "groep": "beyond the ball",
+   "regel": "keuze"
+  },
+  "arno schuitemaker": {
+   "titel": "Monday",
+   "maker": null,
+   "groep": "arno schuitemaker",
+   "regel": "keuze"
+  },
+  "arno schuitemaker | monday": {
+   "titel": "Monday",
+   "maker": null,
+   "groep": "arno schuitemaker",
+   "regel": "keuze"
+  },
+  "ashton brothers": {
+   "titel": "Brothers – Ashton Brothers",
+   "maker": "Ashton Brothers",
+   "groep": "ashton brothers",
+   "regel": "keuze"
+  },
+  "assepoester | nederlandse reisopera": {
+   "titel": "Assepoester",
+   "maker": null,
+   "groep": "assepoester",
+   "regel": "keuze"
+  },
+  "ayoub | en verbied de vogels om te fluiten": {
+   "titel": "En verbied de vogels om te fluiten – Ayoub Kharkhach",
+   "maker": "Ayoub Kharkhach",
+   "groep": "en verbied de vogels om te fluiten",
+   "regel": "keuze"
+  },
+  "baby reindeer | thijs van de meeberg": {
+   "titel": "Baby Reindeer",
+   "maker": null,
+   "groep": "thijs van de meeberg",
+   "regel": "keuze"
+  },
+  "beatrice de graaf": {
+   "titel": "Chaos in de Westerse wereld",
+   "maker": null,
+   "groep": "chaos in de westerse wereld",
+   "regel": "keuze"
+  },
+  "beatrice de graaf | chaos in de westerse wereld": {
+   "titel": "Chaos in de Westerse wereld",
+   "maker": null,
+   "groep": "chaos in de westerse wereld",
+   "regel": "keuze"
+  },
+  "becaud": {
+   "titel": "Bécaud – Frank Cools en Florian De Schepper",
+   "maker": "Frank Cools en Florian De Schepper",
+   "groep": "frank cools en florian de schepper",
+   "regel": "keuze"
+  },
+  "because of you": {
+   "titel": "Because of You – Niels Geusebroek",
+   "maker": "Niels Geusebroek",
+   "makerVast": true,
+   "groep": "niels geusebroek",
+   "regel": "keuze"
+  },
+  "because of you | niels geusebroek": {
+   "titel": "Because of You – Niels Geusebroek",
+   "maker": "Niels Geusebroek",
+   "makerVast": true,
+   "groep": "niels geusebroek",
+   "regel": "keuze"
+  },
+  "behind the wall | conny janssen danst": {
+   "titel": "BEHIND THE WALL",
+   "maker": null,
+   "groep": "behind the wall",
+   "regel": "keuze"
+  },
+  "benr": {
+   "titel": "Tussen 2 maten",
+   "maker": null,
+   "groep": "tussen 2 maten",
+   "regel": "keuze"
+  },
+  "benr | tussen 2 maten": {
+   "titel": "Tussen 2 maten",
+   "maker": null,
+   "groep": "tussen 2 maten",
+   "regel": "keuze"
+  },
+  "best of | fabian franciscus": {
+   "titel": "Is het leven al begonnen? – Fabian Franciscus",
+   "maker": "Fabian Franciscus",
+   "groep": "fabian franciscus",
+   "regel": "keuze"
+  },
+  "beth en flo": {
+   "titel": "Zoveel meer – Beth & Flo",
+   "maker": "Beth & Flo",
+   "groep": "zoveel meer",
+   "regel": "keuze"
+  },
+  "bettina holwerda": {
+   "titel": "Laat Maar – Bettina Holwerda",
+   "maker": "Bettina Holwerda",
+   "makerVast": true,
+   "groep": "bettina holwerda",
+   "regel": "keuze"
+  },
+  "bettina holwerda | laat maar": {
+   "titel": "Laat Maar – Bettina Holwerda",
+   "maker": "Bettina Holwerda",
+   "makerVast": true,
+   "groep": "bettina holwerda",
+   "regel": "keuze"
+  },
+  "bloedheet en tranen | de overgang zonder onzin | evi hanssen": {
+   "titel": "Bloedheet & tranen – Evi Hanssen",
+   "maker": "Evi Hanssen",
+   "makerVast": true,
+   "groep": "bloedheet tranen",
+   "regel": "keuze"
+  },
+  "bloedheet en tranen | evi hanssen": {
+   "titel": "Bloedheet & tranen – Evi Hanssen",
+   "maker": "Evi Hanssen",
+   "makerVast": true,
+   "groep": "bloedheet tranen",
+   "regel": "keuze"
+  },
+  "boi akih": {
+   "titel": "BOI AKIH – De Messiah van Händel",
+   "maker": "De Messiah van Händel",
+   "groep": "boi akih",
+   "regel": "R2"
+  },
+  "bokkers": {
+   "titel": "Hier! – Bökkers",
+   "maker": "Bökkers",
+   "makerVast": true,
+   "groep": "bokkers",
+   "regel": "keuze"
+  },
+  "bokkers | hier": {
+   "titel": "Hier! – Bökkers",
+   "maker": "Bökkers",
+   "makerVast": true,
+   "groep": "bokkers",
+   "regel": "keuze"
+  },
+  "bonobo": {
+   "titel": "Bonobo – Flip Noorman",
+   "maker": "Flip Noorman",
+   "groep": "flip noorman",
+   "regel": "keuze"
+  },
+  "bouwen een feestje": {
+   "titel": "Buurman & Buurman 50 jaar! (4+)",
+   "maker": null,
+   "groep": "bouwen een feestje",
+   "regel": "keuze"
+  },
+  "britt for president | de warme winkel": {
+   "titel": "Britt for President",
+   "maker": "De Warme Winkel",
+   "groep": "britt for president",
+   "regel": "R3"
+  },
+  "brothers": {
+   "titel": "Brothers – Ashton Brothers",
+   "maker": "Ashton Brothers",
+   "groep": "ashton brothers",
+   "regel": "keuze"
+  },
+  "brute passie": {
+   "titel": "Skagen – Brute Passie",
+   "maker": "Brute Passie",
+   "groep": "brute passie",
+   "regel": "R2"
+  },
+  "buysse en joosten": {
+   "titel": "Guyland",
+   "maker": null,
+   "groep": "buysse joosten",
+   "regel": "keuze"
+  },
+  "buysse en joosten | guyland": {
+   "titel": "Guyland",
+   "maker": null,
+   "groep": "buysse joosten",
+   "regel": "keuze"
+  },
+  "cat smits company": {
+   "titel": "Achter gesloten deuren",
+   "maker": null,
+   "groep": "achter gesloten deuren",
+   "regel": "keuze"
+  },
+  "cats | het meesterwerk": {
+   "titel": "CATS",
+   "maker": null,
+   "groep": "het meesterwerk",
+   "regel": "keuze"
+  },
+  "cello octet en sophie van winden | coda": {
+   "titel": "CODA",
+   "maker": "Cello Octet/Sophie van Winden",
+   "groep": "cello octet sophie van winden",
+   "regel": "keuze"
+  },
+  "charly luske | the story of george michael": {
+   "titel": "The Story of George Michael",
+   "maker": null,
+   "groep": "the story of george michael",
+   "regel": "keuze"
+  },
+  "charly luske e a | the story of george michael": {
+   "titel": "The Story of George Michael",
+   "maker": null,
+   "groep": "the story of george michael",
+   "regel": "keuze"
+  },
+  "circus treurdier": {
+   "titel": "Die Bloemkool (een moeilijke musical)",
+   "maker": null,
+   "groep": "circus treurdier",
+   "regel": "keuze"
+  },
+  "circus treurdier | die bloemkool een moeilijke musical try out": {
+   "titel": "Die Bloemkool (een moeilijke musical)",
+   "maker": null,
+   "groep": "circus treurdier",
+   "regel": "keuze"
+  },
+  "club lam": {
+   "titel": "Dolle Mina",
+   "maker": null,
+   "groep": "dolle mina",
+   "regel": "keuze"
+  },
+  "coming on strong | golden earring tribute | onze earring": {
+   "titel": "Coming on Strong",
+   "maker": null,
+   "groep": "onze earring",
+   "regel": "keuze"
+  },
+  "compagnie red yellow en blue | katwijk": {
+   "titel": "KATWIJK – Compagnie Red Yellow & Blue",
+   "maker": "Compagnie Red Yellow & Blue",
+   "makerVast": true,
+   "groep": "compagnie red yellow blue",
+   "regel": "keuze"
+  },
+  "conny janssen danst": {
+   "titel": "BEHIND THE WALL",
+   "maker": null,
+   "groep": "behind the wall",
+   "regel": "keuze"
+  },
+  "darkride": {
+   "titel": "Darkride",
+   "maker": null,
+   "makerVast": true,
+   "groep": "darkride",
+   "regel": "keuze"
+  },
+  "de dansende spion | mata hari returns": {
+   "titel": "Mata Hari Returns – Tafel van Vijf Muziektheater",
+   "maker": "Tafel van Vijf Muziektheater",
+   "makerVast": true,
+   "groep": "tafel van vijf muziektheater",
+   "regel": "keuze"
+  },
+  "de dansers | howling road": {
+   "titel": "Howling Road",
+   "maker": "De Dansers",
+   "groep": "howling road",
+   "regel": "keuze"
+  },
+  "de erfenis | toneelgroep maastricht": {
+   "titel": "De erfenis",
+   "maker": "Toneelgroep Maastricht",
+   "groep": "de erfenis",
+   "regel": "R3"
+  },
+  "de frans halsema musical": {
+   "titel": "Voor Haar, de Frans Halsema Musical",
+   "maker": null,
+   "groep": "de frans halsema musical",
+   "regel": "keuze"
+  },
+  "de frans halsema musical | voor haar": {
+   "titel": "Voor Haar, de Frans Halsema Musical",
+   "maker": null,
+   "groep": "de frans halsema musical",
+   "regel": "keuze"
+  },
+  "de grote jubileumshow | jandino": {
+   "titel": "DE GROTE JUBILEUMSHOW – Jandino Asporaat",
+   "maker": "Jandino Asporaat",
+   "groep": "de grote jubileumshow",
+   "regel": "keuze"
+  },
+  "de grote jubileumshow | jandino | jandino 20 jaar": {
+   "titel": "DE GROTE JUBILEUMSHOW – Jandino Asporaat",
+   "maker": "Jandino Asporaat",
+   "groep": "de grote jubileumshow",
+   "regel": "keuze"
+  },
+  "de grote jubileumshow | jandino 20 jaar": {
+   "titel": "DE GROTE JUBILEUMSHOW – Jandino Asporaat",
+   "maker": "Jandino Asporaat",
+   "groep": "de grote jubileumshow",
+   "regel": "keuze"
+  },
+  "de grote jubileumshow | jandino 20 jaar | jandino asporaat": {
+   "titel": "DE GROTE JUBILEUMSHOW – Jandino Asporaat",
+   "maker": "Jandino Asporaat",
+   "groep": "de grote jubileumshow",
+   "regel": "keuze"
+  },
+  "de lieve vrede": {
+   "titel": "De Lieve Vrede – Piet van Eeghen",
+   "maker": "Piet van Eeghen",
+   "groep": "de lieve vrede",
+   "regel": "R2"
+  },
+  "de poezieboys en theatergroep echo": {
+   "titel": "ARENDS",
+   "maker": null,
+   "groep": "de poezieboys theatergroep echo",
+   "regel": "keuze"
+  },
+  "de regahs": {
+   "titel": "Groeten uit Den Haag – De Règâhs",
+   "maker": "De Règâhs",
+   "makerVast": true,
+   "groep": "groeten uit den haag",
+   "regel": "keuze"
+  },
+  "de regahs | groeten uit den haag": {
+   "titel": "Groeten uit Den Haag – De Règâhs",
+   "maker": "De Règâhs",
+   "makerVast": true,
+   "groep": "groeten uit den haag",
+   "regel": "keuze"
+  },
+  "de rest mag je hebben": {
+   "titel": "De rest mag je hebben – Matthijn Buwalda",
+   "maker": "Matthijn Buwalda",
+   "makerVast": true,
+   "groep": "de rest mag je hebben",
+   "regel": "keuze"
+  },
+  "de rest mag je hebben | matthijn buwalda": {
+   "titel": "De rest mag je hebben – Matthijn Buwalda",
+   "maker": "Matthijn Buwalda",
+   "makerVast": true,
+   "groep": "de rest mag je hebben",
+   "regel": "keuze"
+  },
+  "de theatertroep | vier crematies en een scheiding": {
+   "titel": "Vier crematies en een scheiding",
+   "maker": "De Theatertroep",
+   "groep": "vier crematies en een scheiding",
+   "regel": "keuze"
+  },
+  "de verbouwing": {
+   "titel": "De Verbouwing",
+   "maker": null,
+   "makerVast": true,
+   "groep": "naar het boek van saskia noort",
+   "regel": "keuze"
+  },
+  "de verleiders": {
+   "titel": "Zoek Dekking! – De Verleiders",
+   "maker": "De Verleiders",
+   "makerVast": true,
+   "groep": "de verleiders",
+   "regel": "keuze"
+  },
+  "de verleiders | zoek dekking": {
+   "titel": "Zoek Dekking! – De Verleiders",
+   "maker": "De Verleiders",
+   "makerVast": true,
+   "groep": "de verleiders",
+   "regel": "keuze"
+  },
+  "de warme winkel | judith westbroek zoekt een kamer": {
+   "titel": "Judith Westbroek zoekt een kamer",
+   "maker": "De Warme Winkel",
+   "groep": "judith westbroek zoekt een kamer",
+   "regel": "R3"
+  },
+  "de zaak a": {
+   "titel": "JoepTube (8+)",
+   "maker": null,
+   "groep": "de zaak a",
+   "regel": "keuze"
+  },
+  "debussy s la mer | philzuid": {
+   "titel": "Debussy's La Mer",
+   "maker": "Philzuid",
+   "groep": "debussy s la mer",
+   "regel": "R3"
+  },
+  "dekpunt | jan beuving": {
+   "titel": "Dekpunt – Jan Beuving",
+   "maker": "Jan Beuving",
+   "makerVast": true,
+   "groep": "dekpunt",
+   "regel": "keuze"
+  },
+  "dekpunt | jan beuving en tom dicke": {
+   "titel": "Dekpunt – Jan Beuving",
+   "maker": "Jan Beuving",
+   "makerVast": true,
+   "groep": "dekpunt",
+   "regel": "keuze"
+  },
+  "diggy dex": {
+   "titel": "De zoektocht naar geluk – Diggy Dex",
+   "maker": "Diggy Dex",
+   "groep": "de zoektocht naar geluk",
+   "regel": "keuze"
+  },
+  "dolly dots": {
+   "titel": "Dolly Dots de Musical",
+   "maker": null,
+   "makerVast": true,
+   "groep": "dolly dots de musical",
+   "regel": "keuze"
+  },
+  "don t despair | panama pictures": {
+   "titel": "Don't despair",
+   "maker": null,
+   "groep": "panama pictures",
+   "regel": "keuze"
+  },
+  "donna s hot stuff": {
+   "titel": "Donna's Hot Stuff",
+   "maker": null,
+   "makerVast": true,
+   "groep": "a tribute to the queen of disco",
+   "regel": "keuze"
+  },
+  "dood paard | tsjernobyl": {
+   "titel": "Tsjernobyl",
+   "maker": "Dood Paard",
+   "groep": "tsjernobyl",
+   "regel": "keuze"
+  },
+  "dorona alberti": {
+   "titel": "20 Years & More… Unplugged – Dorona Alberti",
+   "maker": "Dorona Alberti",
+   "groep": "dorona alberti",
+   "regel": "R3"
+  },
+  "een tijd van liefde | orkater": {
+   "titel": "Een tijd van liefde",
+   "maker": null,
+   "groep": "een tijd van liefde",
+   "regel": "keuze"
+  },
+  "eldorado | marcel hensema": {
+   "titel": "Eldorado",
+   "maker": null,
+   "groep": "marcel hensema",
+   "regel": "keuze"
+  },
+  "ellen ten damme": {
+   "titel": "Medusa – Ellen ten Damme",
+   "maker": "Ellen ten Damme",
+   "groep": "ellen ten damme",
+   "regel": "keuze"
+  },
+  "en verbied de vogels om te fluiten": {
+   "titel": "En verbied de vogels om te fluiten – Ayoub Kharkhach",
+   "maker": "Ayoub Kharkhach",
+   "groep": "en verbied de vogels om te fluiten",
+   "regel": "keuze"
+  },
+  "evergreen top 1000 live | golden songs": {
+   "titel": "Evergreen Top 1000 Live!",
+   "maker": "Golden Songs",
+   "groep": "evergreen top 1000 live",
+   "regel": "R3"
+  },
+  "evi hanssen": {
+   "titel": "Bloedheet & tranen – Evi Hanssen",
+   "maker": "Evi Hanssen",
+   "makerVast": true,
+   "groep": "bloedheet tranen",
+   "regel": "keuze"
+  },
+  "fajah lourens": {
+   "titel": "100 Mannen Later – Fajah Lourens",
+   "maker": "Fajah Lourens",
+   "makerVast": true,
+   "groep": "100 mannen later",
+   "regel": "keuze"
+  },
+  "father en son": {
+   "titel": "Father & Son – Leo en Marius Blokhuis",
+   "maker": "Leo en Marius Blokhuis",
+   "groep": "leo en marius blokhuis",
+   "regel": "keuze"
+  },
+  "feest in de tovertuin | woezel en pip": {
+   "titel": "Woezel & Pip",
+   "maker": "Feest in de Tovertuin",
+   "groep": "woezel pip",
+   "regel": "keuze"
+  },
+  "femme vitaal": {
+   "titel": "Femme Vitaal – Tineke Schouten",
+   "maker": "Tineke Schouten",
+   "groep": "tineke schouten",
+   "regel": "keuze"
+  },
+  "firma mes": {
+   "titel": "Wapens",
+   "maker": null,
+   "groep": "firma mes",
+   "regel": "keuze"
+  },
+  "flip noorman": {
+   "titel": "Bonobo – Flip Noorman",
+   "maker": "Flip Noorman",
+   "groep": "flip noorman",
+   "regel": "keuze"
+  },
+  "floor bosman": {
+   "titel": "Puur Floor – Floor Bosman",
+   "maker": "Floor Bosman",
+   "makerVast": true,
+   "groep": "floor bosman",
+   "regel": "keuze"
+  },
+  "floor bosman | puur floor": {
+   "titel": "Puur Floor – Floor Bosman",
+   "maker": "Floor Bosman",
+   "makerVast": true,
+   "groep": "floor bosman",
+   "regel": "keuze"
+  },
+  "forever young | the 70 s unplugged": {
+   "titel": "The 70's Unplugged",
+   "maker": "Forever Young",
+   "groep": "the 70 s unplugged",
+   "regel": "keuze"
+  },
+  "francis van broekhuizen": {
+   "titel": "Magical Opera – Francis van Broekhuizen",
+   "maker": "Francis van Broekhuizen",
+   "makerVast": true,
+   "groep": "francis van broekhuizen",
+   "regel": "keuze"
+  },
+  "francis van broekhuizen | magical opera": {
+   "titel": "Magical Opera – Francis van Broekhuizen",
+   "maker": "Francis van Broekhuizen",
+   "makerVast": true,
+   "groep": "francis van broekhuizen",
+   "regel": "keuze"
+  },
+  "frank cools en florian de schepper": {
+   "titel": "Bécaud – Frank Cools en Florian De Schepper",
+   "maker": "Frank Cools en Florian De Schepper",
+   "groep": "frank cools en florian de schepper",
+   "regel": "keuze"
+  },
+  "frankenstein | veenfabriek": {
+   "titel": "Frankenstein",
+   "maker": "Veenfabriek",
+   "groep": "frankenstein",
+   "regel": "keuze"
+  },
+  "fred delfgaauw": {
+   "titel": "Tot hier en nu verder",
+   "maker": null,
+   "groep": "fred delfgaauw",
+   "regel": "keuze"
+  },
+  "fred delfgaauw | uitopdedag": {
+   "titel": "Tot hier en nu verder",
+   "maker": null,
+   "groep": "fred delfgaauw",
+   "regel": "keuze"
+  },
+  "fred van leer": {
+   "titel": "Ik weet het eigenlijk niet – Fred van Leer",
+   "maker": "Fred van Leer",
+   "groep": "ik weet het eigenlijk niet",
+   "regel": "keuze"
+  },
+  "free": {
+   "titel": "Free – Fuse & Kinan Azmeh",
+   "maker": "Fuse & Kinan Azmeh",
+   "groep": "fuse kinan azmeh",
+   "regel": "keuze"
+  },
+  "fuse en kinan azmeh": {
+   "titel": "Free – Fuse & Kinan Azmeh",
+   "maker": "Fuse & Kinan Azmeh",
+   "groep": "fuse kinan azmeh",
+   "regel": "keuze"
+  },
+  "gaia aikman dorian bindels e a": {
+   "titel": "The Bodyguard",
+   "maker": null,
+   "groep": "the bodyguard",
+   "regel": "keuze"
+  },
+  "gelukkig maar": {
+   "titel": "GELUKKIG MAAR – Myrte Siebinga",
+   "maker": "Myrte Siebinga",
+   "groep": "gelukkig maar",
+   "regel": "R2"
+  },
+  "gerard van maasakkers": {
+   "titel": "Solo",
+   "maker": null,
+   "groep": "gerard van maasakkers",
+   "regel": "keuze"
+  },
+  "gerard van maasakkers | solo": {
+   "titel": "Solo",
+   "maker": null,
+   "groep": "gerard van maasakkers",
+   "regel": "keuze"
+  },
+  "gershwin bonevacia": {
+   "titel": "BLAUWZWART",
+   "maker": null,
+   "groep": "gershwin bonevacia",
+   "regel": "keuze"
+  },
+  "gewoon zoals je bent": {
+   "titel": "Gewoon zoals je bent – Klein Amsterdam Producties (2+)",
+   "maker": "Klein Amsterdam Producties",
+   "groep": "gewoon zoals je bent",
+   "regel": "keuze"
+  },
+  "god is een snotje": {
+   "titel": "God is een snotje – Kim Karssen",
+   "maker": "Kim Karssen",
+   "groep": "god is een snotje",
+   "regel": "keuze"
+  },
+  "goed dat jij bestaat": {
+   "titel": "Goed dat jij bestaat! – Johnny de Mol",
+   "maker": "Johnny de Mol",
+   "makerVast": true,
+   "groep": "johnny de mol",
+   "regel": "keuze"
+  },
+  "goed dat jij bestaat | johnny de mol": {
+   "titel": "Goed dat jij bestaat! – Johnny de Mol",
+   "maker": "Johnny de Mol",
+   "makerVast": true,
+   "groep": "johnny de mol",
+   "regel": "keuze"
+  },
+  "govert de roos": {
+   "titel": "Van Hazes tot Playboy – Govert de Roos",
+   "maker": "Govert de Roos",
+   "makerVast": true,
+   "groep": "van hazes tot playboy",
+   "regel": "keuze"
+  },
+  "groeten uit den haag": {
+   "titel": "Groeten uit Den Haag – De Règâhs",
+   "maker": "De Règâhs",
+   "makerVast": true,
+   "groep": "groeten uit den haag",
+   "regel": "keuze"
+  },
+  "grrr ik ben een boze dino | lil ones presenteert": {
+   "titel": "GRRR… ik ben een boze dino! (4+)",
+   "maker": null,
+   "groep": "grrr ik ben een boze dino",
+   "regel": "keuze"
+  },
+  "gun gewoon": {
+   "titel": "Gun Gewoon – Nouhaila El Guebli",
+   "maker": "Nouhaila El Guebli",
+   "groep": "nouhaila el guebli",
+   "regel": "keuze"
+  },
+  "had je kenne weten": {
+   "titel": "Had je kenne weten – Janice Blok",
+   "maker": "Janice Blok",
+   "groep": "had je kenne weten",
+   "regel": "keuze"
+  },
+  "hassan el fad": {
+   "titel": "HASSAN JIDANE – Hassan El Fad",
+   "maker": "Hassan El Fad",
+   "groep": "hassan el fad",
+   "regel": "R2"
+  },
+  "her majesty | neil young en crazy horse": {
+   "titel": "Her Majesty",
+   "maker": null,
+   "groep": "neil young crazy horse",
+   "regel": "keuze"
+  },
+  "herman van veen": {
+   "titel": "Vandaag – Herman van Veen",
+   "maker": "Herman van Veen",
+   "groep": "herman van veen",
+   "regel": "keuze"
+  },
+  "het echte verhaal achter de iconische fotos van sterrenfotograaf govert de roos | van hazes tot playboy": {
+   "titel": "Van Hazes tot Playboy – Govert de Roos",
+   "maker": "Govert de Roos",
+   "makerVast": true,
+   "groep": "van hazes tot playboy",
+   "regel": "keuze"
+  },
+  "het kado": {
+   "titel": "Het Kado als het Ware – Theater als het Ware",
+   "maker": "Theater als het Ware",
+   "makerVast": true,
+   "groep": "theater als het ware",
+   "regel": "keuze"
+  },
+  "het kado als het ware": {
+   "titel": "Het Kado als het Ware – Theater als het Ware",
+   "maker": "Theater als het Ware",
+   "makerVast": true,
+   "groep": "theater als het ware",
+   "regel": "keuze"
+  },
+  "het meesterwerk": {
+   "titel": "CATS",
+   "maker": null,
+   "groep": "het meesterwerk",
+   "regel": "keuze"
+  },
+  "het nationale ballet": {
+   "titel": "Reflections",
+   "maker": null,
+   "groep": "het nationale ballet",
+   "regel": "keuze"
+  },
+  "het nationale theater | richard iii": {
+   "titel": "Richard III",
+   "maker": "Het Nationale Theater",
+   "groep": "richard iii",
+   "regel": "R3"
+  },
+  "het zuidelijk toneel": {
+   "titel": "Vondels Angels",
+   "maker": null,
+   "groep": "vondels angels",
+   "regel": "keuze"
+  },
+  "het zuidelijk toneel en ada ozdogan": {
+   "titel": "Silence of the Dogs",
+   "maker": null,
+   "groep": "silence of the dogs",
+   "regel": "keuze"
+  },
+  "het zuidelijk toneel en silke van kamp": {
+   "titel": "I Like Art and Art Likes Me",
+   "maker": null,
+   "groep": "i like art and art likes me",
+   "regel": "keuze"
+  },
+  "het zwanenmeer | met live orkest": {
+   "titel": "Het Zwanenmeer",
+   "maker": "Charkiv City Ballet",
+   "groep": "het zwanenmeer",
+   "regel": "keuze"
+  },
+  "hexagon ensemble": {
+   "titel": "Sweet Memories – Hexagon Ensemble",
+   "maker": "Hexagon Ensemble",
+   "groep": "hexagon ensemble",
+   "regel": "R2"
+  },
+  "hier": {
+   "titel": "Hier! – Bökkers",
+   "maker": "Bökkers",
+   "makerVast": true,
+   "groep": "bokkers",
+   "regel": "keuze"
+  },
+  "hoe ik per ongeluk een t rex vond": {
+   "titel": "Hoe ik per ongeluk een T.rex vond – Melanie During",
+   "maker": "Melanie During",
+   "groep": "hoe ik per ongeluk een t rex vond",
+   "regel": "keuze"
+  },
+  "hogewoerd::medusa": {
+   "titel": "Medusa – Ellen ten Damme",
+   "maker": "Ellen ten Damme",
+   "groep": "ellen ten damme",
+   "regel": "keuze"
+  },
+  "houtje | peuters in de paap": {
+   "titel": "Houtje (3+)",
+   "maker": null,
+   "groep": "houtje",
+   "regel": "keuze"
+  },
+  "huub van der lubbe en jan robijns": {
+   "titel": "Neem het Licht – Huub van der Lubbe en Jan Robijns",
+   "maker": "Huub van der Lubbe en Jan Robijns",
+   "groep": "huub van der lubbe en jan robijns",
+   "regel": "keuze"
+  },
+  "iets te vieren": {
+   "titel": "Iets Te Vieren – Diederick Ensink",
+   "maker": "Diederick Ensink",
+   "groep": "diederick ensink",
+   "regel": "keuze"
+  },
+  "ik weet het eigenlijk niet": {
+   "titel": "Ik weet het eigenlijk niet – Fred van Leer",
+   "maker": "Fred van Leer",
+   "groep": "ik weet het eigenlijk niet",
+   "regel": "keuze"
+  },
+  "in de hemel ken ik jullie niet": {
+   "titel": "In de Hemel ken ik jullie niet – Glodi Lugungu",
+   "maker": "Glodi Lugungu",
+   "groep": "in de hemel ken ik jullie niet",
+   "regel": "keuze"
+  },
+  "in persperctief | stefan hendrikx": {
+   "titel": "In Perspectief – Stefan Hendrikx",
+   "maker": "Stefan Hendrikx",
+   "groep": "stefan hendrikx",
+   "regel": "keuze"
+  },
+  "introdans": {
+   "titel": "Swan Lake",
+   "maker": null,
+   "groep": "swan lake",
+   "regel": "keuze"
+  },
+  "isabelle beernaert": {
+   "titel": "ROUGE – Isabelle Beernaert (BE)",
+   "maker": "Isabelle Beernaert (BE)",
+   "makerVast": true,
+   "groep": "rouge",
+   "regel": "keuze"
+  },
+  "isabelle beernaert be": {
+   "titel": "ROUGE – Isabelle Beernaert (BE)",
+   "maker": "Isabelle Beernaert (BE)",
+   "makerVast": true,
+   "groep": "rouge",
+   "regel": "keuze"
+  },
+  "ivgi en greben": {
+   "titel": "What we leave behind",
+   "maker": null,
+   "groep": "what we leave behind",
+   "regel": "keuze"
+  },
+  "jan willem rozenboom": {
+   "titel": "Grip op Bach – Jan-Willem Rozenboom",
+   "maker": "Jan-Willem Rozenboom",
+   "groep": "jan willem rozenboom",
+   "regel": "R2"
+  },
+  "janice blok": {
+   "titel": "Had je kenne weten – Janice Blok",
+   "maker": "Janice Blok",
+   "groep": "had je kenne weten",
+   "regel": "keuze"
+  },
+  "janne schra en de vogels": {
+   "titel": "Kleuren moeten ook slapen (6+)",
+   "maker": null,
+   "groep": "kleuren moeten ook slapen",
+   "regel": "keuze"
+  },
+  "jelka van houten en sanne wallis de vries": {
+   "titel": "LIFT",
+   "maker": null,
+   "groep": "jelka van houten en sanne wallis de vries",
+   "regel": "keuze"
+  },
+  "jenny arean": {
+   "titel": "Jenny Arean Zingt",
+   "maker": null,
+   "makerVast": true,
+   "groep": "jenny arean zingt",
+   "regel": "keuze"
+  },
+  "jenny arean zingt": {
+   "titel": "Jenny Arean Zingt",
+   "maker": null,
+   "makerVast": true,
+   "groep": "jenny arean zingt",
+   "regel": "keuze"
+  },
+  "jip smit | motherland iii": {
+   "titel": "Motherland: The Return of Katinka",
+   "maker": "Jip Smit",
+   "groep": "jip smit",
+   "regel": "keuze"
+  },
+  "johnny de mol": {
+   "titel": "Goed dat jij bestaat! – Johnny de Mol",
+   "maker": "Johnny de Mol",
+   "makerVast": true,
+   "groep": "johnny de mol",
+   "regel": "keuze"
+  },
+  "joost spijkers": {
+   "titel": "Ziel & Zalig – Joost Spijkers",
+   "maker": "Joost Spijkers",
+   "groep": "joost spijkers",
+   "regel": "keuze"
+  },
+  "juf roos": {
+   "titel": "Juf Roos gaat op vakantie (2+)",
+   "maker": null,
+   "makerVast": true,
+   "groep": "juf roos gaat op vakantie",
+   "regel": "keuze"
+  },
+  "juf roos gaat op vakantie": {
+   "titel": "Juf Roos gaat op vakantie (2+)",
+   "maker": null,
+   "makerVast": true,
+   "groep": "juf roos gaat op vakantie",
+   "regel": "keuze"
+  },
+  "julika marijn": {
+   "titel": "No Kidding – Julika Marijn",
+   "maker": "Julika Marijn",
+   "groep": "julika marijn",
+   "regel": "keuze"
+  },
+  "kameleon | sadettin k": {
+   "titel": "KAMELEON",
+   "maker": null,
+   "groep": "sadettin k",
+   "regel": "keuze"
+  },
+  "karin bloemen": {
+   "titel": "Renaissance 2.0 – Karin Bloemen",
+   "maker": "Karin Bloemen",
+   "groep": "renaissance 2 0",
+   "regel": "keuze"
+  },
+  "katwijk": {
+   "titel": "KATWIJK – Compagnie Red Yellow & Blue",
+   "maker": "Compagnie Red Yellow & Blue",
+   "makerVast": true,
+   "groep": "compagnie red yellow blue",
+   "regel": "keuze"
+  },
+  "kees prins": {
+   "titel": "YESTERDAY – Kees Prins",
+   "maker": "Kees Prins",
+   "groep": "kees prins",
+   "regel": "keuze"
+  },
+  "kopfkino": {
+   "titel": "KOPFKINO – Sven Ratzke",
+   "maker": "Sven Ratzke",
+   "makerVast": true,
+   "groep": "sven ratzke",
+   "regel": "keuze"
+  },
+  "kopfkino | sven ratzke": {
+   "titel": "KOPFKINO – Sven Ratzke",
+   "maker": "Sven Ratzke",
+   "makerVast": true,
+   "groep": "sven ratzke",
+   "regel": "keuze"
+  },
+  "krezip": {
+   "titel": "Theatertour – Krezip",
+   "maker": "Krezip",
+   "makerVast": true,
+   "groep": "krezip",
+   "regel": "keuze"
+  },
+  "laat me niet alleen": {
+   "titel": "Laat me niet alleen – Rob Kemps",
+   "maker": "Rob Kemps",
+   "makerVast": true,
+   "groep": "laat me niet alleen",
+   "regel": "keuze"
+  },
+  "laat me niet alleen | rob kemps": {
+   "titel": "Laat me niet alleen – Rob Kemps",
+   "maker": "Rob Kemps",
+   "makerVast": true,
+   "groep": "laat me niet alleen",
+   "regel": "keuze"
+  },
+  "later word ik 7": {
+   "titel": "Later word ik 7 – Meester Mark",
+   "maker": "Meester Mark",
+   "makerVast": true,
+   "groep": "later word ik 7",
+   "regel": "keuze"
+  },
+  "later word ik 7 | meester mark": {
+   "titel": "Later word ik 7 – Meester Mark",
+   "maker": "Meester Mark",
+   "makerVast": true,
+   "groep": "later word ik 7",
+   "regel": "keuze"
+  },
+  "laura van dolron": {
+   "titel": "Liefhebben II",
+   "maker": null,
+   "groep": "liefhebben ii",
+   "regel": "keuze"
+  },
+  "legendary albums live": {
+   "titel": "Beach Boys' Best",
+   "maker": null,
+   "groep": "beach boys best",
+   "regel": "keuze"
+  },
+  "legendary albums live presenteert": {
+   "titel": "Beach Boys' Best",
+   "maker": null,
+   "groep": "beach boys best",
+   "regel": "keuze"
+  },
+  "legende van de witte slang | nhung dam": {
+   "titel": "Legende van de witte slang",
+   "maker": null,
+   "groep": "legende van de witte slang",
+   "regel": "keuze"
+  },
+  "leineroebana": {
+   "titel": "NEGEN",
+   "maker": null,
+   "groep": "leineroebana",
+   "regel": "keuze"
+  },
+  "leineroebana | negen": {
+   "titel": "NEGEN",
+   "maker": null,
+   "groep": "leineroebana",
+   "regel": "keuze"
+  },
+  "leo en marius blokhuis": {
+   "titel": "Father & Son – Leo en Marius Blokhuis",
+   "maker": "Leo en Marius Blokhuis",
+   "groep": "leo en marius blokhuis",
+   "regel": "keuze"
+  },
+  "life in the fast lane": {
+   "titel": "Life in the Fast Lane – The Dutch Eagles",
+   "maker": "The Dutch Eagles",
+   "makerVast": true,
+   "groep": "life in the fast lane",
+   "regel": "keuze"
+  },
+  "life in the fast lane | the dutch eagles": {
+   "titel": "Life in the Fast Lane – The Dutch Eagles",
+   "maker": "The Dutch Eagles",
+   "makerVast": true,
+   "groep": "life in the fast lane",
+   "regel": "keuze"
+  },
+  "lovella telesford | wat een gezeik": {
+   "titel": "Wat een gezeik! – Lovella Telesford",
+   "maker": "Lovella Telesford",
+   "makerVast": true,
+   "groep": "lovella telesford",
+   "regel": "keuze"
+  },
+  "maarten heijmans en xander vrienten": {
+   "titel": "Wachtend op de dood – Maarten Heijmans & Xander Vrienten",
+   "maker": "Maarten Heijmans & Xander Vrienten",
+   "makerVast": true,
+   "groep": "maarten heijmans xander vrienten",
+   "regel": "keuze"
+  },
+  "maarten heijmans en xander vrienten | wachtend op de dood": {
+   "titel": "Wachtend op de dood – Maarten Heijmans & Xander Vrienten",
+   "maker": "Maarten Heijmans & Xander Vrienten",
+   "makerVast": true,
+   "groep": "maarten heijmans xander vrienten",
+   "regel": "keuze"
+  },
+  "magical opera": {
+   "titel": "Magical Opera – Francis van Broekhuizen",
+   "maker": "Francis van Broekhuizen",
+   "makerVast": true,
+   "groep": "francis van broekhuizen",
+   "regel": "keuze"
+  },
+  "marcel hensema": {
+   "titel": "Eldorado",
+   "maker": null,
+   "groep": "marcel hensema",
+   "regel": "keuze"
+  },
+  "marcel van roosmalen": {
+   "titel": "Ik mag niet klagen – Marcel van Roosmalen",
+   "maker": "Marcel van Roosmalen",
+   "groep": "marcel van roosmalen",
+   "regel": "R3"
+  },
+  "marco schuitmaker": {
+   "titel": "Recht uit het hart – Marco Schuitmaker",
+   "maker": "Marco Schuitmaker",
+   "makerVast": true,
+   "groep": "recht uit het hart",
+   "regel": "keuze"
+  },
+  "marco schuitmaker | recht uit het hart": {
+   "titel": "Recht uit het hart – Marco Schuitmaker",
+   "maker": "Marco Schuitmaker",
+   "makerVast": true,
+   "groep": "recht uit het hart",
+   "regel": "keuze"
+  },
+  "maris wat eten we vandaag": {
+   "titel": "Maris, wat eten we vandaag? – Mariska Bauer",
+   "maker": "Mariska Bauer",
+   "groep": "maris",
+   "regel": "keuze"
+  },
+  "mata hari returns": {
+   "titel": "Mata Hari Returns – Tafel van Vijf Muziektheater",
+   "maker": "Tafel van Vijf Muziektheater",
+   "makerVast": true,
+   "groep": "tafel van vijf muziektheater",
+   "regel": "keuze"
+  },
+  "matthijn buwalda": {
+   "titel": "De rest mag je hebben – Matthijn Buwalda",
+   "maker": "Matthijn Buwalda",
+   "makerVast": true,
+   "groep": "de rest mag je hebben",
+   "regel": "keuze"
+  },
+  "meester mark": {
+   "titel": "Later word ik 7 – Meester Mark",
+   "maker": "Meester Mark",
+   "makerVast": true,
+   "groep": "later word ik 7",
+   "regel": "keuze"
+  },
+  "melanie during": {
+   "titel": "Hoe ik per ongeluk een T.rex vond – Melanie During",
+   "maker": "Melanie During",
+   "groep": "hoe ik per ongeluk een t rex vond",
+   "regel": "keuze"
+  },
+  "millennial ii browser history x | theater oostpool": {
+   "titel": "Millennial II Browser History X",
+   "maker": null,
+   "groep": "millennial ii browser history x",
+   "regel": "keuze"
+  },
+  "music care | ranja met een rietje": {
+   "titel": "Ranja met een rietje",
+   "maker": "Diederick Ensink, Vérie Thijssen en Astrid Nijssen",
+   "groep": "ranja met een rietje",
+   "regel": "keuze"
+  },
+  "naar het boek van saskia noort": {
+   "titel": "De Verbouwing",
+   "maker": null,
+   "makerVast": true,
+   "groep": "naar het boek van saskia noort",
+   "regel": "keuze"
+  },
+  "nasrdin dchar": {
+   "titel": "Wat als – Nasrdin Dchar",
+   "maker": "Nasrdin Dchar",
+   "makerVast": true,
+   "groep": "nasrdin dchar",
+   "regel": "keuze"
+  },
+  "nasrdin dchar | wat als": {
+   "titel": "Wat als – Nasrdin Dchar",
+   "maker": "Nasrdin Dchar",
+   "makerVast": true,
+   "groep": "nasrdin dchar",
+   "regel": "keuze"
+  },
+  "nederlands blazers ensemble en duda paiva company": {
+   "titel": "Adem van het woud",
+   "maker": null,
+   "groep": "nederlands blazers ensemble duda paiva company",
+   "regel": "keuze"
+  },
+  "nederlandse reisopera": {
+   "titel": "Assepoester",
+   "maker": null,
+   "groep": "assepoester",
+   "regel": "keuze"
+  },
+  "neem het licht": {
+   "titel": "Neem het Licht – Huub van der Lubbe en Jan Robijns",
+   "maker": "Huub van der Lubbe en Jan Robijns",
+   "groep": "huub van der lubbe en jan robijns",
+   "regel": "keuze"
+  },
+  "neil young en crazy horse": {
+   "titel": "Her Majesty",
+   "maker": null,
+   "groep": "neil young crazy horse",
+   "regel": "keuze"
+  },
+  "nhung dam": {
+   "titel": "Legende van de witte slang",
+   "maker": null,
+   "groep": "legende van de witte slang",
+   "regel": "keuze"
+  },
+  "nick schilder": {
+   "titel": "The Singer Songwriter Show – Nick Schilder",
+   "maker": "Nick Schilder",
+   "makerVast": true,
+   "groep": "the singer songwriter show",
+   "regel": "keuze"
+  },
+  "nick schilder | the singer songwriter show": {
+   "titel": "The Singer Songwriter Show – Nick Schilder",
+   "maker": "Nick Schilder",
+   "makerVast": true,
+   "groep": "the singer songwriter show",
+   "regel": "keuze"
+  },
+  "niels geusebroek": {
+   "titel": "Because of You – Niels Geusebroek",
+   "maker": "Niels Geusebroek",
+   "makerVast": true,
+   "groep": "niels geusebroek",
+   "regel": "keuze"
+  },
+  "nienke plas": {
+   "titel": "Appeltje Eitje – Nienke Plas",
+   "maker": "Nienke Plas",
+   "groep": "nienke plas",
+   "regel": "R2"
+  },
+  "nite": {
+   "titel": "Oersoep",
+   "maker": "NITE / Rebekka Nilsson",
+   "groep": "oersoep",
+   "regel": "keuze"
+  },
+  "no kidding": {
+   "titel": "No Kidding – Julika Marijn",
+   "maker": "Julika Marijn",
+   "groep": "julika marijn",
+   "regel": "keuze"
+  },
+  "nouhaila el guebli": {
+   "titel": "Gun Gewoon – Nouhaila El Guebli",
+   "maker": "Nouhaila El Guebli",
+   "groep": "nouhaila el guebli",
+   "regel": "keuze"
+  },
+  "om het af te leren": {
+   "titel": "Ğelukkig Ğeboren – Buğra Gedik",
+   "maker": "Buğra Gedik",
+   "groep": "gelukkig geboren",
+   "regel": "keuze"
+  },
+  "onze earring": {
+   "titel": "Coming on Strong",
+   "maker": null,
+   "groep": "onze earring",
+   "regel": "keuze"
+  },
+  "op drift": {
+   "titel": "OP DRIFT – Alex Roeka",
+   "maker": "Alex Roeka",
+   "groep": "alex roeka",
+   "regel": "keuze"
+  },
+  "orkater": {
+   "titel": "Een tijd van liefde",
+   "maker": null,
+   "groep": "een tijd van liefde",
+   "regel": "keuze"
+  },
+  "orkater de nieuwkomers patroon": {
+   "titel": "Geschiedenis van een ongeluk",
+   "maker": null,
+   "groep": "orkater de nieuwkomers patroon",
+   "regel": "keuze"
+  },
+  "over de liefde": {
+   "titel": "Over de Liefde – Aaf Brandt Corstius & Lies Visschedijk",
+   "maker": "Aaf Brandt Corstius & Lies Visschedijk",
+   "makerVast": true,
+   "groep": "aaf brandt corstius lies visschedijk",
+   "regel": "keuze"
+  },
+  "overleven in de jungle": {
+   "titel": "Wildebras – Overleven In De Jungle (6+)",
+   "maker": "Overleven In De Jungle (6+)",
+   "groep": "overleven in de jungle",
+   "regel": "R2"
+  },
+  "panama pictures": {
+   "titel": "Don't despair",
+   "maker": null,
+   "groep": "panama pictures",
+   "regel": "keuze"
+  },
+  "peter pannekoek": {
+   "titel": "Demonen – Peter Pannekoek",
+   "maker": "Peter Pannekoek",
+   "groep": "peter pannekoek",
+   "regel": "R2"
+  },
+  "pieter jouke": {
+   "titel": "Uit Stilstand – Pieter Jouke",
+   "maker": "Pieter Jouke",
+   "groep": "uit stilstand",
+   "regel": "keuze"
+  },
+  "pip lucas shanna slaap e a": {
+   "titel": "Dolly Dots de Musical",
+   "maker": null,
+   "makerVast": true,
+   "groep": "dolly dots de musical",
+   "regel": "keuze"
+  },
+  "pip utton": {
+   "titel": "Trump",
+   "maker": null,
+   "groep": "pip utton",
+   "regel": "keuze"
+  },
+  "pip utton | trump": {
+   "titel": "Trump",
+   "maker": null,
+   "groep": "pip utton",
+   "regel": "keuze"
+  },
+  "populisme": {
+   "titel": "Populisme de Musical – Sem Konijn",
+   "maker": "Sem Konijn",
+   "makerVast": true,
+   "groep": "sem konijn",
+   "regel": "keuze"
+  },
+  "populisme | sem konijn": {
+   "titel": "Populisme de Musical – Sem Konijn",
+   "maker": "Sem Konijn",
+   "makerVast": true,
+   "groep": "populisme de musical",
+   "regel": "keuze"
+  },
+  "pretpakhuis": {
+   "titel": "Boeing Boeing",
+   "maker": null,
+   "groep": "boeing boeing",
+   "regel": "keuze"
+  },
+  "pynarello en jochem stavenuiter": {
+   "titel": "Koffie & klassiek – Pynarello & Jochem Stavenuiter",
+   "maker": "Pynarello & Jochem Stavenuiter",
+   "groep": "pynarello jochem stavenuiter",
+   "regel": "R2"
+  },
+  "raga en rasa": {
+   "titel": "Raga & Rasa – Nederlands Blazers Ensemble",
+   "maker": "Nederlands Blazers Ensemble",
+   "groep": "raga rasa",
+   "regel": "R2"
+  },
+  "rayen panday | wonderful christmastime": {
+   "titel": "Wonderful Christmastime – Rayen Panday & Friends",
+   "maker": "Rayen Panday & Friends",
+   "groep": "wonderful christmastime",
+   "regel": "keuze"
+  },
+  "raymi sambo maakt": {
+   "titel": "Drugsmonologen",
+   "maker": null,
+   "groep": "drugsmonologen",
+   "regel": "keuze"
+  },
+  "recht uit het hart": {
+   "titel": "Recht uit het hart – Marco Schuitmaker",
+   "maker": "Marco Schuitmaker",
+   "makerVast": true,
+   "groep": "recht uit het hart",
+   "regel": "keuze"
+  },
+  "rhobijn | rowwen heze": {
+   "titel": "Rhobijn",
+   "maker": null,
+   "groep": "rhobijn",
+   "regel": "keuze"
+  },
+  "ricky koole": {
+   "titel": "Rare Leeftijd – Ricky Koole",
+   "maker": "Ricky Koole",
+   "groep": "rare leeftijd",
+   "regel": "keuze"
+  },
+  "rise up": {
+   "titel": "Rise Up – The Dutch Tenors",
+   "maker": "The Dutch Tenors",
+   "makerVast": true,
+   "groep": "the dutch tenors",
+   "regel": "keuze"
+  },
+  "rise up | the dutch tenors": {
+   "titel": "Rise Up – The Dutch Tenors",
+   "maker": "The Dutch Tenors",
+   "makerVast": true,
+   "groep": "the dutch tenors",
+   "regel": "keuze"
+  },
+  "rob kemps": {
+   "titel": "Laat me niet alleen – Rob Kemps",
+   "maker": "Rob Kemps",
+   "makerVast": true,
+   "groep": "laat me niet alleen",
+   "regel": "keuze"
+  },
+  "rocky mountain high": {
+   "titel": "A Tribute to John Denver",
+   "maker": null,
+   "groep": "a tribute to john denver",
+   "regel": "keuze"
+  },
+  "rof daaimund": {
+   "titel": "ROF DAAIMUND – Isabelle Kafando",
+   "maker": "Isabelle Kafando",
+   "groep": "isabelle kafando",
+   "regel": "keuze"
+  },
+  "romeo en julia | theater oostpool": {
+   "titel": "Romeo en Julia",
+   "maker": "Theater Oostpool",
+   "groep": "romeo en julia",
+   "regel": "R3"
+  },
+  "rouge": {
+   "titel": "ROUGE – Isabelle Beernaert (BE)",
+   "maker": "Isabelle Beernaert (BE)",
+   "makerVast": true,
+   "groep": "rouge",
+   "regel": "keuze"
+  },
+  "rudsichtlos | ruud smulders": {
+   "titel": "RÜDSICHTSLOS – Ruud Smulders",
+   "maker": "Ruud Smulders",
+   "groep": "ruud smulders",
+   "regel": "keuze"
+  },
+  "rundfunk": {
+   "titel": "Wagyu – Rundfunk",
+   "maker": "Rundfunk",
+   "makerVast": true,
+   "groep": "rundfunk",
+   "regel": "keuze"
+  },
+  "rundfunk | tom van kalmthout en yannick van de velde | wagyu": {
+   "titel": "Wagyu – Rundfunk",
+   "maker": "Rundfunk",
+   "makerVast": true,
+   "groep": "rundfunk",
+   "regel": "keuze"
+  },
+  "rundfunk | wagyu": {
+   "titel": "Wagyu – Rundfunk",
+   "maker": "Rundfunk",
+   "makerVast": true,
+   "groep": "rundfunk",
+   "regel": "keuze"
+  },
+  "sadettin k": {
+   "titel": "KAMELEON",
+   "maker": null,
+   "groep": "sadettin k",
+   "regel": "keuze"
+  },
+  "scapino ballet rotterdam": {
+   "titel": "La Mer",
+   "maker": null,
+   "groep": "scapino ballet rotterdam",
+   "regel": "keuze"
+  },
+  "sem konijn": {
+   "titel": "Populisme de Musical – Sem Konijn",
+   "maker": "Sem Konijn",
+   "makerVast": true,
+   "groep": "sem konijn",
+   "regel": "keuze"
+  },
+  "stephanie struijk": {
+   "titel": "Altijd En Nooit",
+   "maker": null,
+   "groep": "stephanie struijk",
+   "regel": "keuze"
+  },
+  "sven ratzke": {
+   "titel": "KOPFKINO – Sven Ratzke",
+   "maker": "Sven Ratzke",
+   "makerVast": true,
+   "groep": "sven ratzke",
+   "regel": "keuze"
+  },
+  "talent on the move": {
+   "titel": "Talent on the move – Holland Dance Festival",
+   "maker": "Holland Dance Festival",
+   "groep": "talent on the move",
+   "regel": "R2"
+  },
+  "taylor swift tribute band": {
+   "titel": "Love Story – Taylor Swift Tribute Band",
+   "maker": "Taylor Swift Tribute Band",
+   "groep": "taylor swift tribute band",
+   "regel": "R2"
+  },
+  "the drama | theater oostpool": {
+   "titel": "The Drama",
+   "maker": "Theater Oostpool",
+   "groep": "the drama",
+   "regel": "R3"
+  },
+  "the dutch eagles": {
+   "titel": "Life in the Fast Lane – The Dutch Eagles",
+   "maker": "The Dutch Eagles",
+   "makerVast": true,
+   "groep": "life in the fast lane",
+   "regel": "keuze"
+  },
+  "the dutch tenors": {
+   "titel": "Rise Up – The Dutch Tenors",
+   "maker": "The Dutch Tenors",
+   "makerVast": true,
+   "groep": "the dutch tenors",
+   "regel": "keuze"
+  },
+  "the nether | theater oostpool": {
+   "titel": "The Nether",
+   "maker": null,
+   "groep": "the nether",
+   "regel": "keuze"
+  },
+  "the singer songwriter show": {
+   "titel": "The Singer Songwriter Show – Nick Schilder",
+   "maker": "Nick Schilder",
+   "makerVast": true,
+   "groep": "the singer songwriter show",
+   "regel": "keuze"
+  },
+  "theater utrecht": {
+   "titel": "THE SCREAM",
+   "maker": "Theater Utrecht / Floor Houwink ten Cate",
+   "groep": "the scream",
+   "regel": "keuze"
+  },
+  "theatercollege door huib moddelkolk": {
+   "titel": "In de digitale loopgraven",
+   "maker": null,
+   "groep": "in de digitale loopgraven",
+   "regel": "keuze"
+  },
+  "theatertour": {
+   "titel": "Theatertour – Krezip",
+   "maker": "Krezip",
+   "makerVast": true,
+   "groep": "krezip",
+   "regel": "keuze"
+  },
+  "thijs van de meeberg": {
+   "titel": "Baby Reindeer",
+   "maker": null,
+   "groep": "thijs van de meeberg",
+   "regel": "keuze"
+  },
+  "tim knol": {
+   "titel": "Wanderings – Tim Knol",
+   "maker": "Tim Knol",
+   "groep": "wanderings",
+   "regel": "keuze"
+  },
+  "tineke schouten": {
+   "titel": "Femme Vitaal – Tineke Schouten",
+   "maker": "Tineke Schouten",
+   "groep": "tineke schouten",
+   "regel": "keuze"
+  },
+  "to do | wunderbaum": {
+   "titel": "To do",
+   "maker": "Wunderbaum",
+   "groep": "wunderbaum",
+   "regel": "keuze"
+  },
+  "todo": {
+   "titel": "To do",
+   "maker": "Wunderbaum",
+   "groep": "wunderbaum",
+   "regel": "keuze"
+  },
+  "tribute to adele": {
+   "titel": "Someone Like Her",
+   "maker": null,
+   "groep": "someone like her",
+   "regel": "keuze"
+  },
+  "van hazes tot playboy": {
+   "titel": "Van Hazes tot Playboy – Govert de Roos",
+   "maker": "Govert de Roos",
+   "makerVast": true,
+   "groep": "van hazes tot playboy",
+   "regel": "keuze"
+  },
+  "vandaag": {
+   "titel": "Vandaag – Herman van Veen",
+   "maker": "Herman van Veen",
+   "groep": "herman van veen",
+   "regel": "keuze"
+  },
+  "wachtend op de dood": {
+   "titel": "Wachtend op de dood – Maarten Heijmans & Xander Vrienten",
+   "maker": "Maarten Heijmans & Xander Vrienten",
+   "makerVast": true,
+   "groep": "maarten heijmans xander vrienten",
+   "regel": "keuze"
+  },
+  "wat een gezeik": {
+   "titel": "Wat een gezeik! – Lovella Telesford",
+   "maker": "Lovella Telesford",
+   "makerVast": true,
+   "groep": "lovella telesford",
+   "regel": "keuze"
+  },
+  "wina s wereld": {
+   "titel": "Wina's Wereld – Wina Ricardo",
+   "maker": "Wina Ricardo",
+   "groep": "wina s wereld",
+   "regel": "R2"
+  },
+  "ziel en zalig": {
+   "titel": "Ziel & Zalig – Joost Spijkers",
+   "maker": "Joost Spijkers",
+   "groep": "joost spijkers",
+   "regel": "keuze"
+  },
+  "zoek dekking": {
+   "titel": "Zoek Dekking! – De Verleiders",
+   "maker": "De Verleiders",
+   "makerVast": true,
+   "groep": "de verleiders",
+   "regel": "keuze"
+  }
+ },
+ "nietSamenvoegen": []
+}

@@ -154,3 +154,10 @@ test('plan op een titel die is samengevoegd (korter geworden): via titelBron gek
   assert.equal(r.profiel.gepland[0].sleutel, geplandSleutel(show));
   assert.equal(r.profiel.gepland[0].titel, 'KING ME – Greg Shapiro');
 });
+
+test('koppelen: plan met de titel van vóór de aliaslijst (titelVoorAlias) → exact', () => {
+  const nu = { ...show, titel: 'Titanique – Renée van Wegberg', titelBron: 'TITANIQUE (try-out)', titelVoorAlias: 'Titanique de Musical' };
+  const r = koppel({ theaterId: 'flint', datum: '2027-01-08', tijd: '20:15', titel: 'Titanique de Musical' }, indexeerShows([nu, { ...nu, id: 'b', tijd: '14:00' }]));
+  assert.equal(r.soort, 'exact');
+  assert.equal(r.show.tijd, '20:15');
+});

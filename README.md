@@ -160,7 +160,12 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   een theater artiest en voorstelling omgedraaid heeft of alleen de artiest
   noemt, staan per theater in `OMGEDRAAID` en `VOORSTELLING_BIJ_ARTIEST`
   (`titels.js`); watchlist en Gezien gaan dan mee naar de nieuwe titel
-  (`titelMapping.js`). Dezelfde productie (zelfde
+  (`titelMapping.js`). Dezelfde productie onder verschillende titels krijgt
+  via de aliaslijst (`config/aliassen.json`, `aliassen.js`; uit de
+  afvinkpagina) bij elk theater één titel, ook in behouden data; de titel van
+  daarvoor blijft als `titelVoorAlias`, zodat ook sleutels van na eerdere
+  titelrondes meegaan, en productie-samenvoegen kort zo'n titel niet weer in.
+  Dezelfde productie (zelfde
   watchlist-sleutel) krijgt bij elk theater dezelfde weergavetitel, hetzelfde
   genre en dezelfde maker: die van de meeste theaters
   (`weergaveMeerderheid.js`, `genreMeerderheid.js`, `makerMeerderheid.js`);
@@ -253,6 +258,17 @@ brew install openjdk@21           # emulators; zet openjdk@21/bin in je PATH
   robots.txt niet: die komt uit de cache, of telt als "geen regels" met een
   waarschuwing in de log). Houd
   testverkeer naar theatersites klein (zie `CLAUDE.md`).
+- Aliaslijst bijwerken: `npm run alias-afvinkpagina` maakt
+  `debug/alias-afvinken.html` (groepen die al in `config/aliassen.json`
+  staan, tellen als beoordeeld); de export daarvan gaat erin met
+  `npm run alias-importeren -- <alias-keuzes-….json>` (eerst eventueel met
+  `--droog`): nieuwe keuzes erbij, een opnieuw beoordeelde groep vervangt de
+  oude, met een overzicht van wat er verandert. `npm run alias-voorstel`
+  zet daarnaast R2 (ontbrekende maker: "Nienke Plas" → "Appeltje Eitje –
+  Nienke Plas") en R3 (maker uit de titel: "Theater Oostpool – The Drama" →
+  "The Drama") uit de voorstellen zonder twijfel in de lijst; alleen als de
+  titeldelen kloppen en de maker een bekende maker is, nooit voor "niet
+  samenvoegen", en een afgevinkte keuze gaat altijd voor.
 
 ### Testen
 

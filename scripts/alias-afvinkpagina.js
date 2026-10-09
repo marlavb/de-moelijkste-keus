@@ -7,7 +7,10 @@
 // (canonieke titel + maker), de twijfelreden en de keuze "samenvoegen", "niet
 // samenvoegen" of "andere naam". Keuzes blijven in localStorage van de
 // browser; "Exporteer" downloadt de alias-JSON (bron → canoniek). Groepen
-// zonder keuze komen niet in de export en blijven dus ongewijzigd.
+// zonder keuze komen niet in de export en blijven dus ongewijzigd. Groepen
+// die al in config/aliassen.json staan (npm run alias-importeren) tellen als
+// beoordeeld ("in aliaslijst"); een nieuwe keuze voor zo'n groep gaat wel
+// mee in de export en vervangt bij het importeren de oude.
 // Volgorde: eerst groepen met items van Marla of Erik, dan op aantal theaters.
 
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -17,6 +20,13 @@ import { readFileSync, writeFileSync } from 'node:fs';
 const { isSloganOfCast = () => false } = await import('../src/lib/titels.js');
 
 const voorstel = JSON.parse(readFileSync('debug/alias-voorstel.json', 'utf-8'));
+// Wat al in de aliaslijst staat (npm run alias-importeren): die groepen
+// tellen als beoordeeld, zodat je verder kunt waar je was.
+const { leesAliassen } = await import('../src/lib/aliassen.js');
+const aliaslijst = leesAliassen();
+const inLijstPerGroep = new Map();
+for (const a of Object.values(aliaslijst.aliassen ?? {})) if (a.regel === 'keuze' && a.groep) inLijstPerGroep.set(a.groep, { keuze: 'samenvoegen / andere naam', titel: a.titel });
+for (const g of aliaslijst.nietSamenvoegen ?? []) inLijstPerGroep.set(g.groep, { keuze: 'niet samenvoegen', titel: null });
 const shows = JSON.parse(readFileSync('public/data/shows.json', 'utf-8'));
 
 const theaterNamen = Object.fromEntries(shows.map((s) => [s.theaterId, s.theaterNaam]));
@@ -36,6 +46,29 @@ const SOORTEN = {
   f: 'maker in titel / omgedraaid',
 };
 
+// Het voorstel "Voorstelling – Maker" gesplitst in titel en maker, volgens
+// de titelconventie van de app (laatste deel = maker). Niet bij een leeftijd
+// ("(6+)", "3+") of "Reeks: titel". Staat het eerste deel bij een variant als
+// maker of als losse titel, dan krijgt de kaart een waarschuwing: uit de data
+// is dan niet te zien wie de maker is ("Herman van Veen" / "Vandaag" staat
+// even vaak andersom; Markant "Floor Bosman" / "PUUR FLOOR").
+const kaal = (t) => String(t ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*(?:\(\d[^)]*\)|[–-]\s*\d+\s*\+)\s*$/, '').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+function splits(canoniek, leden) {
+  const delen = canoniek.split(' – ');
+  const geen = { titel: canoniek, maker: null, volgordeTwijfel: false };
+  // volgordeTwijfel: 'andersom' (eerste deel elders maker of losse titel),
+  // 'onbevestigd' (het laatste deel is nergens maker of losse titel) of false.
+  if (delen.length < 2) return geen;
+  // Een leeftijd achteraan hoort bij de titel: "Beuk – Kim van Zeben (4+)".
+  const leeftijd = delen.at(-1).match(/\s*\(\d[^)]*\)$/)?.[0] ?? '';
+  const laatste = delen.at(-1).slice(0, delen.at(-1).length - leeftijd.length);
+  const eerste = delen.slice(0, -1).join(' – ');
+  if (!/\p{L}{2}/u.test(laatste) || /^\d|\+\)?$|\bjaar\b/i.test(laatste) || laatste.includes(':')) return geen;
+  const andersom = leden.some((x) => (x.maker && kaal(x.maker) === kaal(eerste)) || kaal(x.titel) === kaal(eerste));
+  const bevestigd = leden.some((x) => (x.maker && (kaal(x.maker).includes(kaal(laatste)) || kaal(laatste).includes(kaal(x.maker)))) || kaal(x.titel) === kaal(laatste));
+  return { titel: eerste + leeftijd, maker: laatste, volgordeTwijfel: andersom ? 'andersom' : bevestigd ? false : 'onbevestigd' };
+}
+
 const groepen = voorstel.groepen
   .filter((g) => g.twijfel?.length)
   .map((g) => {
@@ -54,11 +87,16 @@ const groepen = voorstel.groepen
     for (const l of g.leden) if (l.sleutel === g.canoniekeSleutel && l.maker && !isSloganOfCast(l.maker)) makers.set(l.maker, (makers.get(l.maker) ?? 0) + l.n);
     const maker = [...makers].sort((p, q) => q[1] - p[1] || p[0].localeCompare(q[0]))[0]?.[0] ?? null;
     const items = voorstel.gebruikersItems.filter((i) => g.sleutels.includes(i.sleutel));
+    const gesplitst = splits(g.canoniek, g.leden);
     return {
       id: g.anker,
       canoniek: g.canoniek,
       canoniekeSleutel: g.canoniekeSleutel,
-      maker,
+      titel: gesplitst.titel,
+      maker: gesplitst.maker ?? maker,
+      gesplitst: gesplitst.maker !== null,
+      inLijst: inLijstPerGroep.get(g.anker) ?? null,
+      volgordeTwijfel: gesplitst.volgordeTwijfel,
       soorten: g.soorten,
       twijfel: g.twijfel,
       items,
@@ -111,6 +149,8 @@ main { max-width: 980px; margin: 0 auto; padding: 16px; }
 .labels { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
 .label { font-size: 12px; padding: 1px 8px; border-radius: 999px; background: var(--accent-bg); color: var(--accent); }
 .label.gebruiker { background: var(--user-bg); color: var(--user); font-weight: 600; }
+.label.lijst { background: var(--ok-bg); color: var(--ok); font-weight: 600; }
+.groep.lijst { opacity: .75; }
 .twijfel { background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 6px 10px; margin: 8px 0; font-size: 14px; }
 .twijfel ul { margin: 0; padding-left: 18px; }
 .tabel { width: 100%; overflow-x: auto; }
@@ -143,7 +183,8 @@ tr.canoniek td.titel::before { content: "= "; color: var(--ok); }
     <input type="search" id="zoek" placeholder="Zoek op titel, maker of theater" aria-label="Zoeken">
     <select id="filter" aria-label="Filter">
       <option value="alle">Alle groepen</option>
-      <option value="open">Zonder keuze</option>
+      <option value="open">Nog te doen</option>
+      <option value="lijst">In de aliaslijst</option>
       <option value="gekozen">Met keuze</option>
       <option value="gebruikers">Met items van Marla/Erik</option>
     </select>
@@ -172,7 +213,7 @@ function dataTekst(data) {
 
 function kaart(g, i) {
   const k = keuzes[g.id] || {};
-  const klasse = k.keuze === 'samenvoegen' ? 'samenvoegen' : k.keuze === 'niet samenvoegen' ? 'niet' : k.keuze === 'andere naam' ? 'andere' : '';
+  const klasse = k.keuze === 'samenvoegen' ? 'samenvoegen' : k.keuze === 'niet samenvoegen' ? 'niet' : k.keuze === 'andere naam' ? 'andere' : g.inLijst ? 'lijst' : '';
   const naamVeld = 'k' + i;
   const items = g.items.map((it) => '<span class="label gebruiker">' + esc(it.wie) + ': ' + esc(it.veld) + (it.titel ? ' “' + esc(it.titel) + '”' : '') + '</span>').join('');
   const soorten = g.soorten.map((s) => '<span class="label">' + esc(s) + ' · ' + esc(DATA.soorten[s] || s) + '</span>').join('');
@@ -183,12 +224,15 @@ function kaart(g, i) {
     + '<td class="data" data-k="Speeldata">' + esc(dataTekst(v.data)) + '</td></tr>').join('');
   const radio = (waarde) => '<label><input type="radio" name="' + naamVeld + '" value="' + waarde + '"' + (k.keuze === waarde ? ' checked' : '') + '> ' + waarde[0].toUpperCase() + waarde.slice(1) + '</label>';
   return '<section class="groep ' + klasse + '" data-id="' + esc(g.id) + '">'
-    + '<div class="kop"><h2>' + esc(g.canoniek) + '</h2><span class="maker">' + (g.maker ? 'maker: ' + esc(g.maker) : 'geen maker') + '</span><span class="nr">' + g.aantalTheaters + ' theaters</span></div>'
-    + '<div class="labels">' + items + soorten + '</div>'
-    + '<div class="twijfel"><strong>Twijfel</strong><ul>' + g.twijfel.map((t) => '<li>' + esc(t) + '</li>').join('') + '</ul></div>'
+    + '<div class="kop"><h2>' + esc(g.titel) + '</h2><span class="maker">' + (g.maker ? 'maker: ' + esc(g.maker) : 'geen maker') + '</span><span class="nr">' + g.aantalTheaters + ' theaters</span></div>'
+    + '<div class="labels">' + (g.inLijst && !k.keuze ? '<span class="label lijst">in aliaslijst: ' + esc(g.inLijst.titel ? '→ ' + g.inLijst.titel : g.inLijst.keuze) + '</span>' : '') + items + soorten + '</div>'
+    + '<div class="twijfel"><strong>Twijfel</strong><ul>' + g.twijfel.map((t) => '<li>' + esc(t) + '</li>').join('')
+    + (g.volgordeTwijfel === 'andersom' ? '<li>titel en maker: elders staat het andersom (“' + esc(g.titel) + '” als maker of losse titel) — kijk na wie de maker is</li>' : '')
+    + (g.volgordeTwijfel === 'onbevestigd' ? '<li>titel en maker: “' + esc(g.maker) + '” is bij geen variant maker — misschien een ondertitel, kijk na</li>' : '') + '</ul></div>'
     + '<div class="tabel"><table><thead><tr><th>Titel (= voorstel)</th><th>Maker</th><th>Theaters</th><th>Speeldata</th></tr></thead><tbody>' + rijen + '</tbody></table></div>'
     + '<div class="keuze">' + radio('samenvoegen') + radio('niet samenvoegen') + radio('andere naam')
-    + '<input type="text" placeholder="Canonieke titel" aria-label="Andere naam" value="' + esc(k.naam || '') + '"' + (k.keuze === 'andere naam' ? '' : ' disabled') + '>'
+    + '<input type="text" data-veld="titel" placeholder="Titel" aria-label="Andere naam: titel" value="' + esc(k.titel ?? k.naam ?? '') + '"' + (k.keuze === 'andere naam' ? '' : ' disabled') + '>'
+    + '<input type="text" data-veld="maker" placeholder="Maker (leeg = geen)" aria-label="Andere naam: maker" value="' + esc(k.maker ?? '') + '"' + (k.keuze === 'andere naam' ? '' : ' disabled') + '>'
     + '<button type="button" class="wis">Wis keuze</button></div>'
     + '</section>';
 }
@@ -196,12 +240,13 @@ function kaart(g, i) {
 function zichtbaar(g) {
   const f = document.getElementById('filter').value;
   const k = keuzes[g.id];
-  if (f === 'open' && k) return false;
+  if (f === 'open' && (k || g.inLijst)) return false;
+  if (f === 'lijst' && !g.inLijst) return false;
   if (f === 'gekozen' && !k) return false;
   if (f === 'gebruikers' && !g.items.length) return false;
   const q = document.getElementById('zoek').value.trim().toLowerCase();
   if (!q) return true;
-  return [g.canoniek, g.maker, ...g.varianten.flatMap((v) => [v.titel, v.maker, ...v.theaters.map(naam)])].some((t) => String(t ?? '').toLowerCase().includes(q));
+  return [g.canoniek, g.titel, g.maker, ...g.varianten.flatMap((v) => [v.titel, v.maker, ...v.theaters.map(naam)])].some((t) => String(t ?? '').toLowerCase().includes(q));
 }
 
 function teken() {
@@ -212,9 +257,10 @@ function teken() {
 }
 
 function voortgang() {
-  const n = DATA.groepen.filter((g) => keuzes[g.id]).length;
+  const n = DATA.groepen.filter((g) => keuzes[g.id] || g.inLijst).length;
+  const lijst = DATA.groepen.filter((g) => g.inLijst && !keuzes[g.id]).length;
   const tel = (w) => DATA.groepen.filter((g) => keuzes[g.id]?.keuze === w).length;
-  document.getElementById('voortgang').textContent = n + ' van ' + DATA.groepen.length + ' twijfelgroepen beoordeeld (samenvoegen ' + tel('samenvoegen') + ', niet ' + tel('niet samenvoegen') + ', andere naam ' + tel('andere naam') + ') · data: ' + DATA.bron;
+  document.getElementById('voortgang').textContent = n + ' van ' + DATA.groepen.length + ' twijfelgroepen beoordeeld (in de aliaslijst ' + lijst + '; nieuw: samenvoegen ' + tel('samenvoegen') + ', niet ' + tel('niet samenvoegen') + ', andere naam ' + tel('andere naam') + ') · data: ' + DATA.bron;
 }
 
 const groepVan = (el) => DATA.groepen.find((g) => g.id === el.closest('.groep').dataset.id);
@@ -223,10 +269,14 @@ document.getElementById('lijst').addEventListener('change', (e) => {
   if (e.target.type !== 'radio') return;
   const g = groepVan(e.target);
   const sectie = e.target.closest('.groep');
-  const veld = sectie.querySelector('input[type=text]');
-  keuzes[g.id] = { keuze: e.target.value, ...(e.target.value === 'andere naam' ? { naam: veld.value.trim() || g.canoniek } : {}) };
-  if (e.target.value === 'andere naam' && !veld.value.trim()) veld.value = g.canoniek;
-  veld.disabled = e.target.value !== 'andere naam';
+  const titelVeld = sectie.querySelector('input[data-veld=titel]');
+  const makerVeld = sectie.querySelector('input[data-veld=maker]');
+  const andere = e.target.value === 'andere naam';
+  // Bij "andere naam" beginnen de velden met het voorstel.
+  if (andere && !titelVeld.value.trim()) { titelVeld.value = g.titel; makerVeld.value = g.maker ?? ''; }
+  keuzes[g.id] = { keuze: e.target.value, ...(andere ? { titel: titelVeld.value.trim() || g.titel, maker: makerVeld.value.trim() || null } : {}) };
+  titelVeld.disabled = !andere;
+  makerVeld.disabled = !andere;
   sectie.classList.remove('samenvoegen', 'niet', 'andere');
   sectie.classList.add({ samenvoegen: 'samenvoegen', 'niet samenvoegen': 'niet', 'andere naam': 'andere' }[e.target.value]);
   bewaar();
@@ -235,7 +285,12 @@ document.getElementById('lijst').addEventListener('change', (e) => {
 document.getElementById('lijst').addEventListener('input', (e) => {
   if (e.target.type !== 'text') return;
   const g = groepVan(e.target);
-  if (keuzes[g.id]?.keuze === 'andere naam') { keuzes[g.id].naam = e.target.value.trim(); bewaar(); }
+  if (keuzes[g.id]?.keuze !== 'andere naam') return;
+  const sectie = e.target.closest('.groep');
+  keuzes[g.id].titel = sectie.querySelector('input[data-veld=titel]').value.trim();
+  keuzes[g.id].maker = sectie.querySelector('input[data-veld=maker]').value.trim() || null;
+  delete keuzes[g.id].naam;
+  bewaar();
 });
 document.getElementById('lijst').addEventListener('click', (e) => {
   if (!e.target.classList.contains('wis')) return;
@@ -248,7 +303,8 @@ document.getElementById('filter').addEventListener('change', teken);
 
 // Export: per beoordeelde groep bron → canoniek. "samenvoegen": elke variant
 // met een andere sleutel dan het voorstel naar het voorstel; "andere naam":
-// alle varianten naar de ingevulde titel (sleutel volgt in stap B);
+// alle varianten naar de ingevulde titel en maker (sleutel volgt in stap B);
+// canoniek = { titel, maker, weergave } met weergave "Titel – Maker";
 // "niet samenvoegen" apart, zodat de groep niet opnieuw wordt voorgesteld.
 document.getElementById('exporteer').addEventListener('click', () => {
   const aliassen = [];
@@ -258,7 +314,10 @@ document.getElementById('exporteer').addEventListener('click', () => {
     if (!k) continue;
     if (k.keuze === 'niet samenvoegen') { nietSamenvoegen.push({ groep: g.id, sleutels: [...new Set(g.varianten.map((v) => v.sleutel))] }); continue; }
     const andere = k.keuze === 'andere naam';
-    const doel = andere ? (k.naam || g.canoniek) : g.canoniek;
+    const titel = andere ? (k.titel || k.naam || g.titel) : g.titel;
+    const maker = andere ? (k.maker ?? null) : g.maker;
+    // Weergave: bij "samenvoegen" het voorstel zoals het in de data staat.
+    const doel = { titel, maker, weergave: andere ? (maker ? titel + ' – ' + maker : titel) : g.canoniek };
     const bronnen = new Map();
     for (const v of g.varianten) {
       if (!andere && v.sleutel === g.canoniekeSleutel) continue;
@@ -268,7 +327,7 @@ document.getElementById('exporteer').addEventListener('click', () => {
       for (const t of v.theaters) if (!b.theaters.includes(t)) b.theaters.push(t);
     }
     for (const b of bronnen.values()) {
-      aliassen.push({ groep: g.id, keuze: k.keuze, bron: b.bron, bronTitels: b.titels, theaters: b.theaters, canoniek: doel, canoniekeSleutel: andere ? null : g.canoniekeSleutel, maker: g.maker });
+      aliassen.push({ groep: g.id, keuze: k.keuze, bron: b.bron, bronTitels: b.titels, theaters: b.theaters, canoniek: doel, canoniekeSleutel: andere ? null : g.canoniekeSleutel });
     }
   }
   const uit = { gemaakt: new Date().toISOString(), voorstel: DATA.gemaakt, bron: DATA.bron, beoordeeld: Object.keys(keuzes).length, aliassen, nietSamenvoegen };
@@ -288,4 +347,4 @@ teken();
 `;
 
 writeFileSync('debug/alias-afvinken.html', html);
-console.log(`debug/alias-afvinken.html: ${groepen.length} twijfelgroepen, ${groepen.filter((g) => g.items.length).length} met items van Marla/Erik.`);
+console.log(`debug/alias-afvinken.html: ${groepen.length} twijfelgroepen, ${groepen.filter((g) => g.items.length).length} met items van Marla/Erik, ${groepen.filter((g) => g.inLijst).length} al in de aliaslijst, ${groepen.filter((g) => g.gesplitst).length} voorstellen in titel en maker gesplitst (waarschuwing: ${groepen.filter((g) => g.volgordeTwijfel === 'andersom').length} elders andersom, ${groepen.filter((g) => g.volgordeTwijfel === 'onbevestigd').length} maker nergens bevestigd).`);
