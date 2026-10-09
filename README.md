@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **80** (64 ok, 2 leeg, 6 gepauzeerd, 8 onbekend)
-- Voorstellingen (titel per theater): **7573**
-- Speeldata: **10629**
-- Laatste refresh: **9 oktober 2026, 05:49** (Amsterdamse tijd)
+- Theaters: **80** (70 ok, 2 leeg, 6 gepauzeerd, 1 fout, 1 onbekend)
+- Voorstellingen (titel per theater): **8480**
+- Speeldata: **11754**
+- Laatste refresh: **9 oktober 2026, 12:53** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -324,7 +324,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Zaal 3 | Den Haag | ja | ok |
 | Theater Ins Blau | Leiden | ja | ok |
 | Theater Koningshof | Maassluis | deels | ok |
-| De Muze | Noordwijk | – | onbekend |
+| De Muze | Noordwijk | deels | ok |
 | Maas theater en dans | Rotterdam | ja | ok |
 | Theater Rotterdam (TR25 Schouwburg) | Rotterdam | ja | ok |
 | Theater Rotterdam (TR8 William Boothlaan) | Rotterdam | ja | ok |
@@ -370,11 +370,11 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Toonzaal Willem Twee | 's-Hertogenbosch | deels | ok |
 | Kattendans | Bergeijk | deels | ok |
 | Parktheater Eindhoven | Eindhoven | – | gepauzeerd sinds 2026-10-06 |
-| Het Speelhuis | Helmond | ja | ok |
+| Het Speelhuis | Helmond | onbekend | ok |
 | De Link | Tilburg | ja | ok |
 | Paradox | Tilburg | deels | ok |
 | S.M.E.T. | Tilburg | ja | ok |
-| Schouwburg Concertzaal | Tilburg | deels | ok |
+| Schouwburg Concertzaal | Tilburg | onbekend | ok |
 | Theater De Nieuwe Vorst | Tilburg | ja | ok |
 | Markant Theater Maashorst | Uden | deels | ok |
 | Theater de Hofnar | Valkenswaard | deels | ok |
@@ -383,7 +383,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| De Tamboer | Hoogeveen | – | onbekend |
+| De Tamboer | Hoogeveen | – | fout |
 
 **Gelderland** (7)
 
@@ -407,9 +407,9 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| De Reggehof | Goor | – | onbekend |
-| Schouwburg Hengelo | Hengelo | – | onbekend |
-| Rabo Theater De Meenthe | Steenwijk | – | onbekend |
-| Schouwburg Odeon | Zwolle | – | onbekend |
-| Theater de Spiegel | Zwolle | – | onbekend |
+| De Reggehof | Goor | onbekend | ok |
+| Schouwburg Hengelo | Hengelo | deels | ok |
+| Rabo Theater De Meenthe | Steenwijk | deels | ok |
+| Schouwburg Odeon | Zwolle | deels | ok |
+| Theater de Spiegel | Zwolle | deels | ok |
 <!-- AUTO:theaters:end -->
