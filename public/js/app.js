@@ -3907,8 +3907,17 @@ const korteDatum = (iso) => {
 
 // Sleutel van een item van een vriend in onze normalisatie (een vriend met
 // een oudere of nieuwere app kan andere sleutels hebben).
+// Ook een oude sleutel van een samengevoegde titel of een titel waar een
+// label als "(try out)" uit ging (titelBron → titel, okt 2026): die gaat
+// mee naar de nieuwe, net als bij je eigen watchlist.
+let samenvoegingVoor = { shows: null, mapping: new Map() };
+function huidigeSamenvoeging() {
+  if (samenvoegingVoor.shows !== state.shows) samenvoegingVoor = { shows: state.shows, mapping: samenvoegMapping(state.shows) };
+  return samenvoegingVoor.mapping;
+}
 function kopieSleutel(item, nv) {
-  return nv === NORMALISATIE_VERSIE ? item.sleutel : watchlistSleutel(item.titel);
+  const sleutel = nv === NORMALISATIE_VERSIE ? item.sleutel : watchlistSleutel(item.titel);
+  return huidigeSamenvoeging().get(sleutel) ?? sleutel;
 }
 
 // Eerstvolgende speeldatum in de agenda, of null.
