@@ -356,13 +356,13 @@
     "speelhuis": {
       "naam": "Het Speelhuis",
       "stad": "Helmond",
-      "podiumpas": true,
+      "podiumpas": null,
       "melding": "Podiumpas-voorwaarden nog niet bekend — vraag het theater."
     },
     "schouwburgconcertzaal": {
       "naam": "Schouwburg Concertzaal",
       "stad": "Tilburg",
-      "podiumpas": true,
+      "podiumpas": null,
       "melding": "Podiumpas-voorwaarden nog niet bekend — vraag het theater."
     },
     "willemtwee": {
@@ -477,8 +477,9 @@
     "tar": {
       "naam": "TAR",
       "stad": "Arnhem",
-      "podiumpas": true,
-      "melding": "Podiumpas-voorwaarden nog niet bekend — vraag het theater."
+      "podiumpas": null,
+      "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
+      "meldingLink": "https://tar.nl/agenda/"
     },
     "schaffelaar": {
       "naam": "Schaffelaartheater",
@@ -499,6 +500,81 @@
       "stad": "Arnhem",
       "podiumpas": true,
       "melding": "Gesloten wegens vernieuwing (heropening gepland in 2028). De voorstellingen staan bij Musis Arnhem."
+    },
+    "meenthe": {
+      "naam": "Rabo Theater De Meenthe",
+      "stad": "Steenwijk",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "online": true,
+        "toelichting": "Online, vanaf 30 dagen voor de voorstelling; ticket ophalen op de dag zelf met je Podiumpas. Niet bij regionale voorstellingen, de evenementenhal, het Schrijversfestival, Vrijdagavond Vestzakconcerten, Passie voor Bach en producties van derden."
+      },
+      "melding": "Geldt de Podiumpas ook voor concerten in de kerk? Nog niet bekend — vraag het theater."
+    },
+    "reggehof": {
+      "naam": "De Reggehof",
+      "stad": "Goor",
+      "podiumpas": null,
+      "melding": "Podiumpas-voorwaarden nog niet bekend — vraag het theater."
+    },
+    "hengelo": {
+      "naam": "Schouwburg Hengelo",
+      "stad": "Hengelo",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "online": true,
+        "telefoon": "074 255 67 89",
+        "email": "info@schouwburghengelo.nl",
+        "toelichting": "Online of via de theaterkassa (ma–vr 12–16 uur), vanaf 30 dagen voor de voorstelling; houd de barcode van je pas (PP$…) bij de hand. Alleen in de Middenzaal en Rabozaal, tickets tot €50, niet bij verhuur of kaartverkoop door derden."
+      },
+      "melding": "Podiumpas alleen tot €50 — controleer de prijs."
+    },
+    "odeon": {
+      "naam": "Schouwburg Odeon",
+      "stad": "Zwolle",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "online": true,
+        "toelichting": "Online bij de voorstelling, vanaf 30 dagen; kaart ophalen aan de kassa van de schouwburg (vanaf een uur tot een half uur voor aanvang). Niet bij gastprogrammering en rangen boven €50."
+      }
+    },
+    "despiegel": {
+      "naam": "Theater de Spiegel",
+      "stad": "Zwolle",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "online": true,
+        "toelichting": "Online bij de voorstelling, vanaf 30 dagen; kaart ophalen aan de kassa van het theater (vanaf een uur tot een half uur voor aanvang). Niet bij gastprogrammering en rangen boven €50."
+      }
+    },
+    "tamboer": {
+      "naam": "De Tamboer",
+      "stad": "Hoogeveen",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "online": true,
+        "toelichting": "Online: klik op \"bestel\", kies het ticket \"Podiumpas\" (€0), en vul je pasnummer in; neem de pas mee."
+      },
+      "melding": "Uitzonderingen voor de Podiumpas nog niet bekend — vraag het theater."
+    },
+    "demuze": {
+      "naam": "De Muze",
+      "stad": "Noordwijk",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "telefoon": "071 – 364 62 26",
+        "email": "kassa@demuze.nl",
+        "toelichting": "Nog niet online: mail je pasnummer en de voorstelling naar de kassa, bel, of kom langs; vanaf 30 dagen voor de voorstelling, tickets tot €50."
+      }
+    },
+    "grandtheatre": {
+      "naam": "Grand Theatre",
+      "stad": "Groningen",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "email": "kassa@grandtheatregroningen.nl",
+        "toelichting": "Alleen tickets tot €50 — de prijs controleren we niet automatisch. Alleen per mail (naam, adres, pasnummer, voorstelling), vanaf 30 dagen voor de voorstelling; het ticket komt per mail. Niet bij verhuur of voorstellingen waarvoor Grand Theatre de kaartverkoop niet doet."
+      }
     }
   }
 }

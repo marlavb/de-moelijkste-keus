@@ -1,0 +1,213 @@
+{
+ "theaterId": "hengelo",
+ "items": {
+  "https://www.schouwburghengelo.nl/cruise-control-muziektheatergroep-a-muse/12-11-2026-20-30": {
+   "opgehaaldOp": "2026-10-09T10:50:26.118Z",
+   "data": [
+    {
+     "regel": "Do 12 nov. 2026 - 20:30 uur - Middenzaal",
+     "prijs": "€ 18,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10097",
+     "showid": "10097"
+    },
+    {
+     "regel": "Vr 13 nov. 2026 - 20:30 uur - Middenzaal",
+     "prijs": "€ 18,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10098",
+     "showid": "10098"
+    },
+    {
+     "regel": "Za 14 nov. 2026 - 20:30 uur - Middenzaal",
+     "prijs": "€ 18,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10099",
+     "showid": "10099"
+    }
+   ]
+  },
+  "https://www.schouwburghengelo.nl/double-you-be-flat/30-01-2027-19-30": {
+   "opgehaaldOp": "2026-10-09T10:50:30.151Z",
+   "data": [
+    {
+     "regel": "Za 30 jan. 2027 - 19:30 uur - Middenzaal - ongeplaceerd",
+     "prijs": "€ 14,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/9836",
+     "showid": "9836"
+    },
+    {
+     "regel": "Zo 31 jan. 2027 - 14:30 uur - Middenzaal - ongeplaceerd",
+     "prijs": "€ 14,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/9837",
+     "showid": "9837"
+    },
+    {
+     "regel": "Zo 31 jan. 2027 - 19:30 uur - Middenzaal - ongeplaceerd",
+     "prijs": "€ 14,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/9838",
+     "showid": "9838"
+    }
+   ]
+  },
+  "https://www.schouwburghengelo.nl/gouden-jaren-twents-theater/01-04-2027-20-00": {
+   "opgehaaldOp": "2026-10-09T10:50:33.060Z",
+   "data": [
+    {
+     "regel": "Do 01 apr. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 21,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10084",
+     "showid": "10084"
+    },
+    {
+     "regel": "Vr 02 apr. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 21,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10085",
+     "showid": "10085"
+    },
+    {
+     "regel": "Za 03 apr. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 21,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10086",
+     "showid": "10086"
+    },
+    {
+     "regel": "Zo 04 apr. 2027 - 14:00 uur - Rabozaal",
+     "prijs": "€ 21,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10087",
+     "showid": "10087"
+    }
+   ]
+  },
+  "https://www.schouwburghengelo.nl/hengelo-proms27-federatie-amateurkunst-hengelo/09-01-2027-20-00": {
+   "opgehaaldOp": "2026-10-09T10:50:27.151Z",
+   "data": [
+    {
+     "regel": "Za 09 jan. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 14,00 - € 20,00",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10082",
+     "showid": "10082"
+    },
+    {
+     "regel": "Zo 10 jan. 2027 - 14:30 uur - Rabozaal",
+     "prijs": "€ 14,00 - € 20,00",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10083",
+     "showid": "10083"
+    }
+   ]
+  },
+  "https://www.schouwburghengelo.nl/ik-weet-het-eigenlijk-niet-reprise-fred-van-leer/18-01-2027-20-00": {
+   "opgehaaldOp": "2026-10-09T10:50:28.047Z",
+   "data": [
+    {
+     "regel": "Ma 18 jan. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 19,00 - € 37,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/9539",
+     "showid": "9539"
+    },
+    {
+     "regel": "Di 19 jan. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 19,00 - € 37,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/9540",
+     "showid": "9540"
+    }
+   ]
+  },
+  "https://www.schouwburghengelo.nl/the-illusionists-hans-klok-e.a./25-03-2027-20-00": {
+   "opgehaaldOp": "2026-10-09T10:50:32.020Z",
+   "data": [
+    {
+     "regel": "Do 25 mrt. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 51,00 - € 110,00",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10066",
+     "showid": "10066"
+    },
+    {
+     "regel": "Vr 26 mrt. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 51,00 - € 110,00",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10067",
+     "showid": "10067"
+    }
+   ]
+  },
+  "https://www.schouwburghengelo.nl/the-sunshine-boys-bert-visscher-en-martin-van-waardenberg/16-03-2027-20-00": {
+   "opgehaaldOp": "2026-10-09T10:50:31.086Z",
+   "data": [
+    {
+     "regel": "Di 16 mrt. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 27,50 - € 39,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/9898",
+     "showid": "9898"
+    },
+    {
+     "regel": "Wo 17 mrt. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 27,50 - € 39,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/9899",
+     "showid": "9899"
+    }
+   ]
+  },
+  "https://www.schouwburghengelo.nl/wat-n-spul-hengelose-revue/29-01-2027-20-00": {
+   "opgehaaldOp": "2026-10-09T10:50:29.111Z",
+   "data": [
+    {
+     "regel": "Vr 29 jan. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 21,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10089",
+     "showid": "10089"
+    },
+    {
+     "regel": "Za 30 jan. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 21,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10090",
+     "showid": "10090"
+    },
+    {
+     "regel": "Zo 31 jan. 2027 - 14:00 uur - Rabozaal",
+     "prijs": "€ 21,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10091",
+     "showid": "10091"
+    },
+    {
+     "regel": "Wo 03 feb. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 21,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10092",
+     "showid": "10092"
+    },
+    {
+     "regel": "Do 04 feb. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 21,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10093",
+     "showid": "10093"
+    },
+    {
+     "regel": "Vr 05 feb. 2027 - 20:00 uur - Rabozaal",
+     "prijs": "€ 21,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10094",
+     "showid": "10094"
+    }
+   ]
+  }
+ }
+}
