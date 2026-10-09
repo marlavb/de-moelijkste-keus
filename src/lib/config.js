@@ -1114,6 +1114,28 @@ export const THEATERS = [
     },
     budgetMinuten: 8,
   },
+  {
+    id: 'mimik',
+    naam: 'MIMIK',
+    stad: 'Deventer',
+    provincie: 'Overijssel',
+    baseUrl: 'https://www.mimik.nl',
+    agendaUrl: 'https://www.mimik.nl/agenda?categorie=theater',
+    // Bron: https://www.mimik.nl/podiumpas en
+    // https://www.mimik.nl/jouw-bezoek/theater (9 okt 2026): theater-
+    // voorstellingen, niet films; reserveren alleen via het formulier, vanaf
+    // 30 dagen; kaarten ophalen aan de kassa (60 tot 15 min voor aanvang).
+    // De agenda (/mvc/) is verboden in robots.txt: sitemap + productiepagina's
+    // via de detailcache (src/sites/mimik.js).
+    podiumpas: true,
+    podiumpasReserveren: {
+      formulier: 'https://www.mimik.nl/reservering-podiumpas-voorstelling',
+      email: 'podiumpas@mimik.nl',
+      toelichting: 'Alleen via het reserveringsformulier van MIMIK, vanaf 30 dagen voor de voorstelling; kaarten ophalen aan de kassa, van 60 tot 15 minuten voor aanvang. Alleen theatervoorstellingen, geen films.',
+    },
+    // Sitemap + hooguit 80 productiepagina's (1 s).
+    budgetMinuten: 6,
+  },
   // Groningen, Drenthe en De Muze (okt 2026; inventarisatie
   // debug/overijssel-groningen-inventarisatie.md). Namen letterlijk zoals op
   // podiumpas.nl/waar-te-besteden.
