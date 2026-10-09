@@ -160,7 +160,12 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   een theater artiest en voorstelling omgedraaid heeft of alleen de artiest
   noemt, staan per theater in `OMGEDRAAID` en `VOORSTELLING_BIJ_ARTIEST`
   (`titels.js`); watchlist en Gezien gaan dan mee naar de nieuwe titel
-  (`titelMapping.js`). Dezelfde productie (zelfde
+  (`titelMapping.js`). Dezelfde productie onder verschillende titels krijgt
+  via de aliaslijst (`config/aliassen.json`, `aliassen.js`; uit de
+  afvinkpagina) bij elk theater één titel, ook in behouden data; de titel van
+  daarvoor blijft als `titelVoorAlias`, zodat ook sleutels van na eerdere
+  titelrondes meegaan, en productie-samenvoegen kort zo'n titel niet weer in.
+  Dezelfde productie (zelfde
   watchlist-sleutel) krijgt bij elk theater dezelfde weergavetitel, hetzelfde
   genre en dezelfde maker: die van de meeste theaters
   (`weergaveMeerderheid.js`, `genreMeerderheid.js`, `makerMeerderheid.js`);

@@ -350,7 +350,8 @@ export function groepeerWatchlist(items) {
 /**
  * Oude sleutel → nieuwe sleutel uit de data: een voorstelling waarvan de
  * titel is samengevoegd tot één productie (productieSamenvoegen.js) heeft
- * zijn oude titel als titelBron. Alleen eenduidige doelen, en alleen als de
+ * zijn oude titel als titelBron (en een titel uit de aliaslijst zijn titel van
+ * daarvoor als titelVoorAlias). Alleen eenduidige doelen, en alleen als de
  * oude sleutel zelf niet meer in de data staat. Geldt ook voor sleutels uit
  * de oude TITEL_MAPPING (die "Greg Shapiro" naar twee sleutels liet gaan).
  */
@@ -360,11 +361,15 @@ export function samenvoegMapping(shows) {
   for (const s of shows ?? []) {
     const nieuw = watchlistSleutel(s.titel, s.theaterId);
     huidig.add(nieuw);
-    if (!s.titelBron) continue;
-    const oud = watchlistSleutel(s.titelBron, s.theaterId);
-    if (oud === nieuw) continue;
-    if (!doelen.has(oud)) doelen.set(oud, new Set());
-    doelen.get(oud).add(nieuw);
+    // titelVoorAlias: de titel vóór de aliaslijst (titels-ronde-2), voor
+    // sleutels die al naar de titel van na ronde 1 waren omgezet.
+    for (const bron of [s.titelBron, s.titelVoorAlias]) {
+      if (!bron) continue;
+      const oud = watchlistSleutel(bron, s.theaterId);
+      if (oud === nieuw) continue;
+      if (!doelen.has(oud)) doelen.set(oud, new Set());
+      doelen.get(oud).add(nieuw);
+    }
   }
   const mapping = new Map();
   for (const [oud, nieuw] of doelen) if (nieuw.size === 1 && !huidig.has(oud)) mapping.set(oud, [...nieuw][0]);

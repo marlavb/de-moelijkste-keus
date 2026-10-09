@@ -171,7 +171,8 @@ export function koppel(item, index) {
   // Samengevoegd tot één productie (productieSamenvoegen.js, okt 2026): de
   // titel werd korter, de oude staat nog als titelBron ("KING ME – 250 years
   // of Donald Trump – Greg Shapiro" → "KING ME – Greg Shapiro").
-  const viaBron = opDag.filter((s) => (s.tijd ?? '') === tijd && s.titelBron && ruimeTitel(s.titelBron) === titel);
+  // Ook de titel van vóór de aliaslijst (titelVoorAlias, titels-ronde-2).
+  const viaBron = opDag.filter((s) => (s.tijd ?? '') === tijd && [s.titelBron, s.titelVoorAlias].some((b) => b && ruimeTitel(b) === titel));
   if (viaBron.length === 1) return { show: viaBron[0], soort: 'exact', uitgebreid: true };
   const zelfdeTitel = opDag.filter((s) => ruimeTitel(s.titel) === titel);
   if (zelfdeTitel.length === 1) return { show: zelfdeTitel[0], soort: 'tijd' };

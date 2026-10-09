@@ -543,3 +543,11 @@ test('reeks uit de titel: "Herfststukjes: Het Koffertje 4+" (watchlist en tombst
   assert.deepEqual(r.profiel.watchlist.map((i) => i.sleutel), [nieuw]);
   assert.equal(pasSamenvoegingToe(r.profiel, samenvoegMapping(data)).gewijzigd, false);
 });
+
+// Aliaslijst (titels-ronde-2): een sleutel van na ronde 1 (titelVoorAlias)
+// gaat ook mee, naast die van de brontitel.
+test('samenvoegMapping: ook via titelVoorAlias', () => {
+  const data = [{ titel: 'Dekpunt – Jan Beuving', titelBron: 'Dekpunt (try-out) – Jan Beuving & Tom Dicke', titelVoorAlias: 'Dekpunt – Jan Beuving & Tom Dicke', theaterId: 'flint' }];
+  const m = samenvoegMapping(data);
+  assert.equal(m.get('dekpunt | jan beuving en tom dicke'), 'dekpunt | jan beuving');
+});

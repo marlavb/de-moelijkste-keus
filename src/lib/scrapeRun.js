@@ -14,6 +14,8 @@ import { pasProductieSamenvoegingToe } from './productieSamenvoegen.js';
 import { metEnDash, zonderStatusWoord, isGeenMaker, isSloganOfCast, makerZonderVoorvoegsel, draaiTitelEnMakerOm, labelsUitTitel, reeksUitTitel, statusUitTitel } from './titels.js';
 import { THEATERS } from './config.js';
 import { bronIndex, r1Keuze } from './makerOmdraaien.js';
+import { leesAliassen, pasAliasToe, doelSleutel } from './aliassen.js';
+import { watchlistSleutel } from '../../public/js/watchlist.js';
 import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
 
@@ -249,6 +251,8 @@ export async function runRefresh({
   // Per theater de reeksnamen vooraan de titel (config.js, reeksVoorvoegsels);
   // ook voor theaters die deze run niet meedoen.
   reeksVoorvoegsels = Object.fromEntries(THEATERS.filter((t) => t.reeksVoorvoegsels).map((t) => [t.id, t.reeksVoorvoegsels])),
+  // Aliaslijst (config/aliassen.json, aliassen.js).
+  aliassen = leesAliassen(),
 }) {
   const previousShows = await readJson(paths.previousShows, []);
   const previousStatus = await readJson(paths.status, { theaters: {} });
@@ -387,7 +391,7 @@ export async function runRefresh({
     // centraal op null gezet voor elke andere show, in plaats van dat elke
     // afzonderlijke scraper-module het zelf moet opnemen.
     // Eén scheidingsteken in titels en makers (" - " → " – ", zie titels.js).
-    .map(({ titelBron, genreBron, makerBron, beschrijvingBron, genres, ...s }) => {
+    .map(({ titelBron, titelVoorAlias, genreBron, makerBron, beschrijvingBron, genres, ...s }) => {
       // Behouden voorstellingen van de vorige run: eerst terug naar de
       // brontitel, het brongenre en de bronmaker, zodat ontdubbeling en
       // stemming steeds op de bron werken (genreBron/makerBron kunnen null
@@ -454,11 +458,29 @@ export async function runRefresh({
       // Reeksnaam vooraan ("Herfststukjes: …", config.js) op dezelfde manier
       // naar de beschrijving, ook met titelBron.
       const { tekst: zonderReeks, reeks } = reeksUitTitel(zonderStatus, reeksVoorvoegsels[s.theaterId]);
-      const { tekst: titel, labels } = labelsUitTitel(zonderReeks);
+      const { tekst: naRonde1, labels } = labelsUitTitel(zonderReeks);
+      // Aliaslijst (aliassen.js): dezelfde productie, één titel. De titel
+      // ervóór blijft als titelVoorAlias als hij anders was dan de brontitel:
+      // dan gaan ook sleutels van na ronde 1 mee (samenvoegMapping, gepland.js).
+      const a = pasAliasToe({ titel: naRonde1, maker, theaterId: s.theaterId }, aliassen);
+      const titel = a.titel;
+      if (a.alias && a.maker !== maker) {
+        r1Bron ??= s.maker ?? null;
+        maker = a.maker;
+      }
       const nieuw = labels.filter((l) => !new RegExp(`(^|[^\\p{L}])${l}([^\\p{L}]|$)`, 'iu').test(beschrijving ?? ''));
       if (reeks && !(beschrijving ?? '').toLowerCase().includes(reeks.toLowerCase())) nieuw.unshift(reeks);
       if (nieuw.length) beschrijving = [nieuw.join(' · '), beschrijving].filter(Boolean).join(' · ');
-      return { ...s, titel, prijs: s.prijs ?? null, maker, beschrijving, ...(titel !== metLabel ? { titelBron: metLabel } : {}), ...(r1Bron !== undefined ? { makerBron: r1Bron } : {}) };
+      return {
+        ...s,
+        titel,
+        prijs: s.prijs ?? null,
+        maker,
+        beschrijving,
+        ...(titel !== metLabel ? { titelBron: metLabel } : {}),
+        ...(titel !== naRonde1 && naRonde1 !== metLabel ? { titelVoorAlias: naRonde1 } : {}),
+        ...(r1Bron !== undefined ? { makerBron: r1Bron } : {}),
+      };
     });
   const purgedCount = mergedShows.length - verseShows.length;
   if (purgedCount > 0) {
@@ -474,7 +496,14 @@ export async function runRefresh({
   for (const v of tussenTheaters) log(`[${v.theaterId}] "${v.titel}" ${v.datum} ${v.tijd ?? ''} staat ook bij ${v.voorrang} — daar gelaten.`);
   // Dezelfde productie met een langere/kortere titel → één productie
   // (productieSamenvoegen.js); brontitel als titelBron.
-  const samen = pasProductieSamenvoegingToe(ontdubbeld);
+  // Een titel uit de aliaslijst is al de productie: die blijft zoals hij is
+  // (anders kort het samenvoegen "Wachtend op de dood – Maarten Heijmans &
+  // Xander Vrienten" weer in tot "Wachtend op de dood"); andere varianten
+  // mogen er wel in opgaan.
+  const vasteSleutels = new Set(Object.values(aliassen.aliassen ?? {}).map(doelSleutel));
+  const isVast = (s) => vasteSleutels.has(watchlistSleutel(s.titel, s.theaterId));
+  const samenAlles = pasProductieSamenvoegingToe(ontdubbeld);
+  const samen = { ...samenAlles, shows: samenAlles.shows.map((s, i) => (isVast(ontdubbeld[i]) ? ontdubbeld[i] : s)) };
   if (samen.titelUitBeschrijving.length) log(`${samen.titelUitBeschrijving.length} titel(s) "artiest" → "Voorstelling – Artiest" uit de beschrijving.`);
   const samenGewijzigd = samen.shows.filter((s, i) => s.titel !== ontdubbeld[i].titel).length;
   // Altijd loggen (ook 0), zodat nachten te vergelijken zijn (8 okt 2026).

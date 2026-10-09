@@ -55,9 +55,12 @@ function fakeDeps({ crawlDelayMs = 0 } = {}) {
   };
 }
 
-async function run({ paths, theaters, scrapers, deps = fakeDeps(), budgets, logs = [] }) {
+// Zonder aliaslijst, tenzij een test er een meegeeft (config/aliassen.json
+// verandert met elke import).
+async function run({ paths, theaters, scrapers, deps = fakeDeps(), budgets, logs = [], aliassen = { aliassen: {}, nietSamenvoegen: [] } }) {
   const annotations = [];
   const result = await runRefresh({
+    aliassen,
     theaters,
     scrapers,
     deps,
@@ -793,7 +796,7 @@ test('reeksnaam vooraan de titel (reeksVoorvoegsels) → beschrijving, met titel
     show('a', '2026-10-08', { titel: 'November Music: GoGo Penguin', beschrijving: 'Deel van November Music.' }),
     show('a', '2026-10-09', { titel: 'Herfststukjes', beschrijving: null }),
   ];
-  const draai = async (p, scrapers) => runRefresh({ theaters: [theater('a')], scrapers, deps: fakeDeps(), paths: p, budgets: { totalMs: 60_000, theaterMs: () => 30_000 }, minDate: MIN_DATE, now: () => NOW, log: () => {}, annotate: () => {}, reeksVoorvoegsels });
+  const draai = async (p, scrapers) => runRefresh({ theaters: [theater('a')], scrapers, deps: fakeDeps(), paths: p, budgets: { totalMs: 60_000, theaterMs: () => 30_000 }, minDate: MIN_DATE, now: () => NOW, log: () => {}, annotate: () => {}, reeksVoorvoegsels, aliassen: { aliassen: {} } });
   await draai(paths, { a: scraper });
   const written = JSON.parse(await readFile(paths.showsOutputs[1], 'utf-8'));
   const kort = (r) => r.map((s) => [s.titel, s.beschrijving, s.titelBron]);
@@ -826,5 +829,37 @@ test('statuswoord als los titeldeel (R5): weg en status gezet als die onbekend i
   ]);
   const paths2 = await setup({ previousShows: written });
   const { written: weer } = await run({ paths: paths2, theaters: [theater('a')], scrapers: { a: failing } });
+  assert.deepEqual(kort(weer), kort(written));
+});
+
+test('aliaslijst: titel van de productie, titelVoorAlias bewaard, maker niet dubbel; samenvoegen kort hem niet in; stabiel', async () => {
+  const aliassen = {
+    aliassen: {
+      // Bron-sleutels zoals de nabewerking ze maakt.
+      'dekpunt | jan beuving en tom dicke': { titel: 'Dekpunt – Jan Beuving', maker: 'Jan Beuving', groep: 'dekpunt', regel: 'keuze' },
+      'wachtend op de dood': { titel: 'Wachtend op de dood – Maarten Heijmans & Xander Vrienten', maker: 'Maarten Heijmans & Xander Vrienten', groep: 'w', regel: 'keuze' },
+      katwijk: { titel: 'KATWIJK', maker: 'Compagnie Red Yellow & Blue', groep: 'k', regel: 'keuze' },
+    },
+    nietSamenvoegen: [],
+  };
+  const paths = await setup();
+  const scraper = async () => [
+    show('a', '2026-10-07', { id: 'a-1', titel: 'Dekpunt (try-out) – Jan Beuving & Tom Dicke', maker: null }),
+    show('a', '2026-10-08', { id: 'a-2', titel: 'Wachtend op de dood', maker: 'Maarten Heijmans en Xander Vrienten' }),
+    // Omgedraaid: de voorstellingsnaam in het makerveld gaat weg.
+    show('a', '2026-10-09', { id: 'a-3', titel: 'Wachtend op de dood (reprise)', maker: 'Wachtend op de dood' }),
+    show('a', '2026-10-10', { id: 'a-4', titel: 'Katwijk', maker: null }),
+  ];
+  const { written } = await run({ paths, theaters: [theater('a')], scrapers: { a: scraper }, aliassen });
+  const kort = (r) => r.map((s) => [s.titel, s.maker, s.titelBron, s.titelVoorAlias]);
+  assert.deepEqual(kort(written), [
+    ['Dekpunt – Jan Beuving', null, 'Dekpunt (try-out) – Jan Beuving & Tom Dicke', 'Dekpunt – Jan Beuving & Tom Dicke'],
+    ['Wachtend op de dood – Maarten Heijmans & Xander Vrienten', null, 'Wachtend op de dood', undefined],
+    ['Wachtend op de dood – Maarten Heijmans & Xander Vrienten', null, 'Wachtend op de dood (reprise)', 'Wachtend op de dood'],
+    // Een ingevulde maker buiten de titel vult een leeg makerveld.
+    ['KATWIJK', 'Compagnie Red Yellow & Blue', 'Katwijk', undefined],
+  ]);
+  const paths2 = await setup({ previousShows: written });
+  const { written: weer } = await run({ paths: paths2, theaters: [theater('a')], scrapers: { a: failing }, aliassen });
   assert.deepEqual(kort(weer), kort(written));
 });
