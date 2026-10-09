@@ -53,7 +53,7 @@ test('De Reggehof: lijst + genrefilters, zitten/staan samengevoegd, cabaret als 
   );
   assert.equal(per('KNA').beschikbaarheid, 'onbekend', 'geen_webverkoop');
   assert.match(per('Grip – Rayen Panday').reserverenUrl, /^https:\/\/www\.reggehof\.nl\/bestel\/\d+$/);
-  assert.ok(shows.every((s) => s.podiumpas === true));
+  assert.ok(shows.every((s) => s.podiumpas === null), 'Podiumpas nog niet bekend');
   assert.equal(shows.some((s) => /sportgala|kunst van leven/i.test(s.titel)), false);
   assert.ok(logs.some((l) => /zitten\/staan samengevoegd \(4\)/.test(l)), logs.join('\n'));
   assert.equal(logs.some((l) => /WARN/.test(l)), false, logs.join('\n'));

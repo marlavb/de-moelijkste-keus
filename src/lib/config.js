@@ -1048,9 +1048,9 @@ export const THEATERS = [
     agendaUrl: 'https://www.reggehof.nl/programma',
     // Bron: https://podiumpas.nl/waar-te-besteden (8 okt 2026). Op de eigen
     // site staat niets over de Podiumpas (menu, /theater en een detailpagina
-    // doorzocht, 8 okt 2026). Geen uitzonderingen verzonnen: alles true, met
-    // een melding (zoals TAR).
-    podiumpas: true,
+    // doorzocht, 8 okt 2026). Geen uitzonderingen verzonnen: podiumpas null
+    // = nog niet bekend (de app toont "Podiumpas?"), met een melding.
+    podiumpas: null,
     melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
   },
   {
