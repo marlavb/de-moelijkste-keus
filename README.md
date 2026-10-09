@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **72** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout)
+- Theaters: **72** (64 ok, 2 leeg, 6 gepauzeerd)
 - Voorstellingen (titel per theater): **7573**
 - Speeldata: **10629**
 - Laatste refresh: **9 oktober 2026, 05:49** (Amsterdamse tijd)
@@ -341,7 +341,7 @@ voorstelling, zoals in de app: `ja` (alle), `deels` (een deel), `nee` (geen) of
 | Huis Oostpool | Arnhem | ja | ok |
 | Musis Arnhem | Arnhem | deels | ok |
 | Stadstheater Arnhem | Arnhem | – | leeg |
-| TAR | Arnhem | – | fout |
+| TAR | Arnhem | – | gepauzeerd sinds 2026-10-08 |
 | Schaffelaartheater | Barneveld | deels | ok |
 | Schouwburg Agnietenhof | Tiel | – | gepauzeerd sinds 2026-10-07 |
 <!-- AUTO:theaters:end -->

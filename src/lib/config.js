@@ -961,9 +961,16 @@ export const THEATERS = [
     // geeft 404; voorwaarden en manier van reserveren dus onbekend. Geen
     // uitzonderingen verzonnen: alles true, met een melding (zoals Het Speelhuis).
     podiumpas: true,
-    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+    // Bij het opheffen van de pauze weer terugzetten:
+    // melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+    // (Een eigen melding gaat vóór de standaardmelding voor gepauzeerde
+    // theaters in theatersJson.js; zolang TAR gepauzeerd is, die laatste.)
     // Agendapagina + ~5 keer het lijst-endpoint.
     budgetMinuten: 2,
+    // DIAGNOSE 8 en 9 okt 2026: /agenda/ gaf HTTP 202 via
+    // https://tar.nl/.well-known/sgcaptcha/ (SiteGround-captcha), twee
+    // nachten op rij. Niet omzeilen (CLAUDE.md).
+    gepauzeerd: { sinds: '2026-10-08', reden: 'SiteGround-captcha sinds 8 okt' },
   },
   {
     id: 'schaffelaar',
