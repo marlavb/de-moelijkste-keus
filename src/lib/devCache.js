@@ -95,3 +95,33 @@ export async function metDevCache(url, sleutel, ophalen, { dir = path.resolve('d
   await writeFile(file, JSON.stringify(data), 'utf-8');
   return data;
 }
+
+/**
+ * robots.txt in dezelfde lokale cache (10 okt 2026: een "offline" run haalde
+ * robots.txt nog echt op, want dat gaat niet via de browser). Bestand
+ * debug/cache/<host>/robots-<hash>.txt. Online (SCRAPE_CACHE=1) telt alleen
+ * een cache van minder dan een dag; offline elke leeftijd (een oude
+ * robots.txt is behoudender dan geen). Geeft de tekst of null.
+ */
+export function robotsCacheBestand(dir, url) {
+  const u = new URL(url);
+  const hash = createHash('sha1').update(u.toString()).digest('hex').slice(0, 16);
+  return path.join(dir, u.hostname, `robots-${hash}.txt`);
+}
+
+export async function leesRobotsUitCache(url, { dir = path.resolve('debug/cache'), offline = false, now = Date.now } = {}) {
+  const file = robotsCacheBestand(dir, url);
+  try {
+    const info = await stat(file);
+    if (offline || now() - info.mtimeMs < MAX_AGE_MS) return await readFile(file, 'utf-8');
+  } catch {
+    // niet in de cache
+  }
+  return null;
+}
+
+export async function bewaarRobotsInCache(url, tekst, { dir = path.resolve('debug/cache') } = {}) {
+  const file = robotsCacheBestand(dir, url);
+  await mkdir(path.dirname(file), { recursive: true });
+  await writeFile(file, tekst, 'utf-8');
+}

@@ -52,7 +52,9 @@ Houd het testverkeer daarom zo klein mogelijk:
   komen dan uit `debug/cache/` (lokaal, niet in git); elke pagina wordt hooguit
   één keer per dag echt opgehaald. In CI wordt de cache altijd genegeerd.
   Een herhaalde run die niets nieuws mag ophalen: `SCRAPE_CACHE=1
-  SCRAPE_OFFLINE=1` (pagina's buiten de cache worden afgebroken). Let op bij
+  SCRAPE_OFFLINE=1` (pagina's buiten de cache worden afgebroken; robots.txt
+  komt ook uit de cache en wordt nooit echt opgehaald: ontbreekt hij, dan
+  "geen regels" met een waarschuwing in de log). Let op bij
   scrapers met een grens per run (Musis, Schaffelaar): een tweede run haalt
   anders de pagina's achter die grens echt op.
 - Hooguit één volledige testrun (zonder cache) per theater per dag.
