@@ -83,12 +83,27 @@ function sleep(ms) {
 // hebben kunnen zien, en dus niet weten of er een Crawl-delay bedoeld was:
 // - /robots.txt geeft wél een 2xx, maar via een redirect ergens anders
 //   (bv. een inlogpagina achter een CMS-routeprobleem, bij De Krakeling);
-// - een netwerkfout of redirectlus, ook na de retry.
+// - een redirectlus, ook na de retry.
 // Dat is iets anders dan een bevestigde 404 (zoals bij Amstelveen), waar we
 // wél zeker weten dat er geen regels zijn — die blijft op 0ms staan. Hier
 // nemen we liever het zekere voor het onzekere, in lijn met de crawl-delay
 // die de meeste theaters op dit platform hanteren.
 const UNKNOWN_ROBOTS_CRAWL_DELAY_MS = 5000;
+
+// Hoe lang één poging op robots.txt mag duren; daarna telt hij als time-out.
+const ROBOTS_TIMEOUT_MS = 20_000;
+
+/**
+ * robots.txt is onbereikbaar: een 5xx, een time-out of een netwerkfout, ook
+ * na de retry. Volgens RFC 9309 (§2.3.1.4) betekent dat "alles verboden" —
+ * anders dan een 4xx, die "geen regels" betekent. De run slaat het theater
+ * die nacht over en houdt de vorige data (terugval, met waarschuwing). Bij
+ * een netwerkfout staat de oorspronkelijke fout in `cause`, zodat de
+ * herpoging bij een DNS-storing (scrapeRun.js) blijft werken.
+ */
+export class RobotsOnbereikbaarError extends Error {
+  name = 'RobotsOnbereikbaarError';
+}
 
 function cookiePairs(res) {
   const setCookies = res.headers.getSetCookie?.() ?? [];
@@ -137,19 +152,29 @@ export async function loadRobotsRules(baseUrl, userAgent, userAgentToken, { sign
   let groups = [];
   let unknownReason = null;
 
-  // Eén retry op een netwerkfout (niet op een 4xx/5xx-statuscode): een
+  // Eén retry op een netwerkfout, time-out of 5xx (niet op een 4xx): een
   // ontbrekend robots.txt-bestand interpreteren we als "alles toegestaan",
   // maar een verbindingsfout is geen betrouwbaar signaal daarvoor — die kan
   // net zo goed een voorbijgaande hapering zijn (in de praktijk gezien: een
   // connect-timeout naar één specifieke site die bij een tweede poging
-  // meteen weer normaal verbond).
+  // meteen weer normaal verbond). Blijft het mis, dan is robots.txt
+  // onbereikbaar en gooien we RobotsOnbereikbaarError.
+  let onbereikbaar = null;
   for (let attempt = 1; attempt <= ROBOTS_FETCH_ATTEMPTS; attempt++) {
+    if (attempt > 1) await sleep(ROBOTS_FETCH_RETRY_DELAY_MS);
+    onbereikbaar = null;
     try {
+      const pogingSignal = signal ? AbortSignal.any([signal, AbortSignal.timeout(ROBOTS_TIMEOUT_MS)]) : AbortSignal.timeout(ROBOTS_TIMEOUT_MS);
       const { res, finalUrl } = await fetchFollowingCookies(robotsUrl, {
         headers: { 'User-Agent': userAgent },
-        signal,
+        signal: pogingSignal,
         fetchImpl,
       });
+      if (res.status >= 500) {
+        await res.text?.().catch(() => {});
+        onbereikbaar = new RobotsOnbereikbaarError(`robots.txt niet bereikbaar (HTTP ${res.status})`);
+        continue;
+      }
       if (res.ok) {
         if (new URL(finalUrl).pathname === '/robots.txt') {
           groups = parseRobotsText(await res.text());
@@ -163,13 +188,21 @@ export async function loadRobotsRules(baseUrl, userAgent, userAgentToken, { sign
       break;
     } catch (err) {
       if (signal?.aborted) throw signal.reason;
-      if (attempt === ROBOTS_FETCH_ATTEMPTS) {
-        unknownReason = err.message;
-        break;
+      if (/^redirectlus/.test(err.message)) {
+        // De server antwoordt wél, maar we komen niet bij robots.txt uit:
+        // behoudend, niet onbereikbaar.
+        if (attempt === ROBOTS_FETCH_ATTEMPTS) unknownReason = err.message;
+        continue;
       }
-      await sleep(ROBOTS_FETCH_RETRY_DELAY_MS);
+      // De foutcode (ENOTFOUND, ECONNRESET, …) in de melding, zodat
+      // isNetwerkfout() in scrapeRun.js de herpoging nog herkent.
+      const timeout = err.name === 'TimeoutError' || err.cause?.name === 'TimeoutError';
+      const code = err.code ?? err.cause?.code;
+      const reden = timeout ? `time-out na ${ROBOTS_TIMEOUT_MS / 1000} s` : code ? `${err.message}: ${code}` : err.message;
+      onbereikbaar = new RobotsOnbereikbaarError(`robots.txt niet bereikbaar (${reden})`, { cause: err });
     }
   }
+  if (onbereikbaar) throw onbereikbaar;
 
   const group = selectGroup(groups, userAgentToken);
   const crawlDelayMs = group?.crawlDelay
