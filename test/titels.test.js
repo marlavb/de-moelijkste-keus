@@ -321,3 +321,17 @@ test('reeksUitTitel: reeksnaam met dubbele punt vooraan weg (R4, 9 okt 2026)', a
   // Andere theaters (zonder lijst): niets.
   assert.deepEqual(reeksUitTitel('Herfststukjes: Het Koffertje 4+'), { tekst: 'Herfststukjes: Het Koffertje 4+', reeks: null });
 });
+
+test('statusUitTitel: alleen een los statusdeel, nooit de hele titel (R5, 9 okt 2026)', async () => {
+  const { statusUitTitel } = await import('../src/lib/titels.js');
+  const r = (t) => statusUitTitel(t);
+  assert.deepEqual(r('Gelukkig heb je mij nog – Richard Groenendijk – UITVERKOCHT'), { tekst: 'Gelukkig heb je mij nog – Richard Groenendijk', status: 'uitverkocht' });
+  assert.deepEqual(r('Kiem – Laatste kaarten!'), { tekst: 'Kiem', status: 'beschikbaar' });
+  assert.deepEqual(r('Kiem (sold out)'), { tekst: 'Kiem', status: 'uitverkocht' });
+  assert.deepEqual(r("Geannuleerd | O'DREAMS"), { tekst: "O'DREAMS", status: 'afgelast' });
+  assert.deepEqual(r('Wacht – verplaatst'), { tekst: 'Wacht', status: 'verplaatst' });
+  // "Laatste Kaarten" van Collectief BLAUWDRUK is een voorstellingsnaam.
+  for (const t of ['Laatste Kaarten', 'LAATSTE KAARTEN', 'Laatste kaarten...', 'Uitverkocht', 'Laatste kaarten', 'De uitverkochte zaal – Jan']) {
+    assert.deepEqual(r(t), { tekst: t, status: null }, t);
+  }
+});

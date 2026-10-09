@@ -796,3 +796,24 @@ test('reeksnaam vooraan de titel (reeksVoorvoegsels) → beschrijving, met titel
   const weer = JSON.parse(await readFile(paths2.showsOutputs[1], 'utf-8'));
   assert.deepEqual(kort(weer), kort(written));
 });
+
+test('statuswoord als los titeldeel (R5): weg en status gezet als die onbekend is; tegenspraak blijft; "Laatste Kaarten" blijft', async () => {
+  const paths = await setup();
+  const scraper = async () => [
+    show('a', '2026-10-05', { id: 'a-1', titel: 'Gelukkig heb je mij nog - Richard Groenendijk - UITVERKOCHT', beschikbaarheid: 'uitverkocht' }),
+    show('a', '2026-10-06', { id: 'a-2', titel: 'Kiem – Uitverkocht', beschikbaarheid: 'onbekend' }),
+    show('a', '2026-10-07', { id: 'a-3', titel: 'Wacht – uitverkocht', beschikbaarheid: 'beschikbaar' }),
+    show('a', '2026-10-08', { id: 'a-4', titel: 'Laatste Kaarten', maker: 'Collectief BLAUWDRUK', beschikbaarheid: 'beschikbaar' }),
+  ];
+  const { written } = await run({ paths, theaters: [theater('a')], scrapers: { a: scraper } });
+  const kort = (r) => r.map((s) => [s.titel, s.beschikbaarheid, s.titelBron]);
+  assert.deepEqual(kort(written), [
+    ['Gelukkig heb je mij nog – Richard Groenendijk', 'uitverkocht', 'Gelukkig heb je mij nog – Richard Groenendijk – UITVERKOCHT'],
+    ['Kiem', 'uitverkocht', 'Kiem – Uitverkocht'],
+    ['Wacht – uitverkocht', 'beschikbaar', undefined],
+    ['Laatste Kaarten', 'beschikbaar', undefined],
+  ]);
+  const paths2 = await setup({ previousShows: written });
+  const { written: weer } = await run({ paths: paths2, theaters: [theater('a')], scrapers: { a: failing } });
+  assert.deepEqual(kort(weer), kort(written));
+});

@@ -11,7 +11,7 @@ import { pasMeerderheidToe } from './weergaveMeerderheid.js';
 import { pasGenreMeerderheidToe } from './genreMeerderheid.js';
 import { pasMakerMeerderheidToe } from './makerMeerderheid.js';
 import { pasProductieSamenvoegingToe } from './productieSamenvoegen.js';
-import { metEnDash, zonderStatusWoord, isGeenMaker, isSloganOfCast, makerZonderVoorvoegsel, draaiTitelEnMakerOm, labelsUitTitel, reeksUitTitel } from './titels.js';
+import { metEnDash, zonderStatusWoord, isGeenMaker, isSloganOfCast, makerZonderVoorvoegsel, draaiTitelEnMakerOm, labelsUitTitel, reeksUitTitel, statusUitTitel } from './titels.js';
 import { THEATERS } from './config.js';
 import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
@@ -422,7 +422,14 @@ export async function runRefresh({
       const metLabel = kaal(metEnDash(bron));
       // Reeksnaam vooraan ("Herfststukjes: …", config.js) op dezelfde manier
       // naar de beschrijving, ook met titelBron.
-      const { tekst: zonderReeks, reeks } = reeksUitTitel(metLabel, reeksVoorvoegsels[s.theaterId]);
+      // Statuswoord als los titeldeel ("… – UITVERKOCHT", titels.js): weg uit
+      // de titel als het theater die status ook geeft of nog niets ("onbekend":
+      // dan wordt het de status). Spreekt het theater de titel tegen, dan
+      // blijft alles zoals het is.
+      const st = statusUitTitel(metLabel);
+      const zonderStatus = st.status && [st.status, 'onbekend', null, undefined].includes(s.beschikbaarheid) ? st.tekst : metLabel;
+      if (zonderStatus !== metLabel) s.beschikbaarheid = st.status;
+      const { tekst: zonderReeks, reeks } = reeksUitTitel(zonderStatus, reeksVoorvoegsels[s.theaterId]);
       const { tekst: titel, labels } = labelsUitTitel(zonderReeks);
       const nieuw = labels.filter((l) => !new RegExp(`(^|[^\\p{L}])${l}([^\\p{L}]|$)`, 'iu').test(beschrijving ?? ''));
       if (reeks && !(beschrijving ?? '').toLowerCase().includes(reeks.toLowerCase())) nieuw.unshift(reeks);

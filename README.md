@@ -147,7 +147,10 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   zodat oude watchlist-, Gezien- en plansleutels en die van vrienden
   meegaan); een reeksnaam vooraan de titel ("Herfststukjes: …", "November
   Music: …", per theater in `config.js` als `reeksVoorvoegsels`) gaat op
-  dezelfde manier naar de beschrijving; een paar titels waar
+  dezelfde manier naar de beschrijving; een statuswoord als los titeldeel
+  ("… – UITVERKOCHT", "… (laatste kaarten)") gaat uit de titel en wordt de
+  status als het theater nog geen status gaf (een titel die alleen uit zo'n
+  woord bestaat, zoals de voorstelling "Laatste Kaarten", blijft); een paar titels waar
   een theater artiest en voorstelling omgedraaid heeft of alleen de artiest
   noemt, staan per theater in `OMGEDRAAID` en `VOORSTELLING_BIJ_ARTIEST`
   (`titels.js`); watchlist en Gezien gaan dan mee naar de nieuwe titel

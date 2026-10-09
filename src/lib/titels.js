@@ -321,6 +321,38 @@ export function zonderStatusWoord(tekst) {
   return kaal || tekst;
 }
 
+// Statuswoorden over de kaartverkoop als los titeldeel (titels-ronde-1, R5,
+// 9 okt 2026): "Gelukkig heb je mij nog – Richard Groenendijk – UITVERKOCHT"
+// (Stadsgehoorzaal). Alleen als los deel naast een echte titel: "Laatste
+// Kaarten" van Collectief BLAUWDRUK (KS, Concertzaal, Musis) is de naam van
+// de voorstelling en blijft staan.
+const VERKOOPSTATUS = [
+  [/^(?:uitverkocht|sold[ -]?out)$/i, 'uitverkocht'],
+  [/^(?:laatste (?:kaarten|plaatsen|tickets)|bijna uitverkocht|nog enkele kaarten)$/i, 'beschikbaar'],
+  [/^wachtlijst$/i, 'wachtlijst'],
+  [/^(?:geannuleerd|afgelast|gecancel?d|cancel?led)$/i, 'afgelast'],
+  [/^verplaatst$/i, 'verplaatst'],
+];
+const verkoopstatus = (deel) => VERKOOPSTATUS.find(([re]) => re.test(deel.replace(/[.!…]+$/, '').trim()))?.[1] ?? null;
+
+/**
+ * Een statusdeel uit de titel: als laatste of eerste deel (" – ", " - ", " | ")
+ * of tussen haakjes aan het eind. Geeft { tekst, status } (status null als er
+ * niets weg is). Blijft er geen titel over, dan niets.
+ */
+export function statusUitTitel(tekst) {
+  const t = String(tekst ?? '');
+  const haakjes = t.match(/^(.*\S)\s*\(([^()]+)\)$/);
+  if (haakjes && verkoopstatus(haakjes[2])) return { tekst: haakjes[1].trim(), status: verkoopstatus(haakjes[2]) };
+  const delen = t.split(/\s+[-–|]\s+/);
+  if (delen.length < 2) return { tekst: t, status: null };
+  const laatste = verkoopstatus(delen.at(-1));
+  if (laatste) return { tekst: delen.slice(0, -1).join(SCHEIDER), status: laatste };
+  const eerste = verkoopstatus(delen[0]);
+  if (eerste) return { tekst: delen.slice(1).join(SCHEIDER), status: eerste };
+  return { tekst: t, status: null };
+}
+
 /**
  * Titel en maker uit twee regels van de bron ("kop" en "ondertitel"), als de
  * HTML-structuur van een theater (per genre) een vaste volgorde heeft:
