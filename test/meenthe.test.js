@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 
-import { scrapeMeenthe } from '../src/sites/meenthe.js';
+import { scrapeMeenthe, verwerkMeenthe } from '../src/sites/meenthe.js';
 import { amsterdamUitUnix, xcomBeschikbaarheid, xcomToonStatus } from '../src/lib/xcom.js';
 import { THEATERS } from '../src/lib/config.js';
 
@@ -90,4 +90,12 @@ test('X-com: status → beschikbaarheid, en de getoonde status zoals het site-sc
   assert.equal(xcomToonStatus('reserveren', '', null), 'reserveren');
   assert.equal(xcomToonStatus('uitverkocht', '', 'wachtlijst'), 'wachtlijst');
   assert.equal(xcomToonStatus('reserveren', '', 'geannuleerd'), 'geannuleerd');
+});
+
+test('De Meenthe: een vriendenlidmaatschap is geen voorstelling', () => {
+  const logs = [];
+  const item = (title) => ({ ...fixture.raw[0], title, subtitle: '', itix_from_raw: 1806616740 });
+  const shows = verwerkMeenthe([item('Word Vriend van De Meenthe'), item('Word Vriend van het Filmhuis 26/27'), item('Vriendenconcert')], { theater, log: (m) => logs.push(m) });
+  assert.deepEqual(shows.map((s) => s.titel), ['Vriendenconcert']);
+  assert.ok(logs.includes('weggelaten: vriendenlidmaatschap (2)'), logs.join('\n'));
 });

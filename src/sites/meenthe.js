@@ -24,9 +24,10 @@ const GEEN_PAS_REEKS = /vrijdagavond vestzakconcert|schrijversfestival|passie vo
 const EIGEN_ZAAL = /^(eleq theaterzaal|dyka vestzaktheater|evenementenhal|1\.7 intermezzo|de meenthe|foyer)$/i;
 
 // Geen voorstelling: een passe-partout voor een hele serie (de concerten
-// staan ook los in de agenda), en evenementen in de hal die geen
+// staan ook los in de agenda), een vriendenlidmaatschap ("Word Vriend van
+// De Meenthe", als item om 23:59), en evenementen in de hal die geen
 // voorstelling zijn (darts, Lego-expo, banenfestival, bierproeverij; 9 okt 2026).
-const WEGLATEN = /passe[- ]?partout|hele serie/i;
+const WEGLATEN = /passe[- ]?partout|hele serie|^word vriend\b/i;
 const WEGLATEN_EVENEMENT = /\b(darts|mega bricks|werkfestival|bierentocht)\b/i;
 
 // Genre "evenement" (Live in de Hal, festivals, feesten): geen reguliere
@@ -74,7 +75,7 @@ export function verwerkMeenthe(items, { theater, log = () => {}, opgehaaldOp = n
     const onder = metEnDash(String(it.subtitle ?? '').trim()) || null;
     if (!titel) continue;
     if (WEGLATEN.test(`${titel} ${onder ?? ''}`)) {
-      tel(weg, 'passe-partout');
+      tel(weg, /vriend/i.test(titel) ? 'vriendenlidmaatschap' : 'passe-partout');
       continue;
     }
     if (EVENEMENT.test(String(it.genre_title ?? '').trim()) && WEGLATEN_EVENEMENT.test(`${titel} ${onder ?? ''}`)) {
