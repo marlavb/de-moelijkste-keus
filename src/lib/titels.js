@@ -110,25 +110,30 @@ const isGezelschapsdeel = (d) => GEZELSCHAP.test(d) || /^[A-Z]{3,}$/.test(d.trim
 // Willem de Voogd", "Anke van 't Hof").
 const NAAMWOORD = new Set(['van', 'de', 'der', 'den', 'het', 'ten', 'ter', 'te', 'du', 'la', 'le', 'da', 'di', 'von', 'el', 'en', 'y', 'dos', 'das', 'do', 'e', 'des', 'del', 'of', 'and', 'the', 'und', 'met', 'o.l.v.', 'i.s.m.', 'feat.', 'ft.', 'x', 'vs', 'vs.', 'by', 'door', 'with', 'plus', 'zu', 'al', 'bin', 'ibn', "'t", '’t']);
 
-export function isSloganOfCast(tekst) {
+/** Welke R1-regel raakt: 'officieel', 'musical', 'cast', 'uitroep', 'zin' of null. */
+export function sloganSoort(tekst) {
   const t = String(tekst ?? '').trim();
-  if (!t) return false;
+  if (!t) return null;
   const buitenHaakjes = t.replace(/\([^)]*\)/g, ' ').replace(/\s+/g, ' ').trim();
-  if (/\boffici[eë]le\b/i.test(t)) return true;
-  if (/\p{L}-?musical(?!\p{L})/iu.test(t) || /\bmusical\s*!?$/i.test(buitenHaakjes) || /^(?:een|de|het)\s.*\bmusical\b/i.test(t)) return true;
-  if (/(?:^|\s)e\.\s?a\.?(?:\s|$)/i.test(t)) return true;
-  if (/\sals\s+\p{Lu}/u.test(t)) return true;
-  if (/!/.test(buitenHaakjes) && buitenHaakjes.split(' ').length >= 2 && !GEZELSCHAP_NAAM.test(buitenHaakjes)) return true;
+  if (/\boffici[eë]le\b/i.test(t)) return 'officieel';
+  if (/\p{L}-?musical(?!\p{L})/iu.test(t) || /\bmusical\s*!?$/i.test(buitenHaakjes) || /^(?:een|de|het)\s.*\bmusical\b/i.test(t)) return 'musical';
+  if (/(?:^|\s)e\.\s?a\.?(?:\s|$)/i.test(t)) return 'cast';
+  if (/\sals\s+\p{Lu}/u.test(t)) return 'cast';
+  if (/!/.test(buitenHaakjes) && buitenHaakjes.split(' ').length >= 2 && !GEZELSCHAP_NAAM.test(buitenHaakjes)) return 'uitroep';
   const delen = buitenHaakjes.split(',');
-  if (delen.length >= 3 && !t.includes('/') && delen.filter(isGezelschapsdeel).length < 2) return true;
+  if (delen.length >= 3 && !t.includes('/') && delen.filter(isGezelschapsdeel).length < 2) return 'cast';
   // Een zin: vijf woorden of meer, waarvan drie met een kleine letter die in
   // een naam niet voorkomen ("’s Werelds beroemdste detective in een nieuw
   // moordmysterie", "Ik heb je lief, drie generaties lang"). Zonder deze
   // regel won zo'n slogan na het weghalen van de cast de makermeerderheid.
   const woorden = buitenHaakjes.split(' ');
   const klein = woorden.filter((w) => /^\p{Ll}/u.test(w) && !NAAMWOORD.has(w.toLowerCase()));
-  if (woorden.length >= 5 && klein.length >= 3 && !GEZELSCHAP_NAAM.test(buitenHaakjes)) return true;
-  return false;
+  if (woorden.length >= 5 && klein.length >= 3 && !GEZELSCHAP_NAAM.test(buitenHaakjes)) return 'zin';
+  return null;
+}
+
+export function isSloganOfCast(tekst) {
+  return sloganSoort(tekst) !== null;
 }
 
 // Titel en maker omgedraaid bij de bron (okt 2026): de artiest staat als

@@ -13,6 +13,7 @@ import { pasMakerMeerderheidToe } from './makerMeerderheid.js';
 import { pasProductieSamenvoegingToe } from './productieSamenvoegen.js';
 import { metEnDash, zonderStatusWoord, isGeenMaker, isSloganOfCast, makerZonderVoorvoegsel, draaiTitelEnMakerOm, labelsUitTitel, reeksUitTitel, statusUitTitel } from './titels.js';
 import { THEATERS } from './config.js';
+import { bronIndex, r1Keuze } from './makerOmdraaien.js';
 import { isVervallen } from './beschikbaarheid.js';
 import path from 'node:path';
 
@@ -368,6 +369,9 @@ export async function runRefresh({
   // terug) moet niet voor altijd in onze eigen data blijven staan. Geldt ook
   // voor teruggevallen data, zodat die vanzelf slinkt als een scraper
   // wekenlang stuk blijft.
+  // Makers en titels van alle theaters (bron), voor R1 bij omgedraaide titels
+  // (makerOmdraaien.js).
+  const r1Index = bronIndex(mergedShows.map((s) => ({ theaterId: s.theaterId, titel: s.titelBron ?? s.titel, maker: s.makerBron !== undefined ? s.makerBron : s.maker })));
   const uitersteDatum = `${Number(minDate.slice(0, 4)) + MAX_JAREN_VOORUIT}${minDate.slice(4)}`;
   const teVerPerTheater = {};
   const verseShows = mergedShows
@@ -402,16 +406,6 @@ export async function runRefresh({
       // "reprise" gaat naar de beschrijving; "door X" / "o.l.v. X" wordt X.
       let maker = kaal(metEnDash(s.maker ?? null));
       let beschrijving = s.beschrijving ?? null;
-      if (maker && isGeenMaker(maker)) {
-        beschrijving = beschrijving ?? maker;
-        maker = null;
-      } else if (maker && isSloganOfCast(maker)) {
-        // Slogan of cast (titels.js): vóór de beschrijving, tenzij die het al heeft.
-        if (!(beschrijving ?? '').toLowerCase().includes(maker.toLowerCase())) beschrijving = [maker, beschrijving].filter(Boolean).join(' · ');
-        maker = null;
-      } else if (maker) {
-        maker = makerZonderVoorvoegsel(maker);
-      }
       // "(première)", "(try-out)", "(reprise)" achter (een deel van) de titel
       // naar de beschrijving: anders matcht de voorstelling niet met andere
       // theaters en speeldata (titels.js, labelsUitTitel; okt 2026).
@@ -420,21 +414,51 @@ export async function runRefresh({
       // in watchlist.js; gepland.js zoekt ook via titelBron), en werkt de
       // volgende run weer vanaf de brontitel.
       const metLabel = kaal(metEnDash(bron));
-      // Reeksnaam vooraan ("Herfststukjes: …", config.js) op dezelfde manier
-      // naar de beschrijving, ook met titelBron.
+      let voorstelling = metLabel;
+      // Bronmaker bewaren als R1 hem verandert, zodat de volgende run (en de
+      // makermeerderheid) weer vanaf de bron werkt.
+      let r1Bron;
+      const vooraan = (tekst) => {
+        if (tekst && !(beschrijving ?? '').toLowerCase().includes(tekst.toLowerCase())) beschrijving = [tekst, beschrijving].filter(Boolean).join(' · ');
+      };
+      if (maker && isGeenMaker(maker)) {
+        beschrijving = beschrijving ?? maker;
+        maker = null;
+      } else if (maker && isSloganOfCast(maker)) {
+        // Slogan of cast (titels.js) naar de beschrijving; is het eigenlijk de
+        // voorstellingsnaam bij een omgedraaide titel, dan omdraaien of laten
+        // (makerOmdraaien.js).
+        const k = r1Keuze({ titel: metLabel, maker, theaterId: s.theaterId }, r1Index);
+        if (k.keuze === 'omdraaien') {
+          r1Bron = s.maker ?? null;
+          voorstelling = k.titel;
+          vooraan(k.rest);
+          maker = null;
+        } else if (k.keuze === 'beschrijving') {
+          r1Bron = s.maker ?? null;
+          vooraan(maker);
+          maker = null;
+        } else {
+          maker = makerZonderVoorvoegsel(maker);
+        }
+      } else if (maker) {
+        maker = makerZonderVoorvoegsel(maker);
+      }
       // Statuswoord als los titeldeel ("… – UITVERKOCHT", titels.js): weg uit
       // de titel als het theater die status ook geeft of nog niets ("onbekend":
       // dan wordt het de status). Spreekt het theater de titel tegen, dan
       // blijft alles zoals het is.
-      const st = statusUitTitel(metLabel);
-      const zonderStatus = st.status && [st.status, 'onbekend', null, undefined].includes(s.beschikbaarheid) ? st.tekst : metLabel;
-      if (zonderStatus !== metLabel) s.beschikbaarheid = st.status;
+      const st = statusUitTitel(voorstelling);
+      const zonderStatus = st.status && [st.status, 'onbekend', null, undefined].includes(s.beschikbaarheid) ? st.tekst : voorstelling;
+      if (zonderStatus !== voorstelling) s.beschikbaarheid = st.status;
+      // Reeksnaam vooraan ("Herfststukjes: …", config.js) op dezelfde manier
+      // naar de beschrijving, ook met titelBron.
       const { tekst: zonderReeks, reeks } = reeksUitTitel(zonderStatus, reeksVoorvoegsels[s.theaterId]);
       const { tekst: titel, labels } = labelsUitTitel(zonderReeks);
       const nieuw = labels.filter((l) => !new RegExp(`(^|[^\\p{L}])${l}([^\\p{L}]|$)`, 'iu').test(beschrijving ?? ''));
       if (reeks && !(beschrijving ?? '').toLowerCase().includes(reeks.toLowerCase())) nieuw.unshift(reeks);
       if (nieuw.length) beschrijving = [nieuw.join(' · '), beschrijving].filter(Boolean).join(' · ');
-      return { ...s, titel, prijs: s.prijs ?? null, maker, beschrijving, ...(titel !== metLabel ? { titelBron: metLabel } : {}) };
+      return { ...s, titel, prijs: s.prijs ?? null, maker, beschrijving, ...(titel !== metLabel ? { titelBron: metLabel } : {}), ...(r1Bron !== undefined ? { makerBron: r1Bron } : {}) };
     });
   const purgedCount = mergedShows.length - verseShows.length;
   if (purgedCount > 0) {

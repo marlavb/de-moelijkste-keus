@@ -753,22 +753,33 @@ test('log: aantal samengevoegde producties en speeldata, ook bij 0 (8 okt 2026)'
   assert.ok(leeg.some((l) => /^Productie-samenvoeging: 0 productie\(s\), 0 speeldata/.test(l)), leeg.join('\n'));
 });
 
-test('slogan of cast als maker → vóór de beschrijving (R1); niet dubbel; stabiel over twee runs', async () => {
+test('slogan of cast als maker (R1): cast naar de beschrijving, omgedraaide titel omdraaien, anders laten; stabiel over twee runs', async () => {
   const paths = await setup();
-  const scraper = async () => [
-    show('a', '2026-10-07', { titel: 'De Nog Grotere Slijmmusical', maker: 'Slijm is terug!', beschrijving: 'Groter dan ooit.' }),
-    show('a', '2026-10-08', { titel: 'Sherlock Holmes', maker: 'Mark Rietman, Ferdi Stofmeel e.a.', beschrijving: null }),
-    show('a', '2026-10-09', { titel: 'Best of Ireland', maker: 'De grootste hits uit Ierland!', beschrijving: 'De grootste hits uit Ierland! En meer.' }),
-    show('a', '2026-10-10', { titel: 'Het Zesde Zintuig', maker: 'Van Vleuten en Van Muiswinkel', beschrijving: null }),
-  ];
-  const { written } = await run({ paths, theaters: [theater('a')], scrapers: { a: scraper } });
-  const kort = (r) => r.map((s) => [s.titel, s.maker, s.beschrijving]);
+  const scrapers = {
+    a: async () => [
+      show('a', '2026-10-07', { id: 'a-1', titel: 'Johnny de Mol', maker: 'Goed dat jij bestaat!', beschrijving: null }),
+      show('a', '2026-10-08', { id: 'a-2', titel: 'Sherlock Holmes', maker: 'Mark Rietman, Ferdi Stofmeel e.a.', beschrijving: 'Moordmysterie.' }),
+      show('a', '2026-10-09', { id: 'a-3', titel: 'Steven Kazàn', maker: 'Hoe dan!', beschrijving: null }),
+      show('a', '2026-10-10', { id: 'a-4', titel: 'Het Zesde Zintuig', maker: 'Van Vleuten en Van Muiswinkel', beschrijving: null }),
+      show('a', '2026-10-11', { id: 'a-5', titel: 'Juf Braaksel', maker: 'Mark Rietman e.a.', beschrijving: 'Mark Rietman e.a. spelen.' }),
+    ],
+    // Theater b: de juiste volgorde van Johnny de Mol (titel = voorstelling).
+    b: async () => [show('b', '2026-10-07', { id: 'b-1', titel: 'Goed dat jij bestaat!', maker: 'Johnny de Mol' })],
+  };
+  const { written } = await run({ paths, theaters: [theater('a'), theater('b')], scrapers });
+  const kort = (r) => r.filter((s) => s.theaterId === 'a').map((s) => [s.titel, s.maker, s.beschrijving]);
   assert.deepEqual(kort(written), [
-    ['De Nog Grotere Slijmmusical', null, 'Slijm is terug! · Groter dan ooit.'],
-    ['Sherlock Holmes', null, 'Mark Rietman, Ferdi Stofmeel e.a.'],
-    ['Best of Ireland', null, 'De grootste hits uit Ierland! En meer.'],
+    ['Goed dat jij bestaat! – Johnny de Mol', null, null],
+    ['Sherlock Holmes', null, 'Mark Rietman, Ferdi Stofmeel e.a. · Moordmysterie.'],
+    // Geen bewijs dat "Hoe dan!" een slogan is: blijft zoals vóór R1.
+    ['Steven Kazàn', 'Hoe dan!', null],
     ['Het Zesde Zintuig', 'Van Vleuten en Van Muiswinkel', null],
+    ['Juf Braaksel', null, 'Mark Rietman e.a. spelen.'],
   ]);
+  const johnny = written.find((s) => s.id === 'a-1');
+  assert.equal(johnny.titelBron, 'Johnny de Mol');
+  assert.equal(johnny.makerBron, 'Goed dat jij bestaat!');
+  // Volgende run, theater a faalt: vanaf de bron weer hetzelfde.
   const paths2 = await setup({ previousShows: written });
   const { written: weer } = await run({ paths: paths2, theaters: [theater('a')], scrapers: { a: failing } });
   assert.deepEqual(kort(weer), kort(written));
