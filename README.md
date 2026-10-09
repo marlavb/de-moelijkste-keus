@@ -13,9 +13,9 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
 
 <!-- AUTO:aantallen:start -->
 - Theaters: **72** (64 ok, 2 leeg, 5 gepauzeerd, 1 fout)
-- Voorstellingen (titel per theater): **7485**
-- Speeldata: **10537**
-- Laatste refresh: **8 oktober 2026, 05:50** (Amsterdamse tijd)
+- Voorstellingen (titel per theater): **7573**
+- Speeldata: **10629**
+- Laatste refresh: **9 oktober 2026, 05:49** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
