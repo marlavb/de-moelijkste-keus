@@ -36,7 +36,7 @@
 
 import { watchlistSleutel, ruimeTitel, SCHEIDING } from '../../public/js/watchlist.js';
 import { normalizeTitle } from '../../public/js/productions.js';
-import { isGeenMaker } from './titels.js';
+import { isGeenMaker, isSloganOfCast } from './titels.js';
 
 /** Maker zonder schrijfwijze: hoofdletters, leestekens, "&" = "en". */
 export function makerSleutel(maker) {
@@ -185,7 +185,11 @@ export function pasMakerMeerderheidToe(shows, { beslissingen = null, conflicten 
     if (!groepen.has(sleutel)) groepen.set(sleutel, new Map());
     tel(aantal, sleutel);
     const maker = typeof s.maker === 'string' ? s.maker.trim() : '';
-    if (!maker) continue;
+    // Een slogan of cast die als maker is blijven staan (R1, makerOmdraaien.js:
+    // mogelijk de voorstellingsnaam) stemt niet mee, zodat hij zich niet over
+    // de andere theaters verspreidt (zoals vóór R1 kan een echte maker hem
+    // wel vervangen).
+    if (!maker || isSloganOfCast(maker)) continue;
     const perTheater = groepen.get(sleutel);
     if (!perTheater.has(s.theaterId)) perTheater.set(s.theaterId, new Map());
     tel(perTheater.get(s.theaterId), maker);
@@ -238,7 +242,8 @@ export function pasMakerMeerderheidToe(shows, { beslissingen = null, conflicten 
     const maker = gekozen.get(watchlistSleutel(s.titel, s.theaterId));
     if (!maker || maker === s.maker) return s;
     gewijzigd++;
-    return { ...s, maker, makerBron: s.maker ?? null };
+    // Een makerBron die er al is (R1 in scrapeRun) blijft de bron.
+    return { ...s, maker, makerBron: s.makerBron !== undefined ? s.makerBron : (s.maker ?? null) };
   });
   return { shows: uit, gewijzigd };
 }

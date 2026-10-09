@@ -85,7 +85,8 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   detailpagina's: bij Bellevue ~25 verzoeken (~2 min) in plaats van ~205.
   Orpheus (Apeldoorn) en Agnietenhof (Tiel) werken net zo; bij Agnietenhof
   krijgt alleen een kaart met meer speeldata (knop "Speeldata", zonder
-  paneel) een detailpagina, en films vallen weg.
+  paneel) een detailpagina, en films vallen weg. Bij Aan de Slinger
+  (Houten) vallen films (tag "Film", "Vroege Film: …") ook weg.
   Van Huis Oostpool (Arnhem) nemen we uit de agenda van Theater Oostpool
   alleen de speeldata in het eigen huis; de tournee staat al bij de andere
   theaters.
@@ -138,11 +139,24 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   (`dedupe.js`). Titels: waar een theater per genre een vaste volgorde van
   maker en titel heeft, wordt dat "Titel – Maker"; content warnings,
   "met o.a. …", leeftijden en ondertitels als "reprise", "20 jaar …" of
-"In Concert" worden nooit maker maar beschrijving; "(try-out)", "(reprise)",
+"In Concert" worden nooit maker maar beschrijving; een cast in het
+  makerveld ook niet ("Mark Rietman e.a.", "Soy Kroon als …", een rij van
+  drie namen of meer): die gaat vóór de beschrijving. Een slogan als maker
+  ("… !", "… de Musical", een hele zin; `isSloganOfCast`) is soms de
+  voorstellingsnaam bij een omgedraaide titel: staat de titel elders als
+  maker en de "maker" elders als titel, dan wordt het "Voorstelling – Maker"
+  ("Johnny de Mol" / "Goed dat jij bestaat!" → "Goed dat jij bestaat! –
+  Johnny de Mol"); anders blijft hij staan, maar telt hij niet mee in de
+  makermeerderheid (`makerOmdraaien.js`); "(try-out)", "(reprise)",
   "(première)" en "(voorpremière)" gaan overal uit de titel naar de
   beschrijving, bij elk theater (de titel mét label blijft als `titelBron`,
   zodat oude watchlist-, Gezien- en plansleutels en die van vrienden
-  meegaan); een paar titels waar
+  meegaan); een reeksnaam vooraan de titel ("Herfststukjes: …", "November
+  Music: …", per theater in `config.js` als `reeksVoorvoegsels`) gaat op
+  dezelfde manier naar de beschrijving; een statuswoord als los titeldeel
+  ("… – UITVERKOCHT", "… (laatste kaarten)") gaat uit de titel en wordt de
+  status als het theater nog geen status gaf (een titel die alleen uit zo'n
+  woord bestaat, zoals de voorstelling "Laatste Kaarten", blijft); een paar titels waar
   een theater artiest en voorstelling omgedraaid heeft of alleen de artiest
   noemt, staan per theater in `OMGEDRAAID` en `VOORSTELLING_BIJ_ARTIEST`
   (`titels.js`); watchlist en Gezien gaan dan mee naar de nieuwe titel

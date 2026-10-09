@@ -54,6 +54,17 @@ const SCHAFFELAAR_RESERVEREN = {
   toelichting: 'Uitsluitend per mail, vanaf 30 dagen voor de voorstelling; 1 ticket per pas, af te halen aan de avondkassa (een uur voor aanvang open). Niet bij uitverkochte voorstellingen.',
 };
 
+// `reeksVoorvoegsels` (titels-ronde-1, 9 okt 2026): reeks-, festival- of
+// vakantienamen die een theater vóór de titel zet ("Herfststukjes: Het
+// Koffertje 4+", "November Music: GoGo Penguin"). De run haalt "Reeks: "
+// vooraan de titel weg en zet de reeksnaam vóór de beschrijving
+// (scrapeRun.js, reeksUitTitel in titels.js); de titel mét reeks blijft als
+// `titelBron`, zodat watchlist-, Gezien- en plansleutels meegaan. Alleen met
+// dubbele punt en alleen als er daarna nog een titel staat ("CELLOFEST" en
+// "Lunchconcert" zonder meer blijven staan). Gekozen uit de agenda's van
+// 9 okt 2026; bewust niet: "De Suriname-trilogie" (deel van de titel),
+// "Workshop:" (hoort weggelaten, niet ingekort), "Double bill", "Candlelight".
+//
 // `provincie` (sinds 30 sep 2026): voor een latere provinciefilter; nog niet
 // in de UI. Bij elk nieuw theater invullen.
 //
@@ -167,6 +178,7 @@ export const THEATERS = [
     provincie: 'Utrecht',
     baseUrl: 'https://stadsschouwburg-utrecht.nl',
     agendaUrl: 'https://stadsschouwburg-utrecht.nl/agenda',
+    reeksVoorvoegsels: ['Het KIN'],
     podiumpas: true,
   },
   {
@@ -176,6 +188,7 @@ export const THEATERS = [
     provincie: 'Utrecht',
     baseUrl: 'https://www.theaterkikker.nl',
     agendaUrl: 'https://www.theaterkikker.nl/agenda',
+    reeksVoorvoegsels: ['Herfststukjes', 'Lente-Uitjes', 'Kikker Stelt Voor', 'Kikker op Locatie', 'Storytelling Tuesday', 'Winterkost'],
     podiumpas: true,
   },
   {
@@ -194,6 +207,7 @@ export const THEATERS = [
     provincie: 'Noord-Holland',
     baseUrl: 'https://www.podiummozaiek.nl',
     agendaUrl: 'https://www.podiummozaiek.nl/programma/agenda',
+    reeksVoorvoegsels: ['BECOMING'],
     podiumpas: true,
   },
   {
@@ -203,6 +217,7 @@ export const THEATERS = [
     provincie: 'Noord-Holland',
     baseUrl: 'https://www.muziekgebouw.nl',
     agendaUrl: 'https://www.muziekgebouw.nl/nl/agenda',
+    reeksVoorvoegsels: ['CELLOFEST', 'ADE'],
     podiumpas: true,
   },
   {
@@ -262,6 +277,7 @@ export const THEATERS = [
     provincie: 'Noord-Holland',
     baseUrl: 'https://www.bijlmerparktheater.nl',
     agendaUrl: 'https://www.bijlmerparktheater.nl/agenda',
+    reeksVoorvoegsels: ['Familiezondag', 'Herfstvakantie', 'Kerstvakantie', 'Meivakantie', 'Voorjaarsvakantie', 'Bijlmer Klassiek'],
     podiumpas: true,
   },
   {
@@ -314,6 +330,7 @@ export const THEATERS = [
     provincie: 'Noord-Holland',
     baseUrl: 'https://plein-theater.nl',
     agendaUrl: 'https://plein-theater.nl/agenda',
+    reeksVoorvoegsels: ['Nieuwe Noten Amsterdam', 'ADE X Plein Theater'],
     podiumpas: false,
   },
   {
@@ -373,6 +390,7 @@ export const THEATERS = [
     provincie: 'Utrecht',
     baseUrl: 'https://flint.nl',
     agendaUrl: 'https://flint.nl/agenda/',
+    reeksVoorvoegsels: ['Herfststukjes', 'Lente-Uitjes'],
     podiumpas: true,
     // Bron: https://flint.nl/programma/kortingen-acties/podiumpas/ (27 sep 2026)
     podiumpasReserveren: {
@@ -405,6 +423,7 @@ export const THEATERS = [
     provincie: 'Flevoland',
     baseUrl: 'https://kunstlinie.nl',
     agendaUrl: 'https://kunstlinie.nl/programma/',
+    reeksVoorvoegsels: ['Goede Rede Klassiek', 'Kunstlinie x 2turvenhoog'],
     podiumpas: true,
   },
   // Zuid-Holland. Namen letterlijk zoals op podiumpas.nl/waar-te-besteden.
@@ -467,6 +486,7 @@ export const THEATERS = [
     provincie: 'Zuid-Holland',
     baseUrl: 'https://www.theaterkoningshof.nl',
     agendaUrl: 'https://www.theaterkoningshof.nl/agenda',
+    reeksVoorvoegsels: ['Ladies Night'],
     podiumpas: true,
   },
   {
@@ -715,6 +735,7 @@ export const THEATERS = [
     provincie: 'Noord-Brabant',
     baseUrl: 'https://www.schouwburgconcertzaaltilburg.nl',
     agendaUrl: 'https://www.schouwburgconcertzaaltilburg.nl/nl/agenda',
+    reeksVoorvoegsels: ['Reeks Filosofische Gesprekken'],
     // Bron: https://podiumpas.nl/waar-te-besteden (6 okt 2026); de eigen site
     // noemt de pas niet (6 okt 2026). Podiumpas bij alle voorstellingen
     // behalve gratis (zie src/sites/schouwburgconcertzaal.js); voorwaarden
@@ -729,6 +750,7 @@ export const THEATERS = [
     provincie: 'Noord-Brabant',
     baseUrl: 'https://www.willem-twee.nl',
     agendaUrl: 'https://www.willem-twee.nl/agenda/toonzaal',
+    reeksVoorvoegsels: ['PULS', 'Dutch Classical Talent', 'Lunchconcert', 'Oude Muziek'],
     // Per concert: de tag "Podiumpas" op de site (zie src/sites/willemtwee.js).
     podiumpas: true,
     // Bron: https://www.willem-twee.nl/podiumpas (6 okt 2026).
@@ -744,6 +766,7 @@ export const THEATERS = [
     provincie: 'Noord-Brabant',
     baseUrl: 'https://www.theateraandeparade.nl',
     agendaUrl: 'https://www.theateraandeparade.nl/nl/programma',
+    reeksVoorvoegsels: ['November Music', 'Stadsgasten', 'Opera & Brunch'],
     // Per speeldatum: het prijstype "Podiumpas" in de eigen data van de site
     // (zie src/sites/theateraandeparade.js).
     podiumpas: true,
@@ -1089,6 +1112,7 @@ export const THEATERS = [
     provincie: 'Overijssel',
     baseUrl: 'https://www.zwolsetheaters.nl',
     agendaUrl: 'https://www.zwolsetheaters.nl/programma',
+    reeksVoorvoegsels: ['Prentenboekjesfestival'],
     // Bron: https://www.zwolsetheaters.nl/voordeel/podiumpas (8 okt 2026):
     // alles behalve gastprogrammering, tot €50 (per voorstelling in
     // src/sites/zwolse.js).

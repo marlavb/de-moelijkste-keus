@@ -284,3 +284,54 @@ test('labelsUitTitel: alle labels, ook vóór " – " en meer in één titel (ok
   assert.deepEqual(labelsUitTitel('Grip – Rayen Panday'), { tekst: 'Grip – Rayen Panday', labels: [] });
   assert.deepEqual(labelsUitTitel('(reprise)'), { tekst: '(reprise)', labels: [] });
 });
+
+test('slogan of cast nooit als maker (R1, 9 okt 2026), met de valse treffers uit de echte data', async () => {
+  const { isSloganOfCast, isGeenMaker } = await import('../src/lib/titels.js');
+  for (const t of [
+    'Slijm is terug!', 'Jij HOORT in het theater!', 'Goed dat jij bestaat! (try out)', 'GRRR... ik ben een boze dino! (4+)',
+    'De enige echte officiële Queen musical!', 'Aladdin de Musical (4+)', 'de Frans Halsema-musical', 'Big Benny, de kienjermusical',
+    'Een spannende musical voor de hele familie', 'Mark Rietman, Ferdi Stofmeel e.a.', 'Pieter Hulst, Willem Voogd, e.a.',
+    'Soy Kroon als Frans Halsema', 'Hilke Bierman, Jeannine La Rose, Nicole Berendsen',
+    'Ivan Karizna, Steven Isserlis, Irene Duval + Nederlands Kamerorkest',
+    '’s Werelds beroemdste detective in een nieuw moordmysterie', 'Ik heb je lief, drie generaties lang',
+  ]) assert.equal(isSloganOfCast(t), true, t);
+  for (const t of [
+    'Van Vleuten en Van Muiswinkel', 'Hanneke Drenth en Dianne Liesker', 'Ensemble Gamut!', 'LUDIQUE!', 'Romani!',
+    'Bart Krieger (Kunst Toko BAM!)/Theater Bellevue', 'Theater Rotterdam, ZO! Gospel Choir, Glen Faria & Priscilla Vaudelle',
+    'Nationaal Jeugd Musical Theater', 'Stichting Musical Stella Duce', 'Scherzi Musicali', 'Theater Als Het Ware',
+    'Chapter 58 (Antti Uimonen, Flore Muuse, and Sofia Garcia Miramon)', 'Holland Opera, Duda Paiva Company, New European Ensemble',
+    'Iduna Paalman, Zephyr Brüggen / Bellevue Producties, Het Nationale Theater', 'NITE, Club Guy & Roni, Het Muziek, HIIIT',
+    'Anke van \'t Hof in coproductie met Het NUT', 'Maas theater en dans', 'Pieter Hulst en Willem de Voogd',
+    'Mannen komen van Mars, vrouwen van Venus', 'Toneelgroep Maastricht', 'Kor Hoebe',
+  ]) assert.equal(isSloganOfCast(t), false, t);
+  // Een ondertitel met "!" blijft voor de titelconventie gewoon bruikbaar.
+  assert.equal(isGeenMaker('Hoe dan!'), false);
+});
+
+test('reeksUitTitel: reeksnaam met dubbele punt vooraan weg (R4, 9 okt 2026)', async () => {
+  const { reeksUitTitel } = await import('../src/lib/titels.js');
+  const v = ['Herfststukjes', 'Voorjaarsvakantie', 'Opera & Brunch', 'CELLOFEST', 'Lunchconcert'];
+  assert.deepEqual(reeksUitTitel('Herfststukjes: Het Koffertje 4+', v), { tekst: 'Het Koffertje 4+', reeks: 'Herfststukjes' });
+  assert.deepEqual(reeksUitTitel('Voorjaarsvakantie:Het Grooote genieten (4+)', v), { tekst: 'Het Grooote genieten (4+)', reeks: 'Voorjaarsvakantie' });
+  assert.deepEqual(reeksUitTitel('Opera & Brunch: Heroines', v), { tekst: 'Heroines', reeks: 'Opera & Brunch' });
+  // Zonder titel erachter, zonder dubbele punt of niet vooraan: blijft.
+  for (const t of ['CELLOFEST', 'Lunchconcert', 'lunchconcert', 'CELLOFEST: ', 'Herfststukjes voor peuters', 'Het Koffertje – Herfststukjes: x']) {
+    assert.deepEqual(reeksUitTitel(t, v), { tekst: t, reeks: null }, t);
+  }
+  // Andere theaters (zonder lijst): niets.
+  assert.deepEqual(reeksUitTitel('Herfststukjes: Het Koffertje 4+'), { tekst: 'Herfststukjes: Het Koffertje 4+', reeks: null });
+});
+
+test('statusUitTitel: alleen een los statusdeel, nooit de hele titel (R5, 9 okt 2026)', async () => {
+  const { statusUitTitel } = await import('../src/lib/titels.js');
+  const r = (t) => statusUitTitel(t);
+  assert.deepEqual(r('Gelukkig heb je mij nog – Richard Groenendijk – UITVERKOCHT'), { tekst: 'Gelukkig heb je mij nog – Richard Groenendijk', status: 'uitverkocht' });
+  assert.deepEqual(r('Kiem – Laatste kaarten!'), { tekst: 'Kiem', status: 'beschikbaar' });
+  assert.deepEqual(r('Kiem (sold out)'), { tekst: 'Kiem', status: 'uitverkocht' });
+  assert.deepEqual(r("Geannuleerd | O'DREAMS"), { tekst: "O'DREAMS", status: 'afgelast' });
+  assert.deepEqual(r('Wacht – verplaatst'), { tekst: 'Wacht', status: 'verplaatst' });
+  // "Laatste Kaarten" van Collectief BLAUWDRUK is een voorstellingsnaam.
+  for (const t of ['Laatste Kaarten', 'LAATSTE KAARTEN', 'Laatste kaarten...', 'Uitverkocht', 'Laatste kaarten', 'De uitverkochte zaal – Jan']) {
+    assert.deepEqual(r(t), { tekst: t, status: null }, t);
+  }
+});

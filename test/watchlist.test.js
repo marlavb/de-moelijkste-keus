@@ -530,3 +530,16 @@ test('label uit de titel waar de sleutel wél verandert ("(try out)"): via titel
   const tweede = laadWatchlist({ opgeslagen: eerst.profiel, samenvoeging: samenvoegMapping(shows) });
   assert.equal(tweede.gewijzigd, false, 'idempotent');
 });
+
+// Reeksnaam uit de titel (titels-ronde-1, R4, 9 okt 2026): het item met de
+// oude titel gaat via titelBron mee naar de nieuwe sleutel.
+test('reeks uit de titel: "Herfststukjes: Het Koffertje 4+" (watchlist en tombstone) → "Het Koffertje 4+"', () => {
+  const data = [{ titel: 'Het Koffertje 4+', titelBron: 'Herfststukjes: Het Koffertje 4+', theaterId: 'theaterkikker' }];
+  const oud = watchlistSleutel('Herfststukjes: Het Koffertje 4+', 'theaterkikker');
+  const nieuw = watchlistSleutel('Het Koffertje 4+', 'theaterkikker');
+  assert.notEqual(oud, nieuw);
+  assert.equal(samenvoegMapping(data).get(oud), nieuw);
+  const r = pasSamenvoegingToe({ watchlist: [{ sleutel: oud, titel: 'Herfststukjes: Het Koffertje 4+', theaterId: 'theaterkikker', toegevoegdOp: 1 }], watchlistVerwijderd: [] }, samenvoegMapping(data));
+  assert.deepEqual(r.profiel.watchlist.map((i) => i.sleutel), [nieuw]);
+  assert.equal(pasSamenvoegingToe(r.profiel, samenvoegMapping(data)).gewijzigd, false);
+});

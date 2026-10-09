@@ -78,6 +78,64 @@ export function isGeenMaker(tekst) {
   return Boolean(t) && GEEN_MAKER.some((re) => re.test(t));
 }
 
+// Slogan of cast in het makerveld (titels-ronde-1, R1, 9 okt 2026): "Slijm is
+// terug!", "De enige echte officiële Queen musical!", "Aladdin de Musical",
+// "Mark Rietman e.a.", "Soy Kroon als Frans Halsema", "Hilke Bierman, Jeannine
+// La Rose, Nicole Berendsen", "’s Werelds beroemdste detective in een nieuw
+// moordmysterie". Alleen voor het makerveld (scrapeRun): niet in
+// GEEN_MAKER, want een ondertitel met "!" is in een cabarettitel vaak de
+// voorstellingsnaam ("Hoe dan! – Steven Kazàn", pasTitelConventieToe).
+// Bewust níet (gecontroleerd op alle makers van 9 okt 2026):
+// - "!" in één woord ("LUDIQUE!", "Romani!", "DJANGAN!") of na een
+//   gezelschapswoord ("Ensemble Gamut!"), en "!" tussen haakjes ("Bart
+//   Krieger (Kunst Toko BAM!)");
+// - "Musical" in een naam ("Nationaal Jeugd Musical Theater", "Stichting
+//   Musical Stella Duce", "Scherzi Musicali");
+// - "als" met hoofdletter ("Theater Als Het Ware"); "en" zonder komma's
+//   ("Van Vleuten en Van Muiswinkel");
+// - komma's tussen haakjes ("Chapter 58 (Antti Uimonen, Flore Muuse, …)"),
+//   met "/" ("Iduna Paalman, Zephyr Brüggen / Bellevue Producties, Het
+//   Nationale Theater") of tussen gezelschappen ("Holland Opera, Duda Paiva
+//   Company, New European Ensemble"; "NITE, Club Guy & Roni, Het Muziek,
+//   HIIIT"); "!" naast een gezelschapsnaam ("Theater Rotterdam, ZO! Gospel
+//   Choir, Glen Faria & Priscilla Vaudelle").
+const GEZELSCHAP = /\b(ensemble|trio|kwartet|quartet|kwintet|quintet|band|orkest|orchestra|koor|choir|collectief|company|compagnie|opera|theater|producties|gezelschap|toneelgroep)\b/i;
+// Met hoofdletter, als naam: "Theater Rotterdam, ZO! Gospel Choir" blijft,
+// "Jij HOORT in het theater!" niet.
+const GEZELSCHAP_NAAM = /\b(Ensemble|Trio|Kwartet|Quartet|Kwintet|Quintet|Band|Orkest|Orchestra|Koor|Choir|Collectief|Company|Compagnie|Opera|Theater|Producties|Gezelschap|Toneelgroep|Chœur|Choeur)\b/;
+// Een deel dat een gezelschap is: met gezelschapswoord of een afkorting
+// ("NITE, Club Guy & Roni, Het Muziek, HIIIT").
+const isGezelschapsdeel = (d) => GEZELSCHAP.test(d) || /^[A-Z]{3,}$/.test(d.trim());
+// Woorden die in een naam met een kleine letter mogen ("Pieter Hulst en
+// Willem de Voogd", "Anke van 't Hof").
+const NAAMWOORD = new Set(['van', 'de', 'der', 'den', 'het', 'ten', 'ter', 'te', 'du', 'la', 'le', 'da', 'di', 'von', 'el', 'en', 'y', 'dos', 'das', 'do', 'e', 'des', 'del', 'of', 'and', 'the', 'und', 'met', 'o.l.v.', 'i.s.m.', 'feat.', 'ft.', 'x', 'vs', 'vs.', 'by', 'door', 'with', 'plus', 'zu', 'al', 'bin', 'ibn', "'t", '’t']);
+
+/** Welke R1-regel raakt: 'officieel', 'musical', 'cast', 'uitroep', 'zin' of null. */
+export function sloganSoort(tekst) {
+  const t = String(tekst ?? '').trim();
+  if (!t) return null;
+  const buitenHaakjes = t.replace(/\([^)]*\)/g, ' ').replace(/\s+/g, ' ').trim();
+  if (/\boffici[eë]le\b/i.test(t)) return 'officieel';
+  if (/\p{L}-?musical(?!\p{L})/iu.test(t) || /\bmusical\s*!?$/i.test(buitenHaakjes) || /^(?:een|de|het)\s.*\bmusical\b/i.test(t)) return 'musical';
+  if (/(?:^|\s)e\.\s?a\.?(?:\s|$)/i.test(t)) return 'cast';
+  if (/\sals\s+\p{Lu}/u.test(t)) return 'cast';
+  if (/!/.test(buitenHaakjes) && buitenHaakjes.split(' ').length >= 2 && !GEZELSCHAP_NAAM.test(buitenHaakjes)) return 'uitroep';
+  const delen = buitenHaakjes.split(',');
+  if (delen.length >= 3 && !t.includes('/') && delen.filter(isGezelschapsdeel).length < 2) return 'cast';
+  // Een zin: vijf woorden of meer, waarvan drie met een kleine letter die in
+  // een naam niet voorkomen ("’s Werelds beroemdste detective in een nieuw
+  // moordmysterie", "Ik heb je lief, drie generaties lang"). Zonder deze
+  // regel won zo'n slogan na het weghalen van de cast de makermeerderheid.
+  const woorden = buitenHaakjes.split(' ');
+  const klein = woorden.filter((w) => /^\p{Ll}/u.test(w) && !NAAMWOORD.has(w.toLowerCase()));
+  if (woorden.length >= 5 && klein.length >= 3 && !GEZELSCHAP_NAAM.test(buitenHaakjes)) return 'zin';
+  return null;
+}
+
+export function isSloganOfCast(tekst) {
+  return sloganSoort(tekst) !== null;
+}
+
 // Titel en maker omgedraaid bij de bron (okt 2026): de artiest staat als
 // titel en de voorstelling als ondertitel/maker, buiten cabaret (waar
 // pasTitelConventieToe dat al oplost). Per theater, per letterlijke
@@ -202,6 +260,23 @@ export function labelUitTitel(tekst) {
 const LABEL_OVERAL = /\s*\(\s*((?:voor)?premi[eè]re|try[- ]?out|reprise)\s*\)/gi;
 
 /**
+ * Reeksnaam vooraan de titel ("Herfststukjes: Het Koffertje 4+" → titel "Het
+ * Koffertje 4+", reeks "Herfststukjes"), voor de reeksen die een theater in
+ * config.js als `reeksVoorvoegsels` heeft (titels-ronde-1, R4, 9 okt 2026).
+ * Alleen met dubbele punt en als er daarna nog iets staat. Geeft { tekst,
+ * reeks } (reeks null als er niets weg is).
+ */
+export function reeksUitTitel(tekst, voorvoegsels = []) {
+  const t = String(tekst ?? '');
+  for (const v of voorvoegsels ?? []) {
+    const re = new RegExp(`^\\s*(${v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})\\s*:\\s*(\\S.*)$`, 'i');
+    const m = t.match(re);
+    if (m) return { tekst: m[2].trim(), reeks: m[1] };
+  }
+  return { tekst: t, reeks: null };
+}
+
+/**
  * Alle labels "(try-out)", "(try out)", "(reprise)", "(première)",
  * "(voorpremière)" uit een titel, waar ze ook staan ("Rhobijn (reprise) –
  * Rowwen Hèze" → "Rhobijn – Rowwen Hèze"; "Vanzelfsprekend (try-out) & Sint
@@ -249,6 +324,38 @@ export function zonderStatusWoord(tekst) {
   if (typeof tekst !== 'string') return tekst;
   const kaal = tekst.replace(STATUS_DEEL, '').trim();
   return kaal || tekst;
+}
+
+// Statuswoorden over de kaartverkoop als los titeldeel (titels-ronde-1, R5,
+// 9 okt 2026): "Gelukkig heb je mij nog – Richard Groenendijk – UITVERKOCHT"
+// (Stadsgehoorzaal). Alleen als los deel naast een echte titel: "Laatste
+// Kaarten" van Collectief BLAUWDRUK (KS, Concertzaal, Musis) is de naam van
+// de voorstelling en blijft staan.
+const VERKOOPSTATUS = [
+  [/^(?:uitverkocht|sold[ -]?out)$/i, 'uitverkocht'],
+  [/^(?:laatste (?:kaarten|plaatsen|tickets)|bijna uitverkocht|nog enkele kaarten)$/i, 'beschikbaar'],
+  [/^wachtlijst$/i, 'wachtlijst'],
+  [/^(?:geannuleerd|afgelast|gecancel?d|cancel?led)$/i, 'afgelast'],
+  [/^verplaatst$/i, 'verplaatst'],
+];
+const verkoopstatus = (deel) => VERKOOPSTATUS.find(([re]) => re.test(deel.replace(/[.!…]+$/, '').trim()))?.[1] ?? null;
+
+/**
+ * Een statusdeel uit de titel: als laatste of eerste deel (" – ", " - ", " | ")
+ * of tussen haakjes aan het eind. Geeft { tekst, status } (status null als er
+ * niets weg is). Blijft er geen titel over, dan niets.
+ */
+export function statusUitTitel(tekst) {
+  const t = String(tekst ?? '');
+  const haakjes = t.match(/^(.*\S)\s*\(([^()]+)\)$/);
+  if (haakjes && verkoopstatus(haakjes[2])) return { tekst: haakjes[1].trim(), status: verkoopstatus(haakjes[2]) };
+  const delen = t.split(/\s+[-–|]\s+/);
+  if (delen.length < 2) return { tekst: t, status: null };
+  const laatste = verkoopstatus(delen.at(-1));
+  if (laatste) return { tekst: delen.slice(0, -1).join(SCHEIDER), status: laatste };
+  const eerste = verkoopstatus(delen[0]);
+  if (eerste) return { tekst: delen.slice(1).join(SCHEIDER), status: eerste };
+  return { tekst: t, status: null };
 }
 
 /**
