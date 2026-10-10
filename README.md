@@ -265,7 +265,9 @@ brew install openjdk@21           # emulators; zet openjdk@21/bin in je PATH
   robots.txt niet: die komt uit de cache, of telt als "geen regels" met een
   waarschuwing in de log). Houd
   testverkeer naar theatersites klein (zie `CLAUDE.md`).
-- Aliaslijst bijwerken: `npm run alias-afvinkpagina` maakt
+- Aliaslijst bijwerken: `npm run alias-voorstel-maken` maakt het voorstel
+  (`debug/alias-voorstel.json`, logica in `src/lib/aliasGroepen.js`) uit de
+  huidige data; `npm run alias-afvinkpagina` maakt daarvan
   `debug/alias-afvinken.html` (groepen die al in `config/aliassen.json`
   staan, tellen als beoordeeld); de export daarvan gaat erin met
   `npm run alias-importeren -- <alias-keuzes-….json>` (eerst eventueel met

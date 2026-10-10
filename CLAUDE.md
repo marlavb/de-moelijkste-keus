@@ -133,8 +133,11 @@ Houd het testverkeer daarom zo klein mogelijk:
   sleutels gaan mee via `titelBron`/`titelVoorAlias` → `samenvoegMapping`
   (ook gepland.js en `kopieSleutel` voor vrienden).
 - Werkwijze bij nieuwe keuzes, altijd in deze volgorde:
-  1. `npm run alias-afvinkpagina` → `debug/alias-afvinken.html` (groepen die
-     al in de lijst staan, tellen als beoordeeld; filter "Nog te doen");
+  1. `npm run alias-voorstel-maken` (voorstel uit de huidige data, logica in
+     `src/lib/aliasGroepen.js`; eventueel eerst `npm run alias-gebruikers --
+     Marla=<uid> Erik=<uid>`, alleen lezen) en dan `npm run alias-afvinkpagina`
+     → `debug/alias-afvinken.html` (groepen die al in de lijst staan, tellen als
+     beoordeeld; filter "Nog te doen");
   2. de gebruiker vinkt af en exporteert (`alias-keuzes-<datum>.json`);
   3. `npm run alias-importeren -- <export> --droog`, daarna zonder `--droog`
      (overzicht: nieuw, gewijzigd, verwijderd, conflicten);
