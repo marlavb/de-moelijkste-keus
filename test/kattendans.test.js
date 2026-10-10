@@ -26,6 +26,8 @@ test('Kattendans: titels, datums, status, Podiumpas (prijsgrens, film, Uit de re
   const van = (t) => shows.find((s) => s.titel === t);
   assert.deepEqual(waarschuwingen, []);
   assert.equal(shows.length, 11);
+  // Schoolvoorstelling ("Uit de doeken", toegevoegd 10 okt 2026): weggelaten.
+  assert.equal(shows.some((s) => /Uit de doeken/.test(s.titel)), false);
 
   // Cabaret omgedraaid ("Voorstelling – Maker"), wachtlijst uit de knop.
   const rundfunk = van('Wagyu – Rundfunk');

@@ -31,8 +31,11 @@ const MAX_LAAD_MEER = 30;
 
 // De muziekstijlen die Paradox als "genre" geeft; allemaal concerten, dus bij
 // ons Muziek & Concert. Een stijl die hier niet staat, melden we (warn).
-const MUZIEKSTIJLEN = new Set([
+export const MUZIEKSTIJLEN = new Set([
   'modern creative',
+  // Hiphop: een stijl van een concert (ØKSE, 4 feb 2027: "Electronics, Free
+  // jazz, Hiphop, Modern creative"), dus Muziek & Concert (10 okt 2026).
+  'hiphop',
   'funk & jazzrock',
   'straight-ahead',
   'vocal jazz',

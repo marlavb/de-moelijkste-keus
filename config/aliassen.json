@@ -1745,6 +1745,13 @@
    "groep": "herman van veen",
    "regel": "keuze"
   },
+  "voor haar": {
+   "titel": "Voor Haar, de Frans Halsema Musical",
+   "maker": null,
+   "makerVast": true,
+   "groep": "handmatig: voor haar",
+   "regel": "keuze"
+  },
   "wachtend op de dood": {
    "titel": "Wachtend op de dood – Maarten Heijmans & Xander Vrienten",
    "maker": "Maarten Heijmans & Xander Vrienten",
@@ -1757,6 +1764,13 @@
    "maker": "Lovella Telesford",
    "makerVast": true,
    "groep": "lovella telesford",
+   "regel": "keuze"
+  },
+  "we will rock you": {
+   "titel": "We Will Rock You",
+   "maker": null,
+   "makerVast": true,
+   "groep": "handmatig: we will rock you",
    "regel": "keuze"
   },
   "wina s wereld": {
