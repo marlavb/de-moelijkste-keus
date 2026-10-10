@@ -83,6 +83,7 @@ export async function scrapeKattendans({ page, theater, robots, waitForTurn, log
   const onbekendeGenres = {};
   const knoppen = {};
   let jaarAnders = 0;
+  let school = 0;
 
   for (const it of items) {
     if (!it.titel || !it.datum) continue;
@@ -97,6 +98,12 @@ export async function scrapeKattendans({ page, theater, robots, waitForTurn, log
     if (jj && datum.slice(2, 4) !== jj) jaarAnders++;
     const tijd = extractTime(it.tijd);
     const genreRuw = it.categorieen[0] ?? null;
+    // Schoolvoorstellingen nemen we bewust niet op (geen publieksvoorstelling,
+    // net als bij De Maaspoort, DOK6 en het Munttheater; 10 okt 2026).
+    if (it.categorieen.some((c) => /schoolvoorstelling/i.test(c))) {
+      school++;
+      continue;
+    }
     if (genreRuw && !isBekendGenre(genreRuw)) onbekendeGenres[genreRuw] = (onbekendeGenres[genreRuw] ?? 0) + 1;
     const prijs = prijsUitTekst(it.prijs);
     const gratis = prijs === 0;
@@ -135,6 +142,7 @@ export async function scrapeKattendans({ page, theater, robots, waitForTurn, log
   }
 
   const lijst = (o) => Object.entries(o).map(([k, n]) => `${k} (${n})`).join(', ');
+  if (school) log(`${school} schoolvoorstelling(en) weggelaten.`);
   log(`knopteksten: ${lijst(knoppen)}`);
   if (Object.keys(reden).length) log(`podiumpas: false bij ${lijst(reden)}`);
   if (jaarAnders) warn(`${jaarAnders} speeldata waar het jaartal ("‘26") niet klopt met de weekdag — datumparser nakijken.`);
