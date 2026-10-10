@@ -6,8 +6,6 @@
 
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
 import { chromium } from 'playwright';
 
 import {
@@ -23,6 +21,7 @@ import {
   wachtOpTekst,
   wachtOpDoc,
   schermafbeelding,
+  vasteShows,
 } from './hulp.js';
 import { watchlistSleutel } from '../public/js/watchlist.js';
 import { geplandSleutel } from '../public/js/gepland.js';
@@ -45,7 +44,7 @@ before(async () => {
   controleerEmulators();
   await wisEmulators();
   for (const [k, a] of Object.entries(ACCOUNTS)) uid[k] = await maakAccount(a);
-  const data = JSON.parse(await readFile(path.join(new URL('../public/', import.meta.url).pathname, 'data/shows.json'), 'utf-8'));
+  const data = await vasteShows();
   const alle = Array.isArray(data) ? data : data.shows;
   const vandaag = vandaagAmsterdam();
   const gezien = new Set();
@@ -360,7 +359,7 @@ test('Mail in Profiel: uitzetten en weer aanzetten (mailvoorkeur, echte rules)',
 
 test('na de speeldag: gedeeld plan zonder kaarten gaat vanzelf naar Gezien (met @anna); weghalen blijft weg', async () => {
   // Een voorstelling die zo snel mogelijk speelt (kleine klokverschuiving).
-  const data = JSON.parse(await readFile(path.join(new URL('../public/', import.meta.url).pathname, 'data/shows.json'), 'utf-8'));
+  const data = await vasteShows();
   const vandaag = vandaagAmsterdam();
   const bezet = new Set(shows.map((s) => watchlistSleutel(s.titel, s.theaterId)));
   const s = (Array.isArray(data) ? data : data.shows)

@@ -6,11 +6,9 @@
 
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
 import { chromium } from 'playwright';
 
-import { controleerEmulators, startServer, wisEmulators, maakAccount, openGebruiker, ga, wachtOpTekst, wachtOpDoc, schermafbeelding } from './hulp.js';
+import { controleerEmulators, startServer, wisEmulators, maakAccount, openGebruiker, ga, wachtOpTekst, wachtOpDoc, schermafbeelding, vasteShows } from './hulp.js';
 import { watchlistSleutel } from '../public/js/watchlist.js';
 import { vandaag as vandaagAmsterdam } from '../test/datum.js';
 
@@ -30,7 +28,7 @@ before(async () => {
   controleerEmulators();
   await wisEmulators();
   uid = await maakAccount(ACCOUNT);
-  const data = JSON.parse(await readFile(path.join(new URL('../public/', import.meta.url).pathname, 'data/shows.json'), 'utf-8'));
+  const data = await vasteShows();
   const vandaag = vandaagAmsterdam();
   show = (Array.isArray(data) ? data : data.shows).find((s) => s.datum > vandaag && s.beschikbaarheid === 'beschikbaar' && !watchlistSleutel(s.titel, s.theaterId).includes('::'));
   sleutel = watchlistSleutel(show.titel, show.theaterId);
