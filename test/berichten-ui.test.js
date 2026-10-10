@@ -107,7 +107,13 @@ const opslag = (page, pad) => page.evaluate((p) => window.__nepFirestore.get(p) 
 const inbox = (page, uid) => page.evaluate((u) => [...window.__nepFirestore.entries()].filter(([k]) => k.startsWith(`inbox/${u}/`)).map(([, v]) => `${v.van}:${v.soort}`), uid);
 const hash = (page) => new URL(page.url()).hash;
 const tekst = (page, sel) => page.textContent(sel);
-const even = (page, ms = 300) => page.waitForTimeout(ms);
+// Wachten tot de app rustig is: een paar rondes van een timer-tik (de
+// nep-Firestore stuurt zijn callbacks met setTimeout 0) en twee
+// animatieframes (tekenen), in plaats van een vaste wachttijd.
+const rustig = (page) => page.evaluate(async () => {
+  for (let i = 0; i < 3; i++) await new Promise((r) => setTimeout(() => requestAnimationFrame(() => requestAnimationFrame(r)), 0));
+});
+const even = (page) => rustig(page);
 const tab = (page) => page.locator('.nav-item[data-tab="profiel"]');
 
 test('uitgelogd: geen teller en geen tegel; #/berichten gaat naar Profiel', async () => {

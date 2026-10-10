@@ -95,7 +95,13 @@ const opslag = (page, pad) => page.evaluate((p) => window.__nepFirestore.get(p) 
 const linkDocs = (page) => page.evaluate(() => [...window.__nepFirestore.keys()].filter((k) => k.startsWith('uitnodigingslinks/')));
 const hash = (page) => new URL(page.url()).hash;
 const tekst = (page, sel) => page.textContent(sel);
-const even = (page) => page.waitForTimeout(250);
+// Wachten tot de app rustig is: een paar rondes van een timer-tik (de
+// nep-Firestore stuurt zijn callbacks met setTimeout 0) en twee
+// animatieframes (tekenen), in plaats van een vaste wachttijd.
+const rustig = (page) => page.evaluate(async () => {
+  for (let i = 0; i < 3; i++) await new Promise((r) => setTimeout(() => requestAnimationFrame(() => requestAnimationFrame(r)), 0));
+});
+const even = (page) => rustig(page);
 
 test('link maken en delen: eenmalig token (32 tekens) met eigen gegevens; deelmenu krijgt de link', async () => {
   const { ctx, page, fouten } = await openApp();

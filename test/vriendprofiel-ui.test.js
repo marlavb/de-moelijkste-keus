@@ -89,7 +89,10 @@ async function openApp({ beginDocs = docs, hash = '#/vrienden', offline = false,
   if (offline) await ctx.addInitScript(() => { window.__nepOffline = true; });
   await ctx.addInitScript(() => { try { localStorage.removeItem('podiumagenda:gezienSortering'); } catch {} });
   const page = await ctx.newPage();
+  // Vaste tijd waar de test dat vraagt; anders een nepklok die gewoon doorloopt,
+  // zodat we over de kopie-debounce (3 s) kunnen springen.
   if (nu !== null) await page.clock.setFixedTime(nu);
+  else await page.clock.install();
   const fouten = [];
   page.on('pageerror', (e) => fouten.push(e.message));
   await page.goto(`${base}${hash}`);
@@ -100,7 +103,13 @@ async function openApp({ beginDocs = docs, hash = '#/vrienden', offline = false,
 
 const hash = (page) => new URL(page.url()).hash;
 const tekst = (page, sel) => page.textContent(sel);
-const even = (page, ms = 300) => page.waitForTimeout(ms);
+// Wachten tot de app rustig is: een paar rondes van een timer-tik (de
+// nep-Firestore stuurt zijn callbacks met setTimeout 0) en twee
+// animatieframes (tekenen), in plaats van een vaste wachttijd.
+const rustig = (page) => page.evaluate(async () => {
+  for (let i = 0; i < 3; i++) await new Promise((r) => setTimeout(() => requestAnimationFrame(() => requestAnimationFrame(r)), 0));
+});
+const even = (page) => rustig(page);
 const titels = (page, sectie) =>
   page.$$eval(`#vriendInhoud section:nth-of-type(${sectie}) .vriend-titel-naam`, (els) => els.map((e) => e.textContent));
 
@@ -203,7 +212,9 @@ test('terug van een detailscherm: zelfde scrollpositie in het profiel, zonder op
   await rij.scrollIntoViewIfNeeded();
   const y = await page.evaluate(() => window.scrollY);
   assert.ok(y > 200, `scrollY ${y}`);
-  await page.waitForTimeout(3500); // eigen kopie-debounce voorbij, zodat er niets meer loopt
+  // Eigen kopie-debounce voorbij, zodat er niets meer loopt.
+  await page.clock.fastForward(3500);
+  await page.waitForTimeout(50);
   const voor = await page.evaluate(() => window.__nepLees);
   await rij.click();
   await even(page);
