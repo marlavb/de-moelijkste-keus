@@ -75,12 +75,22 @@ async function openApp({ gebruiker = ANNA, beginDocs = docs, hash = '#/profiel',
   await ctx.route(`${base}js/firebase.js`, (r) => r.fulfill({ contentType: 'text/javascript', body: nepFirebase({ gebruiker, docs: beginDocs }) }));
   if (offline) await ctx.addInitScript(() => { window.__nepOffline = true; });
   const page = await ctx.newPage();
+  // Nepklok (tijd loopt gewoon door): over de debounce van de kopie
+  // (KOPIE_WACHT_MS, 3 s) springen we met klok() in plaats van echt te wachten.
+  await page.clock.install();
   const fouten = [];
   page.on('pageerror', (e) => fouten.push(e.message));
   await page.goto(`${base}${hash}`);
   await page.waitForSelector('.nav-item', { state: 'attached' });
   await page.waitForTimeout(500);
   return { ctx, page, fouten };
+}
+
+// De klok van de pagina vooruit (timers die dan aflopen, lopen af), en de
+// app even de tijd geven om te verwerken wat daaruit volgt.
+async function klok(page, ms) {
+  await page.clock.fastForward(ms);
+  await page.waitForTimeout(50);
 }
 
 const opslag = (page, pad) => page.evaluate((p) => window.__nepFirestore.get(p) ?? null, pad);
@@ -104,7 +114,7 @@ test('eenmalige melding: er wordt niets gedeeld tot "Oké"; daarna instelling en
   const { ctx, page, fouten } = await openApp();
   assert.match(await tekst(page, '.delen-melding'), /Je vrienden kunnen je Gezien \(met sterren\) en Watchlist zien/);
   assert.match(await tekst(page, '#delenTegel'), /Nog niet ingesteld/);
-  await page.waitForTimeout(3500); // langer dan de debounce
+  await klok(page, 3500); // langer dan de debounce
   assert.deepEqual(await delenSchrijf(page), []);
 
   await page.click('.delen-melding >> text=Oké');
@@ -158,7 +168,7 @@ test('"Aanpassen": terug zonder keuze deelt niets; een keuze met Opslaan wel', a
 test('uitzetten haalt de kopie weg, weer aanzetten schrijft hem opnieuw', async () => {
   const beginDocs = { ...docs, 'gedeeld/u1': { gezien: true, watchlist: true, gewijzigdOp: 1 } };
   const { ctx, page, fouten } = await openApp({ beginDocs, hash: '#/profiel/delen' });
-  await page.waitForTimeout(3500); // eerste kopieën na de sync
+  await klok(page, 3500); // eerste kopieën na de sync
   assert.ok(await opslag(page, 'gedeeld/u1/onderdelen/gezien'));
   await page.click('#delenSchakelaar-gezien');
   await page.waitForTimeout(300);
@@ -175,27 +185,27 @@ test('uitzetten haalt de kopie weg, weer aanzetten schrijft hem opnieuw', async 
 test('kopie: met debounce, en geen schrijfactie als er niets veranderd is (ook niet op een tweede apparaat)', async () => {
   const beginDocs = { ...docs, 'gedeeld/u1': { gezien: true, watchlist: true, gewijzigdOp: 1 } };
   const een = await openApp({ beginDocs });
-  await een.page.waitForTimeout(3500);
+  await klok(een.page, 3500);
   assert.equal((await delenSchrijf(een.page)).length, 2); // eerste keer beide kopieën
   const stand = await alles(een.page);
   await een.ctx.close();
 
   // Tweede apparaat met dezelfde data: niets te schrijven.
   const twee = await openApp({ beginDocs: stand, hash: `#/show/${encodeURIComponent(show.id)}` });
-  await twee.page.waitForTimeout(3500);
+  await klok(twee.page, 3500);
   assert.deepEqual(await delenSchrijf(twee.page), []);
 
   // Twee tikken (eraf en er weer op): na de debounce één schrijfactie,
   // alleen voor de watchlist (de stand is veranderd, de inhoud niet: geen schrijfactie).
   await twee.page.click('#detailWatchBtn');
   await twee.page.click('#detailWatchBtn');
-  await twee.page.waitForTimeout(3500);
+  await klok(twee.page, 3500);
   assert.deepEqual(await delenSchrijf(twee.page), []);
   // Eén tik (eraf): pas na de debounce, één keer.
   await twee.page.click('#detailWatchBtn');
-  await twee.page.waitForTimeout(1000);
+  await klok(twee.page, 1000);
   assert.deepEqual(await delenSchrijf(twee.page), []);
-  await twee.page.waitForTimeout(2500);
+  await klok(twee.page, 2500);
   assert.deepEqual(await delenSchrijf(twee.page), [['set', 'gedeeld/u1/onderdelen/watchlist']]);
   assert.equal((await opslag(twee.page, 'gedeeld/u1/onderdelen/watchlist')).items.length, 0);
   assert.deepEqual(twee.fouten, []);
