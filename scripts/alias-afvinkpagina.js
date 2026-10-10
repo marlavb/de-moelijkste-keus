@@ -1,5 +1,5 @@
 // `npm run alias-afvinkpagina`: maakt van debug/alias-voorstel.json (het
-// aliasvoorstel van 9 okt 2026, stap B van de aliaslijst) een lokale pagina
+// aliasvoorstel, gemaakt met `npm run alias-voorstel-maken`) een lokale pagina
 // debug/alias-afvinken.html om de twijfelgroepen te beoordelen. Alleen voor
 // lokaal gebruik, niet in de app; debug/ staat niet in git.
 //
