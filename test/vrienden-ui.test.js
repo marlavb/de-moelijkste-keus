@@ -80,7 +80,13 @@ async function openApp({ gebruiker = ANNA, docs = BASIS, hash = '#/profiel', off
 const opslag = (page, pad) => page.evaluate((p) => window.__nepFirestore.get(p) ?? null, pad);
 const hash = (page) => new URL(page.url()).hash;
 const tekst = (page, sel) => page.textContent(sel);
-const even = (page) => page.waitForTimeout(250);
+// Wachten tot de app rustig is: een paar rondes van een timer-tik (de
+// nep-Firestore stuurt zijn callbacks met setTimeout 0) en twee
+// animatieframes (tekenen), in plaats van een vaste wachttijd.
+const rustig = (page) => page.evaluate(async () => {
+  for (let i = 0; i < 3; i++) await new Promise((r) => setTimeout(() => requestAnimationFrame(() => requestAnimationFrame(r)), 0));
+});
+const even = (page) => rustig(page);
 
 async function zoek(page, naam) {
   await page.fill('#vriendZoekInput', naam);
