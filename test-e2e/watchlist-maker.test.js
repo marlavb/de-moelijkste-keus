@@ -2,7 +2,7 @@
 // "niet meer in de agenda" in Profiel → Watchlist, altijd kunnen verwijderen
 // (ook via het eenvoudige scherm), en de maker in Gezien. Ingelogd tegen de
 // Firebase-emulators met de echte firestore.rules. De agenda komt uit
-// public/data/shows.json, in drie standen via de browser geserveerd:
+// vaste agenda (test-e2e/fixtures, vasteShows in hulp.js), in drie standen via de browser geserveerd:
 //   0. zoals hij is (Teckel bij Stadsschouwburg Utrecht zonder maker);
 //   1. na de maker op productieniveau (makerMeerderheid.js, de volgende nacht);
 //   2. daarna: één voorstelling uit de agenda, één helemaal afgelast, Teckel weg.
@@ -10,11 +10,9 @@
 
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
 import { chromium } from 'playwright';
 
-import { controleerEmulators, startServer, wisEmulators, maakAccount, openGebruiker, ga, wachtOpTekst, wachtOpDoc, schermafbeelding } from './hulp.js';
+import { controleerEmulators, startServer, wisEmulators, maakAccount, openGebruiker, ga, wachtOpTekst, wachtOpDoc, schermafbeelding, vasteShows } from './hulp.js';
 import { watchlistSleutel } from '../public/js/watchlist.js';
 import { weergaveTitel, watchlistStand } from '../public/js/weergave.js';
 import { pasMakerMeerderheidToe } from '../src/lib/makerMeerderheid.js';
@@ -41,7 +39,7 @@ before(async () => {
   controleerEmulators();
   await wisEmulators();
   uid = await maakAccount(ACCOUNT);
-  const ruw = JSON.parse(await readFile(path.join(new URL('../public/', import.meta.url).pathname, 'data/shows.json'), 'utf-8'));
+  const ruw = await vasteShows();
   // Stand 0: de makers zoals de theaters ze geven (makerBron; de data na
   // een nachtrun heeft de maker op productieniveau al).
   data[0] = (Array.isArray(ruw) ? ruw : ruw.shows).map(({ makerBron, ...s }) => (makerBron !== undefined ? { ...s, maker: makerBron } : s));

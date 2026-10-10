@@ -1,15 +1,13 @@
 // End-to-end voor de aanpassingen van okt 2026 (volle data, terug na een
 // datumwissel, provincievinkje), ingelogd tegen de Firebase-emulators met de
-// echte firestore.rules en de echte agenda (public/data/shows.json).
+// echte firestore.rules en de vaste agenda (test-e2e/fixtures, vasteShows in hulp.js).
 // Draai met `npm run test:e2e`. De tests bouwen op elkaar voort.
 
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
 import { chromium } from 'playwright';
 
-import { controleerEmulators, startServer, wisEmulators, maakAccount, openGebruiker, ga, wachtOpDoc, schermafbeelding } from './hulp.js';
+import { controleerEmulators, startServer, wisEmulators, maakAccount, openGebruiker, ga, wachtOpDoc, schermafbeelding, vasteShows } from './hulp.js';
 import { vandaag as vandaagAmsterdam } from '../test/datum.js';
 
 const ACCOUNT = { email: 'dirk@e2e.test', wachtwoord: 'geheim-dirk', naam: 'Dirk Bos' };
@@ -26,7 +24,7 @@ before(async () => {
   controleerEmulators();
   await wisEmulators();
   uid = await maakAccount(ACCOUNT);
-  const data = JSON.parse(await readFile(path.join(new URL('../public/', import.meta.url).pathname, 'data/shows.json'), 'utf-8'));
+  const data = await vasteShows();
   shows = (Array.isArray(data) ? data : data.shows).filter((s) => s.datum >= vandaag);
   ({ server, base } = await startServer());
   browser = await chromium.launch();
