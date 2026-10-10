@@ -50,7 +50,7 @@ jobs:
       al_gedaan: ${{ steps.controle.outputs.al_gedaan }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
 
@@ -63,7 +63,10 @@ jobs:
   refresh:
     needs: vandaag
     if: needs.vandaag.outputs.al_gedaan != 'true'
-    runs-on: ubuntu-latest
+    # Vast op 24.04 (okt 2026): ubuntu-latest wordt vanaf 19 okt Ubuntu 26, en
+    # of `playwright install --with-deps` daar de juiste pakketten vindt, is
+    # nog niet zeker. Terug naar ubuntu-latest zodra Playwright 26.04 noemt.
+    runs-on: ubuntu-24.04
     # Ruim boven de 80-minutengrens van "Nachtrun beoordelen" (die maakt de
     # run al rood bij een te lange scrape); 120 min sinds okt 2026 (was 90).
     timeout-minutes: 120
@@ -73,14 +76,14 @@ jobs:
       # uitchecken (inclusief de data van de run vóór hem), niet de SHA van
       # het moment dat hij werd aangemaakt.
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
 
       - name: Node.js instellen
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Dependencies installeren

@@ -33,14 +33,14 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
 
       - name: Node.js instellen
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
 
       # Loopt refresh-data of wacht er een, dan nu niets doen: na die run
       # start deze workflow vanzelf opnieuw (workflow_run), met de nieuwe data.
