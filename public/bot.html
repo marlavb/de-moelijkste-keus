@@ -104,7 +104,7 @@
 
     <h2>Wanneer en hoe vaak?</h2>
     <ul>
-      <li>Eén keer per nacht, rond 03:15 UTC (soms later, als GitHub de taak uitstelt).</li>
+      <li>Eén keer per nacht, om 05:00 Nederlandse tijd (zelden later, als de start uitvalt en een reserve-tijdstip het overneemt).</li>
       <li>We lezen alleen de openbare agendapagina's, en waar nodig de detailpagina van een voorstelling.</li>
       <li>
         De meeste theaters krijgen 1 tot 30 verzoeken per nacht. Theaters waarvan we per voorstelling een pagina
@@ -115,7 +115,8 @@
     <h2>We houden ons aan de regels van jouw site</h2>
     <ul>
       <li>We lezen <code>robots.txt</code> en volgen <code>Disallow</code>, <code>Allow</code> en <code>Crawl-delay</code>.</li>
-      <li>Tussen twee verzoeken zit altijd minstens 1 seconde, of de crawl-delay als die langer is. Kunnen we je robots.txt niet lezen, dan houden we 5 seconden aan.</li>
+      <li>Tussen twee verzoeken zit altijd minstens 1 seconde, of de crawl-delay als die langer is.</li>
+      <li>Geeft je robots.txt een serverfout of reageert hij niet, dan slaan we je site die nacht over. Bestaat er geen robots.txt (404), dan gelden er geen extra regels. Komen we na een doorverwijzing niet bij een robots.txt uit, dan houden we 5 seconden tussen verzoeken aan.</li>
       <li>
         Blokkeren via <code>robots.txt</code> of een firewall of botcontrole respecteren we altijd. We proberen dat
         nooit te omzeilen: geen andere user-agent, geen trucs. Zien we een blokkade, dan stoppen we met je site.
@@ -146,8 +147,9 @@
         The Podiumagenda bot (user agent <code>DeMoeilijksteKeusBot</code>) collects the public event listings of Dutch
         theatres that accept the Podiumpas. Podiumagenda is a personal, non-commercial project that links visitors to each
         theatre's own ticket sales.
-        It runs once a night (around 03:15 UTC), follows <code>robots.txt</code> including <code>Crawl-delay</code>,
-        waits at least 1 second between requests (5 seconds if robots.txt can't be read), and always respects blocks
+        It runs once a night (at 05:00 Dutch time), follows <code>robots.txt</code> including <code>Crawl-delay</code>,
+        waits at least 1 second between requests, skips your site for the night if robots.txt returns a server error or
+        does not respond (no robots.txt, 404: no extra rules), and always respects blocks
         via robots.txt or a firewall; it never tries to get around them. Use the form above to object or ask a question.
       </p>
     </section>

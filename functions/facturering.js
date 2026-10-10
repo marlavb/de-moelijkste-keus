@@ -8,7 +8,7 @@
 // veel reads of writes worden dan geweigerd tot de volgende dag). De app op
 // GitHub Pages en het inloggen blijven werken. Weer aanzetten: in de console
 // het project opnieuw aan het factureringsaccount koppelen (Blaze) en de
-// functions zo nodig opnieuw deployen (zie debug/stap5-instructies.md).
+// functions zo nodig opnieuw deployen (zie docs/mail-en-billing-stop.md).
 
 /**
  * `data` = de base64-data van het Pub/Sub-bericht. Stopt alleen als
