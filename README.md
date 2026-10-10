@@ -300,6 +300,13 @@ De emulators gebruiken altijd het project `demo-podiumagenda`, nooit het echte.
 - Pushen naar `main` altijd via `npm run safe-push`: die weigert zolang de
   nachtelijke run loopt of wacht, en zolang een van de testsuites faalt
   (`scripts/testpoort.js`; ook in de pre-push-hook).
+- Stappen in de Firebase- en Google Cloud-console staan in [`docs/`](docs/):
+  mail bij uitnodigingen, budgetmelding en de billing-stop
+  ([`docs/mail-en-billing-stop.md`](docs/mail-en-billing-stop.md)), het
+  GitHub-token en Cloud Scheduler voor de nachtrun om 05:00
+  ([`docs/nachtrun-scheduler.md`](docs/nachtrun-scheduler.md)), en het ontwerp
+  van vrienden, delen en plannen met de rules
+  ([`docs/vrienden-ontwerp.md`](docs/vrienden-ontwerp.md)).
 
 ## Werkafspraken
 
