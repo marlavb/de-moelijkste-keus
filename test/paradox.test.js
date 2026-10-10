@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 
-import { scrapeParadox, parseParadoxDatum } from '../src/sites/paradox.js';
+import { scrapeParadox, parseParadoxDatum, MUZIEKSTIJLEN } from '../src/sites/paradox.js';
 
 const agenda = readFileSync(new URL('./fixtures/paradox-agenda.html', import.meta.url), 'utf-8');
 const laadMeer = readFileSync(new URL('./fixtures/paradox-laadmeer.json', import.meta.url), 'utf-8');
@@ -102,4 +102,8 @@ test('Paradox: "GEANNULEERD" vooraan de titel → afgelast, woord uit de titel',
   assert.deepEqual(paradoxTitelEnStatus('Afgelast feest'), { titel: 'Afgelast feest', status: null });
   assert.deepEqual(paradoxTitelEnStatus('Nik Bärtsch Ronin'), { titel: 'Nik Bärtsch Ronin', status: null });
   assert.deepEqual(paradoxTitelEnStatus('GEANNULEERD'), { titel: 'GEANNULEERD', status: null });
+});
+
+test('muziekstijl hiphop is bekend (ØKSE, 10 okt 2026): geen waarschuwing, Muziek & Concert', () => {
+  assert.ok(MUZIEKSTIJLEN.has('hiphop'));
 });
