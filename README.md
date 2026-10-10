@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (70 ok, 2 leeg, 8 gepauzeerd, 1 onbekend)
-- Voorstellingen (titel per theater): **8480**
-- Speeldata: **11754**
-- Laatste refresh: **9 oktober 2026, 12:53** (Amsterdamse tijd)
+- Theaters: **81** (71 ok, 2 leeg, 8 gepauzeerd)
+- Voorstellingen (titel per theater): **8482**
+- Speeldata: **11961**
+- Laatste refresh: **10 oktober 2026, 05:53** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -452,7 +452,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| MIMIK | Deventer | – | onbekend |
+| MIMIK | Deventer | ja | ok |
 | De Reggehof | Goor | onbekend | ok |
 | Schouwburg Hengelo | Hengelo | deels | ok |
 | Rabo Theater De Meenthe | Steenwijk | deels | ok |
