@@ -1,5 +1,5 @@
 {
-  "bijgewerktOp": "2026-10-10T03:53:51.436Z",
+  "bijgewerktOp": "2026-10-10T09:20:28.361Z",
   "theaters": {
     "ita": {
       "status": "ok",
@@ -775,9 +775,9 @@
     "speelhuis": {
       "status": "ok",
       "aantal": 197,
-      "vorigAantal": 196,
+      "vorigAantal": 197,
       "duurSeconden": 22,
-      "laatsteSucces": "2026-10-10T03:36:36.645Z",
+      "laatsteSucces": "2026-10-10T09:20:27.310Z",
       "terugvalSinds": null,
       "terugvalReeks": 0,
       "dalingSinds": null,
