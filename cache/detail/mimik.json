@@ -1,0 +1,1939 @@
+{
+ "theaterId": "mimik",
+ "items": {
+  "https://www.mimik.nl/agenda/a-bridge-too-far": {
+   "opgehaaldOp": "2026-10-10T03:52:32.912Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "A Bridge too Far",
+    "onder": "Richard Attenborough",
+    "eersteStart": "2026-10-25T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-25",
+      "tijd": "20:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10381874"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/amsterdams-kleinkunst-festival-akf-2026": {
+   "opgehaaldOp": "2026-10-10T03:53:20.901Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Amsterdams Kleinkunst Festival (AKF)",
+    "onder": "Finalistentournee",
+    "eersteStart": "2026-11-19T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-19",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350412"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/bambie-speelt-bambi": {
+   "opgehaaldOp": "2026-10-10T03:53:22.086Z",
+   "data": {
+    "categorie": "Fysiek theater",
+    "kop": "Bambie speelt Bambi",
+    "onder": "Ode aan de eenzaamheid",
+    "eersteStart": "2027-04-08T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-04-08",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 22,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350413"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/cameretten": {
+   "opgehaaldOp": "2026-10-10T03:53:29.106Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Cameretten",
+    "onder": "Finalistentournee",
+    "eersteStart": "2026-12-12T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-12",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 22,00",
+      "knop": "Uitverkocht",
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/circus-treurdier-die-bloemkool": {
+   "opgehaaldOp": "2026-10-10T03:53:05.073Z",
+   "data": {
+    "categorie": "Muziektheater",
+    "kop": "Circus Treurdier",
+    "onder": "Die Bloemkool (een moeilijke musical) | try-out",
+    "eersteStart": "2027-03-11T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-11",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 22,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350395"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/clean-pete-parelvissers": {
+   "opgehaaldOp": "2026-10-10T03:52:34.095Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "Clean Pete",
+    "onder": "Parelvissers",
+    "eersteStart": "2027-02-13T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-02-13",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350208"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/club-classique-abdelkader-benali": {
+   "opgehaaldOp": "2026-10-10T03:52:49.080Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "Club Classique & Abdelkader Benali",
+    "onder": "Café Kaváfis",
+    "eersteStart": "2027-05-14T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-05-14",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350363"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/club-lam-dolle-mina": {
+   "opgehaaldOp": "2026-10-10T03:53:23.098Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Club Lam",
+    "onder": "Dolle Mina",
+    "eersteStart": "2027-04-09T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-04-09",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 24,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350414"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/collectief-plankton-de-mens": {
+   "opgehaaldOp": "2026-10-10T03:53:40.062Z",
+   "data": {
+    "categorie": "Fysiek theater",
+    "kop": "Collectief Plankton",
+    "onder": "De Mens, het duurde maar heel even",
+    "eersteStart": "2027-05-07T19:30:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-05-07",
+      "tijd": "19:30",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350433"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/de-broers-van-arkel-zeg-maar-u": {
+   "opgehaaldOp": "2026-10-10T03:53:14.094Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "De Broers van Arkel",
+    "onder": "Zeg maar u",
+    "eersteStart": "2026-10-17T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-17",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350405"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/de-dansers": {
+   "opgehaaldOp": "2026-10-10T03:53:34.087Z",
+   "data": {
+    "categorie": "Dans",
+    "kop": "De Dansers",
+    "onder": "Howling Road",
+    "eersteStart": "2027-04-22T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-04-22",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350427"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/de-facto-april": {
+   "opgehaaldOp": "2026-10-10T03:53:19.907Z",
+   "data": {
+    "categorie": "Special",
+    "kop": "De Facto",
+    "onder": "Van de Kaart",
+    "eersteStart": "2027-04-07T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-04-07",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 16,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350411"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/de-ronde-deroo": {
+   "opgehaaldOp": "2026-10-10T03:52:46.378Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "De Ronde / Deroo",
+    "onder": "Please don't make love",
+    "eersteStart": "2027-02-20T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-02-20",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350355"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/de-theatertroep-vier-crematies-en-een-scheiding": {
+   "opgehaaldOp": "2026-10-10T03:53:28.097Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "De Theatertroep",
+    "onder": "Vier crematies en een scheiding",
+    "eersteStart": "2027-04-16T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-04-16",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350419"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/dood-paard-tjernobyl": {
+   "opgehaaldOp": "2026-10-10T03:52:37.083Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Dood Paard",
+    "onder": "Tjernobyl",
+    "eersteStart": "2027-05-28T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-05-28",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350287"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/dorine-wiersma": {
+   "opgehaaldOp": "2026-10-10T03:53:30.182Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Dorine Wiersma",
+    "onder": "Gaandeweg",
+    "eersteStart": "2027-04-17T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-04-17",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350421"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/elfie-tromp-aai-poesje": {
+   "opgehaaldOp": "2026-10-10T03:53:24.094Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Elfie Tromp",
+    "onder": "Aai Poesje Aai Poesje",
+    "eersteStart": "2026-12-03T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-03",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350415"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/ellen-ten-damme": {
+   "opgehaaldOp": "2026-10-10T03:52:51.086Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "Ellen ten Damme",
+    "onder": "Medusa | try-out",
+    "eersteStart": "2027-03-04T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-04",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 25,00",
+      "knop": "Uitverkocht",
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/emma-buysse-luna-joosten-guyland": {
+   "opgehaaldOp": "2026-10-10T03:53:38.091Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Emma Buysse & Luna Joosten",
+    "onder": "Guyland",
+    "eersteStart": "2027-04-29T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-04-29",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 20,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350431"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/eric-vloeimans": {
+   "opgehaaldOp": "2026-10-10T03:53:27.061Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "Eric Vloeimans",
+    "onder": "Pico Bello",
+    "eersteStart": "2027-04-15T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-04-15",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 24,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350418"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/esther-apituley": {
+   "opgehaaldOp": "2026-10-10T03:52:59.080Z",
+   "data": {
+    "categorie": "Muziektheater",
+    "kop": "Esther Apituley",
+    "onder": "De Hemelbestormers en een verdwaalde Kluizenaar",
+    "eersteStart": "2027-03-24T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-24",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350383"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/femke-arnouts-het-wakker-liggen-van-wanda": {
+   "opgehaaldOp": "2026-10-10T03:53:08.246Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Femke Arnouts",
+    "onder": "Het wakker liggen van Wanda",
+    "eersteStart": "2026-10-10T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-10",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 20,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350399"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/filmclub-de-premiere-met-inleiding": {
+   "opgehaaldOp": "2026-10-10T03:52:28.000Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Filmclub de Première (met inleiding)",
+    "onder": null,
+    "eersteStart": "2026-11-06T11:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-06",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 oktober 12:00",
+      "href": null
+     },
+     {
+      "datum": "2026-11-10",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 oktober 12:00",
+      "href": null
+     },
+     {
+      "datum": "2026-12-04",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 november 12:00",
+      "href": null
+     },
+     {
+      "datum": "2026-12-08",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 november 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-01-08",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 december 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-01-12",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 december 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-02-05",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 januari 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-02-09",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 januari 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-03-05",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 februari 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-03-09",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 februari 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-04-02",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 maart 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-04-06",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 maart 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-05-07",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 april 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-05-11",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 april 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-06-04",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 mei 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-06-08",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 mei 12:00",
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/filmclub-de-premiere-zonder-inleiding": {
+   "opgehaaldOp": "2026-10-10T03:52:29.042Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Filmclub de Première (zonder inleiding)",
+    "onder": null,
+    "eersteStart": "2026-11-06T11:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-06",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 oktober 12:00",
+      "href": null
+     },
+     {
+      "datum": "2026-11-07",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 oktober 12:00",
+      "href": null
+     },
+     {
+      "datum": "2026-11-09",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 oktober 12:00",
+      "href": null
+     },
+     {
+      "datum": "2026-11-09",
+      "tijd": "15:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 oktober 12:00",
+      "href": null
+     },
+     {
+      "datum": "2026-11-10",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 oktober 12:00",
+      "href": null
+     },
+     {
+      "datum": "2026-12-04",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 november 12:00",
+      "href": null
+     },
+     {
+      "datum": "2026-12-05",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 november 12:00",
+      "href": null
+     },
+     {
+      "datum": "2026-12-07",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 november 12:00",
+      "href": null
+     },
+     {
+      "datum": "2026-12-07",
+      "tijd": "15:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 november 12:00",
+      "href": null
+     },
+     {
+      "datum": "2026-12-08",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 november 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-01-08",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 december 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-01-09",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 december 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-01-11",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 december 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-01-11",
+      "tijd": "15:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 december 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-01-12",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 december 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-02-05",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 januari 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-02-06",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 januari 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-02-08",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 januari 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-02-08",
+      "tijd": "15:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 juli 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-02-09",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 januari 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-03-05",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 februari 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-03-06",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 februari 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-03-08",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 februari 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-03-08",
+      "tijd": "15:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 februari 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-03-09",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 februari 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-04-02",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 maart 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-04-03",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 maart 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-04-05",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 maart 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-04-05",
+      "tijd": "15:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 maart 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-04-06",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 maart 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-05-07",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 april 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-05-08",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 april 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-05-10",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 april 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-05-10",
+      "tijd": "15:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 april 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-05-11",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 april 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-06-04",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 mei 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-06-05",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 mei 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-06-07",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 mei 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-06-07",
+      "tijd": "15:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 mei 12:00",
+      "href": null
+     },
+     {
+      "datum": "2027-06-08",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 15,00",
+      "knop": "Verkoop start23 mei 12:00",
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/firma-mes": {
+   "opgehaaldOp": "2026-10-10T03:53:31.084Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Firma Mes",
+    "onder": "Wapens",
+    "eersteStart": "2026-12-16T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-16",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 22,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350422"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/gershwin-bonevacia": {
+   "opgehaaldOp": "2026-10-10T03:53:36.102Z",
+   "data": {
+    "categorie": "Muziektheater",
+    "kop": "Gershwin Bonevacia",
+    "onder": "BLAUWZWART",
+    "eersteStart": "2027-04-24T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-04-24",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350429"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/groen-en-van-lien": {
+   "opgehaaldOp": "2026-10-10T03:52:57.083Z",
+   "data": {
+    "categorie": "Junior",
+    "kop": "Groen en van Lien",
+    "onder": "Het verraad van Ithaka 8+",
+    "eersteStart": "2027-03-21T15:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-21",
+      "tijd": "15:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 10,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350380"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/hyperpoezie-2026": {
+   "opgehaaldOp": "2026-10-10T03:53:41.081Z",
+   "data": {
+    "categorie": "Woordkunst",
+    "kop": "HYPERPOËZIE",
+    "onder": "PROTECT ME FROM WHAT I WANT",
+    "eersteStart": "2026-10-28T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-28",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350435"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/izaline-calister-rum-and-coca-cola": {
+   "opgehaaldOp": "2026-10-10T03:53:00.176Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "Izaline Calister",
+    "onder": "Rum and Coca Cola - Het vergeten front in De West",
+    "eersteStart": "2026-11-21T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-21",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 23,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350387"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/jeroen-van-vliet": {
+   "opgehaaldOp": "2026-10-10T03:53:19.094Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "Jeroen van Vliet",
+    "onder": "Dubbelprogramma",
+    "eersteStart": "2026-10-24T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-24",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 18,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350410"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/kamagurka": {
+   "opgehaaldOp": "2026-10-10T03:53:07.098Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Kamagurka",
+    "onder": "Op zekere dag",
+    "eersteStart": "2027-03-12T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-12",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350397"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/kassett-dansblok": {
+   "opgehaaldOp": "2026-10-10T03:53:41.997Z",
+   "data": {
+    "categorie": "Dans",
+    "kop": "KASSETT & DansBlok",
+    "onder": "Knooppunt",
+    "eersteStart": "2026-10-29T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-29",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350437"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/kees-prins": {
+   "opgehaaldOp": "2026-10-10T03:52:50.054Z",
+   "data": {
+    "categorie": "Muziektheater",
+    "kop": "Kees Prins",
+    "onder": "YESTERDAY | try-out",
+    "eersteStart": "2027-03-03T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-03",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 25,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350369"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/kim-karssen-10044665": {
+   "opgehaaldOp": "2026-10-10T03:52:35.113Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Kim Karssen",
+    "onder": "God is een snotje | try-out",
+    "eersteStart": "2027-02-04T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-02-04",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350211"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/kim-schuddeboom": {
+   "opgehaaldOp": "2026-10-10T03:52:48.088Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Kim Schuddeboom",
+    "onder": "Hardleers | try-out",
+    "eersteStart": "2027-02-25T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-02-25",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 24,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350359"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/korzo-breaking-generations": {
+   "opgehaaldOp": "2026-10-10T03:52:55.081Z",
+   "data": {
+    "categorie": "Dans",
+    "kop": "Korzo",
+    "onder": "Breaking Generations",
+    "eersteStart": "2027-05-12T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-05-12",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 22,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350378"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/laura-van-dolron-de-zachte-waarheid": {
+   "opgehaaldOp": "2026-10-10T03:52:30.056Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Laura van Dolron",
+    "onder": "Liefhebben II",
+    "eersteStart": "2026-11-13T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-13",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10296553"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/leids-cabaret-festival-2027": {
+   "opgehaaldOp": "2026-10-10T03:53:16.906Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Leids Cabaret Festival",
+    "onder": "Finalistentour 2027",
+    "eersteStart": "2027-04-03T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-04-03",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Uitverkocht",
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/ludwig-bindervoet": {
+   "opgehaaldOp": "2026-10-10T03:52:38.173Z",
+   "data": {
+    "categorie": "Fysiek theater",
+    "kop": "Ludwig Bindervoet",
+    "onder": "ARTAUD3000",
+    "eersteStart": "2027-03-17T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-17",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 18,50",
+      "knop": "Afgelast",
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/luuk-weggemans": {
+   "opgehaaldOp": "2026-10-10T03:52:44.437Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Luuk Weggemans",
+    "onder": "Lach maar om mij | try-out",
+    "eersteStart": "2027-02-18T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-02-18",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 24,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350352"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/martijn-crins-kooiapen": {
+   "opgehaaldOp": "2026-10-10T03:53:26.098Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Martijn Crins",
+    "onder": "Kooiapen | try-out",
+    "eersteStart": "2027-04-10T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-04-10",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350417"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/maskermeiden-2026": {
+   "opgehaaldOp": "2026-10-10T03:53:44.088Z",
+   "data": {
+    "categorie": "Junior",
+    "kop": "Maskermeiden",
+    "onder": "Cadeautje! 2+",
+    "eersteStart": "2026-12-27T15:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-27",
+      "tijd": "15:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 10,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350441"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/millennium-jazz-orchestra-april-27": {
+   "opgehaaldOp": "2026-10-10T03:53:13.066Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "Millennium Jazz Orchestra | april",
+    "onder": null,
+    "eersteStart": "2027-04-04T15:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-04-04",
+      "tijd": "15:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350404"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/millennium-jazz-orchestra-januari-27": {
+   "opgehaaldOp": "2026-10-10T03:53:09.097Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "Millennium Jazz Orchestra | januari",
+    "onder": "Januari",
+    "eersteStart": "2027-01-24T15:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-01-24",
+      "tijd": "15:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350400"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/millennium-jazz-orchestra-november-26": {
+   "opgehaaldOp": "2026-10-10T03:53:04.181Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "Millennium Jazz Orchestra | november",
+    "onder": "November",
+    "eersteStart": "2026-11-29T15:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-29",
+      "tijd": "15:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350394"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/millennium-jazz-orchestra-oktober-26": {
+   "opgehaaldOp": "2026-10-10T03:53:06.102Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "Millennium Jazz Orchestra | oktober",
+    "onder": "Erik van Lier",
+    "eersteStart": "2026-10-11T15:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-11",
+      "tijd": "15:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350396"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/milo-berlijn-presenteert-de-zorg-theatershow": {
+   "opgehaaldOp": "2026-10-10T03:52:31.090Z",
+   "data": {
+    "categorie": "Te gast",
+    "kop": "Milo Berlijn presenteert: De Zorg Theatershow",
+    "onder": "De theatershow voor iedereen in de Zorg!",
+    "eersteStart": "2026-10-20T20:00:00.0000000",
+    "speeldata": []
+   }
+  },
+  "https://www.mimik.nl/agenda/nazanin-taheri-george-tobal-producties": {
+   "opgehaaldOp": "2026-10-10T03:52:53.905Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Nazanin Taheri & George Tobal Producties",
+    "onder": "De Surpriseshow",
+    "eersteStart": "2027-03-06T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-06",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350375"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/niki-jacobs-ja": {
+   "opgehaaldOp": "2026-10-10T03:53:45.078Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "Niki Jacobs",
+    "onder": "JA! | try-out",
+    "eersteStart": "2026-10-31T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-31",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350442"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/orkaterde-nieuwkomers-dolorosa": {
+   "opgehaaldOp": "2026-10-10T03:53:15.190Z",
+   "data": {
+    "categorie": "Muziektheater",
+    "kop": "Orkater/De Nieuwkomers",
+    "onder": "Marie-Mae van Zuilen - Dolorosa",
+    "eersteStart": "2027-04-01T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-04-01",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350406"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/oscar-smit": {
+   "opgehaaldOp": "2026-10-10T03:53:35.107Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Oscar Smit",
+    "onder": "€472.000 | try-out",
+    "eersteStart": "2026-12-18T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-18",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 18,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350428"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/patrick-nederkoorn-nieuw-programma": {
+   "opgehaaldOp": "2026-10-10T03:52:52.093Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Patrick Nederkoorn",
+    "onder": "Nieuw programma | try-out",
+    "eersteStart": "2027-03-27T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-27",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350372"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/patsy-kroonenberg": {
+   "opgehaaldOp": "2026-10-10T03:53:39.072Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Patsy Kroonenberg",
+    "onder": "Ze is er nog",
+    "eersteStart": "2027-05-01T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-05-01",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 20,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350432"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/peter-heerschop": {
+   "opgehaaldOp": "2026-10-10T03:53:33.081Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Peter Heerschop",
+    "onder": "Lieve Marianne | try-out",
+    "eersteStart": "2026-12-17T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-17",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 23,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350426"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/poezieboys-theatergroep-echo": {
+   "opgehaaldOp": "2026-10-10T03:52:53.080Z",
+   "data": {
+    "categorie": "Woordkunst",
+    "kop": "Poezieboys & theatergroep ECHO",
+    "onder": "Arends",
+    "eersteStart": "2027-03-05T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-05",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 20,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350374"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/raymi-sambo-maakt-marsha": {
+   "opgehaaldOp": "2026-10-10T03:53:18.183Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Raymi Sambo Maakt",
+    "onder": "Wachten op Marsha",
+    "eersteStart": "2026-10-23T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-23",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350409"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/rundfunk-wagyu-try-out": {
+   "opgehaaldOp": "2026-10-10T03:53:16.085Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Rundfunk",
+    "onder": "Wagyu | try-out",
+    "eersteStart": "2026-10-21T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-21",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 23,00",
+      "knop": "Uitverkocht",
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/sadettin-k-kameleon": {
+   "opgehaaldOp": "2026-10-10T03:52:41.081Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Sadettin K.",
+    "onder": "KAMELEON",
+    "eersteStart": "2027-02-05T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-02-05",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 22,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350348"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/sara-kroos-gelukskoekje": {
+   "opgehaaldOp": "2026-10-10T03:53:31.906Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Sara Kroos",
+    "onder": "Gelukskoekje | try-out",
+    "eersteStart": "2027-04-23T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-04-23",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 25,00",
+      "knop": "Uitverkocht",
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/sem-konijn": {
+   "opgehaaldOp": "2026-10-10T03:52:47.078Z",
+   "data": {
+    "categorie": "Muziektheater",
+    "kop": "Sem Konijn",
+    "onder": "Populisme de Musical",
+    "eersteStart": "2027-02-24T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-02-24",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350358"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/sneak-preview": {
+   "opgehaaldOp": "2026-10-10T03:52:26.887Z",
+   "data": {
+    "categorie": "Sneak Preview",
+    "kop": "Sneak Preview",
+    "onder": null,
+    "eersteStart": "2026-10-13T21:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-13",
+      "tijd": "21:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 9,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10385789"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/stichting-krijt-berend-boekenvreter-4": {
+   "opgehaaldOp": "2026-10-10T03:53:11.068Z",
+   "data": {
+    "categorie": "Junior",
+    "kop": "Stichting Krijt",
+    "onder": "Berend Boekenvreter 4+",
+    "eersteStart": "2026-10-15T15:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-15",
+      "tijd": "15:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 0,00",
+      "knop": "Reserveer",
+      "href": "https://www.mimik.nl/tickets?programId=10350402"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/ta-joela": {
+   "opgehaaldOp": "2026-10-10T03:53:46.090Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Ta Joela",
+    "onder": "Grenzen verkennen",
+    "eersteStart": "2027-05-08T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-05-08",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 17,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350444"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/tent-van-het-oosten-maart": {
+   "opgehaaldOp": "2026-10-10T03:53:12.094Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "Tent van het Oosten | maart",
+    "onder": "Zilan Hasret Yıldız",
+    "eersteStart": "2027-03-31T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-31",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 15,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350403"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/tent-van-het-oosten-november": {
+   "opgehaaldOp": "2026-10-10T03:53:02.192Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "Tent van het Oosten | november",
+    "onder": "Samaie Trio",
+    "eersteStart": "2026-11-25T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-25",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 15,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350392"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/tetem-workshop-films": {
+   "opgehaaldOp": "2026-10-10T03:52:32.057Z",
+   "data": {
+    "categorie": "Film, Junior",
+    "kop": "Tetem workshop films",
+    "onder": null,
+    "eersteStart": "2026-10-12T12:30:00.0000000",
+    "speeldata": []
+   }
+  },
+  "https://www.mimik.nl/agenda/tg-tiefschnee": {
+   "opgehaaldOp": "2026-10-10T03:52:58.089Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "TG Tiefschnee",
+    "onder": "Karen",
+    "eersteStart": "2027-03-25T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-25",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 19,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350382"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/the-ambush-party-orchestra": {
+   "opgehaaldOp": "2026-10-10T03:52:39.078Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "The Ambush Party Orchestra",
+    "onder": null,
+    "eersteStart": "2027-03-18T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-18",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 17,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350289"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/theater-bellevue": {
+   "opgehaaldOp": "2026-10-10T03:53:10.134Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Theater Bellevue",
+    "onder": "Teckel",
+    "eersteStart": "2027-02-27T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-02-27",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 20,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350401"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/theater-kwikstaart-dwars-door-het-beton": {
+   "opgehaaldOp": "2026-10-10T03:53:00.903Z",
+   "data": {
+    "categorie": "Junior",
+    "kop": "Theater Kwikstaart",
+    "onder": "Dwars door het beton! 4+",
+    "eersteStart": "2026-11-22T15:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-22",
+      "tijd": "15:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 10,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350389"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/theater-utrecht": {
+   "opgehaaldOp": "2026-10-10T03:53:24.999Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Theater Utrecht",
+    "onder": "Sexodus",
+    "eersteStart": "2026-12-04T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-04",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 22,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350416"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/theatergroep-aluin-moeder-aarde": {
+   "opgehaaldOp": "2026-10-10T03:52:56.097Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Theatergroep Aluin",
+    "onder": "Moeder Aarde",
+    "eersteStart": "2027-03-20T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-20",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350379"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/urland-2026": {
+   "opgehaaldOp": "2026-10-10T03:52:35.997Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Urland",
+    "onder": "Before The Story Starts",
+    "eersteStart": "2026-10-16T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-16",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350212"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/van-die-mensen": {
+   "opgehaaldOp": "2026-10-10T03:52:45.397Z",
+   "data": {
+    "categorie": "Muziektheater",
+    "kop": "Van Die Mensen",
+    "onder": "Grab-n-Go",
+    "eersteStart": "2027-02-19T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-02-19",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 17,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350354"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/van-wyck": {
+   "opgehaaldOp": "2026-10-10T03:53:37.085Z",
+   "data": {
+    "categorie": "Theaterconcert",
+    "kop": "Van Wyck",
+    "onder": "Thin Places",
+    "eersteStart": "2026-12-19T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-19",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 20,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350430"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/via-rudolphi-producties-belangelozen": {
+   "opgehaaldOp": "2026-10-10T03:52:43.077Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Via Rudolphi Producties",
+    "onder": "De Belangelozen",
+    "eersteStart": "2027-02-12T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-02-12",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 21,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350351"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/via-rudolphi-producties-het-debuut-26": {
+   "opgehaaldOp": "2026-10-10T03:53:43.186Z",
+   "data": {
+    "categorie": "Theater",
+    "kop": "Via Rudolphi Producties",
+    "onder": "Het Debuut 2026",
+    "eersteStart": "2026-10-30T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-30",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 17,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350439"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/viggo-waas-eddie-b-wahr": {
+   "opgehaaldOp": "2026-10-10T03:52:40.105Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Viggo Waas & Eddie B. Wahr",
+    "onder": "Eigenlijk | try-out",
+    "eersteStart": "2027-03-19T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-03-19",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 23,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350290"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/werkplaats-walhalla-danielle-deddens": {
+   "opgehaaldOp": "2026-10-10T03:53:03.297Z",
+   "data": {
+    "categorie": "Muziektheater",
+    "kop": "Werkplaats Walhalla & Daniëlle Deddens",
+    "onder": "Hedda Gabber",
+    "eersteStart": "2026-11-28T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-28",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 17,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350393"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/wina-ricardo": {
+   "opgehaaldOp": "2026-10-10T03:52:42.081Z",
+   "data": {
+    "categorie": "Cabaret",
+    "kop": "Wina Ricardo",
+    "onder": "Wina's Wereld",
+    "eersteStart": "2027-02-11T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-02-11",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 22,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350350"
+     }
+    ]
+   }
+  }
+ }
+}

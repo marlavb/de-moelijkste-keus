@@ -547,6 +547,16 @@
         "toelichting": "Online bij de voorstelling, vanaf 30 dagen; kaart ophalen aan de kassa van het theater (vanaf een uur tot een half uur voor aanvang). Niet bij gastprogrammering en rangen boven €50."
       }
     },
+    "mimik": {
+      "naam": "MIMIK",
+      "stad": "Deventer",
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "formulier": "https://www.mimik.nl/reservering-podiumpas-voorstelling",
+        "email": "podiumpas@mimik.nl",
+        "toelichting": "Alleen via het reserveringsformulier van MIMIK, vanaf 30 dagen voor de voorstelling; kaarten ophalen aan de kassa, van 60 tot 15 minuten voor aanvang. Alleen theatervoorstellingen, geen films."
+      }
+    },
     "tamboer": {
       "naam": "De Tamboer",
       "stad": "Hoogeveen",
@@ -555,7 +565,8 @@
         "online": true,
         "toelichting": "Online: klik op \"bestel\", kies het ticket \"Podiumpas\" (€0), en vul je pasnummer in; neem de pas mee."
       },
-      "melding": "Uitzonderingen voor de Podiumpas nog niet bekend — vraag het theater."
+      "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
+      "meldingLink": "https://detamboer.nl/programma"
     },
     "demuze": {
       "naam": "De Muze",
@@ -574,7 +585,9 @@
       "podiumpasReserveren": {
         "email": "kassa@grandtheatregroningen.nl",
         "toelichting": "Alleen tickets tot €50 — de prijs controleren we niet automatisch. Alleen per mail (naam, adres, pasnummer, voorstelling), vanaf 30 dagen voor de voorstelling; het ticket komt per mail. Niet bij verhuur of voorstellingen waarvoor Grand Theatre de kaartverkoop niet doet."
-      }
+      },
+      "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
+      "meldingLink": "https://www.grandtheatregroningen.nl/nl/programma"
     }
   }
 }

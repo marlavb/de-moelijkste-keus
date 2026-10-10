@@ -1,0 +1,2397 @@
+{
+ "theaterId": "carre",
+ "items": {
+  "https://carre.nl/api/render/voorstelling/30-jaar-trijntje": {
+   "opgehaaldOp": "2026-10-10T03:07:24.290Z",
+   "data": {
+    "naam": "Trijntje Oosterhuis",
+    "events": [
+     {
+      "id": "36472",
+      "start": "2027-05-09T14:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36472&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36472%26upsellids%3D36478%252C36480%252C36479&saleschannelid=2&skinid=1&withauthentication=no&signature=f3ffa5ae1c6b304423824abac529a3f80b116d8013b9cdbf58f260349b075cef"
+     },
+     {
+      "id": "36473",
+      "start": "2027-05-09T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36473&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36473%26upsellids%3D36476%252C36475%252C36474%252C36477&saleschannelid=2&skinid=1&withauthentication=no&signature=b21e4eb0791df82bdff7f057bd0d4c510b952bfe2d697bacdaae0fc9037de36c"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/agnes-obel": {
+   "opgehaaldOp": "2026-10-10T03:07:31.293Z",
+   "data": {
+    "naam": "Agnes Obel",
+    "events": [
+     {
+      "id": "36657",
+      "start": "2027-09-27T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36657&flow=return&oncompletion=return&promocode=FLOWERS&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36657%26upsellids%3D36984%252C36983&saleschannelid=2&skinid=10010&withauthentication=no&signature=1dbc22aa9fea73888dfb10e580b9d50874b74a02490a42a2465828683353260f"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/andreas-vollenweider": {
+   "opgehaaldOp": "2026-10-10T03:07:33.293Z",
+   "data": {
+    "naam": "Andreas Vollenweider & Friends",
+    "events": [
+     {
+      "id": "36550",
+      "start": "2027-11-07T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://www.ticketmaster.nl/event/555393632"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/ashton-brothers": {
+   "opgehaaldOp": "2026-10-10T03:07:15.274Z",
+   "data": {
+    "naam": "Ashton Brothers",
+    "events": [
+     {
+      "id": "36966",
+      "start": "2027-03-29T16:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36966&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36966%26upsellids%3D36967%252C36968&saleschannelid=2&skinid=1&withauthentication=no&signature=ed1d4c4b15cda6278743a4e3ecfea0548cd7da34cdb9513d9cfa6d27866f9cad"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/assepoester": {
+   "opgehaaldOp": "2026-10-10T03:07:06.265Z",
+   "data": {
+    "naam": "NRO: La Cenerentola (Assepoester)",
+    "events": [
+     {
+      "id": "36503",
+      "start": "2027-02-20T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36503&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36503%26upsellids%3D36512%252C36513%252C36510%252C36511&saleschannelid=2&skinid=1&withauthentication=no&signature=53ee7bf4d99e538a64f26eecbe97a5c3c3339da4396f670d16707cf4c63cff14"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/ben-bril-memorial-boksgala-2026": {
+   "opgehaaldOp": "2026-10-10T03:06:41.347Z",
+   "data": {
+    "naam": "Ben Bril Memorial Boksgala 2026",
+    "events": [
+     {
+      "id": "35072",
+      "start": "2026-10-12T19:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35072&flow=basketwithcheckout&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Fcarre.nl%2Fagenda&saleschannelid=2&skinid=1&withauthentication=no&signature=8519543f81c2739d524a7c554dcff325b69c4ecb2516aaf532e8d8b64ebed4af"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/bianca-del-rio-2027": {
+   "opgehaaldOp": "2026-10-10T03:07:20.282Z",
+   "data": {
+    "naam": "Bianca Del Rio",
+    "events": [
+     {
+      "id": "36986",
+      "start": "2027-04-21T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36986&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36986%26upsellids%3D37005%252C37004%252C37068&saleschannelid=2&skinid=10007&withauthentication=no&signature=337d3bcd4af2f0593e8a6b43e413f7ba05b09a1f6798f289ec200b524fdce095"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/blancowhite": {
+   "opgehaaldOp": "2026-10-10T03:07:11.274Z",
+   "data": {
+    "naam": "Blanco White",
+    "events": [
+     {
+      "id": "36341",
+      "start": "2027-03-13T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36341&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36341%26upsellids%3D36355%252C36354&saleschannelid=2&skinid=10010&withauthentication=no&signature=0cd0d26191df2b6962b68a5ef1f56613decaad8bf4a4d13a8e2b1857af92c445"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/bonnie-prince-billy": {
+   "opgehaaldOp": "2026-10-10T03:06:46.247Z",
+   "data": {
+    "naam": "Bonnie 'Prince' Billy",
+    "events": [
+     {
+      "id": "36311",
+      "start": "2026-11-11T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://www.ticketmaster.nl/event/1398369498"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/brabo-leone": {
+   "opgehaaldOp": "2026-10-10T03:07:34.297Z",
+   "data": {
+    "naam": "Brabo Leone",
+    "events": [
+     {
+      "id": "36975",
+      "start": "2027-11-30T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36975&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36975%26upsellids%3D36979%252C36981%252C36977&saleschannelid=2&skinid=1&withauthentication=no&signature=43ad94f040b6ce389bd9e8dbd2a774550ad8a118eca6a4bfbeceb4d0a6922f59"
+     },
+     {
+      "id": "36976",
+      "start": "2027-12-01T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36976&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36976%26upsellids%3D36980%252C36982%252C36978&saleschannelid=2&skinid=1&withauthentication=no&signature=782fac9471fd237fba246b0cd22d40b6b39c2bc5302248aac4f37396f9bd6c5e"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/cats": {
+   "opgehaaldOp": "2026-10-10T03:06:43.376Z",
+   "data": {
+    "naam": "Cats",
+    "events": [
+     {
+      "id": "36573",
+      "start": "2026-10-15T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36573&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36573%26upsellids%3D35945%252C35924%252C35915%252C35937&saleschannelid=2&skinid=1&withauthentication=no&signature=662c54c70300cdf27d314a0418561af6c32e91abcab45780f9b50ef29927c438"
+     },
+     {
+      "id": "36583",
+      "start": "2026-10-16T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36583&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36583%26upsellids%3D35946%252C35925%252C35916%252C35938&saleschannelid=2&skinid=1&withauthentication=no&signature=84d7d63d582915ba658f7a54567f34d63e3bc9b7b763a79de035f7aa9b4b6a38"
+     },
+     {
+      "id": "36585",
+      "start": "2026-10-17T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36585&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36585%26upsellids%3D35947%252C35926%252C35917%252C35939&saleschannelid=2&skinid=1&withauthentication=no&signature=838740d1cda17acff4604062d396f2152f448d5b0d242d57999e6a258ddc6a04"
+     },
+     {
+      "id": "36586",
+      "start": "2026-10-18T14:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36586&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36586%26upsellids%3D35954%252C35932%252C35953&saleschannelid=2&skinid=1&withauthentication=no&signature=eb4cb08e291d34de135a07ad7908c93f30b12a95423aa8ba885cb16651835e39"
+     },
+     {
+      "id": "36587",
+      "start": "2026-10-19T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36587&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36587%26upsellids%3D35940&saleschannelid=2&skinid=1&withauthentication=no&signature=5b4a386de78ba19cee893a44dcf9236d14f42442613f7a04464d0cfb4d0f1c82"
+     },
+     {
+      "id": "36588",
+      "start": "2026-10-21T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36588&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36588%26upsellids%3D35949%252C35927%252C35918%252C35941&saleschannelid=2&skinid=1&withauthentication=no&signature=4828161407028218175698d5cff2bdd9bbd5dff57918066b906a4e4301cc9213"
+     },
+     {
+      "id": "36589",
+      "start": "2026-10-22T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36589&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36589%26upsellids%3D35950%252C35928%252C35919%252C35942&saleschannelid=2&skinid=1&withauthentication=no&signature=355ca2ab9926b3887eecebae81c0c72fde642981441549182bdca5f1df5840e3"
+     },
+     {
+      "id": "36590",
+      "start": "2026-10-23T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36590&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36590%26upsellids%3D35956%252C35923%252C35955&saleschannelid=2&skinid=1&withauthentication=no&signature=300beb7a547c922e1c6a17cbebffe653351cbab77bab9a824784a4844d963f4c"
+     },
+     {
+      "id": "36591",
+      "start": "2026-10-23T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36591&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36591%26upsellids%3D35951%252C35929%252C35920%252C35943&saleschannelid=2&skinid=1&withauthentication=no&signature=63307829f54d071dd4ce10fc3e6e0089e0085a965dea4f8d24058f7652397102"
+     },
+     {
+      "id": "36642",
+      "start": "2026-10-24T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36642&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36642%26upsellids%3D35952%252C35959%252C35930%252C35931%252C35921%252C35944%252C35960&saleschannelid=2&skinid=1&withauthentication=no&signature=645c184cd3cd31c4dfc29d72d2dcccbdf24f2d70a5674eaed68d97023d16d008"
+     },
+     {
+      "id": "36643",
+      "start": "2026-10-24T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36643&flow=basketwithcheckout&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Fcarre.nl%2Fagenda&saleschannelid=2&skinid=1&withauthentication=no&signature=01503b414633a205427c64446fe210f24c4e62e7fac6be9b2f4342d4697b5db9"
+     },
+     {
+      "id": "36644",
+      "start": "2026-10-25T14:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36644&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36644%26upsellids%3D35958%252C35933%252C35957&saleschannelid=2&skinid=1&withauthentication=no&signature=4cf1aa83075ea48a56eb7dbdc093c2a355096f2ad02c625fc295db79d46d152c"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/cem-adrian-2027": {
+   "opgehaaldOp": "2026-10-10T03:07:22.288Z",
+   "data": {
+    "naam": "Cem Adrian",
+    "events": [
+     {
+      "id": "36250",
+      "start": "2027-05-01T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36250&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36250%26upsellids%3D36171%252C36170&saleschannelid=2&skinid=1&withauthentication=no&signature=7c67982565d137a0416a98bac67838095612215bbb2fb5a98de3975fb4ab02e5"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/chris-de-burgh-2027": {
+   "opgehaaldOp": "2026-10-10T03:07:23.288Z",
+   "data": {
+    "naam": "Chris de Burgh",
+    "events": [
+     {
+      "id": "36972",
+      "start": "2027-05-02T19:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://www.ticketmaster.nl/event/49488589"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/claudia-de-breij-oudejaarsconference": {
+   "opgehaaldOp": "2026-10-10T03:06:55.261Z",
+   "data": {
+    "naam": "Claudia de Breij",
+    "events": [
+     {
+      "id": "37126",
+      "start": "2026-12-05T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37126&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37126%26upsellids%3D35757%252C35758%252C35756&saleschannelid=2&skinid=1&withauthentication=no&signature=f11758fd765c2c1102cb4c39bc48c936d65459a47ea5e95c9d146d21369e9c81"
+     },
+     {
+      "id": "35755",
+      "start": "2026-12-06T15:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35755&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35755%26upsellids%3D35762&saleschannelid=2&skinid=1&withauthentication=no&signature=1591cd0c18edc36aea2fb34b4f1ef8b43340244e868480b278a0b7283338620e"
+     },
+     {
+      "id": "37127",
+      "start": "2026-12-06T19:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37127&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37127%26upsellids%3D35760%252C35761%252C35759&saleschannelid=2&skinid=1&withauthentication=no&signature=19e9fccd5c7d5722b6273ccdb01d94a4f896f11478b78879c70b1a0042938f13"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/de-proefkeuken-en-de-wc-van-tijd": {
+   "opgehaaldOp": "2026-10-10T03:07:08.277Z",
+   "data": {
+    "naam": "Proefkeuken",
+    "events": [
+     {
+      "id": "36505",
+      "start": "2027-02-26T19:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36505&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36505%26upsellids%3D36517%252C36518%252C36516&saleschannelid=2&skinid=1&withauthentication=no&signature=870e9759492343967f8aafeae6dccdf9d8000b85055c41fe7eba8e7594dcc8ff"
+     },
+     {
+      "id": "36504",
+      "start": "2027-02-27T15:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36504&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36504%26upsellids%3D36519%252C36520&saleschannelid=2&skinid=1&withauthentication=no&signature=aed1452e7dfdc861a8a56fce25be0be7852b9d22c8e46972afe92158e0450074"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/dewolff": {
+   "opgehaaldOp": "2026-10-10T03:07:04.281Z",
+   "data": {
+    "naam": "DeWolff",
+    "events": [
+     {
+      "id": "36105",
+      "start": "2027-02-11T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36105&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36105%26upsellids%3D36108%252C36106&saleschannelid=2&skinid=1&withauthentication=no&signature=dfcc9ecaae7e0df0aec400963f1c8dc34bdd1e22dfa2ca30a5fa08831b0d68c5"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/dolf-jansen-schaamteloos": {
+   "opgehaaldOp": "2026-10-10T03:06:58.263Z",
+   "data": {
+    "naam": "Dolf Jansen",
+    "events": [
+     {
+      "id": "36295",
+      "start": "2027-01-09T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36295&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36295%26upsellids%3D36297%252C36298%252C36296&saleschannelid=2&skinid=1&withauthentication=no&signature=02c1f071934d7f315413d2eca27cc9657815ea2c865a01419729aa3bd5d64a9e"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/epica": {
+   "opgehaaldOp": "2026-10-10T03:07:02.264Z",
+   "data": {
+    "naam": "EPICA",
+    "events": [
+     {
+      "id": "36254",
+      "start": "2027-01-29T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://www.ticketmaster.nl/event/1173762195"
+     },
+     {
+      "id": "36255",
+      "start": "2027-01-30T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://www.ticketmaster.nl/event/1691164177"
+     },
+     {
+      "id": "36383",
+      "start": "2027-01-31T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://www.ticketmaster.nl/event/1909496467"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/erykah-badu": {
+   "opgehaaldOp": "2026-10-10T03:06:42.252Z",
+   "data": {
+    "naam": "Erykah Badu",
+    "events": [
+     {
+      "id": "36686",
+      "start": "2026-10-13T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://www.ticketmaster.nl/event/432974854"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/esther-perel-2027": {
+   "opgehaaldOp": "2026-10-10T03:07:05.280Z",
+   "data": {
+    "naam": "Esther Perel",
+    "events": [
+     {
+      "id": "37069",
+      "start": "2027-02-17T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37069&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37069%26upsellids%3D37071%252C37070&saleschannelid=2&skinid=1&withauthentication=no&signature=46f8c9d21776bc54cf3fc3e25a76d81eda62703e8d17e2c170c92f9d0901e0fa"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/evita": {
+   "opgehaaldOp": "2026-10-10T03:06:48.250Z",
+   "data": {
+    "naam": "Evita",
+    "events": [
+     {
+      "id": "36508",
+      "start": "2026-11-17T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36508&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36508%26upsellids%3D35084%252C35087%252C35086%252C35085&saleschannelid=2&skinid=1&withauthentication=no&signature=d74513d39c8ca46a54361b0424add40e2995aeffe91e2400034c053c424e58c3"
+     },
+     {
+      "id": "36509",
+      "start": "2026-11-18T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36509&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36509%26upsellids%3D35090%252C35089%252C35088%252C35091&saleschannelid=2&skinid=1&withauthentication=no&signature=ba35a04afa4fda90389a517e988e990311f17909b5ce6578994600af9a7be5bd"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/foil-arms-and-hog-smithereens": {
+   "opgehaaldOp": "2026-10-10T03:07:26.291Z",
+   "data": {
+    "naam": "Foil Arms and Hog",
+    "events": [
+     {
+      "id": "37053",
+      "start": "2027-05-15T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37053&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37053%26upsellids%3D37057%252C37055&saleschannelid=2&skinid=10007&withauthentication=no&signature=598ca3df7f255519f81802f6cf848a1c4f83e4238f12a779fbf27210fa99de7f"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/had-ik-maar-nooit-zo-aardig-gedaan": {
+   "opgehaaldOp": "2026-10-10T03:07:18.284Z",
+   "data": {
+    "naam": "Daniël Arends - Had ik maar nooit zo aardig gedaan",
+    "events": [
+     {
+      "id": "36174",
+      "start": "2027-04-12T22:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36174&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36174%26upsellids%3D36178&saleschannelid=2&skinid=1&withauthentication=no&signature=6ba02967b87e08d771cb0bc73fe6b2e36652eecf6967c62921acce473415ad3b"
+     },
+     {
+      "id": "36175",
+      "start": "2027-04-13T22:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36175&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36175%26upsellids%3D36181&saleschannelid=2&skinid=1&withauthentication=no&signature=ea1f69ad141499be6b0095c3b8d7880f7c67b35f63686ad1f49e4c6addc4f145"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/hadestown": {
+   "opgehaaldOp": "2026-10-10T03:07:30.502Z",
+   "data": {
+    "naam": "HADESTOWN",
+    "events": [
+     {
+      "id": "36696",
+      "start": "2027-06-25T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36696&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36696%26upsellids%3D36752%252C36750%252C36751%252C36753&saleschannelid=2&skinid=10020&withauthentication=no&signature=476c17174c044cf45406e2e47a855bb2370738c491e948970dac0337ae1a96b9"
+     },
+     {
+      "id": "36697",
+      "start": "2027-06-26T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36697&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36697%26upsellids%3D36835%252C36868%252C36901%252C36802&saleschannelid=2&skinid=10020&withauthentication=no&signature=7ee025bda6554bc516c08f9edf5e476445f05f169fcfa74ddff741e6bc328008"
+     },
+     {
+      "id": "36702",
+      "start": "2027-06-27T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36702&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36702%26upsellids%3D36836%252C36869%252C36902%252C36803&saleschannelid=2&skinid=10020&withauthentication=no&signature=3d74898e2f07b0bdd0b54a409504016c73fd56425337c6684c5a3b173224b6d0"
+     },
+     {
+      "id": "36703",
+      "start": "2027-06-29T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36703&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36703%26upsellids%3D36852%252C36885%252C36918%252C36819&saleschannelid=2&skinid=10020&withauthentication=no&signature=f297cde3ae862df6ceb0a95010b44ef7da10f8a28481cd9af3f09885f7716664"
+     },
+     {
+      "id": "36704",
+      "start": "2027-06-30T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36704&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36704%26upsellids%3D36853%252C36886%252C36920%252C36820&saleschannelid=2&skinid=10020&withauthentication=no&signature=92a9e613ef05925cc0cea07355c02119746b4b5b19d54e33f1d19b10bc30cb96"
+     },
+     {
+      "id": "36705",
+      "start": "2027-07-01T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36705&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36705%26upsellids%3D36854%252C36887%252C36921%252C36821&saleschannelid=2&skinid=10020&withauthentication=no&signature=a6238b12bf6b7fe28742605becfdb84b3fefd8ce92e74dc9c6bb9369274cb1a2"
+     },
+     {
+      "id": "36706",
+      "start": "2027-07-02T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36706&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36706%26upsellids%3D36837%252C36870%252C36903%252C36804&saleschannelid=2&skinid=10020&withauthentication=no&signature=9fdc27091e3d1cf7b00bef328bb1da6dd8a7698477522ca77bfd93b3526eb1df"
+     },
+     {
+      "id": "36707",
+      "start": "2027-07-03T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36707&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36707%26upsellids%3D36755%252C36754%252C36756&saleschannelid=2&skinid=10020&withauthentication=no&signature=8a2f36dab54818261a42b24571867b52ea38cf9bd7b82d8510d270d27ad8eb08"
+     },
+     {
+      "id": "36708",
+      "start": "2027-07-03T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36708&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36708%26upsellids%3D36838%252C36871%252C36904%252C36805&saleschannelid=2&skinid=10020&withauthentication=no&signature=2dd270c83ac94db57c59ff13bb274e999c7ed7f8c82c73fb29af1c90baa6fc48"
+     },
+     {
+      "id": "36709",
+      "start": "2027-07-04T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36709&flow=basketwithcheckout&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Fcarre.nl%2Fagenda&saleschannelid=2&skinid=10020&withauthentication=no&signature=34f4cb7814ef202aaff92b69f7f741b441e443d6946ccbe7ea3c1db3eac94e6b"
+     },
+     {
+      "id": "36481",
+      "start": "2027-07-06T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36481&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36481%26upsellids%3D36855%252C36888%252C36922%252C36822&saleschannelid=2&skinid=10020&withauthentication=no&signature=6104bb0bd5fd0f3a419806aded550621d52483a5119c5f9482c11d684471336b"
+     },
+     {
+      "id": "36711",
+      "start": "2027-07-07T14:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36711&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36711%26upsellids%3D36772%252C36758%252C36799&saleschannelid=2&skinid=10020&withauthentication=no&signature=736b4859b6e1e80b613e3d345db32e73a9135a18e00009561772e5ac70c1e9f3"
+     },
+     {
+      "id": "36710",
+      "start": "2027-07-07T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36710&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36710%26upsellids%3D36856%252C36889%252C36923%252C36823&saleschannelid=2&skinid=10020&withauthentication=no&signature=2c3c11d94cf0ad8a8f0541c1383e26eb096e86ca6b5259cb3a80d400b7c6d32e"
+     },
+     {
+      "id": "36712",
+      "start": "2027-07-08T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36712&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36712%26upsellids%3D36857%252C36890%252C36928%252C36824&saleschannelid=2&skinid=10020&withauthentication=no&signature=7ea9bec8f892f1f04ca66517e81ec17ba228b835d80bdd7d205eb722ba8a7e86"
+     },
+     {
+      "id": "36713",
+      "start": "2027-07-09T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36713&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36713%26upsellids%3D36839%252C36872%252C36905%252C36806&saleschannelid=2&skinid=10020&withauthentication=no&signature=30bd0960bf98a0c8c245cd429e21797b3b96fc220b5e6ee335879fa80148168f"
+     },
+     {
+      "id": "36482",
+      "start": "2027-07-10T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36482&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36482%26upsellids%3D36491%252C36489%252C36493&saleschannelid=2&skinid=10020&withauthentication=no&signature=4e844b9c799304001459023f58c0f8c9d8e2bafdb2e32ea6cb144a8269c07095"
+     },
+     {
+      "id": "36483",
+      "start": "2027-07-10T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36483&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36483%26upsellids%3D36487%252C36486%252C36485%252C36488&saleschannelid=2&skinid=10020&withauthentication=no&signature=623941d2126c31efee41f3a5a5284f8a16641aff2e55b94c8c67c2f8d5b3f672"
+     },
+     {
+      "id": "36484",
+      "start": "2027-07-11T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36484&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36484%26upsellids%3D36492%252C36490%252C36494&saleschannelid=2&skinid=10020&withauthentication=no&signature=07f6552f53e75b251a0f0ae1215c08e0571ff4f987a85767b46264e0445aae1d"
+     },
+     {
+      "id": "36714",
+      "start": "2027-07-13T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36714&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36714%26upsellids%3D36858%252C36891%252C36924%252C36825&saleschannelid=2&skinid=10020&withauthentication=no&signature=7ecd9f0b54ed60f0489517b7bc24be1dc6523a8891310a2f1e67deb3d6283471"
+     },
+     {
+      "id": "36716",
+      "start": "2027-07-14T14:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36716&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36716%26upsellids%3D36773%252C36759%252C36800&saleschannelid=2&skinid=10020&withauthentication=no&signature=9e18e63c49264c6f5bc8929bdee519f8c0659cd6381215ac84efc2f086e0fda8"
+     },
+     {
+      "id": "36715",
+      "start": "2027-07-14T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36715&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36715%26upsellids%3D36859%252C36892%252C36925%252C36826&saleschannelid=2&skinid=10020&withauthentication=no&signature=31d09f912a8132141c64a6d7ca836aad9211ae394e4b892de8cd5cdf2a6e47a9"
+     },
+     {
+      "id": "36717",
+      "start": "2027-07-15T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36717&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36717%26upsellids%3D36860%252C36893%252C36929%252C36827&saleschannelid=2&skinid=10020&withauthentication=no&signature=9963fcea86ab9dc6aaf88a1f73e41a1396ef3dfae1dc9cd8336a81f452cabaea"
+     },
+     {
+      "id": "36718",
+      "start": "2027-07-16T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36718&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36718%26upsellids%3D36840%252C36873%252C36906%252C36807&saleschannelid=2&skinid=10020&withauthentication=no&signature=bab761347ac30965bd1013bdddd714ad9ffe360851a39cd8087b9e007897f217"
+     },
+     {
+      "id": "36720",
+      "start": "2027-07-17T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36720&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36720%26upsellids%3D36775%252C36757%252C36787&saleschannelid=2&skinid=10020&withauthentication=no&signature=220e2feb2475f5c35d23704c71e51c54ec7c19d1f7eaed7be72a4d1be378e9f2"
+     },
+     {
+      "id": "36719",
+      "start": "2027-07-17T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36719&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36719%26upsellids%3D36841%252C36874%252C36907%252C36808&saleschannelid=2&skinid=10020&withauthentication=no&signature=77924cab0385de5367e4f5c38bfd81f50144092928cbfa28ee08e2ab56f1908a"
+     },
+     {
+      "id": "36721",
+      "start": "2027-07-18T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36721&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36721%26upsellids%3D36776%252C36761%252C36788&saleschannelid=2&skinid=10020&withauthentication=no&signature=e90780916fface04c6b439239c37c872d504018fba6f1972fe20bdb90637ee58"
+     },
+     {
+      "id": "36722",
+      "start": "2027-07-20T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36722&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36722%26upsellids%3D36861%252C36894%252C36926%252C36828&saleschannelid=2&skinid=10020&withauthentication=no&signature=746f29342c4f60654184802d3e5a91439fbcc27c46c3ade254591a1d39c6c402"
+     },
+     {
+      "id": "36724",
+      "start": "2027-07-21T14:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36724&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36724%26upsellids%3D36774%252C36760%252C36801&saleschannelid=2&skinid=10020&withauthentication=no&signature=70d2d3b8d8054e25559151841c30a3bc5b3e306c6df192abcfcfbe91d7055e79"
+     },
+     {
+      "id": "36723",
+      "start": "2027-07-21T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36723&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36723%26upsellids%3D36862%252C36895%252C36927%252C36829&saleschannelid=2&skinid=10020&withauthentication=no&signature=c291b624fc641dc1eac476e642cbdee470572e7f7ef7a2e25ae43bf9d5242f26"
+     },
+     {
+      "id": "36725",
+      "start": "2027-07-22T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36725&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36725%26upsellids%3D36863%252C36896%252C36930%252C36830&saleschannelid=2&skinid=10020&withauthentication=no&signature=24c876d985f34128a43dde23f260f70adffc4b74315103ae2fa859dc25b980d4"
+     },
+     {
+      "id": "36726",
+      "start": "2027-07-23T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36726&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36726%26upsellids%3D36842%252C36875%252C36908%252C36809&saleschannelid=2&skinid=10020&withauthentication=no&signature=59dc96820e25971e798cf3863cf82ca430db33c9c0dde786fc756e6aa54337c0"
+     },
+     {
+      "id": "36728",
+      "start": "2027-07-24T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36728&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36728%26upsellids%3D36777%252C36762%252C36789&saleschannelid=2&skinid=10020&withauthentication=no&signature=9d1cbaf68518e4994c2b82d733766c6b0dbd9401b1484824564bbc02c554ff46"
+     },
+     {
+      "id": "36727",
+      "start": "2027-07-24T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36727&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36727%26upsellids%3D36843%252C36876%252C36909%252C36810&saleschannelid=2&skinid=10020&withauthentication=no&signature=170bd38f628b89994341a47d6b9433cd18ef534f7ed282e4dbba2602ba610a0f"
+     },
+     {
+      "id": "36729",
+      "start": "2027-07-25T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36729&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36729%26upsellids%3D36778%252C36763%252C36790&saleschannelid=2&skinid=10020&withauthentication=no&signature=9b6829a0618f690f0ac9104cc6bdbe72b3bcd14341ad18383fb65693fac837b0"
+     },
+     {
+      "id": "36942",
+      "start": "2027-07-27T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36942&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36942%26upsellids%3D36946%252C36940%252C36938%252C36944&saleschannelid=2&skinid=10020&withauthentication=no&signature=4a161e814081305e86dbea65a442e3b02d7996f5b0a6051ba738576dd532325d"
+     },
+     {
+      "id": "36950",
+      "start": "2027-07-28T14:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36950&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36950%26upsellids%3D36952%252C36948%252C36954&saleschannelid=2&skinid=10020&withauthentication=no&signature=583c48951a5b73a44c2170a11b55f8234c44c6285d3faadc570c7053f5a72404"
+     },
+     {
+      "id": "36960",
+      "start": "2027-07-28T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36960&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36960%26upsellids%3D36964%252C36958%252C36956%252C36962&saleschannelid=2&skinid=10020&withauthentication=no&signature=30b8a40cc0f3b11c17e0b7a54e5c75adda4e0c339ee4a7fa8b2d9d039db29df7"
+     },
+     {
+      "id": "36730",
+      "start": "2027-07-29T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36730&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36730%26upsellids%3D36864%252C36897%252C36931%252C36831&saleschannelid=2&skinid=10020&withauthentication=no&signature=2c074335b3c0558a5a9fb52f60c8f305ee37f3a972844f5e0f945147032cdf3f"
+     },
+     {
+      "id": "36731",
+      "start": "2027-07-30T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36731&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36731%26upsellids%3D36844%252C36877%252C36910%252C36811&saleschannelid=2&skinid=10020&withauthentication=no&signature=231b2bc4087c1721cef8e535fbb9b1247842b0f9e460cd87f733ab30eca31643"
+     },
+     {
+      "id": "36733",
+      "start": "2027-07-31T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36733&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36733%26upsellids%3D36779%252C36764%252C36791&saleschannelid=2&skinid=10020&withauthentication=no&signature=98a6e9652a983544a762f212e0fa6fcf7a0940ce42e79839cc47e5784161b134"
+     },
+     {
+      "id": "36732",
+      "start": "2027-07-31T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36732&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36732%26upsellids%3D36845%252C36878%252C36911%252C36812&saleschannelid=2&skinid=10020&withauthentication=no&signature=404bc0c198a2850a9ed24e470412fe72e7a81cf00af0ae47add2e37be3ce3c91"
+     },
+     {
+      "id": "36734",
+      "start": "2027-08-01T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36734&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36734%26upsellids%3D36780%252C36765%252C36792&saleschannelid=2&skinid=10020&withauthentication=no&signature=97ea131f038c4b554e87ab313b0a2e629d07a4746328ff4bba779adb2b136b86"
+     },
+     {
+      "id": "36943",
+      "start": "2027-08-03T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36943&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36943%26upsellids%3D36947%252C36941%252C36939%252C36945&saleschannelid=2&skinid=10020&withauthentication=no&signature=f8a4cf58b84496ca3f45b13b9ef9230e220829b40a484c71e90815498d473783"
+     },
+     {
+      "id": "36951",
+      "start": "2027-08-04T14:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36951&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36951%26upsellids%3D36953%252C36949%252C36955&saleschannelid=2&skinid=10020&withauthentication=no&signature=5d0b8302e6737016e42c3feb5eb9368784737be23dfc83eeceb14703a6a15af4"
+     },
+     {
+      "id": "36961",
+      "start": "2027-08-04T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36961&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36961%26upsellids%3D36965%252C36959%252C36957%252C36963&saleschannelid=2&skinid=10020&withauthentication=no&signature=f139aba67e0d4a872e381655212db911f92966af8b933438916ddc6e024221d8"
+     },
+     {
+      "id": "36735",
+      "start": "2027-08-05T19:30:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36735&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36735%26upsellids%3D36865%252C36898%252C36932%252C36832&saleschannelid=2&skinid=10020&withauthentication=no&signature=698b93da75cf5181c09d5078698d8be8525988dec33d8b53bfe1ae53857486e4"
+     },
+     {
+      "id": "36738",
+      "start": "2027-08-06T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36738&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36738%26upsellids%3D36846%252C36879%252C36912%252C36813&saleschannelid=2&skinid=10020&withauthentication=no&signature=31b2bcd6fe79687e27d021731200eefc6ed44d714c15579650a347761446af5f"
+     },
+     {
+      "id": "36744",
+      "start": "2027-08-07T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36744&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36744%26upsellids%3D36781%252C36766%252C36793&saleschannelid=2&skinid=10020&withauthentication=no&signature=8f5d69ddb3a9ea11ddd22ec3cdfedf8a0bc6cd13826fd3341fbac279e679cb17"
+     },
+     {
+      "id": "36739",
+      "start": "2027-08-07T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36739&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36739%26upsellids%3D36847%252C36880%252C36913%252C36814&saleschannelid=2&skinid=10020&withauthentication=no&signature=19f5e5478e79d0ed97792aac5115176c8ac34917fd21aefb611b9e35742ac8f2"
+     },
+     {
+      "id": "36745",
+      "start": "2027-08-08T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36745&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36745%26upsellids%3D36782%252C36767%252C36794&saleschannelid=2&skinid=10020&withauthentication=no&signature=529ed5e8f98dea491f1e917e80d35e0ede971f94fadb83c4f7635ed9f8daf65d"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/herman-van-veen-vandaag": {
+   "opgehaaldOp": "2026-10-10T03:06:45.357Z",
+   "data": {
+    "naam": "Herman van Veen",
+    "events": [
+     {
+      "id": "36659",
+      "start": "2026-10-28T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36659&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36659%26upsellids%3D35833%252C35835%252C35832%252C35834&saleschannelid=2&skinid=1&withauthentication=no&signature=3eec6d4a725cddcc15d55b144b89dca01534810ab132f3dfb6e808c1fb764b74"
+     },
+     {
+      "id": "36660",
+      "start": "2026-10-29T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36660&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36660%26upsellids%3D35850%252C35836%252C35894%252C35843&saleschannelid=2&skinid=1&withauthentication=no&signature=00180575001fc4860aef3df45ff3679e4cbf6aeb2b2ce053176c440590303977"
+     },
+     {
+      "id": "36661",
+      "start": "2026-10-30T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36661&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36661%26upsellids%3D35851%252C35837%252C35895%252C35844&saleschannelid=2&skinid=1&withauthentication=no&signature=34e1fd7037744158600e40a42e25a98a36c0fd3fa378491f38fc99c5afeb4a43"
+     },
+     {
+      "id": "36662",
+      "start": "2026-10-31T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36662&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36662%26upsellids%3D35852%252C35838%252C35896%252C35845&saleschannelid=2&skinid=1&withauthentication=no&signature=fb9b1107c67224652700117e17c6c1ade7d96bf7836d26249cb98ba0b9644ba8"
+     },
+     {
+      "id": "36663",
+      "start": "2026-11-01T15:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36663&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36663%26upsellids%3D35861%252C35857%252C35859&saleschannelid=2&skinid=1&withauthentication=no&signature=4603c7643526c3650cacf58157a8c97337356ec6ffca8fee05f69d432133b6c7"
+     },
+     {
+      "id": "36664",
+      "start": "2026-11-04T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36664&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36664%26upsellids%3D35853%252C35839%252C35897%252C35846&saleschannelid=2&skinid=1&withauthentication=no&signature=56aa4f9520fcf811f2842645b8153a8fc44d77de85075ae08535c127a685ff5e"
+     },
+     {
+      "id": "36665",
+      "start": "2026-11-05T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36665&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36665%26upsellids%3D35854%252C35840%252C35898%252C35847&saleschannelid=2&skinid=1&withauthentication=no&signature=79bf9bdeed4995d779d03d4ec9f0388312a8a35fb266277a34be6c1b903f18b8"
+     },
+     {
+      "id": "36666",
+      "start": "2026-11-06T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36666&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36666%26upsellids%3D35855%252C35841%252C35899%252C35848&saleschannelid=2&skinid=1&withauthentication=no&signature=ce96566a4bcecdd91610ca6c2ba9df83931ee447cba3ba916326810904bbdbeb"
+     },
+     {
+      "id": "36667",
+      "start": "2026-11-07T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36667&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36667%26upsellids%3D35856%252C35842%252C35900%252C35849&saleschannelid=2&skinid=1&withauthentication=no&signature=b1bc13c3965ac8cb33646ee427ee79f3406bb54a1444623640c69226d9096e40"
+     },
+     {
+      "id": "36668",
+      "start": "2026-11-08T15:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36668&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36668%26upsellids%3D35862%252C35858%252C35860&saleschannelid=2&skinid=1&withauthentication=no&signature=14397de456eb7ada0fdde853da4102ec7671cb8c021ae647c51b53cec054a689"
+     },
+     {
+      "id": "37075",
+      "start": "2027-01-13T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37075&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37075%26upsellids%3D37088%252C37087%252C37086%252C37089&saleschannelid=2&skinid=1&withauthentication=no&signature=dc566a34165e84aa78ab422e029bd3c2238466db06d4ab60d583e3ef46997e4d"
+     },
+     {
+      "id": "37072",
+      "start": "2027-01-14T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37072&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37072%26upsellids%3D37114%252C37100%252C37093%252C37107&saleschannelid=2&skinid=1&withauthentication=no&signature=8783c4917b589cb109eba35d0490f3b62ce7db90b994dfab9fa22ea103952912"
+     },
+     {
+      "id": "37073",
+      "start": "2027-01-15T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37073&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37073%26upsellids%3D37115%252C37101%252C37094%252C37108&saleschannelid=2&skinid=1&withauthentication=no&signature=0b9c197eee83b768e6a2536f6ad4e1d4eb566f7520c54af99cecc0a370688722"
+     },
+     {
+      "id": "37077",
+      "start": "2027-01-16T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37077&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37077%26upsellids%3D37116%252C37102%252C37095%252C37109&saleschannelid=2&skinid=1&withauthentication=no&signature=38958b2b4b94e321ce3f17ff67f1e531eca50a248b15e43909e32a928e9d078f"
+     },
+     {
+      "id": "37074",
+      "start": "2027-01-17T15:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37074&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37074%26upsellids%3D37092%252C37090%252C37091&saleschannelid=2&skinid=1&withauthentication=no&signature=bcd12acb7a5c0295c5ef60c67e0484920c4db2a59008b78ffad0aaa9fda4a7a9"
+     },
+     {
+      "id": "37076",
+      "start": "2027-01-20T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37076&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37076%26upsellids%3D37117%252C37103%252C37096%252C37110&saleschannelid=2&skinid=1&withauthentication=no&signature=839fc4afdc8fb84d0f1e4c6ca10804e740a91bcd708bfb6354e95f79cfdb5fdf"
+     },
+     {
+      "id": "37078",
+      "start": "2027-01-21T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37078&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37078%26upsellids%3D37118%252C37104%252C37097%252C37111&saleschannelid=2&skinid=1&withauthentication=no&signature=f56f3ac6df53fda7ad0e5b5495a5c7f1ace0f0447139e8796f607fd89e59d296"
+     },
+     {
+      "id": "37079",
+      "start": "2027-01-22T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37079&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37079%26upsellids%3D37119%252C37105%252C37098%252C37112&saleschannelid=2&skinid=1&withauthentication=no&signature=ac92e6b00f484c49459419e9db966782003908c96aa1e35c08077a16f0c9943e"
+     },
+     {
+      "id": "37081",
+      "start": "2027-01-23T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37081&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37081%26upsellids%3D37120%252C37106%252C37099%252C37113&saleschannelid=2&skinid=1&withauthentication=no&signature=9bd2303cf605913df14a9d8a6e57b3c47e4509458a027898a1c4ae3273a5900f"
+     },
+     {
+      "id": "37080",
+      "start": "2027-01-24T15:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37080&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37080%26upsellids%3D37123%252C37121%252C37122&saleschannelid=2&skinid=1&withauthentication=no&signature=21b6b89ad8c163adbd678e3bf6dbc2ab8fcac3914f8f1c77b99da95f8b74e96c"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/high-class-bitch": {
+   "opgehaaldOp": "2026-10-10T03:07:17.282Z",
+   "data": {
+    "naam": "Daniël Arends - High Class Bitch",
+    "events": [
+     {
+      "id": "36172",
+      "start": "2027-04-12T19:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36172&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36172%26upsellids%3D36177%252C36176&saleschannelid=2&skinid=1&withauthentication=no&signature=de46cbb890411d1d2470c029293fc57267e8ca4080161d0a4df8b9234de7749a"
+     },
+     {
+      "id": "36173",
+      "start": "2027-04-13T19:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36173&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36173%26upsellids%3D36180%252C36179&saleschannelid=2&skinid=1&withauthentication=no&signature=380304f722fc2e37c7b6354c0645b68576695fd0799013aa50d7050e9ba75742"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/jenny-arean": {
+   "opgehaaldOp": "2026-10-10T03:07:09.278Z",
+   "data": {
+    "naam": "Jenny Arean",
+    "events": [
+     {
+      "id": "37060",
+      "start": "2027-02-28T15:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37060&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37060%26upsellids%3D37061%252C37062&saleschannelid=2&skinid=1&withauthentication=no&signature=77e67023f95a8645a33317811fcd09a90887addf3b14ee2ca934a6d2f01113e0"
+     },
+     {
+      "id": "37082",
+      "start": "2027-04-23T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37082&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37082%26upsellids%3D37084%252C37085%252C37083&saleschannelid=2&skinid=1&withauthentication=no&signature=6a01d0515de05b29aec614aa6adb2164a6e2de24e081b9640275b76e101fad38"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
+   "opgehaaldOp": "2026-10-10T03:06:44.340Z",
+   "data": {
+    "naam": "Jochem Myjer",
+    "events": [
+     {
+      "id": "36560",
+      "start": "2026-10-10T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36560&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36560%26upsellids%3D36629%252C36609%252C36599%252C36619&saleschannelid=2&skinid=1&withauthentication=no&signature=fcd6c18c388d4e2c0c8582c36799cdde10be9b1970f82fbcd0a5cdd349c82253"
+     },
+     {
+      "id": "36561",
+      "start": "2026-10-11T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36561&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36561%26upsellids%3D36630%252C36610%252C36600%252C36620&saleschannelid=2&skinid=1&withauthentication=no&signature=e1b92c74c3439f72ca84b9c2d2011a881b802bb9bf511dc34ca7aadcc6746b7a"
+     },
+     {
+      "id": "36563",
+      "start": "2026-10-26T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36563&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36563%26upsellids%3D36631%252C36611%252C36601%252C36621&saleschannelid=2&skinid=1&withauthentication=no&signature=d3619770e7a8398ba1d00cac0ab48457486c201c1ae91025c440f2b067704207"
+     },
+     {
+      "id": "36564",
+      "start": "2026-10-27T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36564&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36564%26upsellids%3D36632%252C36612%252C36602%252C36622&saleschannelid=2&skinid=1&withauthentication=no&signature=d9d10991325ba325ba4110cd4623a9e8b8b5bcd85d690b14edae2501584747c1"
+     },
+     {
+      "id": "36566",
+      "start": "2026-11-02T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36566&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36566%26upsellids%3D36633%252C36613%252C36603%252C36623&saleschannelid=2&skinid=1&withauthentication=no&signature=417487bd83cef700d857bb73138301b7cb9edeaa857fb0e7331a5a845c97d4be"
+     },
+     {
+      "id": "36565",
+      "start": "2026-11-03T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36565&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36565%26upsellids%3D36634%252C36614%252C36604%252C36624&saleschannelid=2&skinid=1&withauthentication=no&signature=b5fa10890ace2b6fcb7a00b3720a6aa96ac7a46320c012e89069e2eda3247d45"
+     },
+     {
+      "id": "36567",
+      "start": "2026-11-09T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36567&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36567%26upsellids%3D36635%252C36615%252C36605%252C36625&saleschannelid=2&skinid=1&withauthentication=no&signature=ef5b03f88ab71ae2bc1d40eb88777d5f025ed833ccec34a288db8dd481a23e3a"
+     },
+     {
+      "id": "36568",
+      "start": "2026-11-10T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36568&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36568%26upsellids%3D36636%252C36616%252C36606%252C36626&saleschannelid=2&skinid=1&withauthentication=no&signature=9e4f3a75391ad5e17298e9673d1e7ce1e4b5bd08563abc837f333185db9fd0cc"
+     },
+     {
+      "id": "36569",
+      "start": "2026-11-21T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36569&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36569%26upsellids%3D36637%252C36617%252C36607%252C36627&saleschannelid=2&skinid=1&withauthentication=no&signature=d11603ed8c2ff10edf60cd079dee9d6d8b0b68a0fe109950466a9dc81f1b5bc9"
+     },
+     {
+      "id": "36570",
+      "start": "2026-11-22T19:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36570&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36570%26upsellids%3D36641%252C36639%252C36638%252C36640&saleschannelid=2&skinid=1&withauthentication=no&signature=00996b9ddee4462ec4075623f57da4ea9577003f09c341379ab20865118a72d4"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/joe-jackson-2026": {
+   "opgehaaldOp": "2026-10-10T03:06:52.256Z",
+   "data": {
+    "naam": "Joe Jackson",
+    "events": [
+     {
+      "id": "35133",
+      "start": "2026-12-01T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://www.ticketmaster.nl/event/866530431"
+     },
+     {
+      "id": "35134",
+      "start": "2026-12-02T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://www.ticketmaster.nl/event/356984950"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/julien-clerc-une-vie": {
+   "opgehaaldOp": "2026-10-10T03:07:01.267Z",
+   "data": {
+    "naam": "Julien Clerc",
+    "events": [
+     {
+      "id": "36167",
+      "start": "2027-01-28T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://www.ticketmaster.nl/event/369634834"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/kasper-van-der-laan-ruim": {
+   "opgehaaldOp": "2026-10-10T03:07:29.296Z",
+   "data": {
+    "naam": "Kasper van der Laan",
+    "events": [
+     {
+      "id": "36199",
+      "start": "2027-05-28T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36199&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36199%26upsellids%3D36209%252C36212%252C36206&saleschannelid=2&skinid=1&withauthentication=no&signature=0a9a19630b966e1e726ee9a2ee5e7d751632a8c5d90fdf7e7397153f2175ec8c"
+     },
+     {
+      "id": "36201",
+      "start": "2027-05-29T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36201&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36201%26upsellids%3D36210%252C36213%252C36207&saleschannelid=2&skinid=1&withauthentication=no&signature=335f82d1b7b845b69ef1ec24bcc2335b4d6b1e920827f026d7fda22144b27d45"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/kevin-bridges": {
+   "opgehaaldOp": "2026-10-10T03:07:00.916Z",
+   "data": {
+    "naam": "Kevin Bridges",
+    "events": [
+     {
+      "id": "36683",
+      "start": "2027-01-25T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36683&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36683%26upsellids%3D36220%252C36219&saleschannelid=2&skinid=10007&withauthentication=no&signature=fa14b118247805149915e25e62d29753592458b40a58a5e53ca0ef486e6184f4"
+     },
+     {
+      "id": "36684",
+      "start": "2027-01-26T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36684&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36684%26upsellids%3D36222%252C36221&saleschannelid=2&skinid=10007&withauthentication=no&signature=140ea5796ceecf09770e22e544dc2407fbf7f78d16a1547e16acbf41dbf7b0fc"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/krezip": {
+   "opgehaaldOp": "2026-10-10T03:07:13.274Z",
+   "data": {
+    "naam": "Krezip",
+    "events": [
+     {
+      "id": "35891",
+      "start": "2027-03-21T19:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35891&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35891%26upsellids%3D35893%252C35892&saleschannelid=2&skinid=10010&withauthentication=no&signature=6b8cb117056a439cebebda1f5fde218e426b6e96f9495554d403a9f2fbdab138"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/liefdesbrieven": {
+   "opgehaaldOp": "2026-10-10T03:06:47.253Z",
+   "data": {
+    "naam": "Liefdesbrieven",
+    "events": [
+     {
+      "id": "36260",
+      "start": "2026-11-16T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36260&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36260%26upsellids%3D36264%252C36263%252C36261&saleschannelid=2&skinid=1&withauthentication=no&signature=64172f1a325f679768f90dad19081d1caba91a7358058625fcdb4e6a320851e7"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/lisa-ostermann-de-baas": {
+   "opgehaaldOp": "2026-10-10T03:06:59.265Z",
+   "data": {
+    "naam": "Lisa Ostermann",
+    "events": [
+     {
+      "id": "35873",
+      "start": "2027-01-18T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35873&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35873%26upsellids%3D35877%252C35879%252C35875&saleschannelid=2&skinid=1&withauthentication=no&signature=9d6db953a3d9018fefff093727b200413ff33d09a78082a5bdb0c9c368c4f052"
+     },
+     {
+      "id": "35874",
+      "start": "2027-01-19T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35874&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35874%26upsellids%3D35878%252C35880%252C35876&saleschannelid=2&skinid=1&withauthentication=no&signature=65fbdee7bb2fbfd078489b23fc1357e29d0de18c93bb700e0679312a8f1a69c1"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/loreena-mckennitt-the-mask-and-mirror-tour": {
+   "opgehaaldOp": "2026-10-10T03:07:07.270Z",
+   "data": {
+    "naam": "Loreena McKennitt",
+    "events": [
+     {
+      "id": "36300",
+      "start": "2027-02-23T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://www.ticketmaster.nl/event/1156629893"
+     },
+     {
+      "id": "36301",
+      "start": "2027-02-24T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://www.ticketmaster.nl/event/1339591895"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/mabel-matiz-2027": {
+   "opgehaaldOp": "2026-10-10T03:07:10.273Z",
+   "data": {
+    "naam": "Mabel Matiz",
+    "events": [
+     {
+      "id": "36580",
+      "start": "2027-03-12T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36580&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36580%26upsellids%3D36582%252C36584%252C36581&saleschannelid=2&skinid=1&withauthentication=no&signature=b8909bf108d551f60296eca5df19e5dcc3117b0eeace79d76d518831450e8bf7"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/matthew-bourne-the-car-man": {
+   "opgehaaldOp": "2026-10-10T03:06:51.354Z",
+   "data": {
+    "naam": "Matthew Bourne's The Car Man",
+    "events": [
+     {
+      "id": "36242",
+      "start": "2026-11-25T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36242&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36242%26upsellids%3D36119%252C36117%252C36116%252C36118&saleschannelid=2&skinid=1&withauthentication=no&signature=2184bd0c2f87ba11ec5aa399be1ac59e5b82046cb364830f7c5ca4ab22657bdb"
+     },
+     {
+      "id": "36671",
+      "start": "2026-11-26T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36671&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36671%26upsellids%3D36127%252C36123%252C36120%252C36133&saleschannelid=2&skinid=1&withauthentication=no&signature=63066b2a014b34397b6823698f0c55c522cca0a7208d1c51c319eaf519712cb2"
+     },
+     {
+      "id": "36675",
+      "start": "2026-11-27T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36675&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36675%26upsellids%3D36128%252C36124%252C36134&saleschannelid=2&skinid=1&withauthentication=no&signature=9027a3bb16dc8731882804b337a27acd03c3923c6751a45eacf0b15c4f0eedb1"
+     },
+     {
+      "id": "36678",
+      "start": "2026-11-28T15:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36678&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36678%26upsellids%3D36131%252C36139%252C36137&saleschannelid=2&skinid=1&withauthentication=no&signature=39782026c5557f0101e3ffcbc9c63d5f1fe0a22eeb2660cae5d94de909b4c220"
+     },
+     {
+      "id": "36680",
+      "start": "2026-11-28T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36680&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36680%26upsellids%3D36129%252C36125%252C36122%252C36135&saleschannelid=2&skinid=1&withauthentication=no&signature=30ff8723a0e30bb20e858255eb0e6c809171d080a76607e11cb3b0a27aaf16ec"
+     },
+     {
+      "id": "36681",
+      "start": "2026-11-29T14:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36681&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36681%26upsellids%3D36132%252C36140%252C36138&saleschannelid=2&skinid=1&withauthentication=no&signature=6f53d114109a7859a24317cf5a166a1368cbf3877f16b37ca602b99666ba40ca"
+     },
+     {
+      "id": "36682",
+      "start": "2026-11-29T19:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36682&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36682%26upsellids%3D36130%252C36126%252C36141%252C36136&saleschannelid=2&skinid=1&withauthentication=no&signature=b296ea7167d3367656f94189267336a7fcecbd6205c35d93291395292860ae18"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/merijn-scholten-lemming": {
+   "opgehaaldOp": "2026-10-10T03:07:27.296Z",
+   "data": {
+    "naam": "Merijn Scholten",
+    "events": [
+     {
+      "id": "36182",
+      "start": "2027-05-19T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36182&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36182%26upsellids%3D36186%252C36187%252C36185&saleschannelid=2&skinid=1&withauthentication=no&signature=3ef0f2ac76c47279c59fabfb8d210a1aabc01a9c574e7e725eeeb32606635961"
+     },
+     {
+      "id": "36183",
+      "start": "2027-05-20T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36183&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36183%26upsellids%3D36190%252C36192%252C36188&saleschannelid=2&skinid=1&withauthentication=no&signature=90880e37fa838f1370d90a6973253fff900ebcd3d4ca0fed596ffaea02d16a58"
+     },
+     {
+      "id": "36184",
+      "start": "2027-05-21T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36184&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36184%26upsellids%3D36191%252C36193%252C36189&saleschannelid=2&skinid=1&withauthentication=no&signature=8b4f57153154d28d148f53f8c9d87de7bba1b06f0c3d71c05c892f1732af6ceb"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/micky-overman-2027": {
+   "opgehaaldOp": "2026-10-10T03:07:14.273Z",
+   "data": {
+    "naam": "Micky Overman",
+    "events": [
+     {
+      "id": "36507",
+      "start": "2027-03-28T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36507&extraevents=36515%2C36514&flow=basketwithcheckout&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Fcarre.nl%2Fagenda&saleschannelid=2&skinid=1&withauthentication=no&signature=7888effbf797c994c32c543dbacc847096a574035ee66711050df860850827ac"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/patrick-laureij-kintsugi": {
+   "opgehaaldOp": "2026-10-10T03:06:50.254Z",
+   "data": {
+    "naam": "Patrick Laureij",
+    "events": [
+     {
+      "id": "36194",
+      "start": "2026-11-23T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36194&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36194%26upsellids%3D36196%252C36197%252C36195&saleschannelid=2&skinid=1&withauthentication=no&signature=4fc0f4fd99d81bcf01e9e2472fa2058c004c8571a14ac01f3629ebd1bfc5ef18"
+     },
+     {
+      "id": "36244",
+      "start": "2026-11-30T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36244&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36244%26upsellids%3D35392%252C35393%252C35391&saleschannelid=2&skinid=1&withauthentication=no&signature=cedf12d6c0f08917c034ae5cb920f18bf9f47d331c63ba6ffbfc2de24ce4393c"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/peter-pannekoek-2027": {
+   "opgehaaldOp": "2026-10-10T03:07:32.396Z",
+   "data": {
+    "naam": "Peter Pannekoek",
+    "events": [
+     {
+      "id": "37011",
+      "start": "2027-09-30T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37011&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37011%26upsellids%3D37018%252C37019%252C37017&saleschannelid=2&skinid=1&withauthentication=no&signature=5f4eeaa4439d8ca2da61c10b4f0280a625b89d5155b3f5da47f065164f667418"
+     },
+     {
+      "id": "37010",
+      "start": "2027-10-01T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37010&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37010%26upsellids%3D37030%252C37040%252C37020&saleschannelid=2&skinid=1&withauthentication=no&signature=83bcd060b134475c943b468c5527571264868ce11ee0cf7a905d3e8eccafb9e7"
+     },
+     {
+      "id": "37009",
+      "start": "2027-10-02T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37009&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37009%26upsellids%3D37031%252C37041%252C37021&saleschannelid=2&skinid=1&withauthentication=no&signature=30c0f393580da5def8b3cb3545c54bff277bd79659c86d5e9d32ae0c8f460ca5"
+     },
+     {
+      "id": "37008",
+      "start": "2027-10-08T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37008&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37008%26upsellids%3D37032%252C37042%252C37022&saleschannelid=2&skinid=1&withauthentication=no&signature=348775038ce140579f84ea89987a989e93be63a72c410861c418cf0b5f795d6e"
+     },
+     {
+      "id": "37007",
+      "start": "2027-10-09T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37007&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37007%26upsellids%3D37033%252C37043%252C37023&saleschannelid=2&skinid=1&withauthentication=no&signature=fc63e20de69d7f2497cb2260d07b1847f73c3ff7d3c253a821cb078ac4cc688c"
+     },
+     {
+      "id": "37006",
+      "start": "2027-10-10T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37006&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37006%26upsellids%3D37034%252C37044%252C37024&saleschannelid=2&skinid=1&withauthentication=no&signature=40cdd6eab1eef9ebb5dcfea03f00fdb334d2a5a09445d8bf16489f04b4b22c61"
+     },
+     {
+      "id": "37015",
+      "start": "2027-10-16T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37015&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37015%26upsellids%3D37035%252C37045%252C37025&saleschannelid=2&skinid=1&withauthentication=no&signature=29cf85a9c9a6996920d0c97cb3de610bfbd9e2ebc03334c71b0a42fe175eebd4"
+     },
+     {
+      "id": "37016",
+      "start": "2027-10-17T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37016&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37016%26upsellids%3D37036%252C37046%252C37026&saleschannelid=2&skinid=1&withauthentication=no&signature=96106b3a7517870cdb6e1a0f4ce89031ad0e7ae5d55c1e0d73976ae3824b7ea3"
+     },
+     {
+      "id": "37012",
+      "start": "2027-10-21T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37012&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37012%26upsellids%3D37037%252C37047%252C37027&saleschannelid=2&skinid=1&withauthentication=no&signature=c0d04ca62b6aea310e26db99199e2d5a1771c5ab36f2f59e1ded71ddb44c7c0b"
+     },
+     {
+      "id": "37013",
+      "start": "2027-10-22T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37013&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37013%26upsellids%3D37038%252C37048%252C37028&saleschannelid=2&skinid=1&withauthentication=no&signature=dcb926a2783460fb5e5e73c8bec81210e4cac578a3d2fd5ecf5ebfb3981b1e50"
+     },
+     {
+      "id": "37014",
+      "start": "2027-10-23T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37014&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37014%26upsellids%3D37039%252C37049%252C37029&saleschannelid=2&skinid=1&withauthentication=no&signature=1ec3f5f9f8afb10dcc95c37662069ecf3de5c62dd58a14c6806fd4aa1843dea0"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/pieter-derks-ja-leuk": {
+   "opgehaaldOp": "2026-10-10T03:06:49.267Z",
+   "data": {
+    "naam": "Pieter Derks",
+    "events": [
+     {
+      "id": "36669",
+      "start": "2026-11-19T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36669&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36669%26upsellids%3D35230%252C35232%252C34252&saleschannelid=2&skinid=1&withauthentication=no&signature=771d17fdfc9e5dc8368cbab5221cf05b2508ecb2e89b6be3a0e88ec1423771f1"
+     },
+     {
+      "id": "36670",
+      "start": "2026-11-20T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36670&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36670%26upsellids%3D35229%252C35231%252C34251&saleschannelid=2&skinid=1&withauthentication=no&signature=08987bd69606492cce4ae009d66b35a20637174a29213aa5f5548aa08a923dfd"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/rayen-panday": {
+   "opgehaaldOp": "2026-10-10T03:07:25.290Z",
+   "data": {
+    "naam": "Rayen Panday",
+    "events": [
+     {
+      "id": "36522",
+      "start": "2027-05-13T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36522&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36522%26upsellids%3D36525%252C36526%252C36524&saleschannelid=2&skinid=1&withauthentication=no&signature=6218c71c80a7432d9b3da714dc995c78218d10cda20008e32383962066379b12"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/rhythm-flow-ish": {
+   "opgehaaldOp": "2026-10-10T03:07:21.370Z",
+   "data": {
+    "naam": "ISH - Rhythm & Flow",
+    "events": [
+     {
+      "id": "36521",
+      "start": "2027-04-25T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36521&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36521%26upsellids%3D36529%252C36530&saleschannelid=2&skinid=1&withauthentication=no&signature=c0ec333ea566311c8fbeb3ef573f49e58a8a50959346c141a107f187b15a3828"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/richard-groenendijk-gelukkig-heb-je-mij-nog": {
+   "opgehaaldOp": "2026-10-10T03:07:28.294Z",
+   "data": {
+    "naam": "Richard Groenendijk",
+    "events": [
+     {
+      "id": "35881",
+      "start": "2027-05-22T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35881&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35881%26upsellids%3D35885%252C35890%252C35884&saleschannelid=2&skinid=1&withauthentication=no&signature=74917dcbf7559403244cd01f199d207ebaa5eebe596cdac1b2164f27df042f62"
+     },
+     {
+      "id": "35882",
+      "start": "2027-05-23T14:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35882&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35882%26upsellids%3D35889%252C36215&saleschannelid=2&skinid=1&withauthentication=no&signature=e450f450b7012a130e8eb356bc277cd317acdfdd85a3cd55cef81ad1eb88d8ea"
+     },
+     {
+      "id": "35883",
+      "start": "2027-05-24T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35883&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35883%26upsellids%3D35887%252C35888%252C36214&saleschannelid=2&skinid=1&withauthentication=no&signature=ff6556c3c002226a413205fa4db761177800200fc5befe468c602f841633e142"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/rufus-wainwright-metropole-orkest": {
+   "opgehaaldOp": "2026-10-10T03:06:57.260Z",
+   "data": {
+    "naam": "Rufus Wainwright & Metropole Orkest",
+    "events": [
+     {
+      "id": "35381",
+      "start": "2027-01-08T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35381&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35381%26upsellids%3D35383%252C35382&saleschannelid=2&skinid=1&withauthentication=no&signature=efc85849bc064da47fdac7a0d506decce726d4a12e4f1e2fbd66b851781ac56e"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/ruth-jacott": {
+   "opgehaaldOp": "2026-10-10T03:07:03.263Z",
+   "data": {
+    "naam": "Ruth Jacott",
+    "events": [
+     {
+      "id": "36265",
+      "start": "2027-02-10T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36265&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36265%26upsellids%3D36267%252C36266&saleschannelid=2&skinid=1&withauthentication=no&signature=272afaabc6043c37516f8514815634019dccb76b2dc66a3527802da19a6c2f25"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/sara-kroos-prikkelarme-kermis": {
+   "opgehaaldOp": "2026-10-10T03:06:53.257Z",
+   "data": {
+    "naam": "Sara Kroos",
+    "events": [
+     {
+      "id": "36253",
+      "start": "2026-12-03T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36253&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36253%26upsellids%3D35868%252C35869%252C35867&saleschannelid=2&skinid=1&withauthentication=no&signature=63e308f25a59b43f3d83fda0ca7e412a840961ab67674ecfeec192c0562923c3"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/snarky-puppy": {
+   "opgehaaldOp": "2026-10-10T03:07:19.280Z",
+   "data": {
+    "naam": "Snarky Puppy",
+    "events": [
+     {
+      "id": "36690",
+      "start": "2027-04-15T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36690&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36690%26upsellids%3D36694%252C36692&saleschannelid=2&skinid=1&withauthentication=no&signature=23d7a9bebf8e7a262dee217040a1c3e17b05a719d0bcd920d52c7d78ae4adf3d"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/syml-metropole-orkest": {
+   "opgehaaldOp": "2026-10-10T03:06:54.255Z",
+   "data": {
+    "naam": "Metropole Orkest met SYML",
+    "events": [
+     {
+      "id": "37125",
+      "start": "2026-12-04T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37125&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37125%26upsellids%3D35830%252C35829&saleschannelid=2&skinid=1&withauthentication=no&signature=16b8b35ad3b096672ef53a3f4ed8076fd15153e76f8b3dc3433218545b3a1183"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/the-illusionists": {
+   "opgehaaldOp": "2026-10-10T03:07:16.403Z",
+   "data": {
+    "naam": "Hans Klok",
+    "events": [
+     {
+      "id": "36388",
+      "start": "2027-03-31T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36388&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36388%26upsellids%3D36440%252C36414%252C36456%252C36425&saleschannelid=2&skinid=1&withauthentication=no&signature=3b0b11b687db8cc54732e136c8b1e51585b02fdca3b06e1212579119677d5948"
+     },
+     {
+      "id": "36389",
+      "start": "2027-04-01T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36389&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36389%26upsellids%3D36441%252C36415%252C36457%252C36426&saleschannelid=2&skinid=1&withauthentication=no&signature=92d88eebf207151fdf401bdd3231eb91c30b3b6a02d8bc40b9b3d85e87c0134e"
+     },
+     {
+      "id": "36396",
+      "start": "2027-04-02T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36396&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36396%26upsellids%3D36442%252C36416%252C36458%252C36427&saleschannelid=2&skinid=1&withauthentication=no&signature=43189d3f284cca6bfc347dbcff4e5dbdf4c25ba3712466d23409c2622d1ab556"
+     },
+     {
+      "id": "36390",
+      "start": "2027-04-03T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36390&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36390%26upsellids%3D36449%252C36412%252C36434&saleschannelid=2&skinid=1&withauthentication=no&signature=297975ce765f7505af5de07a934af4e73bcb4d146bf6c2c6920ae949afe03ad1"
+     },
+     {
+      "id": "36399",
+      "start": "2027-04-03T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36399&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36399%26upsellids%3D36443%252C36417%252C36459%252C36428&saleschannelid=2&skinid=1&withauthentication=no&signature=bc8715a6e0e835541cebae8663b90138280fdd234d10267dd3b047180e287e5b"
+     },
+     {
+      "id": "36400",
+      "start": "2027-04-04T14:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36400&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36400%26upsellids%3D36450%252C36408%252C36435&saleschannelid=2&skinid=1&withauthentication=no&signature=28127ce42137e012cb66b39844d988fb521d4f5d29c81c0b9b26660f5447a7b8"
+     },
+     {
+      "id": "36392",
+      "start": "2027-04-04T19:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36392&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36392%26upsellids%3D36451%252C36423%252C36465%252C36436&saleschannelid=2&skinid=1&withauthentication=no&signature=297d1703fa9ed9420c25ace402a9ac81f2988686ac66f15f1faf7fc1cad22730"
+     },
+     {
+      "id": "36395",
+      "start": "2027-04-06T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36395&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36395%26upsellids%3D36444%252C36418%252C36460%252C36429&saleschannelid=2&skinid=1&withauthentication=no&signature=e571d4957bc14636831fbb104cdda5d2298aa02fa16a18aac5f7175f05f041c6"
+     },
+     {
+      "id": "36394",
+      "start": "2027-04-07T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36394&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36394%26upsellids%3D36445%252C36419%252C36461%252C36430&saleschannelid=2&skinid=1&withauthentication=no&signature=458451799d13a4d390384d7c80c367ac2ccd4ead53a57fb931d29e829d47880d"
+     },
+     {
+      "id": "36397",
+      "start": "2027-04-08T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36397&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36397%26upsellids%3D36446%252C36420%252C36462%252C36431&saleschannelid=2&skinid=1&withauthentication=no&signature=6f5e83ec058f379269feef39fb1f2963779d7b6e02274eed4a516d42c94f87dd"
+     },
+     {
+      "id": "36398",
+      "start": "2027-04-09T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36398&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36398%26upsellids%3D36447%252C36421%252C36463%252C36432&saleschannelid=2&skinid=1&withauthentication=no&signature=4ffc13083e676f7ea111f166d1f5d4db4c3e98bdb3da4c79a5bcdb813369cbc3"
+     },
+     {
+      "id": "36401",
+      "start": "2027-04-10T15:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36401&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36401%26upsellids%3D36452%252C36413%252C36437&saleschannelid=2&skinid=1&withauthentication=no&signature=03052e95ec83afdee457a7c869939da704401626cdf38093008e4dce18de887e"
+     },
+     {
+      "id": "36403",
+      "start": "2027-04-10T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36403&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36403%26upsellids%3D36448%252C36422%252C36464%252C36433&saleschannelid=2&skinid=1&withauthentication=no&signature=9a1f3d9f6ef626def3494c6965e251997fb98339a4bcd1af0f4816ac0fd16dfa"
+     },
+     {
+      "id": "36402",
+      "start": "2027-04-11T14:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36402&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36402%26upsellids%3D36453%252C36411%252C36438&saleschannelid=2&skinid=1&withauthentication=no&signature=61388a202094c401fde089a9369f311d7e1da847557e9a3acde144f84765c83e"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/van-der-laan-woe-dinsdagmiddag": {
+   "opgehaaldOp": "2026-10-10T03:07:12.286Z",
+   "data": {
+    "naam": "Van der Laan & Woe",
+    "events": [
+     {
+      "id": "36233",
+      "start": "2027-03-17T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36233&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36233%26upsellids%3D36269%252C36270%252C36268&saleschannelid=2&skinid=1&withauthentication=no&signature=b3e89f8753b46439db0651170e7559e7be4ec259caf775d7fd80ed12bab86a48"
+     },
+     {
+      "id": "36235",
+      "start": "2027-03-18T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36235&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36235%26upsellids%3D36278%252C36285%252C36271&saleschannelid=2&skinid=1&withauthentication=no&signature=ee3a3055c917d1fa1a70b0c21f240d35856c9047a57a16c8311970e27314932c"
+     },
+     {
+      "id": "36234",
+      "start": "2027-03-19T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36234&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36234%26upsellids%3D36279%252C36286%252C36272&saleschannelid=2&skinid=1&withauthentication=no&signature=5d4f7e559ca45b36f17e26c6396908781a0f3eebca7fbff298f85946318c45e5"
+     },
+     {
+      "id": "36237",
+      "start": "2027-03-20T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36237&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36237%26upsellids%3D36280%252C36287%252C36273&saleschannelid=2&skinid=1&withauthentication=no&signature=5eb3d09bf8870073cb012ba6a47334e29d7d5841cbf79b2d3d3cba16a5b13168"
+     },
+     {
+      "id": "36238",
+      "start": "2027-03-23T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36238&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36238%26upsellids%3D36281%252C36288%252C36274&saleschannelid=2&skinid=1&withauthentication=no&signature=566c51873a75f41cf7404fae66136e66afeee3c368f05a3dee625fa10f709f4c"
+     },
+     {
+      "id": "36236",
+      "start": "2027-03-24T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36236&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36236%26upsellids%3D36282%252C36289%252C36275&saleschannelid=2&skinid=1&withauthentication=no&signature=a1c0cbba1041df0d5c3d7bc405f755ea369eb305297271012e321c2520892678"
+     },
+     {
+      "id": "36240",
+      "start": "2027-03-25T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36240&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36240%26upsellids%3D36283%252C36290%252C36276&saleschannelid=2&skinid=1&withauthentication=no&signature=c6d60119442d5315d220da5e02d02a0bc1e464254c83e3488187ef14c47d0400"
+     },
+     {
+      "id": "36239",
+      "start": "2027-03-26T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36239&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36239%26upsellids%3D36284%252C36291%252C36277&saleschannelid=2&skinid=1&withauthentication=no&signature=64f6e1cbce583be3cce199889a865ec8eb2e2ecedadb5ae15856cd5ee61eafd0"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/wereldkerstcircus-2627": {
+   "opgehaaldOp": "2026-10-10T03:06:56.481Z",
+   "data": {
+    "naam": "Wereldkerstcircus",
+    "events": [
+     {
+      "id": "35769",
+      "start": "2026-12-16T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35769&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35769%26upsellids%3D35965%252C35964%252C35963%252C35966&saleschannelid=2&skinid=1&withauthentication=no&signature=2abb3dbe330133782b50d977c67522c799151d23a273862cf9f35dee812f3487"
+     },
+     {
+      "id": "35798",
+      "start": "2026-12-17T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35798&flow=basketwithcheckout&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Fcarre.nl%2Fagenda&saleschannelid=2&skinid=1&withauthentication=no&signature=f039fe6be893921bcdfb8db4ddcb28569608460fe89a1139c799868d838f5456"
+     },
+     {
+      "id": "35770",
+      "start": "2026-12-17T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35770&flow=basketwithcheckout&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Fcarre.nl%2Fagenda&saleschannelid=2&skinid=1&withauthentication=no&signature=b68cccdd90218dd5b7fcb1836eccfc2cbc1f988dcc015c37cc2332f03543e15f"
+     },
+     {
+      "id": "35773",
+      "start": "2026-12-18T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35773&flow=basketwithcheckout&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Fcarre.nl%2Fagenda&saleschannelid=2&skinid=1&withauthentication=no&signature=4dbf834c75b59240a1a16413c7e6806cb151fd049f52ea9c6a4295d3bd0ed3ba"
+     },
+     {
+      "id": "35800",
+      "start": "2026-12-18T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35800&flow=basketwithcheckout&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Fcarre.nl%2Fagenda&saleschannelid=2&skinid=1&withauthentication=no&signature=ec00aecf313ceb75eec711ef0cd8620dc0fc6fadc43687489e788fb11389cebe"
+     },
+     {
+      "id": "35772",
+      "start": "2026-12-19T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35772&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35772%26upsellids%3D36068&saleschannelid=2&skinid=1&withauthentication=no&signature=cf1938cbb1a232ac254a38ad23fc7707284131cfffb0774b301896ac69d885de"
+     },
+     {
+      "id": "35799",
+      "start": "2026-12-19T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35799&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35799%26upsellids%3D35981&saleschannelid=2&skinid=1&withauthentication=no&signature=12049a4481fae37209441b1723282fc42d7b6296278fa42af64b1966d4a40cb9"
+     },
+     {
+      "id": "35801",
+      "start": "2026-12-20T12:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35801&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35801%26upsellids%3D36036&saleschannelid=2&skinid=1&withauthentication=no&signature=7613c7550264b6216ca72ee350291621fe905b0b0d01d3a59e3c6aeab652ce9a"
+     },
+     {
+      "id": "35774",
+      "start": "2026-12-20T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35774&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35774%26upsellids%3D36051&saleschannelid=2&skinid=1&withauthentication=no&signature=726bb102364c2b7ec557ae4ea704b4bfc0b668ae17e11000db1ab132da81c8ef"
+     },
+     {
+      "id": "35777",
+      "start": "2026-12-20T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35777&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35777%26upsellids%3D35994%252C35970%252C36090%252C35982&saleschannelid=2&skinid=1&withauthentication=no&signature=e007ff1c25f832f626c5720c04b4f07b8c81fb6edffe8dcb1a86877762b2a874"
+     },
+     {
+      "id": "35804",
+      "start": "2026-12-21T12:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35804&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35804%26upsellids%3D36022%252C36037&saleschannelid=2&skinid=1&withauthentication=no&signature=1b87c8c643a4eb08c7bdc8ad469b4cc0eee40f59eb01c67566c5f83a61749a95"
+     },
+     {
+      "id": "35775",
+      "start": "2026-12-21T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35775&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35775%26upsellids%3D36073%252C36007%252C36052&saleschannelid=2&skinid=1&withauthentication=no&signature=e9ff80cdb1b0e7913dc91965d7e6f9455cf371999ac54459700fdaa1c5d26622"
+     },
+     {
+      "id": "35803",
+      "start": "2026-12-22T12:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35803&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35803%26upsellids%3D36023%252C36038&saleschannelid=2&skinid=1&withauthentication=no&signature=74bf00c79a6cc1ffe6d3a7e2292d12c42c06faf6306e5b43d6163f42bf1943e4"
+     },
+     {
+      "id": "35776",
+      "start": "2026-12-22T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35776&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35776%26upsellids%3D36074%252C36008%252C36053&saleschannelid=2&skinid=1&withauthentication=no&signature=ef19fe53ad5de04c7b6257a9e246b8e226a72be86a57cc4099b97e8545d8f273"
+     },
+     {
+      "id": "35778",
+      "start": "2026-12-22T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35778&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35778%26upsellids%3D36091%252C35983&saleschannelid=2&skinid=1&withauthentication=no&signature=bd418590f7a7dc9757cdc898245b0d104de9b9281ea62b358782fc1ea0691119"
+     },
+     {
+      "id": "35805",
+      "start": "2026-12-23T12:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35805&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35805%26upsellids%3D36024%252C36039&saleschannelid=2&skinid=1&withauthentication=no&signature=859b9f17a9423317d5ff560d68dcc8a2fabff14982d6219cfba3782000ce2233"
+     },
+     {
+      "id": "35779",
+      "start": "2026-12-23T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35779&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35779%26upsellids%3D36075%252C36009%252C36054&saleschannelid=2&skinid=1&withauthentication=no&signature=1a237f65e6535edac540d8e8af72060fdc6d3ac4cc9fc4473cc6cb32fec611df"
+     },
+     {
+      "id": "35780",
+      "start": "2026-12-23T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35780&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35780%26upsellids%3D35996%252C35972%252C36092%252C35984&saleschannelid=2&skinid=1&withauthentication=no&signature=3957f0c481a69c855517a96188d6dc86f82af5ba24a29a4a867baef3fca4f6b0"
+     },
+     {
+      "id": "35806",
+      "start": "2026-12-24T12:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35806&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35806%26upsellids%3D36025%252C36040&saleschannelid=2&skinid=1&withauthentication=no&signature=87ce4015a899755b738a7fe8aff74b465721a5e18e76b4b2c3dfe6d97235849b"
+     },
+     {
+      "id": "35781",
+      "start": "2026-12-24T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35781&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35781%26upsellids%3D36076%252C36010%252C36055&saleschannelid=2&skinid=1&withauthentication=no&signature=ba87dde589f08dab3079774861b4cea91e186a37303c6efc91899b5addca9096"
+     },
+     {
+      "id": "35802",
+      "start": "2026-12-25T12:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35802&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35802%26upsellids%3D36026%252C36041&saleschannelid=2&skinid=1&withauthentication=no&signature=8d5df638b06945249c4bba6999f9faa1d87f642df676ac20e38795e73b53da29"
+     },
+     {
+      "id": "35782",
+      "start": "2026-12-25T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35782&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35782%26upsellids%3D36077%252C36011%252C36056&saleschannelid=2&skinid=1&withauthentication=no&signature=e14d57eec06614224d1ac66d49057fc5fec21c42e0f67dccd5a3f1b803eedd62"
+     },
+     {
+      "id": "35783",
+      "start": "2026-12-25T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35783&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35783%26upsellids%3D35997%252C35973%252C36093%252C35985&saleschannelid=2&skinid=1&withauthentication=no&signature=814b6c1c5a71a524b19d5350e13aed515a2789e2f3aa153538f03598373afc8e"
+     },
+     {
+      "id": "35807",
+      "start": "2026-12-26T12:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35807&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35807%26upsellids%3D36027%252C36042&saleschannelid=2&skinid=1&withauthentication=no&signature=dea3799dc30b77bfa93b06a10c17fd3fdf333528c600f73d9ef7591ae9bdc093"
+     },
+     {
+      "id": "35784",
+      "start": "2026-12-26T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35784&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35784%26upsellids%3D36078%252C36012%252C36057&saleschannelid=2&skinid=1&withauthentication=no&signature=ada87a66146a86ed772d84da51dc0b0d0775f1e4fac4e9aa8991b72c15789ed3"
+     },
+     {
+      "id": "35785",
+      "start": "2026-12-26T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35785&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35785%26upsellids%3D35998%252C35974%252C36094%252C35986&saleschannelid=2&skinid=1&withauthentication=no&signature=dcba667e79bad6333aee52bfcd1736d648a9670f5bd0747b6c195d27eb9c14d3"
+     },
+     {
+      "id": "35808",
+      "start": "2026-12-27T12:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35808&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35808%26upsellids%3D36028%252C36043&saleschannelid=2&skinid=1&withauthentication=no&signature=8af4fbb26d7a375399b8d1e417ca436cb8543d843d8409a08c2ee11ce9c2029b"
+     },
+     {
+      "id": "35786",
+      "start": "2026-12-27T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35786&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35786%26upsellids%3D36079%252C36013%252C36058&saleschannelid=2&skinid=1&withauthentication=no&signature=cf052bc0daed4b2f00336c4b99da570a565fe07e83879818178d12107ac7611f"
+     },
+     {
+      "id": "35787",
+      "start": "2026-12-27T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35787&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35787%26upsellids%3D35999%252C35975%252C36095%252C35987&saleschannelid=2&skinid=1&withauthentication=no&signature=bfe74013bbe17278d524a69474a172f5d4a733cdb6fcc600b55bf654996fb837"
+     },
+     {
+      "id": "35810",
+      "start": "2026-12-28T12:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35810&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35810%26upsellids%3D36029%252C36044&saleschannelid=2&skinid=1&withauthentication=no&signature=bf2cc5d93d0b1ac2d20a40f3e3511535c42b8106a1d8500d2930878feab80114"
+     },
+     {
+      "id": "35788",
+      "start": "2026-12-28T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35788&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35788%26upsellids%3D36080%252C36014%252C36059&saleschannelid=2&skinid=1&withauthentication=no&signature=06307a9ba5f6cb36801d95b75e6674db94e27e7632a053865c885ca89104d1f0"
+     },
+     {
+      "id": "35809",
+      "start": "2026-12-29T12:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35809&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35809%26upsellids%3D36030%252C36045&saleschannelid=2&skinid=1&withauthentication=no&signature=da702499fb566bcddee2f08dbf75a8a42d9f9e68ee09e9d1a4fe4a1cd9c39ffc"
+     },
+     {
+      "id": "35789",
+      "start": "2026-12-29T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35789&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35789%26upsellids%3D36081%252C36015%252C36060&saleschannelid=2&skinid=1&withauthentication=no&signature=9951f1eb82ddaf26a94367a09c3f55e2f0aa1410161803530ebfea0b67ec71ab"
+     },
+     {
+      "id": "35790",
+      "start": "2026-12-29T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35790&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35790%26upsellids%3D36000%252C35976%252C36096%252C35988&saleschannelid=2&skinid=1&withauthentication=no&signature=a488177eccbccaa74be4a56af67737a067eea8bc973273d57cd161cf409c3e8d"
+     },
+     {
+      "id": "35812",
+      "start": "2026-12-30T12:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35812&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35812%26upsellids%3D36031%252C36046&saleschannelid=2&skinid=1&withauthentication=no&signature=439785ff64be8b788e3277e167fdc4663a2bc43f7244e679bce70fe7f70831e0"
+     },
+     {
+      "id": "35791",
+      "start": "2026-12-30T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35791&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35791%26upsellids%3D36082%252C36016%252C36061&saleschannelid=2&skinid=1&withauthentication=no&signature=bcef7e5172ad05c4487cdd55b0efe9235992e65ee0dc3b11539f307abda79863"
+     },
+     {
+      "id": "35793",
+      "start": "2026-12-30T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35793&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35793%26upsellids%3D36001%252C35977%252C36097%252C35989&saleschannelid=2&skinid=1&withauthentication=no&signature=9e7bd22a2dc73b6fb487c2c09ea1d91b521de5baa6c9cc10acbe2456ac440902"
+     },
+     {
+      "id": "35811",
+      "start": "2026-12-31T12:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35811&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35811%26upsellids%3D36032%252C36047&saleschannelid=2&skinid=1&withauthentication=no&signature=1809f01805bf15cabd51927467151e71d348960a34476ed2b1fb243b2a33e3d3"
+     },
+     {
+      "id": "35792",
+      "start": "2026-12-31T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35792&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35792%26upsellids%3D36083%252C36017%252C36062&saleschannelid=2&skinid=1&withauthentication=no&signature=0eac245e11d4cffc41ebf8aa78f25f0d8d7627ce752eb56b61e75ff8c7646535"
+     },
+     {
+      "id": "35814",
+      "start": "2027-01-01T13:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35814&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35814%26upsellids%3D36033%252C36048&saleschannelid=2&skinid=1&withauthentication=no&signature=1375331bd8874e4c806edc10d357e237b0fb637978f340463e2dd710f123d970"
+     },
+     {
+      "id": "35794",
+      "start": "2027-01-01T17:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35794&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35794%26upsellids%3D36084%252C36020%252C36063&saleschannelid=2&skinid=1&withauthentication=no&signature=68bf7a088722b5752ef513162b43944aadb7559eef0094b9781034863f4e805f"
+     },
+     {
+      "id": "35813",
+      "start": "2027-01-02T12:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35813&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35813%26upsellids%3D36034%252C36049&saleschannelid=2&skinid=1&withauthentication=no&signature=a396b655b1bbd2072a5d09d495f12e9e4c44f2d08f2932599421140a1bd16eb0"
+     },
+     {
+      "id": "35795",
+      "start": "2027-01-02T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35795&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35795%26upsellids%3D36085%252C36018%252C36064&saleschannelid=2&skinid=1&withauthentication=no&signature=3f0ac28c9963f5e6dfe8e66a87992ed6881bd08fd6ed25511984bb0f97c4a69c"
+     },
+     {
+      "id": "35796",
+      "start": "2027-01-02T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35796&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35796%26upsellids%3D36002%252C35978%252C36098%252C35990&saleschannelid=2&skinid=1&withauthentication=no&signature=9dc0f868efd61e55ef8d59e0467cd3381f15070e607e9d9519d74c32e13879f7"
+     },
+     {
+      "id": "35815",
+      "start": "2027-01-03T12:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35815&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35815%26upsellids%3D36035%252C36050&saleschannelid=2&skinid=1&withauthentication=no&signature=0a08074ec555f610b7deee97977cf096933fe3ff8d23333f13494be671ff4fd2"
+     },
+     {
+      "id": "35797",
+      "start": "2027-01-03T16:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35797&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35797%26upsellids%3D36086%252C36019%252C36065&saleschannelid=2&skinid=1&withauthentication=no&signature=4f2025cc7e720b9ad7ee99d030647bd026b6f69565d99cb3408da2e3cd3dee79"
+     }
+    ]
+   }
+  }
+ }
+}
