@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (71 ok, 2 leeg, 8 gepauzeerd)
-- Voorstellingen (titel per theater): **8482**
-- Speeldata: **11961**
-- Laatste refresh: **10 oktober 2026, 11:20** (Amsterdamse tijd)
+- Theaters: **81** (2 terugval, 69 ok, 2 leeg, 8 gepauzeerd)
+- Voorstellingen (titel per theater): **8497**
+- Speeldata: **12087**
+- Laatste refresh: **11 oktober 2026, 05:55** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -349,7 +349,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Bijlmer Parktheater | Amsterdam | ja | ok |
 | CC Amstel | Amsterdam | ja | ok |
 | De Kleine Komedie | Amsterdam | nee | ok |
-| DeLaMar | Amsterdam | ja | ok |
+| DeLaMar | Amsterdam | ja | terugval |
 | Frascati | Amsterdam | ja | ok |
 | Koninklijk Theater Carré | Amsterdam | nee | ok |
 | Muziekgebouw aan 't IJ | Amsterdam | ja | ok |
@@ -399,7 +399,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| Corrosia | Almere | deels | ok |
+| Corrosia | Almere | deels | terugval |
 | Kunstlinie | Almere | deels | ok |
 
 **Limburg** (9)
@@ -461,7 +461,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| MIMIK | Deventer | ja | ok |
+| MIMIK | Deventer | deels | ok |
 | De Reggehof | Goor | onbekend | ok |
 | Schouwburg Hengelo | Hengelo | deels | ok |
 | Rabo Theater De Meenthe | Steenwijk | deels | ok |
