@@ -90,7 +90,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/ben-bril-memorial-boksgala-2026": {
-   "opgehaaldOp": "2026-10-10T03:06:41.347Z",
+   "opgehaaldOp": "2026-10-11T03:07:39.594Z",
    "data": {
     "naam": "Ben Bril Memorial Boksgala 2026",
     "events": [
@@ -178,7 +178,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/cats": {
-   "opgehaaldOp": "2026-10-10T03:06:43.376Z",
+   "opgehaaldOp": "2026-10-11T03:07:41.626Z",
    "data": {
     "naam": "Cats",
     "events": [
@@ -282,7 +282,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/cem-adrian-2027": {
-   "opgehaaldOp": "2026-10-10T03:07:22.288Z",
+   "opgehaaldOp": "2026-10-11T03:07:47.454Z",
    "data": {
     "naam": "Cem Adrian",
     "events": [
@@ -298,7 +298,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/chris-de-burgh-2027": {
-   "opgehaaldOp": "2026-10-10T03:07:23.288Z",
+   "opgehaaldOp": "2026-10-11T03:07:48.457Z",
    "data": {
     "naam": "Chris de Burgh",
     "events": [
@@ -434,7 +434,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/erykah-badu": {
-   "opgehaaldOp": "2026-10-10T03:06:42.252Z",
+   "opgehaaldOp": "2026-10-11T03:07:40.453Z",
    "data": {
     "naam": "Erykah Badu",
     "events": [
@@ -490,7 +490,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/foil-arms-and-hog-smithereens": {
-   "opgehaaldOp": "2026-10-10T03:07:26.291Z",
+   "opgehaaldOp": "2026-10-11T03:07:49.457Z",
    "data": {
     "naam": "Foil Arms and Hog",
     "events": [
@@ -1154,23 +1154,15 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
-   "opgehaaldOp": "2026-10-10T03:06:44.340Z",
+   "opgehaaldOp": "2026-10-11T03:07:42.599Z",
    "data": {
     "naam": "Jochem Myjer",
     "events": [
      {
-      "id": "36560",
-      "start": "2026-10-10T20:00:00+02:00",
-      "salesStatus": "on_sale",
-      "statusID": "waiting_list",
-      "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36560&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36560%26upsellids%3D36629%252C36609%252C36599%252C36619&saleschannelid=2&skinid=1&withauthentication=no&signature=fcd6c18c388d4e2c0c8582c36799cdde10be9b1970f82fbcd0a5cdd349c82253"
-     },
-     {
       "id": "36561",
       "start": "2026-10-11T20:00:00+02:00",
       "salesStatus": "on_sale",
-      "statusID": "waiting_list",
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36561&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36561%26upsellids%3D36630%252C36610%252C36600%252C36620&saleschannelid=2&skinid=1&withauthentication=no&signature=e1b92c74c3439f72ca84b9c2d2011a881b802bb9bf511dc34ca7aadcc6746b7a"
      },
@@ -1346,7 +1338,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/liefdesbrieven": {
-   "opgehaaldOp": "2026-10-10T03:06:47.253Z",
+   "opgehaaldOp": "2026-10-11T03:07:43.458Z",
    "data": {
     "naam": "Liefdesbrieven",
     "events": [
@@ -1362,7 +1354,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/lisa-ostermann-de-baas": {
-   "opgehaaldOp": "2026-10-10T03:06:59.265Z",
+   "opgehaaldOp": "2026-10-11T03:07:45.464Z",
    "data": {
     "naam": "Lisa Ostermann",
     "events": [
@@ -1386,7 +1378,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/loreena-mckennitt-the-mask-and-mirror-tour": {
-   "opgehaaldOp": "2026-10-10T03:07:07.270Z",
+   "opgehaaldOp": "2026-10-11T03:07:46.459Z",
    "data": {
     "naam": "Loreena McKennitt",
     "events": [
@@ -1746,7 +1738,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/rufus-wainwright-metropole-orkest": {
-   "opgehaaldOp": "2026-10-10T03:06:57.260Z",
+   "opgehaaldOp": "2026-10-11T03:07:44.454Z",
    "data": {
     "naam": "Rufus Wainwright & Metropole Orkest",
     "events": [
