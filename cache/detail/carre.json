@@ -178,7 +178,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/cats": {
-   "opgehaaldOp": "2026-10-11T03:07:41.626Z",
+   "opgehaaldOp": "2026-10-12T03:06:37.038Z",
    "data": {
     "naam": "Cats",
     "events": [
@@ -402,7 +402,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/epica": {
-   "opgehaaldOp": "2026-10-10T03:07:02.264Z",
+   "opgehaaldOp": "2026-10-12T03:06:39.874Z",
    "data": {
     "naam": "EPICA",
     "events": [
@@ -434,7 +434,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/erykah-badu": {
-   "opgehaaldOp": "2026-10-11T03:07:40.453Z",
+   "opgehaaldOp": "2026-10-12T03:06:35.873Z",
    "data": {
     "naam": "Erykah Badu",
     "events": [
@@ -1530,7 +1530,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/patrick-laureij-kintsugi": {
-   "opgehaaldOp": "2026-10-10T03:06:50.254Z",
+   "opgehaaldOp": "2026-10-12T03:06:37.874Z",
    "data": {
     "naam": "Patrick Laureij",
     "events": [
@@ -1786,7 +1786,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/snarky-puppy": {
-   "opgehaaldOp": "2026-10-10T03:07:19.280Z",
+   "opgehaaldOp": "2026-10-12T03:06:40.876Z",
    "data": {
     "naam": "Snarky Puppy",
     "events": [
@@ -2010,7 +2010,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/wereldkerstcircus-2627": {
-   "opgehaaldOp": "2026-10-10T03:06:56.481Z",
+   "opgehaaldOp": "2026-10-12T03:06:39.135Z",
    "data": {
     "naam": "Wereldkerstcircus",
     "events": [
