@@ -664,5 +664,12 @@ service cloud.firestore {
     match /zoekTellers/{dag} {
       allow read, write: if false;
     }
+    // Pogingen om een account te verwijderen (callable verwijderAccount, zie
+    // functions/accountVerwijderen.js): alleen de functie, met de admin SDK.
+    // Het verwijderen zelf gaat ook via de admin SDK; daarvoor zijn hier geen
+    // nieuwe rechten nodig.
+    match /verwijderTellers/{dag} {
+      allow read, write: if false;
+    }
   }
 }

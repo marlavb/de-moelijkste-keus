@@ -28,6 +28,9 @@
   --on-accent: #2e0a2e;
   --accent-text: #c44a17;
   --accent-text-small: #a33a0c;
+  /* Onomkeerbare actie (account verwijderen): #a33a0c met #fff6bf, 6,4:1. */
+  --danger: var(--accent-text-small);
+  --on-danger: #fff6bf;
 
   /* Labels en vlakjes */
   --podiumpas-bg: #fce3d3;
@@ -2962,4 +2965,84 @@ button.gezien-titel {
     width: auto;
     padding-inline: 24px;
   }
+}
+
+/* Account verwijderen (okt 2026): de knop onder in Profiel, en het scherm
+   met wat er weggaat en een bevestiging. */
+.account-verwijderen-rij {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 0;
+}
+
+.account-verwijderen-knop {
+  min-height: var(--touch);
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--danger);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.verwijder-lijst {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.verwijder-lijst li + li {
+  margin-top: 4px;
+}
+
+.verwijder-waarschuwing {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--danger);
+}
+
+.verwijder-vink {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: var(--touch);
+  padding: 10px 0 0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.verwijder-vink input {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--primary);
+}
+
+.btn-danger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--danger);
+  color: var(--on-danger);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-danger:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }

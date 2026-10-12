@@ -66,6 +66,10 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
 - **Berichten**: uitnodigingen en reacties, met een teller in Profiel.
 - **Mail**: een korte mail bij een nieuwe uitnodiging (uit te zetten in
   Profiel → Mail). Je adres is nooit zichtbaar voor anderen.
+- **Account verwijderen** (Profiel, onderaan): na een bevestiging en opnieuw
+  inloggen gaat alles van je account weg, ook bij je vrienden (vriendschappen,
+  plannen, berichten); je gebruikersnaam is daarna weer vrij. Op het apparaat
+  kun je je lijsten laten staan of ook wissen.
 
 Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.html).
 
@@ -258,7 +262,10 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
     `startNachtrun` (Cloud Scheduler, start de nachtelijke run via de GitHub
     API), `zoekOpNaam` (callable: vrienden zoeken op volledige naam, 20 keer
     per dag, hooguit 10 treffers, alleen gebruikersnaam en naam terug) en
-    `naamIndexProfiel`/`naamIndexVoorkeur` (houden de zoekindex
+    `verwijderAccount` (callable: je eigen account en alles erover weg, met
+    de admin SDK; alleen kort na opnieuw inloggen, 5 pogingen per dag; zie
+    `functions/accountVerwijderen.js`; twee indexen op collectiegroepen in
+    `firestore.indexes.json`), `naamIndexProfiel`/`naamIndexVoorkeur` (houden de zoekindex
     `naamIndex/{hash van de naam}` bij na een wijziging van het profiel of
     van `naamvoorkeur`; clients kunnen de index niet lezen). Bestaande
     profielen zijn eenmalig in de index gezet met
