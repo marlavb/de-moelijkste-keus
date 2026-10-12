@@ -89,6 +89,14 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   (Houten) vallen films (tag "Film", "Vroege Film: …") ook weg. Bij Podium
   Mozaïek (Amsterdam) vallen workshops en cursussen ("Workshop: …") weg;
   gesprekken en talks blijven.
+  Daarnaast laat de centrale nabewerking (`src/lib/geenVoorstelling.js`) bij
+  alle theaters weg: titels die beginnen met Workshop, Cursus of Masterclass
+  (ook "SoundLAB workshop …"; "Workshopvoorstelling" blijft), voorstellingen
+  met alleen filmgenres ("Film", "film, Familiefilm", "Drama, film") en een
+  paar duidelijke filmvertoningen op titel (Cinekid Festival, Underground
+  Cinema, European Outdoor Film Tour, Diner Zin in Film). Film als extra tag
+  naast een podiumgenre (Bijlmer Parktheater) blijft. De log telt per
+  theater wat er wegvalt.
   Karavaan (Theater de Drukkerij, Alkmaar) haalt elke nacht alle ~10
   detailpagina's op voor de aanvangstijd en "uitverkocht" (geen detailcache).
   Carré leest de agenda (titels, producties) en per productie de JSON van

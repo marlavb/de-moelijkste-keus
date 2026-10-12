@@ -17,6 +17,7 @@ import { bronIndex, r1Keuze } from './makerOmdraaien.js';
 import { leesAliassen, pasAliasToe, doelSleutel } from './aliassen.js';
 import { watchlistSleutel } from '../../public/js/watchlist.js';
 import { isVervallen } from './beschikbaarheid.js';
+import { geenVoorstelling } from './geenVoorstelling.js';
 import path from 'node:path';
 
 import { todayIsoDate } from './normalize.js';
@@ -379,11 +380,20 @@ export async function runRefresh({
   const r1Index = bronIndex(mergedShows.map((s) => ({ theaterId: s.theaterId, titel: s.titelBron ?? s.titel, maker: s.makerBron !== undefined ? s.makerBron : s.maker })));
   const uitersteDatum = `${Number(minDate.slice(0, 4)) + MAX_JAREN_VOORUIT}${minDate.slice(4)}`;
   const teVerPerTheater = {};
+  // Workshops, cursussen en filmvertoningen (geenVoorstelling.js), per theater.
+  const geenVoorstellingPerTheater = {};
   const verseShows = mergedShows
     .filter((s) => s.datum >= minDate)
     .filter((s) => {
       if (s.datum <= uitersteDatum) return true;
       teVerPerTheater[s.theaterId] = (teVerPerTheater[s.theaterId] ?? 0) + 1;
+      return false;
+    })
+    .filter((s) => {
+      const reden = geenVoorstelling({ titel: s.titelBron ?? s.titel, genreRuw: s.genreRuw });
+      if (!reden) return true;
+      const per = (geenVoorstellingPerTheater[s.theaterId] ??= {});
+      per[reden] = (per[reden] ?? 0) + 1;
       return false;
     })
     // `prijs` en `maker` zijn optionele schemavelden die maar een deel van de
@@ -483,7 +493,11 @@ export async function runRefresh({
         ...(r1Bron !== undefined ? { makerBron: r1Bron } : {}),
       };
     });
-  const purgedCount = mergedShows.length - verseShows.length;
+  const geenVoorstellingAantal = Object.values(geenVoorstellingPerTheater).reduce((n, per) => n + Object.values(per).reduce((a, b) => a + b, 0), 0);
+  for (const [theaterId, per] of Object.entries(geenVoorstellingPerTheater)) {
+    log(`[${theaterId}] geen voorstelling, weggelaten: ${Object.entries(per).map(([r, n]) => `${n} ${r === 'film' ? 'film(s)' : 'workshop(s)/cursus(sen)'}`).join(', ')}.`);
+  }
+  const purgedCount = mergedShows.length - verseShows.length - geenVoorstellingAantal;
   if (purgedCount > 0) {
     log(`${purgedCount} verlopen voorstelling(en) verwijderd (datum vóór ${minDate}).`);
   }
@@ -529,6 +543,8 @@ export async function runRefresh({
     if (!st || theater.gepauzeerd) continue;
     st.dubbelingen = verwijderdPerTheater[theater.id] ?? 0;
     st.aantal -= st.dubbelingen;
+    // Workshops en films (geenVoorstelling.js) tellen ook niet mee.
+    st.aantal = Math.max(0, st.aantal - Object.values(geenVoorstellingPerTheater[theater.id] ?? {}).reduce((x, y) => x + y, 0));
     // Bij een ander theater gelaten (ontdubbelTussenTheaters): ook niet meetellen.
     const elders = tussenTheaters.filter((v) => v.theaterId === theater.id).length;
     if (elders) {
