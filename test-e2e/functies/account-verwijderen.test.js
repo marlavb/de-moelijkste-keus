@@ -109,8 +109,14 @@ test('verwijderen: niets meer van anna, ook niet bij bob; gebruikersnaam vrij; i
   await page.waitForSelector('#verwijderBegrepen');
   await page.check('#verwijderOokLokaal');
   await page.check('#verwijderBegrepen');
+  // Na het verwijderen herlaadt de app; vóór het herladen kan de bevestiging
+  // al even staan. Een markering op window verdwijnt bij het herladen.
+  await page.evaluate(() => {
+    window.__voorHerladen = true;
+  });
   await page.click('#accountVerwijderenBevestig');
-  await wachtOpTekst(page, '#accountVerwijderenInhoud', /Je account is verwijderd/, 30000);
+  await page.waitForFunction(() => !window.__voorHerladen && /Je account is verwijderd/.test(document.querySelector('#accountVerwijderenInhoud')?.textContent ?? ''), null, { timeout: 30000 });
+  await page.waitForLoadState('load');
   await schermafbeelding(page, 'account-verwijderen-klaar');
 
   for (const pad of [
