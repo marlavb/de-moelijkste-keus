@@ -12,7 +12,7 @@ import { chromium } from 'playwright';
 
 const dir = await mkdtemp(path.join(os.tmpdir(), 'mimik-'));
 process.env.DETAIL_CACHE_DIR = dir;
-const { scrapeMimik, mimikSpeeldata, mimikStatus, mimikWeglaten, isVerkoopNogNiet } = await import('../src/sites/mimik.js');
+const { scrapeMimik, mimikSpeeldata, mimikStatus, mimikWeglaten, isVerkoopNogNiet, isFilmzaal, verwerkMimik } = await import('../src/sites/mimik.js');
 const { THEATERS } = await import('../src/lib/config.js');
 const theater = THEATERS.find((t) => t.id === 'mimik');
 const lees = (naam) => readFileSync(new URL(`./fixtures/${naam}`, import.meta.url), 'utf-8');
@@ -61,7 +61,7 @@ test('MIMIK: sitemap + productiepagina\'s via de detailcache; film weg, "Voorste
   assert.equal(femke.zaal, 'Theaterzaal');
   assert.equal(femke.prijs, 20);
   assert.match(femke.reserverenUrl, /^https:\/\/www\.mimik\.nl\/tickets\?programId=\d+$/);
-  assert.ok(eerste.logs.some((l) => /weggelaten \(komende producties\): film \(1\)/.test(l)), eerste.logs.join('\n'));
+  assert.ok(eerste.logs.some((l) => /weggelaten \(komende producties; filmzaal = speeldata\): film \(1\)/.test(l)), eerste.logs.join('\n'));
   assert.equal(eerste.logs.some((l) => /^WARN/.test(l)), false, eerste.logs.join('\n'));
 
   // Een dag later: alleen wat binnen 7 dagen speelt opnieuw (Femke, 10 okt);
@@ -86,7 +86,36 @@ test('MIMIK: knop, verkoop nog niet gestart, weglaten', () => {
   assert.equal(mimikStatus('Verkoop start23 oktober 12:00'), 'onbekend');
   assert.equal(isVerkoopNogNiet('Verkoop start23 oktober 12:00'), true);
   assert.equal(mimikWeglaten({ categorie: 'Film, Junior', kop: 'Tetem workshop films' }), 'film');
-  assert.equal(mimikWeglaten({ categorie: 'Sneak Preview', kop: 'Sneak Preview' }), 'film');
+  assert.equal(mimikWeglaten({ categorie: 'Sneak Preview', kop: 'Sneak Preview' }), 'Sneak Preview');
   assert.equal(mimikWeglaten({ categorie: 'Theater', kop: 'Femke Arnouts' }), null);
   assert.equal(mimikWeglaten({ categorie: 'Junior', kop: 'Workshop dansen' }), 'workshop/cursus');
+});
+
+test('MIMIK: alleen het theaterfilter; filmreeksen en filmzalen weg; onbekende categorie weg met waarschuwing (12 okt 2026)', () => {
+  for (const c of ['Cabaret', 'Dans', 'Fysiek theater', 'Junior', 'Muziektheater', 'Special', 'Theater', 'Theaterconcert', 'Woordkunst']) {
+    assert.equal(mimikWeglaten({ categorie: c, kop: 'X' }), null, c);
+  }
+  for (const c of ['Cinekid', 'MIMIK x Japan', 'Queer', 'Movies that Matter', 'Koolhovens Keuze', 'Royal Ballet and Opera', 'Klassieker', 'Te gast']) {
+    assert.equal(mimikWeglaten({ categorie: c, kop: 'X' }), c, c);
+  }
+  assert.equal(mimikWeglaten({ categorie: 'Film', kop: 'X' }), 'film');
+  assert.equal(mimikWeglaten({ categorie: 'Film, Junior', kop: 'X' }), 'film');
+  assert.equal(mimikWeglaten({ categorie: 'Halloween', kop: 'X' }), 'onbekende categorie: Halloween');
+  assert.equal(isFilmzaal('Filmzaal 3'), true);
+  assert.equal(isFilmzaal('Theaterzaal'), false);
+  // Junior: theater in de Theaterzaal blijft, een film in een filmzaal niet.
+  const rij = (datum, zaal) => ({ datum, tijd: '11:00', zaal, prijs: '€ 10,00', knop: 'Tickets', href: '/tickets?programId=1' });
+  const logs = [];
+  const shows = verwerkMimik(
+    [
+      { url: 'https://www.mimik.nl/agenda/groen-en-van-lien', data: { categorie: 'Junior', kop: 'Groen en van Lien', onder: 'Het verraad van Ithaka 8+', speeldata: [rij('2027-03-21', 'Theaterzaal')] } },
+      { url: 'https://www.mimik.nl/agenda/shaun', data: { categorie: 'Junior', kop: 'Shaun het Schaap: Het Beest van de Boerderij (6+)', onder: 'Steve Cox', speeldata: [rij('2026-10-18', 'Filmzaal 3')] } },
+      { url: 'https://www.mimik.nl/agenda/rbo', data: { categorie: 'Royal Ballet and Opera', kop: 'RBO 26/27: Tosca', speeldata: [rij('2026-11-01', 'Filmzaal 2')] } },
+      { url: 'https://www.mimik.nl/agenda/nieuw', data: { categorie: 'Halloween', kop: 'Spookfeest', speeldata: [rij('2026-10-31', 'Foyer')] } },
+    ],
+    { theater, vandaag: '2026-10-12', log: (m) => logs.push(m), warn: (m) => logs.push(`WARN ${m}`) }
+  );
+  assert.deepEqual(shows.map((s) => s.titel), ['Het verraad van Ithaka 8+ – Groen en van Lien']);
+  assert.ok(logs.some((l) => /filmzaal \(Junior\) \(1\)/.test(l) && /Royal Ballet and Opera \(1\)/.test(l)), logs.join('\n'));
+  assert.ok(logs.some((l) => /^WARN onbekende categorieën, weggelaten .*Halloween \(1\)/.test(l)), logs.join('\n'));
 });

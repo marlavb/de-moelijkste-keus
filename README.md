@@ -120,9 +120,13 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   platform als Munttheater; de agenda via /mvc/ verbiedt robots.txt) leest
   sitemap.xml en de productiepagina's via de detailcache: hooguit 80 per
   nacht (opbouw over 3 nachten), daarna nieuwe adressen meteen, producties
-  in de komende 7 dagen dagelijks en de rest wekelijks; films (ook Sneak
-  Preview) vallen weg; Podiumpas bij de theatercategorieën van MIMIK zelf,
-  reserveren alleen via hun formulier.
+  in de komende 7 dagen dagelijks en de rest wekelijks. Alleen de
+  categorieën uit MIMIK's eigen theaterfilter komen erin (Cabaret, Dans,
+  Fysiek theater, Junior, Muziektheater, Special, Theater, Theaterconcert,
+  Woordkunst); films, filmreeksen (Cinekid, Royal Ballet and Opera, …) en
+  speeldata in een filmzaal vallen weg, en een onbekende nieuwe categorie
+  valt ook weg met een waarschuwing in de log. Podiumpas bij die
+  theatercategorieën, reserveren alleen via hun formulier.
   De Tamboer (Hoogeveen) is een Phoenix LiveView-site: `?resultaten=30` in
   de URL geeft alle speeldata in één verzoek (de knop "Bekijk meer" werkt
   via een websocket); een Cloudflare-challenge of 403 geldt als blokkade.

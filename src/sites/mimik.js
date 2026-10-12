@@ -1,5 +1,5 @@
 import { createIdBuilder, todayIsoDate } from '../lib/normalize.js';
-import { normalizeGenre, isBekendGenre } from '../lib/genre.js';
+import { normalizeGenre } from '../lib/genre.js';
 import { titelUitKopEnOndertitel, metEnDash } from '../lib/titels.js';
 import { vervallenStatus } from '../lib/beschikbaarheid.js';
 import { lowestPrice } from '../lib/exclusions.js';
@@ -21,18 +21,35 @@ export const DAGELIJKS_BINNEN_DAGEN = 7;
 // Weggelaten producties (film e.d.): hooguit eens per zoveel dagen opnieuw.
 const WEG_VERVERSEN_DAGEN = 30;
 
+// Alleen wat in MIMIK's eigen theaterfilter valt (12 okt 2026): MIMIK is ook
+// filmhuis, en elke nieuwe filmreeks kreeg een eigen categorie (Cinekid,
+// MIMIK x Japan, Queer, Movies that Matter, Koolhovens Keuze, Royal Ballet and
+// Opera als bioscoopvertoning, Klassieker). Daarom omgekeerd: opnemen wat
+// theater is, de rest weglaten.
+export const THEATER_CATEGORIEEN = new Set(['cabaret', 'dans', 'fysiek theater', 'junior', 'muziektheater', 'special', 'theater', 'theaterconcert', 'woordkunst']);
+// Bekend en bewust weg (geen waarschuwing): film en filmreeksen, en "Te gast"
+// (niet in het theaterfilter; DZ on Stage, The Big Bike Film Night).
+const BEKEND_WEG = new Set(['cinekid', 'mimik x japan', 'queer', 'movies that matter', 'koolhovens keuze', 'royal ballet and opera', 'klassieker', 'sneak preview', 'te gast']);
+
 /**
- * Wat weg moet (geen theater- of podiumvoorstelling), uit de categorie bovenaan
- * de pagina en de titel. Geeft een reden of null.
+ * Waarom een productie weg moet, of null. 'film' (categorie met "film"),
+ * de categorie zelf (een bekende niet-theaterreeks), 'onbekende categorie: X'
+ * (nieuw; de run waarschuwt), of 'workshop/cursus'.
  */
 export function mimikWeglaten({ categorie, kop, onder }) {
   const c = String(categorie ?? '').trim();
+  const k = c.toLowerCase();
   const t = `${kop ?? ''} ${onder ?? ''}`;
-  // "Film", "Film, Junior", "Sneak Preview" (een verrassingsfilm).
-  if (/\bfilm\b|^sneak preview$/i.test(c)) return 'film';
+  // "Film", "Film, Junior".
+  if (/\bfilm\b/i.test(c)) return 'film';
+  if (BEKEND_WEG.has(k)) return c;
+  if (!THEATER_CATEGORIEEN.has(k)) return `onbekende categorie: ${c || '(leeg)'}`;
   if (/\b(workshop|cursus|masterclass)\b/i.test(t)) return 'workshop/cursus';
   return null;
 }
+
+/** Een speeldatum in een filmzaal is een filmvertoning (ook onder "Junior"). */
+export const isFilmzaal = (zaal) => /^filmzaal\b/i.test(String(zaal ?? '').trim());
 
 /** Knoptekst → beschikbaarheid. */
 export function mimikStatus(knop) {
@@ -197,12 +214,11 @@ export function verwerkMimik(producties, { theater, vandaag = todayIsoDate(), lo
     if (komend.length === 0) continue;
     const reden = mimikWeglaten(data);
     if (reden) {
-      tel(weg, reden);
+      tel(reden.startsWith('onbekende categorie') ? onbekend : weg, reden.replace(/^onbekende categorie: /, ''));
       continue;
     }
     if (!data.kop) continue;
     const genreRuw = data.categorie ?? null;
-    if (genreRuw && !isBekendGenre(genreRuw)) tel(onbekend, genreRuw);
     const podium = PODIUMPAS_CATEGORIE.test(genreRuw ?? '');
     // Kop en ondertitel in delen ("Millennium Jazz Orchestra | april",
     // "Gelukskoekje | try-out"): het eerste deel telt, de rest (maand,
@@ -220,6 +236,10 @@ export function verwerkMimik(producties, { theater, vandaag = todayIsoDate(), lo
       : titelUitKopEnOndertitel({ beschrijving: null }, { kop: metEnDash(kop), ondertitel: onder ? metEnDash(onder) : null, volgorde: 'maker-titel' }) ?? { titel: kop, maker: null, beschrijving: null };
     const basis = { ...uit, beschrijving: [...kopRest, ...onderRest, uit.beschrijving].filter(Boolean).join(' · ') || null };
     for (const s of komend) {
+      if (isFilmzaal(s.zaal)) {
+        tel(weg, `filmzaal (${genreRuw ?? '?'})`);
+        continue;
+      }
       const status = mimikStatus(s.knop);
       if (status === 'onbekend' && s.knop && !isVerkoopNogNiet(s.knop)) tel(knoppen, s.knop);
       const zaal = (s.zaal ?? '').trim() || null;
@@ -247,8 +267,8 @@ export function verwerkMimik(producties, { theater, vandaag = todayIsoDate(), lo
     }
   }
   const lijst = (o) => Object.entries(o).map(([k, n]) => `${k} (${n})`).join(', ');
-  if (Object.keys(weg).length) log(`weggelaten (komende producties): ${lijst(weg)}`);
-  if (Object.keys(onbekend).length) warn(`onbekende categorieën (nu Overig): ${lijst(onbekend)}`);
+  if (Object.keys(weg).length) log(`weggelaten (komende producties; filmzaal = speeldata): ${lijst(weg)}`);
+  if (Object.keys(onbekend).length) warn(`onbekende categorieën, weggelaten (staan niet in het theaterfilter): ${lijst(onbekend)}`);
   if (Object.keys(knoppen).length) log(`onbekende knopteksten (als "onbekend"): ${lijst(knoppen)}`);
   return shows;
 }
