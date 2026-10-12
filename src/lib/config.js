@@ -1078,12 +1078,18 @@ export const THEATERS = [
     provincie: 'Overijssel',
     baseUrl: 'https://www.reggehof.nl',
     agendaUrl: 'https://www.reggehof.nl/programma',
-    // Bron: https://podiumpas.nl/waar-te-besteden (8 okt 2026). Op de eigen
-    // site staat niets over de Podiumpas (menu, /theater en een detailpagina
-    // doorzocht, 8 okt 2026). Geen uitzonderingen verzonnen: podiumpas null
-    // = nog niet bekend (de app toont "Podiumpas?"), met een melding.
-    podiumpas: null,
-    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+    // Bron: https://www.reggehof.nl/over-reggehof/podiumpas (12 okt 2026,
+    // gelinkt vanaf podiumpas.nl/waar-te-besteden): "toegang tot alle
+    // voorstellingen in alle zalen, zolang er nog plaatsen beschikbaar zijn",
+    // niet bij (culturele) verhuringen en kaartverkoop door derden. Die zijn
+    // in de data niet te herkennen (alle speeldata worden via /bestel/ van
+    // de Reggehof zelf verkocht), dus true met een melding.
+    podiumpas: true,
+    podiumpasReserveren: {
+      email: 'kassa@reggehof.nl',
+      toelichting: 'Voorlopig alleen per mail (kassa@reggehof.nl), vanaf 30 dagen voor de voorstelling; de kassa behandelt aanvragen ma–vr 9–12 uur. Ticket ophalen op de dag zelf vanaf een uur voor aanvang, op vertoon van je Podiumpas. Niet bij verhuringen en kaartverkoop door derden.',
+    },
+    melding: 'Niet bij verhuringen en voorstellingen met kaartverkoop door derden — controleer bij twijfel bij het theater.',
   },
   {
     id: 'hengelo',
