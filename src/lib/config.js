@@ -690,11 +690,13 @@ export const THEATERS = [
     baseUrl: 'https://www.cenakel.nl',
     agendaUrl: 'https://www.cenakel.nl/agenda',
     // Bron: https://podiumpas.nl/waar-te-besteden (6 okt 2026): S.M.E.T.
-    // staat erop, met een link naar de agenda van Het Cenakel. Eigen
-    // voorwaarden niet gevonden (akkoord 6 okt 2026: Podiumpas volgens
-    // podiumpas.nl; voorwaarden worden nagevraagd).
+    // staat erop, met een link naar de agenda van Het Cenakel. Voorwaarden:
+    // https://www.cenakel.nl/agenda/545-s-m-e-t-kamermuziek-20/2026-11-08-12-30
+    // (12 okt 2026): "Alle S.M.E.T. concerten zijn toegankelijk met de
+    // Podiumpas"; kaarten via www.cenakel.nl of per e-mail. Hoe je met de pas
+    // reserveert, staat er niet: daarom een melding, geen podiumpasReserveren.
     podiumpas: true,
-    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+    melding: 'Alle S.M.E.T.-concerten gelden voor de Podiumpas; hoe je met de pas reserveert, staat er niet bij — vraag het theater.',
   },
   {
     id: 'markant',
