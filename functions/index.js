@@ -8,6 +8,8 @@
 //                       (zie naamzoeken.js).
 //   naamIndexProfiel, naamIndexVoorkeur — houden de zoekindex bij na een
 //                       wijziging van profielen/{uid} of naamvoorkeur/{uid}.
+//   verwijderAccount  — callable: je eigen account en alles erover weg
+//                       (zie accountVerwijderen.js).
 // Geheimen (Secret Manager): GMAIL_USER, GMAIL_APP_PASSWORD,
 // GITHUB_DISPATCH_TOKEN. Nooit in de repo.
 // Instellingen (functions/.env): BUDGET_TOPIC, DRY_RUN; in de emulator
@@ -29,6 +31,7 @@ import { verwerkUitnodiging, ruimOp } from './uitnodiging.js';
 import { verwerkBudgetBericht } from './facturering.js';
 import { startRefresh } from './nachtrun.js';
 import { zoekOpNaam as zoekOpNaamKern, indexeerNaam, ruimZoekTellersOp, ZOEK_LIMIET } from './naamzoeken.js';
+import { verwijderAccount as verwijderAccountKern, telPoging, VERWIJDER_LIMIET, RECENT_INGELOGD_S } from './accountVerwijderen.js';
 
 setGlobalOptions({ region: 'europe-west4', maxInstances: 2 });
 initializeApp();
@@ -141,3 +144,29 @@ const indexeer = (bron) => async (event) => {
 };
 export const naamIndexProfiel = onDocumentWritten({ document: 'profielen/{uid}', retry: false, maxInstances: 2 }, indexeer('profiel'));
 export const naamIndexVoorkeur = onDocumentWritten({ document: 'naamvoorkeur/{uid}', retry: false, maxInstances: 2 }, indexeer('voorkeur'));
+
+// Je eigen account verwijderen (vrienden stap 6): alleen ingelogd, kort
+// geleden opnieuw ingelogd (de app vraagt dat vlak ervoor), met de expliciete
+// bevestiging, en hooguit VERWIJDER_LIMIET pogingen per dag. Geen namen of
+// uid's in de log: alleen tellingen.
+export const verwijderAccount = onCall({ maxInstances: 2, timeoutSeconds: 120, memory: '256MiB' }, async (req) => {
+  const uid = req.auth?.uid;
+  if (!uid) throw new HttpsError('unauthenticated', 'Log in om je account te verwijderen.');
+  if (req.data?.bevestiging !== 'verwijder') throw new HttpsError('invalid-argument', 'Bevestig het verwijderen.');
+  const authTijd = Number(req.auth.token?.auth_time ?? 0);
+  if (!authTijd || Date.now() / 1000 - authTijd > RECENT_INGELOGD_S) {
+    throw new HttpsError('failed-precondition', 'Log opnieuw in om je account te verwijderen.');
+  }
+  const db = getFirestore();
+  if (!(await telPoging({ db, uid }))) {
+    throw new HttpsError('resource-exhausted', `Je hebt vandaag al ${VERWIJDER_LIMIET} keer geprobeerd je account te verwijderen. Probeer het morgen weer.`);
+  }
+  try {
+    const telling = await verwijderAccountKern({ db, auth: getAuth(), uid });
+    logger.info('verwijderAccount', { status: 'verwijderd', ...telling });
+    return { verwijderd: true };
+  } catch (err) {
+    logger.error('verwijderAccount', { status: 'mislukt', code: err?.code ?? null });
+    throw new HttpsError('internal', 'Het verwijderen is niet helemaal gelukt. Probeer het opnieuw; wat al weg is, blijft weg.');
+  }
+});

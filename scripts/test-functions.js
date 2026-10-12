@@ -36,7 +36,7 @@ function ronde(only, bestanden) {
   });
 }
 
-const een = await ronde('firestore,auth', 'functions/test/mail.test.js functions/test/facturering.test.js functions/test/uitnodiging.test.js functions/test/nachtrun.test.js functions/test/naamzoeken.test.js');
+const een = await ronde('firestore,auth', 'functions/test/mail.test.js functions/test/facturering.test.js functions/test/uitnodiging.test.js functions/test/nachtrun.test.js functions/test/naamzoeken.test.js functions/test/accountVerwijderen.test.js');
 const twee = await ronde('functions,firestore,auth', 'functions/test/trigger.test.js functions/test/naamzoeken-trigger.test.js');
 
 // Testgebruikers hebben adressen op @mail.test; geen daarvan mag in de logs.
