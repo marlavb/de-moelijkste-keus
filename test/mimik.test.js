@@ -95,7 +95,7 @@ test('MIMIK: alleen het theaterfilter; filmreeksen en filmzalen weg; onbekende c
   for (const c of ['Cabaret', 'Dans', 'Fysiek theater', 'Junior', 'Muziektheater', 'Special', 'Theater', 'Theaterconcert', 'Woordkunst']) {
     assert.equal(mimikWeglaten({ categorie: c, kop: 'X' }), null, c);
   }
-  for (const c of ['Cinekid', 'MIMIK x Japan', 'Queer', 'Movies that Matter', 'Koolhovens Keuze', 'Royal Ballet and Opera', 'Klassieker', 'Te gast']) {
+  for (const c of ['Cinekid', 'MIMIK x Japan', 'Queer', 'Movies that Matter', 'Koolhovens Keuze', 'Royal Ballet and Opera', 'Klassieker']) {
     assert.equal(mimikWeglaten({ categorie: c, kop: 'X' }), c, c);
   }
   assert.equal(mimikWeglaten({ categorie: 'Film', kop: 'X' }), 'film');
@@ -118,4 +118,20 @@ test('MIMIK: alleen het theaterfilter; filmreeksen en filmzalen weg; onbekende c
   assert.deepEqual(shows.map((s) => s.titel), ['Het verraad van Ithaka 8+ – Groen en van Lien']);
   assert.ok(logs.some((l) => /filmzaal \(Junior\) \(1\)/.test(l) && /Royal Ballet and Opera \(1\)/.test(l)), logs.join('\n'));
   assert.ok(logs.some((l) => /^WARN onbekende categorieën, weggelaten .*Halloween \(1\)/.test(l)), logs.join('\n'));
+});
+
+test('MIMIK: "Te gast" alleen in de theaterzaal, Podiumpas onbekend met noot (12 okt 2026)', () => {
+  assert.equal(mimikWeglaten({ categorie: 'Te gast', kop: 'DZ on Stage' }), null);
+  const rij = (datum, zaal) => ({ datum, tijd: '20:00', zaal, prijs: '€ 20,00', knop: 'Tickets', href: '/tickets?programId=2' });
+  const logs = [];
+  const shows = verwerkMimik(
+    [
+      { url: 'https://www.mimik.nl/agenda/dz-on-stage-borstkanker', data: { categorie: 'Te gast', kop: 'DZ on Stage', speeldata: [rij('2026-10-27', 'Theaterzaal')] } },
+      { url: 'https://www.mimik.nl/agenda/the-big-bike-film-night-2026', data: { categorie: 'Te gast', kop: 'The Big Bike Film Night', speeldata: [rij('2026-11-05', 'Filmzaal 1'), rij('2026-11-06', 'Foyer')] } },
+    ],
+    { theater, vandaag: '2026-10-12', log: (m) => logs.push(m), warn: (m) => logs.push(`WARN ${m}`) }
+  );
+  assert.deepEqual(shows.map((s) => [s.titel, s.podiumpas, s.podiumpasNoot]), [['DZ on Stage', null, 'Podiumpas-voorwaarden voor gastvoorstellingen nog niet bekend']]);
+  assert.ok(logs.some((l) => /filmzaal \(Te gast\) \(1\)/.test(l) && /te gast buiten de theaterzaal \(1\)/.test(l)), logs.join('\n'));
+  assert.ok(!logs.some((l) => l.startsWith('WARN')), logs.join('\n'));
 });

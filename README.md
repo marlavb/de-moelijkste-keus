@@ -89,6 +89,14 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   (Houten) vallen films (tag "Film", "Vroege Film: …") ook weg. Bij Podium
   Mozaïek (Amsterdam) vallen workshops en cursussen ("Workshop: …") weg;
   gesprekken en talks blijven.
+  Daarnaast laat de centrale nabewerking (`src/lib/geenVoorstelling.js`) bij
+  alle theaters weg: titels die beginnen met Workshop, Cursus of Masterclass
+  (ook "SoundLAB workshop …"; "Workshopvoorstelling" blijft), voorstellingen
+  met alleen filmgenres ("Film", "film, Familiefilm", "Drama, film") en een
+  paar duidelijke filmvertoningen op titel (Cinekid Festival, Underground
+  Cinema, European Outdoor Film Tour, Diner Zin in Film). Film als extra tag
+  naast een podiumgenre (Bijlmer Parktheater) blijft. De log telt per
+  theater wat er wegvalt.
   Karavaan (Theater de Drukkerij, Alkmaar) haalt elke nacht alle ~10
   detailpagina's op voor de aanvangstijd en "uitverkocht" (geen detailcache).
   Carré leest de agenda (titels, producties) en per productie de JSON van
@@ -128,7 +136,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   Woordkunst); films, filmreeksen (Cinekid, Royal Ballet and Opera, …) en
   speeldata in een filmzaal vallen weg, en een onbekende nieuwe categorie
   valt ook weg met een waarschuwing in de log. Podiumpas bij die
-  theatercategorieën, reserveren alleen via hun formulier.
+  theatercategorieën; "Te gast" (gastvoorstellingen) komt erin, maar alleen
+  in de theaterzaal en met Podiumpas onbekend (`null`, met een noot).
+  Reserveren alleen via hun formulier.
   De Tamboer (Hoogeveen) is een Phoenix LiveView-site: `?resultaten=30` in
   de URL geeft alle speeldata in één verzoek (de knop "Bekijk meer" werkt
   via een websocket); een Cloudflare-challenge of 403 geldt als blokkade.
