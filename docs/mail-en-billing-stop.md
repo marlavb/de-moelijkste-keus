@@ -1,8 +1,8 @@
 # Stap 5: mail bij uitnodigingen aanzetten — instructies
 
 > Sinds 10 okt 2026 in `docs/` (eerder `debug/stap5-instructies.md`). De mail is
-> uitgerold; de billing-stop staat nog in DRY_RUN (§9 beschrijft de test en het
-> aanzetten). Waar hieronder branch `vrienden` staat: nu gewoon `main`.
+> uitgerold; de billing-stop is getest en staat sinds 12 okt 2026 echt aan
+> (`DRY_RUN=false`; §9 beschrijft de test en het aanzetten). Waar hieronder branch `vrienden` staat: nu gewoon `main`.
 
 Voor project **`de-moeilijkste-keus`** (projectnummer `836341833360`),
 Firestore-locatie **europe-west4**. Doe de stappen in deze volgorde. Waar

@@ -254,7 +254,7 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
     vrienden, delen, plannen en berichten. Toegang via `firestore.rules`.
   - **Functions** (2nd gen, Node 22, **europe-west4**, map `functions/`):
     `uitnodigingsmail` (mail bij een uitnodiging), `stopFacturering` (stopt de
-    facturering bij overschrijding van het budget; staat in DRY_RUN) en
+    facturering bij overschrijding van het budget van €5; sinds 12 okt 2026 echt, `DRY_RUN=false`) en
     `startNachtrun` (Cloud Scheduler, start de nachtelijke run via de GitHub
     API), `zoekOpNaam` (callable: vrienden zoeken op volledige naam, 20 keer
     per dag, hooguit 10 treffers, alleen gebruikersnaam en naam terug) en
