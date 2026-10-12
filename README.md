@@ -116,8 +116,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   locatie en Podiumpas onbekend (`null`: de pagina zegt "in het theater"). De Reggehof (Goor) geeft HTML-blokken in JSON, genre via de
   genrefilters van de site; "zitten" en "staan" worden één voorstelling, en
   een uitverkocht-status is er niet (robots.txt van de Itix-host verbiedt
-  die); Podiumpas onbekend (`null`), want alleen podiumpas.nl noemt het
-  theater. Schouwburg Hengelo leest de lijstpagina's (één tegel per speeldatum);
+  die); Podiumpas bij alle voorstellingen (eigen Podiumpas-pagina, 12 okt
+  2026), met een melding dat verhuringen en kaartverkoop door derden niet
+  meetellen (niet te herkennen in de data). Schouwburg Hengelo leest de lijstpagina's (één tegel per speeldatum);
   de Podiumpas geldt alleen in de Middenzaal en Rabozaal, tot €50 (de lijst
   heeft geen prijs: true met een melding; boven €50 false), "Regionaal" is
   onbekend (`null`), en welke regel de voorstelling

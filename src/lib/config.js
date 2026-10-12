@@ -690,11 +690,13 @@ export const THEATERS = [
     baseUrl: 'https://www.cenakel.nl',
     agendaUrl: 'https://www.cenakel.nl/agenda',
     // Bron: https://podiumpas.nl/waar-te-besteden (6 okt 2026): S.M.E.T.
-    // staat erop, met een link naar de agenda van Het Cenakel. Eigen
-    // voorwaarden niet gevonden (akkoord 6 okt 2026: Podiumpas volgens
-    // podiumpas.nl; voorwaarden worden nagevraagd).
+    // staat erop, met een link naar de agenda van Het Cenakel. Voorwaarden:
+    // https://www.cenakel.nl/agenda/545-s-m-e-t-kamermuziek-20/2026-11-08-12-30
+    // (12 okt 2026): "Alle S.M.E.T. concerten zijn toegankelijk met de
+    // Podiumpas"; kaarten via www.cenakel.nl of per e-mail. Hoe je met de pas
+    // reserveert, staat er niet: daarom een melding, geen podiumpasReserveren.
     podiumpas: true,
-    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+    melding: 'Alle S.M.E.T.-concerten gelden voor de Podiumpas; hoe je met de pas reserveert, staat er niet bij — vraag het theater.',
   },
   {
     id: 'markant',
@@ -724,7 +726,9 @@ export const THEATERS = [
     // pagina https://theaterspeelhuis.nl/podiumpas (6 okt 2026) noemt geen
     // voorwaarden: Podiumpas bij alle voorstellingen behalve gratis (zie
     // src/sites/speelhuis.js); voorwaarden worden nagevraagd. Daarom
-    // podiumpas null = nog niet bekend (9 okt 2026, zoals TAR en De Reggehof).
+    // podiumpas null = nog niet bekend (9 okt 2026, zoals TAR). Opnieuw
+    // gecontroleerd 12 okt 2026 (zelfde pagina, gelinkt vanaf podiumpas.nl):
+    // alleen algemene uitleg over de pas, geen voorwaarden.
     podiumpas: null,
     melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
   },
@@ -740,6 +744,9 @@ export const THEATERS = [
     // noemt de pas niet (6 okt 2026). Podiumpas bij alle voorstellingen
     // behalve gratis (zie src/sites/schouwburgconcertzaal.js); voorwaarden
     // worden nagevraagd. Daarom podiumpas null = nog niet bekend (9 okt 2026).
+    // Opnieuw gecontroleerd 12 okt 2026: podiumpas.nl linkt alleen naar de
+    // homepage; https://www.schouwburgconcertzaaltilburg.nl/nl/je-bezoek/tickets
+    // noemt de pas niet.
     podiumpas: null,
     melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
   },
@@ -1063,7 +1070,8 @@ export const THEATERS = [
     // Bron: https://www.demeenthe.nl/informatie/podiumpas/ (8 okt 2026):
     // reguliere voorstellingen en concerten in het theater; uitsluitingen per
     // voorstelling in src/sites/meenthe.js. Kerkconcerten: podiumpas null
-    // (nog niet bekend; de pagina zegt "in het theater").
+    // (nog niet bekend; de pagina zegt "in het theater"; zo ook bij de
+    // controle van 12 okt 2026).
     podiumpas: true,
     podiumpasReserveren: {
       online: true,
@@ -1078,12 +1086,18 @@ export const THEATERS = [
     provincie: 'Overijssel',
     baseUrl: 'https://www.reggehof.nl',
     agendaUrl: 'https://www.reggehof.nl/programma',
-    // Bron: https://podiumpas.nl/waar-te-besteden (8 okt 2026). Op de eigen
-    // site staat niets over de Podiumpas (menu, /theater en een detailpagina
-    // doorzocht, 8 okt 2026). Geen uitzonderingen verzonnen: podiumpas null
-    // = nog niet bekend (de app toont "Podiumpas?"), met een melding.
-    podiumpas: null,
-    melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
+    // Bron: https://www.reggehof.nl/over-reggehof/podiumpas (12 okt 2026,
+    // gelinkt vanaf podiumpas.nl/waar-te-besteden): "toegang tot alle
+    // voorstellingen in alle zalen, zolang er nog plaatsen beschikbaar zijn",
+    // niet bij (culturele) verhuringen en kaartverkoop door derden. Die zijn
+    // in de data niet te herkennen (alle speeldata worden via /bestel/ van
+    // de Reggehof zelf verkocht), dus true met een melding.
+    podiumpas: true,
+    podiumpasReserveren: {
+      email: 'kassa@reggehof.nl',
+      toelichting: 'Voorlopig alleen per mail (kassa@reggehof.nl), vanaf 30 dagen voor de voorstelling; de kassa behandelt aanvragen ma–vr 9–12 uur. Ticket ophalen op de dag zelf vanaf een uur voor aanvang, op vertoon van je Podiumpas. Niet bij verhuringen en kaartverkoop door derden.',
+    },
+    melding: 'Niet bij verhuringen en voorstellingen met kaartverkoop door derden — controleer bij twijfel bij het theater.',
   },
   {
     id: 'hengelo',
@@ -1096,6 +1110,8 @@ export const THEATERS = [
     // alleen in de Middenzaal en Rabozaal (per voorstelling in
     // src/sites/hengelo.js), tot €50: true bij onbekende prijs (de lijst
     // heeft geen prijs) met de melding, false boven €50; Regionaal null.
+    // Controle 12 okt 2026: "professionele voorstellingen" in de Middenzaal
+    // of Rabozaal; of "Regionaal" daarbuiten valt, staat er niet letterlijk.
     podiumpas: true,
     podiumpasReserveren: {
       online: true,
@@ -1195,7 +1211,9 @@ export const THEATERS = [
     baseUrl: 'https://demuze.nl',
     agendaUrl: 'https://demuze.nl/programma/',
     // Bron: https://demuze.nl/podiumpas/ (8 okt 2026): tickets tot €50 (niet
-    // bijbetalen), vanaf 30 dagen; reserveren nog niet online.
+    // bijbetalen), vanaf 30 dagen; reserveren nog niet online. Controle 12
+    // okt 2026: niets over voorstellingen van verenigingen en organisaties
+    // (die blijven null).
     podiumpas: true,
     podiumpasReserveren: {
       telefoon: '071 – 364 62 26',
