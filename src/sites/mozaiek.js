@@ -35,6 +35,15 @@ function parseDateTime(raw) {
 }
 
 /**
+ * Workshops, cursussen en masterclasses ("Workshop: The storyteller's voice")
+ * zijn geen voorstellingen en laten we weg, zoals elders (12 okt 2026).
+ * Gesprekken en talks blijven.
+ */
+export function isMozaiekWorkshop(titel) {
+  return /^(workshop|cursus|masterclass)\b/i.test(String(titel ?? '').trim());
+}
+
+/**
  * Haalt de volledige agenda van Podium Mozaïek op.
  *
  * Structuur (geïnspecteerd op
@@ -100,7 +109,12 @@ export async function scrapeMozaiek({ page, theater, robots, waitForTurn, log })
   const opgehaaldOp = new Date().toISOString();
   const shows = [];
 
+  let workshops = 0;
   for (const item of rawItems) {
+    if (isMozaiekWorkshop(item.titel)) {
+      workshops++;
+      continue;
+    }
     const parsed = parseDateTime(item.datumTekst);
     if (!parsed) {
       log(`kon datum niet parsen: "${item.datumTekst}" (${item.titel}) — overgeslagen.`);
@@ -127,6 +141,7 @@ export async function scrapeMozaiek({ page, theater, robots, waitForTurn, log })
       opgehaaldOp,
     });
   }
+  if (workshops) log(`${workshops} workshop(s)/cursus(sen) weggelaten.`);
 
   return shows;
 }
