@@ -86,7 +86,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   Orpheus (Apeldoorn) en Agnietenhof (Tiel) werken net zo; bij Agnietenhof
   krijgt alleen een kaart met meer speeldata (knop "Speeldata", zonder
   paneel) een detailpagina, en films vallen weg. Bij Aan de Slinger
-  (Houten) vallen films (tag "Film", "Vroege Film: …") ook weg.
+  (Houten) vallen films (tag "Film", "Vroege Film: …") ook weg. Bij Podium
+  Mozaïek (Amsterdam) vallen workshops en cursussen ("Workshop: …") weg;
+  gesprekken en talks blijven.
   Karavaan (Theater de Drukkerij, Alkmaar) haalt elke nacht alle ~10
   detailpagina's op voor de aanvangstijd en "uitverkocht" (geen detailcache).
   Carré leest de agenda (titels, producties) en per productie de JSON van
