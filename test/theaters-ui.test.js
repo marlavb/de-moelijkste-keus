@@ -12,6 +12,7 @@ import { chromium } from 'playwright';
 
 import { nepFirebase } from './nepFirebase.js';
 import { TIJDZONE } from './datum.js';
+import { serveerVasteAgenda } from './vasteAgenda.js';
 
 const ROOT = new URL('../public/', import.meta.url).pathname;
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
@@ -24,6 +25,8 @@ let browser;
 before(async () => {
   server = createServer(async (req, res) => {
     const pad = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+    // De vaste agenda, niet public/data/shows.json (vasteAgenda.js).
+    if (await serveerVasteAgenda(pad, res)) return;
     const file = path.join(ROOT, pad.endsWith('/') ? `${pad}index.html` : pad);
     try {
       const body = await readFile(file);

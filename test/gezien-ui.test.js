@@ -14,6 +14,7 @@ import { nepFirebase } from './nepFirebase.js';
 import { planIn, zetStatus, legeGepland } from '../public/js/gepland.js';
 import { voegToe, legeWatchlist, watchlistSleutel } from '../public/js/watchlist.js';
 import { TIJDZONE, dagenVerder, vandaag as vandaagAmsterdam } from './datum.js';
+import { serveerVasteAgenda, vasteShows } from './vasteAgenda.js';
 
 const ROOT = new URL('../public/', import.meta.url).pathname;
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
@@ -25,6 +26,8 @@ let eenShow; // een toekomstige voorstelling uit de echte data
 before(async () => {
   server = createServer(async (req, res) => {
     const pad = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+    // De vaste agenda, niet public/data/shows.json (vasteAgenda.js).
+    if (await serveerVasteAgenda(pad, res)) return;
     const file = path.join(ROOT, pad.endsWith('/') ? `${pad}index.html` : pad);
     try {
       const body = await readFile(file);
@@ -38,7 +41,7 @@ before(async () => {
   await new Promise((r) => server.listen(0, '127.0.0.1', r));
   base = `http://127.0.0.1:${server.address().port}/`;
   browser = await chromium.launch();
-  const shows = JSON.parse(await readFile(path.join(ROOT, 'data/shows.json'), 'utf-8'));
+  const shows = await vasteShows();
   const vandaag = vandaagAmsterdam();
   // Een voorstelling met een gewone sleutel (niet theatergebonden, zoals
   // "Cabaret" op de uitsluitlijst) en een titel die geen genrenaam is: de
@@ -70,7 +73,7 @@ after(async () => {
 async function openApp({ opslag = {}, html, viewport = { width: 390, height: 900 }, extraShows = [] } = {}) {
   const ctx = await browser.newContext({ viewport, serviceWorkers: 'block', timezoneId: TIJDZONE });
   if (extraShows.length) {
-    const echt = JSON.parse(await readFile(path.join(ROOT, 'data/shows.json'), 'utf-8'));
+    const echt = await vasteShows();
     await ctx.route(/data\/shows\.json/, (r) => r.fulfill({ contentType: 'application/json', body: JSON.stringify([...extraShows, ...echt]) }));
   }
   await ctx.route(/^https?:\/\/(?!127\.0\.0\.1)/, (r) => r.abort());
