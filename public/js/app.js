@@ -99,6 +99,7 @@ import {
   ruimBerichtenOp,
   uitnodigingStand,
   isNogTePlannen,
+  amsterdamDatum,
 } from './plannen.js';
 import {
   laadGezien,
@@ -118,6 +119,18 @@ import {
   gezienVeld,
 } from './gezien.js';
 import { maakSterren } from './sterren.js';
+import {
+  SNELKEUZES,
+  WEEKDAGEN,
+  legeWanneer,
+  normaliseerWanneer,
+  matchtWanneer,
+  isWanneerActief,
+  heeftBereik,
+  kiesSnel,
+  kiesDatum,
+  wisselDag,
+} from './wanneer.js';
 
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
 // theater) — vaste, kleine lookup hier is prima voor 3 theaters in 1 stad.
@@ -294,7 +307,7 @@ const PROVINCE_BY_CITY = {
 // Desktop-sidebar accordeon-secties (Stad/Theater/Genre) — standaard allemaal
 // open zodat bestaande bezoekers zonder opgeslagen voorkeur niets zien
 // veranderen totdat ze zelf iets inklappen.
-const SIDEBAR_SECTION_IDS = ['stad', 'theater', 'genre'];
+const SIDEBAR_SECTION_IDS = ['wanneer', 'stad', 'theater', 'genre'];
 
 // Standaard tonen we alleen voorstellingen tot 30 dagen vooruit — met 1136+
 // voorstellingen tot in 2028 is "alles in één keer" geen bruikbare lijst.
@@ -324,6 +337,9 @@ const state = {
   selectedCities: savedFilters.selectedCities,
   selectedTheaters: savedFilters.selectedTheaters,
   selectedGenres: savedFilters.selectedGenres,
+  // Datumfilter "Wanneer" (wanneer.js): snelkeuze of eigen van–tot, plus
+  // weekdagen. Bewaard zoals de filters hierboven.
+  wanneer: savedFilters.wanneer,
   // De 3 toggles hieronder (podiumpasOnly/watchlistOnly/hideFullOnly) waren
   // vroeger bewust session-only (nooit opgeslagen), zodat ze bij elk bezoek
   // weer op de standaardstand "uit" stonden — dat is op expliciet verzoek
@@ -395,6 +411,7 @@ const els = {
   sheetCityFilters: document.getElementById('sheetCityFilters'),
   sheetTheaterFilters: document.getElementById('sheetTheaterFilters'),
   sheetGenreFilters: document.getElementById('sheetGenreFilters'),
+  sheetWanneerFilters: document.getElementById('sheetWanneerFilters'),
   podiumpasToggle: document.getElementById('podiumpasToggle'),
   detailPodiumpasOnbekend: document.getElementById('detailPodiumpasOnbekend'),
   watchlistOnlyToggle: document.getElementById('watchlistOnlyToggle'),
@@ -402,6 +419,7 @@ const els = {
   sidebarCityFilters: document.getElementById('sidebarCityFilters'),
   sidebarTheaterFilters: document.getElementById('sidebarTheaterFilters'),
   sidebarGenreFilters: document.getElementById('sidebarGenreFilters'),
+  sidebarWanneerFilters: document.getElementById('sidebarWanneerFilters'),
   sidebarPodiumpasToggle: document.getElementById('sidebarPodiumpasToggle'),
   sidebarWatchlistOnlyToggle: document.getElementById('sidebarWatchlistOnlyToggle'),
   sidebarHideFullToggle: document.getElementById('sidebarHideFullToggle'),
@@ -414,6 +432,7 @@ const els = {
     stad: document.getElementById('sidebarStadHeader'),
     theater: document.getElementById('sidebarTheaterHeader'),
     genre: document.getElementById('sidebarGenreHeader'),
+    wanneer: document.getElementById('sidebarWanneerHeader'),
   },
   sidebarClearFilters: document.getElementById('sidebarClearFilters'),
   agendaList: document.getElementById('agendaList'),
@@ -569,6 +588,7 @@ const SIDEBAR_SECTION_CONTENT_ELS = {
   stad: () => els.sidebarCityFilters,
   theater: () => els.sidebarTheaterFilters,
   genre: () => els.sidebarGenreFilters,
+  wanneer: () => els.sidebarWanneerFilters,
 };
 
 function applySidebarSectionState(sectionId) {
@@ -1084,6 +1104,7 @@ function loadFilters() {
     hideFullOnly: stored.hideFullOnly === true,
     hideGezien: stored.hideGezien === true,
     searchQueryRaw: typeof stored.searchQuery === 'string' ? stored.searchQuery : '',
+    wanneer: normaliseerWanneer(stored.wanneer),
   };
 }
 
@@ -1099,6 +1120,7 @@ function saveFilters() {
       hideFullOnly: state.hideFullOnly,
       hideGezien: state.hideGezien,
       searchQuery: state.searchQueryRaw,
+      wanneer: state.wanneer,
     })
   );
 }
@@ -4788,6 +4810,7 @@ function clearAllFilters() {
   state.watchlistOnly = false;
   state.hideFullOnly = false;
   state.hideGezien = false;
+  state.wanneer = legeWanneer();
   renderFilters();
   renderFilterBadge();
   renderAgenda();
@@ -4835,6 +4858,107 @@ function renderGenreFilters() {
   }
 }
 
+// ---------- Datumfilter "Wanneer" (wanneer.js) ----------
+
+function onWanneerWijzig(nieuw) {
+  state.wanneer = nieuw;
+  renderWanneerFilters();
+  renderFilterBadge();
+  renderAgenda();
+  saveFilters();
+}
+
+function wanneerChip(label, onClick, { ariaLabel, waarde } = {}) {
+  const btn = makeChip(label, false, onClick);
+  btn.dataset.waarde = waarde;
+  btn.setAttribute('aria-pressed', 'false');
+  if (ariaLabel) btn.setAttribute('aria-label', ariaLabel);
+  return btn;
+}
+
+/** Eén keer per container de opbouw; renderWanneerFilters() zet de stand. */
+function bouwWanneer(container, prefix) {
+  const snel = document.createElement('div');
+  snel.className = 'filter-row filter-row--wrap wanneer-snel';
+  snel.setAttribute('role', 'group');
+  snel.setAttribute('aria-label', 'Snelkeuze');
+  for (const k of SNELKEUZES) snel.appendChild(wanneerChip(k.label, () => onWanneerWijzig(kiesSnel(state.wanneer, k.id)), { waarde: k.id }));
+
+  const datums = document.createElement('fieldset');
+  datums.className = 'wanneer-datums';
+  const legend = document.createElement('legend');
+  legend.className = 'wanneer-kop';
+  legend.textContent = 'Kies datums';
+  datums.appendChild(legend);
+  const velden = document.createElement('div');
+  velden.className = 'wanneer-velden';
+  for (const [veld, tekst] of [['van', 'Van'], ['tot', 'Tot en met']]) {
+    const id = `${prefix}Wanneer${veld === 'van' ? 'Van' : 'Tot'}`;
+    const wrap = document.createElement('div');
+    wrap.className = 'veld';
+    const label = document.createElement('label');
+    label.className = 'veld-label';
+    label.htmlFor = id;
+    label.textContent = tekst;
+    const invoer = document.createElement('div');
+    invoer.className = 'veld-invoer';
+    const input = document.createElement('input');
+    input.type = 'date';
+    input.id = id;
+    input.className = 'veld-input';
+    input.dataset.veld = veld;
+    input.addEventListener('change', () => onWanneerWijzig(kiesDatum(state.wanneer, veld, input.value)));
+    invoer.appendChild(input);
+    wrap.append(label, invoer);
+    velden.appendChild(wrap);
+  }
+  datums.appendChild(velden);
+  const wis = document.createElement('button');
+  wis.type = 'button';
+  wis.className = 'text-btn wanneer-wis';
+  wis.textContent = 'Datums wissen';
+  wis.addEventListener('click', () => onWanneerWijzig({ ...state.wanneer, van: '', tot: '' }));
+  datums.appendChild(wis);
+
+  const dagenKop = document.createElement('p');
+  dagenKop.className = 'wanneer-kop';
+  dagenKop.id = `${prefix}WanneerDagenKop`;
+  dagenKop.textContent = 'Weekdagen';
+  const dagen = document.createElement('div');
+  dagen.className = 'filter-row filter-row--wrap wanneer-dagen';
+  dagen.setAttribute('role', 'group');
+  dagen.setAttribute('aria-labelledby', dagenKop.id);
+  for (const d of WEEKDAGEN) dagen.appendChild(wanneerChip(d.label, () => onWanneerWijzig(wisselDag(state.wanneer, d.dag)), { ariaLabel: d.naam, waarde: String(d.dag) }));
+
+  container.append(snel, datums, dagenKop, dagen);
+  container.dataset.gebouwd = '1';
+}
+
+function renderWanneerFilters() {
+  const w = state.wanneer;
+  const vandaag = amsterdamDatum();
+  for (const [container, prefix] of [[els.sidebarWanneerFilters, 'sidebar'], [els.sheetWanneerFilters, 'sheet']]) {
+    if (!container) continue;
+    if (!container.dataset.gebouwd) bouwWanneer(container, prefix);
+    for (const btn of container.querySelectorAll('.wanneer-snel .chip')) {
+      const aan = w.snel === btn.dataset.waarde;
+      btn.classList.toggle('is-active', aan);
+      btn.setAttribute('aria-pressed', String(aan));
+    }
+    for (const btn of container.querySelectorAll('.wanneer-dagen .chip')) {
+      const aan = w.dagen.includes(Number(btn.dataset.waarde));
+      btn.classList.toggle('is-active', aan);
+      btn.setAttribute('aria-pressed', String(aan));
+    }
+    for (const input of container.querySelectorAll('input[type="date"]')) {
+      const waarde = w[input.dataset.veld];
+      if (input.value !== waarde) input.value = waarde;
+      input.min = input.dataset.veld === 'tot' && w.van ? w.van : vandaag;
+    }
+    container.querySelector('.wanneer-wis').hidden = !w.van && !w.tot;
+  }
+}
+
 function renderPodiumpasToggle() {
   for (const btn of [els.podiumpasToggle, els.sidebarPodiumpasToggle]) {
     btn.classList.toggle('is-on', state.podiumpasOnly);
@@ -4859,6 +4983,7 @@ function renderHideFullToggle() {
 /** Rendert alle filter-UI (sidebar + sheet) in één keer — city eerst,
  * want theater cascadeert erop. */
 function renderFilters() {
+  renderWanneerFilters();
   renderCityFilters();
   renderTheaterFilters();
   renderGenreFilters();
@@ -4884,7 +5009,8 @@ function renderFilterBadge() {
     (state.podiumpasOnly ? 1 : 0) +
     (state.watchlistOnly ? 1 : 0) +
     (state.hideFullOnly ? 1 : 0) +
-    (state.hideGezien ? 1 : 0);
+    (state.hideGezien ? 1 : 0) +
+    (isWanneerActief(state.wanneer) ? 1 : 0);
   els.filterBadge.textContent = String(count);
   els.filterBadge.hidden = count === 0;
 }
@@ -4907,10 +5033,14 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
   // naar een favoriete productie onbruikbaar zodra de eerstvolgende datum
   // verder in de toekomst ligt dan het venster (zie "Teckel"-voorbeeld:
   // pas vanaf januari, dus onvindbaar binnen de standaard 30 dagen).
+  // Een gekozen datumbereik ("Wanneer") heft de grens ook op: "Volgende
+  // maand" of "vanaf 1 januari" moet gewoon werken.
   const maxDate =
-    !ignoreDateWindow && !state.searchQuery && state.dateWindowDays != null
+    !ignoreDateWindow && !state.searchQuery && !heeftBereik(state.wanneer) && state.dateWindowDays != null
       ? addDaysIso(todayIsoDate(), state.dateWindowDays)
       : null;
+  // "Wanneer" rekent in Amsterdamse tijd (wanneer.js).
+  const vandaagAmsterdam = amsterdamDatum();
 
   return state.shows.filter((s) => {
     if (!enabled.has(s.theaterId)) return false;
@@ -4934,6 +5064,7 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     // voorwaartse 30-dagen-grens op via "toon meer" — verleden tijd tonen we
     // nooit, dat is geen "meer", dat is gewoon verlopen data).
     const dateOk = s.datum >= minDate && (maxDate == null || s.datum <= maxDate);
+    const wanneerOk = matchtWanneer(s.datum, state.wanneer, vandaagAmsterdam);
     const searchOk =
       !state.searchQuery ||
       s.titel.toLowerCase().includes(state.searchQuery) ||
@@ -4941,7 +5072,7 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
       (s.titelBron ?? '').toLowerCase().includes(state.searchQuery) ||
       s.theaterNaam.toLowerCase().includes(state.searchQuery) ||
       (THEATER_ZOEKALIASSEN[s.theaterId] ?? []).some((alias) => alias.includes(state.searchQuery));
-    return cityOk && theaterOk && genreOk && podiumpasOk && watchlistOk && gezienOk && fullOk && dateOk && searchOk;
+    return cityOk && theaterOk && genreOk && podiumpasOk && watchlistOk && gezienOk && fullOk && dateOk && wanneerOk && searchOk;
   });
 }
 
@@ -4960,7 +5091,8 @@ function emptyStateMessage() {
     state.podiumpasOnly ||
     state.watchlistOnly ||
     state.hideFullOnly ||
-    state.hideGezien;
+    state.hideGezien ||
+    isWanneerActief(state.wanneer);
   const query = state.searchQueryRaw;
   if (query && filtersActive) return `Geen voorstellingen gevonden voor "${query}" met deze filters.`;
   if (query) return `Geen voorstellingen gevonden voor "${query}".`;

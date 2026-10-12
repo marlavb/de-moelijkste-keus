@@ -85,6 +85,15 @@
           </div>
 
           <section class="sheet-section">
+            <button class="filter-accordion-header" type="button" id="sidebarWanneerHeader" aria-expanded="false" aria-controls="sidebarWanneerFilters">
+              <h3>Wanneer</h3>
+              <svg class="filter-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+            <div class="wanneer" id="sidebarWanneerFilters" role="group" aria-label="Filter op datum" hidden></div>
+          </section>
+          <section class="sheet-section">
             <button class="filter-accordion-header" type="button" id="sidebarStadHeader" aria-expanded="false" aria-controls="sidebarCityFilters">
               <h3>Stad</h3>
               <svg class="filter-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -665,6 +674,10 @@
         </button>
       </div>
       <div class="sheet-body">
+        <section class="sheet-section">
+          <h3>Wanneer</h3>
+          <div class="wanneer" id="sheetWanneerFilters" role="group" aria-label="Filter op datum"></div>
+        </section>
         <section class="sheet-section">
           <h3>Stad</h3>
           <div class="filter-row filter-row--wrap" id="sheetCityFilters" role="group" aria-label="Filter op stad"></div>

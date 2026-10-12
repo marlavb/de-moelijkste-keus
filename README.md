@@ -22,7 +22,11 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
 
 - **Agenda**: alle komende voorstellingen per dag, zoeken op titel en theater,
   standaard de komende 30 dagen ("Toon … verder in de toekomst").
-- **Filters**: stad, theater, genre, alleen Podiumpas (ook "Podiumpas?":
+- **Filters**: "Wanneer" (snelkeuze Vandaag, Morgen, Dit weekend (vr–zo),
+  Deze week (t/m zondag), Volgende week (ma–zo), Deze maand; of eigen datums
+  van–tot; plus weekdagen, combineerbaar; in Amsterdamse tijd, logica in
+  `public/js/wanneer.js`; een datumbereik heft de 30-dagengrens op), stad,
+  theater, genre, alleen Podiumpas (ook "Podiumpas?":
   nog niet bekend of de pas geldt), alleen watchlist,
   "Verberg volle voorstellingen" (uitverkocht, wachtlijst, afgelast) en
   "Verberg gezien". De keuze wordt onthouden.
