@@ -726,7 +726,9 @@ export const THEATERS = [
     // pagina https://theaterspeelhuis.nl/podiumpas (6 okt 2026) noemt geen
     // voorwaarden: Podiumpas bij alle voorstellingen behalve gratis (zie
     // src/sites/speelhuis.js); voorwaarden worden nagevraagd. Daarom
-    // podiumpas null = nog niet bekend (9 okt 2026, zoals TAR en De Reggehof).
+    // podiumpas null = nog niet bekend (9 okt 2026, zoals TAR). Opnieuw
+    // gecontroleerd 12 okt 2026 (zelfde pagina, gelinkt vanaf podiumpas.nl):
+    // alleen algemene uitleg over de pas, geen voorwaarden.
     podiumpas: null,
     melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
   },
@@ -742,6 +744,9 @@ export const THEATERS = [
     // noemt de pas niet (6 okt 2026). Podiumpas bij alle voorstellingen
     // behalve gratis (zie src/sites/schouwburgconcertzaal.js); voorwaarden
     // worden nagevraagd. Daarom podiumpas null = nog niet bekend (9 okt 2026).
+    // Opnieuw gecontroleerd 12 okt 2026: podiumpas.nl linkt alleen naar de
+    // homepage; https://www.schouwburgconcertzaaltilburg.nl/nl/je-bezoek/tickets
+    // noemt de pas niet.
     podiumpas: null,
     melding: 'Podiumpas-voorwaarden nog niet bekend — vraag het theater.',
   },
@@ -1065,7 +1070,8 @@ export const THEATERS = [
     // Bron: https://www.demeenthe.nl/informatie/podiumpas/ (8 okt 2026):
     // reguliere voorstellingen en concerten in het theater; uitsluitingen per
     // voorstelling in src/sites/meenthe.js. Kerkconcerten: podiumpas null
-    // (nog niet bekend; de pagina zegt "in het theater").
+    // (nog niet bekend; de pagina zegt "in het theater"; zo ook bij de
+    // controle van 12 okt 2026).
     podiumpas: true,
     podiumpasReserveren: {
       online: true,
@@ -1104,6 +1110,8 @@ export const THEATERS = [
     // alleen in de Middenzaal en Rabozaal (per voorstelling in
     // src/sites/hengelo.js), tot €50: true bij onbekende prijs (de lijst
     // heeft geen prijs) met de melding, false boven €50; Regionaal null.
+    // Controle 12 okt 2026: "professionele voorstellingen" in de Middenzaal
+    // of Rabozaal; of "Regionaal" daarbuiten valt, staat er niet letterlijk.
     podiumpas: true,
     podiumpasReserveren: {
       online: true,
@@ -1203,7 +1211,9 @@ export const THEATERS = [
     baseUrl: 'https://demuze.nl',
     agendaUrl: 'https://demuze.nl/programma/',
     // Bron: https://demuze.nl/podiumpas/ (8 okt 2026): tickets tot €50 (niet
-    // bijbetalen), vanaf 30 dagen; reserveren nog niet online.
+    // bijbetalen), vanaf 30 dagen; reserveren nog niet online. Controle 12
+    // okt 2026: niets over voorstellingen van verenigingen en organisaties
+    // (die blijven null).
     podiumpas: true,
     podiumpasReserveren: {
       telefoon: '071 – 364 62 26',

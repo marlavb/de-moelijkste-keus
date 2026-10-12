@@ -288,6 +288,7 @@ export function verwerkMimik(producties, { theater, vandaag = todayIsoDate(), lo
 // MIMIK zelf: het filter van /agenda?categorie=theater (8 okt 2026) noemt
 // Cabaret, Dans, Fysiek theater, Junior, Muziektheater, Special, Theater,
 // Theaterconcert en Woordkunst. Die dus true; "Te gast" (12 okt 2026): null,
-// met een noot.
+// met een noot (https://www.mimik.nl/podiumpas, 12 okt 2026: "onbeperkt naar
+// theatervoorstellingen", niets over gastvoorstellingen).
 const PODIUMPAS_CATEGORIE = /^(cabaret|dans|fysiek theater|junior|muziektheater|special|theater|theaterconcert|woordkunst)$/i;
 const PODIUMPAS_NOOT = 'Podiumpas-voorwaarden voor gastvoorstellingen nog niet bekend';
