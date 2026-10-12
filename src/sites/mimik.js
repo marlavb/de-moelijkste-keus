@@ -27,9 +27,12 @@ const WEG_VERVERSEN_DAGEN = 30;
 // Opera als bioscoopvertoning, Klassieker). Daarom omgekeerd: opnemen wat
 // theater is, de rest weglaten.
 export const THEATER_CATEGORIEEN = new Set(['cabaret', 'dans', 'fysiek theater', 'junior', 'muziektheater', 'special', 'theater', 'theaterconcert', 'woordkunst']);
-// Bekend en bewust weg (geen waarschuwing): film en filmreeksen, en "Te gast"
-// (niet in het theaterfilter; DZ on Stage, The Big Bike Film Night).
-const BEKEND_WEG = new Set(['cinekid', 'mimik x japan', 'queer', 'movies that matter', 'koolhovens keuze', 'royal ballet and opera', 'klassieker', 'sneak preview', 'te gast']);
+// "Te gast" (gastvoorstellingen, niet in het theaterfilter) komt erin, maar
+// alleen in de theaterzaal (DZ on Stage wel, The Big Bike Film Night niet),
+// met Podiumpas onbekend.
+export const TE_GAST = 'te gast';
+// Bekend en bewust weg (geen waarschuwing): film en filmreeksen.
+const BEKEND_WEG = new Set(['cinekid', 'mimik x japan', 'queer', 'movies that matter', 'koolhovens keuze', 'royal ballet and opera', 'klassieker', 'sneak preview']);
 
 /**
  * Waarom een productie weg moet, of null. 'film' (categorie met "film"),
@@ -43,13 +46,14 @@ export function mimikWeglaten({ categorie, kop, onder }) {
   // "Film", "Film, Junior".
   if (/\bfilm\b/i.test(c)) return 'film';
   if (BEKEND_WEG.has(k)) return c;
-  if (!THEATER_CATEGORIEEN.has(k)) return `onbekende categorie: ${c || '(leeg)'}`;
+  if (!THEATER_CATEGORIEEN.has(k) && k !== TE_GAST) return `onbekende categorie: ${c || '(leeg)'}`;
   if (/\b(workshop|cursus|masterclass)\b/i.test(t)) return 'workshop/cursus';
   return null;
 }
 
 /** Een speeldatum in een filmzaal is een filmvertoning (ook onder "Junior"). */
 export const isFilmzaal = (zaal) => /^filmzaal\b/i.test(String(zaal ?? '').trim());
+export const isTheaterzaal = (zaal) => /^theaterzaal\b/i.test(String(zaal ?? '').trim());
 
 /** Knoptekst → beschikbaarheid. */
 export function mimikStatus(knop) {
@@ -240,6 +244,10 @@ export function verwerkMimik(producties, { theater, vandaag = todayIsoDate(), lo
         tel(weg, `filmzaal (${genreRuw ?? '?'})`);
         continue;
       }
+      if (genreRuw?.toLowerCase() === TE_GAST && !isTheaterzaal(s.zaal)) {
+        tel(weg, `te gast buiten de theaterzaal`);
+        continue;
+      }
       const status = mimikStatus(s.knop);
       if (status === 'onbekend' && s.knop && !isVerkoopNogNiet(s.knop)) tel(knoppen, s.knop);
       const zaal = (s.zaal ?? '').trim() || null;
@@ -279,7 +287,7 @@ export function verwerkMimik(producties, { theater, vandaag = todayIsoDate(), lo
 // via het formulier, vanaf 30 dagen. Welke categorieën theater zijn, zegt
 // MIMIK zelf: het filter van /agenda?categorie=theater (8 okt 2026) noemt
 // Cabaret, Dans, Fysiek theater, Junior, Muziektheater, Special, Theater,
-// Theaterconcert en Woordkunst. Die dus true; andere ("Te gast"): null (nog
-// niet bekend), met een noot.
+// Theaterconcert en Woordkunst. Die dus true; "Te gast" (12 okt 2026): null,
+// met een noot.
 const PODIUMPAS_CATEGORIE = /^(cabaret|dans|fysiek theater|junior|muziektheater|special|theater|theaterconcert|woordkunst)$/i;
-const PODIUMPAS_NOOT = 'Geldt de Podiumpas hier? MIMIK noemt alleen theatervoorstellingen — vraag het theater.';
+const PODIUMPAS_NOOT = 'Podiumpas-voorwaarden voor gastvoorstellingen nog niet bekend';

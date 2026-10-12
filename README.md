@@ -128,7 +128,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   Woordkunst); films, filmreeksen (Cinekid, Royal Ballet and Opera, …) en
   speeldata in een filmzaal vallen weg, en een onbekende nieuwe categorie
   valt ook weg met een waarschuwing in de log. Podiumpas bij die
-  theatercategorieën, reserveren alleen via hun formulier.
+  theatercategorieën; "Te gast" (gastvoorstellingen) komt erin, maar alleen
+  in de theaterzaal en met Podiumpas onbekend (`null`, met een noot).
+  Reserveren alleen via hun formulier.
   De Tamboer (Hoogeveen) is een Phoenix LiveView-site: `?resultaten=30` in
   de URL geeft alle speeldata in één verzoek (de knop "Bekijk meer" werkt
   via een websocket); een Cloudflare-challenge of 403 geldt als blokkade.
