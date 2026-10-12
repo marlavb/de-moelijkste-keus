@@ -2963,3 +2963,39 @@ button.gezien-titel {
     padding-inline: 24px;
   }
 }
+
+/* Keuze met een vinkje in een formulier (profiel maken: "Vindbaar op naam"):
+   tikvlak ≥ 44 px, titel en uitleg naast het vinkje. */
+.keuze-vink {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: var(--touch);
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.keuze-vink input {
+  width: 22px;
+  height: 22px;
+  margin: 1px 0 0;
+  flex-shrink: 0;
+  accent-color: var(--primary);
+}
+
+.keuze-vink-titel {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.keuze-vink-uitleg {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--text-2);
+}

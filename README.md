@@ -57,8 +57,9 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
   hierboven werkt ook zonder inloggen (alleen op dat apparaat); ingelogd
   synchroniseert het tussen je apparaten.
 - **Vrienden**: zoeken op gebruikersnaam of op volledige naam (exact; alleen
-  wie "Vindbaar op naam" aan heeft, standaard aan, uit te zetten in
-  Profiel), verzoeken, eenmalige uitnodigingslink, blokkeren.
+  wie "Vindbaar op naam" aan heeft: standaard uit, te kiezen bij het maken
+  van je profiel en te wijzigen in Profiel), verzoeken, eenmalige
+  uitnodigingslink, blokkeren.
 - **Delen**: je Gezien (met sterren) en Watchlist voor vrienden, per onderdeel
   aan of uit.
 - **Uitnodigen**: een vriend uitnodigen voor een geplande voorstelling; zij

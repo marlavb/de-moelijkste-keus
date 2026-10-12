@@ -649,9 +649,17 @@
               />
             </div>
             <p class="veld-uitleg" id="profielNaamUitleg">Vrienden zien deze naam, en wie je gebruikersnaam precies intypt ook.</p>
-            <p class="veld-uitleg" id="profielNaamVindbaar">Anderen kunnen je vinden op deze naam (uit te zetten in Profiel).</p>
+            <p class="veld-uitleg" id="profielNaamVindbaar" hidden></p>
             <p class="veld-fout" id="profielNaamFout" hidden></p>
           </div>
+          <!-- Alleen bij een nieuw profiel: de keuze "Vindbaar op naam" (standaard uit). -->
+          <label class="keuze-vink" id="profielVindbaarKeuze" hidden>
+            <input type="checkbox" id="profielVindbaar" aria-describedby="profielVindbaarUitleg" />
+            <span>
+              <span class="keuze-vink-titel">Vindbaar op naam</span>
+              <span class="keuze-vink-uitleg" id="profielVindbaarUitleg">Wie je volledige naam precies intypt, kan je vinden en een vriendschapsverzoek sturen. Zonder dit vinden anderen je alleen op je gebruikersnaam of via je uitnodigingslink. Je kunt het later wijzigen in Profiel.</span>
+            </span>
+          </label>
           <p class="profiel-status" id="profielStatus" role="alert" hidden></p>
           <div class="profiel-knoppen">
             <button class="btn-primary" type="submit" id="profielOpslaan">Opslaan</button>

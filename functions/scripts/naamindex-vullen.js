@@ -1,4 +1,4 @@
-// Eenmalig: alle bestaande profielen in de zoekindex voor "zoeken op naam"
+// Alle bestaande profielen in de zoekindex voor "zoeken op naam" volgens hun voorkeur
 // (okt 2026), los van het openen van de app. Zie vulNaamIndex in
 // ../naamzoeken.js. Admin SDK met je eigen Google-login (Application Default
 // Credentials). Zonder --echt een proefrun: alleen tellen, niets schrijven.

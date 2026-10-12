@@ -222,24 +222,50 @@ const PROFIEL_ANNA = {
   'usernames/anna': { uid: 'u1', gebruikersnaam: 'anna', naam: 'Anna de Vries' },
 };
 
-test('Vindbaar op naam: bestaand profiel zonder voorkeur → eenmalig { vindbaar: true } (aan, zonder melding); uitzetten en de regel bij je naam', async () => {
+test('Vindbaar op naam: nieuw profiel → keuze standaard uit; zonder vinkje { vindbaar: false }, met vinkje { vindbaar: true } (12 okt 2026)', async () => {
+  for (const [vink, verwacht] of [[false, false], [true, true]]) {
+    const { ctx, page, fouten } = await openApp({ gebruiker: ANNA });
+    assert.equal(new URL(page.url()).hash, '#/profiel/instellen');
+    assert.equal(await zichtbaar(page, '#profielVindbaarKeuze'), true);
+    assert.equal(await page.isChecked('#profielVindbaar'), false, 'standaard uit');
+    assert.equal(await zichtbaar(page, '#profielNaamVindbaar'), false);
+    assert.match(await page.textContent('#profielVindbaarKeuze'), /Vindbaar op naam.*Wie je volledige naam precies intypt/s);
+    const box = await page.locator('#profielVindbaarKeuze').boundingBox();
+    assert.ok(box.height >= 44, `tikvlak ${box.height}`);
+    if (vink) await page.click('#profielVindbaarKeuze .keuze-vink-titel');
+    await page.click('#profielOpslaan');
+    await page.waitForTimeout(300);
+    assert.equal(new URL(page.url()).hash, '#/profiel');
+    assert.equal((await opslag(page, 'naamvoorkeur/u1')).vindbaar, verwacht);
+    await page.waitForSelector('#vindbaarSchakelaar');
+    assert.equal(await page.getAttribute('#vindbaarSchakelaar', 'aria-checked'), String(verwacht));
+    assert.deepEqual(fouten, []);
+    await ctx.close();
+  }
+});
+
+test('Vindbaar op naam: bestaand profiel zonder voorkeur → uit, en er wordt niets geschreven; aanzetten in Profiel; de regel bij je naam', async () => {
   const { ctx, page, fouten } = await openApp({ gebruiker: ANNA, docs: PROFIEL_ANNA });
   await page.waitForSelector('#vindbaarSchakelaar');
-  assert.equal(await page.getAttribute('#vindbaarSchakelaar', 'aria-checked'), 'true');
-  assert.equal((await opslag(page, 'naamvoorkeur/u1')).vindbaar, true);
-  assert.equal(await page.locator('.profiel-vindbaar .vrienden-melding').count(), 0, 'geen aparte melding bij de migratie');
-  assert.match(await page.textContent('.profiel-vindbaar'), /Wie je volledige naam \(Anna de Vries\) precies intypt/);
+  assert.equal(await page.getAttribute('#vindbaarSchakelaar', 'aria-checked'), 'false');
+  assert.equal(await opslag(page, 'naamvoorkeur/u1'), null, 'geen stille migratie meer');
+  assert.match(await page.textContent('.profiel-vindbaar'), /Je bent alleen te vinden op je gebruikersnaam of via een uitnodigingslink/);
 
   await page.click('#vindbaarSchakelaar');
   await page.waitForTimeout(250);
-  assert.equal((await opslag(page, 'naamvoorkeur/u1')).vindbaar, false);
-  assert.equal(await page.getAttribute('#vindbaarSchakelaar', 'aria-checked'), 'false');
-  assert.match(await page.textContent('.profiel-vindbaar'), /Opgeslagen: je bent niet meer vindbaar op je naam/);
+  assert.equal((await opslag(page, 'naamvoorkeur/u1')).vindbaar, true);
+  assert.equal(await page.getAttribute('#vindbaarSchakelaar', 'aria-checked'), 'true');
+  assert.match(await page.textContent('.profiel-vindbaar'), /Opgeslagen: anderen kunnen je vinden op je naam/);
 
-  // Bij je naam wijzigen: de regel past zich aan.
+  // Bij je naam wijzigen: geen keuze meer, alleen de huidige stand.
   await page.click('button[aria-label="Gebruikersnaam en naam wijzigen"]');
   await page.waitForTimeout(300);
-  assert.equal(await page.textContent('#profielNaamVindbaar'), 'Je bent niet vindbaar op deze naam (aan te zetten in Profiel).');
+  assert.equal(await zichtbaar(page, '#profielVindbaarKeuze'), false);
+  assert.equal(await page.textContent('#profielNaamVindbaar'), 'Anderen kunnen je vinden op deze naam (uit te zetten in Profiel).');
+  // Opslaan bij wijzigen raakt de voorkeur niet.
+  await page.click('#profielOpslaan');
+  await page.waitForTimeout(300);
+  assert.equal((await opslag(page, 'naamvoorkeur/u1')).vindbaar, true);
   assert.deepEqual(fouten, []);
   await ctx.close();
 });

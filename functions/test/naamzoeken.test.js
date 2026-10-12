@@ -14,7 +14,8 @@ beforeEach(async () => {
   await wis();
 });
 
-async function persoon(uid, naam, { vindbaar = null } = {}) {
+// Vindbaar staat standaard uit; de meeste tests zetten het aan (null = geen voorkeur).
+async function persoon(uid, naam, { vindbaar = true } = {}) {
   await db.doc(`profielen/${uid}`).set({ gebruikersnaam: uid, gebruikersnaamLaag: uid.toLowerCase(), naam, aangemaaktOp: Timestamp.now(), gewijzigdOp: Timestamp.now(), v: 1 });
   if (vindbaar !== null) await db.doc(`naamvoorkeur/${uid}`).set({ vindbaar, gewijzigdOp: Timestamp.now() });
   await indexeerNaam({ db, uid });
@@ -87,28 +88,36 @@ test(`hooguit ${MAX_TREFFERS} treffers`, async () => {
   assert.equal(r.treffers.length, MAX_TREFFERS);
 });
 
-test('vulNaamIndex: wie de app nooit opende (profiel zonder voorkeur, niet in de index) is daarna vindbaar; een vriend ook; "uit" blijft uit; proef schrijft niets', async () => {
-  // Profielen van vóór de deploy: geen voorkeur, geen indexregel.
+test('vindbaar standaard uit: een profiel zonder voorkeur komt niet in de index en wordt niet gevonden', async () => {
+  await persoon('anna', 'Anna de Vries', { vindbaar: null });
+  assert.equal((await db.doc('naamIndexLid/anna').get()).exists, false);
+  assert.deepEqual((await zoek('bob', 'Anna de Vries')).treffers, []);
+  // Ook een verouderde indexregel (van vóór 12 okt 2026) geeft geen treffer.
+  await db.doc(`naamIndex/${naamSleutel('Anna de Vries')}/vermeldingen/anna`).set({ uid: 'anna', bijgewerktOp: Timestamp.now() });
+  assert.deepEqual((await zoek('bob', 'Anna de Vries')).treffers, []);
+  await db.doc('naamvoorkeur/anna').set({ vindbaar: true, gewijzigdOp: Timestamp.now() });
+  assert.deepEqual((await zoek('bob', 'Anna de Vries')).treffers.map((t) => t.gebruikersnaam), ['anna']);
+});
+
+test('vulNaamIndex: indexeert volgens de voorkeur, schrijft nooit een voorkeur; zonder voorkeur niet vindbaar; proef schrijft niets', async () => {
   const profiel = (gebruikersnaam, naam) => ({ gebruikersnaam, gebruikersnaamLaag: gebruikersnaam, naam, aangemaaktOp: Timestamp.now(), gewijzigdOp: Timestamp.now(), v: 1 });
   await db.doc('profielen/erik').set(profiel('erik', 'Erik van de Winkel'));
   await db.doc('profielen/fien').set(profiel('fien', 'Fien Bos'));
   await db.doc('profielen/gijs').set(profiel('gijs', 'Gijs'));
+  await db.doc('profielen/hans').set(profiel('hans', 'Hans Smit'));
+  await db.doc('naamvoorkeur/erik').set({ vindbaar: true, gewijzigdOp: Timestamp.now() });
   await db.doc('naamvoorkeur/fien').set({ vindbaar: false, gewijzigdOp: Timestamp.now() });
-  // Erik is al vriend van marla: dat sluit hem niet uit (de app toont "Al vrienden").
-  await db.doc('vrienden/marla/lijst/erik').set({ uid: 'erik', sinds: Timestamp.now(), via: 'verzoek' });
-  await db.doc('vrienden/erik/lijst/marla').set({ uid: 'marla', sinds: Timestamp.now(), via: 'verzoek' });
-  assert.deepEqual((await zoek('marla', 'Erik van de Winkel')).treffers, [], 'vóór het vullen: het probleem van 8 okt');
 
   const proef = await vulNaamIndex({ db, proef: true });
-  assert.deepEqual(proef, { profielen: 3, voorkeurGezet: 2, gezet: 0, verwijderd: 0, ongewijzigd: 0, nietVindbaar: 1, geenVolledigeNaam: 1 });
-  assert.equal((await db.doc('naamvoorkeur/erik').get()).exists, false, 'proef schrijft niets');
+  assert.deepEqual(proef, { profielen: 4, geenVoorkeur: 2, gezet: 0, verwijderd: 0, ongewijzigd: 0, nietVindbaar: 1, geenVolledigeNaam: 1 });
+  assert.equal((await db.doc('naamIndexLid/erik').get()).exists, false, 'proef schrijft niets');
 
   const echt = await vulNaamIndex({ db });
-  assert.deepEqual(echt, { profielen: 3, voorkeurGezet: 2, gezet: 1, verwijderd: 0, ongewijzigd: 2, nietVindbaar: 1, geenVolledigeNaam: 1 });
-  assert.equal((await db.doc('naamvoorkeur/erik').get()).data().vindbaar, true);
-  assert.equal((await db.doc('naamvoorkeur/fien').get()).data().vindbaar, false, 'bestaande voorkeur blijft');
+  assert.deepEqual(echt, { profielen: 4, geenVoorkeur: 2, gezet: 1, verwijderd: 0, ongewijzigd: 3, nietVindbaar: 1, geenVolledigeNaam: 1 });
+  assert.equal((await db.doc('naamvoorkeur/hans').get()).exists, false, 'nooit een voorkeur geschreven');
   assert.deepEqual((await zoek('marla', 'erik van de winkel')).treffers, [{ gebruikersnaam: 'erik', naam: 'Erik van de Winkel' }]);
   assert.deepEqual((await zoek('marla', 'Fien Bos')).treffers, []);
+  assert.deepEqual((await zoek('marla', 'Hans Smit')).treffers, []);
   // Idempotent.
   assert.equal((await vulNaamIndex({ db })).gezet, 0);
 });

@@ -2195,11 +2195,20 @@ function renderProfielInstellen() {
   toonVeldFout(els.profielGebruikersnaam, els.profielGebruikersnaamFout, null);
   toonVeldFout(els.profielNaam, els.profielNaamFout, null);
   toonProfielStatus(null);
+  // Nieuw profiel: de keuze "Vindbaar op naam" (standaard uit). Bestaand
+  // profiel: alleen de huidige stand; wijzigen gaat in Profiel.
+  const nieuw = !state.profiel;
+  const keuze = document.getElementById('profielVindbaarKeuze');
+  if (keuze) {
+    keuze.hidden = !nieuw;
+    document.getElementById('profielVindbaar').checked = false;
+  }
   const vindbaarUitleg = document.getElementById('profielNaamVindbaar');
   if (vindbaarUitleg) {
-    vindbaarUitleg.textContent = state.vindbaar === false
-      ? 'Je bent niet vindbaar op deze naam (aan te zetten in Profiel).'
-      : 'Anderen kunnen je vinden op deze naam (uit te zetten in Profiel).';
+    vindbaarUitleg.hidden = nieuw || state.vindbaar === undefined;
+    vindbaarUitleg.textContent = state.vindbaar
+      ? 'Anderen kunnen je vinden op deze naam (uit te zetten in Profiel).'
+      : 'Je bent niet vindbaar op deze naam (aan te zetten in Profiel).';
   }
 }
 
@@ -2232,7 +2241,11 @@ async function onProfielOpslaan(e) {
   els.profielOpslaan.disabled = true;
   els.profielOpslaan.textContent = 'Opslaan…';
   try {
-    const opslaan = bewaarProfiel({ db, fs: firestoreFns, uid: user.uid, gebruikersnaam: g.weergave, naam: n.naam });
+    // Alleen bij een nieuw profiel telt het vinkje (bewaarProfiel schrijft de
+    // voorkeur alleen als er nog geen profiel was).
+    const keuze = document.getElementById('profielVindbaarKeuze');
+    const vindbaar = Boolean(keuze && !keuze.hidden && document.getElementById('profielVindbaar').checked);
+    const opslaan = bewaarProfiel({ db, fs: firestoreFns, uid: user.uid, gebruikersnaam: g.weergave, naam: n.naam, vindbaar });
     const timeout = new Promise((_, weiger) => setTimeout(() => weiger(new Error('timeout')), PROFIEL_TIMEOUT_MS));
     const profiel = await Promise.race([opslaan, timeout]);
     if (state.user !== user) return;
@@ -2298,13 +2311,11 @@ function renderProfielRegel() {
 
 // ---------- Vindbaar op naam (okt 2026) ----------
 
-// naamvoorkeur/{uid}: { vindbaar, gewijzigdOp }; geen document = vindbaar.
-// De Cloud Functions houden daarmee de zoekindex bij (functions/naamzoeken.js).
-// Eenmalige migratie, bij het laden van een bestaand profiel: staat er nog
-// geen voorkeur, dan zetten we { vindbaar: true } (standaard aan, zonder
-// aparte melding). Dat schrijven laat de trigger naamIndexVoorkeur de
-// gebruiker in de index zetten; nieuwe profielen komen er via de trigger op
-// profielen/{uid} ook vanzelf in.
+// naamvoorkeur/{uid}: { vindbaar, gewijzigdOp }; alleen { vindbaar: true } is
+// vindbaar, geen document = uit (standaard uit sinds 12 okt 2026). Een nieuw
+// profiel legt de keuze vast bij het aanmaken (bewaarProfiel); hier wordt
+// nooit meer stil een voorkeur geschreven. De Cloud Functions houden daarmee
+// de zoekindex bij (functions/naamzoeken.js).
 let vindbaarMelding = null;
 
 async function laadVindbaar() {
@@ -2314,12 +2325,7 @@ async function laadVindbaar() {
   try {
     const snap = await getDoc(ref);
     if (state.user !== user) return;
-    if (snap.exists()) {
-      state.vindbaar = snap.data().vindbaar !== false;
-    } else {
-      state.vindbaar = true;
-      await setDoc(ref, { vindbaar: true, gewijzigdOp: serverTimestamp() });
-    }
+    state.vindbaar = snap.exists() && snap.data().vindbaar === true;
   } catch (err) {
     if (state.user !== user) return;
     console.error('Kon "Vindbaar op naam" niet laden:', err);

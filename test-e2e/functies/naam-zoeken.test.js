@@ -1,9 +1,10 @@
 // End-to-end: vrienden zoeken op volledige naam (okt 2026), tegen de
 // emulators mét de Functions-emulator (callable zoekOpNaam en de triggers die
 // de zoekindex bijhouden) en de echte firestore.rules. Vier accounts:
-//   A anna  "Anna de Vries" — vindbaar (standaard)
+//   A anna  "Anna de Vries" — kiest vindbaar bij het profiel maken
 //   D anna2 "Anna de Vries" — vindbaar, zelfde naam (twee treffers)
-//   C carol "Carol Smit"    — zet "Vindbaar op naam" uit
+//   C carol "Carol Smit"    — vindbaar, zet het later uit in Profiel
+//   V eva   "Eva Smit"      — laat het vinkje uit (standaard): niet vindbaar
 //   B bob   "Bob Jansen"    — zoekt
 // Draai met `npm run test:e2e` (ronde met de functies). Tests in volgorde.
 
@@ -20,6 +21,7 @@ const ACCOUNTS = {
   D: { email: 'anna2@naam.e2e.test', wachtwoord: 'geheim-anna2', naam: 'Anna de Vries', gebruikersnaam: 'anna2' },
   C: { email: 'carol@naam.e2e.test', wachtwoord: 'geheim-carol', naam: 'Carol Smit', gebruikersnaam: 'carol' },
   B: { email: 'bob@naam.e2e.test', wachtwoord: 'geheim-bob', naam: 'Bob Jansen', gebruikersnaam: 'bob' },
+  V: { email: 'eva@naam.e2e.test', wachtwoord: 'geheim-eva', naam: 'Eva Smit', gebruikersnaam: 'eva', vindbaar: false },
 };
 const uid = {};
 const ik = {};
@@ -49,20 +51,26 @@ async function zoek(page, tekst) {
   await page.click('#vriendZoekForm button[type="submit"]');
 }
 
-test('profiel kiezen: regel "Anderen kunnen je vinden op deze naam"; daarna vindbaar (voorkeur + zoekindex via de trigger)', async () => {
+test('profiel kiezen: "Vindbaar op naam" staat standaard uit; wie het aanvinkt, komt in de zoekindex (trigger), wie niet, niet', async () => {
   for (const k of Object.keys(ACCOUNTS)) {
     const { page } = ik[k];
+    const vindbaar = ACCOUNTS[k].vindbaar !== false;
     await page.waitForFunction(() => location.hash === '#/profiel/instellen', null, { timeout: 15000 });
-    assert.match(await page.textContent('#profielNaamVindbaar'), /Anderen kunnen je vinden op deze naam \(uit te zetten in Profiel\)/);
+    await page.waitForSelector('#profielVindbaarKeuze', { state: 'visible' });
+    assert.equal(await page.isChecked('#profielVindbaar'), false, 'standaard uit');
     await page.fill('#profielGebruikersnaam', ACCOUNTS[k].gebruikersnaam);
     await page.fill('#profielNaam', ACCOUNTS[k].naam);
+    if (vindbaar) await page.check('#profielVindbaar');
     await page.click('#profielOpslaan');
     await page.waitForFunction(() => location.hash === '#/profiel', null, { timeout: 15000 });
     await page.waitForSelector('#vindbaarSchakelaar');
-    assert.equal(await page.getAttribute('#vindbaarSchakelaar', 'aria-checked'), 'true');
-    await wachtOpDoc(`naamvoorkeur/${uid[k]}`, (d) => d?.vindbaar === true);
-    await wachtOpDoc(`naamIndexLid/${uid[k]}`, (d) => d !== null, 30000);
+    assert.equal(await page.getAttribute('#vindbaarSchakelaar', 'aria-checked'), String(vindbaar));
+    await wachtOpDoc(`naamvoorkeur/${uid[k]}`, (d) => d?.vindbaar === vindbaar);
+    if (vindbaar) await wachtOpDoc(`naamIndexLid/${uid[k]}`, (d) => d !== null, 30000);
   }
+  // Eva vinkte niets aan: ook na de trigger niet in de index.
+  await new Promise((r) => setTimeout(r, 1500));
+  assert.equal(await leesDoc(`naamIndexLid/${uid.V}`), null);
   await schermafbeelding(ik.A.page, 'naam-zoeken-profiel');
 });
 
@@ -111,43 +119,38 @@ test('een woord zonder geldige gebruikersnaam: uitleg; geen e-mailadressen of ui
   assert.deepEqual(antwoord, { treffers: [{ gebruikersnaam: 'anna', naam: 'Anna de Vries' }, { gebruikersnaam: 'anna2', naam: 'Anna de Vries' }] });
 });
 
-// ---------- Bestaande gebruikers van vóór de deploy (8 okt 2026) ----------
-// Erik (E) had al een profiel en is al vriend van B, maar opende de app niet
-// sinds de deploy: geen naamvoorkeur, niet in de index. Zo zag het eruit
-// toen "Erik van de Winkel" niets opleverde. Het vulscript lost dat op.
+// ---------- Bestaande gebruikers zonder voorkeur (12 okt 2026) ----------
+// Erik (E) heeft een profiel en is al vriend van B, maar heeft geen
+// naamvoorkeur. Sinds 12 okt 2026 betekent dat: niet vindbaar. Het vulscript
+// schrijft geen voorkeur meer; pas met { vindbaar: true } (zoals de echte
+// Erik heeft) is hij te vinden, en dan als "Al vrienden".
 
-test('vriend die de app nooit opende: eerst niet gevonden; na het vulscript "Al vrienden" zonder knop', async () => {
+test('vriend zonder voorkeur: niet gevonden, ook niet na het vulscript; met vindbaar aan "Al vrienden" zonder knop', async () => {
   const E = await maakAccount({ email: 'erik@naam.e2e.test', wachtwoord: 'geheim-erik', naam: 'Erik van de Winkel' });
   const nu = new Date();
   await schrijfDoc(`usernames/erik`, { uid: E, gebruikersnaam: 'erik', naam: 'Erik van de Winkel' });
   await schrijfDoc(`profielen/${E}`, { gebruikersnaam: 'erik', gebruikersnaamLaag: 'erik', naam: 'Erik van de Winkel', aangemaaktOp: nu, gewijzigdOp: nu, v: 1 });
   await schrijfDoc(`vrienden/${uid.B}/lijst/${E}`, { uid: E, sinds: nu, via: 'verzoek' });
   await schrijfDoc(`vrienden/${E}/lijst/${uid.B}`, { uid: uid.B, sinds: nu, via: 'verzoek' });
-  // In de emulator draait de profieltrigger wél; de toestand van vóór de deploy is: niets in de index.
-  const lid = await wachtOpDoc(`naamIndexLid/${E}`, (d) => d !== null, 30000);
-  await wisDoc(`naamIndex/${lid.sleutel}/vermeldingen/${E}`);
-  await wisDoc(`naamIndexLid/${E}`);
-  assert.equal(await leesDoc(`naamvoorkeur/${E}`), null);
+  await new Promise((r) => setTimeout(r, 1500));
+  assert.equal(await leesDoc(`naamIndexLid/${E}`), null, 'de profieltrigger zet hem zonder voorkeur niet in de index');
 
   const B = ik.B.page;
   await zoek(B, 'Erik van de Winkel');
   await wachtOpTekst(B, '#vriendZoekResultaat', /^Niemand gevonden met deze naam\.$/);
 
-  // Het echte script, tegen de emulator.
+  // Het echte script, tegen de emulator: telt hem, schrijft geen voorkeur.
   const { stdout } = await promisify(execFile)('node', ['functions/scripts/naamindex-vullen.js', '--echt'], {
     cwd: new URL('../../', import.meta.url).pathname,
     env: { ...process.env, GCLOUD_PROJECT: PROJECT },
   });
-  // Het script zet de voorkeur; die schrijfactie start óók de trigger
-  // naamIndexVoorkeur, die tegelijk met het script indexeert. Wie van de twee
-  // de index zet, wisselt (dan telt het script "gezet" of "ongewijzigd"; 9 okt
-  // 2026 faalde de test daarop). Dus niet op die telling, maar wachten tot
-  // Erik in de index staat (hooguit 10 s).
-  assert.match(stdout, /"voorkeurGezet": 1/);
-  assert.equal((await leesDoc(`naamvoorkeur/${E}`)).vindbaar, true);
-  await wachtOpDoc(`naamIndex/${lid.sleutel}/vermeldingen/${E}`, (d) => d !== null, 10000);
-  assert.equal((await wachtOpDoc(`naamIndexLid/${E}`, (d) => d !== null, 10000)).sleutel, lid.sleutel);
+  assert.match(stdout, /"geenVoorkeur": [1-9]/);
+  assert.equal(await leesDoc(`naamvoorkeur/${E}`), null);
+  assert.equal(await leesDoc(`naamIndexLid/${E}`), null);
 
+  // Met een expliciete keuze "aan": via de trigger in de index.
+  await schrijfDoc(`naamvoorkeur/${E}`, { vindbaar: true, gewijzigdOp: nu });
+  await wachtOpDoc(`naamIndexLid/${E}`, (d) => d !== null, 30000);
   await zoek(B, 'erik van de winkel');
   await wachtOpTekst(B, '#vriendZoekResultaat', /@erik · Erik van de Winkel\s*Al vrienden/);
   assert.equal(await B.locator('#vriendZoekResultaat button').count(), 0, 'geen knop bij een vriend');

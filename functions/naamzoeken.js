@@ -10,8 +10,10 @@
 // sleutel = sha256 van de genormaliseerde naam (geen naam leesbaar in de
 // documentnamen, en geen problemen met "/" of lengte).
 //
-// Vindbaar op naam: naamvoorkeur/{uid} { vindbaar, gewijzigdOp }; geen
-// document = aan (standaard, ook voor bestaande gebruikers). De index volgt
+// Vindbaar op naam: naamvoorkeur/{uid} { vindbaar, gewijzigdOp }; alleen
+// { vindbaar: true } telt als vindbaar. Geen document = uit (sinds 12 okt
+// 2026 standaard uit; nieuwe profielen kiezen het bij het aanmaken, en
+// bestaande keuzes staan als document). De index volgt
 // het profiel en de voorkeur via triggers (indexeerNaam). Bij het zoeken
 // wordt alles nog eens gecontroleerd tegen het profiel en de voorkeur, dus
 // een verouderde indexregel geeft nooit een verkeerde treffer.
@@ -47,7 +49,7 @@ export function naamSleutel(naam) {
   return createHash('sha256').update(n).digest('hex');
 }
 
-const isVindbaar = (voorkeurSnap) => !(voorkeurSnap.exists && voorkeurSnap.data().vindbaar === false);
+const isVindbaar = (voorkeurSnap) => voorkeurSnap.exists && voorkeurSnap.data().vindbaar === true;
 
 /**
  * Zet de indexregel van `uid` goed: onder de sleutel van zijn naam als hij
@@ -119,25 +121,22 @@ export async function zoekOpNaam({ db, uid, invoer, nu = Date.now() }) {
 }
 
 /**
- * Eenmalig (okt 2026): alle bestaande profielen in de index, los van het
- * openen van de app. Wie nog geen voorkeur heeft, krijgt { vindbaar: true }
- * (standaard aan); een bestaande voorkeur blijft staan (ook "uit"). Daarna
- * indexeerNaam per profiel. Idempotent. Met `proef` wordt niets geschreven.
- * Geeft tellingen terug, nooit namen.
+ * Alle bestaande profielen in de index zetten volgens hun voorkeur
+ * (indexeerNaam per profiel), los van het openen van de app. Een voorkeur
+ * wordt nooit geschreven: geen voorkeur = niet vindbaar (sinds 12 okt 2026;
+ * de eenmalige vulling van okt 2026 zette toen nog { vindbaar: true }).
+ * Idempotent. Met `proef` wordt niets geschreven. Geeft tellingen terug,
+ * nooit namen.
  */
 export async function vulNaamIndex({ db, proef = false, nu = Date.now() }) {
-  const telling = { profielen: 0, voorkeurGezet: 0, gezet: 0, verwijderd: 0, ongewijzigd: 0, nietVindbaar: 0, geenVolledigeNaam: 0 };
+  const telling = { profielen: 0, geenVoorkeur: 0, gezet: 0, verwijderd: 0, ongewijzigd: 0, nietVindbaar: 0, geenVolledigeNaam: 0 };
   const profielen = await db.collection('profielen').get();
   for (const p of profielen.docs) {
     telling.profielen++;
     const uid = p.id;
     const voorkeur = await db.doc(`naamvoorkeur/${uid}`).get();
-    if (!voorkeur.exists) {
-      telling.voorkeurGezet++;
-      if (!proef) await db.doc(`naamvoorkeur/${uid}`).set({ vindbaar: true, gewijzigdOp: Timestamp.fromMillis(nu) });
-    } else if (voorkeur.data().vindbaar === false) {
-      telling.nietVindbaar++;
-    }
+    if (!voorkeur.exists) telling.geenVoorkeur++;
+    else if (voorkeur.data().vindbaar !== true) telling.nietVindbaar++;
     if (!naamSleutel(p.data().naam)) telling.geenVolledigeNaam++;
     if (proef) continue;
     telling[await indexeerNaam({ db, uid, nu })]++;
