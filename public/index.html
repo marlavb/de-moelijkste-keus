@@ -400,7 +400,31 @@
           </div>
         </section>
       </main>
+      <!-- Alleen ingelogd (renderAuthBox): naar het scherm Account verwijderen. -->
+      <div class="account-verwijderen-rij" id="accountVerwijderenRij" hidden>
+        <button class="account-verwijderen-knop" type="button" id="accountVerwijderenKnop">Account verwijderen</button>
+      </div>
       <p class="bot-link profiel-privacy"><a href="privacy.html">Privacy: wat we opslaan en wie wat ziet</a></p>
+    </section>
+
+    <!-- SCHERM: account verwijderen (alleen ingelogd) -->
+    <section class="screen" id="screen-accountVerwijderen" hidden>
+      <header class="app-header">
+        <div class="header-top header-top--terug">
+          <button class="icon-btn" type="button" id="accountVerwijderenBack" aria-label="Terug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="app-title">Account verwijderen</h1>
+            <p class="app-subtitle">Je account en alles wat erbij hoort</p>
+          </div>
+        </div>
+      </header>
+      <main class="vrienden-scherm">
+        <div class="vrienden-blok" id="accountVerwijderenInhoud" aria-live="polite"></div>
+      </main>
     </section>
 
     <!-- SCHERM: vrienden (alleen ingelogd met profiel) -->

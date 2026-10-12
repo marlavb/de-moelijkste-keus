@@ -20,6 +20,7 @@ import {
   runTransaction,
   serverTimestamp,
   roepFunctie,
+  herbevestigInlog,
 } from './firebase.js';
 import {
   bewaarProfiel,
@@ -469,6 +470,7 @@ const els = {
     uitnodigen: document.getElementById('screen-uitnodigen'),
     berichten: document.getElementById('screen-berichten'),
     mail: document.getElementById('screen-mail'),
+    accountVerwijderen: document.getElementById('screen-accountVerwijderen'),
   },
   detailGezienBlok: document.getElementById('detailGezienBlok'),
   detailGezienBezoeken: document.getElementById('detailGezienBezoeken'),
@@ -578,6 +580,10 @@ const els = {
   berichtenBack: document.getElementById('berichtenBack'),
   mailBack: document.getElementById('mailBack'),
   mailInhoud: document.getElementById('mailInhoud'),
+  accountVerwijderenRij: document.getElementById('accountVerwijderenRij'),
+  accountVerwijderenKnop: document.getElementById('accountVerwijderenKnop'),
+  accountVerwijderenBack: document.getElementById('accountVerwijderenBack'),
+  accountVerwijderenInhoud: document.getElementById('accountVerwijderenInhoud'),
   berichtenInhoud: document.getElementById('berichtenInhoud'),
   profielBadge: document.getElementById('profielBadge'),
   feedbackForm: document.getElementById('feedbackForm'),
@@ -728,6 +734,8 @@ async function init() {
   els.uitnodigenBack?.addEventListener('click', () => terug('#/profiel'));
   els.berichtenBack?.addEventListener('click', () => terug('#/profiel'));
   els.mailBack?.addEventListener('click', () => terug('#/profiel'));
+  els.accountVerwijderenKnop?.addEventListener('click', () => navigate('#/profiel/account-verwijderen'));
+  els.accountVerwijderenBack?.addEventListener('click', () => terug('#/profiel'));
   if (els.profielGebruikersnaamUitleg) els.profielGebruikersnaamUitleg.textContent = GEBRUIKERSNAAM_UITLEG;
   route();
 
@@ -915,6 +923,18 @@ function routeNaar(hash) {
     return;
   }
 
+  // Account verwijderen: ingelogd, of net verwijderd (dan de bevestiging).
+  if (hash === '#/profiel/account-verwijderen') {
+    if (!els.screens.accountVerwijderen || (state.authBekend && !state.user && !accountVerwijderdKlaar())) {
+      vervang('#/profiel');
+      return;
+    }
+    if (!accountVerwijderen.bezig) accountVerwijderen = { bezig: false, fout: null, begrepen: false, ookLokaal: false };
+    showScreen('accountVerwijderen');
+    renderAccountVerwijderen();
+    return;
+  }
+
   // Ook uitgelogd: de link in elke mail komt hier ("eerst inloggen").
   if (hash === '#/profiel/mail') {
     if (!els.screens.mail) {
@@ -1018,7 +1038,7 @@ function showScreen(name) {
   for (const [key, el] of Object.entries(els.screens)) {
     if (el) el.hidden = key !== name;
   }
-  els.bottomNav.hidden = ['detail', 'gezien', 'watchlist', 'profielInstellen', 'vrienden', 'vriendLink', 'delen', 'vriend', 'vriendItem', 'uitnodigen', 'berichten', 'mail'].includes(name);
+  els.bottomNav.hidden = ['detail', 'gezien', 'watchlist', 'profielInstellen', 'vrienden', 'vriendLink', 'delen', 'vriend', 'vriendItem', 'uitnodigen', 'berichten', 'mail', 'accountVerwijderen'].includes(name);
   for (const btn of els.bottomNav.querySelectorAll('.nav-item')) {
     btn.classList.toggle('is-active', btn.dataset.tab === name);
   }
@@ -2083,6 +2103,7 @@ async function handleAuthChange(user) {
   if (hash.startsWith('#/uitnodigen/')) routeNaar(hash);
   if (hash === '#/berichten') routeNaar(hash);
   if (hash === '#/profiel/mail') laadMail();
+  if (hash === '#/profiel/account-verwijderen') routeNaar(hash);
   vernieuwVriendenTeller();
   planKopie();
   laadEigenPlannen();
@@ -2787,6 +2808,162 @@ function renderMailScherm() {
     p.setAttribute('role', mailMelding.soort === 'fout' ? 'alert' : 'status');
     box.appendChild(p);
   }
+}
+
+// ---------- Account verwijderen (vrienden stap 6; functions/accountVerwijderen.js) ----------
+
+// Na een geslaagde verwijdering herladen we de pagina (schone stand, en zo
+// nodig zonder de lokale lijsten); deze vlag laat daarna de bevestiging zien.
+const VERWIJDERD_VLAG = 'podiumagenda:accountVerwijderd';
+const accountVerwijderdKlaar = () => {
+  try {
+    return sessionStorage.getItem(VERWIJDERD_VLAG) === '1';
+  } catch {
+    return false;
+  }
+};
+let accountVerwijderen = { bezig: false, fout: null, begrepen: false, ookLokaal: false };
+
+const WAT_WEGGAAT = [
+  'Je profiel: je naam en gebruikersnaam (die is daarna weer vrij voor een ander).',
+  'Je watchlist, Gezien, planning en theaterkeuze in je account.',
+  'Je vriendschappen en vriendschapsverzoeken, ook bij je vrienden: je verdwijnt uit hun lijst.',
+  'Plannen die jij organiseert: wie je uitnodigde, ziet "Gedeeld plan opgeheven". Uit plannen van anderen word je gehaald.',
+  'Berichten aan en van jou, je uitnodigingslinks en je blokkades.',
+  'Je instellingen voor mail en vindbaarheid, en je inlog bij Podiumagenda.',
+];
+
+function vinkje(id, tekst, aan, onChange) {
+  const label = document.createElement('label');
+  label.className = 'verwijder-vink';
+  const input = document.createElement('input');
+  input.type = 'checkbox';
+  input.id = id;
+  input.checked = aan;
+  input.addEventListener('change', () => onChange(input.checked));
+  label.append(input, vriendenTekst('span', '', tekst));
+  return label;
+}
+
+function renderAccountVerwijderen() {
+  const box = els.accountVerwijderenInhoud;
+  if (!box || els.screens.accountVerwijderen.hidden) return;
+  box.replaceChildren();
+  if (accountVerwijderdKlaar()) {
+    const klaar = vriendenTekst('p', 'vrienden-melding vrienden-melding--succes', 'Je account is verwijderd.');
+    klaar.setAttribute('role', 'status');
+    box.append(
+      klaar,
+      vriendenTekst('p', 'vrienden-leeg', 'Alles wat bij je account hoorde, is weg. Je kunt de app gewoon blijven gebruiken zonder in te loggen.')
+    );
+    const verder = document.createElement('button');
+    verder.type = 'button';
+    verder.className = 'btn-secondary';
+    verder.textContent = 'Naar de agenda';
+    verder.addEventListener('click', () => {
+      try {
+        sessionStorage.removeItem(VERWIJDERD_VLAG);
+      } catch {
+        // geen opslag: dan blijft de bevestiging hier staan, verder niets
+      }
+      navigate('#/');
+    });
+    box.appendChild(verder);
+    return;
+  }
+  if (!state.authBekend || !state.user) {
+    box.appendChild(vriendenTekst('p', 'profiel-melding', 'Laden…'));
+    return;
+  }
+  const a = accountVerwijderen;
+  box.append(
+    vriendenTekst('p', 'verwijder-waarschuwing', 'Dit kan niet ongedaan worden gemaakt.'),
+    vriendenTekst('p', 'vrienden-leeg', 'Als je je account verwijdert, gaat dit weg:')
+  );
+  const lijst = document.createElement('ul');
+  lijst.className = 'verwijder-lijst';
+  for (const regel of WAT_WEGGAAT) lijst.appendChild(vriendenTekst('li', '', regel));
+  box.appendChild(lijst);
+  const blijft = vriendenTekst('p', 'vrienden-leeg', 'Je Google-account zelf blijft bestaan. Je lijsten op dit apparaat blijven staan, tenzij je hieronder kiest om ze ook te wissen. ');
+  const privacy = document.createElement('a');
+  privacy.href = 'privacy.html';
+  privacy.textContent = 'Meer over privacy';
+  blijft.appendChild(privacy);
+  box.appendChild(blijft);
+
+  box.append(
+    vinkje('verwijderOokLokaal', 'Ook mijn lijsten op dit apparaat wissen', a.ookLokaal, (aan) => {
+      a.ookLokaal = aan;
+    }),
+    vinkje('verwijderBegrepen', 'Ik begrijp dat mijn account en alles hierboven definitief weg zijn', a.begrepen, (aan) => {
+      a.begrepen = aan;
+      knop.disabled = !aan || a.bezig;
+    })
+  );
+  const knop = document.createElement('button');
+  knop.type = 'button';
+  knop.id = 'accountVerwijderenBevestig';
+  knop.className = 'btn-danger';
+  knop.textContent = a.bezig ? 'Bezig met verwijderen…' : 'Account definitief verwijderen';
+  knop.disabled = !a.begrepen || a.bezig;
+  knop.addEventListener('click', verwijderMijnAccount);
+  const annuleer = document.createElement('button');
+  annuleer.type = 'button';
+  annuleer.className = 'btn-secondary';
+  annuleer.textContent = 'Annuleren';
+  annuleer.disabled = a.bezig;
+  annuleer.addEventListener('click', () => terug('#/profiel'));
+  box.append(knop, annuleer);
+  if (a.fout) {
+    const p = vriendenTekst('p', 'vrienden-melding vrienden-melding--fout', a.fout);
+    p.setAttribute('role', 'alert');
+    box.appendChild(p);
+  }
+}
+
+function verwijderFoutTekst(err) {
+  const code = String(err?.code ?? '');
+  if (code.startsWith('auth/') && /popup|cancelled|closed/.test(code)) return 'Opnieuw inloggen is afgebroken. Er is niets verwijderd.';
+  if (code.endsWith('failed-precondition')) return 'Log opnieuw in en probeer het nog eens. Er is niets verwijderd.';
+  if (code.endsWith('resource-exhausted') && err?.message) return err.message;
+  return 'Het verwijderen is niet gelukt. Controleer je verbinding en probeer het opnieuw; wat al weg is, blijft weg.';
+}
+
+async function verwijderMijnAccount() {
+  const a = accountVerwijderen;
+  if (!state.user || !a.begrepen || a.bezig) return;
+  a.bezig = true;
+  a.fout = null;
+  renderAccountVerwijderen();
+  try {
+    await herbevestigInlog();
+    await roepFunctie('verwijderAccount', { bevestiging: 'verwijder' });
+  } catch (err) {
+    console.error('Account verwijderen mislukt:', err?.code ?? err);
+    a.bezig = false;
+    a.fout = verwijderFoutTekst(err);
+    renderAccountVerwijderen();
+    return;
+  }
+  // Gelukt: eerst de vlag (dan blijft dit scherm staan als het uitloggen de
+  // route opnieuw bekijkt), meteen uitloggen (het oude token is nog even
+  // geldig; niets meer schrijven), zo nodig de lokale lijsten wissen, en
+  // schoon herladen op dit scherm.
+  try {
+    sessionStorage.setItem(VERWIJDERD_VLAG, '1');
+  } catch {
+    // geen opslag: de bevestiging komt dan niet, het verwijderen is wel gelukt
+  }
+  await signOut(auth).catch(() => {});
+  try {
+    if (a.ookLokaal) {
+      for (const k of Object.keys(localStorage)) if (k.startsWith('podiumagenda:')) localStorage.removeItem(k);
+    }
+  } catch {
+    // geen opslag: dan valt er ook niets te wissen
+  }
+  if (location.hash !== '#/profiel/account-verwijderen') history.replaceState(null, '', '#/profiel/account-verwijderen');
+  window.location.reload();
 }
 
 // ---------- Berichten (zie plannen.js) ----------
@@ -4567,6 +4744,7 @@ function renderAuthBox() {
   }
 
   els.authBox.appendChild(box);
+  if (els.accountVerwijderenRij) els.accountVerwijderenRij.hidden = !state.user;
   const profielRegel = renderProfielRegel();
   if (profielRegel) els.authBox.appendChild(profielRegel);
   const vindbaar = renderVindbaarRegel();

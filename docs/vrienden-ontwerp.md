@@ -1,6 +1,6 @@
 # Profiel, vrienden en uitnodigingen — ontwerp, inventarisatie en voortgang
 
-1 okt 2026. Sinds 10 okt 2026 in `docs/` (eerder in `debug/`). Historisch ontwerp en voortgang per stap; stap 6 (account verwijderen) is nog niet gebouwd.
+1 okt 2026. Sinds 10 okt 2026 in `docs/` (eerder in `debug/`). Historisch ontwerp en voortgang per stap; stap 6 (account verwijderen) is gebouwd op 12 okt 2026, anders dan hieronder ontworpen niet client-side maar met de callable `verwijderAccount` (admin SDK, `functions/accountVerwijderen.js`).
 
 ---
 

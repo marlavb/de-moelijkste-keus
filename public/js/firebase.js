@@ -10,6 +10,7 @@ import {
   onAuthStateChanged,
   connectAuthEmulator,
   signInWithEmailAndPassword,
+  reauthenticateWithPopup,
 } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js';
 import {
   getFirestore,
@@ -66,6 +67,19 @@ export const googleProvider = new GoogleAuthProvider();
 const functies = getFunctions(app, 'europe-west4');
 /** Een callable Cloud Function aanroepen: roepFunctie('zoekOpNaam', { naam }) → { data }. */
 export const roepFunctie = (naam, data) => httpsCallable(functies, naam)(data);
+
+/**
+ * Voor account verwijderen: de functie eist een inlog van hooguit 10 minuten
+ * oud. Is die ouder dan 5 minuten, dan eerst opnieuw inloggen (Google-popup).
+ */
+export async function herbevestigInlog() {
+  const user = auth.currentUser;
+  if (!user) throw new Error('niet ingelogd');
+  const { authTime } = await user.getIdTokenResult();
+  if (Date.now() - Date.parse(authTime) < 5 * 60 * 1000) return;
+  await reauthenticateWithPopup(user, googleProvider);
+  await user.getIdToken(true);
+}
 
 if (EMULATOR) {
   connectAuthEmulator(auth, EMULATOR_AUTH, { disableWarnings: true });
