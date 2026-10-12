@@ -145,3 +145,43 @@ export function wisselDag(w, dag) {
   const dagen = w.dagen.includes(dag) ? w.dagen.filter((d) => d !== dag) : [...w.dagen, dag].sort();
   return { ...w, dagen };
 }
+
+const MAANDEN = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+const delen = (iso) => iso.split('-').map(Number);
+const kort = (iso, metJaar) => {
+  const [j, m, d] = delen(iso);
+  return `${d} ${MAANDEN[m - 1]}${metJaar ? ` ${j}` : ''}`;
+};
+
+/**
+ * Korte tekst voor eigen datums: "1 nov", "1–8 nov", "28 okt – 3 nov",
+ * "28 dec 2026 – 3 jan 2027", "vanaf 1 nov", "t/m 8 nov". Omgedraaid wordt
+ * rechtgezet (zoals wanneerBereik).
+ */
+export function datumTekst(vanIn, totIn) {
+  let [van, tot] = [vanIn || null, totIn || null];
+  if (van && tot && van > tot) [van, tot] = [tot, van];
+  if (van && !tot) return `vanaf ${kort(van)}`;
+  if (!van && tot) return `t/m ${kort(tot)}`;
+  if (!van) return '';
+  if (van === tot) return kort(van);
+  const [jv, mv, dv] = delen(van);
+  const [jt, mt, dt] = delen(tot);
+  if (jv === jt && mv === mt) return `${dv}–${dt} ${MAANDEN[mt - 1]}`;
+  if (jv === jt) return `${kort(van)} – ${kort(tot)}`;
+  return `${kort(van, true)} – ${kort(tot, true)}`;
+}
+
+/** Samenvatting van een keuze ("Dit weekend · za", "1–8 nov", "ma, do"), of '' zonder keuze. */
+export function wanneerSamenvatting(w) {
+  const bereik = w.snel ? SNELKEUZES.find((s) => s.id === w.snel)?.label ?? '' : datumTekst(w.van, w.tot);
+  const dagen = WEEKDAGEN.filter((d) => w.dagen.includes(d.dag)).map((d) => d.label).join(', ');
+  return [bereik, dagen].filter(Boolean).join(' · ');
+}
+
+/** Samenvatting van een meerkeuze ("Utrecht", "Utrecht +2"): de eerste in Nederlandse volgorde. */
+export function lijstSamenvatting(namen) {
+  const gesorteerd = [...namen].sort((a, b) => a.localeCompare(b, 'nl'));
+  if (!gesorteerd.length) return '';
+  return gesorteerd.length === 1 ? gesorteerd[0] : `${gesorteerd[0]} +${gesorteerd.length - 1}`;
+}

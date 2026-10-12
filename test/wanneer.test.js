@@ -104,3 +104,20 @@ test('wanneer: snelkeuze en datums sluiten elkaar uit; bewaarde vorm wordt opges
   assert.deepEqual(normaliseerWanneer({ snel: 'onzin', van: '1-11-2026', tot: '2026-11-05', dagen: [0, 3, 3, 8, 'ma'] }), { snel: null, van: '', tot: '2026-11-05', dagen: [3] });
   assert.deepEqual(normaliseerWanneer({ snel: 'maand', van: '2026-11-01' }).snel, null);
 });
+
+test('wanneer: samenvatting voor de filterkop', async () => {
+  const { wanneerSamenvatting, datumTekst, lijstSamenvatting } = await import('../public/js/wanneer.js');
+  assert.equal(wanneerSamenvatting(legeWanneer()), '');
+  assert.equal(wanneerSamenvatting(w({ snel: 'weekend', dagen: [6] })), 'Dit weekend · za');
+  assert.equal(wanneerSamenvatting(w({ van: '2026-11-01', tot: '2026-11-08' })), '1–8 nov');
+  assert.equal(wanneerSamenvatting(w({ dagen: [4, 1] })), 'ma, do');
+  assert.equal(wanneerSamenvatting(w({ van: '2026-11-08', tot: '2026-11-01', dagen: [7] })), '1–8 nov · zo');
+  assert.equal(datumTekst('2026-11-03', '2026-11-03'), '3 nov');
+  assert.equal(datumTekst('2026-10-28', '2026-11-03'), '28 okt – 3 nov');
+  assert.equal(datumTekst('2026-12-28', '2027-01-03'), '28 dec 2026 – 3 jan 2027');
+  assert.equal(datumTekst('2026-11-01', ''), 'vanaf 1 nov');
+  assert.equal(datumTekst('', '2026-11-08'), 't/m 8 nov');
+  assert.equal(lijstSamenvatting([]), '');
+  assert.equal(lijstSamenvatting(['Utrecht']), 'Utrecht');
+  assert.equal(lijstSamenvatting(['Zwolle', 'Utrecht', "'s-Hertogenbosch"]), "'s-Hertogenbosch +2");
+});

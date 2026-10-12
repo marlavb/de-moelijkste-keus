@@ -661,6 +661,37 @@ a {
   margin: 0;
 }
 
+/* Filterkop met een samenvatting van de keuze (okt 2026): kop en samenvatting
+   op één regel, de samenvatting kort met een ellips. */
+.filter-kop {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.filter-accordion-header .filter-kop {
+  margin-right: 8px;
+}
+
+.filter-kop-naam {
+  flex-shrink: 0;
+}
+
+.filter-samenvatting {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-2);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
 .filter-accordion-chevron {
   width: 16px;
   height: 16px;

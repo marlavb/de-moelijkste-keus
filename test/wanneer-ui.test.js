@@ -144,25 +144,75 @@ test('Wanneer: snelkeuzes en eigen datums sluiten elkaar uit; leeg → bestaande
   assert.equal(await sheet.getByRole('button', { name: 'Dit weekend' }).getAttribute('aria-pressed'), 'false');
   assert.deepEqual(await titels(page), ['Maandag Utrecht', 'Maandag Amsterdam', 'Donderdag Amsterdam']);
   // Eigen datum zet de snelkeuze uit; alleen "van" = vanaf (ook voorbij 30 dagen).
-  await sheet.getByLabel('Van').fill('2026-10-22');
+  await sheet.getByLabel('Van', { exact: true }).fill('2026-10-22');
   assert.equal(await sheet.getByRole('button', { name: 'Volgende week' }).getAttribute('aria-pressed'), 'false');
   assert.deepEqual(await titels(page), ['Donderdag Amsterdam', 'Ver weg Utrecht']);
   // Van = tot: één dag.
-  await sheet.getByLabel('Tot en met').fill('2026-10-22');
+  await sheet.getByLabel('Tot en met', { exact: true }).fill('2026-10-22');
   assert.deepEqual(await titels(page), ['Donderdag Amsterdam']);
   // Snelkeuze zet de datums weer uit.
   await sheet.getByRole('button', { name: 'Vandaag' }).click();
-  assert.equal(await sheet.getByLabel('Van').inputValue(), '');
+  assert.equal(await sheet.getByLabel('Van', { exact: true }).inputValue(), '');
   assert.deepEqual(await titels(page), ['Woensdag Utrecht']);
   // Met een weekdag die vandaag niet is: leeg, de gewone melding.
   await sheet.getByRole('button', { name: 'zondag' }).click();
   assert.equal(await page.locator('#emptyState').innerText(), 'Geen voorstellingen gevonden voor deze filters.');
   assert.equal(await badge(page), 1);
   // Tikvlakken ≥ 44 px.
-  for (const el of [sheet.getByRole('button', { name: 'zondag' }), sheet.getByLabel('Van')]) {
+  for (const el of [sheet.getByRole('button', { name: 'zondag' }), sheet.getByLabel('Van', { exact: true })]) {
     const box = await el.boundingBox();
     assert.ok(box.height >= 44, `tikvlak ${box.height}`);
   }
   assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
   await ctx.close();
+});
+
+test('Filterkoppen tonen een samenvatting van de keuze (sidebar ook ingeklapt, en mobiel), als deel van de kopnaam', async () => {
+  const { ctx, page } = await openApp();
+  const sidebar = page.locator('#filterSidebar');
+  const samenvatting = (id) => page.locator(`#${id} .filter-samenvatting`);
+  const zichtbaar = (id) => samenvatting(id).evaluate((el) => el.textContent);
+  // Geen keuze: geen samenvatting.
+  assert.equal(await samenvatting('sidebarWanneerHeader').count(), 1);
+  assert.equal(await samenvatting('sidebarWanneerHeader').isHidden(), true);
+  await page.click('#sidebarWanneerHeader');
+  await sidebar.getByRole('button', { name: 'Dit weekend', exact: true }).click();
+  await sidebar.getByRole('button', { name: 'zaterdag' }).click();
+  await page.click('#sidebarStadHeader');
+  await sidebar.locator('#sidebarCityFilters').getByRole('button', { name: 'Utrecht' }).click();
+  await sidebar.locator('#sidebarCityFilters').getByRole('button', { name: 'Amsterdam' }).click();
+  await page.click('#sidebarTheaterHeader');
+  await sidebar.locator('#sidebarTheaterFilters').getByRole('button', { name: 'DeLaMar' }).click();
+  // Allemaal weer inklappen: de samenvatting blijft zichtbaar.
+  for (const id of ['sidebarWanneerHeader', 'sidebarStadHeader', 'sidebarTheaterHeader']) await page.click(`#${id}`);
+  assert.equal(await page.getAttribute('#sidebarWanneerHeader', 'aria-expanded'), 'false');
+  assert.equal(await zichtbaar('sidebarWanneerHeader'), 'Dit weekend · za');
+  assert.equal(await zichtbaar('sidebarStadHeader'), 'Amsterdam +1');
+  assert.equal(await zichtbaar('sidebarTheaterHeader'), 'DeLaMar');
+  assert.equal(await samenvatting('sidebarGenreHeader').isHidden(), true);
+  // Kopnaam voor schermlezers: kop en samenvatting samen.
+  assert.equal(await sidebar.getByRole('button', { name: 'Wanneer: Dit weekend · za' }).count(), 1);
+  assert.equal(await sidebar.getByRole('heading', { name: 'Stad: Amsterdam +1' }).count(), 1);
+  // Eén regel met ellips: de samenvatting loopt niet over.
+  const stijl = await samenvatting('sidebarWanneerHeader').evaluate((el) => [getComputedStyle(el).whiteSpace, getComputedStyle(el).textOverflow, getComputedStyle(el).fontSize]);
+  assert.deepEqual(stijl, ['nowrap', 'ellipsis', '14px']);
+  // Eigen datums.
+  await page.click('#sidebarWanneerHeader');
+  await sidebar.getByLabel('Van', { exact: true }).fill('2026-11-01');
+  await sidebar.getByLabel('Tot en met', { exact: true }).fill('2026-11-08');
+  assert.equal(await zichtbaar('sidebarWanneerHeader'), '1–8 nov · za');
+  await ctx.close();
+
+  // Mobiel: dezelfde keuze (bewaard) in de koppen van het filterpaneel.
+  const m = await openApp({ viewport: { width: 390, height: 844 }, opslag: { 'podiumagenda:filters': { selectedCities: ['Utrecht'], selectedTheaters: [], selectedGenres: [], wanneer: { snel: null, van: '', tot: '', dagen: [1, 4] } } } });
+  await m.page.click('#filterToggle');
+  const sheet = m.page.locator('#filterSheet');
+  assert.equal(await sheet.getByRole('heading', { name: 'Wanneer: ma, do' }).count(), 1);
+  assert.equal(await sheet.getByRole('heading', { name: 'Stad: Utrecht' }).count(), 1);
+  assert.equal(await sheet.getByRole('heading', { name: 'Genre', exact: true }).count(), 1);
+  // Wissen: weg.
+  await m.page.click('#clearFilters');
+  assert.equal(await sheet.getByRole('heading', { name: 'Wanneer', exact: true }).count(), 1);
+  assert.equal(m.page.fouten.length, 0, m.page.fouten.join('\n'));
+  await m.ctx.close();
 });

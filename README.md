@@ -29,7 +29,8 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
   theater, genre, alleen Podiumpas (ook "Podiumpas?":
   nog niet bekend of de pas geldt), alleen watchlist,
   "Verberg volle voorstellingen" (uitverkocht, wachtlijst, afgelast) en
-  "Verberg gezien". De keuze wordt onthouden.
+  "Verberg gezien". De keuze wordt onthouden; de kop van een filtergroep
+  vat hem samen ("Dit weekend · za", "Utrecht +2"), ook ingeklapt.
 - **Detailscherm**: info, reserveren, Podiumpas per speeldatum ("Podiumpas:
   nog niet bekend" met de toelichting als dat zo is), andere data en
   "Ook te zien bij" (volle data grijs en doorgestreept), in je agenda zetten.

@@ -130,6 +130,8 @@ import {
   kiesSnel,
   kiesDatum,
   wisselDag,
+  wanneerSamenvatting,
+  lijstSamenvatting,
 } from './wanneer.js';
 
 // Adressen staan niet in shows.json (dat is per-voorstelling data, niet per
@@ -5001,7 +5003,63 @@ function renderHideGezienToggle() {
   }
 }
 
+// Samenvatting van de keuze in de kop van elke filtergroep (sidebar, ook
+// ingeklapt, en filterpaneel): "Dit weekend · za", "Utrecht +2". In de
+// <h3>, dus onderdeel van de kopnaam (en van de knopnaam in de sidebar),
+// voor schermlezers als "Stad: Utrecht +2".
+const FILTER_KOP_CONTAINERS = {
+  wanneer: ['sidebarWanneerFilters', 'sheetWanneerFilters'],
+  stad: ['sidebarCityFilters', 'sheetCityFilters'],
+  theater: ['sidebarTheaterFilters', 'sheetTheaterFilters'],
+  genre: ['sidebarGenreFilters', 'sheetGenreFilters'],
+};
+
+function filterSamenvatting(groep) {
+  if (groep === 'wanneer') return wanneerSamenvatting(state.wanneer);
+  if (groep === 'stad') return lijstSamenvatting(state.selectedCities);
+  if (groep === 'theater') return lijstSamenvatting([...state.selectedTheaters].map(theaterDisplayName));
+  return lijstSamenvatting(state.selectedGenres);
+}
+
+/** De <h3> van een filtergroep: in de sidebar in de accordeonknop, in het paneel vlak vóór de chips. */
+function filterKop(containerId) {
+  const header = document.querySelector(`[aria-controls="${containerId}"]`);
+  if (header) return header.querySelector('h3');
+  const vorige = document.getElementById(containerId)?.previousElementSibling;
+  return vorige?.tagName === 'H3' ? vorige : null;
+}
+
+function renderFilterSamenvattingen() {
+  for (const [groep, ids] of Object.entries(FILTER_KOP_CONTAINERS)) {
+    const tekst = filterSamenvatting(groep);
+    for (const id of ids) {
+      const kop = filterKop(id);
+      if (!kop) continue;
+      let span = kop.querySelector('.filter-samenvatting');
+      if (!span) {
+        const naam = document.createElement('span');
+        naam.className = 'filter-kop-naam';
+        naam.append(...kop.childNodes);
+        span = document.createElement('span');
+        span.className = 'filter-samenvatting';
+        kop.classList.add('filter-kop');
+        kop.append(naam, span);
+      }
+      span.hidden = !tekst;
+      span.textContent = tekst;
+      span.title = tekst;
+      // Kopnaam voor schermlezers "Stad: Utrecht +2" (de knop in de sidebar
+      // neemt hem over). Als label: tussen twee flex-items zou Chromium
+      // anders een spatie zetten ("Stad : Utrecht").
+      const naam = kop.querySelector('.filter-kop-naam').textContent.trim();
+      if (tekst) kop.setAttribute('aria-label', `${naam}: ${tekst}`);
+      else kop.removeAttribute('aria-label');
+    }
+  }
+}
+
 function renderFilterBadge() {
+  renderFilterSamenvattingen();
   const count =
     (state.selectedCities.size > 0 ? 1 : 0) +
     (state.selectedTheaters.size > 0 ? 1 : 0) +
