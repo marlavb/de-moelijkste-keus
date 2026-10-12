@@ -661,6 +661,37 @@ a {
   margin: 0;
 }
 
+/* Filterkop met een samenvatting van de keuze (okt 2026): kop en samenvatting
+   op één regel, de samenvatting kort met een ellips. */
+.filter-kop {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.filter-accordion-header .filter-kop {
+  margin-right: 8px;
+}
+
+.filter-kop-naam {
+  flex-shrink: 0;
+}
+
+.filter-samenvatting {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-2);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
 .filter-accordion-chevron {
   width: 16px;
   height: 16px;
@@ -671,6 +702,74 @@ a {
 
 .filter-accordion-header[aria-expanded="false"] .filter-accordion-chevron {
   transform: rotate(-90deg);
+}
+
+/* Datumfilter "Wanneer" (okt 2026): snelkeuzes en weekdagen als chips,
+   daartussen twee datumvelden (native, tikvlak ≥ 44 px via .veld-input). */
+.wanneer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wanneer-kop {
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.wanneer-datums {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.wanneer-velden {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.wanneer-velden .veld-invoer {
+  min-height: 0;
+  padding: 0 10px;
+}
+
+.wanneer-velden .veld-input {
+  min-height: var(--touch);
+  font-size: 16px;
+}
+
+/* Weekdagen: zeven korte chips op één rij, even breed (mobiel ≥ 44 px). */
+.wanneer-dagen {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.wanneer-dagen .chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 8px 0;
+  text-align: center;
+}
+
+.wanneer-datums legend {
+  margin-bottom: 6px;
+}
+
+.text-btn.wanneer-wis {
+  width: auto;
+  align-self: flex-start;
+  padding: 8px 14px;
 }
 
 .sheet-footer {
