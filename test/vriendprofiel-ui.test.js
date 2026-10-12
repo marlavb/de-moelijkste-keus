@@ -14,6 +14,7 @@ import { chromium } from 'playwright';
 import { nepFirebase } from './nepFirebase.js';
 import { watchlistSleutel } from '../public/js/watchlist.js';
 import { TIJDZONE, amsterdamTijdstip, dagenVerder, vandaag as vandaagAmsterdam } from './datum.js';
+import { serveerVasteAgenda, vasteShows } from './vasteAgenda.js';
 
 const ROOT = new URL('../public/', import.meta.url).pathname;
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
@@ -31,7 +32,7 @@ const kopie = (items, nv = 4) => ({ items, stand: 1, nv, v: 1, bijgewerktOp: 1 }
 const VEEL = Array.from({ length: 30 }, (_, i) => ({ sleutel: `oud ${i}`, titel: `Oude voorstelling ${String(i).padStart(2, '0')}`, laatsteBezoek: `2025-01-${String((i % 28) + 1).padStart(2, '0')}`, aantal: 1 }));
 
 before(async () => {
-  const data = JSON.parse(await readFile(path.join(ROOT, 'data/shows.json'), 'utf-8'));
+  const data = await vasteShows();
   const shows = Array.isArray(data) ? data : data.shows;
   const vandaag = vandaagAmsterdam();
   show = shows.find((s) => s.datum > vandaag);
@@ -60,6 +61,8 @@ before(async () => {
 
   server = createServer(async (req, res) => {
     const pad = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+    // De vaste agenda, niet public/data/shows.json (vasteAgenda.js).
+    if (await serveerVasteAgenda(pad, res)) return;
     const file = path.join(ROOT, pad.endsWith('/') ? `${pad}index.html` : pad);
     try {
       const body = await readFile(file);

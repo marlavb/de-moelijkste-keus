@@ -6,7 +6,8 @@
 import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
-import { TIJDZONE, vandaag as vandaagAmsterdam } from '../test/datum.js';
+import { TIJDZONE } from '../test/datum.js';
+import { vasteShows } from '../test/vasteAgenda.js';
 
 export const PROJECT = 'demo-podiumagenda';
 const FIRESTORE = 'http://127.0.0.1:8085';
@@ -22,16 +23,8 @@ export function controleerEmulators() {
   }
 }
 
-/**
- * De vaste agenda van de tests (test-e2e/fixtures/shows.json, gemaakt met
- * scripts/e2e-fixture.js): `dagen` → `datum` vanaf vandaag (Amsterdam), zodat
- * de tests niet afhangen van de echte data en de fixture niet veroudert.
- */
-export async function vasteShows() {
-  const { shows } = JSON.parse(await readFile(new URL('./fixtures/shows.json', import.meta.url), 'utf-8'));
-  const basis = Date.parse(`${vandaagAmsterdam()}T12:00:00Z`);
-  return shows.map(({ dagen, ...s }) => ({ ...s, datum: new Date(basis + dagen * 86_400_000).toISOString().slice(0, 10) }));
-}
+// De vaste agenda van de tests (test/vasteAgenda.js, ook voor de UI-tests).
+export { vasteShows };
 
 export async function startServer() {
   const agenda = JSON.stringify(await vasteShows());

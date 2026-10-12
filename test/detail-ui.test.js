@@ -10,6 +10,7 @@ import path from 'node:path';
 import { chromium } from 'playwright';
 
 import { nepFirebase } from './nepFirebase.js';
+import { serveerVasteAgenda, vasteShows } from './vasteAgenda.js';
 
 import { planIn, zetStatus, legeGepland } from '../public/js/gepland.js';
 import { voegToe, legeWatchlist, watchlistSleutel } from '../public/js/watchlist.js';
@@ -23,6 +24,8 @@ let browser;
 before(async () => {
   server = createServer(async (req, res) => {
     const pad = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+    // De vaste agenda, niet public/data/shows.json (vasteAgenda.js).
+    if (await serveerVasteAgenda(pad, res)) return;
     const file = path.join(ROOT, pad.endsWith('/') ? `${pad}index.html` : pad);
     try {
       const body = await readFile(file);
@@ -48,7 +51,7 @@ async function openApp({ opslag = {}, html, viewport = { width: 390, height: 900
   // Vaste testdata in plaats van de echte agenda (die verandert elke nacht).
   if (alleenShows) await ctx.route(/data\/shows\.json/, (r) => r.fulfill({ contentType: 'application/json', body: JSON.stringify(alleenShows) }));
   else if (extraShows.length) {
-    const echt = JSON.parse(await readFile(path.join(ROOT, 'data/shows.json'), 'utf-8'));
+    const echt = await vasteShows();
     await ctx.route(/data\/shows\.json/, (r) => r.fulfill({ contentType: 'application/json', body: JSON.stringify([...extraShows, ...echt]) }));
   }
   await ctx.route(/^https?:\/\/(?!127\.0\.0\.1)/, (r) => r.abort());

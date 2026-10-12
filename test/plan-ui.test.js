@@ -15,6 +15,7 @@ import { nepFirebase } from './nepFirebase.js';
 import { planIn, legeGepland } from '../public/js/gepland.js';
 import { speeldagVan } from '../public/js/plannen.js';
 import { TIJDZONE, vandaag as vandaagAmsterdam } from './datum.js';
+import { serveerVasteAgenda, vasteShows } from './vasteAgenda.js';
 
 const ROOT = new URL('../public/', import.meta.url).pathname;
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
@@ -47,7 +48,7 @@ function planDocs({ planId = 'P1', leden, genodigden = leden.filter((l) => l.rol
 }
 
 before(async () => {
-  const data = JSON.parse(await readFile(path.join(ROOT, 'data/shows.json'), 'utf-8'));
+  const data = await vasteShows();
   const shows = Array.isArray(data) ? data : data.shows;
   const vandaag = vandaagAmsterdam();
   show = shows.find((s) => s.datum > vandaag && s.tijd);
@@ -65,6 +66,8 @@ before(async () => {
 
   server = createServer(async (req, res) => {
     const pad = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+    // De vaste agenda, niet public/data/shows.json (vasteAgenda.js).
+    if (await serveerVasteAgenda(pad, res)) return;
     const file = path.join(ROOT, pad.endsWith('/') ? `${pad}index.html` : pad);
     try {
       const body = await readFile(file);

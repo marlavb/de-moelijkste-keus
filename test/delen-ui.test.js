@@ -13,6 +13,7 @@ import { chromium } from 'playwright';
 import { nepFirebase } from './nepFirebase.js';
 import { watchlistSleutel } from '../public/js/watchlist.js';
 import { TIJDZONE, vandaag as vandaagAmsterdam } from './datum.js';
+import { serveerVasteAgenda, vasteShows } from './vasteAgenda.js';
 
 const ROOT = new URL('../public/', import.meta.url).pathname;
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
@@ -24,7 +25,7 @@ let show; // een toekomstige voorstelling uit de echte data
 let docs; // beginstand: profiel, watchlist met die voorstelling, één gezien voorstelling
 
 before(async () => {
-  const data = JSON.parse(await readFile(path.join(ROOT, 'data/shows.json'), 'utf-8'));
+  const data = await vasteShows();
   const shows = Array.isArray(data) ? data : data.shows;
   const vandaag = vandaagAmsterdam();
   show = shows.find((s) => s.datum > vandaag);
@@ -49,6 +50,8 @@ before(async () => {
 
   server = createServer(async (req, res) => {
     const pad = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+    // De vaste agenda, niet public/data/shows.json (vasteAgenda.js).
+    if (await serveerVasteAgenda(pad, res)) return;
     const file = path.join(ROOT, pad.endsWith('/') ? `${pad}index.html` : pad);
     try {
       const body = await readFile(file);
