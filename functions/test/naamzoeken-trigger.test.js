@@ -43,9 +43,13 @@ before(async () => {
   await wis();
 });
 
-test('trigger: nieuw profiel komt in de index; vindbaar uit haalt het eruit; callable vindt alleen ingelogd', async () => {
+test('trigger: nieuw profiel zonder keuze niet in de index; vindbaar aan zet het erin, uit haalt het eruit; callable vindt alleen ingelogd', async () => {
   await db.doc('profielen/anna').set({ gebruikersnaam: 'anna', gebruikersnaamLaag: 'anna', naam: 'Anna de Vries', aangemaaktOp: Timestamp.now(), gewijzigdOp: Timestamp.now(), v: 1 });
-  assert.ok(await wachtOp(async () => (await db.doc('naamIndexLid/anna').get()).exists), 'indexregel na het profiel');
+  // Standaard uit (sinds 12 okt 2026): geen indexregel zonder voorkeur.
+  await new Promise((r) => setTimeout(r, 1500));
+  assert.equal((await db.doc('naamIndexLid/anna').get()).exists, false, 'geen indexregel zonder keuze');
+  await db.doc('naamvoorkeur/anna').set({ vindbaar: true, gewijzigdOp: Timestamp.now() });
+  assert.ok(await wachtOp(async () => (await db.doc('naamIndexLid/anna').get()).exists), 'indexregel na vindbaar aan');
   const bob = await token('bob');
 
   const uitgelogd = await roep('Anna de Vries', null);

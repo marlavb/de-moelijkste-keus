@@ -101,8 +101,11 @@ export async function laadProfiel({ db, fs, uid }) {
  * schrijven en een eventuele oude naam vrijgeven. `fs` = { runTransaction,
  * doc, serverTimestamp }. Ongeldige invoer: ProfielFout('ongeldig').
  * Netwerkfouten komen ongewijzigd door (de app toont dan een eigen melding).
+ * Bij een nieuw profiel ook de keuze "Vindbaar op naam" (`vindbaar`, standaard
+ * uit) in dezelfde transactie: naamvoorkeur/{uid}. Bij wijzigen blijft een
+ * bestaande voorkeur onaangeroerd.
  */
-export async function bewaarProfiel({ db, fs, uid, gebruikersnaam, naam }) {
+export async function bewaarProfiel({ db, fs, uid, gebruikersnaam, naam, vindbaar = false }) {
   const g = controleerGebruikersnaam(gebruikersnaam);
   if (!g.ok) throw new ProfielFout('ongeldig', g.fout);
   const n = controleerNaam(naam);
@@ -127,6 +130,7 @@ export async function bewaarProfiel({ db, fs, uid, gebruikersnaam, naam }) {
     };
     tx.set(profielRef, profiel);
     tx.set(naamRef, { uid, gebruikersnaam: g.weergave, naam: n.naam });
+    if (!oud) tx.set(fs.doc(db, 'naamvoorkeur', uid), { vindbaar: vindbaar === true, gewijzigdOp: fs.serverTimestamp() });
     if (oud?.gebruikersnaamLaag && oud.gebruikersnaamLaag !== g.laag) {
       tx.delete(fs.doc(db, 'usernames', oud.gebruikersnaamLaag));
     }
