@@ -42,7 +42,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/andreas-vollenweider": {
-   "opgehaaldOp": "2026-10-10T03:07:33.293Z",
+   "opgehaaldOp": "2026-10-13T03:06:34.974Z",
    "data": {
     "naam": "Andreas Vollenweider & Friends",
     "events": [
@@ -178,7 +178,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/cats": {
-   "opgehaaldOp": "2026-10-12T03:06:37.038Z",
+   "opgehaaldOp": "2026-10-13T03:06:31.027Z",
    "data": {
     "naam": "Cats",
     "events": [
@@ -1258,7 +1258,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/julien-clerc-une-vie": {
-   "opgehaaldOp": "2026-10-10T03:07:01.267Z",
+   "opgehaaldOp": "2026-10-13T03:06:32.975Z",
    "data": {
     "naam": "Julien Clerc",
     "events": [
@@ -1402,7 +1402,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/mabel-matiz-2027": {
-   "opgehaaldOp": "2026-10-10T03:07:10.273Z",
+   "opgehaaldOp": "2026-10-13T03:06:33.973Z",
    "data": {
     "naam": "Mabel Matiz",
     "events": [
@@ -1770,7 +1770,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/sara-kroos-prikkelarme-kermis": {
-   "opgehaaldOp": "2026-10-10T03:06:53.257Z",
+   "opgehaaldOp": "2026-10-13T03:06:31.975Z",
    "data": {
     "naam": "Sara Kroos",
     "events": [

@@ -342,7 +342,7 @@
       "naam": "S.M.E.T.",
       "stad": "Tilburg",
       "podiumpas": true,
-      "melding": "Podiumpas-voorwaarden nog niet bekend — vraag het theater."
+      "melding": "Alle S.M.E.T.-concerten gelden voor de Podiumpas; hoe je met de pas reserveert, staat er niet bij — vraag het theater."
     },
     "markant": {
       "naam": "Markant Theater Maashorst",
@@ -514,8 +514,12 @@
     "reggehof": {
       "naam": "De Reggehof",
       "stad": "Goor",
-      "podiumpas": null,
-      "melding": "Podiumpas-voorwaarden nog niet bekend — vraag het theater."
+      "podiumpas": true,
+      "podiumpasReserveren": {
+        "email": "kassa@reggehof.nl",
+        "toelichting": "Voorlopig alleen per mail (kassa@reggehof.nl), vanaf 30 dagen voor de voorstelling; de kassa behandelt aanvragen ma–vr 9–12 uur. Ticket ophalen op de dag zelf vanaf een uur voor aanvang, op vertoon van je Podiumpas. Niet bij verhuringen en kaartverkoop door derden."
+      },
+      "melding": "Niet bij verhuringen en voorstellingen met kaartverkoop door derden — controleer bij twijfel bij het theater."
     },
     "hengelo": {
       "naam": "Schouwburg Hengelo",
