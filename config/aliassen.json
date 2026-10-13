@@ -2406,5 +2406,18 @@
    "regel": "keuze"
   }
  },
- "nietSamenvoegen": []
+ "nietSamenvoegen": [
+  {
+   "groep": "theater oostpool",
+   "sleutels": [
+    "theater oostpool"
+   ]
+  },
+  {
+   "groep": "psychologie in theater",
+   "sleutels": [
+    "psychologie in theater"
+   ]
+  }
+ ]
 }
