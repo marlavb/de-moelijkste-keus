@@ -325,6 +325,20 @@
       </header>
 
       <main class="theaters-list">
+        <!-- Lijst (standaard) of kaart; de lijst blijft het volledige alternatief. -->
+        <div class="segmented segmented--groot theaters-weergave" role="group" aria-label="Weergave">
+          <button type="button" id="theatersLijstKnop" aria-pressed="true">Lijst</button>
+          <button type="button" id="theatersKaartKnop" aria-pressed="false">Kaart</button>
+        </div>
+        <section class="theaters-kaart-blok" id="theatersKaartBlok" aria-label="Kaart van de theaters" hidden>
+          <p class="theaters-kaart-status" id="theatersKaartStatus" role="status" hidden></p>
+          <div class="theaters-kaart" id="theatersKaart"></div>
+          <ul class="kaart-legenda" aria-label="Legenda">
+            <li><span class="kaart-legenda-pin kaart-pin--aan" aria-hidden="true"></span>In Mijn theaters</li>
+            <li><span class="kaart-legenda-pin kaart-pin--uit" aria-hidden="true"></span>Uit</li>
+            <li><span class="kaart-legenda-pin kaart-pin--aan kaart-pin--stil" aria-hidden="true"></span>Nu geen voorstellingen</li>
+          </ul>
+        </section>
         <div id="theatersList"></div>
 
         <section class="feedback-box">

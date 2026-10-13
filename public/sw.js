@@ -1,4 +1,4 @@
-const CACHE_NAME = 'podiumagenda-v52';
+const CACHE_NAME = 'podiumagenda-v53';
 const APP_SHELL = [
   './',
   './index.html',
@@ -20,6 +20,7 @@ const APP_SHELL = [
   './js/titelMapping.js',
   './js/weergave.js',
   './js/wanneer.js',
+  './js/kaart.js',
   './manifest.json',
   './data/shows.json',
 ];
@@ -62,6 +63,10 @@ function isNetworkFirst(url) {
 // css/ en de data, cache-first voor de rest (bv. icons), die zelden wijzigen.
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
+
+  // Kaarttegels van OpenStreetMap (kaart bij Mijn theaters): nooit via de
+  // service worker en nooit in de cache — gewoon de browser laten ophalen.
+  if (url.hostname.endsWith('tile.openstreetmap.org')) return;
 
   if (isNetworkFirst(url)) {
     event.respondWith(
