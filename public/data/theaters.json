@@ -3,27 +3,37 @@
     "delamar": {
       "naam": "DeLaMar",
       "stad": "Amsterdam",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.36442,
+      "lng": 4.88069
     },
     "bellevue": {
       "naam": "Theater Bellevue",
       "stad": "Amsterdam",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.3641,
+      "lng": 4.88044
     },
     "meervaart": {
       "naam": "Theater de Meervaart",
       "stad": "Amsterdam",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.35905,
+      "lng": 4.80735
     },
     "ita": {
       "naam": "Stadsschouwburg Amsterdam",
       "stad": "Amsterdam",
-      "podiumpas": false
+      "podiumpas": false,
+      "lat": 52.36436,
+      "lng": 4.88194
     },
     "kleinekomedie": {
       "naam": "De Kleine Komedie",
       "stad": "Amsterdam",
-      "podiumpas": false
+      "podiumpas": false,
+      "lat": 52.3669,
+      "lng": 4.89603
     },
     "frascati": {
       "naam": "Frascati",
@@ -33,43 +43,59 @@
         "telefoon": "020-6266866",
         "email": "kassa@frascatitheater.nl",
         "toelichting": "Telefonisch; als bestaande klant ook per mail (naam, postcode, voorstelling met datum en tijd). Vanaf 30 dagen voor de voorstelling."
-      }
+      },
+      "lat": 52.37034,
+      "lng": 4.89365
     },
     "carre": {
       "naam": "Koninklijk Theater Carré",
       "stad": "Amsterdam",
-      "podiumpas": false
+      "podiumpas": false,
+      "lat": 52.36233,
+      "lng": 4.90393
     },
     "amstelveen": {
       "naam": "Schouwburg Amstelveen",
       "stad": "Amstelveen",
       "podiumpas": true,
-      "melding": "Tijdelijk gesloten wegens verbouwing (heropening december 2027). De voorstellingen staan bij Theater De Landing."
+      "melding": "Tijdelijk gesloten wegens verbouwing (heropening december 2027). De voorstellingen staan bij Theater De Landing.",
+      "lat": 52.30241,
+      "lng": 4.85879
     },
     "stadsschouwburgutrecht": {
       "naam": "Stadsschouwburg Utrecht",
       "stad": "Utrecht",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.09339,
+      "lng": 5.1275
     },
     "theaterkikker": {
       "naam": "Theater Kikker",
       "stad": "Utrecht",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.09221,
+      "lng": 5.11919
     },
     "krakeling": {
       "naam": "Theater De Krakeling",
       "stad": "Amsterdam",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.38615,
+      "lng": 4.87355
     },
     "mozaiek": {
       "naam": "Podium Mozaïek",
       "stad": "Amsterdam",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.38015,
+      "lng": 4.85435
     },
     "muziekgebouw": {
       "naam": "Muziekgebouw aan 't IJ",
       "stad": "Amsterdam",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.37827,
+      "lng": 4.91311
     },
     "scala": {
       "naam": "Scala Theater",
@@ -78,27 +104,37 @@
       "podiumpasReserveren": {
         "email": "info@scala-amsterdam.nl",
         "toelichting": "Per mail met datum, shows, aantal gasten en pasnummer(s). Vrijdag en zaterdag alleen in combinatie met het 4-gangenmenu."
-      }
+      },
+      "lat": 52.37914,
+      "lng": 4.87213
     },
     "omval": {
       "naam": "Theater de Omval",
       "stad": "Diemen",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.34205,
+      "lng": 4.96474
     },
     "delanding": {
       "naam": "De Landing",
       "stad": "Amstelveen",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.32094,
+      "lng": 4.87419
     },
     "zaantheater": {
       "naam": "Zaantheater",
       "stad": "Zaandam",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.43827,
+      "lng": 4.82491
     },
     "bijlmerparktheater": {
       "naam": "Bijlmer Parktheater",
       "stad": "Amsterdam",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.31454,
+      "lng": 4.96021
     },
     "ccamstel": {
       "naam": "CC Amstel",
@@ -107,7 +143,9 @@
       "podiumpasReserveren": {
         "email": "info@ccamstel.nl",
         "toelichting": "Per mail met onderwerp \"Podiumpas Reservering\" (voorstelling, datum, tijd), vanaf 30 dagen voor de voorstelling."
-      }
+      },
+      "lat": 52.35335,
+      "lng": 4.90632
     },
     "marionettentheater": {
       "naam": "Amsterdams Marionetten Theater",
@@ -116,17 +154,23 @@
       "podiumpasReserveren": {
         "email": "info@marionettentheater.nl",
         "toelichting": "Alleen per mail (onderwerp \"Podiumpas\"), vanaf 30 dagen voor de voorstelling. Ticket ophalen 30–45 min. voor aanvang."
-      }
+      },
+      "lat": 52.37344,
+      "lng": 4.90238
     },
     "griffioen": {
       "naam": "VU Griffioen",
       "stad": "Amsterdam",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.33461,
+      "lng": 4.86365
     },
     "pleintheater": {
       "naam": "Plein Theater",
       "stad": "Amsterdam",
-      "podiumpas": false
+      "podiumpas": false,
+      "lat": 52.36098,
+      "lng": 4.914
     },
     "karavaan": {
       "naam": "Karavaan - Theater de Drukkerij",
@@ -135,17 +179,23 @@
       "podiumpasReserveren": {
         "formulier": "https://www.karavaan.nl/bestel-met-podiumpas/",
         "toelichting": "Via het Podiumpas-formulier, vanaf 30 dagen voor de voorstelling (max. 1 ticket per pas)."
-      }
+      },
+      "lat": 52.62575,
+      "lng": 4.76665
     },
     "schuur": {
       "naam": "Schuur",
       "stad": "Haarlem",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.3818,
+      "lng": 4.63924
     },
     "bostheater": {
       "naam": "Bostheater",
       "stad": "Amstelveen",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.32174,
+      "lng": 4.8252
     },
     "hogewoerd": {
       "naam": "Podium Hoge Woerd",
@@ -155,7 +205,9 @@
         "telefoon": "030-7210933",
         "email": "kassa@podiumhogewoerd.nl",
         "toelichting": "Via de kassa, per mail of telefonisch, vanaf 30 dagen voor de voorstelling (weekend: uiterlijk vrijdag 17.00 uur)."
-      }
+      },
+      "lat": 52.08719,
+      "lng": 5.04219
     },
     "flint": {
       "naam": "Flint",
@@ -164,22 +216,30 @@
       "podiumpasReserveren": {
         "telefoon": "033 4 229 229",
         "toelichting": "Telefonisch via de kassa, vanaf 30 dagen voor de voorstelling."
-      }
+      },
+      "lat": 52.15955,
+      "lng": 5.3928
     },
     "aandeslinger": {
       "naam": "Aan de Slinger",
       "stad": "Houten",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.03309,
+      "lng": 5.16814
     },
     "corrosia": {
       "naam": "Corrosia",
       "stad": "Almere",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.33639,
+      "lng": 5.21832
     },
     "kunstlinie": {
       "naam": "Kunstlinie",
       "stad": "Almere",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.36693,
+      "lng": 5.21918
     },
     "koninklijkeschouwburg": {
       "naam": "Koninklijke Schouwburg",
@@ -189,7 +249,9 @@
         "telefoon": "088 356 53 56",
         "email": "service@hnt.nl",
         "toelichting": "Telefonisch of per mail, vanaf 30 dagen voor de voorstelling."
-      }
+      },
+      "lat": 52.08189,
+      "lng": 4.31582
     },
     "theateraanhetspui": {
       "naam": "Theater aan het Spui",
@@ -199,7 +261,9 @@
         "telefoon": "088 356 53 56",
         "email": "service@hnt.nl",
         "toelichting": "Telefonisch of per mail, vanaf 30 dagen voor de voorstelling."
-      }
+      },
+      "lat": 52.07621,
+      "lng": 4.31677
     },
     "zaal3": {
       "naam": "Zaal 3",
@@ -209,7 +273,9 @@
         "telefoon": "088 356 53 56",
         "email": "service@hnt.nl",
         "toelichting": "Telefonisch of per mail, vanaf 30 dagen voor de voorstelling."
-      }
+      },
+      "lat": 52.07664,
+      "lng": 4.29116
     },
     "tr25": {
       "naam": "Theater Rotterdam (TR25 Schouwburg)",
@@ -219,7 +285,9 @@
         "telefoon": "010 - 41 18 110",
         "email": "kassa@theaterrotterdam.nl",
         "toelichting": "Via de kassa: telefonisch (ma–vr 14–17 uur), per mail of aan de balie, vanaf 30 dagen voor de voorstelling."
-      }
+      },
+      "lat": 51.92014,
+      "lng": 4.47406
     },
     "tr8": {
       "naam": "Theater Rotterdam (TR8 William Boothlaan)",
@@ -229,27 +297,37 @@
         "telefoon": "010 - 41 18 110",
         "email": "kassa@theaterrotterdam.nl",
         "toelichting": "Via de kassa: telefonisch (ma–vr 14–17 uur), per mail of aan de balie, vanaf 30 dagen voor de voorstelling."
-      }
+      },
+      "lat": 51.91561,
+      "lng": 4.47892
     },
     "koningshof": {
       "naam": "Theater Koningshof",
       "stad": "Maassluis",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 51.92878,
+      "lng": 4.23714
     },
     "maas": {
       "naam": "Maas theater en dans",
       "stad": "Rotterdam",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 51.90555,
+      "lng": 4.46207
     },
     "insblau": {
       "naam": "Theater Ins Blau",
       "stad": "Leiden",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.15898,
+      "lng": 4.47905
     },
     "stadsgehoorzaal": {
       "naam": "Stadsgehoorzaal",
       "stad": "Vlaardingen",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 51.90944,
+      "lng": 4.34624
     },
     "kruispunt": {
       "naam": "Theater het Kruispunt",
@@ -259,6 +337,9 @@
         "telefoon": "0180-615958",
         "toelichting": "Uitsluitend telefonisch via de publieksservice, vanaf 30 dagen voor de voorstelling."
       },
+      "lat": 51.85627,
+      "lng": 4.5365,
+      "gepauzeerd": true,
       "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
       "meldingLink": "https://www.theaterhetkruispunt.nl/agenda"
     },
@@ -271,13 +352,18 @@
         "email": "info@isalatheater.nl",
         "toelichting": "Via het bespreekbureau, aan de balie, telefonisch of per mail, vanaf 30 dagen voor de voorstelling."
       },
+      "lat": 51.93156,
+      "lng": 4.58822,
+      "gepauzeerd": true,
       "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
       "meldingLink": "https://www.isalatheater.nl/agenda"
     },
     "stoep": {
       "naam": "Theater de Stoep",
       "stad": "Spijkenisse",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 51.85164,
+      "lng": 4.33107
     },
     "maaspoort": {
       "naam": "De Maaspoort Theater & Events",
@@ -286,7 +372,9 @@
       "podiumpasReserveren": {
         "online": true,
         "toelichting": "Online met het tarief \"Podiumpas\" (pasnummer invullen), vanaf 30 dagen voor de voorstelling. Niet bij Uit de regio, Events, Educatie en voorstellingen buiten het Maaspoort-gebouw."
-      }
+      },
+      "lat": 51.37049,
+      "lng": 6.1681
     },
     "dok6": {
       "naam": "DOK6",
@@ -296,19 +384,26 @@
         "online": true,
         "telefoon": "077 310 1064",
         "toelichting": "Online met het prijstype \"Podiumpas\" (pasnummer invullen), of telefonisch, vanaf 30 dagen voor de voorstelling. Kaartje tot een half uur voor aanvang ophalen bij de balie."
-      }
+      },
+      "lat": 51.32827,
+      "lng": 5.98069
     },
     "kennemertheater": {
       "naam": "Kennemer Theater",
       "stad": "Beverwijk",
       "podiumpas": false,
+      "lat": 52.48662,
+      "lng": 4.65806,
+      "gepauzeerd": true,
       "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
       "meldingLink": "https://www.kennemertheater.nl/programma"
     },
     "cpunt": {
       "naam": "Cpunt",
       "stad": "Hoofddorp",
-      "podiumpas": false
+      "podiumpas": false,
+      "lat": 52.30111,
+      "lng": 4.69674
     },
     "kattendans": {
       "naam": "Kattendans",
@@ -318,7 +413,9 @@
         "online": true,
         "telefoon": "0497-571318",
         "toelichting": "Online met het prijstype \"podiumpas\" (pasnummer invullen), of telefonisch, vanaf 30 dagen voor de voorstelling. Kaartje tot een half uur voor aanvang ophalen bij de theaterkassa."
-      }
+      },
+      "lat": 51.32406,
+      "lng": 5.35954
     },
     "paradox": {
       "naam": "Paradox",
@@ -327,7 +424,9 @@
       "podiumpasReserveren": {
         "email": "info@paradoxtilburg.nl",
         "toelichting": "Je krijgt per mail een entreeticket met barcode; alleen de pas tonen bij de kassa is niet genoeg."
-      }
+      },
+      "lat": 51.55862,
+      "lng": 5.08684
     },
     "delink": {
       "naam": "De Link",
@@ -336,13 +435,17 @@
       "podiumpasReserveren": {
         "online": true,
         "toelichting": "Reserveer vanaf 30 dagen voor het concert online een zitplaats: kies op de concertpagina bij De Link \"Ik heb een Podiumpas\". Je krijgt een ticket van € 0; laat ticket én pas zien bij de kassa."
-      }
+      },
+      "lat": 51.54993,
+      "lng": 5.10982
     },
     "smet": {
       "naam": "S.M.E.T.",
       "stad": "Tilburg",
       "podiumpas": true,
-      "melding": "Alle S.M.E.T.-concerten gelden voor de Podiumpas; hoe je met de pas reserveert, staat er niet bij — vraag het theater."
+      "melding": "Alle S.M.E.T.-concerten gelden voor de Podiumpas; hoe je met de pas reserveert, staat er niet bij — vraag het theater.",
+      "lat": 51.54993,
+      "lng": 5.10982
     },
     "markant": {
       "naam": "Markant Theater Maashorst",
@@ -351,19 +454,25 @@
       "podiumpasReserveren": {
         "telefoon": "0413 230 230",
         "toelichting": "Bel het Informatiepunt (optie 1) vanaf 30 dagen voor de voorstelling; online reserveren is niet mogelijk. Ticket ophalen en pas laten scannen bij het Informatiepunt, vanaf een uur voor aanvang."
-      }
+      },
+      "lat": 51.65716,
+      "lng": 5.61742
     },
     "speelhuis": {
       "naam": "Het Speelhuis",
       "stad": "Helmond",
       "podiumpas": null,
-      "melding": "Podiumpas-voorwaarden nog niet bekend — vraag het theater."
+      "melding": "Podiumpas-voorwaarden nog niet bekend — vraag het theater.",
+      "lat": 51.47889,
+      "lng": 5.64887
     },
     "schouwburgconcertzaal": {
       "naam": "Schouwburg Concertzaal",
       "stad": "Tilburg",
       "podiumpas": null,
-      "melding": "Podiumpas-voorwaarden nog niet bekend — vraag het theater."
+      "melding": "Podiumpas-voorwaarden nog niet bekend — vraag het theater.",
+      "lat": 51.55439,
+      "lng": 5.08281
     },
     "willemtwee": {
       "naam": "Toonzaal Willem Twee",
@@ -372,7 +481,9 @@
       "podiumpasReserveren": {
         "email": "podiumpas@willem-twee.nl",
         "toelichting": "Mail vanaf 15 dagen voor het concert welk concert je wilt bezoeken; er zijn 5 Podiumpasplaatsen per concert. Laat op de dag zelf je pas zien bij de kassa (open vanaf een uur voor aanvang)."
-      }
+      },
+      "lat": 51.6859,
+      "lng": 5.30369
     },
     "theateraandeparade": {
       "naam": "Theater aan de Parade",
@@ -382,7 +493,9 @@
         "online": true,
         "telefoon": "073 680 9809",
         "toelichting": "Online reserveren kan vanaf één maand voor de voorstelling, als je bent ingelogd en je Podiumpas hebt laten registreren; je tickets staan daarna in je mail of account. Eén ticket per pas."
-      }
+      },
+      "lat": 51.68693,
+      "lng": 5.30867
     },
     "denieuwevorst": {
       "naam": "Theater De Nieuwe Vorst",
@@ -391,7 +504,9 @@
       "podiumpasReserveren": {
         "online": true,
         "toelichting": "Online met de kaartsoort \"Podiumpas\" (pasnummer invullen), vanaf 30 dagen voor de voorstelling. Neem je pas mee naar de kassa; reserveringen blijven tot 15 minuten voor aanvang geldig."
-      }
+      },
+      "lat": 51.55702,
+      "lng": 5.08643
     },
     "hofnar": {
       "naam": "Theater de Hofnar",
@@ -400,7 +515,9 @@
       "podiumpasReserveren": {
         "telefoon": "040-207 40 10",
         "toelichting": "Uitsluitend telefonisch via de kaartverkoopbalie, vanaf 30 dagen voor de voorstelling; online reserveren is niet mogelijk. Kaartje tot een half uur voor aanvang ophalen bij de balie."
-      }
+      },
+      "lat": 51.34979,
+      "lng": 5.46035
     },
     "parktheater": {
       "naam": "Parktheater Eindhoven",
@@ -410,48 +527,67 @@
         "telefoon": "040-211 11 22",
         "toelichting": "Telefonisch via de kaartverkoopbalie, vanaf 30 dagen voor de voorstelling; online reserveren is nog niet mogelijk. Pas laten scannen bij de avondkassa (open vanaf een uur voor aanvang)."
       },
+      "lat": 51.42885,
+      "lng": 5.4847,
+      "gepauzeerd": true,
       "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
       "meldingLink": "https://www.parktheater.nl/programma"
     },
     "vrijthof": {
       "naam": "Theater aan het Vrijthof",
       "stad": "Maastricht",
-      "podiumpas": false
+      "podiumpas": false,
+      "lat": 50.85022,
+      "lng": 5.68798
     },
     "ainsi": {
       "naam": "AINSI",
       "stad": "Maastricht",
-      "podiumpas": false
+      "podiumpas": false,
+      "lat": 50.82349,
+      "lng": 5.69537
     },
     "pltheerlen": {
       "naam": "Theater Heerlen",
       "stad": "Heerlen",
-      "podiumpas": false
+      "podiumpas": false,
+      "lat": 50.88671,
+      "lng": 5.97278
     },
     "pltkerkrade": {
       "naam": "Theater Kerkrade",
       "stad": "Kerkrade",
-      "podiumpas": false
+      "podiumpas": false,
+      "lat": 50.86613,
+      "lng": 6.06223
     },
     "pltsittard": {
       "naam": "Toon Hermans Theater Sittard",
       "stad": "Sittard",
-      "podiumpas": false
+      "podiumpas": false,
+      "lat": 50.99879,
+      "lng": 5.8612
     },
     "oranjerie": {
       "naam": "Theater De Oranjerie",
       "stad": "Roermond",
-      "podiumpas": false
+      "podiumpas": false,
+      "lat": 51.19168,
+      "lng": 5.9896
     },
     "munttheater": {
       "naam": "Munttheater",
       "stad": "Weert",
-      "podiumpas": false
+      "podiumpas": false,
+      "lat": 51.25399,
+      "lng": 5.70469
     },
     "orpheus": {
       "naam": "Theater Orpheus",
       "stad": "Apeldoorn",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 52.21971,
+      "lng": 5.95295
     },
     "agnietenhof": {
       "naam": "Schouwburg Agnietenhof",
@@ -462,6 +598,9 @@
         "email": "kassa@cultuurbedrijftiel.nl",
         "toelichting": "Alleen via de kassa: telefonisch, per mail of aan de balie, vanaf 30 dagen voor de voorstelling; tickets tot €50."
       },
+      "lat": 51.88573,
+      "lng": 5.43625,
+      "gepauzeerd": true,
       "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
       "meldingLink": "https://www.agnietenhof.nl/agenda"
     },
@@ -472,12 +611,17 @@
       "podiumpasReserveren": {
         "online": true,
         "toelichting": "Online, vanaf 30 dagen voor de voorstelling, nadat je je pas via het formulier op de site hebt geregistreerd (dat duurt een paar werkdagen). Anders aan de deur, als het niet uitverkocht is."
-      }
+      },
+      "lat": 51.97845,
+      "lng": 5.90516
     },
     "tar": {
       "naam": "TAR",
       "stad": "Arnhem",
       "podiumpas": null,
+      "lat": 51.98044,
+      "lng": 5.9057,
+      "gepauzeerd": true,
       "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
       "meldingLink": "https://tar.nl/agenda/"
     },
@@ -488,18 +632,24 @@
       "podiumpasReserveren": {
         "email": "kassa@schaffelaartheater.nl",
         "toelichting": "Uitsluitend per mail, vanaf 30 dagen voor de voorstelling; 1 ticket per pas, af te halen aan de avondkassa (een uur voor aanvang open). Niet bij uitverkochte voorstellingen."
-      }
+      },
+      "lat": 52.13607,
+      "lng": 5.58609
     },
     "musis": {
       "naam": "Musis Arnhem",
       "stad": "Arnhem",
-      "podiumpas": true
+      "podiumpas": true,
+      "lat": 51.9827,
+      "lng": 5.9138
     },
     "stadstheater": {
       "naam": "Stadstheater Arnhem",
       "stad": "Arnhem",
       "podiumpas": true,
-      "melding": "Gesloten wegens vernieuwing (heropening gepland in 2028). De voorstellingen staan bij Musis Arnhem."
+      "melding": "Gesloten wegens vernieuwing (heropening gepland in 2028). De voorstellingen staan bij Musis Arnhem.",
+      "lat": 51.98277,
+      "lng": 5.91382
     },
     "meenthe": {
       "naam": "Rabo Theater De Meenthe",
@@ -509,7 +659,9 @@
         "online": true,
         "toelichting": "Online, vanaf 30 dagen voor de voorstelling; ticket ophalen op de dag zelf met je Podiumpas. Niet bij regionale voorstellingen, de evenementenhal, het Schrijversfestival, Vrijdagavond Vestzakconcerten, Passie voor Bach en producties van derden."
       },
-      "melding": "Geldt de Podiumpas ook voor concerten in de kerk? Nog niet bekend — vraag het theater."
+      "melding": "Geldt de Podiumpas ook voor concerten in de kerk? Nog niet bekend — vraag het theater.",
+      "lat": 52.79011,
+      "lng": 6.11539
     },
     "reggehof": {
       "naam": "De Reggehof",
@@ -519,7 +671,9 @@
         "email": "kassa@reggehof.nl",
         "toelichting": "Voorlopig alleen per mail (kassa@reggehof.nl), vanaf 30 dagen voor de voorstelling; de kassa behandelt aanvragen ma–vr 9–12 uur. Ticket ophalen op de dag zelf vanaf een uur voor aanvang, op vertoon van je Podiumpas. Niet bij verhuringen en kaartverkoop door derden."
       },
-      "melding": "Niet bij verhuringen en voorstellingen met kaartverkoop door derden — controleer bij twijfel bij het theater."
+      "melding": "Niet bij verhuringen en voorstellingen met kaartverkoop door derden — controleer bij twijfel bij het theater.",
+      "lat": 52.23355,
+      "lng": 6.58403
     },
     "hengelo": {
       "naam": "Schouwburg Hengelo",
@@ -531,7 +685,9 @@
         "email": "info@schouwburghengelo.nl",
         "toelichting": "Online of via de theaterkassa (ma–vr 12–16 uur), vanaf 30 dagen voor de voorstelling; houd de barcode van je pas (PP$…) bij de hand. Alleen in de Middenzaal en Rabozaal, tickets tot €50, niet bij verhuur of kaartverkoop door derden."
       },
-      "melding": "Podiumpas alleen tot €50 — controleer de prijs."
+      "melding": "Podiumpas alleen tot €50 — controleer de prijs.",
+      "lat": 52.26291,
+      "lng": 6.79522
     },
     "odeon": {
       "naam": "Schouwburg Odeon",
@@ -540,7 +696,9 @@
       "podiumpasReserveren": {
         "online": true,
         "toelichting": "Online bij de voorstelling, vanaf 30 dagen; kaart ophalen aan de kassa van de schouwburg (vanaf een uur tot een half uur voor aanvang). Niet bij gastprogrammering en rangen boven €50."
-      }
+      },
+      "lat": 52.51048,
+      "lng": 6.09185
     },
     "despiegel": {
       "naam": "Theater de Spiegel",
@@ -549,7 +707,9 @@
       "podiumpasReserveren": {
         "online": true,
         "toelichting": "Online bij de voorstelling, vanaf 30 dagen; kaart ophalen aan de kassa van het theater (vanaf een uur tot een half uur voor aanvang). Niet bij gastprogrammering en rangen boven €50."
-      }
+      },
+      "lat": 52.51599,
+      "lng": 6.09762
     },
     "mimik": {
       "naam": "MIMIK",
@@ -559,7 +719,9 @@
         "formulier": "https://www.mimik.nl/reservering-podiumpas-voorstelling",
         "email": "podiumpas@mimik.nl",
         "toelichting": "Alleen via het reserveringsformulier van MIMIK, vanaf 30 dagen voor de voorstelling; kaarten ophalen aan de kassa, van 60 tot 15 minuten voor aanvang. Alleen theatervoorstellingen, geen films."
-      }
+      },
+      "lat": 52.25212,
+      "lng": 6.15294
     },
     "tamboer": {
       "naam": "De Tamboer",
@@ -569,6 +731,9 @@
         "online": true,
         "toelichting": "Online: klik op \"bestel\", kies het ticket \"Podiumpas\" (€0), en vul je pasnummer in; neem de pas mee."
       },
+      "lat": 52.72736,
+      "lng": 6.47799,
+      "gepauzeerd": true,
       "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
       "meldingLink": "https://detamboer.nl/programma"
     },
@@ -580,7 +745,9 @@
         "telefoon": "071 – 364 62 26",
         "email": "kassa@demuze.nl",
         "toelichting": "Nog niet online: mail je pasnummer en de voorstelling naar de kassa, bel, of kom langs; vanaf 30 dagen voor de voorstelling, tickets tot €50."
-      }
+      },
+      "lat": 52.24913,
+      "lng": 4.43634
     },
     "grandtheatre": {
       "naam": "Grand Theatre",
@@ -590,6 +757,9 @@
         "email": "kassa@grandtheatregroningen.nl",
         "toelichting": "Alleen tickets tot €50 — de prijs controleren we niet automatisch. Alleen per mail (naam, adres, pasnummer, voorstelling), vanaf 30 dagen voor de voorstelling; het ticket komt per mail. Niet bij verhuur of voorstellingen waarvoor Grand Theatre de kaartverkoop niet doet."
       },
+      "lat": 53.21828,
+      "lng": 6.56868,
+      "gepauzeerd": true,
       "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
       "meldingLink": "https://www.grandtheatregroningen.nl/nl/programma"
     }
