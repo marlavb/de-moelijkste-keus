@@ -104,7 +104,7 @@ test('Kaart: lijst standaard; kaart pas geladen bij openen; speldje uitzetten (t
   assert.ok(tegels.length > 0, 'tegels van OpenStreetMap opgevraagd');
   // Alle theaters op de kaart: losse speldjes plus de aantallen in clusters.
   const opKaart = await page.evaluate(() => document.querySelectorAll('.kaart-pin').length + [...document.querySelectorAll('.kaart-cluster')].reduce((n, c) => n + Number(c.textContent), 0));
-  assert.equal(opKaart, 80);
+  assert.equal(opKaart, 81);
   // Knoppen ≥ 44 px.
   for (const sel of ['#theatersKaartKnop', '.leaflet-control-zoom-in', '.leaflet-control-zoom-out']) {
     const box = await page.locator(sel).boundingBox();

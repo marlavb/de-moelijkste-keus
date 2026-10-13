@@ -1014,9 +1014,7 @@ export const THEATERS = [
     naam: 'Schouwburg Agnietenhof',
     stad: 'Tiel',
     provincie: 'Gelderland',
-    // Nog niet vastgesteld (13 okt 2026): de site is gepauzeerd (geen verzoeken),
-    // Nominatim vond niets en podiumpas.nl heeft geen coördinaten. Adres nodig.
-    locatie: null,
+    locatie: { lat: 51.88573, lng: 5.43625, bron: 'adres Sint Agnietenstraat 2, 4001 NB Tiel (kidsproof.nl en songkick.com, opgegeven door Marla, 13 okt 2026) via PDOK Locatieserver (13 okt 2026)' },
     baseUrl: 'https://www.agnietenhof.nl',
     agendaUrl: 'https://www.agnietenhof.nl/agenda',
     podiumpas: true,

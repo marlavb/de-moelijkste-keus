@@ -8,8 +8,6 @@ import { THEATERS } from '../src/lib/config.js';
 import { buildTheatersJson } from '../src/lib/theatersJson.js';
 import { kaartTheaters, aantalTekst, LEAFLET_BESTANDEN } from '../public/js/kaart.js';
 
-// Nog zonder coördinaten, met reden (zie config.js).
-const NOG_OPEN = new Set(['agnietenhof']);
 const NL = { latMin: 50.75, latMax: 53.56, lngMin: 3.35, lngMax: 7.23 };
 const km = (a, b) => {
   const r = Math.PI / 180;
@@ -19,17 +17,13 @@ const km = (a, b) => {
 
 test('kaart: elk theater heeft coördinaten met bron, binnen Nederland', () => {
   for (const t of THEATERS) {
-    if (NOG_OPEN.has(t.id)) {
-      assert.equal(t.locatie, null, `${t.id}: nog open, dus null`);
-      continue;
-    }
     assert.ok(t.locatie, `${t.id} heeft geen locatie`);
     const { lat, lng, bron } = t.locatie;
     assert.ok(Number.isFinite(lat) && Number.isFinite(lng), t.id);
     assert.ok(lat > NL.latMin && lat < NL.latMax && lng > NL.lngMin && lng < NL.lngMax, `${t.id} ligt buiten Nederland: ${lat},${lng}`);
     assert.ok(typeof bron === 'string' && bron.length > 10 && /20\d\d/.test(bron), `${t.id}: bron met datum`);
   }
-  assert.ok(THEATERS.filter((t) => t.locatie).length >= 80);
+  assert.equal(THEATERS.filter((t) => t.locatie).length, THEATERS.length);
 });
 
 test('kaart: theaters in dezelfde stad liggen dicht bij elkaar (geen verwisselde of verkeerde plek)', () => {
@@ -53,7 +47,6 @@ test('kaart: theaters.json krijgt lat/lng (zonder bron) en gepauzeerd', () => {
   assert.deepEqual([theaters.delamar.lat, theaters.delamar.lng], [delamar.locatie.lat, delamar.locatie.lng]);
   assert.equal(theaters.delamar.bron, undefined);
   for (const t of THEATERS.filter((x) => x.gepauzeerd)) assert.equal(theaters[t.id].gepauzeerd, true, t.id);
-  assert.equal('lat' in theaters.agnietenhof, false);
 });
 
 test('kaart: per theater aan/uit, aantal komende voorstellingen en actief', () => {
