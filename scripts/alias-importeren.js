@@ -1,8 +1,9 @@
 // `npm run alias-importeren -- <export.json> [--droog]`: een export van de
 // afvinkpagina (alias-keuzes-<datum>.json) samenvoegen met config/aliassen.json.
 // Nieuwe keuzes komen erbij, een groep die opnieuw is beoordeeld krijgt de
-// nieuwe keuze (de oude aliassen van die groep vervallen). Toont wat er
-// verandert; met --droog wordt er niets geschreven.
+// nieuwe keuze; oude bronnen van die groep die niet in de export staan,
+// blijven met het nieuwe doel ("behouden"), behalve bij "niet samenvoegen".
+// Toont wat er verandert; met --droog wordt er niets geschreven.
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -39,6 +40,7 @@ console.log(`Export: ${exp.beoordeeld ?? '?'} groepen beoordeeld (${bestand})`);
 toon('Nieuw', overzicht.nieuw);
 toon('Gewijzigd', overzicht.gewijzigd);
 toon('Verwijderd', overzicht.verwijderd);
+toon('Behouden (oude bron, niet in de export; nieuw doel van de groep)', overzicht.behouden);
 toon('Conflicten (bron met twee doelen, niet opgenomen)', overzicht.conflicten);
 toon('Ketens opgelost', overzicht.ketens);
 if (overzicht.eenProductie) toon('Zelfde titel → één productie', overzicht.eenProductie);
