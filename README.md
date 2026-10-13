@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (71 ok, 2 leeg, 8 gepauzeerd)
-- Voorstellingen (titel per theater): **8451**
-- Speeldata: **11975**
-- Laatste refresh: **12 oktober 2026, 05:49** (Amsterdamse tijd)
+- Theaters: **81** (70 ok, 2 leeg, 1 terugval, 8 gepauzeerd)
+- Voorstellingen (titel per theater): **8353**
+- Speeldata: **11733**
+- Laatste refresh: **13 oktober 2026, 05:49** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -375,7 +375,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Bostheater | Amstelveen | – | leeg |
 | De Landing | Amstelveen | deels | ok |
 | Schouwburg Amstelveen | Amstelveen | ja | ok |
-| Amsterdams Marionetten Theater | Amsterdam | deels | ok |
+| Amsterdams Marionetten Theater | Amsterdam | ja | ok |
 | Bijlmer Parktheater | Amsterdam | ja | ok |
 | CC Amstel | Amsterdam | ja | ok |
 | De Kleine Komedie | Amsterdam | nee | ok |
@@ -413,7 +413,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater Rotterdam (TR25 Schouwburg) | Rotterdam | ja | ok |
 | Theater Rotterdam (TR8 William Boothlaan) | Rotterdam | ja | ok |
 | Theater de Stoep | Spijkenisse | deels | ok |
-| Stadsgehoorzaal | Vlaardingen | deels | ok |
+| Stadsgehoorzaal | Vlaardingen | deels | terugval |
 
 **Utrecht** (5)
 
@@ -492,7 +492,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
 | MIMIK | Deventer | deels | ok |
-| De Reggehof | Goor | onbekend | ok |
+| De Reggehof | Goor | ja | ok |
 | Schouwburg Hengelo | Hengelo | deels | ok |
 | Rabo Theater De Meenthe | Steenwijk | deels | ok |
 | Schouwburg Odeon | Zwolle | deels | ok |
