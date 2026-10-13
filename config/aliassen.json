@@ -201,9 +201,17 @@
    "groep": "aluin",
    "regel": "keuze"
   },
+  "amor matador": {
+   "titel": "Amor Matador",
+   "maker": "Ariane Schluter & Silbersee & Het Muziek",
+   "makerVast": true,
+   "groep": "amor matador",
+   "regel": "keuze"
+  },
   "amor matador | ariane schluter en silbersee en het muziek": {
    "titel": "Amor Matador",
-   "maker": null,
+   "maker": "Ariane Schluter & Silbersee & Het Muziek",
+   "makerVast": true,
    "groep": "amor matador",
    "regel": "keuze"
   },
@@ -1258,12 +1266,6 @@
    "groep": "rouge",
    "regel": "keuze"
   },
-  "ish": {
-   "titel": "Rhythm & Flow",
-   "maker": null,
-   "groep": "rhythm flow",
-   "regel": "keuze"
-  },
   "ish dance collective | rhythm en flow": {
    "titel": "Rhythm & Flow",
    "maker": null,
@@ -2140,7 +2142,8 @@
   },
   "silbersee": {
    "titel": "Amor Matador",
-   "maker": null,
+   "maker": "Ariane Schluter & Silbersee & Het Muziek",
+   "makerVast": true,
    "groep": "amor matador",
    "regel": "keuze"
   },
