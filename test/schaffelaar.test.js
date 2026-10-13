@@ -108,3 +108,11 @@ test('Schaffelaar: OncoSalon-informatieavonden weg, klassieke koffieconcerten al
   assert.equal(isBekendGenre('klassiekekoffieconcerten'), true);
   assert.equal(normalizeGenre('klassiekekoffieconcerten'), 'Muziek & Concert');
 });
+
+test('Schaffelaar: "muziekcafé" is Muziek & Concert (13 okt 2026)', async () => {
+  const { normalizeGenre, isBekendGenre } = await import('../src/lib/genre.js');
+  for (const g of ['muziekcafé', 'Muziekcafé', 'muziekcafe']) {
+    assert.equal(isBekendGenre(g), true, g);
+    assert.equal(normalizeGenre(g), 'Muziek & Concert', g);
+  }
+});

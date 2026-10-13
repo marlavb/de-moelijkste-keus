@@ -229,8 +229,11 @@ const GENRE_MAP = {
   junior: 'Familie & Jeugd',
   woordkunst: 'Overig',
 
-  // Schaffelaartheater (9 okt 2026): klassieke koffieconcerten.
+  // Schaffelaartheater (9 okt 2026): klassieke koffieconcerten; muziekcafé
+  // (13 okt 2026, nachtrun meldde het als onbekend).
   klassiekekoffieconcerten: 'Muziek & Concert',
+  muziekcafé: 'Muziek & Concert',
+  muziekcafe: 'Muziek & Concert',
 
   // Schouwburg Hengelo (9 okt 2026).
   theaterspecial: 'Overig',

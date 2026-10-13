@@ -180,6 +180,22 @@ function classifyBeschikbaarheid(label) {
  *   detailpagina bezoeken) valt reserverenUrl terug op de detailpagina-URL
  *   zelf, net als bij Karavaan.
  */
+/**
+ * Flint zet de datum alleen bij de eerste kaart van een dag; de volgende
+ * kaarten van die dag hebben een lege ".agenda-item__day-container"
+ * (13 okt 2026: 131 van de 302 kaarten). De kaarten staan op datumvolgorde,
+ * dus zo'n kaart krijgt de datum van de kaart ervoor. Zonder dit vielen ze
+ * stil weg: per avond met twee voorstellingen bleef er één over, en welke
+ * hing af van de volgorde op de site.
+ */
+export function vulDagAan(kaarten) {
+  let dag = null;
+  return kaarten.map((k) => {
+    if (k.dagTekst) dag = k.dagTekst;
+    return { ...k, dagTekst: k.dagTekst || dag };
+  });
+}
+
 export async function scrapeFlint({ page, theater, robots, waitForTurn, log, signal }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
@@ -237,6 +253,9 @@ export async function scrapeFlint({ page, theater, robots, waitForTurn, log, sig
   }
 
   log(`${rawCards.length} kaarten gevonden op de agendapagina`);
+  const zonderDag = rawCards.filter((k) => !k.dagTekst).length;
+  if (zonderDag) log(`${zonderDag} kaarten zonder eigen datum: datum van de kaart ervoor (zelfde dag).`);
+  rawCards = vulDagAan(rawCards);
 
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();
