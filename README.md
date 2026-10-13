@@ -33,7 +33,7 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
   vat hem samen ("Dit weekend · za", "Utrecht +2"), ook ingeklapt.
 - **Detailscherm**: info, reserveren, Podiumpas per speeldatum ("Podiumpas:
   nog niet bekend" met de toelichting als dat zo is), andere data en
-  "Ook te zien bij" (volle data grijs en doorgestreept), in je agenda zetten.
+  "Ook te zien bij" (theaters op hun eerstvolgende speeldatum; volle data grijs en doorgestreept), in je agenda zetten.
 - **Theaters per provincie**: theaters aan of uit, per theater, per stad of per
   provincie (vinkje met aan/uit/deels). Gepauzeerde theaters staan er met een
   melding. Met "Lijst | Kaart" ook op een kaart (Leaflet en OpenStreetMap,

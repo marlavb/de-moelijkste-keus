@@ -5900,11 +5900,17 @@ function renderRelatedTheaters(show) {
   els.detailRelatedTheatersWrap.hidden = false;
   els.detailRelatedTheaters.innerHTML = '';
 
-  const theaterIds = [...byTheater.keys()].sort((a, b) =>
-    (state.shows.find((s) => s.theaterId === a)?.theaterNaam ?? a).localeCompare(
-      state.shows.find((s) => s.theaterId === b)?.theaterNaam ?? b
-    )
-  );
+  // Op de eerste komende speeldatum (okt 2026), dan tijd (zonder tijd
+  // achteraan, zoals binnen een groep), dan theaternaam. Binnen een groep
+  // staan de data al oplopend (getOtherTheaterShows).
+  const vandaag = todayIsoDate();
+  const eerste = (id) => {
+    const lijst = byTheater.get(id);
+    const s = lijst.find((x) => x.datum >= vandaag) ?? lijst[0];
+    return `${s.datum}T${s.tijd ?? '99:99'}`;
+  };
+  const naamVan = (id) => byTheater.get(id)[0].theaterNaam ?? id;
+  const theaterIds = [...byTheater.keys()].sort((a, b) => eerste(a).localeCompare(eerste(b)) || naamVan(a).localeCompare(naamVan(b), 'nl'));
 
   for (const theaterId of theaterIds) {
     const shows = byTheater.get(theaterId);
