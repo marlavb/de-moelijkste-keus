@@ -90,11 +90,24 @@ async function openApp({ viewport = { width: 1280, height: 900 }, opslag = {} } 
     for (const [k, v] of Object.entries(opslag)) localStorage.setItem(k, JSON.stringify(v));
   }, opslag);
   const page = await ctx.newPage();
+  // Een hang wordt zo een duidelijke fout (welk element) na 15 s, niet een
+  // stille wachttijd van 30 s per stap (13 okt 2026: één keer 57 s).
+  page.setDefaultTimeout(15_000);
   page.fouten = [];
   page.on('pageerror', (e) => page.fouten.push(e.message));
-  await page.goto(base, { waitUntil: 'networkidle' });
-  await page.waitForSelector('#agendaList .show-row');
+  await page.goto(base, { waitUntil: 'load' });
+  await klaar(page);
   return { ctx, page };
+}
+
+/**
+ * De app is klaar: agenda getekend en de filterkoppen hebben hun
+ * samenvatting-element (renderFilterBadge na renderFilters). Niet op
+ * "networkidle" wachten: dat hangt af van al het netwerkverkeer.
+ */
+async function klaar(page) {
+  await page.waitForSelector('#agendaList .show-row');
+  await page.waitForSelector('#sidebarWanneerHeader .filter-samenvatting', { state: 'attached' });
 }
 
 const titels = async (page) => (await page.locator('#agendaList .show-title-text').allInnerTexts()).map((t) => t.trim());
@@ -122,8 +135,8 @@ test('Wanneer: weekdagen ma + do samen met stad Utrecht (desktop-sidebar), bewaa
   assert.deepEqual((await filters(page)).wanneer, { snel: null, van: '', tot: '', dagen: [1, 4] });
 
   // Bewaard: na herladen dezelfde keuze.
-  await page.reload({ waitUntil: 'networkidle' });
-  await page.waitForSelector('#agendaList .show-row');
+  await page.reload({ waitUntil: 'load' });
+  await klaar(page);
   assert.deepEqual(await titels(page), ['Donderdag Utrecht', 'Maandag Utrecht']);
   assert.equal(await badge(page), 2);
 
@@ -175,9 +188,11 @@ test('Filterkoppen tonen een samenvatting van de keuze (sidebar ook ingeklapt, e
   const sidebar = page.locator('#filterSidebar');
   const samenvatting = (id) => page.locator(`#${id} .filter-samenvatting`);
   const zichtbaar = (id) => samenvatting(id).evaluate((el) => el.textContent);
+  // Wacht tot de samenvatting van een kop deze tekst heeft (de app tekent na een klik).
+  const wachtOp = (id, tekst) => page.waitForFunction(([id, tekst]) => document.querySelector(`#${id} .filter-samenvatting`)?.textContent === tekst, [id, tekst]);
   // Geen keuze: geen samenvatting.
   assert.equal(await samenvatting('sidebarWanneerHeader').count(), 1);
-  assert.equal(await samenvatting('sidebarWanneerHeader').isHidden(), true);
+  await samenvatting('sidebarWanneerHeader').waitFor({ state: 'hidden' });
   await page.click('#sidebarWanneerHeader');
   await sidebar.getByRole('button', { name: 'Dit weekend', exact: true }).click();
   await sidebar.getByRole('button', { name: 'zaterdag' }).click();
@@ -188,14 +203,15 @@ test('Filterkoppen tonen een samenvatting van de keuze (sidebar ook ingeklapt, e
   await sidebar.locator('#sidebarTheaterFilters').getByRole('button', { name: 'DeLaMar' }).click();
   // Allemaal weer inklappen: de samenvatting blijft zichtbaar.
   for (const id of ['sidebarWanneerHeader', 'sidebarStadHeader', 'sidebarTheaterHeader']) await page.click(`#${id}`);
-  assert.equal(await page.getAttribute('#sidebarWanneerHeader', 'aria-expanded'), 'false');
+  await page.waitForSelector('#sidebarWanneerHeader[aria-expanded="false"]');
+  await wachtOp('sidebarTheaterHeader', 'DeLaMar');
   assert.equal(await zichtbaar('sidebarWanneerHeader'), 'Dit weekend · za');
   assert.equal(await zichtbaar('sidebarStadHeader'), 'Amsterdam +1');
   assert.equal(await zichtbaar('sidebarTheaterHeader'), 'DeLaMar');
   assert.equal(await samenvatting('sidebarGenreHeader').isHidden(), true);
   // Kopnaam voor schermlezers: kop en samenvatting samen.
-  assert.equal(await sidebar.getByRole('button', { name: 'Wanneer: Dit weekend · za' }).count(), 1);
-  assert.equal(await sidebar.getByRole('heading', { name: 'Stad: Amsterdam +1' }).count(), 1);
+  await sidebar.getByRole('button', { name: 'Wanneer: Dit weekend · za' }).waitFor();
+  await sidebar.getByRole('heading', { name: 'Stad: Amsterdam +1' }).waitFor();
   // Eén regel met ellips: de samenvatting loopt niet over.
   const stijl = await samenvatting('sidebarWanneerHeader').evaluate((el) => [getComputedStyle(el).whiteSpace, getComputedStyle(el).textOverflow, getComputedStyle(el).fontSize]);
   assert.deepEqual(stijl, ['nowrap', 'ellipsis', '14px']);
@@ -203,19 +219,21 @@ test('Filterkoppen tonen een samenvatting van de keuze (sidebar ook ingeklapt, e
   await page.click('#sidebarWanneerHeader');
   await sidebar.getByLabel('Van', { exact: true }).fill('2026-11-01');
   await sidebar.getByLabel('Tot en met', { exact: true }).fill('2026-11-08');
-  assert.equal(await zichtbaar('sidebarWanneerHeader'), '1–8 nov · za');
+  await wachtOp('sidebarWanneerHeader', '1–8 nov · za');
   await ctx.close();
 
   // Mobiel: dezelfde keuze (bewaard) in de koppen van het filterpaneel.
   const m = await openApp({ viewport: { width: 390, height: 844 }, opslag: { 'podiumagenda:filters': { selectedCities: ['Utrecht'], selectedTheaters: [], selectedGenres: [], wanneer: { snel: null, van: '', tot: '', dagen: [1, 4] } } } });
   await m.page.click('#filterToggle');
   const sheet = m.page.locator('#filterSheet');
-  assert.equal(await sheet.getByRole('heading', { name: 'Wanneer: ma, do' }).count(), 1);
-  assert.equal(await sheet.getByRole('heading', { name: 'Stad: Utrecht' }).count(), 1);
-  assert.equal(await sheet.getByRole('heading', { name: 'Genre', exact: true }).count(), 1);
+  await sheet.waitFor();
+  await sheet.getByRole('heading', { name: 'Wanneer: ma, do' }).waitFor();
+  await sheet.getByRole('heading', { name: 'Stad: Utrecht' }).waitFor();
+  await sheet.getByRole('heading', { name: 'Genre', exact: true }).waitFor();
   // Wissen: weg.
   await m.page.click('#clearFilters');
-  assert.equal(await sheet.getByRole('heading', { name: 'Wanneer', exact: true }).count(), 1);
+  await sheet.getByRole('heading', { name: 'Wanneer', exact: true }).waitFor();
+  assert.equal(await sheet.getByRole('heading', { name: 'Wanneer: ma, do' }).count(), 0);
   assert.equal(m.page.fouten.length, 0, m.page.fouten.join('\n'));
   await m.ctx.close();
 });
