@@ -546,3 +546,34 @@ test('Podiumpas onbekend (null): zichtbaar met filter aan, label "Podiumpas?", t
   assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
   await ctx.close();
 });
+
+// ---------- Ook te zien bij: volgorde op eerste speeldatum (okt 2026) ----------
+
+test('Ook te zien bij: theaters op hun eerste speeldatum, dan tijd, dan naam; data binnen een theater oplopend', async () => {
+  const stuk = (theaterId, theaterNaam, dag, tijd) => ({ ...proef(theaterId, theaterNaam, 'Amsterdam', dag, true), id: `volgorde-${theaterId}-${dag}`, titel: 'Volgordestuk', tijd });
+  const shows = [
+    stuk('delamar', 'DeLaMar', 2, '20:15'), // het geopende scherm
+    stuk('zaantheater', 'Zaantheater', 9, '20:15'), // latere datum eerst in de data
+    stuk('zaantheater', 'Zaantheater', 3, '20:15'),
+    stuk('bellevue', 'Theater Bellevue', 3, '14:30'),
+    stuk('carre', 'Koninklijk Theater Carré', 3, '20:15'),
+    stuk('scala', 'Scala', 3, null),
+    stuk('kleinekomedie', 'De Kleine Komedie', 5, '20:15'),
+    stuk('ita', 'Internationaal Theater Amsterdam', 12, '20:15'),
+  ];
+  const { ctx, page } = await openApp({ alleenShows: shows });
+  await page.goto(`${base}#/show/volgorde-delamar-2`);
+  await page.waitForSelector('.related-theater-group');
+  const namen = (await page.locator('.related-theater-name').allInnerTexts()).map((t) => t.trim());
+  assert.deepEqual(namen, ['Theater Bellevue', 'Koninklijk Theater Carré', 'Zaantheater', 'Scala', 'De Kleine Komedie', 'Internationaal Theater Amsterdam']);
+  // Binnen Zaantheater: eerst dag 3, dan dag 9.
+  const zaan = page.locator('.related-theater-group', { hasText: 'Zaantheater' }).locator('.chip');
+  assert.equal(await zaan.count(), 2);
+  const [eerste, tweede] = await zaan.allInnerTexts();
+  assert.notEqual(eerste, tweede);
+  const dagVan = (tekst) => Number(/(\d{1,2})\s/.exec(tekst)?.[1]);
+  const [d3, d9] = [morgen(3), morgen(9)].map((d) => Number(d.slice(8, 10)));
+  assert.deepEqual([dagVan(eerste), dagVan(tweede)], [d3, d9]);
+  assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+  await ctx.close();
+});
