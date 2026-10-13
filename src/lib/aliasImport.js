@@ -1,8 +1,12 @@
 // Een export van de afvinkpagina (alias-keuzes-<datum>.json) samenvoegen met
 // de aliaslijst (config/aliassen.json, zie aliassen.js). Per beoordeelde
-// groep vervangt de nieuwe keuze de oude: eerdere aliassen van die groep
-// gaan eruit, de nieuwe komen erin. Een keuze wint van een R2/R3-alias op
-// dezelfde bron. Geeft { lijst, overzicht }.
+// groep vervangt de nieuwe keuze de oude. Een eerdere bron van die groep die
+// niet in de nieuwe export staat, blijft staan met het nieuwe doel van de
+// groep ("behouden"; aliassen-ronde-3, 13 okt 2026: de export van een voorstel
+// van een eerdere dag mist soms een bron, zoals "Thijs van de Meeberg" bij
+// Baby Reindeer). Alleen een expliciete keuze "niet samenvoegen" haalt een
+// bron weg. Een keuze wint van een R2/R3-alias op dezelfde bron. Geeft
+// { lijst, overzicht }.
 //
 // - Een bron die in twee groepen naar een ander doel wijst ("Theater
 //   Oostpool" als losse titel, naar "The Nether" én "Millennial II") is niet
@@ -40,12 +44,18 @@ export function voegExportSamen(bestaand, exp, { isTitelElders = () => false } =
     aliassen: { ...(bestaand?.aliassen ?? {}) },
     nietSamenvoegen: [...(bestaand?.nietSamenvoegen ?? [])],
   };
-  const overzicht = { nieuw: [], gewijzigd: [], verwijderd: [], gelijk: 0, conflicten: [], eenProductie: [], ketens: [] };
+  const overzicht = { nieuw: [], gewijzigd: [], verwijderd: [], behouden: [], gelijk: 0, conflicten: [], eenProductie: [], ketens: [] };
   const oud = structuredClone(lijst.aliassen);
 
-  // Groepen in deze export: hun oude keuzes en niet-samenvoegen eruit.
+  // Groepen in deze export: hun oude keuzes en niet-samenvoegen eruit (de
+  // oude bronnen onthouden: die zonder nieuwe keuze komen hieronder terug).
   const groepen = new Set([...(exp.aliassen ?? []).map((a) => a.groep), ...(exp.nietSamenvoegen ?? []).map((g) => g.groep)]);
-  for (const [bron, a] of Object.entries(lijst.aliassen)) if (a.regel === 'keuze' && groepen.has(a.groep)) delete lijst.aliassen[bron];
+  const oudeBronnen = [];
+  for (const [bron, a] of Object.entries(lijst.aliassen)) {
+    if (a.regel !== 'keuze' || !groepen.has(a.groep)) continue;
+    oudeBronnen.push({ bron, groep: a.groep });
+    delete lijst.aliassen[bron];
+  }
   lijst.nietSamenvoegen = lijst.nietSamenvoegen.filter((g) => !groepen.has(g.groep));
   for (const g of exp.nietSamenvoegen ?? []) lijst.nietSamenvoegen.push({ groep: g.groep, sleutels: g.sleutels });
 
@@ -84,6 +94,21 @@ export function voegExportSamen(bestaand, exp, { isTitelElders = () => false } =
       continue;
     }
     lijst.aliassen[bron] = { titel: ks[0].doel.titel, maker: ks[0].doel.maker, ...(ks[0].doel.makerVast ? { makerVast: true } : {}), groep: ks[0].groep, regel: 'keuze' };
+  }
+
+  // Oude bronnen van een opnieuw beoordeelde groep die niet in de export
+  // staan: behouden, met het nieuwe doel van de groep. Niet als de bron in
+  // "niet samenvoegen" staat, of als de groep geen keuze meer heeft.
+  const inExport = new Set(keuzes.map((k) => k.bron));
+  const nietSamen = new Set((exp.nietSamenvoegen ?? []).flatMap((g) => g.sleutels));
+  const doelVanGroep = new Map();
+  for (const k of keuzes) if (!doelVanGroep.has(k.groep)) doelVanGroep.set(k.groep, k.doel);
+  for (const { bron, groep } of oudeBronnen) {
+    if (inExport.has(bron) || nietSamen.has(bron) || lijst.aliassen[bron]) continue;
+    const doel = doelVanGroep.get(groep);
+    if (!doel) continue;
+    lijst.aliassen[bron] = { titel: doel.titel, maker: doel.maker, ...(doel.makerVast ? { makerVast: true } : {}), groep, regel: 'keuze' };
+    overzicht.behouden.push(`${bron} → "${doel.titel}"`);
   }
 
   // Een nietSamenvoegen-groep: geen R2/R3-alias op zijn sleutels.

@@ -53,6 +53,13 @@
    "groep": "deze ridder zegt nee",
    "regel": "keuze"
   },
+  "40 jaar rowwen heze": {
+   "titel": "Rhobijn – Rowwen Hèze",
+   "maker": "Rowwen Hèze",
+   "makerVast": true,
+   "groep": "rhobijn",
+   "regel": "keuze"
+  },
   "40 jaar rowwen heze | rhobijn": {
    "titel": "Rhobijn – Rowwen Hèze",
    "maker": "Rowwen Hèze",
@@ -1681,6 +1688,12 @@
    "groep": "milene van der smissen",
    "regel": "keuze"
   },
+  "millennial ii browser history x | theater oostpool": {
+   "titel": "Millennial II Browser History X",
+   "maker": null,
+   "groep": "millennial ii browser history x",
+   "regel": "keuze"
+  },
   "music care | ranja met een rietje": {
    "titel": "Ranja met een rietje",
    "maker": "Diederick Ensink, Vérie Thijssen en Astrid Nijssen",
@@ -2005,6 +2018,13 @@
    "groep": "rhobijn",
    "regel": "keuze"
   },
+  "rhobijn | rowwen heze": {
+   "titel": "Rhobijn – Rowwen Hèze",
+   "maker": "Rowwen Hèze",
+   "makerVast": true,
+   "groep": "rhobijn",
+   "regel": "keuze"
+  },
   "ricky koole": {
    "titel": "Rare Leeftijd – Ricky Koole",
    "maker": "Ricky Koole",
@@ -2192,6 +2212,12 @@
    "groep": "dawn brothers friends",
    "regel": "keuze"
   },
+  "the nether | theater oostpool": {
+   "titel": "The Nether",
+   "maker": null,
+   "groep": "the nether",
+   "regel": "keuze"
+  },
   "the singer songwriter show": {
    "titel": "The Singer Songwriter Show – Nick Schilder",
    "maker": "Nick Schilder",
@@ -2222,6 +2248,12 @@
    "maker": "Krezip",
    "makerVast": true,
    "groep": "krezip",
+   "regel": "keuze"
+  },
+  "thijs van de meeberg": {
+   "titel": "Baby Reindeer",
+   "maker": "Thijs van de Meeberg",
+   "groep": "thijs van de meeberg",
    "regel": "keuze"
   },
   "tim knol": {

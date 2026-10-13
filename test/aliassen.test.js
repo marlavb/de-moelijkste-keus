@@ -81,7 +81,7 @@ test('config/aliassen.json: geldig, geen ketens, elke bron een echte sleutel', (
   assert.equal(watchlistSleutel('Dekpunt – Jan Beuving'), 'dekpunt | jan beuving');
 });
 
-test('latere export: nieuwe keuzes erbij, opnieuw beoordeelde groep vervangt de oude, keuze wint van R2/R3, niet samenvoegen haalt R2/R3 weg', () => {
+test('latere export: nieuwe keuzes erbij, opnieuw beoordeelde groep krijgt het nieuwe doel (oude bron behouden), keuze wint van R2/R3, niet samenvoegen haalt R2/R3 weg', () => {
   const bestaand = {
     aliassen: {
       'dekpunt | jan beuving en tom dicke': { titel: 'Dekpunt – Jan Beuving & Tom Dicke', maker: 'Jan Beuving & Tom Dicke', groep: 'dekpunt', regel: 'keuze' },
@@ -103,13 +103,15 @@ test('latere export: nieuwe keuzes erbij, opnieuw beoordeelde groep vervangt de 
   };
   const { lijst, overzicht } = voegExportSamen(bestaand, exp);
   assert.equal(lijst.aliassen['dekpunt | jan beuving en tom dicke'].titel, 'Dekpunt – Jan Beuving');
-  assert.equal(lijst.aliassen.dekpunt, undefined);
+  // De oude bron "dekpunt" staat niet in de export: behouden, met het nieuwe doel.
+  assert.deepEqual(lijst.aliassen.dekpunt, { titel: 'Dekpunt – Jan Beuving', maker: 'Jan Beuving', makerVast: true, groep: 'dekpunt', regel: 'keuze' });
+  assert.deepEqual(overzicht.behouden, ['dekpunt → "Dekpunt – Jan Beuving"']);
   assert.equal(lijst.aliassen['nienke plas'].regel, 'keuze');
   assert.equal(lijst.aliassen['theater oostpool | the drama'], undefined);
   assert.equal(lijst.aliassen.katwijk.titel, 'KATWIJK');
   assert.equal(lijst.aliassen.x.titel, 'Y');
   assert.deepEqual(lijst.nietSamenvoegen.map((g) => g.groep), ['the drama']);
-  assert.deepEqual({ nieuw: overzicht.nieuw.length, gewijzigd: overzicht.gewijzigd.length, verwijderd: overzicht.verwijderd.length, gelijk: overzicht.gelijk }, { nieuw: 1, gewijzigd: 2, verwijderd: 2, gelijk: 1 });
+  assert.deepEqual({ nieuw: overzicht.nieuw.length, gewijzigd: overzicht.gewijzigd.length, verwijderd: overzicht.verwijderd.length, gelijk: overzicht.gelijk }, { nieuw: 1, gewijzigd: 3, verwijderd: 1, gelijk: 1 });
   // Dezelfde export nog eens: niets verandert.
   const twee = voegExportSamen(lijst, exp);
   assert.deepEqual(twee.lijst, lijst);
@@ -136,4 +138,28 @@ test('zelfde titel in twee groepen → één productie (met maker); twee verschi
   assert.equal(lijst.aliassen['sezgin gulec'].titel, 'Nieuw programma – Sezgin Güleç');
   // Eén productie: één watchlist-sleutel.
   assert.equal(watchlistSleutel(lijst.aliassen.populisme.titel), watchlistSleutel(lijst.aliassen['populisme | sem konijn'].titel));
+});
+
+test('opnieuw beoordeelde groep: een bron die in de nieuwe export ontbreekt blijft (Baby Reindeer, 13 okt 2026); alleen "niet samenvoegen" haalt hem weg', () => {
+  const bestaand = {
+    aliassen: {
+      'thijs van de meeberg': { titel: 'Baby Reindeer', maker: null, groep: 'baby reindeer', regel: 'keuze' },
+      'baby reindeer | thijs van de meeberg': { titel: 'Baby Reindeer', maker: null, groep: 'baby reindeer', regel: 'keuze' },
+    },
+    nietSamenvoegen: [],
+  };
+  const exp = {
+    aliassen: [keuze('baby reindeer', 'andere naam', 'baby reindeer | thijs van de meeberg', { titel: 'Baby Reindeer', maker: 'Thijs van de Meeberg', weergave: 'Baby Reindeer' })],
+    nietSamenvoegen: [],
+  };
+  const { lijst, overzicht } = voegExportSamen(bestaand, exp);
+  const doel = { titel: 'Baby Reindeer', maker: 'Thijs van de Meeberg', makerVast: true, groep: 'baby reindeer', regel: 'keuze' };
+  assert.deepEqual(lijst.aliassen['thijs van de meeberg'], doel);
+  assert.deepEqual(lijst.aliassen['baby reindeer | thijs van de meeberg'], doel);
+  assert.deepEqual(overzicht.verwijderd, []);
+  assert.deepEqual(overzicht.behouden, ['thijs van de meeberg → "Baby Reindeer"']);
+  // Expliciet "niet samenvoegen" voor die bron: dan wel weg.
+  const metNee = voegExportSamen(bestaand, { ...exp, nietSamenvoegen: [{ groep: 'baby reindeer', sleutels: ['thijs van de meeberg'] }] });
+  assert.equal(metNee.lijst.aliassen['thijs van de meeberg'], undefined);
+  assert.deepEqual(metNee.overzicht.verwijderd, ['thijs van de meeberg (was "Baby Reindeer")']);
 });
