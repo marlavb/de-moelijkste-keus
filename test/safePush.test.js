@@ -106,3 +106,15 @@ test('pre-push-hook: refresh rustig maar een suite faalt â†’ geweigerd; groen â†
   const head = spawnSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf-8' }).stdout.trim();
   assert.equal(haak([[process.execPath, ['-e', 'process.exit(1)']]], { PODIUM_GETEST: head }).status, 0, 'getest door safe-push: niet nog eens');
 });
+
+test('wakker houden: op macOS caffeinate -i -w <pid>, op Linux/CI of zonder caffeinate niets (13 okt 2026)', async () => {
+  const { houWakker, CAFFEINATE } = await import('../scripts/wakker.js');
+  const aanroepen = [];
+  const spawn = (cmd, args, opties) => (aanroepen.push([cmd, args, opties.detached]), { on() {}, unref() {} });
+  assert.equal(houWakker({ platform: 'darwin', bestaat: () => true, spawn, pid: 4242 }), true);
+  assert.deepEqual(aanroepen, [[CAFFEINATE, ['-i', '-w', '4242'], true]]);
+  assert.equal(houWakker({ platform: 'linux', bestaat: () => true, spawn, pid: 1 }), false);
+  assert.equal(houWakker({ platform: 'darwin', bestaat: () => false, spawn, pid: 1 }), false);
+  assert.equal(houWakker({ platform: 'darwin', bestaat: () => true, spawn: () => { throw new Error('kapot'); }, pid: 1 }), false);
+  assert.equal(aanroepen.length, 1);
+});

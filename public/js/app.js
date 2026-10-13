@@ -4847,7 +4847,10 @@ function renderSubtitle() {
   const ids = activeTheaterIds();
   const cities = new Set(ids.map((id) => theaterStad(id)).filter(Boolean));
   const theaterCount = ids.length;
-  const theaterWoord = theaterCount === 1 ? 'theater' : 'theaters';
+  // "Actief" = met voorstellingen (en aan in Mijn theaters); zo past het op
+  // één regel op een telefoon van 360 px (13 okt 2026; "met voorstellingen"
+  // liep over naar twee regels). De title zegt het voluit.
+  const theaterWoord = theaterCount === 1 ? 'actief theater' : 'actieve theaters';
 
   // Bij precies 1 stad noemen we 'm bij naam (leest natuurlijker dan "1
   // stad"); bij meerdere steden tellen we ze op i.p.v. ze allemaal uit te
@@ -4861,6 +4864,7 @@ function renderSubtitle() {
   }
 
   els.subtitle.textContent = cityText ? `${theaterCount} ${theaterWoord} in ${cityText}` : `${theaterCount} ${theaterWoord}`;
+  els.subtitle.title = 'Theaters met voorstellingen die aan staan in Mijn theaters';
 }
 
 function theaterDisplayName(id) {

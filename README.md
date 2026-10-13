@@ -107,7 +107,8 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   (ook "SoundLAB workshop …"; "Workshopvoorstelling" blijft), voorstellingen
   met alleen filmgenres ("Film", "film, Familiefilm", "Drama, film") en een
   paar duidelijke filmvertoningen op titel (Cinekid Festival, Underground
-  Cinema, European Outdoor Film Tour, Diner Zin in Film). Film als extra tag
+  Cinema, European Outdoor Film Tour, Diner Zin in Film), en quizzen (een
+  woord dat op "quiz" eindigt: Pubquiz, Jaarquiz; niet "Quizmaster"). Film als extra tag
   naast een podiumgenre (Bijlmer Parktheater) blijft. De log telt per
   theater wat er wegvalt.
   Karavaan (Theater de Drukkerij, Alkmaar) haalt elke nacht alle ~10
@@ -334,7 +335,13 @@ De emulators gebruiken altijd het project `demo-podiumagenda`, nooit het echte.
   `npm run firebase -- deploy --only functions`.
 - Pushen naar `main` altijd via `npm run safe-push`: die weigert zolang de
   nachtelijke run loopt of wacht, en zolang een van de testsuites faalt
-  (`scripts/testpoort.js`; ook in de pre-push-hook).
+  (`scripts/testpoort.js`; ook in de pre-push-hook). Op macOS blijft de Mac
+  intussen wakker (`caffeinate -i`, alleen als dat bestaat).
+- Vóór elke commit (pre-commit-hook, `scripts/precommit.js`): geen
+  conflictmarkeringen in gestagede bestanden, en de snelle unit-tests (zonder
+  UI-tests). De hooks staan in `.githooks/`; `npm install` zet
+  `core.hooksPath`. Alleen in noodgevallen overslaan:
+  `PODIUM_GEEN_PRECOMMIT=1 git commit …`.
 - Stappen in de Firebase- en Google Cloud-console staan in [`docs/`](docs/):
   mail bij uitnodigingen, budgetmelding en de billing-stop
   ([`docs/mail-en-billing-stop.md`](docs/mail-en-billing-stop.md)), het

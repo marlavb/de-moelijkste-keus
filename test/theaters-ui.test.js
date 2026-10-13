@@ -182,3 +182,25 @@ test('provincievinkje: kleuren uit de tokens', async () => {
   assert.match(regel('.provincie-vinkje'), /color:\s*var\(--text-2\)/);
   assert.match(regel('.provincie-vinkje'), /min-height:\s*var\(--touch\)/);
 });
+
+test('teller in de kop: "N actieve theaters in M steden", op één regel op 360 px; uitzetten telt mee (13 okt 2026)', async () => {
+  const { vasteShows } = await import('./vasteAgenda.js');
+  const shows = await vasteShows();
+  const theaters = new Set(shows.map((s) => s.theaterId));
+  const steden = new Set(shows.map((s) => s.stad));
+  const { ctx, page } = await openApp({ viewport: { width: 360, height: 800 } });
+  await page.click('.nav-item[data-tab="agenda"]');
+  await page.waitForSelector('.show-row');
+  const tekst = await page.textContent('#subtitle');
+  assert.equal(tekst, `${theaters.size} actieve theaters in ${steden.size} steden`);
+  assert.equal(await page.getAttribute('#subtitle', 'title'), 'Theaters met voorstellingen die aan staan in Mijn theaters');
+  const { hoogte, regel } = await page.evaluate(() => { const el = document.getElementById('subtitle'); const cs = getComputedStyle(el); return { hoogte: el.getBoundingClientRect().height, regel: parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.25 }; });
+  assert.ok(hoogte < regel * 1.5, `één regel: ${hoogte} px bij regelhoogte ${regel}`);
+  // Eén theater uit in Mijn theaters: één minder.
+  await page.click('.nav-item[data-tab="theaters"]');
+  const schakelaar = page.locator('#theatersList [role="switch"][aria-checked="true"]').first();
+  await schakelaar.evaluate((el) => el.click());
+  assert.match(await page.textContent('#subtitle'), new RegExp(`^${theaters.size - 1} actieve theaters in \\d+ steden$`));
+  assert.equal(page.fouten.length, 0, page.fouten.join('\n'));
+  await ctx.close();
+});

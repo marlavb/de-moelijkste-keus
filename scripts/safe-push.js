@@ -5,11 +5,13 @@
 // faalt), nog eens de refresh-controle (de tests duren minuten), dan `git
 // push`. De pre-push-hook slaat de tests over voor precies deze commit
 // (PODIUM_GETEST), zodat ze niet twee keer draaien.
-// Met --dry-run alleen de refresh-controle.
+// Met --dry-run alleen de refresh-controle. Op macOS blijft de Mac wakker
+// tot het script klaar is (caffeinate, zie wakker.js).
 
 import { execFileSync } from 'node:child_process';
 import { controleerRefresh } from './refresh-check.js';
 import { draaiPoort, SUITES } from './testpoort.js';
+import { houWakker } from './wakker.js';
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -26,6 +28,9 @@ function refresh() {
 
 refresh();
 if (dryRun) process.exit(0);
+
+// macOS: wakker blijven tijdens testpoort en push (scripts/wakker.js).
+if (houWakker()) console.log('✓ Mac blijft wakker tot de push klaar is (caffeinate)');
 
 execFileSync('git', ['pull', '--ff-only'], { stdio: 'inherit' });
 const suites = process.env.TESTPOORT_SUITES_VOOR_TESTS ? JSON.parse(process.env.TESTPOORT_SUITES_VOOR_TESTS) : SUITES;
