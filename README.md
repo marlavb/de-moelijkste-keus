@@ -335,7 +335,8 @@ De emulators gebruiken altijd het project `demo-podiumagenda`, nooit het echte.
   `npm run firebase -- deploy --only functions`.
 - Pushen naar `main` altijd via `npm run safe-push`: die weigert zolang de
   nachtelijke run loopt of wacht, en zolang een van de testsuites faalt
-  (`scripts/testpoort.js`; ook in de pre-push-hook).
+  (`scripts/testpoort.js`; ook in de pre-push-hook). Op macOS blijft de Mac
+  intussen wakker (`caffeinate -i`, alleen als dat bestaat).
 - Vóór elke commit (pre-commit-hook, `scripts/precommit.js`): geen
   conflictmarkeringen in gestagede bestanden, en de snelle unit-tests (zonder
   UI-tests). De hooks staan in `.githooks/`; `npm install` zet
