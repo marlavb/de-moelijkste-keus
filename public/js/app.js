@@ -120,6 +120,7 @@ import {
   gezienVeld,
 } from './gezien.js';
 import { maakSterren } from './sterren.js';
+import { kaartTheaters, aantalTekst, laadLeaflet, TEGELS, BRONVERMELDING } from './kaart.js';
 import {
   SNELKEUZES,
   WEEKDAGEN,
@@ -522,6 +523,11 @@ const els = {
   detailPodiumpasNotice: document.getElementById('detailPodiumpasNotice'),
   detailAddCalendar: document.getElementById('detailAddCalendar'),
   theatersList: document.getElementById('theatersList'),
+  theatersLijstKnop: document.getElementById('theatersLijstKnop'),
+  theatersKaartKnop: document.getElementById('theatersKaartKnop'),
+  theatersKaartBlok: document.getElementById('theatersKaartBlok'),
+  theatersKaart: document.getElementById('theatersKaart'),
+  theatersKaartStatus: document.getElementById('theatersKaartStatus'),
   favoritesList: document.getElementById('favoritesList'),
   favoritesEmpty: document.getElementById('favoritesEmpty'),
   // Gezien (30 sep 2026). Kan ontbreken bij een oudere index.html naast een
@@ -716,6 +722,8 @@ async function init() {
   for (const id of SIDEBAR_SECTION_IDS) {
     els.sidebarAccordionHeaders[id].addEventListener('click', () => toggleSidebarSection(id));
   }
+  els.theatersLijstKnop?.addEventListener('click', () => zetTheatersWeergave('lijst'));
+  els.theatersKaartKnop?.addEventListener('click', () => zetTheatersWeergave('kaart'));
 
   els.detailBack.addEventListener('click', () => terug('#/'));
   els.gezienBack?.addEventListener('click', () => terug('#/profiel'));
@@ -6120,6 +6128,7 @@ function buildMoveHint(id) {
 function refreshAfterTheaterToggle() {
   saveEnabledTheaters();
   renderTheatersScreen();
+  werkKaartBij();
   renderFilters();
   renderFilterBadge();
   renderSubtitle();
@@ -6300,6 +6309,138 @@ function renderTheatersScreen() {
       els.theatersList.appendChild(buildCitySection(stad, idsByStad.get(stad)));
     }
   }
+}
+
+// ---------- Kaart bij Mijn theaters (kaart.js) ----------
+
+// Lijst blijft standaard (ook na herladen); de kaart is een extra weergave.
+let theatersWeergave = 'lijst';
+// { map, cluster, markers: Map(id → marker) } zodra de kaart er is.
+let kaart = null;
+
+function zetTheatersWeergave(weergave) {
+  theatersWeergave = weergave;
+  const isKaart = weergave === 'kaart';
+  els.theatersLijstKnop?.setAttribute('aria-pressed', String(!isKaart));
+  els.theatersKaartKnop?.setAttribute('aria-pressed', String(isKaart));
+  if (els.theatersKaartBlok) els.theatersKaartBlok.hidden = !isKaart;
+  els.theatersList.hidden = isKaart;
+  if (isKaart) toonKaart();
+}
+
+function kaartStatus(tekst) {
+  if (!els.theatersKaartStatus) return;
+  els.theatersKaartStatus.hidden = !tekst;
+  els.theatersKaartStatus.textContent = tekst ?? '';
+}
+
+async function toonKaart() {
+  if (kaart) {
+    kaart.map.invalidateSize();
+    werkKaartBij();
+    return;
+  }
+  kaartStatus('Kaart laden…');
+  let L;
+  try {
+    L = await laadLeaflet();
+  } catch (err) {
+    console.error('Kaart laden mislukt:', err);
+    kaartStatus('De kaart kon niet worden geladen. Controleer je verbinding; de lijst werkt gewoon.');
+    return;
+  }
+  if (theatersWeergave !== 'kaart' || kaart) return;
+  kaartStatus(null);
+  const map = L.map(els.theatersKaart, { zoomControl: true, scrollWheelZoom: true, keyboard: true, attributionControl: true });
+  L.tileLayer(TEGELS, { maxZoom: 18, minZoom: 6, attribution: BRONVERMELDING }).addTo(map);
+  const cluster = L.markerClusterGroup({
+    maxClusterRadius: 36,
+    showCoverageOnHover: false,
+    spiderfyOnMaxZoom: true,
+    disableClusteringAtZoom: 12,
+    iconCreateFunction: (c) => L.divIcon({ html: `<span>${c.getChildCount()}</span>`, className: 'kaart-cluster', iconSize: [44, 44] }),
+  });
+  // Eerst de uitsnede (alle theaters in beeld), dan de clusterlaag: die
+  // breekt als er speldjes bijkomen voordat de kaart een zoomniveau heeft.
+  const punten = kaartTheaters(state.theaterInfo, state.shows, state.enabledTheaters, todayIsoDate()).map((t) => [t.lat, t.lng]);
+  if (punten.length) map.fitBounds(L.latLngBounds(punten), { padding: [24, 24] });
+  else map.setView([52.2, 5.3], 7);
+  map.addLayer(cluster);
+  kaart = { L, map, cluster, markers: new Map() };
+  map.on('popupopen', (e) => {
+    // Toetsenbord: meteen naar de knop in de popup.
+    e.popup.getElement()?.querySelector('button')?.focus();
+  });
+  map.on('popupclose', (e) => {
+    const marker = e.popup._source;
+    // Terug naar het speldje (als dat zichtbaar is, niet in een cluster).
+    if (marker && document.activeElement?.closest?.('.leaflet-popup') == null) marker.getElement()?.focus?.();
+  });
+  // Voor tests en hulpmiddelen: de speldjes staan er, en het zoomniveau.
+  map.on('zoomend', () => {
+    els.theatersKaart.dataset.zoom = String(map.getZoom());
+  });
+  werkKaartBij();
+  els.theatersKaart.dataset.zoom = String(map.getZoom());
+  els.theatersKaart.dataset.klaar = '1';
+}
+
+function pinIcoon(t) {
+  const klassen = ['kaart-pin', t.aan ? 'kaart-pin--aan' : 'kaart-pin--uit'];
+  if (!t.actief) klassen.push('kaart-pin--stil');
+  return kaart.L.divIcon({ className: klassen.join(' '), html: '<span></span>', iconSize: [44, 44], iconAnchor: [22, 40], popupAnchor: [0, -34] });
+}
+
+function pinLabel(t) {
+  return `${t.naam}, ${t.stad}: ${t.aan ? 'in Mijn theaters' : 'uit'}, ${aantalTekst(t.aantal).toLowerCase()}`;
+}
+
+function popupInhoud(t) {
+  const box = document.createElement('div');
+  box.className = 'kaart-popup';
+  const naam = vriendenTekst('p', 'kaart-popup-naam', t.naam);
+  const stad = vriendenTekst('p', 'kaart-popup-stad', t.stad);
+  const aantal = vriendenTekst('p', 'kaart-popup-aantal', t.gepauzeerd ? 'Agenda tijdelijk niet beschikbaar' : aantalTekst(t.aantal));
+  const knop = document.createElement('button');
+  knop.type = 'button';
+  knop.className = 'kaart-popup-knop' + (t.aan ? ' is-aan' : '');
+  knop.setAttribute('aria-pressed', String(t.aan));
+  knop.textContent = t.aan ? 'Aan in Mijn theaters · zet uit' : 'Uit · zet aan in Mijn theaters';
+  knop.addEventListener('click', () => {
+    state.enabledTheaters[t.id] = !t.aan;
+    refreshAfterTheaterToggle();
+  });
+  box.append(naam, stad, aantal, knop);
+  return box;
+}
+
+/** Speldjes neerzetten of bijwerken (na aan/uit, ook vanuit de lijst of een filter). */
+function werkKaartBij() {
+  if (!kaart) return;
+  const theaters = kaartTheaters(state.theaterInfo, state.shows, state.enabledTheaters, todayIsoDate());
+  for (const t of theaters) {
+    let m = kaart.markers.get(t.id);
+    if (!m) {
+      m = kaart.L.marker([t.lat, t.lng], { icon: pinIcoon(t), keyboard: true, title: t.naam, riseOnHover: true });
+      m.bindPopup(() => popupInhoud(kaartTheaters(state.theaterInfo, state.shows, state.enabledTheaters, todayIsoDate()).find((x) => x.id === t.id)), { closeButton: true, maxWidth: 260, autoPanPaddingTopLeft: [64, 16], autoPanPaddingBottomRight: [16, 16] });
+      m.on('add', () => {
+        const el = m.getElement();
+        el?.setAttribute('role', 'button');
+        el?.setAttribute('aria-label', pinLabel(kaartTheaters(state.theaterInfo, state.shows, state.enabledTheaters, todayIsoDate()).find((x) => x.id === t.id)));
+      });
+      kaart.markers.set(t.id, m);
+      kaart.cluster.addLayer(m);
+      continue;
+    }
+    m.setIcon(pinIcoon(t));
+    m.getElement()?.setAttribute('role', 'button');
+    m.getElement()?.setAttribute('aria-label', pinLabel(t));
+    if (m.isPopupOpen()) {
+      m.setPopupContent(popupInhoud(t));
+      m.getPopup().getElement()?.querySelector('button')?.focus();
+    }
+  }
+  kaart.cluster.refreshClusters();
 }
 
 // ---------- Profiel: watchlist ----------

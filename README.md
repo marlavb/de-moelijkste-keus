@@ -36,7 +36,10 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
   "Ook te zien bij" (volle data grijs en doorgestreept), in je agenda zetten.
 - **Theaters per provincie**: theaters aan of uit, per theater, per stad of per
   provincie (vinkje met aan/uit/deels). Gepauzeerde theaters staan er met een
-  melding.
+  melding. Met "Lijst | Kaart" ook op een kaart (Leaflet en OpenStreetMap,
+  pas geladen als je de kaart opent): een speldje per theater, aan/uit in de
+  popup. De coördinaten staan vast in `src/lib/config.js` (`locatie`, met
+  bron); de app en de nachtrun geocoderen niet.
 - **Watchlist**: voorstellingen die je wilt zien, één regel per voorstelling,
   met de eerstvolgende datum en de stand: "Afgelast", "2 van 5 data afgelast" of "Niet meer in de
   agenda". Elk item heeft een eigen knop om het weg te halen; een item dat niet

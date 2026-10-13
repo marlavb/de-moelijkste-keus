@@ -112,10 +112,13 @@ export async function alleIn(collectie) {
 /**
  * Een browsercontext (390×844) voor één gebruiker; met `account` ingelogd via
  * de testlogin (alleen in de emulatormodus). Deelmenu en klembord zijn nep.
+ * `voorbereid(ctx)` zet extra routes vóór de eerste pagina.
  */
-export async function openGebruiker(browser, base, account = null, hash = '#/profiel') {
+export async function openGebruiker(browser, base, account = null, hash = '#/profiel', { voorbereid = null } = {}) {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block', timezoneId: TIJDZONE });
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
+  // Extra routes vóór de eerste pagina (bv. de kaart: test/kaartNep.js).
+  if (voorbereid) await voorbereid(ctx);
   await ctx.addInitScript(() => {
     window.__gedeeld = [];
     Object.defineProperty(Navigator.prototype, 'share', { configurable: true, value: async (d) => { window.__gedeeld.push(d); } });
