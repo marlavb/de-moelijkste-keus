@@ -335,6 +335,11 @@ De emulators gebruiken altijd het project `demo-podiumagenda`, nooit het echte.
 - Pushen naar `main` altijd via `npm run safe-push`: die weigert zolang de
   nachtelijke run loopt of wacht, en zolang een van de testsuites faalt
   (`scripts/testpoort.js`; ook in de pre-push-hook).
+- Vóór elke commit (pre-commit-hook, `scripts/precommit.js`): geen
+  conflictmarkeringen in gestagede bestanden, en de snelle unit-tests (zonder
+  UI-tests). De hooks staan in `.githooks/`; `npm install` zet
+  `core.hooksPath`. Alleen in noodgevallen overslaan:
+  `PODIUM_GEEN_PRECOMMIT=1 git commit …`.
 - Stappen in de Firebase- en Google Cloud-console staan in [`docs/`](docs/):
   mail bij uitnodigingen, budgetmelding en de billing-stop
   ([`docs/mail-en-billing-stop.md`](docs/mail-en-billing-stop.md)), het

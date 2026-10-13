@@ -23,7 +23,15 @@ dezelfde dag stopt meteen. De workflow commit de data zelf.
   refresh-controle. Nooit omheen werken (ook geen `--no-verify`); bij een
   weigering eerst de run afwachten of de test repareren.
 - Dezelfde controles zitten in de pre-push-hook `.githooks/pre-push`; activeer
-  die in een nieuwe clone met `git config core.hooksPath .githooks`.
+  die in een nieuwe clone met `git config core.hooksPath .githooks` (doet
+  `npm install` ook, via het `prepare`-script).
+- Pre-commit-hook `.githooks/pre-commit` (`scripts/precommit.js`): weigert een
+  commit met conflictmarkeringen (`<<<<<<<`, `=======`, `>>>>>>>` aan het begin
+  van een regel) in gestagede bestanden, en draait snelle unit-tests: die bij
+  de gewijzigde bestanden horen, anders alle tests behalve de UI-tests (~12 s).
+  Overslaan alleen in noodgevallen, met `PODIUM_GEEN_PRECOMMIT=1 git commit …`
+  (en zeg dat in het rapport); nooit `--no-verify`. Waarom: op 12 okt 2026
+  werd een merge met markeringen in styles.css gecommit.
   Waarom de testpoort: op 8 okt 2026 ging een push door terwijl een test
   faalde (de controle keek naar tekst in de uitvoer, niet naar de exitcode).
   Waarom: op 29 sep 2026 is er gepusht terwijl een (uitgestelde) nachtelijke
