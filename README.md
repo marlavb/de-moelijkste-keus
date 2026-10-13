@@ -107,7 +107,8 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   (ook "SoundLAB workshop …"; "Workshopvoorstelling" blijft), voorstellingen
   met alleen filmgenres ("Film", "film, Familiefilm", "Drama, film") en een
   paar duidelijke filmvertoningen op titel (Cinekid Festival, Underground
-  Cinema, European Outdoor Film Tour, Diner Zin in Film). Film als extra tag
+  Cinema, European Outdoor Film Tour, Diner Zin in Film), en quizzen (een
+  woord dat op "quiz" eindigt: Pubquiz, Jaarquiz; niet "Quizmaster"). Film als extra tag
   naast een podiumgenre (Bijlmer Parktheater) blijft. De log telt per
   theater wat er wegvalt.
   Karavaan (Theater de Drukkerij, Alkmaar) haalt elke nacht alle ~10

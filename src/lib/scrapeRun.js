@@ -495,7 +495,7 @@ export async function runRefresh({
     });
   const geenVoorstellingAantal = Object.values(geenVoorstellingPerTheater).reduce((n, per) => n + Object.values(per).reduce((a, b) => a + b, 0), 0);
   for (const [theaterId, per] of Object.entries(geenVoorstellingPerTheater)) {
-    log(`[${theaterId}] geen voorstelling, weggelaten: ${Object.entries(per).map(([r, n]) => `${n} ${r === 'film' ? 'film(s)' : 'workshop(s)/cursus(sen)'}`).join(', ')}.`);
+    log(`[${theaterId}] geen voorstelling, weggelaten: ${Object.entries(per).map(([r, n]) => `${n} ${{ film: 'film(s)', quiz: 'quiz(zen)' }[r] ?? 'workshop(s)/cursus(sen)'}`).join(', ')}.`);
   }
   const purgedCount = mergedShows.length - verseShows.length - geenVoorstellingAantal;
   if (purgedCount > 0) {

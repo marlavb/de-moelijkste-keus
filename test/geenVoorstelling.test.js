@@ -25,3 +25,12 @@ test('geenVoorstelling: alleen filmgenres weg, film als extra tag naast een podi
     assert.equal(geenVoorstelling({ titel }), null, titel);
   }
 });
+
+test('geenVoorstelling: quizzen weg (woord dat op "quiz" eindigt), niet Quizmaster; twijfelgevallen blijven (13 okt 2026)', () => {
+  for (const titel of ['Pubquiz', 'Musical pubquiz', 'Pubquiz ‘Met de fles op tafel’', 'Jaarquiz 2026', 'Algemene kennis- en Muziekquiz', 'Quiz', 'De grote Quiz-avond']) {
+    assert.equal(geenVoorstelling({ titel }), 'quiz', titel);
+  }
+  for (const titel of ['Quizmaster – de voorstelling', 'Quizzen met Jan', 'Niet zomaar een Pubquiz #3 – Flunknarf', 'Interactieve muziekquiz – De Hitbingo Band', 'Squizzle']) {
+    assert.equal(geenVoorstelling({ titel }), null, titel);
+  }
+});
