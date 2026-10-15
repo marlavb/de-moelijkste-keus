@@ -386,7 +386,7 @@ naar `main` en na de nachtelijke run, en commit alleen als er iets verandert.
 Pas de tekst tussen de markers dus niet met de hand aan.
 
 <!-- AUTO:sw:start -->
-Service worker: `podiumagenda-v55`
+Service worker: `podiumagenda-v56`
 <!-- AUTO:sw:end -->
 
 ### Theaters
