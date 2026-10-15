@@ -187,7 +187,8 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   Johnny de Mol"); anders blijft hij staan, maar telt hij niet mee in de
   makermeerderheid (`makerOmdraaien.js`); "(try-out)", "(reprise)",
   "(première)" en "(voorpremière)" gaan overal uit de titel naar de
-  beschrijving, bij elk theater (de titel mét label blijft als `titelBron`,
+  beschrijving, bij elk theater, ook als los titeldeel ("Baby Reindeer –
+  première") (de titel mét label blijft als `titelBron`,
   zodat oude watchlist-, Gezien- en plansleutels en die van vrienden
   meegaan); een reeksnaam vooraan de titel ("Herfststukjes: …", "November
   Music: …", per theater in `config.js` als `reeksVoorvoegsels`) gaat op
@@ -203,6 +204,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   afvinkpagina) bij elk theater één titel, ook in behouden data; de titel van
   daarvoor blijft als `titelVoorAlias`, zodat ook sleutels van na eerdere
   titelrondes meegaan, en productie-samenvoegen kort zo'n titel niet weer in.
+  Wordt een titel pas door samenvoegen of meerderheid een bron uit de lijst,
+  dan gaat de alias alsnog mee; de log meldt elke bron die daarna nog los in
+  de data staat ("Aliasbron nog los").
   Dezelfde productie (zelfde
   watchlist-sleutel) krijgt bij elk theater dezelfde weergavetitel, hetzelfde
   genre en dezelfde maker: die van de meeste theaters

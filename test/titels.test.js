@@ -283,6 +283,12 @@ test('labelsUitTitel: alle labels, ook vóór " – " en meer in één titel (ok
   assert.deepEqual(labelsUitTitel('Scheepers op z\'n scherpst – Rob Scheepers (reprise)'), { tekst: 'Scheepers op z\'n scherpst – Rob Scheepers', labels: ['reprise'] });
   assert.deepEqual(labelsUitTitel('Grip – Rayen Panday'), { tekst: 'Grip – Rayen Panday', labels: [] });
   assert.deepEqual(labelsUitTitel('(reprise)'), { tekst: '(reprise)', labels: [] });
+  // Los titeldeel, niet vooraan (15 okt 2026).
+  assert.deepEqual(labelsUitTitel('Baby Reindeer – première'), { tekst: 'Baby Reindeer', labels: ['première'] });
+  assert.deepEqual(labelsUitTitel('Kooiapen – Try-out – Martijn Crins'), { tekst: 'Kooiapen – Martijn Crins', labels: ['try-out'] });
+  assert.deepEqual(labelsUitTitel('Samir Calixto – Descent Ascent – Première'), { tekst: 'Samir Calixto – Descent Ascent', labels: ['première'] });
+  assert.deepEqual(labelsUitTitel('Première – Het Nationale Theater'), { tekst: 'Première – Het Nationale Theater', labels: [] }, 'vooraan blijft');
+  assert.deepEqual(labelsUitTitel('Reprisewerk – Try-outs'), { tekst: 'Reprisewerk – Try-outs', labels: [] }, 'alleen hele delen');
 });
 
 test('slogan of cast nooit als maker (R1, 9 okt 2026), met de valse treffers uit de echte data', async () => {

@@ -90,3 +90,48 @@ export function controleer(lijst) {
   }
   return meldingen;
 }
+
+/**
+ * Tweede ronde na productie-samenvoeging en weergave op meerderheid (15 okt
+ * 2026): wordt een titel pas dan een bron uit de lijst, dan alsnog de alias.
+ * Stadsschouwburg Utrecht "Baby Reindeer – Kobra theaterproducties – Thijs
+ * van de Meeberg" werd door het samenvoegen "Baby Reindeer – Thijs van de
+ * Meeberg" (een bron) en bleef zo los naast "Baby Reindeer". De titel van
+ * vóór deze ronde blijft als titelVoorAlias (samenvoegMapping, gepland.js);
+ * titelBron blijft de brontitel. Geeft { shows, gewijzigd }.
+ */
+export function pasAliasNaSamenvoegenToe(shows, lijst) {
+  let gewijzigd = 0;
+  const uit = shows.map((s) => {
+    const a = pasAliasToe(s, lijst);
+    if (!a.alias || (a.titel === s.titel && a.maker === (s.maker ?? null))) return s;
+    gewijzigd++;
+    const bron = s.titelBron ?? s.titel;
+    return {
+      ...s,
+      titel: a.titel,
+      maker: a.maker,
+      ...(a.titel !== bron ? { titelBron: bron } : {}),
+      ...(s.titel !== a.titel && s.titel !== bron ? { titelVoorAlias: s.titelVoorAlias ?? s.titel } : {}),
+      ...(a.maker !== (s.maker ?? null) && s.makerBron === undefined ? { makerBron: s.maker ?? null } : {}),
+    };
+  });
+  return { shows: uit, gewijzigd };
+}
+
+/**
+ * Bronnen uit de lijst die na de nabewerking nog als eigen productiesleutel
+ * in de data staan (doel: geen). Geeft [{ sleutel, titel, theaters }].
+ */
+export function losseBronnen(shows, lijst) {
+  const per = new Map();
+  for (const s of shows) {
+    const k = watchlistSleutel(s.titel, s.theaterId);
+    const a = lijst?.aliassen?.[k];
+    if (!a || doelSleutel(a) === k) continue;
+    const e = per.get(k) ?? { sleutel: k, titel: s.titel, theaters: new Set() };
+    e.theaters.add(s.theaterId);
+    per.set(k, e);
+  }
+  return [...per.values()].map((e) => ({ ...e, theaters: [...e.theaters].sort() }));
+}

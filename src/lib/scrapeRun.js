@@ -14,7 +14,7 @@ import { pasProductieSamenvoegingToe } from './productieSamenvoegen.js';
 import { metEnDash, zonderStatusWoord, isGeenMaker, isSloganOfCast, makerZonderVoorvoegsel, draaiTitelEnMakerOm, labelsUitTitel, reeksUitTitel, statusUitTitel } from './titels.js';
 import { THEATERS } from './config.js';
 import { bronIndex, r1Keuze } from './makerOmdraaien.js';
-import { leesAliassen, pasAliasToe, doelSleutel } from './aliassen.js';
+import { leesAliassen, pasAliasToe, doelSleutel, pasAliasNaSamenvoegenToe, losseBronnen } from './aliassen.js';
 import { watchlistSleutel } from '../../public/js/watchlist.js';
 import { isVervallen } from './beschikbaarheid.js';
 import { geenVoorstelling } from './geenVoorstelling.js';
@@ -526,8 +526,12 @@ export async function runRefresh({
   for (const o of samen.overgeslagen) log(`Niet samengevoegd (generiek begin "${o.begin}", maker ${o.maker}): ${o.producties.join('; ')}.`);
   // Weergavetitel op meerderheid (weergaveMeerderheid.js); brontitel blijft
   // als titelBron.
-  const { shows: metWeergave, gewijzigd: titelsOpMeerderheid } = pasMeerderheidToe(samen.shows);
+  const { shows: naMeerderheid, gewijzigd: titelsOpMeerderheid } = pasMeerderheidToe(samen.shows);
   if (titelsOpMeerderheid > 0) log(`${titelsOpMeerderheid} titel(s) naar de weergave van de meeste theaters (titelBron bewaard).`);
+  // Aliaslijst opnieuw: een titel die pas door samenvoegen of meerderheid een
+  // bron werd (aliassen.js, pasAliasNaSamenvoegenToe; 15 okt 2026).
+  const { shows: metWeergave, gewijzigd: aliasNaSamenvoegen } = pasAliasNaSamenvoegenToe(naMeerderheid, aliassen);
+  if (aliasNaSamenvoegen > 0) log(`${aliasNaSamenvoegen} speeldata alsnog naar de aliaslijst (titel werd pas na het samenvoegen een bron).`);
   // Genre op productieniveau (genreMeerderheid.js); brongenre als genreBron.
   const { shows: metGenre, gewijzigd: genresOpMeerderheid } = pasGenreMeerderheidToe(metWeergave);
   if (genresOpMeerderheid > 0) log(`${genresOpMeerderheid} voorstelling(en) naar het genre van de productie (genreBron bewaard).`);
@@ -538,6 +542,9 @@ export async function runRefresh({
   if (makersOpMeerderheid > 0) log(`${makersOpMeerderheid} voorstelling(en) naar de maker van de productie (makerBron bewaard).`);
   for (const c of makerConflicten) log(`Maker van "${c.sleutel}" niet gelijkgetrokken (gelijke stand): ${c.theaters.map((t) => `${t.theaterId}: ${t.maker}`).join('; ')}.`);
   for (const v of makerVerdacht) log(`Maker van "${v.sleutel}" niet overgenomen (alleen ${v.theaterId}, verdacht: ${v.reden}): ${v.maker}.`);
+  // Controle: een bron uit de aliaslijst hoort na de nabewerking niet meer als
+  // eigen productie in de data te staan.
+  for (const b of losseBronnen(freshShows, aliassen)) log(`Aliasbron nog los in de data: "${b.titel}" (${b.theaters.join(', ')}).`);
   for (const theater of theaters) {
     const st = theaterStatus[theater.id];
     if (!st || theater.gepauzeerd) continue;
