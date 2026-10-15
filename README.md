@@ -392,6 +392,10 @@ Zie [`CLAUDE.md`](CLAUDE.md): git en pushen, testverkeer naar theatersites,
 botblokkades (nooit omzeilen), Podiumpas-dekking verifiëren, scrapers,
 watchlist-sleutels en de README bijwerken bij nieuwe functies.
 
+## Licentie
+
+Alle rechten voorbehouden – zie LICENSE.
+
 ## Automatisch bijgewerkt
 
 De blokken hieronder (en het blok met aantallen bovenaan) maakt
