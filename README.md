@@ -249,7 +249,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   op rij teruggevallen (`terugvalReeks` in `scrape-status.json`), meer dan
   drie theaters in één nacht, een scherpe daling bij hetzelfde theater twee
   nachten op rij (`dalingReeks`), een gefaalde stap of een scrape van meer dan
-  80 minuten. Eén nacht terugval bij hooguit drie theaters, of één nacht een
+  80 minuten. Mislukt de datapush, dan staat bovenaan een eigen fout "Data
+  niet gepubliceerd" (live blijft de vorige data), los van de
+  scraperesultaten. Eén nacht terugval bij hooguit drie theaters, of één nacht een
   scherpe daling, geeft een waarschuwing. Elke run heeft een samenvatting (looptijd,
   aantallen, per teruggevallen theater de fout en de reeks). Bij rood komt
   die in één GitHub-issue "Nachtrun: aandacht nodig" (label `nachtrun`); een

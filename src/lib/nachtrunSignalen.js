@@ -12,6 +12,9 @@
 //   ROOD_REEKS+ nachten op rij (dalingReeks; de eerste nacht is een
 //   waarschuwing), een gefaalde stap (scrapen, datacheck, commit, deploy) of
 //   een scrape langer dan MAX_SCRAPE_MINUTEN.
+// - Een mislukte datapush is een eigen fout, bovenaan: "data niet
+//   gepubliceerd" (14 en 15 okt 2026 ging die tussen de scraperesultaten
+//   verloren). De scraperesultaten staan dan nergens live.
 
 export const MAX_TERUGVAL = 3;
 export const ROOD_REEKS = 2;
@@ -36,12 +39,15 @@ export function nachtenSinds(sinds, nu) {
 
 const TERUGVAL = new Set(['terugval', 'fout']);
 const STAPPEN = { scrape: 'scrapen', datacheck: 'controle op dubbele voorstellingen', commit: 'data committen en pushen', deploy: 'deploy starten' };
+const MISLUKT = new Set(['failure', 'cancelled']);
+export const NIET_GEPUBLICEERD = 'data niet gepubliceerd: de datapush naar main is mislukt, live staat nog de vorige data';
 
 /**
  * Beoordeelt een run. `status`: scrape-status.json; `scrapeSeconden`: duur
  * van de scrape-stap (of null); `stappen`: { scrape, datacheck, commit,
  * deploy } met de outcome van GitHub ('success', 'failure', 'skipped', …).
- * Geeft { niveau: 'ok' | 'waarschuwing' | 'rood', redenen, terugval, aantallen, scrapeSeconden }.
+ * Geeft { niveau: 'ok' | 'waarschuwing' | 'rood', redenen, terugval, aantallen,
+ * scrapeSeconden, gepubliceerd } (gepubliceerd: false als de datapush mislukte).
  */
 export function beoordeelNachtrun({ status, scrapeSeconden = null, stappen = {} }) {
   const theaters = Object.entries(status?.theaters ?? {});
@@ -59,23 +65,25 @@ export function beoordeelNachtrun({ status, scrapeSeconden = null, stappen = {} 
   }
   terugval.sort((a, b) => b.reeks - a.reeks || a.id.localeCompare(b.id));
 
-  const rood = [];
+  const gepubliceerd = !MISLUKT.has(stappen.commit);
+  const rood = gepubliceerd ? [] : [NIET_GEPUBLICEERD];
   for (const t of terugval) if (t.reeks >= ROOD_REEKS) rood.push(`${t.id} valt ${t.reeks} nachten op rij terug`);
   if (terugval.length > MAX_TERUGVAL) rood.push(`${terugval.length} theaters vallen terug (meer dan ${MAX_TERUGVAL})`);
   for (const d of dalingen) if (d.reeks >= ROOD_REEKS) rood.push(`scherpe daling bij ${d.id}, ${d.reeks} nachten op rij`);
   for (const [stap, naam] of Object.entries(STAPPEN)) {
-    if (stappen[stap] === 'failure' || stappen[stap] === 'cancelled') rood.push(`stap "${naam}" mislukt`);
+    if (stap !== 'commit' && MISLUKT.has(stappen[stap])) rood.push(`stap "${naam}" mislukt`);
   }
   if (scrapeSeconden != null && scrapeSeconden > MAX_SCRAPE_MINUTEN * 60) {
     rood.push(`scrapen duurde ${Math.round(scrapeSeconden / 60)} min (grens ${MAX_SCRAPE_MINUTEN})`);
   }
 
-  if (rood.length) return { niveau: 'rood', redenen: rood, terugval, aantallen, scrapeSeconden };
   const waarschuwing = [
     ...(terugval.length ? [`${terugval.length} theater(s) teruggevallen (1e nacht)`] : []),
     ...dalingen.map((d) => `scherpe daling bij ${d.id} (1e nacht): ${d.waarschuwing}`),
   ];
-  return { niveau: waarschuwing.length ? 'waarschuwing' : 'ok', redenen: waarschuwing, terugval, aantallen, scrapeSeconden };
+  // Alleen de datapush mislukt: de waarschuwingen over de scrape blijven zichtbaar.
+  if (rood.length) return { niveau: 'rood', redenen: rood.length === 1 && !gepubliceerd ? [...rood, ...waarschuwing] : rood, terugval, aantallen, scrapeSeconden, gepubliceerd };
+  return { niveau: waarschuwing.length ? 'waarschuwing' : 'ok', redenen: waarschuwing, terugval, aantallen, scrapeSeconden, gepubliceerd };
 }
 
 const KOP = { ok: '✅ Nachtrun ok', waarschuwing: '⚠️ Nachtrun ok, met terugval', rood: '❌ Nachtrun: aandacht nodig' };
@@ -84,7 +92,11 @@ const kort = (t, max = 160) => (t && t.length > max ? `${t.slice(0, max - 1)}…
 /** Markdown voor de job summary en het issue. */
 export function samenvatting(b, { datum = null, runUrl = null } = {}) {
   const regels = [`## ${KOP[b.niveau]}${datum ? ` (${datum})` : ''}`, ''];
-  if (b.redenen.length) regels.push(...b.redenen.map((r) => `- ${r}`), '');
+  if (b.gepubliceerd === false) {
+    regels.push('### 🚫 Data niet gepubliceerd', '', 'De datapush naar main is mislukt: de site, scrape-status.json en cache/detail staan nog op de vorige run. De scraperesultaten hieronder staan alleen in deze log. Zie de stap "data committen en pushen".', '');
+  }
+  const overig = b.redenen.filter((r) => r !== NIET_GEPUBLICEERD);
+  if (overig.length) regels.push(...(b.gepubliceerd === false ? ['Scraperesultaten (niet gepubliceerd):', ''] : []), ...overig.map((r) => `- ${r}`), '');
   const duur = b.scrapeSeconden == null ? 'onbekend' : `${Math.floor(b.scrapeSeconden / 60)} min ${b.scrapeSeconden % 60} s`;
   regels.push(`Looptijd scrapen: ${duur}`, '');
   const a = b.aantallen;

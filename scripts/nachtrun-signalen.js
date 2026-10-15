@@ -66,6 +66,7 @@ function main() {
   console.log(md);
   if (env.GITHUB_STEP_SUMMARY) appendFileSync(env.GITHUB_STEP_SUMMARY, `${md}\n`);
 
+  if (b.gepubliceerd === false) console.log('::error title=Data niet gepubliceerd::De datapush naar main is mislukt; live staat nog de vorige data. Zie de stap "data committen en pushen".');
   const lijn = b.redenen.join('; ');
   if (b.niveau === 'rood') console.log(`::error title=Nachtrun: aandacht nodig::${lijn}`);
   if (b.niveau === 'waarschuwing') console.log(`::warning title=Terugval::${lijn} — zie de job summary; wordt rood als het morgen weer zo is.`);
