@@ -891,6 +891,13 @@
    "groep": "evergreen top 1000 live",
    "regel": "R3"
   },
+  "everywhere is here": {
+   "titel": "Everywhere is here",
+   "maker": "NDT 1",
+   "makerVast": true,
+   "groep": "everywhere is here",
+   "regel": "keuze"
+  },
   "evi hanssen": {
    "titel": "Bloedheet & tranen – Evi Hanssen",
    "maker": "Evi Hanssen",
@@ -1085,6 +1092,20 @@
    "maker": "Johnny de Mol",
    "makerVast": true,
    "groep": "johnny de mol",
+   "regel": "keuze"
+  },
+  "gone": {
+   "titel": "GONE",
+   "maker": "NDT 1",
+   "makerVast": true,
+   "groep": "gone",
+   "regel": "keuze"
+  },
+  "gone | inspired by benjamin clementine | ndt 1": {
+   "titel": "GONE",
+   "maker": "NDT 1",
+   "makerVast": true,
+   "groep": "gone",
    "regel": "keuze"
   },
   "govert de roos": {
@@ -1759,6 +1780,13 @@
    "groep": "nasrdin dchar",
    "regel": "keuze"
   },
+  "ndt 1": {
+   "titel": "GONE",
+   "maker": "NDT 1",
+   "makerVast": true,
+   "groep": "gone",
+   "regel": "keuze"
+  },
   "ndt 2": {
    "titel": "Blast a universe",
    "maker": null,
@@ -1899,6 +1927,13 @@
    "titel": "Ouder Worden – Joost Hofman & Barbara Sloesen",
    "maker": "Joost Hofman & Barbara Sloesen",
    "groep": "joost hofman barbara sloesen",
+   "regel": "keuze"
+  },
+  "out of the stillness": {
+   "titel": "Out of the stillness",
+   "maker": "NDT 1",
+   "makerVast": true,
+   "groep": "out of the stillness",
    "regel": "keuze"
   },
   "over de liefde": {
