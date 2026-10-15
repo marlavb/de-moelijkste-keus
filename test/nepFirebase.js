@@ -8,6 +8,7 @@
 //                          geweigerd zoals door de rules (permission-denied);
 //   window.__nepSchrijf    lijst van alle geslaagde schrijfacties ['set'|'delete', pad];
 //   window.__nepLees       aantal leesacties (getDoc, getDocs, getCountFromServer).
+//   window.__nepUitgelogd  aantal keer signOut.
 // Queries: alleen gelijkheid (where(veld, '==', waarde)) en orderBy op directe
 // kinderen. doc(collectie) zonder pad geeft een nieuw id; onSnapshot geeft
 // de stand meteen en na elke schrijfactie opnieuw.
@@ -40,8 +41,12 @@ let teller = 0;
 const luisteraars = new Set();
 const meld = () => { for (const l of luisteraars) l(); };
 export const auth = {}, db = {}, googleProvider = {};
-export const onAuthStateChanged = (_a, cb) => setTimeout(() => cb(${JSON.stringify(gebruiker)}), 0);
-export const signInWithPopup = async () => {}, signOut = async () => {};
+// Uitloggen meldt null aan de auth-luisteraar, zoals de echte SDK
+// (window.__nepUitgelogd telt mee).
+let authLuisteraar = null;
+export const onAuthStateChanged = (_a, cb) => { authLuisteraar = cb; setTimeout(() => cb(${JSON.stringify(gebruiker)}), 0); };
+export const signInWithPopup = async () => {};
+export const signOut = async () => { window.__nepUitgelogd = (window.__nepUitgelogd ?? 0) + 1; setTimeout(() => authLuisteraar?.(null), 0); };
 export const doc = (a, ...pad) => {
   if (a?.path !== undefined && pad.length === 0) {
     const id = 'auto' + String(++teller).padStart(4, '0');

@@ -119,10 +119,10 @@ const rustig = (page) => page.evaluate(async () => {
 const even = (page) => rustig(page);
 const tab = (page) => page.locator('.nav-item[data-tab="profiel"]');
 
-test('uitgelogd: geen teller en geen tegel; #/berichten gaat naar Profiel', async () => {
+test('uitgelogd: geen teller en geen Berichten-knop; #/berichten gaat naar Profiel', async () => {
   const { ctx, page, fouten } = await openApp({ wie: null, docs: {} });
   assert.equal(await page.isVisible('#profielBadge'), false);
-  assert.equal(await page.locator('#berichtenTegel').count(), 0);
+  assert.equal(await page.isVisible('#berichtenKnop'), false);
   await page.goto(`${base}#/berichten`);
   await even(page);
   assert.equal(hash(page), '#/profiel');
@@ -130,13 +130,14 @@ test('uitgelogd: geen teller en geen tegel; #/berichten gaat naar Profiel', asyn
   await ctx.close();
 });
 
-test('teller (live) op de tegel en de Profiel-tab; openen zet gelezen en ruimt oude berichten op', async () => {
+test('teller (live) op de Berichten-knop in de kop en de Profiel-tab; openen zet gelezen en ruimt oude berichten op', async () => {
   const { ctx, page, fouten } = await openApp();
   assert.equal(await tekst(page, '#profielBadge'), '1');
   assert.equal(await tab(page).getAttribute('aria-label'), 'Profiel, 1 ongelezen bericht');
-  assert.match(await tekst(page, '#berichtenTegel'), /Berichten.*1 ongelezen/);
+  assert.equal(await tekst(page, '#berichtenKnopBadge'), '1');
+  assert.equal(await page.getAttribute('#berichtenKnop', 'aria-label'), 'Berichten, 1 ongelezen');
 
-  await page.click('#berichtenTegel');
+  await page.click('#berichtenKnop');
   await even(page, 500);
   assert.equal(hash(page), '#/berichten');
   const kaart = page.locator('.bericht').first();
@@ -148,6 +149,11 @@ test('teller (live) op de tegel en de Profiel-tab; openen zet gelezen en ruimt o
   await even(page);
   assert.equal(await page.isVisible('#profielBadge'), false);
   assert.equal(await tab(page).getAttribute('aria-label'), null);
+  // Terug op Profiel: de knop zonder teller.
+  await page.click('#berichtenBack');
+  await even(page);
+  assert.equal(await page.isVisible('#berichtenKnopBadge'), false);
+  assert.equal(await page.getAttribute('#berichtenKnop', 'aria-label'), 'Berichten');
   assert.deepEqual(fouten, []);
   await ctx.close();
 });
@@ -199,7 +205,7 @@ test('Kan niet: status in het plan, bericht aan de organisator, niets in Gepland
 
 test('de titel opent het detailscherm; terug gaat naar Berichten', async () => {
   const { ctx, page, fouten } = await openApp({ hash: '#/profiel' });
-  await page.click('#berichtenTegel');
+  await page.click('#berichtenKnop');
   await even(page, 500);
   await page.click('.bericht-titel');
   await even(page);
@@ -293,7 +299,7 @@ test('rond middernacht: [Ik ga mee] tot 00:00 in Amsterdam, daarna "Verlopen" (z
 test('offline: melding met Opnieuw; weer online laden', async () => {
   const { ctx, page, fouten } = await openApp({ hash: '#/profiel' });
   await page.evaluate(() => { window.__nepOffline = true; });
-  await page.click('#berichtenTegel');
+  await page.click('#berichtenKnop');
   await even(page, 500);
   assert.match(await tekst(page, '#berichtenInhoud'), /konden niet worden geladen/);
   await page.evaluate(() => { window.__nepOffline = false; });

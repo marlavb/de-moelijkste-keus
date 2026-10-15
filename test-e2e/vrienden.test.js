@@ -83,7 +83,8 @@ test('profiel: na inloggen "Kies je gebruikersnaam", opslaan, usernames-document
     await page.fill('#profielNaam', ACCOUNTS[k].naam);
     await page.click('#profielOpslaan');
     await page.waitForFunction(() => location.hash === '#/profiel', null, { timeout: 15000 });
-    await wachtOpTekst(page, '.profiel-regel', new RegExp(`@${ACCOUNTS[k].gebruikersnaam} · ${ACCOUNTS[k].naam}`));
+    // Profielkaart: naam en @gebruikersnaam (de regel met Wijzigen staat in Instellingen).
+    await wachtOpTekst(page, '#authBox', new RegExp(`${ACCOUNTS[k].naam}@${ACCOUNTS[k].gebruikersnaam}`));
     assert.deepEqual(await leesDoc(`usernames/${ACCOUNTS[k].gebruikersnaam}`), { uid: uid[k], gebruikersnaam: ACCOUNTS[k].gebruikersnaam, naam: ACCOUNTS[k].naam });
   }
 });
@@ -186,9 +187,10 @@ test('teller bij B zonder herladen, Berichten met de uitnodiging, titel naar het
   const B = ik.B.page;
   await B.waitForSelector('#profielBadge:not([hidden])', { timeout: 15000 });
   assert.equal(await tekst(B, '#profielBadge'), '1');
-  assert.match(await tekst(B, '#berichtenTegel'), /1 ongelezen/);
+  assert.equal(await tekst(B, '#berichtenKnopBadge'), '1');
+  assert.equal(await B.getAttribute('#berichtenKnop', 'aria-label'), 'Berichten, 1 ongelezen');
   await schermafbeelding(B, '2-berichten-teller');
-  await B.click('#berichtenTegel');
+  await B.click('#berichtenKnop');
   await wachtOpTekst(B, '.bericht', /Nieuw@anna nodigt je uit voor/);
   await schermafbeelding(B, '2b-berichten');
   await B.waitForSelector('#profielBadge', { state: 'hidden', timeout: 15000 });
@@ -312,7 +314,7 @@ test('offline: Berichten blijft niet hangen (berichten uit de cache of een meldi
   const { ctx, page } = ik.C;
   await ga(page, base, '#/profiel');
   await ctx.setOffline(true);
-  await page.click('#berichtenTegel');
+  await page.click('#berichtenKnop');
   // De echte Firestore-SDK toont offline wat hij al heeft (cache); lukt dat
   // niet, dan na de tijdslimiet "konden niet worden geladen". Nooit "Laden…".
   await wachtOpTekst(page, '#berichtenInhoud', /@anna|konden niet worden geladen/, 20000);
@@ -324,11 +326,15 @@ test('offline: Berichten blijft niet hangen (berichten uit de cache of een meldi
   await wachtOpTekst(page, '#berichtenInhoud', /@anna/, 20000);
 });
 
-test('uitgelogd: geen teller, geen tegels; #/berichten gaat naar Profiel', async () => {
+test('uitgelogd: geen teller, geen tegels, geen knoppen in de kop; #/berichten en #/profiel/instellingen gaan naar Profiel', async () => {
   const g = await openGebruiker(browser, base, null);
   await even(g.page, 1500);
   assert.equal(await g.page.isVisible('#profielBadge'), false);
   assert.equal(await g.page.isVisible('#profielTegels'), false);
+  assert.equal(await g.page.isVisible('#berichtenKnop'), false);
+  assert.equal(await g.page.isVisible('#instellingenKnop'), false);
+  await ga(g.page, base, '#/profiel/instellingen');
+  await g.page.waitForFunction(() => location.hash === '#/profiel');
   assert.equal(await g.page.isVisible('.google-btn'), true);
   await ga(g.page, base, '#/berichten');
   await g.page.waitForFunction(() => location.hash === '#/profiel');
@@ -336,9 +342,10 @@ test('uitgelogd: geen teller, geen tegels; #/berichten gaat naar Profiel', async
   await g.ctx.close();
 });
 
-test('Mail in Profiel: uitzetten en weer aanzetten (mailvoorkeur, echte rules)', async () => {
+test('Mail in Instellingen: uitzetten en weer aanzetten (mailvoorkeur, echte rules)', async () => {
   const B = ik.B.page;
   await ga(B, base, '#/profiel');
+  await B.click('#instellingenKnop');
   await B.click('#mailTegel');
   await B.waitForSelector('#mailSchakelaar');
   assert.equal(await B.getAttribute('#mailSchakelaar', 'aria-checked'), 'true');

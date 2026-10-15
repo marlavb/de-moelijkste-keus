@@ -64,8 +64,10 @@ async function openApp({ gebruiker = BOB, docs = DOCS, hash = '#/profiel' } = {}
 }
 const opslag = (page, pad) => page.evaluate((p) => window.__nepFirestore.get(p) ?? null, pad);
 
-test('tegel → Mail: standaard aan; uitzetten en weer aanzetten schrijft mailvoorkeur; terug naar Profiel', async () => {
+test('Instellingen → Mail: standaard aan; uitzetten en weer aanzetten schrijft mailvoorkeur; terug naar Instellingen en Profiel', async () => {
   const { ctx, page, fouten } = await openApp();
+  await page.click('#instellingenKnop');
+  await page.waitForSelector('#mailTegel');
   await page.click('#mailTegel');
   await page.waitForSelector('#mailSchakelaar');
   assert.equal(new URL(page.url()).hash, '#/profiel/mail');
@@ -80,6 +82,9 @@ test('tegel → Mail: standaard aan; uitzetten en weer aanzetten schrijft mailvo
   await page.waitForTimeout(200);
   assert.equal((await opslag(page, 'mailvoorkeur/u2')).uitnodigingen, true);
   await page.click('#mailBack');
+  await page.waitForTimeout(200);
+  assert.equal(new URL(page.url()).hash, '#/profiel/instellingen');
+  await page.click('#instellingenBack');
   await page.waitForTimeout(200);
   assert.equal(new URL(page.url()).hash, '#/profiel');
   assert.deepEqual(fouten, []);
@@ -102,7 +107,7 @@ test('uitgelogd (de link in de mail): eerst inloggen', async () => {
 });
 
 test('offline: laden en opslaan geven een nette melding', async () => {
-  const { ctx, page, fouten } = await openApp();
+  const { ctx, page, fouten } = await openApp({ hash: '#/profiel/instellingen' });
   await page.evaluate(() => { window.__nepOffline = true; });
   await page.click('#mailTegel');
   await page.waitForTimeout(300);

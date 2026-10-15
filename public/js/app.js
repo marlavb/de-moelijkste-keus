@@ -2951,7 +2951,7 @@ function renderAccountVerwijderen() {
   annuleer.className = 'btn-secondary';
   annuleer.textContent = 'Annuleren';
   annuleer.disabled = a.bezig;
-  annuleer.addEventListener('click', () => terug('#/profiel'));
+  annuleer.addEventListener('click', () => terug('#/profiel/instellingen'));
   box.append(knop, annuleer);
   if (a.fout) {
     const p = vriendenTekst('p', 'vrienden-melding vrienden-melding--fout', a.fout);

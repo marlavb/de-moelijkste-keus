@@ -132,7 +132,9 @@ test('opslaan: ongeldig → melding bij het veld; bezet → melding; geldig → 
   await page.click('#profielOpslaan');
   await page.waitForTimeout(300);
   assert.equal(new URL(page.url()).hash, '#/profiel');
-  assert.match(await page.textContent('.profiel-regel'), /@Anna_V · Anna de Vries/);
+  // Profielkaart: naam en @gebruikersnaam; de regel met Wijzigen staat in Instellingen.
+  assert.match(await page.textContent('#authBox'), /Anna de Vries@Anna_V/);
+  assert.match(await page.textContent('#instellingenInhoud .profiel-regel'), /@Anna_V · Anna de Vries/);
   assert.deepEqual(await opslag(page, 'usernames/anna_v'), { uid: 'u1', gebruikersnaam: 'Anna_V', naam: 'Anna de Vries' });
   assert.equal((await opslag(page, 'profielen/u1')).gebruikersnaamLaag, 'anna_v');
   assert.equal((await opslag(page, 'usernames/anna')).uid, 'u2');
@@ -147,6 +149,8 @@ test('bestaand profiel: Wijzigen toont de huidige gegevens zonder "Later"; nieuw
     'usernames/anna': { uid: 'u1', gebruikersnaam: 'anna', naam: 'Anna' },
   };
   const { ctx, page, fouten } = await openApp({ gebruiker: ANNA, docs });
+  await page.click('#instellingenKnop');
+  await page.waitForTimeout(200);
   assert.match(await page.textContent('.profiel-regel'), /@anna · Anna/);
   await page.click('.profiel-regel .text-btn-small');
   await page.waitForTimeout(200);
@@ -157,17 +161,17 @@ test('bestaand profiel: Wijzigen toont de huidige gegevens zonder "Later"; nieuw
   await page.fill('#profielGebruikersnaam', 'anna.v');
   await page.click('#profielOpslaan');
   await page.waitForTimeout(300);
-  assert.equal(new URL(page.url()).hash, '#/profiel');
+  assert.equal(new URL(page.url()).hash, '#/profiel/instellingen');
   assert.equal(await opslag(page, 'usernames/anna'), null);
   assert.equal((await opslag(page, 'usernames/anna.v')).uid, 'u1');
   assert.equal((await opslag(page, 'profielen/u1')).aangemaaktOp, 'TOEN');
 
-  // Terug (app-knop) vanaf het instelscherm gaat naar Profiel.
+  // Terug (app-knop) vanaf het instelscherm gaat naar Instellingen.
   await page.click('.profiel-regel .text-btn-small');
   await page.waitForTimeout(200);
   await page.click('#profielInstellenBack');
   await page.waitForTimeout(200);
-  assert.equal(new URL(page.url()).hash, '#/profiel');
+  assert.equal(new URL(page.url()).hash, '#/profiel/instellingen');
   assert.deepEqual(fouten, []);
   await ctx.close();
 });
@@ -237,6 +241,7 @@ test('Vindbaar op naam: nieuw profiel → keuze standaard uit; zonder vinkje { v
     await page.waitForTimeout(300);
     assert.equal(new URL(page.url()).hash, '#/profiel');
     assert.equal((await opslag(page, 'naamvoorkeur/u1')).vindbaar, verwacht);
+    await page.click('#instellingenKnop');
     await page.waitForSelector('#vindbaarSchakelaar');
     assert.equal(await page.getAttribute('#vindbaarSchakelaar', 'aria-checked'), String(verwacht));
     assert.deepEqual(fouten, []);
@@ -244,8 +249,9 @@ test('Vindbaar op naam: nieuw profiel → keuze standaard uit; zonder vinkje { v
   }
 });
 
-test('Vindbaar op naam: bestaand profiel zonder voorkeur → uit, en er wordt niets geschreven; aanzetten in Profiel; de regel bij je naam', async () => {
+test('Vindbaar op naam: bestaand profiel zonder voorkeur → uit, en er wordt niets geschreven; aanzetten in Instellingen; de regel bij je naam', async () => {
   const { ctx, page, fouten } = await openApp({ gebruiker: ANNA, docs: PROFIEL_ANNA });
+  await page.click('#instellingenKnop');
   await page.waitForSelector('#vindbaarSchakelaar');
   assert.equal(await page.getAttribute('#vindbaarSchakelaar', 'aria-checked'), 'false');
   assert.equal(await opslag(page, 'naamvoorkeur/u1'), null, 'geen stille migratie meer');
@@ -272,6 +278,7 @@ test('Vindbaar op naam: bestaand profiel zonder voorkeur → uit, en er wordt ni
 
 test('Vindbaar op naam: een bestaande voorkeur (uit) wordt niet overschreven', async () => {
   const { ctx, page, fouten } = await openApp({ gebruiker: ANNA, docs: { ...PROFIEL_ANNA, 'naamvoorkeur/u1': { vindbaar: false, gewijzigdOp: 1 } } });
+  await page.click('#instellingenKnop');
   await page.waitForSelector('#vindbaarSchakelaar');
   assert.equal(await page.getAttribute('#vindbaarSchakelaar', 'aria-checked'), 'false');
   assert.deepEqual(await opslag(page, 'naamvoorkeur/u1'), { vindbaar: false, gewijzigdOp: 1 });
