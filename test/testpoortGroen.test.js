@@ -113,7 +113,7 @@ test('met andere suites dan de echte (tests, TESTPOORT_SUITES_VOOR_TESTS) nooit 
 
 // ---------- Tegelijk (okt 2026) ----------
 
-import { draaiParallel, banen, tweedeConfig, TWEEDE_POORTEN, startSuite } from '../scripts/testpoort.js';
+import { draaiParallel, banen, tweedeConfig, TWEEDE_POORTEN, startSuite, stappen, bezettePoorten, EERSTE_POORTEN } from '../scripts/testpoort.js';
 
 // Nep-start: elke suite eindigt na `ms` met `code`; stop() eindigt meteen met 130.
 function nepStart(gedrag, log) {
@@ -123,7 +123,7 @@ function nepStart(gedrag, log) {
     let klaar;
     const p = new Promise((r) => { klaar = r; });
     const t = setTimeout(() => { log.push(`klaar ${naam}`); klaar(code); }, ms);
-    return { klaar: p, stop: () => { clearTimeout(t); log.push(`gestopt ${naam} (${label})`); klaar(130); } };
+    return { klaar: p, stop: () => { clearTimeout(t); log.push(`gestopt ${naam} (${label})`); klaar(0); } }; // een nette afsluiting eindigt met 0
   };
 }
 const LANES = [
@@ -152,13 +152,22 @@ test('tegelijk: één fout → exit ≠ 0 met de naam van de suite, de andere ba
   assert.ok(log.includes('gestopt npm test (unit)'));
   assert.ok(log.includes('gestopt npm run test:e2e (e2e)'));
   assert.ok(!log.some((l) => l.includes('test:functions')), 'functions niet meer gestart');
+  assert.ok(meldingen.includes('⏹ [unit] npm test gestopt'));
+  assert.ok(!meldingen.some((m) => m.startsWith('✓')), 'niets gestopt als groen gemeld');
   assert.ok(meldingen.some((m) => /✖ \[rules\+functions\] npm run test:rules faalt \(exit 1\)/.test(m)));
 });
 
-test('banen: unit, rules+functions (tweede poorten) en e2e; samen precies de vier suites', () => {
-  const b = banen('/repo');
+test('banen: unit, rules+functions (tweede poorten) en e2e; samen precies de vier suites, test:e2e in losse stappen', () => {
+  const scripts = { 'test:rules': 'npm --prefix firebase test', 'test:functions': 'node scripts/test-functions.js', 'test:e2e': 'npm --prefix firebase run e2e && node scripts/nep-geheimen.js && npm --prefix firebase run e2e-functies' };
+  const b = banen('/repo', scripts);
   assert.deepEqual(b.map((l) => l.label), ['unit', 'rules+functions', 'e2e']);
-  assert.deepEqual(b.flatMap((l) => l.suites), SUITES);
+  const namen = [...new Set(b.flatMap((l) => l.suites.map((s) => s[2])))];
+  assert.deepEqual(namen, SUITES.map(([c, a]) => [c, ...a].join(' ')));
+  assert.deepEqual(b[2].suites, [
+    ['sh', ['-c', 'npm --prefix firebase run e2e'], 'npm run test:e2e'],
+    ['sh', ['-c', 'node scripts/nep-geheimen.js'], 'npm run test:e2e'],
+    ['sh', ['-c', 'npm --prefix firebase run e2e-functies'], 'npm run test:e2e'],
+  ]);
   assert.equal(b[1].env.PODIUM_FIREBASE_CONFIG, '/repo/firebase.parallel.json');
   assert.equal(b[1].env.PODIUM_FUNCTIONS_POORT, '5111');
   assert.equal(b[0].env, undefined);
@@ -187,4 +196,35 @@ test('startSuite: elke regel met het label; exitcode doorgegeven; stop() haalt d
   const q = startSuite(process.execPath, ['-e', 'require("child_process").spawn(process.execPath, ["-e", "setInterval(()=>{}, 1000)"], { stdio: "inherit" }); setInterval(()=>{}, 1000)'], { label: 'y', schrijf: () => {} });
   setTimeout(() => q.stop(), 200);
   assert.notEqual(await q.klaar, 0);
+});
+
+test('banen uit de echte package.json: dezelfde stappen als het script (geen drift)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf-8'));
+  const e2e = banen(new URL('..', import.meta.url).pathname).find((l) => l.label === 'e2e').suites;
+  assert.equal(e2e.map((s) => s[1][1]).join(' && '), pkg.scripts['test:e2e']);
+  assert.deepEqual(stappen(['npm', ['test']], pkg.scripts), [['npm', ['test'], 'npm test']]);
+});
+
+test('tegelijk: na een stop start de volgende stap van dezelfde suite niet meer (geen nieuwe emulatorronde)', async () => {
+  const log = [];
+  const lanes = [
+    { label: 'a', suites: [['npm', ['test'], 'npm test']] },
+    { label: 'e2e', suites: [['sh', ['-c', 'e2e'], 'npm run test:e2e'], ['sh', ['-c', 'geheimen'], 'npm run test:e2e'], ['sh', ['-c', 'e2e-functies'], 'npm run test:e2e']] },
+  ];
+  const r = await draaiParallel({ lanes, start: nepStart({ 'npm test': { ms: 5, code: 1 }, 'sh -c e2e': { ms: 200 } }, log), log: () => {} });
+  assert.equal(r.mislukt, 'npm test');
+  assert.ok(log.includes('gestopt sh -c e2e (e2e)'));
+  assert.ok(!log.some((l) => /geheimen|e2e-functies/.test(l)));
+});
+
+test('poorten: een bezette poort wordt gezien', async () => {
+  const { createServer } = await import('node:net');
+  const s = createServer();
+  await new Promise((r) => s.listen(0, '127.0.0.1', r));
+  const p = s.address().port;
+  assert.deepEqual(await bezettePoorten([p]), [p]);
+  await new Promise((r) => s.close(r));
+  assert.deepEqual(await bezettePoorten([p]), []);
+  assert.equal(EERSTE_POORTEN.some((x) => Object.values(TWEEDE_POORTEN).includes(x)), false);
 });

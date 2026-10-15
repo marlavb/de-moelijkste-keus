@@ -15,8 +15,11 @@
 //   e2e              op de poorten van firebase.json (de app in de browser
 //                    gebruikt die vast, public/js/emulator.js)
 // Elke regel uitvoer krijgt het label van zijn baan. Faalt een suite, dan
-// stoppen de andere banen (hun hele procesgroep, ook de emulators) en meldt
-// de poort welke suite faalde. Na elkaar als vroeger: PODIUM_TESTPOORT_SERIEEL=1.
+// stoppen de andere banen (SIGINT aan hun procesgroep: de emulators sluiten
+// netjes af) en meldt de poort welke suite faalde. Een npm-script met "&&"
+// (test:e2e) draait als losse stappen, zodat er na een stop geen volgende
+// emulatorronde meer start. Vooraf: alle emulatorpoorten moeten vrij zijn.
+// Na elkaar als vroeger: PODIUM_TESTPOORT_SERIEEL=1.
 //
 // Alleen voor de tests van dit script: TESTPOORT_SUITES_VOOR_TESTS (JSON,
 // [[commando, [argumenten]], …]) vervangt de suites (na elkaar). Met andere
@@ -25,6 +28,7 @@
 
 import { spawn, spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
+import { createServer } from 'node:net';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { magOverslaan, isSchoon, groenSleutel, schrijfGroen } from './testpoortGroen.js';
@@ -59,14 +63,44 @@ export function tweedeConfig(config, p = TWEEDE_POORTEN) {
   };
 }
 
-/** De banen voor de echte suites; `cwd` voor het absolute pad naar de tweede config. */
-export function banen(cwd = process.cwd()) {
+export const EERSTE_POORTEN = [8085, 9150, 9099, 5011, 4400, 4500, 9299, 9499];
+
+/**
+ * Een suite als stappen: een npm-script met " && " wordt losse stappen
+ * (['sh', ['-c', deel], naam]), zodat na een stop geen volgende stap start.
+ * Leest de scripts uit package.json (`scripts`), zodat ze nooit uit de pas
+ * lopen.
+ */
+export function stappen([cmd, args], scripts = {}) {
+  const naam = [cmd, ...args].join(' ');
+  const script = cmd === 'npm' && args[0] === 'run' && args.length === 2 ? scripts[args[1]] : null;
+  if (!script || !script.includes(' && ')) return [[cmd, args, naam]];
+  return script.split(' && ').map((deel) => ['sh', ['-c', deel.trim()], naam]);
+}
+
+/** De banen voor de echte suites; `cwd` voor package.json en de tweede config. */
+export function banen(cwd = process.cwd(), scripts = JSON.parse(readFileSync(path.join(cwd, 'package.json'), 'utf-8')).scripts) {
   const tweede = path.join(cwd, TWEEDE_CONFIG);
+  const als = (...suites) => suites.flatMap((s) => stappen(s, scripts));
   return [
-    { label: 'unit', suites: [SUITES[0]] },
-    { label: 'rules+functions', suites: [SUITES[1], SUITES[2]], env: { PODIUM_FIREBASE_CONFIG: tweede, PODIUM_FUNCTIONS_POORT: String(TWEEDE_POORTEN.functions) } },
-    { label: 'e2e', suites: [SUITES[3]] },
+    { label: 'unit', suites: als(SUITES[0]) },
+    { label: 'rules+functions', suites: als(SUITES[1], SUITES[2]), env: { PODIUM_FIREBASE_CONFIG: tweede, PODIUM_FUNCTIONS_POORT: String(TWEEDE_POORTEN.functions) } },
+    { label: 'e2e', suites: als(SUITES[3]) },
   ];
+}
+
+/** Welke van deze poorten op 127.0.0.1 al bezet zijn. */
+export async function bezettePoorten(poorten) {
+  const bezet = [];
+  for (const p of poorten) {
+    const vrij = await new Promise((r) => {
+      const s = createServer();
+      s.once('error', () => r(false));
+      s.listen(p, '127.0.0.1', () => s.close(() => r(true)));
+    });
+    if (!vrij) bezet.push(p);
+  }
+  return bezet;
 }
 
 const standaardUitvoer = (cmd, args) => spawnSync(cmd, args, { stdio: 'inherit' }).status ?? 1;
@@ -139,16 +173,23 @@ export async function draaiParallel({ lanes, start = startSuite, log = console.l
   };
   await Promise.all(
     lanes.map(async ({ label, suites, env }) => {
-      for (const [cmd, args] of suites) {
+      for (let i = 0; i < suites.length; i++) {
+        const [cmd, args, naam = [cmd, ...args].join(' ')] = suites[i];
         if (mislukt) return;
-        const naam = [cmd, ...args].join(' ');
-        log(`▶ [${label}] ${naam}`);
+        const eersteStap = i === 0 || (suites[i - 1][2] ?? suites[i - 1].slice(0, 2).flat().join(' ')) !== naam;
+        if (eersteStap) log(`▶ [${label}] ${naam}`);
         const begin = nu();
         const p = start(cmd, args, { label, env });
         lopend.add(p);
         const code = await p.klaar;
         lopend.delete(p);
-        tijden[naam] = Math.round((nu() - begin) / 100) / 10;
+        tijden[naam] = Math.round(((tijden[naam] ?? 0) * 1000 + nu() - begin) / 100) / 10;
+        // Gestopt omdat een andere baan faalde: nooit "groen" (een emulator
+        // die netjes afsluit, eindigt met exit 0).
+        if (mislukt && mislukt !== naam) {
+          log(`⏹ [${label}] ${naam} gestopt`);
+          return;
+        }
         if (code !== 0) {
           if (!mislukt) {
             mislukt = naam;
@@ -157,7 +198,8 @@ export async function draaiParallel({ lanes, start = startSuite, log = console.l
           }
           return;
         }
-        log(`✓ [${label}] ${naam} groen (${tijden[naam]} s)`);
+        const laatsteStap = i === suites.length - 1 || (suites[i + 1][2] ?? suites[i + 1].slice(0, 2).flat().join(' ')) !== naam;
+        if (laatsteStap) log(`✓ [${label}] ${naam} groen (${tijden[naam]} s)`);
       }
     })
   );
@@ -208,6 +250,13 @@ export async function testpoort({
   let r;
   if (parallel) {
     if (!lanes) {
+      // Een emulator van een eerdere (afgebroken) run zou een baan vreemd
+      // laten falen: dan liever meteen een duidelijke weigering.
+      const bezet = await bezettePoorten([...EERSTE_POORTEN, ...Object.values(TWEEDE_POORTEN)]);
+      if (bezet.length) {
+        log(`✖ emulatorpoort(en) bezet: ${bezet.join(', ')} — draait er nog een emulator van een eerdere run? (lsof -nP -iTCP:${bezet[0]} -sTCP:LISTEN)`);
+        return { ok: false, mislukt: `vrije emulatorpoorten (bezet: ${bezet.join(', ')})`, overgeslagen: false };
+      }
       const config = JSON.parse(readFileSync(path.join(cwd, 'firebase.json'), 'utf-8'));
       writeFileSync(path.join(cwd, TWEEDE_CONFIG), `${JSON.stringify(tweedeConfig(config), null, 2)}\n`);
     }
