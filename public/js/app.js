@@ -67,6 +67,7 @@ import {
 import { getGenreBucket, getGenres, matchtGenreFilter } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
 import { weergaveTitel, makerStaatInTitel, isVervallen, isVol, VERVALLEN_LABELS, watchlistStand } from './weergave.js';
+import { matchtZoekterm } from './zoeken.js';
 import { renameFavoritesAndPersist, THEATER_MOVES } from './favorites.js';
 import { laadWatchlist, bekendeSleutels, legeWatchlist, watchlistSleutel, voegToe, verwijder, NORMALISATIE_VERSIE, samenvoegMapping, groepeerWatchlist } from './watchlist.js';
 import {
@@ -4844,12 +4845,17 @@ function sortKey(show) {
 }
 
 function renderSubtitle() {
-  const ids = activeTheaterIds();
+  // Vast: alle theaters met voorstellingen in de data, los van Mijn theaters,
+  // filters en zoeken (15 okt 2026; daarvoor telde Mijn theaters mee, en
+  // sprong de kop na het inloggen van "69 in 40" naar de eigen keuze, bv.
+  // "33 in 13"). Gepauzeerde theaters hebben geen voorstellingen en tellen
+  // dus niet mee.
+  const ids = [...new Set(state.shows.map((s) => s.theaterId))];
   const cities = new Set(ids.map((id) => theaterStad(id)).filter(Boolean));
   const theaterCount = ids.length;
-  // "Actief" = met voorstellingen (en aan in Mijn theaters); zo past het op
-  // één regel op een telefoon van 360 px (13 okt 2026; "met voorstellingen"
-  // liep over naar twee regels). De title zegt het voluit.
+  // "Actief" = met voorstellingen; zo past het op één regel op een telefoon
+  // van 360 px (13 okt 2026; "met voorstellingen" liep over naar twee
+  // regels). De title zegt het voluit.
   const theaterWoord = theaterCount === 1 ? 'actief theater' : 'actieve theaters';
 
   // Bij precies 1 stad noemen we 'm bij naam (leest natuurlijker dan "1
@@ -4864,7 +4870,7 @@ function renderSubtitle() {
   }
 
   els.subtitle.textContent = cityText ? `${theaterCount} ${theaterWoord} in ${cityText}` : `${theaterCount} ${theaterWoord}`;
-  els.subtitle.title = 'Theaters met voorstellingen die aan staan in Mijn theaters';
+  els.subtitle.title = 'Alle theaters met voorstellingen in de agenda';
 }
 
 function theaterDisplayName(id) {
@@ -5319,13 +5325,9 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     // nooit, dat is geen "meer", dat is gewoon verlopen data).
     const dateOk = s.datum >= minDate && (maxDate == null || s.datum <= maxDate);
     const wanneerOk = matchtWanneer(s.datum, state.wanneer, vandaagAmsterdam);
-    const searchOk =
-      !state.searchQuery ||
-      s.titel.toLowerCase().includes(state.searchQuery) ||
-      // Ook op de titel zoals het theater hem schrijft (weergave op meerderheid).
-      (s.titelBron ?? '').toLowerCase().includes(state.searchQuery) ||
-      s.theaterNaam.toLowerCase().includes(state.searchQuery) ||
-      (THEATER_ZOEKALIASSEN[s.theaterId] ?? []).some((alias) => alias.includes(state.searchQuery));
+    // In alles wat je ziet: titel met maker, brontitel, maker, theater en
+    // stad (zoeken.js).
+    const searchOk = !state.searchQuery || matchtZoekterm(s, state.searchQuery, { aliassen: THEATER_ZOEKALIASSEN[s.theaterId] ?? [] });
     return cityOk && theaterOk && genreOk && podiumpasOk && watchlistOk && gezienOk && fullOk && dateOk && wanneerOk && searchOk;
   });
 }
