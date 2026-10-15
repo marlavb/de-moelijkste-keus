@@ -111,7 +111,9 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   ("Film", "Drama, film", "Horror, film", "Film, Festival") en
   filmvertoningen op titel (Cinekid Festival, Underground Cinema, European
   Outdoor Film Tour, Diner Zin in Film, "Filmvertoning: …", "… film:" of
-  "… film (AL)"; filmmuziek en filmorkesten blijven), en quizzen (een
+  "… film (AL)"; filmmuziek en filmorkesten blijven), rondleidingen
+  ("rondleiding", "guided tour", "public tour", "Kijkje achter de schermen";
+  niet "tour" alleen of "Theatertour") en quizzen (een
   woord dat op "quiz" eindigt: Pubquiz, Jaarquiz; niet "Quizmaster"). Film als extra tag
   naast een podiumgenre (Bijlmer Parktheater) blijft. De log telt per
   theater wat er wegvalt.
