@@ -2967,6 +2967,25 @@ button.gezien-titel {
   }
 }
 
+/* Kop van Profiel: Berichten en Instellingen als ronde icoonknoppen (44 px)
+   op --surface met een rand in --control-border (3:1 op --bg); het icoon in
+   --primary (13:1). De teller met een ring in --surface (3,3:1). */
+.profiel-kop-knoppen {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.icon-btn--kop {
+  border-color: var(--control-border);
+  background: var(--surface);
+  color: var(--primary);
+}
+
+.icon-btn--kop .badge {
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
 /* Instellingen (okt 2026): groepen met een kopje; onderaan Uitloggen en
    Account verwijderen als gewone links. Op --bg haalt --primary 12:1 en
    --accent-text-small 6,0:1. */

@@ -589,6 +589,9 @@ const els = {
   mailBack: document.getElementById('mailBack'),
   mailInhoud: document.getElementById('mailInhoud'),
   instellingenBack: document.getElementById('instellingenBack'),
+  berichtenKnop: document.getElementById('berichtenKnop'),
+  berichtenKnopBadge: document.getElementById('berichtenKnopBadge'),
+  instellingenKnop: document.getElementById('instellingenKnop'),
   instellingenInhoud: document.getElementById('instellingenInhoud'),
   accountVerwijderenBack: document.getElementById('accountVerwijderenBack'),
   accountVerwijderenInhoud: document.getElementById('accountVerwijderenInhoud'),
@@ -747,6 +750,8 @@ async function init() {
   els.mailBack?.addEventListener('click', () => terug('#/profiel/instellingen'));
   els.accountVerwijderenBack?.addEventListener('click', () => terug('#/profiel/instellingen'));
   els.instellingenBack?.addEventListener('click', () => terug('#/profiel'));
+  els.berichtenKnop?.addEventListener('click', () => navigate('#/berichten'));
+  els.instellingenKnop?.addEventListener('click', () => navigate('#/profiel/instellingen'));
   if (els.profielGebruikersnaamUitleg) els.profielGebruikersnaamUitleg.textContent = GEBRUIKERSNAAM_UITLEG;
   route();
 
@@ -2998,9 +3003,6 @@ async function verwijderMijnAccount() {
 
 // ---------- Berichten (zie plannen.js) ----------
 
-const BERICHT_ICOON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="3" y="5" width="18" height="14" rx="2" /><polyline points="3 7 12 13 21 7" />
-</svg>`;
 const STAND_TEKST = {
   gaat: 'Je gaat mee',
   'kan-niet': 'Afgeslagen',
@@ -3051,38 +3053,23 @@ function renderBerichtenTeller() {
     if (n) tab.setAttribute('aria-label', `Profiel, ${n} ongelezen ${n === 1 ? 'bericht' : 'berichten'}`);
     else tab.removeAttribute('aria-label');
   }
-  document.getElementById('berichtenTegel')?.replaceWith(renderBerichtenTegel());
+  renderProfielKop();
 }
 
-function renderBerichtenTegel() {
+// Kop van Profiel (okt 2026): rechts Berichten (met teller, alleen met een
+// profiel: zonder kun je geen berichten krijgen) en Instellingen (ingelogd).
+// Uitgelogd geen van beide; Profiel toont dan "Inloggen met Google".
+function renderProfielKop() {
   const n = state.ongelezen ?? 0;
-  const tegel = document.createElement('button');
-  tegel.type = 'button';
-  tegel.className = 'profiel-tegel';
-  tegel.id = 'berichtenTegel';
-  const icoon = document.createElement('span');
-  icoon.className = 'profiel-tegel-icoon';
-  icoon.innerHTML = BERICHT_ICOON;
-  icoon.firstElementChild.setAttribute('aria-hidden', 'true');
-  if (n > 0) {
-    const badge = document.createElement('span');
-    badge.className = 'badge';
-    badge.setAttribute('aria-hidden', 'true');
-    badge.textContent = n > 99 ? '99+' : String(n);
-    icoon.appendChild(badge);
+  if (els.berichtenKnop) {
+    els.berichtenKnop.hidden = !magVrienden() || !els.screens.berichten;
+    els.berichtenKnop.setAttribute('aria-label', n > 0 ? `Berichten, ${n} ongelezen` : 'Berichten');
   }
-  const tekst = document.createElement('span');
-  tekst.className = 'profiel-tegel-tekst';
-  tekst.append(
-    vriendenTekst('span', 'profiel-tegel-titel', 'Berichten'),
-    vriendenTekst('span', 'profiel-tegel-sub', n > 0 ? `${n} ongelezen` : 'Uitnodigingen en reacties')
-  );
-  const pijl = document.createElement('span');
-  pijl.className = 'profiel-tegel-pijl';
-  pijl.innerHTML = CHEVRON;
-  tegel.append(icoon, tekst, pijl);
-  tegel.addEventListener('click', () => navigate('#/berichten'));
-  return tegel;
+  if (els.berichtenKnopBadge) {
+    els.berichtenKnopBadge.hidden = n === 0;
+    els.berichtenKnopBadge.textContent = n > 99 ? '99+' : String(n);
+  }
+  if (els.instellingenKnop) els.instellingenKnop.hidden = !state.user || !els.screens.instellingen;
 }
 
 const BERICHTEN_TIMEOUT_MS = 12000;
@@ -3755,7 +3742,6 @@ function renderProfielTegels() {
 
   const melding = renderDelenMelding();
   if (melding) box.appendChild(melding);
-  if (els.screens.berichten) box.appendChild(renderBerichtenTegel());
 
   const n = state.inkomendAantal ?? 0;
   const tegel = document.createElement('button');
@@ -4778,6 +4764,7 @@ function renderAuthBox() {
     err.textContent = state.authError;
     els.authBox.appendChild(err);
   }
+  renderProfielKop();
   renderInstellingen();
 }
 
