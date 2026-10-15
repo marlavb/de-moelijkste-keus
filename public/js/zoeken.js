@@ -26,9 +26,22 @@ export function zoekTeksten(show, aliassen = []) {
   return [weergaveTitel(show), show?.titelBron, show?.maker, show?.theaterNaam, show?.stad, ...aliassen].filter(Boolean);
 }
 
+// Een korte zoekterm (hooguit KORT tekens) is vaak een afkorting ("NDT",
+// "ITA", "KSO"): die moet aan het begin van een woord staan, anders vindt
+// "NDT" ook "Brandt", "Grondtonen" en "Soundtrack", en "ITA" ook "Evita".
+// Langere zoektermen mogen midden in een woord staan, voor Nederlandse
+// samenstellingen ("dans" in "Introdans", "kerst" in "Babykerstconcert").
+export const KORT = 3;
+const opWoordbegin = (q) => new RegExp(`(^|[^\\p{L}\\p{N}])${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'u');
+
 /** Past de voorstelling bij de zoekterm? Een lege zoekterm past altijd. */
 export function matchtZoekterm(show, zoekterm, { aliassen = [] } = {}) {
   const q = zoekVorm(zoekterm);
   if (!q) return true;
-  return zoekTeksten(show, aliassen).some((t) => zoekVorm(t).includes(q));
+  const teksten = zoekTeksten(show, aliassen).map(zoekVorm);
+  if (q.length <= KORT) {
+    const re = opWoordbegin(q);
+    return teksten.some((t) => re.test(t));
+  }
+  return teksten.some((t) => t.includes(q));
 }
