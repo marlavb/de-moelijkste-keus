@@ -152,7 +152,10 @@ const GENRE_MAP = {
   'houten presenteert': 'Overig', // lokale gemeente-programmering, geen genre op zich (zelfde afweging als 'stadsprogrammering')
   'no dutch? no problem!': 'Overig', // taal-toegankelijkheidslabel bij Hoge Woerd, geen genre
   talks: 'Overig', // Engelse meervoudsvorm van het al gemapte 'talk'
-  theatertour: 'Overig', // rondleiding, geen voorstelling op zich
+  // Geen 'theatertour': dat is de theatertour van een artiest, geen
+  // rondleiding (Hoge Woerd, 15 okt 2026). Zonder koppeling is het een
+  // niet-genre-tag: een andere tag ("Cabaret, Theatertour") of het genre van
+  // de productie (genreMeerderheid) geeft het genre.
   verhuur: 'Overig', // zaalverhuur-categorie, komt in de praktijk niet als los agenda-item voor
   verrassing: 'Overig', // mystery-programmering, geen eigen genre
   bijzonder: 'Overig', // Flint's eigen "bijzonder"-label, staat meestal naast een echt genre in de tag-lijst

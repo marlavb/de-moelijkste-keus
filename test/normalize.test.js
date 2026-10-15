@@ -66,3 +66,11 @@ test('genres Noord-Brabant (okt 2026): cabaret & comedy → Cabaret, en de nieuw
   assert.equal(normalizeGenre('Met thema Carnaval'), 'Overig');
   assert.equal(isBekendGenre('Met thema Carnaval'), false);
 });
+
+test('"Theatertour" is geen genre (tour van een artiest, geen rondleiding; Hoge Woerd, 15 okt 2026)', async () => {
+  const { normalizeGenreFromList, isBekendGenre } = await import('../src/lib/genre.js');
+  assert.equal(isBekendGenre('Theatertour'), false);
+  assert.equal(normalizeGenreFromList(['Theatertour']), null);
+  assert.equal(normalizeGenreFromList(['Cabaret', 'Theatertour']), 'Cabaret');
+  assert.equal(normalizeGenreFromList(['Theatertour', 'Cabaret']), 'Cabaret');
+});

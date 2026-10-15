@@ -380,7 +380,8 @@ export async function runRefresh({
   const r1Index = bronIndex(mergedShows.map((s) => ({ theaterId: s.theaterId, titel: s.titelBron ?? s.titel, maker: s.makerBron !== undefined ? s.makerBron : s.maker })));
   const uitersteDatum = `${Number(minDate.slice(0, 4)) + MAX_JAREN_VOORUIT}${minDate.slice(4)}`;
   const teVerPerTheater = {};
-  // Workshops, cursussen en filmvertoningen (geenVoorstelling.js), per theater.
+  // Workshops, cursussen, filmvertoningen, rondleidingen en quizzen
+  // (geenVoorstelling.js), per theater.
   const geenVoorstellingPerTheater = {};
   const verseShows = mergedShows
     .filter((s) => s.datum >= minDate)
@@ -505,7 +506,7 @@ export async function runRefresh({
     });
   const geenVoorstellingAantal = Object.values(geenVoorstellingPerTheater).reduce((n, per) => n + Object.values(per).reduce((a, b) => a + b, 0), 0);
   for (const [theaterId, per] of Object.entries(geenVoorstellingPerTheater)) {
-    log(`[${theaterId}] geen voorstelling, weggelaten: ${Object.entries(per).map(([r, n]) => `${n} ${{ film: 'film(s)', quiz: 'quiz(zen)' }[r] ?? 'workshop(s)/cursus(sen)'}`).join(', ')}.`);
+    log(`[${theaterId}] geen voorstelling, weggelaten: ${Object.entries(per).map(([r, n]) => `${n} ${{ film: 'film(s)', quiz: 'quiz(zen)', rondleiding: 'rondleiding(en)' }[r] ?? 'workshop(s)/cursus(sen)'}`).join(', ')}.`);
   }
   const purgedCount = mergedShows.length - verseShows.length - geenVoorstellingAantal;
   if (purgedCount > 0) {
@@ -566,7 +567,7 @@ export async function runRefresh({
     if (!st || theater.gepauzeerd) continue;
     st.dubbelingen = verwijderdPerTheater[theater.id] ?? 0;
     st.aantal -= st.dubbelingen;
-    // Workshops en films (geenVoorstelling.js) tellen ook niet mee.
+    // Workshops, films, rondleidingen en quizzen (geenVoorstelling.js) tellen ook niet mee.
     st.aantal = Math.max(0, st.aantal - Object.values(geenVoorstellingPerTheater[theater.id] ?? {}).reduce((x, y) => x + y, 0));
     // Bij een ander theater gelaten (ontdubbelTussenTheaters): ook niet meetellen.
     const elders = tussenTheaters.filter((v) => v.theaterId === theater.id).length;

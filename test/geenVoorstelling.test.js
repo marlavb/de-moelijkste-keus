@@ -59,3 +59,15 @@ test('geenVoorstelling strakker: samengestelde woorden, genre Workshop, films me
     ['Het is een lange weg naar de workshop', null],
   ]) assert.equal(geenVoorstelling({ titel, genreRuw }), null, titel);
 });
+
+test('geenVoorstelling: rondleidingen weg, tours en Theatertour blijven (15 okt 2026)', () => {
+  for (const titel of [
+    'Rondleiding', 'Openbare rondleiding (in het Nederlands)', 'The Bookshop Kids Rondleiding', 'Rondleiding door de Koninklijke Schouwburg',
+    'Rondleiding: Duurzaamheid achter de schermen', 'Rondleiding in De Landing', 'Guided tour in English', 'Public tour (in English)',
+    'Kijkje achter de schermen', 'Rondleidingen voor groepen',
+  ]) assert.equal(geenVoorstelling({ titel }), 'rondleiding', titel);
+  for (const titel of [
+    'Theatertour', 'Liefde Onderschat – Theatertour – MEAU', 'Joe Jackson – Hope and Fury Tour 2026', 'Medammecour On Tour',
+    'The Making of: Warming Up on Tour', 'KADO on TOUR', 'Rondleidingsmuziek', 'Achter de schermen – een backstage-komedie',
+  ]) assert.equal(geenVoorstelling({ titel, genreRuw: 'Muziek' }), null, titel);
+});

@@ -23,6 +23,12 @@
 //   "Film, Festival"); "Filmvertoning: …" en "… film:" / "… film (AL)" op
 //   titel ("De Club van Sinterklaas film: …" bij Corrosia). Filmmuziek en
 //   filmorkesten ("Films live in Concert", "CineMusic Filmorkest") blijven.
+// - Rondleiding (15 okt 2026): "rondleiding(en)" als woord in de titel
+//   ("Openbare rondleiding …", "The Bookshop Kids Rondleiding" bij ITA),
+//   "guided tour" / "public tour" (Muziekgebouw, ITA) en "Kijkje achter de
+//   schermen" vooraan (Flint). Niet "tour" alleen: "… Tour 2026", "on tour"
+//   en "Theatertour" zijn concerten en voorstellingen. De scrapers van
+//   Speelhuis, Musis, Parade en Carré laten ze zelf al weg.
 // - Quiz (13 okt 2026): een woord in de titel dat op "quiz" eindigt
 //   ("Pubquiz", "Musical pubquiz", "Jaarquiz 2026", "Muziekquiz"), niet
 //   "Quizmaster" of "quizzen". Uitzonderingen bij twijfel hieronder.
@@ -51,6 +57,8 @@ const FILM = new Set(['film', 'films', 'familiefilm', 'jeugdfilm']);
 // Hoge Woerd "Muziek, Film").
 const PODIUM = /theater|theatre|toneel|dans|ballet|muziek|music|concert|cabaret|comedy|stand-up|musical|opera|klassiek|show|performance|circus|kleinkunst|spoken word|poëzie|jazz|(^|\s)pop($|\s)|voorstelling/i;
 
+const RONDLEIDING = /(^|[^\p{L}])rondleiding(?:en)?($|[^\p{L}])|(^|[^\p{L}])(?:guided|public) tours?($|[^\p{L}])|^kijkje achter de schermen($|[^\p{L}])/iu;
+
 const QUIZ = /(^|[^\p{L}])\p{L}*quiz($|[^\p{L}])/iu;
 // Wel een voorstelling (of bij twijfel laten staan, 13 okt 2026):
 // - "Niet zomaar een Pubquiz – Flunknarf": een reeks van het comedygezelschap
@@ -67,13 +75,14 @@ const FILMTITELS = [
   /\bfilm\s*(?::|\s[–|]\s|\((?:al|\d+\+)\)|$)/i,
 ];
 
-/** 'workshop', 'film', 'quiz' of null. */
+/** 'workshop', 'film', 'rondleiding', 'quiz' of null. */
 export function geenVoorstelling({ titel, genreRuw }) {
   const t = String(titel ?? '').trim();
   const tags = String(genreRuw ?? '').split(/\s*[,|/;]\s*/).map((g) => g.trim().toLowerCase()).filter(Boolean);
   if ((WORKSHOP.test(t) || WORKSHOP_WOORD.test(t) || (tags.length && tags.every((g) => WORKSHOPTAGS.has(g)))) && !WEL_VOORSTELLING.some((r) => r.test(t))) return 'workshop';
   if (tags.some((g) => FILM.has(g)) && (tags.every((g) => FILMTAGS.has(g)) || !tags.some((g) => PODIUM.test(g)))) return 'film';
   if (FILMTITELS.some((r) => r.test(t))) return 'film';
+  if (RONDLEIDING.test(t)) return 'rondleiding';
   if (QUIZ.test(t) && !QUIZ_WEL_VOORSTELLING.some((r) => r.test(t))) return 'quiz';
   return null;
 }
