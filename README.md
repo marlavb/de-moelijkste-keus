@@ -61,21 +61,28 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
   van de watchlist ("Ook van je watchlist gehaald · Ongedaan maken"); zet je
   hem daarna opnieuw op de watchlist, dan blijft hij staan. Wat op beide
   stond van vóór je laatste bezoek, wordt bij het laden opgeruimd.
-- **Profiel** (na inloggen met Google): gebruikersnaam en naam. Alles
-  hierboven werkt ook zonder inloggen (alleen op dat apparaat); ingelogd
-  synchroniseert het tussen je apparaten.
+- **Profiel** (na inloggen met Google): een kaart met avatar, naam en
+  @gebruikersnaam, de kaart Vrienden (aantal vrienden, badge bij nieuwe
+  verzoeken) en je lijsten. Rechts in de kop twee knoppen: Berichten (met
+  het aantal ongelezen) en Instellingen. Alles hierboven werkt ook zonder
+  inloggen (alleen op dat apparaat); ingelogd synchroniseert het tussen je
+  apparaten.
+- **Instellingen** (Profiel → tandwiel, `#/profiel/instellingen`): Account
+  (gebruikersnaam en naam wijzigen), Privacy (Vindbaar op naam, Wat vrienden
+  zien), Meldingen (Mail), en onderaan Uitloggen en Account verwijderen.
 - **Vrienden**: zoeken op gebruikersnaam of op volledige naam (exact; alleen
   wie "Vindbaar op naam" aan heeft: standaard uit, te kiezen bij het maken
-  van je profiel en te wijzigen in Profiel), verzoeken, eenmalige
+  van je profiel en te wijzigen in Instellingen), verzoeken, eenmalige
   uitnodigingslink, blokkeren.
 - **Delen**: je Gezien (met sterren) en Watchlist voor vrienden, per onderdeel
   aan of uit.
 - **Uitnodigen**: een vriend uitnodigen voor een geplande voorstelling; zij
   gaan mee of kunnen niet, en je ziet wie er kaarten heeft.
-- **Berichten**: uitnodigingen en reacties, met een teller in Profiel.
+- **Berichten**: uitnodigingen en reacties, met een teller op de knop in de
+  kop van Profiel en op het tabje Profiel.
 - **Mail**: een korte mail bij een nieuwe uitnodiging (uit te zetten in
-  Profiel → Mail). Je adres is nooit zichtbaar voor anderen.
-- **Account verwijderen** (Profiel, onderaan): na een bevestiging en opnieuw
+  Instellingen → Mail). Je adres is nooit zichtbaar voor anderen.
+- **Account verwijderen** (Instellingen, onderaan): na een bevestiging en opnieuw
   inloggen gaat alles van je account weg, ook bij je vrienden (vriendschappen,
   plannen, berichten); je gebruikersnaam is daarna weer vrij. Op het apparaat
   kun je je lijsten laten staan of ook wissen.

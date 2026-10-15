@@ -368,6 +368,22 @@
             <h1 class="app-title">Profiel</h1>
             <p class="app-subtitle">Je planning en de voorstellingen die je wilt zien</p>
           </div>
+          <!-- Rechts in de kop (alleen ingelogd, renderProfielKop): Berichten
+               (met teller) en Instellingen. -->
+          <div class="profiel-kop-knoppen">
+            <button class="icon-btn icon-btn--kop" type="button" id="berichtenKnop" aria-label="Berichten" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="2" /><polyline points="3 7 12 13 21 7" />
+              </svg>
+              <span class="badge" id="berichtenKnopBadge" aria-hidden="true" hidden></span>
+            </button>
+            <button class="icon-btn icon-btn--kop" type="button" id="instellingenKnop" aria-label="Instellingen" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -414,11 +430,29 @@
           </div>
         </section>
       </main>
-      <!-- Alleen ingelogd (renderAuthBox): naar het scherm Account verwijderen. -->
-      <div class="account-verwijderen-rij" id="accountVerwijderenRij" hidden>
-        <button class="account-verwijderen-knop" type="button" id="accountVerwijderenKnop">Account verwijderen</button>
-      </div>
       <p class="bot-link profiel-privacy"><a href="privacy.html">Privacy: wat we opslaan en wie wat ziet</a></p>
+    </section>
+
+    <!-- SCHERM: instellingen (#/profiel/instellingen; subscherm van Profiel,
+         alleen ingelogd): account, privacy, meldingen, uitloggen en account
+         verwijderen (okt 2026). -->
+    <section class="screen" id="screen-instellingen" hidden>
+      <header class="app-header">
+        <div class="header-top header-top--terug">
+          <button class="icon-btn" type="button" id="instellingenBack" aria-label="Terug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="app-title">Instellingen</h1>
+            <p class="app-subtitle">Je account, privacy en meldingen</p>
+          </div>
+        </div>
+      </header>
+      <main class="vrienden-scherm instellingen-scherm">
+        <div id="instellingenInhoud" aria-live="polite"></div>
+      </main>
     </section>
 
     <!-- SCHERM: account verwijderen (alleen ingelogd) -->
@@ -695,7 +729,7 @@
             <input type="checkbox" id="profielVindbaar" aria-describedby="profielVindbaarUitleg" />
             <span>
               <span class="keuze-vink-titel">Vindbaar op naam</span>
-              <span class="keuze-vink-uitleg" id="profielVindbaarUitleg">Wie je volledige naam precies intypt, kan je vinden en een vriendschapsverzoek sturen. Zonder dit vinden anderen je alleen op je gebruikersnaam of via je uitnodigingslink. Je kunt het later wijzigen in Profiel.</span>
+              <span class="keuze-vink-uitleg" id="profielVindbaarUitleg">Wie je volledige naam precies intypt, kan je vinden en een vriendschapsverzoek sturen. Zonder dit vinden anderen je alleen op je gebruikersnaam of via je uitnodigingslink. Je kunt het later wijzigen in Profiel → Instellingen.</span>
             </span>
           </label>
           <p class="profiel-status" id="profielStatus" role="alert" hidden></p>

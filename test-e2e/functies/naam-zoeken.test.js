@@ -63,6 +63,8 @@ test('profiel kiezen: "Vindbaar op naam" staat standaard uit; wie het aanvinkt, 
     if (vindbaar) await page.check('#profielVindbaar');
     await page.click('#profielOpslaan');
     await page.waitForFunction(() => location.hash === '#/profiel', null, { timeout: 15000 });
+    // De schakelaar staat in Instellingen (Profiel → tandwiel).
+    await page.click('#instellingenKnop');
     await page.waitForSelector('#vindbaarSchakelaar');
     assert.equal(await page.getAttribute('#vindbaarSchakelaar', 'aria-checked'), String(vindbaar));
     await wachtOpDoc(`naamvoorkeur/${uid[k]}`, (d) => d?.vindbaar === vindbaar);

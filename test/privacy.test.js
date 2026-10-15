@@ -13,12 +13,12 @@ test('privacy.html: wat we opslaan, wie wat ziet, verwijderen, plaatshouder voor
   for (const kop of ['Zonder inloggen', 'Met inloggen (Google)', 'Wie ziet wat?', 'Verwijderen']) assert.match(html, new RegExp(`<h2>${kop.replace(/[()?]/g, '\\$&')}</h2>`));
   assert.match(html, /gebruikersnaam en je volledige naam/);
   // Vindbaar op naam staat standaard uit (12 okt 2026).
-  assert.match(html, /<strong>Zoeken op naam<\/strong>: .*Dat staat standaard uit: je kiest het zelf als je je profiel maakt, en je zet het later aan of uit in Profiel → Vindbaar op naam\./);
+  assert.match(html, /<strong>Zoeken op naam<\/strong>: .*Dat staat standaard uit: je kiest het zelf als je je profiel maakt, en je zet het later aan of uit in Profiel → Instellingen → Vindbaar op naam\./);
   assert.match(html, /als je vindbaar bent op naam \(standaard uit; je kiest het zelf\)/);
   assert.match(html, /Je e-mailadres<\/strong> ziet niemand anders/);
   assert.match(html, /Je planning<\/strong> \(Gepland\) ziet niemand anders/);
   assert.match(html, /Account verwijderen/);
-  assert.match(html, /alleen om je een mail te sturen als een vriend je uitnodigt voor een voorstelling\. Die mail gaat via Gmail \(Google\)\. Je zet het uit in Profiel → Mail\./);
+  assert.match(html, /alleen om je een mail te sturen als een vriend je uitnodigt voor een voorstelling\. Die mail gaat via Gmail \(Google\)\. Je zet het uit in Profiel → Instellingen → Mail\./);
   assert.doesNotMatch(html, /INVULLEN/);
   assert.equal((html.match(/<a href="mailto:marlavb\.github@gmail\.com">marlavb\.github@gmail\.com<\/a>/g) ?? []).length, 2);
   assert.match(html, /<html lang="nl">/);

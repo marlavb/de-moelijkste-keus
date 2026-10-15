@@ -314,6 +314,12 @@ export async function laadVriendenScherm({ db, fs, ik, nu = Date.now() }) {
   };
 }
 
+/** Aantal vrienden (voor de kaart op Profiel); 1 read per 1000. */
+export async function telVrienden({ db, fs, ik }) {
+  const snap = await fs.getCountFromServer(fs.collection(db, 'vrienden', ik, 'lijst'));
+  return snap.data().count;
+}
+
 /** Aantal openstaande inkomende verzoeken (voor de tegel); 1 read per 1000. */
 export async function telInkomend({ db, fs, ik }) {
   const snap = await fs.getCountFromServer(fs.query(fs.collection(db, 'vriendverzoeken'), fs.where('naar', '==', ik)));

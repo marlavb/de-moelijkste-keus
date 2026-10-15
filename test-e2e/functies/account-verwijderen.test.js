@@ -78,10 +78,13 @@ test('profielen, vriendschap, plan van anna met bob, bericht aan bob', async () 
   assert.ok(await leesDoc('usernames/anna'));
 });
 
-test('de knop in Profiel opent het scherm met wat er weggaat; verwijderen pas na het vinkje', async () => {
+test('de link in Instellingen opent het scherm met wat er weggaat; verwijderen pas na het vinkje', async () => {
   const { page } = ik.A;
   await ga(page, base, '#/profiel');
+  await page.click('#instellingenKnop');
   await page.waitForSelector('#accountVerwijderenKnop', { state: 'visible' });
+  // Even rust: binnenkomende tellers bouwen Instellingen nog opnieuw op.
+  await page.waitForTimeout(500);
   await page.locator('#accountVerwijderenKnop').scrollIntoViewIfNeeded();
   await schermafbeelding(page, 'account-verwijderen-knop');
   await page.click('#accountVerwijderenKnop');
@@ -95,9 +98,9 @@ test('de knop in Profiel opent het scherm met wat er weggaat; verwijderen pas na
   await page.check('#verwijderBegrepen');
   assert.equal(await page.isDisabled('#accountVerwijderenBevestig'), false);
   await schermafbeelding(page, 'account-verwijderen-bevestiging');
-  // Annuleren: terug naar Profiel, niets weg.
+  // Annuleren: terug naar Instellingen, niets weg.
   await page.click('text=Annuleren');
-  await page.waitForFunction(() => location.hash === '#/profiel');
+  await page.waitForFunction(() => location.hash === '#/profiel/instellingen');
   assert.ok(await leesDoc(`profielen/${uid.A}`));
   assert.equal(ik.A.fouten.length, 0, ik.A.fouten.join('\n'));
 });

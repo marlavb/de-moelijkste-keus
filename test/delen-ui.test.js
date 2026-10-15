@@ -116,13 +116,15 @@ test('uitgelogd: geen melding en geen tegels', async () => {
 test('eenmalige melding: er wordt niets gedeeld tot "Oké"; daarna instelling en kopieën', async () => {
   const { ctx, page, fouten } = await openApp();
   assert.match(await tekst(page, '.delen-melding'), /Je vrienden kunnen je Gezien \(met sterren\) en Watchlist zien/);
-  assert.match(await tekst(page, '#delenTegel'), /Nog niet ingesteld/);
   await klok(page, 3500); // langer dan de debounce
   assert.deepEqual(await delenSchrijf(page), []);
 
   await page.click('.delen-melding >> text=Oké');
   await page.waitForTimeout(300);
   assert.equal(await page.locator('.delen-melding').count(), 0);
+  // "Wat vrienden zien" staat in Instellingen.
+  await page.click('#instellingenKnop');
+  await page.waitForTimeout(200);
   assert.match(await tekst(page, '#delenTegel'), /Gezien en Watchlist/);
   const instelling = await opslag(page, 'gedeeld/u1');
   assert.equal(instelling.gezien, true);
