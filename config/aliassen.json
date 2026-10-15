@@ -82,8 +82,15 @@
    "regel": "keuze"
   },
   "a poem for the world": {
-   "titel": "A poem for the world – NDT 2",
-   "maker": "Nederlands Dans Theater",
+   "titel": "A poem for the world",
+   "maker": "NDT 2",
+   "makerVast": true,
+   "groep": "a poem for the world",
+   "regel": "keuze"
+  },
+  "a poem for the world | ndt 2": {
+   "titel": "A poem for the world",
+   "maker": "NDT 2",
    "makerVast": true,
    "groep": "a poem for the world",
    "regel": "keuze"
