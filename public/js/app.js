@@ -4845,12 +4845,17 @@ function sortKey(show) {
 }
 
 function renderSubtitle() {
-  const ids = activeTheaterIds();
+  // Vast: alle theaters met voorstellingen in de data, los van Mijn theaters,
+  // filters en zoeken (15 okt 2026; daarvoor telde Mijn theaters mee, en
+  // sprong de kop na het inloggen van "69 in 40" naar de eigen keuze, bv.
+  // "33 in 13"). Gepauzeerde theaters hebben geen voorstellingen en tellen
+  // dus niet mee.
+  const ids = [...new Set(state.shows.map((s) => s.theaterId))];
   const cities = new Set(ids.map((id) => theaterStad(id)).filter(Boolean));
   const theaterCount = ids.length;
-  // "Actief" = met voorstellingen (en aan in Mijn theaters); zo past het op
-  // één regel op een telefoon van 360 px (13 okt 2026; "met voorstellingen"
-  // liep over naar twee regels). De title zegt het voluit.
+  // "Actief" = met voorstellingen; zo past het op één regel op een telefoon
+  // van 360 px (13 okt 2026; "met voorstellingen" liep over naar twee
+  // regels). De title zegt het voluit.
   const theaterWoord = theaterCount === 1 ? 'actief theater' : 'actieve theaters';
 
   // Bij precies 1 stad noemen we 'm bij naam (leest natuurlijker dan "1
@@ -4865,7 +4870,7 @@ function renderSubtitle() {
   }
 
   els.subtitle.textContent = cityText ? `${theaterCount} ${theaterWoord} in ${cityText}` : `${theaterCount} ${theaterWoord}`;
-  els.subtitle.title = 'Theaters met voorstellingen die aan staan in Mijn theaters';
+  els.subtitle.title = 'Alle theaters met voorstellingen in de agenda';
 }
 
 function theaterDisplayName(id) {

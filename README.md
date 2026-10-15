@@ -23,7 +23,10 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
 - **Agenda**: alle komende voorstellingen per dag, zoeken in alles wat je
   ziet (titel met maker, de titel van het theater, maker, theater en stad;
   zonder accenten, `public/js/zoeken.js`; een zoekterm van hooguit drie
-  tekens, zoals "NDT" of "ITA", vanaf het begin van een woord), standaard de komende 30 dagen ("Toon … verder in de toekomst").
+  tekens, zoals "NDT" of "ITA", vanaf het begin van een woord). De kop
+  toont vast "N actieve theaters in M steden": alle theaters met
+  voorstellingen, los van Mijn theaters, filters en zoeken. Standaard de
+  komende 30 dagen ("Toon … verder in de toekomst").
 - **Filters**: "Wanneer" (snelkeuze Vandaag, Morgen, Dit weekend (vr–zo),
   Deze week (t/m zondag), Volgende week (ma–zo), Deze maand; of eigen datums
   van–tot; plus weekdagen, combineerbaar; in Amsterdamse tijd, logica in
