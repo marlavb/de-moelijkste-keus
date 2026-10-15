@@ -14,7 +14,7 @@ import { pasProductieSamenvoegingToe } from './productieSamenvoegen.js';
 import { metEnDash, zonderStatusWoord, isGeenMaker, isSloganOfCast, makerZonderVoorvoegsel, draaiTitelEnMakerOm, labelsUitTitel, reeksUitTitel, statusUitTitel } from './titels.js';
 import { THEATERS } from './config.js';
 import { bronIndex, r1Keuze } from './makerOmdraaien.js';
-import { leesAliassen, pasAliasToe, doelSleutel, pasAliasNaSamenvoegenToe, losseBronnen } from './aliassen.js';
+import { leesAliassen, pasAliasToe, doelSleutel, pasAliasNaSamenvoegenToe, losseBronnen, sleutelsMetMeerDoelen, doelInTitel } from './aliassen.js';
 import { watchlistSleutel } from '../../public/js/watchlist.js';
 import { isVervallen } from './beschikbaarheid.js';
 import { geenVoorstelling } from './geenVoorstelling.js';
@@ -473,7 +473,17 @@ export async function runRefresh({
       // Aliaslijst (aliassen.js): dezelfde productie, één titel. De titel
       // ervóór blijft als titelVoorAlias als hij anders was dan de brontitel:
       // dan gaan ook sleutels van na ronde 1 mee (samenvoegMapping, gepland.js).
-      const a = pasAliasToe({ titel: naRonde1, maker, theaterId: s.theaterId }, aliassen);
+      let a = pasAliasToe({ titel: naRonde1, maker, theaterId: s.theaterId }, aliassen);
+      // Heeft R1 de titel veranderd (omgedraaid), dan ook de brontitel: Odeon
+      // "Janne Schra & De Vogels" / maker "Kleuren moeten ook slapen 6+" werd
+      // "Kleuren moeten ook slapen 6+ – Janne Schra & De Vogels" en matchte de
+      // bron "janne schra en de vogels" niet meer (15 okt 2026). Alleen als
+      // het doel ook in de R1-titel staat: "NDT 2" / maker "A poem for the
+      // world" mag niet het doel "Blast a universe" van de kale "NDT 2" krijgen.
+      if (!a.alias && voorstelling !== metLabel) {
+        const vanBron = pasAliasToe({ titel: labelsUitTitel(metLabel).tekst, maker: r1Bron ?? maker, theaterId: s.theaterId }, aliassen);
+        if (vanBron.alias && doelInTitel(vanBron.titel, naRonde1)) a = vanBron;
+      }
       const titel = a.titel;
       if (a.alias && a.maker !== maker) {
         r1Bron ??= s.maker ?? null;
@@ -545,6 +555,12 @@ export async function runRefresh({
   // Controle: een bron uit de aliaslijst hoort na de nabewerking niet meer als
   // eigen productie in de data te staan.
   for (const b of losseBronnen(freshShows, aliassen)) log(`Aliasbron nog los in de data: "${b.titel}" (${b.theaters.join(', ')}).`);
+  // Controle: een oude sleutel met twee doelen gaat in de app nergens heen.
+  for (const m of sleutelsMetMeerDoelen(freshShows)) {
+    const msg = `oude sleutel "${m.sleutel}" gaat naar ${m.doelen.length} doelen (${m.doelen.join(' / ')}): watchlist-, Gezien- en planitems blijven hangen`;
+    log(msg);
+    annotate('warning', 'Sleutel met meer doelen', msg);
+  }
   for (const theater of theaters) {
     const st = theaterStatus[theater.id];
     if (!st || theater.gepauzeerd) continue;

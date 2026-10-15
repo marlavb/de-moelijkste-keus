@@ -135,3 +135,42 @@ export function losseBronnen(shows, lijst) {
   }
   return [...per.values()].map((e) => ({ ...e, theaters: [...e.theaters].sort() }));
 }
+
+/**
+ * Oude sleutels (titelBron, titelVoorAlias) die naar meer dan één huidige
+ * sleutel gaan. samenvoegMapping (watchlist.js) zet die niet om, dus een
+ * watchlist-, Gezien- of planitem met zo'n sleutel blijft hangen ("ndt 2":
+ * via de alias "Blast a universe", via PLT/De Spiegel "A poem for the world –
+ * NDT 2"; 15 okt 2026). Een oude sleutel die zelf nog een huidige sleutel
+ * is, telt niet (die wordt niet omgezet). Geeft [{ sleutel, doelen }].
+ */
+export function sleutelsMetMeerDoelen(shows) {
+  const huidig = new Set();
+  const doelen = new Map();
+  for (const s of shows ?? []) {
+    const nieuw = watchlistSleutel(s.titel, s.theaterId);
+    huidig.add(nieuw);
+    for (const bron of [s.titelBron, s.titelVoorAlias]) {
+      if (!bron) continue;
+      const oud = watchlistSleutel(bron, s.theaterId);
+      if (oud === nieuw) continue;
+      if (!doelen.has(oud)) doelen.set(oud, new Set());
+      doelen.get(oud).add(nieuw);
+    }
+  }
+  return [...doelen]
+    .filter(([oud, d]) => d.size > 1 && !huidig.has(oud))
+    .map(([sleutel, d]) => ({ sleutel, doelen: [...d].sort() }))
+    .sort((x, y) => x.sleutel.localeCompare(y.sleutel));
+}
+
+/**
+ * Staat het aliasdoel als geheel titeldeel in de titel (zoals de watchlist-
+ * sleutel: zonder leeftijd, hoofdletters en leestekens)? "Kleuren moeten ook
+ * slapen (6+)" in "Kleuren moeten ook slapen 6+ – Janne Schra & De Vogels":
+ * ja; "Blast a universe" in "A poem for the world – NDT 2": nee.
+ */
+export function doelInTitel(doel, titel) {
+  const delen = new Set(watchlistSleutel(titel).split(' | '));
+  return watchlistSleutel(doel).split(' | ').every((d) => delen.has(d));
+}

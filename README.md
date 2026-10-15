@@ -206,7 +206,10 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   titelrondes meegaan, en productie-samenvoegen kort zo'n titel niet weer in.
   Wordt een titel pas door samenvoegen of meerderheid een bron uit de lijst,
   dan gaat de alias alsnog mee; de log meldt elke bron die daarna nog los in
-  de data staat ("Aliasbron nog los").
+  de data staat ("Aliasbron nog los"). Heeft R1 een omgedraaide titel
+  samengesteld, dan telt ook de brontitel als bron, als het doel in die titel
+  staat. Een oude sleutel die naar twee doelen gaat (die zet de app niet om),
+  geeft een waarschuwing in de run (`sleutelsMetMeerDoelen`).
   Dezelfde productie (zelfde
   watchlist-sleutel) krijgt bij elk theater dezelfde weergavetitel, hetzelfde
   genre en dezelfde maker: die van de meeste theaters

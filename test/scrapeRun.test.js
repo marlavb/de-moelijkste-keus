@@ -863,3 +863,28 @@ test('aliaslijst: titel van de productie, titelVoorAlias bewaard, maker niet dub
   const { written: weer } = await run({ paths: paths2, theaters: [theater('a')], scrapers: { a: failing }, aliassen });
   assert.deepEqual(kort(weer), kort(written));
 });
+
+test('aliaslijst via de brontitel als R1 de titel omdraaide (Janne Schra, 15 okt 2026)', async () => {
+  const aliassen = {
+    aliassen: {
+      'janne schra en de vogels': { titel: 'Kleuren moeten ook slapen (6+)', maker: null, groep: 'k', regel: 'keuze' },
+      'ndt 2': { titel: 'Blast a universe', maker: null, groep: 'b', regel: 'keuze' },
+    },
+    nietSamenvoegen: [],
+  };
+  const paths = await setup();
+  // R1 draait alleen om als een ander theater (b) de titel en maker kent.
+  const scraperA = async () => [
+    show('a', '2026-10-07', { id: 'a-1', titel: 'Janne Schra & De Vogels', maker: 'Kleuren moeten ook slapen 6+' }),
+    show('a', '2026-10-11', { id: 'a-5', titel: 'NDT 2', maker: null }),
+  ];
+  const scraperB = async () => [
+    show('b', '2026-10-08', { id: 'b-1', titel: 'Kleuren moeten ook slapen (6+)', maker: 'Janne Schra & De Vogels' }),
+  ];
+  const { written, writtenStatus } = await run({ paths, theaters: [theater('a'), theater('b')], scrapers: { a: scraperA, b: scraperB }, aliassen });
+  const titel = Object.fromEntries(written.map((s) => [s.id, s.titel]));
+  assert.equal(titel['a-1'], 'Kleuren moeten ook slapen (6+)', 'Janne Schra: via de brontitel');
+  // De bewaker (doel in de R1-titel) zelf: doelInTitel in aliassen.test.js.
+  assert.equal(titel['a-5'], 'Blast a universe', 'zonder R1: gewoon de alias');
+  assert.ok(writtenStatus);
+});
