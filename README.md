@@ -104,10 +104,14 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   gesprekken en talks blijven.
   Daarnaast laat de centrale nabewerking (`src/lib/geenVoorstelling.js`) bij
   alle theaters weg: titels die beginnen met Workshop, Cursus of Masterclass
-  (ook "SoundLAB workshop …"; "Workshopvoorstelling" blijft), voorstellingen
-  met alleen filmgenres ("Film", "film, Familiefilm", "Drama, film") en een
-  paar duidelijke filmvertoningen op titel (Cinekid Festival, Underground
-  Cinema, European Outdoor Film Tour, Diner Zin in Film), en quizzen (een
+  (ook "SoundLAB workshop …"; "Workshopvoorstelling" blijft), samengestelde
+  woorden en meervouden ergens in de titel ("Circusworkshop", "Danscursus",
+  "verschillende workshops"; "Workshoporkest" blijft), het genre "Workshop"
+  als enige soort, voorstellingen met de tag Film zonder enige podiumtag
+  ("Film", "Drama, film", "Horror, film", "Film, Festival") en
+  filmvertoningen op titel (Cinekid Festival, Underground Cinema, European
+  Outdoor Film Tour, Diner Zin in Film, "Filmvertoning: …", "… film:" of
+  "… film (AL)"; filmmuziek en filmorkesten blijven), en quizzen (een
   woord dat op "quiz" eindigt: Pubquiz, Jaarquiz; niet "Quizmaster"). Film als extra tag
   naast een podiumgenre (Bijlmer Parktheater) blijft. De log telt per
   theater wat er wegvalt.
