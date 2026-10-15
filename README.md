@@ -340,7 +340,9 @@ De emulators gebruiken altijd het project `demo-podiumagenda`, nooit het echte.
 - Vóór elke commit (pre-commit-hook, `scripts/precommit.js`): geen
   conflictmarkeringen in gestagede bestanden, en de snelle unit-tests (zonder
   UI-tests). De hooks staan in `.githooks/`; `npm install` zet
-  `core.hooksPath`. Alleen in noodgevallen overslaan:
+  `core.hooksPath` (`scripts/hooks-installeren.js`), behalve in CI: daar
+  staan de hooks uit, zodat de workflows zelf kunnen pushen. Alleen in
+  noodgevallen overslaan:
   `PODIUM_GEEN_PRECOMMIT=1 git commit …`.
 - Stappen in de Firebase- en Google Cloud-console staan in [`docs/`](docs/):
   mail bij uitnodigingen, budgetmelding en de billing-stop

@@ -27,7 +27,11 @@ dezelfde dag stopt meteen. De workflow commit de data zelf.
   weigering eerst de run afwachten of de test repareren.
 - Dezelfde controles zitten in de pre-push-hook `.githooks/pre-push`; activeer
   die in een nieuwe clone met `git config core.hooksPath .githooks` (doet
-  `npm install` ook, via het `prepare`-script).
+  `npm install` ook, via het `prepare`-script `scripts/hooks-installeren.js`).
+  In CI blijven de hooks uit (drie lagen: `prepare` doet niets bij
+  `CI`/`GITHUB_ACTIONS=true`, de hooks stoppen bij `GITHUB_ACTIONS=true`, en
+  de workflows halen `core.hooksPath` weg). Waarom: op 14 en 15 okt 2026
+  weigerde de pre-push-hook in CI de datapush van de nachtrun.
 - Pre-commit-hook `.githooks/pre-commit` (`scripts/precommit.js`): weigert een
   commit met conflictmarkeringen (`<<<<<<<`, `=======`, `>>>>>>>` aan het begin
   van een regel) in gestagede bestanden, en draait snelle unit-tests: die bij

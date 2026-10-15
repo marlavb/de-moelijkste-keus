@@ -3,6 +3,8 @@
 # testsuite faalt (zie CLAUDE.md). Via `npm run safe-push` zijn de tests voor
 # deze commit al gedraaid (PODIUM_GETEST); dan alleen de refresh-controle.
 # Actief via: git config core.hooksPath .githooks
+# Nooit in GitHub Actions: de workflows committen en pushen zelf (14 okt 2026).
+if [ "$GITHUB_ACTIONS" = "true" ]; then exit 0; fi
 top="$(git rev-parse --show-toplevel)"
 node "$top/scripts/refresh-check.js" || exit 1
 if [ -n "$PODIUM_GETEST" ] && [ "$PODIUM_GETEST" = "$(git rev-parse HEAD)" ]; then
