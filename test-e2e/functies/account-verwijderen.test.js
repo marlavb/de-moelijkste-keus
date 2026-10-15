@@ -83,6 +83,8 @@ test('de link in Instellingen opent het scherm met wat er weggaat; verwijderen p
   await ga(page, base, '#/profiel');
   await page.click('#instellingenKnop');
   await page.waitForSelector('#accountVerwijderenKnop', { state: 'visible' });
+  // Even rust: binnenkomende tellers bouwen Instellingen nog opnieuw op.
+  await page.waitForTimeout(500);
   await page.locator('#accountVerwijderenKnop').scrollIntoViewIfNeeded();
   await schermafbeelding(page, 'account-verwijderen-knop');
   await page.click('#accountVerwijderenKnop');

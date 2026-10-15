@@ -134,6 +134,8 @@ test('opslaan: ongeldig → melding bij het veld; bezet → melding; geldig → 
   assert.equal(new URL(page.url()).hash, '#/profiel');
   // Profielkaart: naam en @gebruikersnaam; de regel met Wijzigen staat in Instellingen.
   assert.match(await page.textContent('#authBox'), /Anna de Vries@Anna_V/);
+  await page.click('#instellingenKnop');
+  await page.waitForTimeout(200);
   assert.match(await page.textContent('#instellingenInhoud .profiel-regel'), /@Anna_V · Anna de Vries/);
   assert.deepEqual(await opslag(page, 'usernames/anna_v'), { uid: 'u1', gebruikersnaam: 'Anna_V', naam: 'Anna de Vries' });
   assert.equal((await opslag(page, 'profielen/u1')).gebruikersnaamLaag, 'anna_v');

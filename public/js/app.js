@@ -4810,6 +4810,11 @@ function instellingenGroep(kop, ...inhoud) {
 function renderInstellingen() {
   const box = els.instellingenInhoud;
   if (!box) return;
+  // Alleen als het scherm open is (route() bouwt het bij openen op), en met
+  // behoud van de focus: een binnenkomende teller mag een knop niet onder je
+  // vinger of toetsenbord vandaan halen.
+  if (els.screens.instellingen?.hidden) return;
+  const focusId = box.contains(document.activeElement) ? document.activeElement.id : null;
   box.innerHTML = '';
   if (!state.user) return;
 
@@ -4844,6 +4849,7 @@ function renderInstellingen() {
     onder.appendChild(verwijderen);
   }
   box.appendChild(onder);
+  if (focusId) document.getElementById(focusId)?.focus();
 }
 
 // ---------- Filter sheet ----------
