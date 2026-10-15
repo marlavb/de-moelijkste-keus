@@ -258,6 +258,10 @@ export function labelUitTitel(tekst) {
 }
 
 const LABEL_OVERAL = /\s*\(\s*((?:voor)?premi[eè]re|try[- ]?out|reprise)\s*\)/gi;
+// Hetzelfde label als los titeldeel, niet vooraan: "Baby Reindeer – première"
+// (Kleine Komedie), "Kooiapen – Try-out – Martijn Crins" (15 okt 2026; anders
+// bleef "– première" een eigen productie naast "Baby Reindeer").
+const LABEL_DEEL = /\s+[–—|-]\s+((?:voor)?premi[eè]re|try[- ]?out|reprise)(?=\s+[–—|-]\s+|\s*$)/gi;
 
 /**
  * Reeksnaam vooraan de titel ("Herfststukjes: Het Koffertje 4+" → titel "Het
@@ -280,19 +284,22 @@ export function reeksUitTitel(tekst, voorvoegsels = []) {
  * Alle labels "(try-out)", "(try out)", "(reprise)", "(première)",
  * "(voorpremière)" uit een titel, waar ze ook staan ("Rhobijn (reprise) –
  * Rowwen Hèze" → "Rhobijn – Rowwen Hèze"; "Vanzelfsprekend (try-out) & Sint
- * Juttemis (try-out) – …" → beide weg). Centraal in de run toegepast op alle
+ * Juttemis (try-out) – …" → beide weg), ook als los titeldeel ("Baby
+ * Reindeer – première" → "Baby Reindeer"). Centraal in de run toegepast op alle
  * theaters (okt 2026). Blijft er niets over, dan de oorspronkelijke tekst.
  * Geeft { tekst, labels } (kleine letters, in volgorde, zonder dubbele).
  */
 export function labelsUitTitel(tekst) {
   if (typeof tekst !== 'string') return { tekst, labels: [] };
   const labels = [];
+  const neem = (_, label) => {
+    const l = label.toLowerCase();
+    if (!labels.includes(l)) labels.push(l);
+    return '';
+  };
   const kaal = tekst
-    .replace(LABEL_OVERAL, (_, label) => {
-      const l = label.toLowerCase();
-      if (!labels.includes(l)) labels.push(l);
-      return '';
-    })
+    .replace(LABEL_OVERAL, neem)
+    .replace(LABEL_DEEL, neem)
     .replace(/\s{2,}/g, ' ')
     .trim();
   return kaal ? { tekst: kaal, labels } : { tekst, labels: [] };

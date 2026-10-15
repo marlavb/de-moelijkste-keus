@@ -2,9 +2,9 @@
 // afvinkpagina omzetten. Fixtures naar de echte keuzes van 9 okt 2026.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { pasAliasToe, makerInTitel, controleer, leesAliassen } from '../src/lib/aliassen.js';
+import { pasAliasToe, makerInTitel, controleer, leesAliassen, pasAliasNaSamenvoegenToe, losseBronnen, sleutelsMetMeerDoelen, doelInTitel } from '../src/lib/aliassen.js';
 import { voegExportSamen } from '../src/lib/aliasImport.js';
-import { watchlistSleutel } from '../public/js/watchlist.js';
+import { watchlistSleutel, samenvoegMapping } from '../public/js/watchlist.js';
 
 const lijst = {
   aliassen: {
@@ -162,4 +162,45 @@ test('opnieuw beoordeelde groep: een bron die in de nieuwe export ontbreekt blij
   const metNee = voegExportSamen(bestaand, { ...exp, nietSamenvoegen: [{ groep: 'baby reindeer', sleutels: ['thijs van de meeberg'] }] });
   assert.equal(metNee.lijst.aliassen['thijs van de meeberg'], undefined);
   assert.deepEqual(metNee.overzicht.verwijderd, ['thijs van de meeberg (was "Baby Reindeer")']);
+});
+
+test('alias na het samenvoegen: een titel die pas dan een bron wordt, gaat alsnog mee (Baby Reindeer Utrecht, 15 okt 2026)', () => {
+  const br = {
+    aliassen: {
+      'baby reindeer': { titel: 'Baby Reindeer', maker: 'Thijs van de Meeberg', makerVast: true, regel: 'keuze' },
+      'baby reindeer | thijs van de meeberg': { titel: 'Baby Reindeer', maker: 'Thijs van de Meeberg', makerVast: true, regel: 'keuze' },
+    },
+  };
+  const utrecht = { titel: 'Baby Reindeer – Thijs van de Meeberg', maker: null, theaterId: 'stadsschouwburgutrecht', titelBron: 'Baby Reindeer – Kobra theaterproducties – Thijs van de Meeberg' };
+  const al = { titel: 'Baby Reindeer', maker: 'Thijs van de Meeberg', theaterId: 'schuur' };
+  const los = { titel: 'Baby Reindeer – Kobra Theaterproducties', maker: null, theaterId: 'griffioen' };
+  assert.equal(losseBronnen([utrecht, al, los], br).length, 1);
+  const { shows, gewijzigd } = pasAliasNaSamenvoegenToe([utrecht, al, los], br);
+  assert.equal(gewijzigd, 1);
+  assert.deepEqual(shows[0], {
+    titel: 'Baby Reindeer', maker: 'Thijs van de Meeberg', theaterId: 'stadsschouwburgutrecht',
+    titelBron: 'Baby Reindeer – Kobra theaterproducties – Thijs van de Meeberg',
+    titelVoorAlias: 'Baby Reindeer – Thijs van de Meeberg', makerBron: null,
+  });
+  assert.equal(shows[1], al, 'al goed: ongemoeid');
+  assert.equal(shows[2], los, 'geen bron: ongemoeid');
+  assert.deepEqual(losseBronnen(shows, br), []);
+  // Idempotent.
+  assert.equal(pasAliasNaSamenvoegenToe(shows, br).gewijzigd, 0);
+  // Oude sleutel van de losse titel gaat via titelVoorAlias naar het doel.
+  assert.equal(samenvoegMapping(shows).get('baby reindeer | thijs van de meeberg'), 'baby reindeer');
+});
+
+test('controle: een oude sleutel met meer dan één doel ("ndt 2", 15 okt 2026)', () => {
+  const shows = [
+    { titel: 'Blast a universe', titelBron: 'NDT 2', theaterId: 'theateraandeparade' },
+    { titel: 'A poem for the world – NDT 2', titelBron: 'NDT 2', theaterId: 'pltheerlen' },
+    { titel: 'Kleuren moeten ook slapen (6+)', titelBron: 'Janne Schra & De Vogels', theaterId: 'odeon' },
+    { titel: 'Kleuren moeten ook slapen (6+)', titelBron: 'Janne Schra & De Vogels (6+)', theaterId: 'schaffelaar' },
+  ];
+  assert.deepEqual(sleutelsMetMeerDoelen(shows), [{ sleutel: 'ndt 2', doelen: ['a poem for the world | ndt 2', 'blast a universe'] }]);
+  // Is de oude sleutel zelf nog een productie, dan wordt hij niet omgezet: geen melding.
+  assert.deepEqual(sleutelsMetMeerDoelen([...shows, { titel: 'NDT 2', theaterId: 'x' }]), []);
+  assert.equal(doelInTitel('Kleuren moeten ook slapen (6+)', 'Kleuren moeten ook slapen 6+ – Janne Schra & De Vogels'), true);
+  assert.equal(doelInTitel('Blast a universe', 'A poem for the world – NDT 2'), false);
 });

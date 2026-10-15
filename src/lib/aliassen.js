@@ -90,3 +90,87 @@ export function controleer(lijst) {
   }
   return meldingen;
 }
+
+/**
+ * Tweede ronde na productie-samenvoeging en weergave op meerderheid (15 okt
+ * 2026): wordt een titel pas dan een bron uit de lijst, dan alsnog de alias.
+ * Stadsschouwburg Utrecht "Baby Reindeer – Kobra theaterproducties – Thijs
+ * van de Meeberg" werd door het samenvoegen "Baby Reindeer – Thijs van de
+ * Meeberg" (een bron) en bleef zo los naast "Baby Reindeer". De titel van
+ * vóór deze ronde blijft als titelVoorAlias (samenvoegMapping, gepland.js);
+ * titelBron blijft de brontitel. Geeft { shows, gewijzigd }.
+ */
+export function pasAliasNaSamenvoegenToe(shows, lijst) {
+  let gewijzigd = 0;
+  const uit = shows.map((s) => {
+    const a = pasAliasToe(s, lijst);
+    if (!a.alias || (a.titel === s.titel && a.maker === (s.maker ?? null))) return s;
+    gewijzigd++;
+    const bron = s.titelBron ?? s.titel;
+    return {
+      ...s,
+      titel: a.titel,
+      maker: a.maker,
+      ...(a.titel !== bron ? { titelBron: bron } : {}),
+      ...(s.titel !== a.titel && s.titel !== bron ? { titelVoorAlias: s.titelVoorAlias ?? s.titel } : {}),
+      ...(a.maker !== (s.maker ?? null) && s.makerBron === undefined ? { makerBron: s.maker ?? null } : {}),
+    };
+  });
+  return { shows: uit, gewijzigd };
+}
+
+/**
+ * Bronnen uit de lijst die na de nabewerking nog als eigen productiesleutel
+ * in de data staan (doel: geen). Geeft [{ sleutel, titel, theaters }].
+ */
+export function losseBronnen(shows, lijst) {
+  const per = new Map();
+  for (const s of shows) {
+    const k = watchlistSleutel(s.titel, s.theaterId);
+    const a = lijst?.aliassen?.[k];
+    if (!a || doelSleutel(a) === k) continue;
+    const e = per.get(k) ?? { sleutel: k, titel: s.titel, theaters: new Set() };
+    e.theaters.add(s.theaterId);
+    per.set(k, e);
+  }
+  return [...per.values()].map((e) => ({ ...e, theaters: [...e.theaters].sort() }));
+}
+
+/**
+ * Oude sleutels (titelBron, titelVoorAlias) die naar meer dan één huidige
+ * sleutel gaan. samenvoegMapping (watchlist.js) zet die niet om, dus een
+ * watchlist-, Gezien- of planitem met zo'n sleutel blijft hangen ("ndt 2":
+ * via de alias "Blast a universe", via PLT/De Spiegel "A poem for the world –
+ * NDT 2"; 15 okt 2026). Een oude sleutel die zelf nog een huidige sleutel
+ * is, telt niet (die wordt niet omgezet). Geeft [{ sleutel, doelen }].
+ */
+export function sleutelsMetMeerDoelen(shows) {
+  const huidig = new Set();
+  const doelen = new Map();
+  for (const s of shows ?? []) {
+    const nieuw = watchlistSleutel(s.titel, s.theaterId);
+    huidig.add(nieuw);
+    for (const bron of [s.titelBron, s.titelVoorAlias]) {
+      if (!bron) continue;
+      const oud = watchlistSleutel(bron, s.theaterId);
+      if (oud === nieuw) continue;
+      if (!doelen.has(oud)) doelen.set(oud, new Set());
+      doelen.get(oud).add(nieuw);
+    }
+  }
+  return [...doelen]
+    .filter(([oud, d]) => d.size > 1 && !huidig.has(oud))
+    .map(([sleutel, d]) => ({ sleutel, doelen: [...d].sort() }))
+    .sort((x, y) => x.sleutel.localeCompare(y.sleutel));
+}
+
+/**
+ * Staat het aliasdoel als geheel titeldeel in de titel (zoals de watchlist-
+ * sleutel: zonder leeftijd, hoofdletters en leestekens)? "Kleuren moeten ook
+ * slapen (6+)" in "Kleuren moeten ook slapen 6+ – Janne Schra & De Vogels":
+ * ja; "Blast a universe" in "A poem for the world – NDT 2": nee.
+ */
+export function doelInTitel(doel, titel) {
+  const delen = new Set(watchlistSleutel(titel).split(' | '));
+  return watchlistSleutel(doel).split(' | ').every((d) => delen.has(d));
+}

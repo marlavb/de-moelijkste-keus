@@ -104,10 +104,14 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   gesprekken en talks blijven.
   Daarnaast laat de centrale nabewerking (`src/lib/geenVoorstelling.js`) bij
   alle theaters weg: titels die beginnen met Workshop, Cursus of Masterclass
-  (ook "SoundLAB workshop …"; "Workshopvoorstelling" blijft), voorstellingen
-  met alleen filmgenres ("Film", "film, Familiefilm", "Drama, film") en een
-  paar duidelijke filmvertoningen op titel (Cinekid Festival, Underground
-  Cinema, European Outdoor Film Tour, Diner Zin in Film), en quizzen (een
+  (ook "SoundLAB workshop …"; "Workshopvoorstelling" blijft), samengestelde
+  woorden en meervouden ergens in de titel ("Circusworkshop", "Danscursus",
+  "verschillende workshops"; "Workshoporkest" blijft), het genre "Workshop"
+  als enige soort, voorstellingen met de tag Film zonder enige podiumtag
+  ("Film", "Drama, film", "Horror, film", "Film, Festival") en
+  filmvertoningen op titel (Cinekid Festival, Underground Cinema, European
+  Outdoor Film Tour, Diner Zin in Film, "Filmvertoning: …", "… film:" of
+  "… film (AL)"; filmmuziek en filmorkesten blijven), en quizzen (een
   woord dat op "quiz" eindigt: Pubquiz, Jaarquiz; niet "Quizmaster"). Film als extra tag
   naast een podiumgenre (Bijlmer Parktheater) blijft. De log telt per
   theater wat er wegvalt.
@@ -187,7 +191,8 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   Johnny de Mol"); anders blijft hij staan, maar telt hij niet mee in de
   makermeerderheid (`makerOmdraaien.js`); "(try-out)", "(reprise)",
   "(première)" en "(voorpremière)" gaan overal uit de titel naar de
-  beschrijving, bij elk theater (de titel mét label blijft als `titelBron`,
+  beschrijving, bij elk theater, ook als los titeldeel ("Baby Reindeer –
+  première") (de titel mét label blijft als `titelBron`,
   zodat oude watchlist-, Gezien- en plansleutels en die van vrienden
   meegaan); een reeksnaam vooraan de titel ("Herfststukjes: …", "November
   Music: …", per theater in `config.js` als `reeksVoorvoegsels`) gaat op
@@ -203,6 +208,12 @@ Privacy: [privacy.html](https://marlavb.github.io/de-moelijkste-keus/privacy.htm
   afvinkpagina) bij elk theater één titel, ook in behouden data; de titel van
   daarvoor blijft als `titelVoorAlias`, zodat ook sleutels van na eerdere
   titelrondes meegaan, en productie-samenvoegen kort zo'n titel niet weer in.
+  Wordt een titel pas door samenvoegen of meerderheid een bron uit de lijst,
+  dan gaat de alias alsnog mee; de log meldt elke bron die daarna nog los in
+  de data staat ("Aliasbron nog los"). Heeft R1 een omgedraaide titel
+  samengesteld, dan telt ook de brontitel als bron, als het doel in die titel
+  staat. Een oude sleutel die naar twee doelen gaat (die zet de app niet om),
+  geeft een waarschuwing in de run (`sleutelsMetMeerDoelen`).
   Dezelfde productie (zelfde
   watchlist-sleutel) krijgt bij elk theater dezelfde weergavetitel, hetzelfde
   genre en dezelfde maker: die van de meeste theaters
