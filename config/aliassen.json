@@ -81,6 +81,13 @@
    "groep": "darkride",
    "regel": "keuze"
   },
+  "a poem for the world": {
+   "titel": "A poem for the world – NDT 2",
+   "maker": "Nederlands Dans Theater",
+   "makerVast": true,
+   "groep": "a poem for the world",
+   "regel": "keuze"
+  },
   "a tribute to bruno mars | treasure": {
    "titel": "A tribute to Bruno Mars",
    "maker": null,
@@ -297,6 +304,20 @@
    "groep": "thijs van de meeberg",
    "regel": "keuze"
   },
+  "baby reindeer | kobra theaterproducties": {
+   "titel": "Baby Reindeer",
+   "maker": "Thijs van de Meeberg",
+   "makerVast": true,
+   "groep": "thijs van de meeberg",
+   "regel": "keuze"
+  },
+  "baby reindeer | naar de netflixhit van richard gadd": {
+   "titel": "Baby Reindeer",
+   "maker": "Thijs van de Meeberg",
+   "makerVast": true,
+   "groep": "thijs van de meeberg",
+   "regel": "keuze"
+  },
   "baby reindeer | thijs van de meeberg": {
    "titel": "Baby Reindeer",
    "maker": "Thijs van de Meeberg",
@@ -506,13 +527,13 @@
    "groep": "cello octet sophie van winden",
    "regel": "keuze"
   },
-  "charly luske e a | the story of george michael": {
+  "charly luske | the story of george michael": {
    "titel": "The Story of George Michael",
    "maker": null,
    "groep": "the story of george michael",
    "regel": "keuze"
   },
-  "charly luske | the story of george michael": {
+  "charly luske e a | the story of george michael": {
    "titel": "The Story of George Michael",
    "maker": null,
    "groep": "the story of george michael",
@@ -640,6 +661,12 @@
    "groep": "de grote jubileumshow",
    "regel": "keuze"
   },
+  "de grote jubileumshow | jandino | jandino 20 jaar": {
+   "titel": "DE GROTE JUBILEUMSHOW – Jandino Asporaat",
+   "maker": "Jandino Asporaat",
+   "groep": "de grote jubileumshow",
+   "regel": "keuze"
+  },
   "de grote jubileumshow | jandino 20 jaar": {
    "titel": "DE GROTE JUBILEUMSHOW – Jandino Asporaat",
    "maker": "Jandino Asporaat",
@@ -647,12 +674,6 @@
    "regel": "keuze"
   },
   "de grote jubileumshow | jandino 20 jaar | jandino asporaat": {
-   "titel": "DE GROTE JUBILEUMSHOW – Jandino Asporaat",
-   "maker": "Jandino Asporaat",
-   "groep": "de grote jubileumshow",
-   "regel": "keuze"
-  },
-  "de grote jubileumshow | jandino | jandino 20 jaar": {
    "titel": "DE GROTE JUBILEUMSHOW – Jandino Asporaat",
    "maker": "Jandino Asporaat",
    "groep": "de grote jubileumshow",
@@ -1938,16 +1959,16 @@
    "groep": "pip utton",
    "regel": "keuze"
   },
-  "pip utton uk": {
-   "titel": "Trump",
-   "maker": "Pip Utton",
-   "groep": "trump",
-   "regel": "keuze"
-  },
   "pip utton | trump": {
    "titel": "Trump",
    "maker": null,
    "groep": "pip utton",
+   "regel": "keuze"
+  },
+  "pip utton uk": {
+   "titel": "Trump",
+   "maker": "Pip Utton",
+   "groep": "trump",
    "regel": "keuze"
   },
   "poeziebar": {
