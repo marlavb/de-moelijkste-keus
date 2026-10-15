@@ -1514,6 +1514,17 @@ a {
   object-fit: cover;
 }
 
+/* Geen foto: de eerste letter op --tint, in --primary (10:1). */
+.auth-avatar--letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tint);
+  color: var(--primary);
+  font-size: 18px;
+  font-weight: 700;
+}
+
 .auth-box-text {
   flex: 1;
   min-width: 0;

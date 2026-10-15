@@ -43,6 +43,7 @@ import {
   deblokkeer,
   laadVriendenScherm,
   telInkomend,
+  telVrienden,
   maakLink,
   trekLinkIn,
   bekijkLink,
@@ -392,10 +393,12 @@ const state = {
   // Vrienden (stap 2, zie vrienden.js): geladen bij het openen van het
   // scherm, niet live. vrienden = { vrienden, inkomend, uitgaand,
   // geblokkeerd, links } of null; vriendenStatus 'leeg' | 'laden' | 'klaar'
-  // | 'fout'; inkomendAantal voor de tegel in Profiel (null = onbekend).
+  // | 'fout'; inkomendAantal en vriendenAantal voor de kaart Vrienden in
+  // Profiel (null = onbekend).
   vrienden: null,
   vriendenStatus: 'leeg',
   inkomendAantal: null,
+  vriendenAantal: null,
   // Geopende uitnodigingslink: { token, status: 'leeg'|'laden'|'klaar'|'fout'
   // |'bezig'|'gelukt', uitkomst } (uitkomst van bekijkLink).
   vriendLink: null,
@@ -2042,6 +2045,7 @@ async function handleAuthChange(user) {
   state.vrienden = null;
   state.vriendenStatus = 'leeg';
   state.inkomendAantal = null;
+  state.vriendenAantal = null;
   if (state.vriendLink) state.vriendLink = { token: state.vriendLink.token, status: 'leeg', uitkomst: null };
   state.delen = undefined;
   state.delenFout = false;
@@ -3716,19 +3720,22 @@ const MEER_ICOON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tr
 
 const VERBINDING_FOUT = 'Dat lukte niet. Controleer je verbinding en probeer het opnieuw.';
 
-// Aantal openstaande verzoeken voor de tegel (1 read), bij het openen van
+// Aantal openstaande verzoeken en aantal vrienden voor de kaart Vrienden
+// (2 reads), bij het openen van
 // Profiel en na inloggen.
 async function vernieuwVriendenTeller() {
   if (!magVrienden()) return;
   const user = state.user;
   try {
-    const n = await telInkomend({ db, fs: firestoreFns, ik: user.uid });
+    const [n, v] = await Promise.all([telInkomend({ db, fs: firestoreFns, ik: user.uid }), telVrienden({ db, fs: firestoreFns, ik: user.uid })]);
     if (state.user !== user) return;
     state.inkomendAantal = n;
+    state.vriendenAantal = v;
   } catch (err) {
     if (state.user !== user) return;
     console.error('Kon het aantal vriendschapsverzoeken niet ophalen:', err);
     state.inkomendAantal = null;
+    state.vriendenAantal = null;
   }
   renderProfielTegels();
 }
@@ -3766,7 +3773,12 @@ function renderProfielTegels() {
   titel.textContent = 'Vrienden';
   const sub = document.createElement('span');
   sub.className = 'profiel-tegel-sub';
-  sub.textContent = n > 0 ? `${n} ${n === 1 ? 'nieuw verzoek' : 'nieuwe verzoeken'}` : 'Toevoegen, verzoeken en je uitnodigingslink';
+  // "3 vrienden · 1 nieuw verzoek"; aantal onbekend (laden, fout): de
+  // algemene tekst.
+  const v = state.vriendenAantal;
+  const aantal = v == null ? null : `${v} ${v === 1 ? 'vriend' : 'vrienden'}`;
+  const verzoeken = n > 0 ? `${n} ${n === 1 ? 'nieuw verzoek' : 'nieuwe verzoeken'}` : null;
+  sub.textContent = [aantal, verzoeken].filter(Boolean).join(' · ') || 'Toevoegen, verzoeken en je uitnodigingslink';
   tekst.append(titel, sub);
   const pijl = document.createElement('span');
   pijl.className = 'profiel-tegel-pijl';
@@ -3799,6 +3811,7 @@ async function laadVrienden() {
     state.vrienden = data;
     state.vriendenStatus = 'klaar';
     state.inkomendAantal = data.inkomend.length;
+    state.vriendenAantal = data.vrienden.length;
     // Verlopen links van jezelf opruimen (ze werken toch niet meer).
     for (const token of data.verlopenLinks) {
       trekLinkIn({ db, fs: firestoreFns, token }).catch((err) => console.error('Kon een verlopen link niet opruimen:', err));
@@ -4710,6 +4723,9 @@ function renderAuthBox() {
   box.className = 'auth-box' + (state.user ? ' auth-box--signed-in' : '');
 
   if (state.user) {
+    // Profielkaart (okt 2026): alleen avatar, naam en @gebruikersnaam.
+    // Zonder foto een bol met de eerste letter.
+    const naam = state.profiel?.naam || state.user.displayName || state.user.email || 'Ingelogd';
     if (state.user.photoURL) {
       const avatar = document.createElement('img');
       avatar.className = 'auth-avatar';
@@ -4717,17 +4733,24 @@ function renderAuthBox() {
       avatar.alt = '';
       avatar.referrerPolicy = 'no-referrer';
       box.appendChild(avatar);
+    } else {
+      const avatar = vriendenTekst('span', 'auth-avatar auth-avatar--letter', naam.trim().charAt(0).toUpperCase());
+      avatar.setAttribute('aria-hidden', 'true');
+      box.appendChild(avatar);
     }
 
     const text = document.createElement('div');
     text.className = 'auth-box-text';
     const name = document.createElement('p');
     name.className = 'auth-box-title';
-    name.textContent = state.user.displayName || state.user.email || 'Ingelogd';
-    const sub = document.createElement('p');
-    sub.className = 'auth-box-desc';
-    sub.textContent = 'Je watchlist, planning en theaterkeuze staan op al je apparaten.';
-    text.append(name, sub);
+    name.textContent = naam;
+    text.appendChild(name);
+    if (state.profiel?.gebruikersnaam) {
+      const handle = document.createElement('p');
+      handle.className = 'auth-box-desc auth-box-handle';
+      handle.textContent = `@${state.profiel.gebruikersnaam}`;
+      text.appendChild(handle);
+    }
     box.appendChild(text);
   } else {
     const text = document.createElement('div');
