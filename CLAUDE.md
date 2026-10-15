@@ -19,10 +19,26 @@ dezelfde dag stopt meteen. De workflow commit de data zelf.
   (ook als `gh` het niet kan vaststellen), doet dan `git pull --ff-only`,
   draait alle testsuites (`scripts/testpoort.js`: unit, rules, functions,
   e2e; stopt bij de eerste die faalt, op de exitcode) en pas dan `git push`.
+  De suites draaien in drie banen tegelijk: unit; rules+functions op een
+  tweede set emulatorpoorten (`firebase.parallel.json`, gemaakt uit
+  `firebase.json`, genegeerd); e2e op de vaste poorten van de app. Elke regel
+  uitvoer heeft het label van zijn baan; faalt er één, dan stoppen de andere
+  banen (de emulators sluiten netjes af; een gestopte suite heet "gestopt",
+  nooit "groen"). Vooraf moeten alle emulatorpoorten vrij zijn (anders een
+  weigering met de bezette poort). Na elkaar als vroeger:
+  `PODIUM_TESTPOORT_SERIEEL=1`.
   Op macOS houdt safe-push de Mac wakker tot het klaar is (`caffeinate -i`,
   `scripts/wakker.js`; 13 okt 2026 sliep de Mac tijdens de testpoort); op
   Linux/CI gebeurt dat niet.
-  Duurt dus ~10 minuten. `npm run safe-push -- --dry-run` doet alleen de
+  Niet dubbel testen (`scripts/testpoortGroen.js`): na een groene poort met
+  een schone werkboom staat in `.testpoort-groen` (genegeerd) wat er getest
+  is (tree-hash van HEAD, hashes van de drie package-locks, Node-versie).
+  Is de werkboom schoon (ook geen nieuwe bestanden) en is precies dat al
+  groen, dan slaat de poort de tests over ("testpoort overgeslagen: <hash>
+  al groen om <tijd>"); elke andere wijziging test alles opnieuw. Altijd
+  alles: `PODIUM_TESTPOORT_VOLLEDIG=1 npm run safe-push`.
+  Duurt ~1,5 minuut (tegelijk; na elkaar ~3,5 minuut), overgeslagen minder
+  dan een seconde. `npm run safe-push -- --dry-run` doet alleen de
   refresh-controle. Nooit omheen werken (ook geen `--no-verify`); bij een
   weigering eerst de run afwachten of de test repareren.
 - Dezelfde controles zitten in de pre-push-hook `.githooks/pre-push`; activeer
