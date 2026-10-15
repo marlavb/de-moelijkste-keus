@@ -502,6 +502,11 @@ export const THEATERS = [
     agendaUrl: 'https://www.theaterrotterdam.nl/agenda',
     podiumpas: true,
     podiumpasReserveren: TR_RESERVEREN,
+    // Gepauzeerd: sinds 14 okt 2026 krijgt onze scraper in CI een 403 met
+    // een botcontrole ("Establishing a secure connection...", DIAGNOSE in de
+    // runs van 14 en 15 okt; de herpoging van 14 okt gaf hetzelfde). We
+    // omzeilen dat niet. Terugzetten = deze regel weghalen.
+    gepauzeerd: { sinds: '2026-10-14', reden: '403 botcontrole sinds 14 okt' },
   },
   {
     id: 'tr8',
@@ -513,6 +518,11 @@ export const THEATERS = [
     agendaUrl: 'https://www.theaterrotterdam.nl/agenda',
     podiumpas: true,
     podiumpasReserveren: TR_RESERVEREN,
+    // Gepauzeerd: sinds 14 okt 2026 krijgt onze scraper in CI een 403 met
+    // een botcontrole ("Establishing a secure connection...", DIAGNOSE in de
+    // runs van 14 en 15 okt; de herpoging van 14 okt gaf hetzelfde). We
+    // omzeilen dat niet. Terugzetten = deze regel weghalen.
+    gepauzeerd: { sinds: '2026-10-14', reden: '403 botcontrole sinds 14 okt' },
   },
   {
     id: 'koningshof',

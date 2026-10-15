@@ -3,5 +3,7 @@
 # (scripts/precommit.js). De volledige testpoort zit in safe-push/pre-push.
 # Overslaan alleen in noodgevallen: PODIUM_GEEN_PRECOMMIT=1 git commit …
 # Actief via: git config core.hooksPath .githooks (npm install doet dat).
+# Nooit in GitHub Actions: de workflows committen en pushen zelf (14 okt 2026).
+if [ "$GITHUB_ACTIONS" = "true" ]; then exit 0; fi
 top="$(git rev-parse --show-toplevel)"
 exec node "$top/scripts/precommit.js"

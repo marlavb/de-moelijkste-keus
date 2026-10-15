@@ -4,7 +4,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { beoordeelNachtrun, nachtenSinds, samenvatting, issueActie, MAX_SCRAPE_MINUTEN } from '../src/lib/nachtrunSignalen.js';
+import { beoordeelNachtrun, nachtenSinds, samenvatting, issueActie, MAX_SCRAPE_MINUTEN, NIET_GEPUBLICEERD } from '../src/lib/nachtrunSignalen.js';
 
 const ok = { status: 'ok' };
 const tv = (reeks = 1, fout = 'exception: page.goto: net::ERR_NAME_NOT_RESOLVED') => ({ status: 'terugval', fout, terugvalReeks: reeks });
@@ -118,4 +118,26 @@ test('issue: groen zonder terugval → sluiten als het open is; waarschuwing →
   const w = nepGh([{ number: 7, title: 'Nachtrun: aandacht nodig' }]);
   assert.equal(verwerkIssue('niets', 'x', { gh: w.gh, datum: '2026-10-08' }), 'niets');
   assert.deepEqual(w.aanroepen, []);
+});
+
+test('mislukte datapush: eigen fout "data niet gepubliceerd", los van de scraperesultaten (14 okt 2026)', () => {
+  const st = status({ a: { status: 'terugval', terugvalReeks: 1, fout: 'time-out' } });
+  for (const uitkomst of ['failure', 'cancelled']) {
+    const b = beoordeelNachtrun({ status: st, stappen: { ...stappenOk, commit: uitkomst, deploy: 'skipped' } });
+    assert.equal(b.niveau, 'rood');
+    assert.equal(b.gepubliceerd, false);
+    assert.equal(b.redenen[0], NIET_GEPUBLICEERD);
+    assert.ok(!b.redenen.some((r) => /data committen en pushen/.test(r)), 'geen dubbele melding als gewone stap');
+    assert.equal(issueActie(b), 'bijwerken');
+    const md = samenvatting(b, { datum: '2026-10-15' });
+    assert.ok(md.indexOf('### 🚫 Data niet gepubliceerd') < md.indexOf('Scraperesultaten (niet gepubliceerd)'));
+    assert.match(md, /Scraperesultaten \(niet gepubliceerd\):\n\n- 1 theater\(s\) teruggevallen \(1e nacht\)/);
+    assert.ok(!md.includes(`- ${NIET_GEPUBLICEERD}`), 'staat als kop, niet als gewone regel');
+  }
+  // Datapush gelukt (of overgeslagen): geen publicatiemelding.
+  for (const uitkomst of ['success', 'skipped', undefined]) {
+    const b = beoordeelNachtrun({ status: status(), stappen: { ...stappenOk, commit: uitkomst } });
+    assert.equal(b.gepubliceerd, true);
+    assert.ok(!samenvatting(b).includes('Data niet gepubliceerd'));
+  }
 });

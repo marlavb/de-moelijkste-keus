@@ -86,8 +86,13 @@ jobs:
           node-version: 22
           cache: npm
 
+      # npm ci draait `prepare` (scripts/hooks-installeren.js), dat in CI de
+      # git-hooks niet aanzet. Vangnet: hooks hier altijd uit, anders weigert
+      # de pre-push-hook de datapush (14 en 15 okt 2026).
       - name: Dependencies installeren
-        run: npm ci
+        run: |
+          npm ci
+          git config --local --unset core.hooksPath || true
 
       - name: Playwright's Chromium installeren
         run: npx playwright install --with-deps chromium
