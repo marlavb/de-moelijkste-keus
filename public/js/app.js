@@ -473,6 +473,7 @@ const els = {
     berichten: document.getElementById('screen-berichten'),
     mail: document.getElementById('screen-mail'),
     accountVerwijderen: document.getElementById('screen-accountVerwijderen'),
+    instellingen: document.getElementById('screen-instellingen'),
   },
   detailGezienBlok: document.getElementById('detailGezienBlok'),
   detailGezienBezoeken: document.getElementById('detailGezienBezoeken'),
@@ -587,8 +588,8 @@ const els = {
   berichtenBack: document.getElementById('berichtenBack'),
   mailBack: document.getElementById('mailBack'),
   mailInhoud: document.getElementById('mailInhoud'),
-  accountVerwijderenRij: document.getElementById('accountVerwijderenRij'),
-  accountVerwijderenKnop: document.getElementById('accountVerwijderenKnop'),
+  instellingenBack: document.getElementById('instellingenBack'),
+  instellingenInhoud: document.getElementById('instellingenInhoud'),
   accountVerwijderenBack: document.getElementById('accountVerwijderenBack'),
   accountVerwijderenInhoud: document.getElementById('accountVerwijderenInhoud'),
   berichtenInhoud: document.getElementById('berichtenInhoud'),
@@ -729,7 +730,8 @@ async function init() {
   els.detailBack.addEventListener('click', () => terug('#/'));
   els.gezienBack?.addEventListener('click', () => terug('#/profiel'));
   els.watchlistItemBack?.addEventListener('click', () => terug('#/profiel'));
-  els.profielBack?.addEventListener('click', () => terug('#/profiel'));
+  // Subschermen van Instellingen: zonder geschiedenis (diepe link) terug naar Instellingen.
+  els.profielBack?.addEventListener('click', () => terug('#/profiel/instellingen'));
   els.profielLater?.addEventListener('click', () => terug('#/profiel'));
   els.profielOpnieuw?.addEventListener('click', opnieuwProfielLaden);
   els.profielForm?.addEventListener('submit', onProfielOpslaan);
@@ -737,14 +739,14 @@ async function init() {
   els.vriendZoekForm?.addEventListener('submit', onVriendZoeken);
   els.vriendLinkMaak?.addEventListener('click', onLinkMaken);
   els.vriendLinkBack?.addEventListener('click', () => terug('#/profiel'));
-  els.delenBack?.addEventListener('click', () => terug('#/profiel'));
+  els.delenBack?.addEventListener('click', () => terug('#/profiel/instellingen'));
   els.vriendBack?.addEventListener('click', () => terug('#/vrienden'));
   els.vriendItemBack?.addEventListener('click', () => terug(vriendItemTerug));
   els.uitnodigenBack?.addEventListener('click', () => terug('#/profiel'));
   els.berichtenBack?.addEventListener('click', () => terug('#/profiel'));
-  els.mailBack?.addEventListener('click', () => terug('#/profiel'));
-  els.accountVerwijderenKnop?.addEventListener('click', () => navigate('#/profiel/account-verwijderen'));
-  els.accountVerwijderenBack?.addEventListener('click', () => terug('#/profiel'));
+  els.mailBack?.addEventListener('click', () => terug('#/profiel/instellingen'));
+  els.accountVerwijderenBack?.addEventListener('click', () => terug('#/profiel/instellingen'));
+  els.instellingenBack?.addEventListener('click', () => terug('#/profiel'));
   if (els.profielGebruikersnaamUitleg) els.profielGebruikersnaamUitleg.textContent = GEBRUIKERSNAAM_UITLEG;
   route();
 
@@ -932,6 +934,18 @@ function routeNaar(hash) {
     return;
   }
 
+  // Instellingen: subscherm van Profiel, alleen ingelogd (uitgelogd: Profiel,
+  // met de knop Inloggen).
+  if (hash === '#/profiel/instellingen') {
+    if (!els.screens.instellingen || (state.authBekend && !state.user)) {
+      vervang('#/profiel');
+      return;
+    }
+    showScreen('instellingen');
+    renderInstellingen();
+    return;
+  }
+
   // Account verwijderen: ingelogd, of net verwijderd (dan de bevestiging).
   if (hash === '#/profiel/account-verwijderen') {
     if (!els.screens.accountVerwijderen || (state.authBekend && !state.user && !accountVerwijderdKlaar())) {
@@ -1047,7 +1061,7 @@ function showScreen(name) {
   for (const [key, el] of Object.entries(els.screens)) {
     if (el) el.hidden = key !== name;
   }
-  els.bottomNav.hidden = ['detail', 'gezien', 'watchlist', 'profielInstellen', 'vrienden', 'vriendLink', 'delen', 'vriend', 'vriendItem', 'uitnodigen', 'berichten', 'mail', 'accountVerwijderen'].includes(name);
+  els.bottomNav.hidden = ['detail', 'gezien', 'watchlist', 'profielInstellen', 'vrienden', 'vriendLink', 'delen', 'vriend', 'vriendItem', 'uitnodigen', 'berichten', 'mail', 'accountVerwijderen', 'instellingen'].includes(name);
   for (const btn of els.bottomNav.querySelectorAll('.nav-item')) {
     btn.classList.toggle('is-active', btn.dataset.tab === name);
   }
@@ -2113,6 +2127,7 @@ async function handleAuthChange(user) {
   if (hash === '#/berichten') routeNaar(hash);
   if (hash === '#/profiel/mail') laadMail();
   if (hash === '#/profiel/account-verwijderen') routeNaar(hash);
+  if (hash === '#/profiel/instellingen') routeNaar(hash);
   vernieuwVriendenTeller();
   planKopie();
   laadEigenPlannen();
@@ -2226,7 +2241,7 @@ function renderProfielInstellen() {
   toonVeldFout(els.profielNaam, els.profielNaamFout, null);
   toonProfielStatus(null);
   // Nieuw profiel: de keuze "Vindbaar op naam" (standaard uit). Bestaand
-  // profiel: alleen de huidige stand; wijzigen gaat in Profiel.
+  // profiel: alleen de huidige stand; wijzigen gaat in Instellingen.
   const nieuw = !state.profiel;
   const keuze = document.getElementById('profielVindbaarKeuze');
   if (keuze) {
@@ -2237,8 +2252,8 @@ function renderProfielInstellen() {
   if (vindbaarUitleg) {
     vindbaarUitleg.hidden = nieuw || state.vindbaar === undefined;
     vindbaarUitleg.textContent = state.vindbaar
-      ? 'Anderen kunnen je vinden op deze naam (uit te zetten in Profiel).'
-      : 'Je bent niet vindbaar op deze naam (aan te zetten in Profiel).';
+      ? 'Anderen kunnen je vinden op deze naam (uit te zetten in Instellingen).'
+      : 'Je bent niet vindbaar op deze naam (aan te zetten in Instellingen).';
   }
 }
 
@@ -2303,7 +2318,7 @@ async function onProfielOpslaan(e) {
   }
 }
 
-// Onder het inlogblok in Profiel: je gebruikersnaam met "Wijzigen", of een
+// In Instellingen (Account): je gebruikersnaam met "Wijzigen"; op Profiel alleen een
 // knop om er een te kiezen, of een foutmelding met "Opnieuw".
 function renderProfielRegel() {
   if (!state.user || !els.screens.profielInstellen) return null;
@@ -2380,7 +2395,7 @@ async function zetVindbaar(aan, knop) {
   document.getElementById('vindbaarSchakelaar')?.focus();
 }
 
-// In Profiel, onder je gebruikersnaam: de schakelaar "Vindbaar op naam".
+// In Instellingen (Privacy): de schakelaar "Vindbaar op naam".
 function renderVindbaarRegel() {
   if (!state.user || !state.profiel || state.vindbaar === undefined) return null;
   const blok = document.createElement('div');
@@ -3773,8 +3788,8 @@ function renderProfielTegels() {
   tegel.append(icoon, tekst, pijl);
   tegel.addEventListener('click', () => navigate('#/vrienden'));
   box.appendChild(tegel);
-  if (els.screens.delen) box.appendChild(renderDelenTegel());
-  if (els.screens.mail) box.appendChild(renderMailTegel());
+  // "Wat vrienden zien" en "Mail" staan in Instellingen (okt 2026).
+  renderInstellingen();
 }
 
 // Een geopend menu bij een rij: { uid, soort: 'vriend'|'verzoek', bevestig: null|'verbreek'|'blokkeer' }.
@@ -4728,13 +4743,6 @@ function renderAuthBox() {
     sub.textContent = 'Je watchlist, planning en theaterkeuze staan op al je apparaten.';
     text.append(name, sub);
     box.appendChild(text);
-
-    const signOutBtn = document.createElement('button');
-    signOutBtn.type = 'button';
-    signOutBtn.className = 'text-btn-small';
-    signOutBtn.textContent = 'Uitloggen';
-    signOutBtn.addEventListener('click', handleSignOut);
-    box.appendChild(signOutBtn);
   } else {
     const text = document.createElement('div');
     text.className = 'auth-box-text';
@@ -4759,11 +4767,10 @@ function renderAuthBox() {
   }
 
   els.authBox.appendChild(box);
-  if (els.accountVerwijderenRij) els.accountVerwijderenRij.hidden = !state.user;
-  const profielRegel = renderProfielRegel();
+  // Op Profiel alleen de oproep (nog geen gebruikersnaam, of laden mislukt);
+  // wijzigen, Vindbaar op naam en uitloggen staan in Instellingen.
+  const profielRegel = state.profiel ? null : renderProfielRegel();
   if (profielRegel) els.authBox.appendChild(profielRegel);
-  const vindbaar = renderVindbaarRegel();
-  if (vindbaar) els.authBox.appendChild(vindbaar);
 
   if (state.authError) {
     const err = document.createElement('p');
@@ -4771,6 +4778,62 @@ function renderAuthBox() {
     err.textContent = state.authError;
     els.authBox.appendChild(err);
   }
+  renderInstellingen();
+}
+
+// ---------- Instellingen (#/profiel/instellingen, okt 2026) ----------
+
+// Subscherm van Profiel, in groepen: Account (gebruikersnaam en naam),
+// Privacy (Vindbaar op naam, Wat vrienden zien), Meldingen (Mail), en
+// onderaan Uitloggen en Account verwijderen. Opnieuw opgebouwd bij elke
+// wijziging in het profiel (renderAuthBox, renderProfielTegels).
+function instellingenGroep(kop, ...inhoud) {
+  const groep = document.createElement('section');
+  groep.className = 'instellingen-groep';
+  const h = vriendenTekst('h2', 'instellingen-kop', kop);
+  h.id = `instellingen-${kop.toLowerCase()}`;
+  groep.setAttribute('aria-labelledby', h.id);
+  groep.append(h, ...inhoud.filter(Boolean));
+  return groep;
+}
+
+function renderInstellingen() {
+  const box = els.instellingenInhoud;
+  if (!box) return;
+  box.innerHTML = '';
+  if (!state.user) return;
+
+  const laden = vriendenTekst('p', 'vrienden-leeg', 'Even laden…');
+  box.appendChild(instellingenGroep('Account', renderProfielRegel() ?? laden));
+
+  const zonderProfiel = state.profiel === null
+    ? vriendenTekst('p', 'vrienden-leeg', 'Kies eerst een gebruikersnaam; daarna kun je hier instellen wie je vindt en wat vrienden zien.')
+    : null;
+  const vindbaar = renderVindbaarRegel();
+  const delen = magVrienden() && els.screens.delen ? renderDelenTegel() : null;
+  box.appendChild(instellingenGroep('Privacy', zonderProfiel, vindbaar, delen));
+
+  if (els.screens.mail) box.appendChild(instellingenGroep('Meldingen', renderMailTegel()));
+
+  const onder = document.createElement('div');
+  onder.className = 'instellingen-onder';
+  const uitloggen = document.createElement('button');
+  uitloggen.type = 'button';
+  uitloggen.id = 'instellingenUitloggen';
+  uitloggen.className = 'instellingen-link';
+  uitloggen.textContent = 'Uitloggen';
+  uitloggen.addEventListener('click', handleSignOut);
+  onder.appendChild(uitloggen);
+  if (els.screens.accountVerwijderen) {
+    const verwijderen = document.createElement('button');
+    verwijderen.type = 'button';
+    verwijderen.id = 'accountVerwijderenKnop';
+    verwijderen.className = 'instellingen-link instellingen-link--gevaar';
+    verwijderen.textContent = 'Account verwijderen';
+    verwijderen.addEventListener('click', () => navigate('#/profiel/account-verwijderen'));
+    onder.appendChild(verwijderen);
+  }
+  box.appendChild(onder);
 }
 
 // ---------- Filter sheet ----------

@@ -261,7 +261,7 @@ test('Vindbaar op naam: bestaand profiel zonder voorkeur → uit, en er wordt ni
   await page.click('button[aria-label="Gebruikersnaam en naam wijzigen"]');
   await page.waitForTimeout(300);
   assert.equal(await zichtbaar(page, '#profielVindbaarKeuze'), false);
-  assert.equal(await page.textContent('#profielNaamVindbaar'), 'Anderen kunnen je vinden op deze naam (uit te zetten in Profiel).');
+  assert.equal(await page.textContent('#profielNaamVindbaar'), 'Anderen kunnen je vinden op deze naam (uit te zetten in Instellingen).');
   // Opslaan bij wijzigen raakt de voorkeur niet.
   await page.click('#profielOpslaan');
   await page.waitForTimeout(300);

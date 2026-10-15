@@ -2967,26 +2967,64 @@ button.gezien-titel {
   }
 }
 
-/* Account verwijderen (okt 2026): de knop onder in Profiel, en het scherm
-   met wat er weggaat en een bevestiging. */
-.account-verwijderen-rij {
+/* Instellingen (okt 2026): groepen met een kopje; onderaan Uitloggen en
+   Account verwijderen als gewone links. Op --bg haalt --primary 12:1 en
+   --accent-text-small 6,0:1. */
+#instellingenInhoud {
   display: flex;
-  justify-content: center;
-  margin: 16px 0 0;
+  flex-direction: column;
+  gap: 28px;
 }
 
-.account-verwijderen-knop {
+.instellingen-groep {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.instellingen-groep > .profiel-regel,
+.instellingen-groep > .profiel-vindbaar {
+  margin-top: 0;
+}
+
+.instellingen-kop {
+  margin: 0 0 2px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--divider);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: var(--kop-gewicht);
+  color: var(--primary);
+}
+
+.instellingen-onder {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.instellingen-link {
   min-height: var(--touch);
-  padding: 8px 16px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
-  background: var(--surface);
-  color: var(--danger);
+  padding: 0 2px;
+  border: none;
+  background: none;
+  color: var(--primary);
   font-family: inherit;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
   cursor: pointer;
 }
+
+.instellingen-link--gevaar {
+  color: var(--accent-text-small);
+}
+
+/* Account verwijderen (okt 2026): het scherm met wat er weggaat en een
+   bevestiging (de link staat in Instellingen). */
 
 .verwijder-lijst {
   margin: 0;

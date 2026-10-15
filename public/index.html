@@ -414,11 +414,29 @@
           </div>
         </section>
       </main>
-      <!-- Alleen ingelogd (renderAuthBox): naar het scherm Account verwijderen. -->
-      <div class="account-verwijderen-rij" id="accountVerwijderenRij" hidden>
-        <button class="account-verwijderen-knop" type="button" id="accountVerwijderenKnop">Account verwijderen</button>
-      </div>
       <p class="bot-link profiel-privacy"><a href="privacy.html">Privacy: wat we opslaan en wie wat ziet</a></p>
+    </section>
+
+    <!-- SCHERM: instellingen (#/profiel/instellingen; subscherm van Profiel,
+         alleen ingelogd): account, privacy, meldingen, uitloggen en account
+         verwijderen (okt 2026). -->
+    <section class="screen" id="screen-instellingen" hidden>
+      <header class="app-header">
+        <div class="header-top header-top--terug">
+          <button class="icon-btn" type="button" id="instellingenBack" aria-label="Terug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="app-title">Instellingen</h1>
+            <p class="app-subtitle">Je account, privacy en meldingen</p>
+          </div>
+        </div>
+      </header>
+      <main class="vrienden-scherm instellingen-scherm">
+        <div id="instellingenInhoud" aria-live="polite"></div>
+      </main>
     </section>
 
     <!-- SCHERM: account verwijderen (alleen ingelogd) -->
@@ -695,7 +713,7 @@
             <input type="checkbox" id="profielVindbaar" aria-describedby="profielVindbaarUitleg" />
             <span>
               <span class="keuze-vink-titel">Vindbaar op naam</span>
-              <span class="keuze-vink-uitleg" id="profielVindbaarUitleg">Wie je volledige naam precies intypt, kan je vinden en een vriendschapsverzoek sturen. Zonder dit vinden anderen je alleen op je gebruikersnaam of via je uitnodigingslink. Je kunt het later wijzigen in Profiel.</span>
+              <span class="keuze-vink-uitleg" id="profielVindbaarUitleg">Wie je volledige naam precies intypt, kan je vinden en een vriendschapsverzoek sturen. Zonder dit vinden anderen je alleen op je gebruikersnaam of via je uitnodigingslink. Je kunt het later wijzigen in Profiel → Instellingen.</span>
             </span>
           </label>
           <p class="profiel-status" id="profielStatus" role="alert" hidden></p>
