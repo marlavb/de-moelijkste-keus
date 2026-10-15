@@ -6,23 +6,25 @@
 // gecontroleerd: er mag geen e-mailadres van een testgebruiker in staan, en
 // geen (nep-)GitHub-token.
 // Het nepgeheim voor de emulator (functions/.secret.local) wordt hier
-// aangemaakt; het staat in .gitignore.
+// aangemaakt; het staat in .gitignore. PODIUM_FIREBASE_CONFIG (absoluut pad)
+// kiest een andere emulatorconfig, met andere poorten (parallelle testpoort).
 
 import { spawn } from 'node:child_process';
-import { writeFile } from 'node:fs/promises';
+import { writeFile, rename } from 'node:fs/promises';
 
 const FIREBASE = 'firebase/node_modules/.bin/firebase';
 const NEP_GITHUB_TOKEN = 'github_pat_NEP0000emulator0000geheim';
-await writeFile(
-  'functions/.secret.local',
-  `GMAIL_USER=podiumagenda-test@localhost.invalid\nGMAIL_APP_PASSWORD=nep-wachtwoord\nGITHUB_DISPATCH_TOKEN=${NEP_GITHUB_TOKEN}\n`
-);
+// Atomair (tijdelijk bestand + rename): in de parallelle testpoort schrijft
+// de e2e-baan (nep-geheimen.js) hetzelfde bestand.
+const tijdelijk = `functions/.secret.local.${process.pid}`;
+await writeFile(tijdelijk, `GMAIL_USER=podiumagenda-test@localhost.invalid\nGMAIL_APP_PASSWORD=nep-wachtwoord\nGITHUB_DISPATCH_TOKEN=${NEP_GITHUB_TOKEN}\n`);
+await rename(tijdelijk, 'functions/.secret.local');
 
 function ronde(only, bestanden) {
   return new Promise((klaar) => {
     const kind = spawn(
       FIREBASE,
-      ['emulators:exec', '--config', 'firebase.json', '--only', only, '--project', 'demo-podiumagenda', `node --test --test-concurrency=1 ${bestanden}`],
+      ['emulators:exec', '--config', process.env.PODIUM_FIREBASE_CONFIG ?? 'firebase.json', '--only', only, '--project', 'demo-podiumagenda', `node --test --test-concurrency=1 ${bestanden}`],
       { stdio: ['ignore', 'pipe', 'pipe'] }
     );
     let uitvoer = '';

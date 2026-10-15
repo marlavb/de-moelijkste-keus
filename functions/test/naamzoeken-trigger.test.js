@@ -7,7 +7,9 @@ import assert from 'node:assert/strict';
 import { Timestamp } from 'firebase-admin/firestore';
 import { admin, wis, PROJECT } from './hulp.js';
 
-const FUNCTIES = `http://127.0.0.1:5011/${PROJECT}/europe-west4`;
+// Poort van de Functions-emulator: 5011 (firebase.json), of die van de
+// tweede config in de parallelle testpoort (PODIUM_FUNCTIONS_POORT).
+const FUNCTIES = `http://127.0.0.1:${process.env.PODIUM_FUNCTIONS_POORT ?? 5011}/${PROJECT}/europe-west4`;
 let db;
 let auth;
 

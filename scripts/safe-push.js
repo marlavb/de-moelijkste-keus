@@ -37,7 +37,7 @@ if (houWakker()) console.log('✓ Mac blijft wakker tot de push klaar is (caffei
 execFileSync('git', ['pull', '--ff-only'], { stdio: 'inherit' });
 const suites = process.env.TESTPOORT_SUITES_VOOR_TESTS ? JSON.parse(process.env.TESTPOORT_SUITES_VOOR_TESTS) : SUITES;
 // Al groen getest en schone werkboom: overgeslagen (testpoortGroen.js).
-const poort = testpoort({ suites });
+const poort = await testpoort({ suites });
 if (!poort.ok) {
   console.error(`✋ Push geweigerd: "${poort.mislukt}" faalt. Eerst alles groen.`);
   process.exit(1);

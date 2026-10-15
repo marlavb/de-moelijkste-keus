@@ -19,6 +19,11 @@ dezelfde dag stopt meteen. De workflow commit de data zelf.
   (ook als `gh` het niet kan vaststellen), doet dan `git pull --ff-only`,
   draait alle testsuites (`scripts/testpoort.js`: unit, rules, functions,
   e2e; stopt bij de eerste die faalt, op de exitcode) en pas dan `git push`.
+  De suites draaien in drie banen tegelijk: unit; rules+functions op een
+  tweede set emulatorpoorten (`firebase.parallel.json`, gemaakt uit
+  `firebase.json`, genegeerd); e2e op de vaste poorten van de app. Elke regel
+  uitvoer heeft het label van zijn baan; faalt er één, dan stoppen de andere
+  banen. Na elkaar als vroeger: `PODIUM_TESTPOORT_SERIEEL=1`.
   Op macOS houdt safe-push de Mac wakker tot het klaar is (`caffeinate -i`,
   `scripts/wakker.js`; 13 okt 2026 sliep de Mac tijdens de testpoort); op
   Linux/CI gebeurt dat niet.
