@@ -287,7 +287,10 @@
         "toelichting": "Via de kassa: telefonisch (ma–vr 14–17 uur), per mail of aan de balie, vanaf 30 dagen voor de voorstelling."
       },
       "lat": 51.92014,
-      "lng": 4.47406
+      "lng": 4.47406,
+      "gepauzeerd": true,
+      "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
+      "meldingLink": "https://www.theaterrotterdam.nl/agenda"
     },
     "tr8": {
       "naam": "Theater Rotterdam (TR8 William Boothlaan)",
@@ -299,7 +302,10 @@
         "toelichting": "Via de kassa: telefonisch (ma–vr 14–17 uur), per mail of aan de balie, vanaf 30 dagen voor de voorstelling."
       },
       "lat": 51.91561,
-      "lng": 4.47892
+      "lng": 4.47892,
+      "gepauzeerd": true,
+      "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
+      "meldingLink": "https://www.theaterrotterdam.nl/agenda"
     },
     "koningshof": {
       "naam": "Theater Koningshof",

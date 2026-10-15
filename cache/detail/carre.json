@@ -314,7 +314,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/claudia-de-breij-oudejaarsconference": {
-   "opgehaaldOp": "2026-10-10T03:06:55.261Z",
+   "opgehaaldOp": "2026-10-15T06:54:08.794Z",
    "data": {
     "naam": "Claudia de Breij",
     "events": [
@@ -386,7 +386,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/dolf-jansen-schaamteloos": {
-   "opgehaaldOp": "2026-10-10T03:06:58.263Z",
+   "opgehaaldOp": "2026-10-15T06:54:09.789Z",
    "data": {
     "naam": "Dolf Jansen",
     "events": [
@@ -506,7 +506,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/had-ik-maar-nooit-zo-aardig-gedaan": {
-   "opgehaaldOp": "2026-10-10T03:07:18.284Z",
+   "opgehaaldOp": "2026-10-15T06:54:12.790Z",
    "data": {
     "naam": "Daniël Arends - Had ik maar nooit zo aardig gedaan",
     "events": [
@@ -1129,8 +1129,96 @@
     ]
    }
   },
+  "https://carre.nl/api/render/voorstelling/idfa-in-carre-2026": {
+   "opgehaaldOp": "2026-10-15T06:54:07.812Z",
+   "data": {
+    "naam": "IDFA 2026",
+    "events": [
+     {
+      "id": "37133",
+      "start": "2026-11-13T11:30:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://festival.idfa.nl/film/e64a0b19-15c4-4b15-9cf7-5c00eb61acd2/the-siege-of-paradise"
+     },
+     {
+      "id": "37134",
+      "start": "2026-11-13T14:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://festival.idfa.nl/film/99f4878d-139e-4eec-a7ce-373d92700e59/white-tiger-column-"
+     },
+     {
+      "id": "37132",
+      "start": "2026-11-13T17:30:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://festival.idfa.nl/film/30aaeb3c-70b5-4402-a637-1daddea78e84/the-mayor-halsema--amsterdam"
+     },
+     {
+      "id": "37135",
+      "start": "2026-11-13T20:30:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://festival.idfa.nl/film/715217e7-beea-4efa-b608-600b0caf2636/you-can-see-everything"
+     },
+     {
+      "id": "37131",
+      "start": "2026-11-14T09:45:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://festival.idfa.nl/composition/b5a35261-4afa-46f1-ad23-035af0d3a5ee/de-volkskrantdag"
+     },
+     {
+      "id": "37136",
+      "start": "2026-11-14T19:30:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://festival.idfa.nl/film/292ccaf2-a5d3-4090-bce5-965e3ce87003/musk/"
+     },
+     {
+      "id": "37137",
+      "start": "2026-11-15T10:15:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://festival.idfa.nl/film/41151639-3748-4943-a667-30b38acc5155/everybody-to-kenmure-street/"
+     },
+     {
+      "id": "37138",
+      "start": "2026-11-15T13:30:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://festival.idfa.nl/film/02f4634b-d7ee-4654-ba3d-7c09259ec34d/everest-the-other-side"
+     },
+     {
+      "id": "37139",
+      "start": "2026-11-15T17:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://festival.idfa.nl/film/202d0d5b-1c64-4bc5-a317-fa4dec1d7e51/how-much-longer"
+     },
+     {
+      "id": "37140",
+      "start": "2026-11-15T20:15:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": "https://festival.idfa.nl/film/ec589c48-fff7-44e9-a4a0-60b70b593149/14th"
+     }
+    ]
+   }
+  },
   "https://carre.nl/api/render/voorstelling/jenny-arean": {
-   "opgehaaldOp": "2026-10-10T03:07:09.278Z",
+   "opgehaaldOp": "2026-10-15T06:54:10.790Z",
    "data": {
     "naam": "Jenny Arean",
     "events": [
@@ -1514,7 +1602,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/micky-overman-2027": {
-   "opgehaaldOp": "2026-10-10T03:07:14.273Z",
+   "opgehaaldOp": "2026-10-15T06:54:11.789Z",
    "data": {
     "naam": "Micky Overman",
     "events": [
