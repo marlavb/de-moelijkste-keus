@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (70 ok, 2 leeg, 1 terugval, 8 gepauzeerd)
+- Theaters: **81** (68 ok, 2 leeg, 10 gepauzeerd, 1 terugval)
 - Voorstellingen (titel per theater): **8352**
 - Speeldata: **11733**
 - Laatste refresh: **13 oktober 2026, 12:47** (Amsterdamse tijd)
@@ -424,8 +424,8 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater Koningshof | Maassluis | deels | ok |
 | De Muze | Noordwijk | deels | ok |
 | Maas theater en dans | Rotterdam | ja | ok |
-| Theater Rotterdam (TR25 Schouwburg) | Rotterdam | ja | ok |
-| Theater Rotterdam (TR8 William Boothlaan) | Rotterdam | ja | ok |
+| Theater Rotterdam (TR25 Schouwburg) | Rotterdam | ja | gepauzeerd sinds 2026-10-14 |
+| Theater Rotterdam (TR8 William Boothlaan) | Rotterdam | ja | gepauzeerd sinds 2026-10-14 |
 | Theater de Stoep | Spijkenisse | deels | ok |
 | Stadsgehoorzaal | Vlaardingen | deels | terugval |
 
