@@ -67,6 +67,7 @@ import {
 import { getGenreBucket, getGenres, matchtGenreFilter } from './genre.js';
 import { getOtherTheaterShows } from './productions.js';
 import { weergaveTitel, makerStaatInTitel, isVervallen, isVol, VERVALLEN_LABELS, watchlistStand } from './weergave.js';
+import { matchtZoekterm } from './zoeken.js';
 import { renameFavoritesAndPersist, THEATER_MOVES } from './favorites.js';
 import { laadWatchlist, bekendeSleutels, legeWatchlist, watchlistSleutel, voegToe, verwijder, NORMALISATIE_VERSIE, samenvoegMapping, groepeerWatchlist } from './watchlist.js';
 import {
@@ -5319,13 +5320,9 @@ function filteredShows({ ignoreDateWindow = false } = {}) {
     // nooit, dat is geen "meer", dat is gewoon verlopen data).
     const dateOk = s.datum >= minDate && (maxDate == null || s.datum <= maxDate);
     const wanneerOk = matchtWanneer(s.datum, state.wanneer, vandaagAmsterdam);
-    const searchOk =
-      !state.searchQuery ||
-      s.titel.toLowerCase().includes(state.searchQuery) ||
-      // Ook op de titel zoals het theater hem schrijft (weergave op meerderheid).
-      (s.titelBron ?? '').toLowerCase().includes(state.searchQuery) ||
-      s.theaterNaam.toLowerCase().includes(state.searchQuery) ||
-      (THEATER_ZOEKALIASSEN[s.theaterId] ?? []).some((alias) => alias.includes(state.searchQuery));
+    // In alles wat je ziet: titel met maker, brontitel, maker, theater en
+    // stad (zoeken.js).
+    const searchOk = !state.searchQuery || matchtZoekterm(s, state.searchQuery, { aliassen: THEATER_ZOEKALIASSEN[s.theaterId] ?? [] });
     return cityOk && theaterOk && genreOk && podiumpasOk && watchlistOk && gezienOk && fullOk && dateOk && wanneerOk && searchOk;
   });
 }
