@@ -22,7 +22,14 @@ dezelfde dag stopt meteen. De workflow commit de data zelf.
   Op macOS houdt safe-push de Mac wakker tot het klaar is (`caffeinate -i`,
   `scripts/wakker.js`; 13 okt 2026 sliep de Mac tijdens de testpoort); op
   Linux/CI gebeurt dat niet.
-  Duurt dus ~10 minuten. `npm run safe-push -- --dry-run` doet alleen de
+  Niet dubbel testen (`scripts/testpoortGroen.js`): na een groene poort met
+  een schone werkboom staat in `.testpoort-groen` (genegeerd) wat er getest
+  is (tree-hash van HEAD, hashes van de drie package-locks, Node-versie).
+  Is de werkboom schoon (ook geen nieuwe bestanden) en is precies dat al
+  groen, dan slaat de poort de tests over ("testpoort overgeslagen: <hash>
+  al groen om <tijd>"); elke andere wijziging test alles opnieuw. Altijd
+  alles: `PODIUM_TESTPOORT_VOLLEDIG=1 npm run safe-push`.
+  Duurt dus een paar minuten. `npm run safe-push -- --dry-run` doet alleen de
   refresh-controle. Nooit omheen werken (ook geen `--no-verify`); bij een
   weigering eerst de run afwachten of de test repareren.
 - Dezelfde controles zitten in de pre-push-hook `.githooks/pre-push`; activeer

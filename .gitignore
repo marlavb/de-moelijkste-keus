@@ -23,3 +23,6 @@ ui-debug.log
 
 # Nepgeheimen voor de Functions-emulator (worden door npm run test:functions aangemaakt).
 functions/.secret.local
+
+# Laatste groene testpoort (scripts/testpoortGroen.js): lokaal, nooit in git.
+.testpoort-groen
