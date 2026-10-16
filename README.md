@@ -13,9 +13,9 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
 
 <!-- AUTO:aantallen:start -->
 - Theaters: **81** (69 ok, 2 leeg, 10 gepauzeerd)
-- Voorstellingen (titel per theater): **8213**
-- Speeldata: **11508**
-- Laatste refresh: **15 oktober 2026, 09:40** (Amsterdamse tijd)
+- Voorstellingen (titel per theater): **8143**
+- Speeldata: **11305**
+- Laatste refresh: **16 oktober 2026, 05:53** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -457,7 +457,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater aan het Spui | Den Haag | ja | ok |
 | Zaal 3 | Den Haag | ja | ok |
 | Theater Ins Blau | Leiden | ja | ok |
-| Theater Koningshof | Maassluis | deels | ok |
+| Theater Koningshof | Maassluis | ja | ok |
 | De Muze | Noordwijk | deels | ok |
 | Maas theater en dans | Rotterdam | ja | ok |
 | Theater Rotterdam (TR25 Schouwburg) | Rotterdam | – | gepauzeerd sinds 2026-10-14 |
