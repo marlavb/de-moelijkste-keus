@@ -26,7 +26,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/agnes-obel": {
-   "opgehaaldOp": "2026-10-10T03:07:31.293Z",
+   "opgehaaldOp": "2026-10-17T03:06:39.587Z",
    "data": {
     "naam": "Agnes Obel",
     "events": [
@@ -58,7 +58,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/ashton-brothers": {
-   "opgehaaldOp": "2026-10-10T03:07:15.274Z",
+   "opgehaaldOp": "2026-10-17T03:06:34.581Z",
    "data": {
     "naam": "Ashton Brothers",
     "events": [
@@ -106,7 +106,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/bianca-del-rio-2027": {
-   "opgehaaldOp": "2026-10-10T03:07:20.282Z",
+   "opgehaaldOp": "2026-10-17T03:06:36.585Z",
    "data": {
     "naam": "Bianca Del Rio",
     "events": [
@@ -122,7 +122,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/blancowhite": {
-   "opgehaaldOp": "2026-10-10T03:07:11.274Z",
+   "opgehaaldOp": "2026-10-17T03:06:33.587Z",
    "data": {
     "naam": "Blanco White",
     "events": [
@@ -154,7 +154,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/brabo-leone": {
-   "opgehaaldOp": "2026-10-10T03:07:34.297Z",
+   "opgehaaldOp": "2026-10-17T03:06:40.588Z",
    "data": {
     "naam": "Brabo Leone",
     "events": [
@@ -345,8 +345,32 @@
     ]
    }
   },
+  "https://carre.nl/api/render/voorstelling/damien-rice-25th-anniversary-tour": {
+   "opgehaaldOp": "2026-10-17T03:06:35.581Z",
+   "data": {
+    "naam": "Damien Rice",
+    "events": [
+     {
+      "id": "37141",
+      "start": "2027-04-16T20:00:00+02:00",
+      "salesStatus": "sales_not_started",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": null
+     },
+     {
+      "id": "37142",
+      "start": "2027-04-17T20:00:00+02:00",
+      "salesStatus": "sales_not_started",
+      "statusID": "last_chance",
+      "soort": "Voorstelling",
+      "salesUrl": null
+     }
+    ]
+   }
+  },
   "https://carre.nl/api/render/voorstelling/de-proefkeuken-en-de-wc-van-tijd": {
-   "opgehaaldOp": "2026-10-10T03:07:08.277Z",
+   "opgehaaldOp": "2026-10-17T03:06:32.582Z",
    "data": {
     "naam": "Proefkeuken",
     "events": [
@@ -466,7 +490,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/evita": {
-   "opgehaaldOp": "2026-10-10T03:06:48.250Z",
+   "opgehaaldOp": "2026-10-17T03:06:29.596Z",
    "data": {
     "naam": "Evita",
     "events": [
@@ -1506,7 +1530,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/matthew-bourne-the-car-man": {
-   "opgehaaldOp": "2026-10-10T03:06:51.354Z",
+   "opgehaaldOp": "2026-10-17T03:06:30.697Z",
    "data": {
     "naam": "Matthew Bourne's The Car Man",
     "events": [
@@ -1516,7 +1540,7 @@
       "salesStatus": "on_sale",
       "statusID": null,
       "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36242&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36242%26upsellids%3D36119%252C36117%252C36116%252C36118&saleschannelid=2&skinid=1&withauthentication=no&signature=2184bd0c2f87ba11ec5aa399be1ac59e5b82046cb364830f7c5ca4ab22657bdb"
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36242&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36242%26upsellids%3D36119%252C36117%252C36118&saleschannelid=2&skinid=1&withauthentication=no&signature=18148b5cfa8959f958ada50c6d9c38444fcc10e2bf7e91e9f3d2a8cbe8099f86"
      },
      {
       "id": "36671",
@@ -1524,7 +1548,7 @@
       "salesStatus": "on_sale",
       "statusID": null,
       "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36671&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36671%26upsellids%3D36127%252C36123%252C36120%252C36133&saleschannelid=2&skinid=1&withauthentication=no&signature=63066b2a014b34397b6823698f0c55c522cca0a7208d1c51c319eaf519712cb2"
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36671&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36671%26upsellids%3D36127%252C36123%252C36120%252C36133&saleschannelid=2&skinid=1&withauthentication=no&signature=05d6f279c8555791c626e2400b1c26805e87eae045147493689053c183a76a2c"
      },
      {
       "id": "36675",
@@ -1532,7 +1556,7 @@
       "salesStatus": "on_sale",
       "statusID": null,
       "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36675&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36675%26upsellids%3D36128%252C36124%252C36134&saleschannelid=2&skinid=1&withauthentication=no&signature=9027a3bb16dc8731882804b337a27acd03c3923c6751a45eacf0b15c4f0eedb1"
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36675&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36675%26upsellids%3D36128%252C36124%252C36134&saleschannelid=2&skinid=1&withauthentication=no&signature=2b753d32c5d5a1441fe0e22f3876524768bfc4845b7e0e3b3f186c59824b2fd0"
      },
      {
       "id": "36678",
@@ -1540,7 +1564,7 @@
       "salesStatus": "on_sale",
       "statusID": null,
       "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36678&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36678%26upsellids%3D36131%252C36139%252C36137&saleschannelid=2&skinid=1&withauthentication=no&signature=39782026c5557f0101e3ffcbc9c63d5f1fe0a22eeb2660cae5d94de909b4c220"
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36678&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36678%26upsellids%3D36131%252C36139%252C36137&saleschannelid=2&skinid=1&withauthentication=no&signature=2589645510e39222a996d101cf29774ee42e42d8d4d0912fb700d8caae4dd315"
      },
      {
       "id": "36680",
@@ -1548,7 +1572,7 @@
       "salesStatus": "on_sale",
       "statusID": null,
       "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36680&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36680%26upsellids%3D36129%252C36125%252C36122%252C36135&saleschannelid=2&skinid=1&withauthentication=no&signature=30ff8723a0e30bb20e858255eb0e6c809171d080a76607e11cb3b0a27aaf16ec"
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36680&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36680%26upsellids%3D36129%252C36125%252C36122%252C36135&saleschannelid=2&skinid=1&withauthentication=no&signature=d3fc980473277ea4f10bde2df06a7182461fb3c0f2e33907f12832319f4c597d"
      },
      {
       "id": "36681",
@@ -1556,7 +1580,7 @@
       "salesStatus": "on_sale",
       "statusID": null,
       "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36681&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36681%26upsellids%3D36132%252C36140%252C36138&saleschannelid=2&skinid=1&withauthentication=no&signature=6f53d114109a7859a24317cf5a166a1368cbf3877f16b37ca602b99666ba40ca"
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36681&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36681%26upsellids%3D36132%252C36140%252C36138&saleschannelid=2&skinid=1&withauthentication=no&signature=dfa7c0266b24444e69f0a42d313bd8a497b48a942fa39a4ea0a1f51098fc1bbc"
      },
      {
       "id": "36682",
@@ -1564,7 +1588,7 @@
       "salesStatus": "on_sale",
       "statusID": null,
       "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36682&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36682%26upsellids%3D36130%252C36126%252C36141%252C36136&saleschannelid=2&skinid=1&withauthentication=no&signature=b296ea7167d3367656f94189267336a7fcecbd6205c35d93291395292860ae18"
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36682&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36682%26upsellids%3D36130%252C36126%252C36141%252C36136&saleschannelid=2&skinid=1&withauthentication=no&signature=9a2907617a5d913acc61b33fe567a4cd564fa5b8e2b5f1892c9418e7e8a98de5"
      }
     ]
    }
@@ -1762,7 +1786,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/rayen-panday": {
-   "opgehaaldOp": "2026-10-10T03:07:25.290Z",
+   "opgehaaldOp": "2026-10-17T03:06:38.587Z",
    "data": {
     "naam": "Rayen Panday",
     "events": [
@@ -1778,7 +1802,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/rhythm-flow-ish": {
-   "opgehaaldOp": "2026-10-10T03:07:21.370Z",
+   "opgehaaldOp": "2026-10-17T03:06:37.685Z",
    "data": {
     "naam": "ISH - Rhythm & Flow",
     "events": [
@@ -1842,7 +1866,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/ruth-jacott": {
-   "opgehaaldOp": "2026-10-10T03:07:03.263Z",
+   "opgehaaldOp": "2026-10-17T03:06:31.578Z",
    "data": {
     "naam": "Ruth Jacott",
     "events": [
