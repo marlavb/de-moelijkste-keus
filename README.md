@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (68 ok, 1 terugval, 2 leeg, 10 gepauzeerd)
-- Voorstellingen (titel per theater): **7987**
-- Speeldata: **11124**
-- Laatste refresh: **17 oktober 2026, 05:48** (Amsterdamse tijd)
+- Theaters: **81** (1 terugval, 68 ok, 2 leeg, 10 gepauzeerd)
+- Voorstellingen (titel per theater): **8047**
+- Speeldata: **11254**
+- Laatste refresh: **18 oktober 2026, 05:49** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -429,7 +429,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Bijlmer Parktheater | Amsterdam | ja | ok |
 | CC Amstel | Amsterdam | ja | ok |
 | De Kleine Komedie | Amsterdam | nee | ok |
-| DeLaMar | Amsterdam | ja | ok |
+| DeLaMar | Amsterdam | ja | terugval |
 | Frascati | Amsterdam | ja | ok |
 | Koninklijk Theater Carré | Amsterdam | nee | ok |
 | Muziekgebouw aan 't IJ | Amsterdam | ja | ok |
@@ -443,7 +443,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | VU Griffioen | Amsterdam | ja | ok |
 | Kennemer Theater | Beverwijk | – | gepauzeerd sinds 2026-10-01 |
 | Theater de Omval | Diemen | ja | ok |
-| Schuur | Haarlem | ja | terugval |
+| Schuur | Haarlem | ja | ok |
 | Cpunt | Hoofddorp | nee | ok |
 | Zaantheater | Zaandam | ja | ok |
 
