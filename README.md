@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (69 ok, 2 leeg, 10 gepauzeerd)
-- Voorstellingen (titel per theater): **7993**
-- Speeldata: **11174**
-- Laatste refresh: **19 oktober 2026, 05:49** (Amsterdamse tijd)
+- Theaters: **81** (68 ok, 1 terugval, 2 leeg, 10 gepauzeerd)
+- Voorstellingen (titel per theater): **7988**
+- Speeldata: **11073**
+- Laatste refresh: **20 oktober 2026, 05:45** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -430,7 +430,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | CC Amstel | Amsterdam | ja | ok |
 | De Kleine Komedie | Amsterdam | nee | ok |
 | DeLaMar | Amsterdam | ja | ok |
-| Frascati | Amsterdam | ja | ok |
+| Frascati | Amsterdam | ja | terugval |
 | Koninklijk Theater Carré | Amsterdam | nee | ok |
 | Muziekgebouw aan 't IJ | Amsterdam | ja | ok |
 | Plein Theater | Amsterdam | nee | ok |
