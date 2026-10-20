@@ -67,7 +67,7 @@
    }
   },
   "https://www.mimik.nl/agenda/alex-ploeg-2027": {
-   "opgehaaldOp": "2026-10-13T03:49:14.521Z",
+   "opgehaaldOp": "2026-10-20T03:45:12.673Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Alex Ploeg",
@@ -219,7 +219,7 @@
    }
   },
   "https://www.mimik.nl/agenda/brothertill-lisa-weeda": {
-   "opgehaaldOp": "2026-10-13T03:49:16.468Z",
+   "opgehaaldOp": "2026-10-20T03:45:14.642Z",
    "data": {
     "categorie": "Woordkunst",
     "kop": "BrotherTill & Lisa Weeda",
@@ -738,7 +738,7 @@
    }
   },
   "https://www.mimik.nl/agenda/de-theatertroep-vier-crematies-en-een-scheiding": {
-   "opgehaaldOp": "2026-10-13T03:49:10.520Z",
+   "opgehaaldOp": "2026-10-20T03:45:08.691Z",
    "data": {
     "categorie": "Theater",
     "kop": "De Theatertroep",
@@ -795,6 +795,25 @@
       "prijs": "€ 13,00",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10385724"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/dikkie-dik-en-de-verdwenen-knuffel-3": {
+   "opgehaaldOp": "2026-10-20T03:45:00.858Z",
+   "data": {
+    "categorie": "Junior",
+    "kop": "Dikkie Dik en de verdwenen knuffel (3+)",
+    "onder": "Joost van den Bosch",
+    "eersteStart": "2026-10-25T10:50:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-10-25",
+      "tijd": "10:50",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 9,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10387655"
      }
     ]
    }
@@ -908,7 +927,7 @@
    }
   },
   "https://www.mimik.nl/agenda/dz-on-stage-borstkanker": {
-   "opgehaaldOp": "2026-10-15T07:40:07.083Z",
+   "opgehaaldOp": "2026-10-20T03:44:59.705Z",
    "data": {
     "categorie": "Te gast",
     "kop": "DZ on Stage",
@@ -1079,7 +1098,7 @@
    }
   },
   "https://www.mimik.nl/agenda/esther-apituley": {
-   "opgehaaldOp": "2026-10-13T03:49:05.385Z",
+   "opgehaaldOp": "2026-10-20T03:45:04.735Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Esther Apituley",
@@ -1976,7 +1995,7 @@
    }
   },
   "https://www.mimik.nl/agenda/het-nut-2026": {
-   "opgehaaldOp": "2026-10-13T03:49:17.461Z",
+   "opgehaaldOp": "2026-10-20T03:45:15.655Z",
    "data": {
     "categorie": "Theater",
     "kop": "Het NUT",
@@ -1992,6 +2011,16 @@
       "href": "https://www.mimik.nl/tickets?programId=10355859"
      }
     ]
+   }
+  },
+  "https://www.mimik.nl/agenda/hola-frida": {
+   "opgehaaldOp": "2026-10-20T03:45:01.823Z",
+   "data": {
+    "categorie": "Cinekid",
+    "kop": "Hola Frida!",
+    "onder": null,
+    "eersteStart": "2026-10-26T09:00:00.0000000",
+    "speeldata": []
    }
   },
   "https://www.mimik.nl/agenda/human-nature": {
@@ -2060,7 +2089,7 @@
    }
   },
   "https://www.mimik.nl/agenda/izaline-calister-rum-and-coca-cola": {
-   "opgehaaldOp": "2026-10-13T03:49:06.596Z",
+   "opgehaaldOp": "2026-10-20T03:45:05.835Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Izaline Calister",
@@ -2098,7 +2127,7 @@
    }
   },
   "https://www.mimik.nl/agenda/jeroen-van-vliet": {
-   "opgehaaldOp": "2026-10-19T03:48:31.977Z",
+   "opgehaaldOp": "2026-10-20T03:44:55.715Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Jeroen van Vliet",
@@ -2463,7 +2492,7 @@
    }
   },
   "https://www.mimik.nl/agenda/korzo-breaking-generations": {
-   "opgehaaldOp": "2026-10-13T03:49:04.507Z",
+   "opgehaaldOp": "2026-10-20T03:45:03.745Z",
    "data": {
     "categorie": "Dans",
     "kop": "Korzo",
@@ -2528,7 +2557,7 @@
    }
   },
   "https://www.mimik.nl/agenda/lebbis-satan-is-moe": {
-   "opgehaaldOp": "2026-10-13T03:49:11.492Z",
+   "opgehaaldOp": "2026-10-20T03:45:09.732Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Lebbis",
@@ -2547,7 +2576,7 @@
    }
   },
   "https://www.mimik.nl/agenda/leids-cabaret-festival-2027": {
-   "opgehaaldOp": "2026-10-13T03:49:09.486Z",
+   "opgehaaldOp": "2026-10-20T03:45:07.687Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Leids Cabaret Festival",
@@ -3409,7 +3438,7 @@
    }
   },
   "https://www.mimik.nl/agenda/patrick-nederkoorn-nieuw-programma": {
-   "opgehaaldOp": "2026-10-13T03:49:03.488Z",
+   "opgehaaldOp": "2026-10-20T03:45:02.725Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Patrick Nederkoorn",
@@ -3596,7 +3625,7 @@
    }
   },
   "https://www.mimik.nl/agenda/raymi-sambo-maakt-marsha": {
-   "opgehaaldOp": "2026-10-19T03:48:30.981Z",
+   "opgehaaldOp": "2026-10-20T03:44:54.749Z",
    "data": {
     "categorie": "Theater",
     "kop": "Raymi Sambo Maakt",
@@ -4098,7 +4127,7 @@
    }
   },
   "https://www.mimik.nl/agenda/ronald-goedemondt": {
-   "opgehaaldOp": "2026-10-19T03:48:32.974Z",
+   "opgehaaldOp": "2026-10-20T03:44:56.490Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Ronald Goedemondt",
@@ -4117,7 +4146,7 @@
    }
   },
   "https://www.mimik.nl/agenda/rundfunk-wagyu-try-out": {
-   "opgehaaldOp": "2026-10-19T03:48:30.012Z",
+   "opgehaaldOp": "2026-10-20T03:44:53.681Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Rundfunk",
@@ -4193,7 +4222,7 @@
    }
   },
   "https://www.mimik.nl/agenda/schwung": {
-   "opgehaaldOp": "2026-10-13T03:49:15.488Z",
+   "opgehaaldOp": "2026-10-20T03:45:13.638Z",
    "data": {
     "categorie": "Theater",
     "kop": "Schwung",
@@ -4323,7 +4352,7 @@
    }
   },
   "https://www.mimik.nl/agenda/shaun-het-schaap-het-beest-van-de-boerderij-6": {
-   "opgehaaldOp": "2026-10-19T03:48:35.176Z",
+   "opgehaaldOp": "2026-10-20T03:44:59.039Z",
    "data": {
     "categorie": "Junior",
     "kop": "Shaun het Schaap: Het Beest van de Boerderij (6+)",
@@ -4337,6 +4366,22 @@
       "prijs": "€ 9,00",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10386428"
+     },
+     {
+      "datum": "2026-10-25",
+      "tijd": "12:20",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 9,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10387699"
+     },
+     {
+      "datum": "2026-10-28",
+      "tijd": "15:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 9,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10387700"
      },
      {
       "datum": "2026-10-31",
@@ -4569,7 +4614,7 @@
    }
   },
   "https://www.mimik.nl/agenda/studio-sibling": {
-   "opgehaaldOp": "2026-10-13T03:49:18.508Z",
+   "opgehaaldOp": "2026-10-20T03:45:16.737Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Studio Sibling",
@@ -4642,7 +4687,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tent-van-het-oosten-januari": {
-   "opgehaaldOp": "2026-10-13T03:49:13.650Z",
+   "opgehaaldOp": "2026-10-20T03:45:11.760Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Tent van het Oosten | januari",
@@ -4949,7 +4994,7 @@
    }
   },
   "https://www.mimik.nl/agenda/theater-kwikstaart-dwars-door-het-beton": {
-   "opgehaaldOp": "2026-10-13T03:49:07.463Z",
+   "opgehaaldOp": "2026-10-20T03:45:06.654Z",
    "data": {
     "categorie": "Junior",
     "kop": "Theater Kwikstaart",
@@ -5109,7 +5154,7 @@
    }
   },
   "https://www.mimik.nl/agenda/van-vleuten-en-van-muiswinkel-10-11": {
-   "opgehaaldOp": "2026-10-13T03:49:12.549Z",
+   "opgehaaldOp": "2026-10-20T03:45:10.690Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Van Vleuten en van Muiswinkel",
@@ -5166,7 +5211,7 @@
    }
   },
   "https://www.mimik.nl/agenda/verhalen-uit-de-magische-tuin-6": {
-   "opgehaaldOp": "2026-10-19T03:48:34.068Z",
+   "opgehaaldOp": "2026-10-20T03:44:57.677Z",
    "data": {
     "categorie": "Junior",
     "kop": "Verhalen uit de Magische tuin (6+)",

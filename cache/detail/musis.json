@@ -2,7 +2,7 @@
  "theaterId": "musis",
  "items": {
   "https://www.musisenstadstheater.nl/nl/agenda/40-up-let-s-dance-again": {
-   "opgehaaldOp": "2026-10-13T03:46:27.529Z",
+   "opgehaaldOp": "2026-10-20T03:42:32.239Z",
    "data": {
     "plek": "Musis Arnhem, Parkzaal",
     "ticket": "https://www.40up.nl/agenda/tijdmachine-arnhem/",
@@ -74,7 +74,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/amatis-trio-thomas-quasthoff-humanity-in-war": {
-   "opgehaaldOp": "2026-10-13T03:46:20.508Z",
+   "opgehaaldOp": "2026-10-20T03:42:25.239Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55143/115515/",
@@ -110,7 +110,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/amsterdam-sinfonietta-ivan-karizna": {
-   "opgehaaldOp": "2026-10-13T03:46:39.621Z",
+   "opgehaaldOp": "2026-10-20T03:42:43.315Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55125/115496/",
@@ -218,7 +218,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/beatrice-de-graaf-chaos-in-de-westerse-wereld": {
-   "opgehaaldOp": "2026-10-13T03:46:30.612Z",
+   "opgehaaldOp": "2026-10-20T03:42:35.288Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56318/117134/",
@@ -389,7 +389,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/colin-blunstone": {
-   "opgehaaldOp": "2026-10-13T03:46:47.626Z",
+   "opgehaaldOp": "2026-10-20T03:42:51.327Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://www.ticketmaster.nl/event/529161680?brand=nl_musis",
@@ -434,7 +434,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/daan": {
-   "opgehaaldOp": "2026-10-13T03:46:46.589Z",
+   "opgehaaldOp": "2026-10-20T03:42:50.282Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://www.ticketmaster.nl/event/1183836398?brand=nl_musis",
@@ -542,7 +542,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/dood-paard-eleonora-of-de-farce-van-de-tragedie": {
-   "opgehaaldOp": "2026-10-13T03:46:26.611Z",
+   "opgehaaldOp": "2026-10-20T03:42:31.331Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56410/117252/",
@@ -551,7 +551,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/dox-the-desire-club-14": {
-   "opgehaaldOp": "2026-10-13T03:46:36.633Z",
+   "opgehaaldOp": "2026-10-20T03:42:40.329Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56437/117280/",
@@ -641,7 +641,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/eusebius-icoon-4-olivier-latry": {
-   "opgehaaldOp": "2026-10-13T03:46:35.588Z",
+   "opgehaaldOp": "2026-10-20T03:42:39.281Z",
    "data": {
     "plek": "Eusebiuskerk, Externe locatie",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55641/116321/",
@@ -785,7 +785,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/hadewijch-van-gent-dutch-classical-talent-resonanties": {
-   "opgehaaldOp": "2026-10-13T03:46:19.409Z",
+   "opgehaaldOp": "2026-10-20T03:42:24.156Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55378/115930/",
@@ -920,7 +920,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/introdans-kylian": {
-   "opgehaaldOp": "2026-10-13T03:46:42.601Z",
+   "opgehaaldOp": "2026-10-20T03:42:46.298Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56134/116907/",
@@ -1010,7 +1010,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/jeroen-van-veen-late-night-einaudi-yurima-tiersen": {
-   "opgehaaldOp": "2026-10-13T03:46:40.599Z",
+   "opgehaaldOp": "2026-10-20T03:42:44.291Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55191/115749/",
@@ -1073,7 +1073,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/kasper-van-der-laan-nieuw-programma": {
-   "opgehaaldOp": "2026-10-13T03:46:23.603Z",
+   "opgehaaldOp": "2026-10-20T03:42:28.310Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "",
@@ -1100,7 +1100,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/kim-karssen-god-is-snotje": {
-   "opgehaaldOp": "2026-10-13T03:46:37.612Z",
+   "opgehaaldOp": "2026-10-20T03:42:41.316Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56699/117721/",
@@ -1172,7 +1172,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/leonkoro-quartet-destiny-in-a-minor-key": {
-   "opgehaaldOp": "2026-10-13T03:46:34.615Z",
+   "opgehaaldOp": "2026-10-20T03:42:38.310Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55255/115823/",
@@ -1190,7 +1190,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/lieven-scheire-robots": {
-   "opgehaaldOp": "2026-10-13T03:46:41.602Z",
+   "opgehaaldOp": "2026-10-20T03:42:45.299Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56415/117261/",
@@ -1217,7 +1217,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/loes-luca-rambling-with-loes": {
-   "opgehaaldOp": "2026-10-13T03:46:48.600Z",
+   "opgehaaldOp": "2026-10-20T03:42:52.295Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://www.ticketmaster.nl/event/404711442?brand=nl_musis",
@@ -1307,7 +1307,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/matilda-lloyd-concerto-de-cavalieri-casta-diva": {
-   "opgehaaldOp": "2026-10-13T03:46:43.515Z",
+   "opgehaaldOp": "2026-10-20T03:42:47.229Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55265/115848/",
@@ -1343,7 +1343,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/maya-fridman-elisabeth-hetherington-hecate": {
-   "opgehaaldOp": "2026-10-13T03:46:29.611Z",
+   "opgehaaldOp": "2026-10-20T03:42:34.311Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56018/116778/",
@@ -1352,7 +1352,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/maya-fridman-introdans-corpus-bach": {
-   "opgehaaldOp": "2026-10-13T03:46:51.628Z",
+   "opgehaaldOp": "2026-10-20T03:42:55.340Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56021/116781/",
@@ -1595,7 +1595,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/nederlands-kamerkoor-bach-motetten": {
-   "opgehaaldOp": "2026-10-13T03:46:45.556Z",
+   "opgehaaldOp": "2026-10-20T03:42:49.334Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55200/115758/",
@@ -1658,7 +1658,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/nikola-meeuwsen": {
-   "opgehaaldOp": "2026-10-13T03:46:28.609Z",
+   "opgehaaldOp": "2026-10-20T03:42:33.304Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55206/115766/",
@@ -1739,7 +1739,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/orkest-phion-anadolu-tinilari-anatolische-klankkleuren": {
-   "opgehaaldOp": "2026-10-13T03:46:49.488Z",
+   "opgehaaldOp": "2026-10-20T03:42:53.280Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56156/116935/",
@@ -1829,7 +1829,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/orkest-phion-to-die-for-a-comedy": {
-   "opgehaaldOp": "2026-10-13T03:46:24.497Z",
+   "opgehaaldOp": "2026-10-20T03:42:29.219Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56008/116768/",
@@ -1856,7 +1856,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/pieter-van-loenen-friends-queer-notes": {
-   "opgehaaldOp": "2026-10-13T03:46:22.626Z",
+   "opgehaaldOp": "2026-10-20T03:42:27.313Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55439/116011/",
@@ -2000,7 +2000,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/raymond-mens-de-tussenstand-in-amerika": {
-   "opgehaaldOp": "2026-10-13T03:46:18.420Z",
+   "opgehaaldOp": "2026-10-20T03:42:23.175Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/58130/119744/",
@@ -2081,7 +2081,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/rumours-of-fleetwood-mac-2027": {
-   "opgehaaldOp": "2026-10-13T03:46:44.623Z",
+   "opgehaaldOp": "2026-10-20T03:42:48.329Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://www.ticketmaster.nl/venue/musis-arnhem-arnhem-tickets/musis/105",
@@ -2243,7 +2243,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/tafel-van-vijf-mata-hari-returns": {
-   "opgehaaldOp": "2026-10-13T03:46:25.601Z",
+   "opgehaaldOp": "2026-10-20T03:42:30.327Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56396/117238/",
@@ -2261,7 +2261,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/the-counterpoints-la-dolce-stravaganza": {
-   "opgehaaldOp": "2026-10-13T03:46:21.523Z",
+   "opgehaaldOp": "2026-10-20T03:42:26.316Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55246/115812/",
@@ -2315,7 +2315,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/the-james-brown-experience": {
-   "opgehaaldOp": "2026-10-13T03:46:31.585Z",
+   "opgehaaldOp": "2026-10-20T03:42:36.285Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://www.ticketmaster.nl/event/1669028241?brand=nl_musis",
@@ -2333,7 +2333,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/the-show-popkoor-prestige-nijmegen": {
-   "opgehaaldOp": "2026-10-13T03:46:18.191Z",
+   "opgehaaldOp": "2026-10-20T03:42:22.881Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/57804/119249/",
@@ -2360,7 +2360,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/theater-artemis-internationale-coproductie-6-werktitel": {
-   "opgehaaldOp": "2026-10-13T03:46:38.596Z",
+   "opgehaaldOp": "2026-10-20T03:42:42.290Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56716/117738/",
@@ -2432,7 +2432,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/thomas-van-luyn-super-normaal": {
-   "opgehaaldOp": "2026-10-13T03:46:50.612Z",
+   "opgehaaldOp": "2026-10-20T03:42:54.293Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56922/118040/",
@@ -2576,7 +2576,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/young-gun-silver-fox": {
-   "opgehaaldOp": "2026-10-13T03:46:33.598Z",
+   "opgehaaldOp": "2026-10-20T03:42:37.291Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://www.ticketmaster.nl/event/2076160537?brand=nl_musis",
