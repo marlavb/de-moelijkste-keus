@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (69 ok, 2 leeg, 10 gepauzeerd)
-- Voorstellingen (titel per theater): **7982**
-- Speeldata: **11057**
-- Laatste refresh: **21 oktober 2026, 05:47** (Amsterdamse tijd)
+- Theaters: **81** (65 ok, 4 terugval, 2 leeg, 10 gepauzeerd)
+- Voorstellingen (titel per theater): **7935**
+- Speeldata: **10986**
+- Laatste refresh: **22 oktober 2026, 05:52** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -425,14 +425,14 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Bostheater | Amstelveen | – | leeg |
 | De Landing | Amstelveen | deels | ok |
 | Schouwburg Amstelveen | Amstelveen | ja | ok |
-| Amsterdams Marionetten Theater | Amsterdam | ja | ok |
+| Amsterdams Marionetten Theater | Amsterdam | ja | terugval |
 | Bijlmer Parktheater | Amsterdam | ja | ok |
 | CC Amstel | Amsterdam | ja | ok |
 | De Kleine Komedie | Amsterdam | nee | ok |
 | DeLaMar | Amsterdam | ja | ok |
 | Frascati | Amsterdam | ja | ok |
 | Koninklijk Theater Carré | Amsterdam | nee | ok |
-| Muziekgebouw aan 't IJ | Amsterdam | ja | ok |
+| Muziekgebouw aan 't IJ | Amsterdam | ja | terugval |
 | Plein Theater | Amsterdam | nee | ok |
 | Podium Mozaïek | Amsterdam | ja | ok |
 | Scala Theater | Amsterdam | ja | ok |
@@ -443,7 +443,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | VU Griffioen | Amsterdam | ja | ok |
 | Kennemer Theater | Beverwijk | – | gepauzeerd sinds 2026-10-01 |
 | Theater de Omval | Diemen | ja | ok |
-| Schuur | Haarlem | ja | ok |
+| Schuur | Haarlem | ja | terugval |
 | Cpunt | Hoofddorp | nee | ok |
 | Zaantheater | Zaandam | ja | ok |
 
@@ -480,7 +480,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
 | Corrosia | Almere | deels | ok |
-| Kunstlinie | Almere | deels | ok |
+| Kunstlinie | Almere | deels | terugval |
 
 **Limburg** (9)
 
