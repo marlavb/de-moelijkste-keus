@@ -314,7 +314,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/claudia-de-breij-oudejaarsconference": {
-   "opgehaaldOp": "2026-10-15T06:54:08.794Z",
+   "opgehaaldOp": "2026-10-22T03:13:22.554Z",
    "data": {
     "naam": "Claudia de Breij",
     "events": [
@@ -322,7 +322,7 @@
       "id": "37126",
       "start": "2026-12-05T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "waiting_list",
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37126&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37126%26upsellids%3D35757%252C35758%252C35756&saleschannelid=2&skinid=1&withauthentication=no&signature=f11758fd765c2c1102cb4c39bc48c936d65459a47ea5e95c9d146d21369e9c81"
      },
@@ -338,7 +338,7 @@
       "id": "37127",
       "start": "2026-12-06T19:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "waiting_list",
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37127&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37127%26upsellids%3D35760%252C35761%252C35759&saleschannelid=2&skinid=1&withauthentication=no&signature=19e9fccd5c7d5722b6273ccdb01d94a4f896f11478b78879c70b1a0042938f13"
      }
@@ -410,7 +410,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/dolf-jansen-schaamteloos": {
-   "opgehaaldOp": "2026-10-15T06:54:09.789Z",
+   "opgehaaldOp": "2026-10-22T03:13:23.558Z",
    "data": {
     "naam": "Dolf Jansen",
     "events": [
@@ -530,7 +530,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/had-ik-maar-nooit-zo-aardig-gedaan": {
-   "opgehaaldOp": "2026-10-15T06:54:12.790Z",
+   "opgehaaldOp": "2026-10-22T03:13:26.551Z",
    "data": {
     "naam": "Daniël Arends - Had ik maar nooit zo aardig gedaan",
     "events": [
@@ -962,7 +962,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/herman-van-veen-vandaag": {
-   "opgehaaldOp": "2026-10-21T03:06:09.236Z",
+   "opgehaaldOp": "2026-10-22T03:13:21.693Z",
    "data": {
     "naam": "Herman van Veen",
     "events": [
@@ -1242,7 +1242,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jenny-arean": {
-   "opgehaaldOp": "2026-10-15T06:54:10.790Z",
+   "opgehaaldOp": "2026-10-22T03:13:24.559Z",
    "data": {
     "naam": "Jenny Arean",
     "events": [
@@ -1266,7 +1266,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
-   "opgehaaldOp": "2026-10-21T03:06:08.204Z",
+   "opgehaaldOp": "2026-10-22T03:13:20.563Z",
    "data": {
     "naam": "Jochem Myjer",
     "events": [
@@ -1618,7 +1618,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/micky-overman-2027": {
-   "opgehaaldOp": "2026-10-15T06:54:11.789Z",
+   "opgehaaldOp": "2026-10-22T03:13:25.546Z",
    "data": {
     "naam": "Micky Overman",
     "events": [
