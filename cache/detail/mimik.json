@@ -303,7 +303,7 @@
    }
   },
   "https://www.mimik.nl/agenda/clean-pete-parelvissers": {
-   "opgehaaldOp": "2026-10-16T03:53:06.422Z",
+   "opgehaaldOp": "2026-10-23T03:55:35.067Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Clean Pete",
@@ -322,7 +322,7 @@
    }
   },
   "https://www.mimik.nl/agenda/club-classique-abdelkader-benali": {
-   "opgehaaldOp": "2026-10-16T03:53:10.168Z",
+   "opgehaaldOp": "2026-10-23T03:55:38.943Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Club Classique & Abdelkader Benali",
@@ -436,7 +436,7 @@
    }
   },
   "https://www.mimik.nl/agenda/dawn-collective": {
-   "opgehaaldOp": "2026-10-16T03:53:20.144Z",
+   "opgehaaldOp": "2026-10-23T03:55:48.890Z",
    "data": {
     "categorie": "Theater",
     "kop": "Dawn Collective",
@@ -493,7 +493,7 @@
    }
   },
   "https://www.mimik.nl/agenda/de-facto-april": {
-   "opgehaaldOp": "2026-10-16T03:53:12.179Z",
+   "opgehaaldOp": "2026-10-23T03:55:40.940Z",
    "data": {
     "categorie": "Special",
     "kop": "De Facto",
@@ -800,7 +800,7 @@
    }
   },
   "https://www.mimik.nl/agenda/dikkie-dik-en-de-verdwenen-knuffel-3": {
-   "opgehaaldOp": "2026-10-22T03:52:27.503Z",
+   "opgehaaldOp": "2026-10-23T03:55:24.881Z",
    "data": {
     "categorie": "Junior",
     "kop": "Dikkie Dik en de verdwenen knuffel (3+)",
@@ -927,7 +927,7 @@
    }
   },
   "https://www.mimik.nl/agenda/dz-on-stage-borstkanker": {
-   "opgehaaldOp": "2026-10-22T03:52:34.541Z",
+   "opgehaaldOp": "2026-10-23T03:55:31.678Z",
    "data": {
     "categorie": "Te gast",
     "kop": "DZ on Stage",
@@ -965,10 +965,10 @@
    }
   },
   "https://www.mimik.nl/agenda/een-kijkje-in-het-onderwijs-van-de-toekomst-in-mimik-deventer": {
-   "opgehaaldOp": "2026-10-17T03:47:56.167Z",
+   "opgehaaldOp": "2026-10-23T03:55:50.884Z",
    "data": {
     "categorie": "Te gast",
-    "kop": "Een kijkje in het onderwijs van de toekomst in MIMIK Deventer",
+    "kop": "Een kijkje in het onderwijs van de toekomst",
     "onder": null,
     "eersteStart": "2026-11-18T19:00:00.0000000",
     "speeldata": [
@@ -977,8 +977,8 @@
       "tijd": "19:00",
       "zaal": "Filmzaal 1",
       "prijs": "€ 15,00",
-      "knop": "Geen webverkoop",
-      "href": null
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10387126"
      }
     ]
    }
@@ -2043,7 +2043,7 @@
    }
   },
   "https://www.mimik.nl/agenda/hyperpoezie-2026": {
-   "opgehaaldOp": "2026-10-22T03:52:30.932Z",
+   "opgehaaldOp": "2026-10-23T03:55:27.947Z",
    "data": {
     "categorie": "Woordkunst",
     "kop": "HYPERPOËZIE",
@@ -2059,6 +2059,16 @@
       "href": "https://www.mimik.nl/tickets?programId=10350435"
      }
     ]
+   }
+  },
+  "https://www.mimik.nl/agenda/i-swear": {
+   "opgehaaldOp": "2026-10-23T03:55:33.192Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "I Swear",
+    "onder": "LAATSTE WEEK",
+    "eersteStart": "2026-11-04T14:00:00.0000000",
+    "speeldata": []
    }
   },
   "https://www.mimik.nl/agenda/inu-oh": {
@@ -2108,7 +2118,7 @@
    }
   },
   "https://www.mimik.nl/agenda/jaco-benckhuijsen-met-adam-quartet": {
-   "opgehaaldOp": "2026-10-16T03:53:21.293Z",
+   "opgehaaldOp": "2026-10-23T03:55:50.054Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Jaco Benckhuijsen met ADAM Quartet",
@@ -2127,7 +2137,7 @@
    }
   },
   "https://www.mimik.nl/agenda/jeroen-van-vliet": {
-   "opgehaaldOp": "2026-10-22T03:52:29.544Z",
+   "opgehaaldOp": "2026-10-23T03:55:26.966Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Jeroen van Vliet",
@@ -2165,7 +2175,7 @@
    }
   },
   "https://www.mimik.nl/agenda/joep-van-deudekom-rob-urgert-oudejaarskwis": {
-   "opgehaaldOp": "2026-10-16T03:53:17.161Z",
+   "opgehaaldOp": "2026-10-23T03:55:45.919Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Joep van Deudekom & Rob Urgert",
@@ -2184,7 +2194,7 @@
    }
   },
   "https://www.mimik.nl/agenda/johan-goossens": {
-   "opgehaaldOp": "2026-10-16T03:53:19.288Z",
+   "opgehaaldOp": "2026-10-23T03:55:48.091Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Johan Goossens",
@@ -2324,7 +2334,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kassett-dansblok": {
-   "opgehaaldOp": "2026-10-22T03:52:32.060Z",
+   "opgehaaldOp": "2026-10-23T03:55:29.038Z",
    "data": {
     "categorie": "Dans",
     "kop": "KASSETT & DansBlok",
@@ -2538,7 +2548,7 @@
    }
   },
   "https://www.mimik.nl/agenda/laura-van-dolron-de-zachte-waarheid": {
-   "opgehaaldOp": "2026-10-16T03:53:05.098Z",
+   "opgehaaldOp": "2026-10-23T03:55:34.005Z",
    "data": {
     "categorie": "Theater",
     "kop": "Laura van Dolron",
@@ -2668,7 +2678,7 @@
    }
   },
   "https://www.mimik.nl/agenda/ludwig-bindervoet": {
-   "opgehaaldOp": "2026-10-16T03:53:07.194Z",
+   "opgehaaldOp": "2026-10-23T03:55:36.084Z",
    "data": {
     "categorie": "Fysiek theater",
     "kop": "Ludwig Bindervoet",
@@ -2779,7 +2789,7 @@
    }
   },
   "https://www.mimik.nl/agenda/maskermeiden-2026": {
-   "opgehaaldOp": "2026-10-16T03:53:16.170Z",
+   "opgehaaldOp": "2026-10-23T03:55:44.938Z",
    "data": {
     "categorie": "Junior",
     "kop": "Maskermeiden",
@@ -3476,7 +3486,7 @@
    }
   },
   "https://www.mimik.nl/agenda/peter-heerschop": {
-   "opgehaaldOp": "2026-10-16T03:53:14.161Z",
+   "opgehaaldOp": "2026-10-23T03:55:42.936Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Peter Heerschop",
@@ -3625,7 +3635,7 @@
    }
   },
   "https://www.mimik.nl/agenda/raymi-sambo-maakt-marsha": {
-   "opgehaaldOp": "2026-10-22T03:52:28.686Z",
+   "opgehaaldOp": "2026-10-23T03:55:25.979Z",
    "data": {
     "categorie": "Theater",
     "kop": "Raymi Sambo Maakt",
@@ -4203,7 +4213,7 @@
    }
   },
   "https://www.mimik.nl/agenda/sara-kroos-gelukskoekje": {
-   "opgehaaldOp": "2026-10-16T03:53:13.175Z",
+   "opgehaaldOp": "2026-10-23T03:55:41.921Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Sara Kroos",
@@ -4241,7 +4251,7 @@
    }
   },
   "https://www.mimik.nl/agenda/sem-konijn": {
-   "opgehaaldOp": "2026-10-16T03:53:09.176Z",
+   "opgehaaldOp": "2026-10-23T03:55:37.934Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Sem Konijn",
@@ -4352,7 +4362,7 @@
    }
   },
   "https://www.mimik.nl/agenda/shaun-het-schaap-het-beest-van-de-boerderij-6": {
-   "opgehaaldOp": "2026-10-22T03:52:33.770Z",
+   "opgehaaldOp": "2026-10-23T03:55:31.040Z",
    "data": {
     "categorie": "Junior",
     "kop": "Shaun het Schaap: Het Beest van de Boerderij (6+)",
@@ -4967,7 +4977,7 @@
    }
   },
   "https://www.mimik.nl/agenda/theater-bellevue": {
-   "opgehaaldOp": "2026-10-16T03:53:11.166Z",
+   "opgehaaldOp": "2026-10-23T03:55:39.690Z",
    "data": {
     "categorie": "Theater",
     "kop": "Theater Bellevue",
@@ -5165,7 +5175,7 @@
    }
   },
   "https://www.mimik.nl/agenda/van-vleuten-en-van-muiswinkel-11-11": {
-   "opgehaaldOp": "2026-10-16T03:53:18.177Z",
+   "opgehaaldOp": "2026-10-23T03:55:46.987Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Van Vleuten en van Muiswinkel",
@@ -5184,7 +5194,7 @@
    }
   },
   "https://www.mimik.nl/agenda/van-wyck": {
-   "opgehaaldOp": "2026-10-16T03:53:15.162Z",
+   "opgehaaldOp": "2026-10-23T03:55:43.941Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Van Wyck",
@@ -5241,7 +5251,7 @@
    }
   },
   "https://www.mimik.nl/agenda/via-rudolphi-producties-het-debuut-26": {
-   "opgehaaldOp": "2026-10-17T03:48:09.298Z",
+   "opgehaaldOp": "2026-10-23T03:55:30.028Z",
    "data": {
     "categorie": "Theater",
     "kop": "Via Rudolphi Producties",
@@ -5425,7 +5435,7 @@
    }
   },
   "https://www.mimik.nl/agenda/wina-ricardo": {
-   "opgehaaldOp": "2026-10-16T03:53:08.176Z",
+   "opgehaaldOp": "2026-10-23T03:55:36.949Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Wina Ricardo",
