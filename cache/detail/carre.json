@@ -42,7 +42,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/andreas-vollenweider": {
-   "opgehaaldOp": "2026-10-20T03:05:59.991Z",
+   "opgehaaldOp": "2026-10-27T04:06:38.149Z",
    "data": {
     "naam": "Andreas Vollenweider & Friends",
     "events": [
@@ -962,7 +962,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/herman-van-veen-vandaag": {
-   "opgehaaldOp": "2026-10-26T04:06:25.916Z",
+   "opgehaaldOp": "2026-10-27T04:06:32.291Z",
    "data": {
     "naam": "Herman van Veen",
     "events": [
@@ -1266,18 +1266,10 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
-   "opgehaaldOp": "2026-10-26T04:06:26.896Z",
+   "opgehaaldOp": "2026-10-27T04:06:33.250Z",
    "data": {
     "naam": "Jochem Myjer",
     "events": [
-     {
-      "id": "36563",
-      "start": "2026-10-26T20:00:00+01:00",
-      "salesStatus": "on_sale",
-      "statusID": "last_chance",
-      "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36563&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36563%26upsellids%3D36631%252C36611%252C36601%252C36621&saleschannelid=2&skinid=1&withauthentication=no&signature=d3619770e7a8398ba1d00cac0ab48457486c201c1ae91025c440f2b067704207"
-     },
      {
       "id": "36564",
       "start": "2026-10-27T20:00:00+01:00",
@@ -1362,7 +1354,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/julien-clerc-une-vie": {
-   "opgehaaldOp": "2026-10-20T03:05:56.993Z",
+   "opgehaaldOp": "2026-10-27T04:06:35.146Z",
    "data": {
     "naam": "Julien Clerc",
     "events": [
@@ -1506,7 +1498,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/mabel-matiz-2027": {
-   "opgehaaldOp": "2026-10-20T03:05:58.995Z",
+   "opgehaaldOp": "2026-10-27T04:06:37.147Z",
    "data": {
     "naam": "Mabel Matiz",
     "events": [
@@ -1890,7 +1882,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/sara-kroos-prikkelarme-kermis": {
-   "opgehaaldOp": "2026-10-20T03:05:55.996Z",
+   "opgehaaldOp": "2026-10-27T04:06:34.144Z",
    "data": {
     "naam": "Sara Kroos",
     "events": [
@@ -1906,7 +1898,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/severina-2027": {
-   "opgehaaldOp": "2026-10-20T03:05:57.989Z",
+   "opgehaaldOp": "2026-10-27T04:06:36.149Z",
    "data": {
     "naam": "Severina",
     "events": [
