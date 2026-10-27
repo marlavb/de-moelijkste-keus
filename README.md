@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (69 ok, 2 leeg, 10 gepauzeerd)
-- Voorstellingen (titel per theater): **7775**
-- Speeldata: **10808**
-- Laatste refresh: **26 oktober 2026, 05:45** (Amsterdamse tijd)
+- Theaters: **81** (70 ok, 10 gepauzeerd, 1 leeg)
+- Voorstellingen (titel per theater): **7774**
+- Speeldata: **10815**
+- Laatste refresh: **27 oktober 2026, 05:46** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -422,7 +422,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
 | Karavaan - Theater de Drukkerij | Alkmaar | ja | ok |
-| Bostheater | Amstelveen | – | leeg |
+| Bostheater | Amstelveen | nee | ok |
 | De Landing | Amstelveen | deels | ok |
 | Schouwburg Amstelveen | Amstelveen | ja | ok |
 | Amsterdams Marionetten Theater | Amsterdam | ja | ok |
@@ -457,7 +457,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater aan het Spui | Den Haag | ja | ok |
 | Zaal 3 | Den Haag | ja | ok |
 | Theater Ins Blau | Leiden | ja | ok |
-| Theater Koningshof | Maassluis | ja | ok |
+| Theater Koningshof | Maassluis | deels | ok |
 | De Muze | Noordwijk | deels | ok |
 | Maas theater en dans | Rotterdam | ja | ok |
 | Theater Rotterdam (TR25 Schouwburg) | Rotterdam | – | gepauzeerd sinds 2026-10-14 |
