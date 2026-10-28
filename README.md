@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (70 ok, 10 gepauzeerd, 1 leeg)
-- Voorstellingen (titel per theater): **7774**
-- Speeldata: **10815**
-- Laatste refresh: **27 oktober 2026, 05:46** (Amsterdamse tijd)
+- Theaters: **81** (69 ok, 10 gepauzeerd, 1 terugval, 1 leeg)
+- Voorstellingen (titel per theater): **7770**
+- Speeldata: **10812**
+- Laatste refresh: **28 oktober 2026, 05:45** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -463,7 +463,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater Rotterdam (TR25 Schouwburg) | Rotterdam | – | gepauzeerd sinds 2026-10-14 |
 | Theater Rotterdam (TR8 William Boothlaan) | Rotterdam | – | gepauzeerd sinds 2026-10-14 |
 | Theater de Stoep | Spijkenisse | deels | ok |
-| Stadsgehoorzaal | Vlaardingen | deels | ok |
+| Stadsgehoorzaal | Vlaardingen | deels | terugval |
 
 **Utrecht** (5)
 
@@ -541,7 +541,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| MIMIK | Deventer | deels | ok |
+| MIMIK | Deventer | ja | ok |
 | De Reggehof | Goor | ja | ok |
 | Schouwburg Hengelo | Hengelo | deels | ok |
 | Rabo Theater De Meenthe | Steenwijk | deels | ok |
