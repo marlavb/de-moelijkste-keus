@@ -302,6 +302,33 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/cinema-rondeel-urbanized": {
+   "opgehaaldOp": "2026-10-28T04:45:29.801Z",
+   "data": {
+    "categorie": "Cinema Rondeel",
+    "kop": "Cinema Rondeel: Urbanized",
+    "onder": "Inclusief inleiding van Martijn Huting",
+    "eersteStart": "2026-11-19T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-19",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": "2026-11-19",
+      "tijd": "20:20",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10387773"
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/circus-treurdier-die-bloemkool": {
    "opgehaaldOp": "2026-10-25T04:43:53.508Z",
    "data": {
@@ -493,7 +520,7 @@
    }
   },
   "https://www.mimik.nl/agenda/de-dansers": {
-   "opgehaaldOp": "2026-10-21T03:47:29.897Z",
+   "opgehaaldOp": "2026-10-28T04:45:36.927Z",
    "data": {
     "categorie": "Dans",
     "kop": "De Dansers",
@@ -738,7 +765,7 @@
    }
   },
   "https://www.mimik.nl/agenda/de-ronde-deroo": {
-   "opgehaaldOp": "2026-10-21T03:47:27.864Z",
+   "opgehaaldOp": "2026-10-28T04:45:34.874Z",
    "data": {
     "categorie": "Theater",
     "kop": "De Ronde / Deroo",
@@ -1193,7 +1220,7 @@
    }
   },
   "https://www.mimik.nl/agenda/eva-van-manen": {
-   "opgehaaldOp": "2026-10-21T03:47:32.903Z",
+   "opgehaaldOp": "2026-10-28T04:45:37.913Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Eva van Manen",
@@ -2119,7 +2146,7 @@
    }
   },
   "https://www.mimik.nl/agenda/hyperpoezie-2026": {
-   "opgehaaldOp": "2026-10-27T04:45:41.525Z",
+   "opgehaaldOp": "2026-10-28T04:45:23.870Z",
    "data": {
     "categorie": "Woordkunst",
     "kop": "HYPERPOËZIE",
@@ -2251,7 +2278,7 @@
    }
   },
   "https://www.mimik.nl/agenda/joep-van-deudekom-rob-urgert-oudejaarskwis": {
-   "opgehaaldOp": "2026-10-23T03:55:45.919Z",
+   "opgehaaldOp": "2026-10-28T04:45:27.929Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Joep van Deudekom & Rob Urgert",
@@ -2410,7 +2437,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kassett-dansblok": {
-   "opgehaaldOp": "2026-10-27T04:45:42.605Z",
+   "opgehaaldOp": "2026-10-28T04:45:25.249Z",
    "data": {
     "categorie": "Dans",
     "kop": "KASSETT & DansBlok",
@@ -2467,7 +2494,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kim-karssen-10044665": {
-   "opgehaaldOp": "2026-10-21T03:47:25.912Z",
+   "opgehaaldOp": "2026-10-28T04:45:32.923Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Kim Karssen",
@@ -2538,6 +2565,33 @@
       "prijs": "€ 10,00",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10351214"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/knit-cinema-wicker": {
+   "opgehaaldOp": "2026-10-28T04:45:31.018Z",
+   "data": {
+    "categorie": "Special",
+    "kop": "Knit Cinema: Wicker",
+    "onder": "i.s.m. Dol op Wol",
+    "eersteStart": "2026-11-08T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-08",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": "2026-11-08",
+      "tijd": "19:30",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 25,25",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10388094"
      }
     ]
    }
@@ -3089,7 +3143,7 @@
    }
   },
   "https://www.mimik.nl/agenda/mimik-xs-februari": {
-   "opgehaaldOp": "2026-10-21T03:47:33.865Z",
+   "opgehaaldOp": "2026-10-28T04:45:38.883Z",
    "data": {
     "categorie": "Theater",
     "kop": "MIMIK XS | februari",
@@ -3367,7 +3421,7 @@
    }
   },
   "https://www.mimik.nl/agenda/niki-jacobs-ja": {
-   "opgehaaldOp": "2026-10-27T04:45:44.532Z",
+   "opgehaaldOp": "2026-10-28T04:45:26.934Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Niki Jacobs",
@@ -4467,7 +4521,7 @@
    }
   },
   "https://www.mimik.nl/agenda/shaun-het-schaap-het-beest-van-de-boerderij-6": {
-   "opgehaaldOp": "2026-10-27T04:45:45.833Z",
+   "opgehaaldOp": "2026-10-28T04:45:28.895Z",
    "data": {
     "categorie": "Junior",
     "kop": "Shaun het Schaap: Het Beest van de Boerderij (6+)",
@@ -4872,7 +4926,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tg-tiefschnee": {
-   "opgehaaldOp": "2026-10-21T03:47:28.894Z",
+   "opgehaaldOp": "2026-10-28T04:45:36.094Z",
    "data": {
     "categorie": "Theater",
     "kop": "TG Tiefschnee",
@@ -4999,6 +5053,25 @@
     "speeldata": [
      {
       "datum": "2026-12-10",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/the-devils": {
+   "opgehaaldOp": "2026-10-28T04:45:31.906Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "The Devils",
+    "onder": "Ken Russell",
+    "eersteStart": "2026-11-12T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-12",
       "tijd": null,
       "zaal": null,
       "prijs": null,
@@ -5253,7 +5326,7 @@
    }
   },
   "https://www.mimik.nl/agenda/van-die-mensen": {
-   "opgehaaldOp": "2026-10-21T03:47:26.887Z",
+   "opgehaaldOp": "2026-10-28T04:45:34.024Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Van Die Mensen",
@@ -5367,7 +5440,7 @@
    }
   },
   "https://www.mimik.nl/agenda/via-rudolphi-producties-het-debuut-26": {
-   "opgehaaldOp": "2026-10-27T04:45:43.606Z",
+   "opgehaaldOp": "2026-10-28T04:45:25.826Z",
    "data": {
     "categorie": "Theater",
     "kop": "Via Rudolphi Producties",

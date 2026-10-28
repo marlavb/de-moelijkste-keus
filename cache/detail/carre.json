@@ -346,25 +346,25 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/damien-rice-25th-anniversary-tour": {
-   "opgehaaldOp": "2026-10-21T03:06:16.105Z",
+   "opgehaaldOp": "2026-10-28T04:06:40.602Z",
    "data": {
     "naam": "Damien Rice",
     "events": [
      {
       "id": "37141",
       "start": "2027-04-16T20:00:00+02:00",
-      "salesStatus": "sales_not_started",
+      "salesStatus": "on_sale",
       "statusID": "last_chance",
       "soort": "Voorstelling",
-      "salesUrl": null
+      "salesUrl": "https://www.ticketmaster.nl/event/1556449221"
      },
      {
       "id": "37142",
       "start": "2027-04-17T20:00:00+02:00",
-      "salesStatus": "sales_not_started",
+      "salesStatus": "on_sale",
       "statusID": "last_chance",
       "soort": "Voorstelling",
-      "salesUrl": null
+      "salesUrl": "https://www.ticketmaster.nl/event/205715450"
      }
     ]
    }
@@ -474,7 +474,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/esther-perel-2027": {
-   "opgehaaldOp": "2026-10-21T03:06:14.116Z",
+   "opgehaaldOp": "2026-10-28T04:06:38.600Z",
    "data": {
     "naam": "Esther Perel",
     "events": [
@@ -962,7 +962,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/herman-van-veen-vandaag": {
-   "opgehaaldOp": "2026-10-27T04:06:32.291Z",
+   "opgehaaldOp": "2026-10-28T04:06:32.730Z",
    "data": {
     "naam": "Herman van Veen",
     "events": [
@@ -1130,7 +1130,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/high-class-bitch": {
-   "opgehaaldOp": "2026-10-21T03:06:15.108Z",
+   "opgehaaldOp": "2026-10-28T04:06:39.604Z",
    "data": {
     "naam": "Daniël Arends - High Class Bitch",
     "events": [
@@ -1154,7 +1154,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/idfa-in-carre-2026": {
-   "opgehaaldOp": "2026-10-21T03:06:10.115Z",
+   "opgehaaldOp": "2026-10-28T04:06:34.608Z",
    "data": {
     "naam": "IDFA 2026",
     "events": [
@@ -1266,18 +1266,10 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
-   "opgehaaldOp": "2026-10-27T04:06:33.250Z",
+   "opgehaaldOp": "2026-10-28T04:06:33.708Z",
    "data": {
     "naam": "Jochem Myjer",
     "events": [
-     {
-      "id": "36564",
-      "start": "2026-10-27T20:00:00+01:00",
-      "salesStatus": "on_sale",
-      "statusID": "last_chance",
-      "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36564&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36564%26upsellids%3D36632%252C36612%252C36602%252C36622&saleschannelid=2&skinid=1&withauthentication=no&signature=d9d10991325ba325ba4110cd4623a9e8b8b5bcd85d690b14edae2501584747c1"
-     },
      {
       "id": "36566",
       "start": "2026-11-02T20:00:00+01:00",
@@ -1322,7 +1314,7 @@
       "id": "36570",
       "start": "2026-11-22T19:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": "waiting_list",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36570&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36570%26upsellids%3D36641%252C36639%252C36638%252C36640&saleschannelid=2&skinid=1&withauthentication=no&signature=00996b9ddee4462ec4075623f57da4ea9577003f09c341379ab20865118a72d4"
      }
@@ -1330,7 +1322,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/joe-jackson-2026": {
-   "opgehaaldOp": "2026-10-21T03:06:12.110Z",
+   "opgehaaldOp": "2026-10-28T04:06:36.606Z",
    "data": {
     "naam": "Joe Jackson",
     "events": [
@@ -1370,7 +1362,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/kasper-van-der-laan-ruim": {
-   "opgehaaldOp": "2026-10-21T03:06:17.115Z",
+   "opgehaaldOp": "2026-10-28T04:06:41.605Z",
    "data": {
     "naam": "Kasper van der Laan",
     "events": [
@@ -1762,7 +1754,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/pieter-derks-ja-leuk": {
-   "opgehaaldOp": "2026-10-21T03:06:11.110Z",
+   "opgehaaldOp": "2026-10-28T04:06:35.612Z",
    "data": {
     "naam": "Pieter Derks",
     "events": [
@@ -1930,7 +1922,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/syml-metropole-orkest": {
-   "opgehaaldOp": "2026-10-21T03:06:13.109Z",
+   "opgehaaldOp": "2026-10-28T04:06:37.602Z",
    "data": {
     "naam": "Metropole Orkest met SYML",
     "events": [
