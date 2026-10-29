@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (69 ok, 10 gepauzeerd, 1 terugval, 1 leeg)
-- Voorstellingen (titel per theater): **7770**
-- Speeldata: **10812**
-- Laatste refresh: **28 oktober 2026, 05:45** (Amsterdamse tijd)
+- Theaters: **81** (69 ok, 1 terugval, 10 gepauzeerd, 1 leeg)
+- Voorstellingen (titel per theater): **7714**
+- Speeldata: **10670**
+- Laatste refresh: **29 oktober 2026, 05:44** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -442,7 +442,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater de Meervaart | Amsterdam | ja | ok |
 | VU Griffioen | Amsterdam | ja | ok |
 | Kennemer Theater | Beverwijk | – | gepauzeerd sinds 2026-10-01 |
-| Theater de Omval | Diemen | ja | ok |
+| Theater de Omval | Diemen | ja | terugval |
 | Schuur | Haarlem | ja | ok |
 | Cpunt | Hoofddorp | nee | ok |
 | Zaantheater | Zaandam | ja | ok |
@@ -463,7 +463,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater Rotterdam (TR25 Schouwburg) | Rotterdam | – | gepauzeerd sinds 2026-10-14 |
 | Theater Rotterdam (TR8 William Boothlaan) | Rotterdam | – | gepauzeerd sinds 2026-10-14 |
 | Theater de Stoep | Spijkenisse | deels | ok |
-| Stadsgehoorzaal | Vlaardingen | deels | terugval |
+| Stadsgehoorzaal | Vlaardingen | deels | ok |
 
 **Utrecht** (5)
 
