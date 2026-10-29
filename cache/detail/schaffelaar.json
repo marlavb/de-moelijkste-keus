@@ -83,7 +83,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/abba-the-music/": {
-   "opgehaaldOp": "2026-10-28T04:40:33.764Z",
+   "opgehaaldOp": "2026-10-29T04:40:04.864Z",
    "data": {
     "titel": "ABBA The Music",
     "onder": "From Waterloo to Dancing Queen",
@@ -239,7 +239,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/barnevelds-kamerorkest-1/": {
-   "opgehaaldOp": "2026-10-22T03:49:02.782Z",
+   "opgehaaldOp": "2026-10-29T04:40:22.411Z",
    "data": {
     "titel": "Barnevelds Kamerorkest",
     "onder": "Van Alles Wat",
@@ -413,7 +413,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/bee-gees-by-maincourse-2026-1/": {
-   "opgehaaldOp": "2026-10-22T03:49:00.790Z",
+   "opgehaaldOp": "2026-10-29T04:40:20.771Z",
    "data": {
     "titel": "Bee Gees by MainCourse - 2026",
     "onder": "You should be dancing (Reprise)",
@@ -772,7 +772,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/child-of-destiny-geannuleerd/": {
-   "opgehaaldOp": "2026-10-22T03:49:01.881Z",
+   "opgehaaldOp": "2026-10-29T04:40:21.819Z",
    "data": {
     "titel": "Child of Destiny - geannuleerd",
     "onder": "The Dutch Experience",
@@ -1273,7 +1273,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/de-waanzinnige-boomhut-van-78-verdiepingen-6/": {
-   "opgehaaldOp": "2026-10-28T04:40:21.731Z",
+   "opgehaaldOp": "2026-10-29T04:40:02.884Z",
    "data": {
     "titel": "De waanzinnige boomhut van 78 verdiepingen (6+)",
     "onder": "Meneer Monster",
@@ -1579,7 +1579,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/feestelijke-seizoensopening-26-27/": {
-   "opgehaaldOp": "2026-10-22T03:48:57.897Z",
+   "opgehaaldOp": "2026-10-29T04:40:17.832Z",
    "data": {
     "titel": "Feestelijke Seizoensopening 26|27",
     "onder": null,
@@ -1757,7 +1757,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/guido-weijers/": {
-   "opgehaaldOp": "2026-10-28T04:40:40.754Z",
+   "opgehaaldOp": "2026-10-29T04:40:05.858Z",
    "data": {
     "titel": "Guido Weijers",
     "onder": "Oudejaarsconference 2026",
@@ -1878,7 +1878,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/horeca-arrangement-bij-sing-en-swing-mamma-mia/": {
-   "opgehaaldOp": "2026-10-22T03:48:58.802Z",
+   "opgehaaldOp": "2026-10-29T04:40:18.756Z",
    "data": {
     "titel": "Horeca arrangement bij Sing en swing Mamma Mia",
     "onder": null,
@@ -2178,7 +2178,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/johnny-de-mol/": {
-   "opgehaaldOp": "2026-10-28T04:41:44.769Z",
+   "opgehaaldOp": "2026-10-29T04:40:14.857Z",
    "data": {
     "titel": "Johnny de Mol",
     "onder": "Goed dat jij bestaat!",
@@ -2607,7 +2607,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/martijn-koning/": {
-   "opgehaaldOp": "2026-10-28T04:41:18.753Z",
+   "opgehaaldOp": "2026-10-29T04:40:11.823Z",
    "data": {
     "titel": "Martijn Koning",
     "onder": "Overprikkeld",
@@ -3352,7 +3352,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/ontroerende-adagio-s/": {
-   "opgehaaldOp": "2026-10-22T03:48:56.934Z",
+   "opgehaaldOp": "2026-10-29T04:40:16.922Z",
    "data": {
     "titel": "Ontroerende Adagio's",
     "onder": "Koffieconcert",
@@ -3376,7 +3376,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/opera-highlights/": {
-   "opgehaaldOp": "2026-10-22T03:48:59.880Z",
+   "opgehaaldOp": "2026-10-29T04:40:19.885Z",
    "data": {
     "titel": "Opera Highlights",
     "onder": "Koffieconcert",
@@ -3812,7 +3812,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/rob-scheepers/": {
-   "opgehaaldOp": "2026-10-28T04:41:35.837Z",
+   "opgehaaldOp": "2026-10-29T04:40:13.004Z",
    "data": {
     "titel": "Rob Scheepers",
     "onder": "Op z'n scherpst",
@@ -3932,16 +3932,21 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/rundfunk/": {
-   "opgehaaldOp": "2026-10-28T04:41:38.776Z",
+   "opgehaaldOp": "2026-10-29T04:40:13.525Z",
    "data": {
     "titel": "Rundfunk",
     "onder": "Wagyu (Try Out)",
     "genres": [],
-    "zaal": "BDUmedia Grote Zaal",
-    "prijs": "Normaal € 29,50",
+    "zaal": null,
+    "prijs": null,
     "rijen": [
      {
-      "datum": "wo. 09-12-2026 | 20:00",
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": null,
       "knop": null,
       "href": null
      }
@@ -3949,7 +3954,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/ruud-smulders/": {
-   "opgehaaldOp": "2026-10-28T04:41:16.781Z",
+   "opgehaaldOp": "2026-10-29T04:40:10.636Z",
    "data": {
     "titel": "Ruud Smulders",
     "onder": "RÜDSICHTSLOS",
@@ -4215,7 +4220,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/steven-kazan-6/": {
-   "opgehaaldOp": "2026-10-22T03:49:03.903Z",
+   "opgehaaldOp": "2026-10-29T04:40:23.839Z",
    "data": {
     "titel": "Steven Kazàn (6+)",
     "onder": "Hoe dan!",
@@ -4263,7 +4268,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/talent-academy-next/": {
-   "opgehaaldOp": "2026-10-28T04:40:16.830Z",
+   "opgehaaldOp": "2026-10-29T04:40:08.903Z",
    "data": {
     "titel": "Talent Academy NEXT",
     "onder": "De Carrousel van Hugelwiedes",
@@ -4314,7 +4319,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/tbs-met-job-knoester/": {
-   "opgehaaldOp": "2026-10-28T04:41:48.770Z",
+   "opgehaaldOp": "2026-10-29T04:40:15.831Z",
    "data": {
     "titel": "TBS met Job Knoester",
     "onder": null,
@@ -4508,7 +4513,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/the-johnny-cash-experience/": {
-   "opgehaaldOp": "2026-10-28T04:40:43.747Z",
+   "opgehaaldOp": "2026-10-29T04:40:06.869Z",
    "data": {
     "titel": "The Johnny Cash Experience",
     "onder": "The Story of The Man in Black",
@@ -4906,7 +4911,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/valentina-toth/": {
-   "opgehaaldOp": "2026-10-28T04:40:22.776Z",
+   "opgehaaldOp": "2026-10-29T04:40:03.931Z",
    "data": {
     "titel": "Valentina Tóth",
     "onder": "Revue Revanche",
@@ -4949,7 +4954,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/verrassingsvoorstelling-familie-2/": {
-   "opgehaaldOp": "2026-10-28T04:41:08.743Z",
+   "opgehaaldOp": "2026-10-29T04:40:09.879Z",
    "data": {
     "titel": "Verrassingsvoorstelling Familie (2+)",
     "onder": "Nationaal Theaterweekend",
@@ -4987,7 +4992,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/verrassingsvoorstelling-vrijdag-cabaret/": {
-   "opgehaaldOp": "2026-10-28T04:40:50.749Z",
+   "opgehaaldOp": "2026-10-29T04:40:07.882Z",
    "data": {
     "titel": "Verrassingsvoorstelling Vrijdag Cabaret",
     "onder": "Nationaal Theaterweekend",

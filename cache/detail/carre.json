@@ -314,7 +314,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/claudia-de-breij-oudejaarsconference": {
-   "opgehaaldOp": "2026-10-22T03:13:22.554Z",
+   "opgehaaldOp": "2026-10-29T04:06:22.527Z",
    "data": {
     "naam": "Claudia de Breij",
     "events": [
@@ -410,7 +410,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/dolf-jansen-schaamteloos": {
-   "opgehaaldOp": "2026-10-22T03:13:23.558Z",
+   "opgehaaldOp": "2026-10-29T04:06:23.520Z",
    "data": {
     "naam": "Dolf Jansen",
     "events": [
@@ -530,7 +530,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/had-ik-maar-nooit-zo-aardig-gedaan": {
-   "opgehaaldOp": "2026-10-22T03:13:26.551Z",
+   "opgehaaldOp": "2026-10-29T04:06:26.997Z",
    "data": {
     "naam": "Daniël Arends - Had ik maar nooit zo aardig gedaan",
     "events": [
@@ -962,18 +962,10 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/herman-van-veen-vandaag": {
-   "opgehaaldOp": "2026-10-28T04:06:32.730Z",
+   "opgehaaldOp": "2026-10-29T04:06:20.677Z",
    "data": {
     "naam": "Herman van Veen",
     "events": [
-     {
-      "id": "36659",
-      "start": "2026-10-28T20:00:00+01:00",
-      "salesStatus": "on_sale",
-      "statusID": null,
-      "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36659&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36659%26upsellids%3D35833%252C35835%252C35832%252C35834&saleschannelid=2&skinid=1&withauthentication=no&signature=3eec6d4a725cddcc15d55b144b89dca01534810ab132f3dfb6e808c1fb764b74"
-     },
      {
       "id": "36660",
       "start": "2026-10-29T20:00:00+01:00",
@@ -1002,7 +994,7 @@
       "id": "36663",
       "start": "2026-11-01T15:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": null,
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36663&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36663%26upsellids%3D35861%252C35857%252C35859&saleschannelid=2&skinid=1&withauthentication=no&signature=4603c7643526c3650cacf58157a8c97337356ec6ffca8fee05f69d432133b6c7"
      },
@@ -1042,7 +1034,7 @@
       "id": "36668",
       "start": "2026-11-08T15:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": null,
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36668&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36668%26upsellids%3D35862%252C35858%252C35860&saleschannelid=2&skinid=1&withauthentication=no&signature=14397de456eb7ada0fdde853da4102ec7671cb8c021ae647c51b53cec054a689"
      },
@@ -1242,7 +1234,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jenny-arean": {
-   "opgehaaldOp": "2026-10-22T03:13:24.559Z",
+   "opgehaaldOp": "2026-10-29T04:06:24.528Z",
    "data": {
     "naam": "Jenny Arean",
     "events": [
@@ -1266,7 +1258,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
-   "opgehaaldOp": "2026-10-28T04:06:33.708Z",
+   "opgehaaldOp": "2026-10-29T04:06:21.644Z",
    "data": {
     "naam": "Jochem Myjer",
     "events": [
@@ -1602,7 +1594,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/micky-overman-2027": {
-   "opgehaaldOp": "2026-10-22T03:13:25.546Z",
+   "opgehaaldOp": "2026-10-29T04:06:25.523Z",
    "data": {
     "naam": "Micky Overman",
     "events": [
@@ -1618,7 +1610,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/oh-wonder-2027": {
-   "opgehaaldOp": "2026-10-23T03:11:28.931Z",
+   "opgehaaldOp": "2026-10-29T04:06:27.525Z",
    "data": {
     "naam": "Oh Wonder",
     "events": [

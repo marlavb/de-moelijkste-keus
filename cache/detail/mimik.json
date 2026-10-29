@@ -200,7 +200,7 @@
    }
   },
   "https://www.mimik.nl/agenda/bambie-speelt-bambi": {
-   "opgehaaldOp": "2026-10-22T03:52:39.707Z",
+   "opgehaaldOp": "2026-10-29T04:43:52.112Z",
    "data": {
     "categorie": "Fysiek theater",
     "kop": "Bambie speelt Bambi",
@@ -884,7 +884,7 @@
    }
   },
   "https://www.mimik.nl/agenda/dood-paard-tjernobyl": {
-   "opgehaaldOp": "2026-10-22T03:52:35.916Z",
+   "opgehaaldOp": "2026-10-29T04:43:48.230Z",
    "data": {
     "categorie": "Theater",
     "kop": "Dood Paard",
@@ -1087,7 +1087,7 @@
    }
   },
   "https://www.mimik.nl/agenda/elfie-tromp-aai-poesje": {
-   "opgehaaldOp": "2026-10-22T03:52:40.693Z",
+   "opgehaaldOp": "2026-10-29T04:43:53.112Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Elfie Tromp",
@@ -1106,7 +1106,7 @@
    }
   },
   "https://www.mimik.nl/agenda/elias-de-bruyne": {
-   "opgehaaldOp": "2026-10-22T03:52:41.673Z",
+   "opgehaaldOp": "2026-10-29T04:43:54.218Z",
    "data": {
     "categorie": "Fysiek theater",
     "kop": "Elias de Bruyne",
@@ -1898,7 +1898,7 @@
    }
   },
   "https://www.mimik.nl/agenda/flip-noorman": {
-   "opgehaaldOp": "2026-10-22T03:52:42.828Z",
+   "opgehaaldOp": "2026-10-29T04:43:55.109Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Flip Noorman",
@@ -1971,7 +1971,7 @@
    }
   },
   "https://www.mimik.nl/agenda/gabbro-in-gabbro-as-we-walk": {
-   "opgehaaldOp": "2026-10-22T03:52:44.790Z",
+   "opgehaaldOp": "2026-10-29T04:43:57.244Z",
    "data": {
     "categorie": "Special",
     "kop": "Gabbro in Gabbro / As We Walk",
@@ -2278,7 +2278,7 @@
    }
   },
   "https://www.mimik.nl/agenda/joep-van-deudekom-rob-urgert-oudejaarskwis": {
-   "opgehaaldOp": "2026-10-28T04:45:27.929Z",
+   "opgehaaldOp": "2026-10-29T04:43:45.441Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Joep van Deudekom & Rob Urgert",
@@ -2437,7 +2437,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kassett-dansblok": {
-   "opgehaaldOp": "2026-10-28T04:45:25.249Z",
+   "opgehaaldOp": "2026-10-29T04:43:42.204Z",
    "data": {
     "categorie": "Dans",
     "kop": "KASSETT & DansBlok",
@@ -2513,7 +2513,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kim-schuddeboom": {
-   "opgehaaldOp": "2026-10-22T03:52:36.879Z",
+   "opgehaaldOp": "2026-10-29T04:43:49.112Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Kim Schuddeboom",
@@ -3019,7 +3019,7 @@
    }
   },
   "https://www.mimik.nl/agenda/millennium-jazz-orchestra-april-27": {
-   "opgehaaldOp": "2026-10-22T03:52:37.872Z",
+   "opgehaaldOp": "2026-10-29T04:43:50.117Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Millennium Jazz Orchestra | april",
@@ -3421,7 +3421,7 @@
    }
   },
   "https://www.mimik.nl/agenda/niki-jacobs-ja": {
-   "opgehaaldOp": "2026-10-28T04:45:26.934Z",
+   "opgehaaldOp": "2026-10-29T04:43:44.108Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Niki Jacobs",
@@ -3486,7 +3486,7 @@
    }
   },
   "https://www.mimik.nl/agenda/orkaterde-nieuwkomers-dolorosa": {
-   "opgehaaldOp": "2026-10-22T03:52:38.995Z",
+   "opgehaaldOp": "2026-10-29T04:43:51.221Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Orkater/De Nieuwkomers",
@@ -4521,21 +4521,13 @@
    }
   },
   "https://www.mimik.nl/agenda/shaun-het-schaap-het-beest-van-de-boerderij-6": {
-   "opgehaaldOp": "2026-10-28T04:45:28.895Z",
+   "opgehaaldOp": "2026-10-29T04:43:46.118Z",
    "data": {
     "categorie": "Junior",
     "kop": "Shaun het Schaap: Het Beest van de Boerderij (6+)",
     "onder": "Steve Cox",
-    "eersteStart": "2026-10-28T15:00:00.0000000",
+    "eersteStart": "2026-10-31T13:00:00.0000000",
     "speeldata": [
-     {
-      "datum": "2026-10-28",
-      "tijd": "15:00",
-      "zaal": "Filmzaal 2",
-      "prijs": "€ 9,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10387700"
-     },
      {
       "datum": "2026-10-31",
       "tijd": "13:00",
@@ -4748,7 +4740,7 @@
    }
   },
   "https://www.mimik.nl/agenda/studio-figur-dawn-collective": {
-   "opgehaaldOp": "2026-10-22T03:52:43.549Z",
+   "opgehaaldOp": "2026-10-29T04:43:56.216Z",
    "data": {
     "categorie": "Junior",
     "kop": "Studio Figur - Dawn Collective",
@@ -4781,6 +4773,33 @@
       "prijs": "€ 17,50",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10370019"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/sugar-met-qa-amira-duynhouwer": {
+   "opgehaaldOp": "2026-10-29T04:43:47.320Z",
+   "data": {
+    "categorie": "Met Q&A",
+    "kop": "Sugar met Q&A Amira Duynhouwer",
+    "onder": null,
+    "eersteStart": "2026-12-06T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-06",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": "2026-12-06",
+      "tijd": "15:00",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10388865"
      }
     ]
    }
@@ -5440,7 +5459,7 @@
    }
   },
   "https://www.mimik.nl/agenda/via-rudolphi-producties-het-debuut-26": {
-   "opgehaaldOp": "2026-10-28T04:45:25.826Z",
+   "opgehaaldOp": "2026-10-29T04:43:43.359Z",
    "data": {
     "categorie": "Theater",
     "kop": "Via Rudolphi Producties",
