@@ -2,7 +2,7 @@
  "theaterId": "carre",
  "items": {
   "https://carre.nl/api/render/voorstelling/30-jaar-trijntje": {
-   "opgehaaldOp": "2026-10-23T03:11:27.933Z",
+   "opgehaaldOp": "2026-10-30T04:06:36.371Z",
    "data": {
     "naam": "Trijntje Oosterhuis",
     "events": [
@@ -74,7 +74,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/assepoester": {
-   "opgehaaldOp": "2026-10-23T03:11:24.488Z",
+   "opgehaaldOp": "2026-10-30T04:06:32.367Z",
    "data": {
     "naam": "NRO: La Cenerentola (Assepoester)",
     "events": [
@@ -138,7 +138,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/bonnie-prince-billy": {
-   "opgehaaldOp": "2026-10-23T03:11:19.928Z",
+   "opgehaaldOp": "2026-10-30T04:06:28.367Z",
    "data": {
     "naam": "Bonnie 'Prince' Billy",
     "events": [
@@ -394,7 +394,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/dewolff": {
-   "opgehaaldOp": "2026-10-23T03:11:22.931Z",
+   "opgehaaldOp": "2026-10-30T04:06:31.373Z",
    "data": {
     "naam": "DeWolff",
     "events": [
@@ -554,7 +554,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/hadestown": {
-   "opgehaaldOp": "2026-10-23T03:11:32.115Z",
+   "opgehaaldOp": "2026-10-30T04:06:39.646Z",
    "data": {
     "naam": "HADESTOWN",
     "events": [
@@ -594,7 +594,7 @@
       "id": "36704",
       "start": "2027-06-30T19:30:00+02:00",
       "salesStatus": "on_sale",
-      "statusID": null,
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36704&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36704%26upsellids%3D36853%252C36886%252C36920%252C36820&saleschannelid=2&skinid=10020&withauthentication=no&signature=92a9e613ef05925cc0cea07355c02119746b4b5b19d54e33f1d19b10bc30cb96"
      },
@@ -674,7 +674,7 @@
       "id": "36713",
       "start": "2027-07-09T20:00:00+02:00",
       "salesStatus": "on_sale",
-      "statusID": null,
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36713&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36713%26upsellids%3D36839%252C36872%252C36905%252C36806&saleschannelid=2&skinid=10020&withauthentication=no&signature=30bd0960bf98a0c8c245cd429e21797b3b96fc220b5e6ee335879fa80148168f"
      },
@@ -962,18 +962,10 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/herman-van-veen-vandaag": {
-   "opgehaaldOp": "2026-10-29T04:06:20.677Z",
+   "opgehaaldOp": "2026-10-30T04:06:26.533Z",
    "data": {
     "naam": "Herman van Veen",
     "events": [
-     {
-      "id": "36660",
-      "start": "2026-10-29T20:00:00+01:00",
-      "salesStatus": "on_sale",
-      "statusID": null,
-      "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36660&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36660%26upsellids%3D35850%252C35836%252C35894%252C35843&saleschannelid=2&skinid=1&withauthentication=no&signature=00180575001fc4860aef3df45ff3679e4cbf6aeb2b2ce053176c440590303977"
-     },
      {
       "id": "36661",
       "start": "2026-10-30T20:00:00+01:00",
@@ -994,7 +986,7 @@
       "id": "36663",
       "start": "2026-11-01T15:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": null,
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36663&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36663%26upsellids%3D35861%252C35857%252C35859&saleschannelid=2&skinid=1&withauthentication=no&signature=4603c7643526c3650cacf58157a8c97337356ec6ffca8fee05f69d432133b6c7"
      },
@@ -1258,7 +1250,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
-   "opgehaaldOp": "2026-10-29T04:06:21.644Z",
+   "opgehaaldOp": "2026-10-30T04:06:27.494Z",
    "data": {
     "naam": "Jochem Myjer",
     "events": [
@@ -1274,7 +1266,7 @@
       "id": "36565",
       "start": "2026-11-03T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": "waiting_list",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36565&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36565%26upsellids%3D36634%252C36614%252C36604%252C36624&saleschannelid=2&skinid=1&withauthentication=no&signature=b5fa10890ace2b6fcb7a00b3720a6aa96ac7a46320c012e89069e2eda3247d45"
      },
@@ -1290,7 +1282,7 @@
       "id": "36568",
       "start": "2026-11-10T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": "waiting_list",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36568&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36568%26upsellids%3D36636%252C36616%252C36606%252C36626&saleschannelid=2&skinid=1&withauthentication=no&signature=9e4f3a75391ad5e17298e9673d1e7ce1e4b5bd08563abc837f333185db9fd0cc"
      },
@@ -1378,7 +1370,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/kevin-bridges": {
-   "opgehaaldOp": "2026-10-23T03:11:21.925Z",
+   "opgehaaldOp": "2026-10-30T04:06:30.366Z",
    "data": {
     "naam": "Kevin Bridges",
     "events": [
@@ -1402,7 +1394,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/krezip": {
-   "opgehaaldOp": "2026-10-23T03:11:25.930Z",
+   "opgehaaldOp": "2026-10-30T04:06:34.370Z",
    "data": {
     "naam": "Krezip",
     "events": [
@@ -1562,7 +1554,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/merijn-scholten-lemming": {
-   "opgehaaldOp": "2026-10-23T03:11:29.937Z",
+   "opgehaaldOp": "2026-10-30T04:06:37.377Z",
    "data": {
     "naam": "Merijn Scholten",
     "events": [
@@ -1650,7 +1642,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/peter-pannekoek-2027": {
-   "opgehaaldOp": "2026-10-23T03:11:33.077Z",
+   "opgehaaldOp": "2026-10-30T04:06:40.513Z",
    "data": {
     "naam": "Peter Pannekoek",
     "events": [
@@ -1802,7 +1794,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/richard-groenendijk-gelukkig-heb-je-mij-nog": {
-   "opgehaaldOp": "2026-10-23T03:11:30.934Z",
+   "opgehaaldOp": "2026-10-30T04:06:38.374Z",
    "data": {
     "naam": "Richard Groenendijk",
     "events": [
@@ -1930,7 +1922,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/the-illusionists": {
-   "opgehaaldOp": "2026-10-23T03:11:27.100Z",
+   "opgehaaldOp": "2026-10-30T04:06:35.531Z",
    "data": {
     "naam": "Hans Klok",
     "events": [
@@ -2050,7 +2042,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/van-der-laan-woe-dinsdagmiddag": {
-   "opgehaaldOp": "2026-10-23T03:11:24.912Z",
+   "opgehaaldOp": "2026-10-30T04:06:33.377Z",
    "data": {
     "naam": "Van der Laan & Woe",
     "events": [
@@ -2498,7 +2490,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/yentl-en-de-boer-rekhalzen": {
-   "opgehaaldOp": "2026-10-23T03:11:20.929Z",
+   "opgehaaldOp": "2026-10-30T04:06:29.369Z",
    "data": {
     "naam": "Yentl en de Boer - Poelifinario",
     "events": [
@@ -2506,7 +2498,7 @@
       "id": "37143",
       "start": "2027-01-12T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": "waiting_list",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37143&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37143%26upsellids%3D37145%252C37146%252C37144&saleschannelid=2&skinid=1&withauthentication=no&signature=d7628b1b42cf90486d53e9ea0a6cb10aa92b2fcbfa2e32ae42795bf79cf38979"
      }
