@@ -89,22 +89,6 @@
     ]
    }
   },
-  "https://carre.nl/api/render/voorstelling/ben-bril-memorial-boksgala-2026": {
-   "opgehaaldOp": "2026-10-11T03:07:39.594Z",
-   "data": {
-    "naam": "Ben Bril Memorial Boksgala 2026",
-    "events": [
-     {
-      "id": "35072",
-      "start": "2026-10-12T19:00:00+02:00",
-      "salesStatus": "on_sale",
-      "statusID": "last_chance",
-      "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35072&flow=basketwithcheckout&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Fcarre.nl%2Fagenda&saleschannelid=2&skinid=1&withauthentication=no&signature=8519543f81c2739d524a7c554dcff325b69c4ecb2516aaf532e8d8b64ebed4af"
-     }
-    ]
-   }
-  },
   "https://carre.nl/api/render/voorstelling/bianca-del-rio-2027": {
    "opgehaaldOp": "2026-10-31T04:06:18.948Z",
    "data": {
@@ -282,7 +266,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/cem-adrian-2027": {
-   "opgehaaldOp": "2026-10-25T04:06:40.772Z",
+   "opgehaaldOp": "2026-11-01T04:06:56.539Z",
    "data": {
     "naam": "Cem Adrian",
     "events": [
@@ -298,7 +282,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/chris-de-burgh-2027": {
-   "opgehaaldOp": "2026-10-25T04:06:41.756Z",
+   "opgehaaldOp": "2026-11-01T04:06:57.541Z",
    "data": {
     "naam": "Chris de Burgh",
     "events": [
@@ -514,7 +498,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/foil-arms-and-hog-smithereens": {
-   "opgehaaldOp": "2026-10-25T04:06:42.736Z",
+   "opgehaaldOp": "2026-11-01T04:06:58.541Z",
    "data": {
     "naam": "Foil Arms and Hog",
     "events": [
@@ -962,18 +946,10 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/herman-van-veen-vandaag": {
-   "opgehaaldOp": "2026-10-31T04:06:11.087Z",
+   "opgehaaldOp": "2026-11-01T04:06:51.653Z",
    "data": {
     "naam": "Herman van Veen",
     "events": [
-     {
-      "id": "36662",
-      "start": "2026-10-31T20:00:00+01:00",
-      "salesStatus": "on_sale",
-      "statusID": null,
-      "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36662&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36662%26upsellids%3D35852%252C35838%252C35896%252C35845&saleschannelid=2&skinid=1&withauthentication=no&signature=fb9b1107c67224652700117e17c6c1ade7d96bf7836d26249cb98ba0b9644ba8"
-     },
      {
       "id": "36663",
       "start": "2026-11-01T15:00:00+01:00",
@@ -1242,7 +1218,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
-   "opgehaaldOp": "2026-10-31T04:06:12.068Z",
+   "opgehaaldOp": "2026-11-01T04:06:50.649Z",
    "data": {
     "naam": "Jochem Myjer",
     "events": [
@@ -1402,7 +1378,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/liefdesbrieven": {
-   "opgehaaldOp": "2026-10-25T04:06:36.764Z",
+   "opgehaaldOp": "2026-11-01T04:06:52.547Z",
    "data": {
     "naam": "Liefdesbrieven",
     "events": [
@@ -1418,7 +1394,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/lisa-ostermann-de-baas": {
-   "opgehaaldOp": "2026-10-25T04:06:38.761Z",
+   "opgehaaldOp": "2026-11-01T04:06:54.538Z",
    "data": {
     "naam": "Lisa Ostermann",
     "events": [
@@ -1426,7 +1402,7 @@
       "id": "35873",
       "start": "2027-01-18T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": "waiting_list",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35873&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35873%26upsellids%3D35877%252C35879%252C35875&saleschannelid=2&skinid=1&withauthentication=no&signature=9d6db953a3d9018fefff093727b200413ff33d09a78082a5bdb0c9c368c4f052"
      },
@@ -1434,7 +1410,7 @@
       "id": "35874",
       "start": "2027-01-19T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": "waiting_list",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35874&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35874%26upsellids%3D35878%252C35880%252C35876&saleschannelid=2&skinid=1&withauthentication=no&signature=65fbdee7bb2fbfd078489b23fc1357e29d0de18c93bb700e0679312a8f1a69c1"
      }
@@ -1442,7 +1418,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/loreena-mckennitt-the-mask-and-mirror-tour": {
-   "opgehaaldOp": "2026-10-25T04:06:39.770Z",
+   "opgehaaldOp": "2026-11-01T04:06:55.541Z",
    "data": {
     "naam": "Loreena McKennitt",
     "events": [
@@ -1818,7 +1794,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/rufus-wainwright-metropole-orkest": {
-   "opgehaaldOp": "2026-10-25T04:06:37.763Z",
+   "opgehaaldOp": "2026-11-01T04:06:53.540Z",
    "data": {
     "naam": "Rufus Wainwright & Metropole Orkest",
     "events": [
