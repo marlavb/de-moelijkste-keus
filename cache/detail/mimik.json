@@ -47,8 +47,35 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/a-little-grey-wolf-will-come-met-qa-met-regisseur-zhanna-agalakova": {
+   "opgehaaldOp": "2026-11-03T04:45:15.822Z",
+   "data": {
+    "categorie": "Met Q&A",
+    "kop": "A Little Grey Wolf Will Come (met Q&A met regisseur Zhanna Agalakova)",
+    "onder": "Zhanna Agalakova",
+    "eersteStart": "2026-11-28T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-28",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": "2026-11-28",
+      "tijd": "19:00",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389102"
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/alex-ploeg-2027": {
-   "opgehaaldOp": "2026-10-27T04:46:04.532Z",
+   "opgehaaldOp": "2026-11-03T04:45:25.567Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Alex Ploeg",
@@ -200,7 +227,7 @@
    }
   },
   "https://www.mimik.nl/agenda/brothertill-lisa-weeda": {
-   "opgehaaldOp": "2026-11-02T04:44:26.817Z",
+   "opgehaaldOp": "2026-11-03T04:45:10.463Z",
    "data": {
     "categorie": "Woordkunst",
     "kop": "BrotherTill & Lisa Weeda",
@@ -570,25 +597,6 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/de-gaulle-resistance": {
-   "opgehaaldOp": "2026-10-11T03:54:54.887Z",
-   "data": {
-    "categorie": "Film",
-    "kop": "De Gaulle: Résistance",
-    "onder": "Antonin Baudry",
-    "eersteStart": "2026-10-13T11:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-10-13",
-      "tijd": "11:00",
-      "zaal": "Filmzaal 1",
-      "prijs": "€ 13,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385712"
-     }
-    ]
-   }
-  },
   "https://www.mimik.nl/agenda/de-manager": {
    "opgehaaldOp": "2026-10-11T03:54:35.806Z",
    "data": {
@@ -644,7 +652,7 @@
    }
   },
   "https://www.mimik.nl/agenda/de-theatertroep-vier-crematies-en-een-scheiding": {
-   "opgehaaldOp": "2026-10-27T04:46:00.534Z",
+   "opgehaaldOp": "2026-11-03T04:45:23.468Z",
    "data": {
     "categorie": "Theater",
     "kop": "De Theatertroep",
@@ -975,7 +983,7 @@
    }
   },
   "https://www.mimik.nl/agenda/esther-apituley": {
-   "opgehaaldOp": "2026-10-27T04:45:56.529Z",
+   "opgehaaldOp": "2026-11-03T04:45:19.561Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Esther Apituley",
@@ -989,6 +997,33 @@
       "prijs": "€ 21,50",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10350383"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/european-cinema-night-2026-a-hidden-life": {
+   "opgehaaldOp": "2026-11-03T04:45:16.600Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "European Cinema Night 2026: A Hidden Life",
+    "onder": null,
+    "eersteStart": "2026-12-02T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-02",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": "2026-12-02",
+      "tijd": "19:30",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 0,00",
+      "knop": "Reserveer",
+      "href": "https://www.mimik.nl/tickets?programId=10389115"
      }
     ]
    }
@@ -1755,8 +1790,18 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/hamnet": {
+   "opgehaaldOp": "2026-11-03T04:45:12.573Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Hamnet",
+    "onder": "LAATSTE WEEK",
+    "eersteStart": "2026-11-10T14:00:00.0000000",
+    "speeldata": []
+   }
+  },
   "https://www.mimik.nl/agenda/het-nut-2026": {
-   "opgehaaldOp": "2026-10-27T04:46:07.532Z",
+   "opgehaaldOp": "2026-11-03T04:45:27.541Z",
    "data": {
     "categorie": "Theater",
     "kop": "Het NUT",
@@ -1768,8 +1813,8 @@
       "tijd": "20:00",
       "zaal": "Theaterzaal",
       "prijs": "€ 18,50",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10355859"
+      "knop": "Afgelast",
+      "href": null
      }
     ]
    }
@@ -1841,7 +1886,7 @@
    }
   },
   "https://www.mimik.nl/agenda/izaline-calister-rum-and-coca-cola": {
-   "opgehaaldOp": "2026-10-27T04:45:57.606Z",
+   "opgehaaldOp": "2026-11-03T04:45:20.600Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Izaline Calister",
@@ -1917,7 +1962,7 @@
    }
   },
   "https://www.mimik.nl/agenda/joep-van-deudekom-rob-urgert-oudejaarskwis": {
-   "opgehaaldOp": "2026-11-02T04:44:24.745Z",
+   "opgehaaldOp": "2026-11-03T04:45:07.492Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Joep van Deudekom & Rob Urgert",
@@ -2107,7 +2152,7 @@
    }
   },
   "https://www.mimik.nl/agenda/knit-cinema-wicker": {
-   "opgehaaldOp": "2026-11-02T04:44:28.049Z",
+   "opgehaaldOp": "2026-11-03T04:45:11.560Z",
    "data": {
     "categorie": "Special",
     "kop": "Knit Cinema: Wicker",
@@ -2161,7 +2206,7 @@
    }
   },
   "https://www.mimik.nl/agenda/korzo-breaking-generations": {
-   "opgehaaldOp": "2026-10-27T04:45:55.634Z",
+   "opgehaaldOp": "2026-11-03T04:45:18.556Z",
    "data": {
     "categorie": "Dans",
     "kop": "Korzo",
@@ -2199,7 +2244,7 @@
    }
   },
   "https://www.mimik.nl/agenda/lebbis-satan-is-moe": {
-   "opgehaaldOp": "2026-11-02T04:44:25.848Z",
+   "opgehaaldOp": "2026-11-03T04:45:08.460Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Lebbis",
@@ -2211,14 +2256,14 @@
       "tijd": "20:00",
       "zaal": "Theaterzaal",
       "prijs": "€ 21,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10350451"
+      "knop": "Uitverkocht",
+      "href": null
      }
     ]
    }
   },
   "https://www.mimik.nl/agenda/leids-cabaret-festival-2027": {
-   "opgehaaldOp": "2026-10-27T04:45:59.531Z",
+   "opgehaaldOp": "2026-11-03T04:45:22.572Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Leids Cabaret Festival",
@@ -2231,25 +2276,6 @@
       "zaal": "Theaterzaal",
       "prijs": "€ 19,50",
       "knop": "Uitverkocht",
-      "href": null
-     }
-    ]
-   }
-  },
-  "https://www.mimik.nl/agenda/linconnue": {
-   "opgehaaldOp": "2026-10-12T03:48:59.436Z",
-   "data": {
-    "categorie": "Film",
-    "kop": "L'Inconnue",
-    "onder": "Arthur Harari",
-    "eersteStart": "2026-10-15T00:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-10-15",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
       "href": null
      }
     ]
@@ -2701,6 +2727,41 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/nieuw-drassig-land": {
+   "opgehaaldOp": "2026-11-03T04:45:13.690Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Nieuw Drassig Land",
+    "onder": "Jonathan de Jong & Bastiaan Brand",
+    "eersteStart": "2026-11-08T12:50:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-08",
+      "tijd": "12:50",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 10,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389373"
+     },
+     {
+      "datum": "2026-11-09",
+      "tijd": "13:50",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 10,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389374"
+     },
+     {
+      "datum": "2026-11-11",
+      "tijd": "13:30",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 10,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389375"
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/niki-jacobs-ja": {
    "opgehaaldOp": "2026-10-31T04:44:18.906Z",
    "data": {
@@ -2805,7 +2866,7 @@
    }
   },
   "https://www.mimik.nl/agenda/patrick-nederkoorn-nieuw-programma": {
-   "opgehaaldOp": "2026-10-27T04:45:54.535Z",
+   "opgehaaldOp": "2026-11-03T04:45:17.567Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Patrick Nederkoorn",
@@ -3526,7 +3587,7 @@
    }
   },
   "https://www.mimik.nl/agenda/schwung": {
-   "opgehaaldOp": "2026-10-27T04:46:05.527Z",
+   "opgehaaldOp": "2026-11-03T04:45:26.542Z",
    "data": {
     "categorie": "Theater",
     "kop": "Schwung",
@@ -3762,7 +3823,7 @@
    }
   },
   "https://www.mimik.nl/agenda/studio-sibling": {
-   "opgehaaldOp": "2026-10-27T04:46:08.530Z",
+   "opgehaaldOp": "2026-11-03T04:45:28.659Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Studio Sibling",
@@ -3827,7 +3888,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tent-van-het-oosten-januari": {
-   "opgehaaldOp": "2026-10-27T04:46:03.605Z",
+   "opgehaaldOp": "2026-11-03T04:45:24.808Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Tent van het Oosten | januari",
@@ -4135,7 +4196,7 @@
    }
   },
   "https://www.mimik.nl/agenda/theater-kwikstaart-dwars-door-het-beton": {
-   "opgehaaldOp": "2026-10-27T04:45:58.527Z",
+   "opgehaaldOp": "2026-11-03T04:45:21.543Z",
    "data": {
     "categorie": "Junior",
     "kop": "Theater Kwikstaart",
@@ -4287,7 +4348,7 @@
    }
   },
   "https://www.mimik.nl/agenda/van-vleuten-en-van-muiswinkel-10-11": {
-   "opgehaaldOp": "2026-10-27T04:46:02.540Z",
+   "opgehaaldOp": "2026-11-03T04:45:09.581Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Van Vleuten en van Muiswinkel",
@@ -4677,6 +4738,33 @@
       "prijs": "€ 13,00",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10385831"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/you-can-see-everything": {
+   "opgehaaldOp": "2026-11-03T04:45:14.555Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "You Can See Everything",
+    "onder": "Nathan Fielder",
+    "eersteStart": "2026-12-13T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-13",
+      "tijd": "20:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389113"
+     },
+     {
+      "datum": "2027-01-07",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
      }
     ]
    }
