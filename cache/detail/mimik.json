@@ -74,6 +74,25 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/a-talent-for-murder": {
+   "opgehaaldOp": "2026-11-04T04:46:00.086Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "A Talent For Murder",
+    "onder": "Anton Corbijn",
+    "eersteStart": "2026-12-24T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-24",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/alex-ploeg-2027": {
    "opgehaaldOp": "2026-11-03T04:45:25.567Z",
    "data": {
@@ -207,16 +226,16 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/brand-new-landscape": {
-   "opgehaaldOp": "2026-10-12T03:49:00.456Z",
+  "https://www.mimik.nl/agenda/behemoth": {
+   "opgehaaldOp": "2026-11-04T04:45:54.013Z",
    "data": {
     "categorie": "Film",
-    "kop": "Brand New Landscape",
-    "onder": "Yuiga Danzuka",
-    "eersteStart": "2026-10-15T00:00:00.0000000",
+    "kop": "Behemoth!",
+    "onder": "Tony Gilroy",
+    "eersteStart": "2026-12-03T00:00:00.0000000",
     "speeldata": [
      {
-      "datum": "2026-10-15",
+      "datum": "2026-12-03",
       "tijd": null,
       "zaal": null,
       "prijs": null,
@@ -227,7 +246,7 @@
    }
   },
   "https://www.mimik.nl/agenda/brothertill-lisa-weeda": {
-   "opgehaaldOp": "2026-11-03T04:45:10.463Z",
+   "opgehaaldOp": "2026-11-04T04:45:48.999Z",
    "data": {
     "categorie": "Woordkunst",
     "kop": "BrotherTill & Lisa Weeda",
@@ -509,7 +528,7 @@
    }
   },
   "https://www.mimik.nl/agenda/de-dansers": {
-   "opgehaaldOp": "2026-10-28T04:45:36.927Z",
+   "opgehaaldOp": "2026-11-04T04:46:06.022Z",
    "data": {
     "categorie": "Dans",
     "kop": "De Dansers",
@@ -597,43 +616,8 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/de-manager": {
-   "opgehaaldOp": "2026-10-11T03:54:35.806Z",
-   "data": {
-    "categorie": "Film",
-    "kop": "De Manager",
-    "onder": "Maartje Bakers",
-    "eersteStart": "2026-10-11T19:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-10-11",
-      "tijd": "19:00",
-      "zaal": "Filmzaal 2",
-      "prijs": "€ 13,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385716"
-     },
-     {
-      "datum": "2026-10-12",
-      "tijd": "16:50",
-      "zaal": "Filmzaal 3",
-      "prijs": "€ 13,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385715"
-     },
-     {
-      "datum": "2026-10-13",
-      "tijd": "17:20",
-      "zaal": "Filmzaal 4",
-      "prijs": "€ 13,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385717"
-     }
-    ]
-   }
-  },
   "https://www.mimik.nl/agenda/de-ronde-deroo": {
-   "opgehaaldOp": "2026-10-28T04:45:34.874Z",
+   "opgehaaldOp": "2026-11-04T04:46:04.022Z",
    "data": {
     "categorie": "Theater",
     "kop": "De Ronde / Deroo",
@@ -666,6 +650,25 @@
       "prijs": "€ 21,50",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10350419"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/dial-q-filmquiz-2026": {
+   "opgehaaldOp": "2026-11-04T04:45:51.058Z",
+   "data": {
+    "categorie": "Quiz",
+    "kop": "Dial Q Filmquiz",
+    "onder": "DialQ Filmquiz",
+    "eersteStart": "2027-02-07T15:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2027-02-07",
+      "tijd": "15:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 18,50",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390005"
      }
     ]
    }
@@ -963,25 +966,6 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/erupcja": {
-   "opgehaaldOp": "2026-10-12T03:49:03.549Z",
-   "data": {
-    "categorie": "Film",
-    "kop": "Erupcja",
-    "onder": "Pete Ohs",
-    "eersteStart": "2026-10-22T00:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-10-22",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
-     }
-    ]
-   }
-  },
   "https://www.mimik.nl/agenda/esther-apituley": {
    "opgehaaldOp": "2026-11-03T04:45:19.561Z",
    "data": {
@@ -1029,7 +1013,7 @@
    }
   },
   "https://www.mimik.nl/agenda/eva-van-manen": {
-   "opgehaaldOp": "2026-10-28T04:45:37.913Z",
+   "opgehaaldOp": "2026-11-04T04:46:07.030Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Eva van Manen",
@@ -1043,6 +1027,44 @@
       "prijs": "€ 22,50",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10350445"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/everybody-digs-bill-evans": {
+   "opgehaaldOp": "2026-11-04T04:45:58.072Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Everybody Digs Bill Evans",
+    "onder": "Grant Gee",
+    "eersteStart": "2026-12-24T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-24",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/everybody-to-kenmure-street": {
+   "opgehaaldOp": "2026-11-04T04:45:59.088Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Everybody To Kenmure Street",
+    "onder": "Felipe Bustos Sierra",
+    "eersteStart": "2026-12-24T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-24",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
      }
     ]
    }
@@ -1663,6 +1685,25 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/foret-ivre": {
+   "opgehaaldOp": "2026-11-04T04:45:52.130Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Forêt ivre",
+    "onder": "Manon Coubia",
+    "eersteStart": "2026-11-19T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-19",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/freek-de-jonge": {
    "opgehaaldOp": "2026-11-01T04:42:20.762Z",
    "data": {
@@ -1819,6 +1860,25 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/heysel-85": {
+   "opgehaaldOp": "2026-11-04T04:45:53.008Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Heysel 85",
+    "onder": "Teodora Mihai",
+    "eersteStart": "2026-11-26T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-26",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/hola-frida": {
    "opgehaaldOp": "2026-10-20T03:45:01.823Z",
    "data": {
@@ -1962,7 +2022,7 @@
    }
   },
   "https://www.mimik.nl/agenda/joep-van-deudekom-rob-urgert-oudejaarskwis": {
-   "opgehaaldOp": "2026-11-03T04:45:07.492Z",
+   "opgehaaldOp": "2026-11-04T04:45:44.958Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Joep van Deudekom & Rob Urgert",
@@ -2076,7 +2136,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kim-karssen-10044665": {
-   "opgehaaldOp": "2026-10-28T04:45:32.923Z",
+   "opgehaaldOp": "2026-11-04T04:46:02.046Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Kim Karssen",
@@ -2152,11 +2212,11 @@
    }
   },
   "https://www.mimik.nl/agenda/knit-cinema-wicker": {
-   "opgehaaldOp": "2026-11-03T04:45:11.560Z",
+   "opgehaaldOp": "2026-11-04T04:45:49.920Z",
    "data": {
     "categorie": "Special",
     "kop": "Knit Cinema: Wicker",
-    "onder": "i.s.m. Dol op Wol",
+    "onder": "i.s.m. Dol-op-Wol",
     "eersteStart": "2026-11-08T00:00:00.0000000",
     "speeldata": [
      {
@@ -2224,6 +2284,44 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/la-vie-dune-femme": {
+   "opgehaaldOp": "2026-11-04T04:45:56.013Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "La vie d'une femme",
+    "onder": "Charline Bourgeois-Tacquet",
+    "eersteStart": "2026-12-17T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-17",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/laatbloeier": {
+   "opgehaaldOp": "2026-11-04T04:46:00.925Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Laatbloeier",
+    "onder": "Jelle de Jonge",
+    "eersteStart": "2026-11-12T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-12",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/laura-van-dolron-de-zachte-waarheid": {
    "opgehaaldOp": "2026-10-30T04:45:56.003Z",
    "data": {
@@ -2244,7 +2342,7 @@
    }
   },
   "https://www.mimik.nl/agenda/lebbis-satan-is-moe": {
-   "opgehaaldOp": "2026-11-03T04:45:08.460Z",
+   "opgehaaldOp": "2026-11-04T04:45:45.912Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Lebbis",
@@ -2256,8 +2354,8 @@
       "tijd": "20:00",
       "zaal": "Theaterzaal",
       "prijs": "€ 21,00",
-      "knop": "Uitverkocht",
-      "href": null
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350451"
      }
     ]
    }
@@ -2520,7 +2618,7 @@
    }
   },
   "https://www.mimik.nl/agenda/mimik-xs-februari": {
-   "opgehaaldOp": "2026-10-28T04:45:38.883Z",
+   "opgehaaldOp": "2026-11-04T04:46:08.001Z",
    "data": {
     "categorie": "Theater",
     "kop": "MIMIK XS | februari",
@@ -3964,7 +4062,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tg-tiefschnee": {
-   "opgehaaldOp": "2026-10-28T04:45:36.094Z",
+   "opgehaaldOp": "2026-11-04T04:46:05.038Z",
    "data": {
     "categorie": "Theater",
     "kop": "TG Tiefschnee",
@@ -4110,6 +4208,25 @@
     "speeldata": [
      {
       "datum": "2026-11-12",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/the-diary-of-a-chambermaid": {
+   "opgehaaldOp": "2026-11-04T04:45:57.011Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "The Diary of a Chambermaid",
+    "onder": "Radu Jude",
+    "eersteStart": "2026-12-10T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-10",
       "tijd": null,
       "zaal": null,
       "prijs": null,
@@ -4309,6 +4426,25 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/tin-castle": {
+   "opgehaaldOp": "2026-11-04T04:45:55.054Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Tin Castle",
+    "onder": "Alexander Murphy",
+    "eersteStart": "2026-12-17T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-17",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/urland-2026": {
    "opgehaaldOp": "2026-10-16T03:52:44.995Z",
    "data": {
@@ -4329,7 +4465,7 @@
    }
   },
   "https://www.mimik.nl/agenda/van-die-mensen": {
-   "opgehaaldOp": "2026-10-28T04:45:34.024Z",
+   "opgehaaldOp": "2026-11-04T04:46:03.028Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Van Die Mensen",
@@ -4348,7 +4484,7 @@
    }
   },
   "https://www.mimik.nl/agenda/van-vleuten-en-van-muiswinkel-10-11": {
-   "opgehaaldOp": "2026-11-03T04:45:09.581Z",
+   "opgehaaldOp": "2026-11-04T04:45:47.051Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Van Vleuten en van Muiswinkel",
@@ -4360,14 +4496,14 @@
       "tijd": "20:00",
       "zaal": "Theaterzaal",
       "prijs": "€ 21,50",
-      "knop": "Uitverkocht",
-      "href": null
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350453"
      }
     ]
    }
   },
   "https://www.mimik.nl/agenda/van-vleuten-en-van-muiswinkel-11-11": {
-   "opgehaaldOp": "2026-10-30T04:46:07.906Z",
+   "opgehaaldOp": "2026-11-04T04:45:48.033Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Van Vleuten en van Muiswinkel",
@@ -4379,8 +4515,8 @@
       "tijd": "20:00",
       "zaal": "Theaterzaal",
       "prijs": "€ 21,50",
-      "knop": "Uitverkocht",
-      "href": null
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350454"
      }
     ]
    }
