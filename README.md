@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (70 ok, 10 gepauzeerd, 1 leeg)
-- Voorstellingen (titel per theater): **7504**
-- Speeldata: **10396**
-- Laatste refresh: **3 november 2026, 05:45** (Amsterdamse tijd)
+- Theaters: **81** (69 ok, 10 gepauzeerd, 1 terugval, 1 leeg)
+- Voorstellingen (titel per theater): **7488**
+- Speeldata: **10364**
+- Laatste refresh: **4 november 2026, 05:46** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -491,7 +491,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | AINSI | Maastricht | nee | ok |
 | Theater aan het Vrijthof | Maastricht | nee | ok |
 | DOK6 | Panningen | deels | ok |
-| Theater De Oranjerie | Roermond | nee | ok |
+| Theater De Oranjerie | Roermond | nee | terugval |
 | Toon Hermans Theater Sittard | Sittard | nee | ok |
 | De Maaspoort Theater & Events | Venlo | deels | ok |
 | Munttheater | Weert | nee | ok |
