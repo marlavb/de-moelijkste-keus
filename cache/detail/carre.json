@@ -122,7 +122,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/bonnie-prince-billy": {
-   "opgehaaldOp": "2026-11-04T04:06:09.415Z",
+   "opgehaaldOp": "2026-11-05T04:06:06.101Z",
    "data": {
     "naam": "Bonnie 'Prince' Billy",
     "events": [
@@ -194,7 +194,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/claudia-de-breij-oudejaarsconference": {
-   "opgehaaldOp": "2026-10-29T04:06:22.527Z",
+   "opgehaaldOp": "2026-11-05T04:06:07.111Z",
    "data": {
     "naam": "Claudia de Breij",
     "events": [
@@ -202,7 +202,7 @@
       "id": "37126",
       "start": "2026-12-05T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": "waiting_list",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37126&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37126%26upsellids%3D35757%252C35758%252C35756&saleschannelid=2&skinid=1&withauthentication=no&signature=f11758fd765c2c1102cb4c39bc48c936d65459a47ea5e95c9d146d21369e9c81"
      },
@@ -218,7 +218,7 @@
       "id": "37127",
       "start": "2026-12-06T19:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": "waiting_list",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37127&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37127%26upsellids%3D35760%252C35761%252C35759&saleschannelid=2&skinid=1&withauthentication=no&signature=19e9fccd5c7d5722b6273ccdb01d94a4f896f11478b78879c70b1a0042938f13"
      }
@@ -290,7 +290,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/dolf-jansen-schaamteloos": {
-   "opgehaaldOp": "2026-10-29T04:06:23.520Z",
+   "opgehaaldOp": "2026-11-05T04:06:08.100Z",
    "data": {
     "naam": "Dolf Jansen",
     "events": [
@@ -410,7 +410,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/had-ik-maar-nooit-zo-aardig-gedaan": {
-   "opgehaaldOp": "2026-10-29T04:06:26.997Z",
+   "opgehaaldOp": "2026-11-05T04:06:12.109Z",
    "data": {
     "naam": "Daniël Arends - Had ik maar nooit zo aardig gedaan",
     "events": [
@@ -842,18 +842,10 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/herman-van-veen-vandaag": {
-   "opgehaaldOp": "2026-11-04T04:06:14.566Z",
+   "opgehaaldOp": "2026-11-05T04:06:09.240Z",
    "data": {
     "naam": "Herman van Veen",
     "events": [
-     {
-      "id": "36664",
-      "start": "2026-11-04T20:00:00+01:00",
-      "salesStatus": "on_sale",
-      "statusID": null,
-      "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36664&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36664%26upsellids%3D35853%252C35839%252C35897%252C35846&saleschannelid=2&skinid=1&withauthentication=no&signature=56aa4f9520fcf811f2842645b8153a8fc44d77de85075ae08535c127a685ff5e"
-     },
      {
       "id": "36665",
       "start": "2026-11-05T20:00:00+01:00",
@@ -1082,7 +1074,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jenny-arean": {
-   "opgehaaldOp": "2026-10-29T04:06:24.528Z",
+   "opgehaaldOp": "2026-11-05T04:06:10.105Z",
    "data": {
     "naam": "Jenny Arean",
     "events": [
@@ -1106,7 +1098,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
-   "opgehaaldOp": "2026-11-04T04:06:08.451Z",
+   "opgehaaldOp": "2026-11-05T04:06:05.115Z",
    "data": {
     "naam": "Jochem Myjer",
     "events": [
@@ -1114,7 +1106,7 @@
       "id": "36567",
       "start": "2026-11-09T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": "waiting_list",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36567&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36567%26upsellids%3D36635%252C36615%252C36605%252C36625&saleschannelid=2&skinid=1&withauthentication=no&signature=ef5b03f88ab71ae2bc1d40eb88777d5f025ed833ccec34a288db8dd481a23e3a"
      },
@@ -1426,7 +1418,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/micky-overman-2027": {
-   "opgehaaldOp": "2026-10-29T04:06:25.523Z",
+   "opgehaaldOp": "2026-11-05T04:06:11.098Z",
    "data": {
     "naam": "Micky Overman",
     "events": [
@@ -1442,17 +1434,17 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/oh-wonder-2027": {
-   "opgehaaldOp": "2026-10-29T04:06:27.525Z",
+   "opgehaaldOp": "2026-11-05T04:06:13.102Z",
    "data": {
     "naam": "Oh Wonder",
     "events": [
      {
       "id": "37151",
       "start": "2027-05-12T20:00:00+02:00",
-      "salesStatus": "sales_not_started",
+      "salesStatus": "on_sale",
       "statusID": "last_chance",
       "soort": "Voorstelling",
-      "salesUrl": null
+      "salesUrl": "https://www.ticketmaster.nl/event/815147967"
      }
     ]
    }
