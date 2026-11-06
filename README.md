@@ -13,9 +13,9 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
 
 <!-- AUTO:aantallen:start -->
 - Theaters: **81** (69 ok, 1 terugval, 10 gepauzeerd, 1 leeg)
-- Voorstellingen (titel per theater): **7460**
-- Speeldata: **10320**
-- Laatste refresh: **5 november 2026, 05:44** (Amsterdamse tijd)
+- Voorstellingen (titel per theater): **7416**
+- Speeldata: **10271**
+- Laatste refresh: **6 november 2026, 05:44** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -442,10 +442,10 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater de Meervaart | Amsterdam | ja | ok |
 | VU Griffioen | Amsterdam | ja | ok |
 | Kennemer Theater | Beverwijk | – | gepauzeerd sinds 2026-10-01 |
-| Theater de Omval | Diemen | ja | ok |
+| Theater de Omval | Diemen | ja | terugval |
 | Schuur | Haarlem | ja | ok |
 | Cpunt | Hoofddorp | nee | ok |
-| Zaantheater | Zaandam | ja | terugval |
+| Zaantheater | Zaandam | ja | ok |
 
 **Zuid-Holland** (13)
 
