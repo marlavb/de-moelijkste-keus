@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (69 ok, 1 terugval, 10 gepauzeerd, 1 leeg)
-- Voorstellingen (titel per theater): **7416**
-- Speeldata: **10271**
-- Laatste refresh: **6 november 2026, 05:44** (Amsterdamse tijd)
+- Theaters: **81** (67 ok, 3 terugval, 10 gepauzeerd, 1 leeg)
+- Voorstellingen (titel per theater): **7366**
+- Speeldata: **10198**
+- Laatste refresh: **7 november 2026, 05:44** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -442,7 +442,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater de Meervaart | Amsterdam | ja | ok |
 | VU Griffioen | Amsterdam | ja | ok |
 | Kennemer Theater | Beverwijk | – | gepauzeerd sinds 2026-10-01 |
-| Theater de Omval | Diemen | ja | terugval |
+| Theater de Omval | Diemen | ja | ok |
 | Schuur | Haarlem | ja | ok |
 | Cpunt | Hoofddorp | nee | ok |
 | Zaantheater | Zaandam | ja | ok |
@@ -453,9 +453,9 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 |---|---|---|---|
 | Theater het Kruispunt | Barendrecht | – | gepauzeerd sinds 2026-09-28 |
 | Isala theater | Capelle aan den IJssel | – | gepauzeerd sinds 2026-09-28 |
-| Koninklijke Schouwburg | Den Haag | ja | ok |
-| Theater aan het Spui | Den Haag | ja | ok |
-| Zaal 3 | Den Haag | ja | ok |
+| Koninklijke Schouwburg | Den Haag | ja | terugval |
+| Theater aan het Spui | Den Haag | ja | terugval |
+| Zaal 3 | Den Haag | ja | terugval |
 | Theater Ins Blau | Leiden | ja | ok |
 | Theater Koningshof | Maassluis | deels | ok |
 | De Muze | Noordwijk | deels | ok |
