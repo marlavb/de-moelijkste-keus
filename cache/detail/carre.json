@@ -26,7 +26,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/agnes-obel": {
-   "opgehaaldOp": "2026-10-31T04:06:21.949Z",
+   "opgehaaldOp": "2026-11-07T04:06:31.856Z",
    "data": {
     "naam": "Agnes Obel",
     "events": [
@@ -58,7 +58,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/ashton-brothers": {
-   "opgehaaldOp": "2026-10-31T04:06:17.963Z",
+   "opgehaaldOp": "2026-11-07T04:06:27.849Z",
    "data": {
     "naam": "Ashton Brothers",
     "events": [
@@ -90,7 +90,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/bianca-del-rio-2027": {
-   "opgehaaldOp": "2026-10-31T04:06:18.948Z",
+   "opgehaaldOp": "2026-11-07T04:06:28.844Z",
    "data": {
     "naam": "Bianca Del Rio",
     "events": [
@@ -105,8 +105,24 @@
     ]
    }
   },
+  "https://carre.nl/api/render/voorstelling/billy-ocean-2027": {
+   "opgehaaldOp": "2026-11-07T04:06:32.850Z",
+   "data": {
+    "naam": "Billy Ocean",
+    "events": [
+     {
+      "id": "37164",
+      "start": "2027-11-25T20:00:00+01:00",
+      "salesStatus": "sales_not_started",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": null
+     }
+    ]
+   }
+  },
   "https://carre.nl/api/render/voorstelling/blancowhite": {
-   "opgehaaldOp": "2026-10-31T04:06:16.942Z",
+   "opgehaaldOp": "2026-11-07T04:06:26.846Z",
    "data": {
     "naam": "Blanco White",
     "events": [
@@ -122,7 +138,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/bonnie-prince-billy": {
-   "opgehaaldOp": "2026-11-06T04:06:03.391Z",
+   "opgehaaldOp": "2026-11-07T04:06:19.842Z",
    "data": {
     "naam": "Bonnie 'Prince' Billy",
     "events": [
@@ -138,7 +154,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/brabo-leone": {
-   "opgehaaldOp": "2026-10-31T04:06:22.952Z",
+   "opgehaaldOp": "2026-11-07T04:06:33.858Z",
    "data": {
     "naam": "Brabo Leone",
     "events": [
@@ -250,7 +266,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/de-proefkeuken-en-de-wc-van-tijd": {
-   "opgehaaldOp": "2026-10-31T04:06:15.948Z",
+   "opgehaaldOp": "2026-11-07T04:06:25.848Z",
    "data": {
     "naam": "Proefkeuken",
     "events": [
@@ -370,7 +386,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/evita": {
-   "opgehaaldOp": "2026-10-31T04:06:12.957Z",
+   "opgehaaldOp": "2026-11-07T04:06:21.844Z",
    "data": {
     "naam": "Evita",
     "events": [
@@ -842,18 +858,10 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/herman-van-veen-vandaag": {
-   "opgehaaldOp": "2026-11-06T04:06:06.518Z",
+   "opgehaaldOp": "2026-11-07T04:06:23.945Z",
    "data": {
     "naam": "Herman van Veen",
     "events": [
-     {
-      "id": "36666",
-      "start": "2026-11-06T20:00:00+01:00",
-      "salesStatus": "on_sale",
-      "statusID": null,
-      "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36666&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36666%26upsellids%3D35855%252C35841%252C35899%252C35848&saleschannelid=2&skinid=1&withauthentication=no&signature=ce96566a4bcecdd91610ca6c2ba9df83931ee447cba3ba916326810904bbdbeb"
-     },
      {
       "id": "36667",
       "start": "2026-11-07T20:00:00+01:00",
@@ -978,7 +986,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/idfa-in-carre-2026": {
-   "opgehaaldOp": "2026-11-06T04:06:04.395Z",
+   "opgehaaldOp": "2026-11-07T04:06:20.845Z",
    "data": {
     "naam": "IDFA 2026",
     "events": [
@@ -1090,7 +1098,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
-   "opgehaaldOp": "2026-11-06T04:06:02.395Z",
+   "opgehaaldOp": "2026-11-07T04:06:18.864Z",
    "data": {
     "naam": "Jochem Myjer",
     "events": [
@@ -1314,7 +1322,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/matthew-bourne-the-car-man": {
-   "opgehaaldOp": "2026-10-31T04:06:14.088Z",
+   "opgehaaldOp": "2026-11-07T04:06:22.957Z",
    "data": {
     "naam": "Matthew Bourne's The Car Man",
     "events": [
@@ -1586,7 +1594,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/rayen-panday": {
-   "opgehaaldOp": "2026-10-31T04:06:20.944Z",
+   "opgehaaldOp": "2026-11-07T04:06:30.849Z",
    "data": {
     "naam": "Rayen Panday",
     "events": [
@@ -1602,7 +1610,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/rhythm-flow-ish": {
-   "opgehaaldOp": "2026-10-31T04:06:20.066Z",
+   "opgehaaldOp": "2026-11-07T04:06:29.940Z",
    "data": {
     "naam": "ISH - Rhythm & Flow",
     "events": [
@@ -1666,7 +1674,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/ruth-jacott": {
-   "opgehaaldOp": "2026-10-31T04:06:14.942Z",
+   "opgehaaldOp": "2026-11-07T04:06:24.849Z",
    "data": {
     "naam": "Ruth Jacott",
     "events": [
