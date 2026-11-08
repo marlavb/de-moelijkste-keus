@@ -138,7 +138,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/bonnie-prince-billy": {
-   "opgehaaldOp": "2026-11-07T04:06:19.842Z",
+   "opgehaaldOp": "2026-11-08T04:06:38.313Z",
    "data": {
     "naam": "Bonnie 'Prince' Billy",
     "events": [
@@ -178,7 +178,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/cem-adrian-2027": {
-   "opgehaaldOp": "2026-11-01T04:06:56.539Z",
+   "opgehaaldOp": "2026-11-08T04:06:45.326Z",
    "data": {
     "naam": "Cem Adrian",
     "events": [
@@ -194,7 +194,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/chris-de-burgh-2027": {
-   "opgehaaldOp": "2026-11-01T04:06:57.541Z",
+   "opgehaaldOp": "2026-11-08T04:06:46.316Z",
    "data": {
     "naam": "Chris de Burgh",
     "events": [
@@ -410,7 +410,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/foil-arms-and-hog-smithereens": {
-   "opgehaaldOp": "2026-11-01T04:06:58.541Z",
+   "opgehaaldOp": "2026-11-08T04:06:47.317Z",
    "data": {
     "naam": "Foil Arms and Hog",
     "events": [
@@ -858,18 +858,10 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/herman-van-veen-vandaag": {
-   "opgehaaldOp": "2026-11-07T04:06:23.945Z",
+   "opgehaaldOp": "2026-11-08T04:06:42.452Z",
    "data": {
     "naam": "Herman van Veen",
     "events": [
-     {
-      "id": "36667",
-      "start": "2026-11-07T20:00:00+01:00",
-      "salesStatus": "on_sale",
-      "statusID": "last_chance",
-      "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36667&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36667%26upsellids%3D35856%252C35842%252C35900%252C35849&saleschannelid=2&skinid=1&withauthentication=no&signature=b1bc13c3965ac8cb33646ee427ee79f3406bb54a1444623640c69226d9096e40"
-     },
      {
       "id": "36668",
       "start": "2026-11-08T15:00:00+01:00",
@@ -986,7 +978,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/idfa-in-carre-2026": {
-   "opgehaaldOp": "2026-11-07T04:06:20.845Z",
+   "opgehaaldOp": "2026-11-08T04:06:39.319Z",
    "data": {
     "naam": "IDFA 2026",
     "events": [
@@ -1098,7 +1090,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
-   "opgehaaldOp": "2026-11-07T04:06:18.864Z",
+   "opgehaaldOp": "2026-11-08T04:06:37.329Z",
    "data": {
     "naam": "Jochem Myjer",
     "events": [
@@ -1242,7 +1234,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/liefdesbrieven": {
-   "opgehaaldOp": "2026-11-01T04:06:52.547Z",
+   "opgehaaldOp": "2026-11-08T04:06:40.316Z",
    "data": {
     "naam": "Liefdesbrieven",
     "events": [
@@ -1258,7 +1250,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/lisa-ostermann-de-baas": {
-   "opgehaaldOp": "2026-11-01T04:06:54.538Z",
+   "opgehaaldOp": "2026-11-08T04:06:43.546Z",
    "data": {
     "naam": "Lisa Ostermann",
     "events": [
@@ -1282,7 +1274,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/loreena-mckennitt-the-mask-and-mirror-tour": {
-   "opgehaaldOp": "2026-11-01T04:06:55.541Z",
+   "opgehaaldOp": "2026-11-08T04:06:44.318Z",
    "data": {
     "naam": "Loreena McKennitt",
     "events": [
@@ -1658,17 +1650,17 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/rufus-wainwright-metropole-orkest": {
-   "opgehaaldOp": "2026-11-01T04:06:53.540Z",
+   "opgehaaldOp": "2026-11-08T04:06:41.313Z",
    "data": {
     "naam": "Rufus Wainwright & Metropole Orkest",
     "events": [
      {
-      "id": "35381",
+      "id": "37175",
       "start": "2027-01-08T20:00:00+01:00",
       "salesStatus": "on_sale",
       "statusID": "waiting_list",
       "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35381&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35381%26upsellids%3D35383%252C35382&saleschannelid=2&skinid=1&withauthentication=no&signature=efc85849bc064da47fdac7a0d506decce726d4a12e4f1e2fbd66b851781ac56e"
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37175&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37175%26upsellids%3D35383%252C35382&saleschannelid=2&skinid=1&withauthentication=no&signature=4e3969b32a0ff8ee9bfb2e14265864712203b4e0af71605f0a80f2461c311e84"
      }
     ]
    }

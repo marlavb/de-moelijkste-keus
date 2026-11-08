@@ -151,7 +151,7 @@
    }
   },
   "https://www.mimik.nl/agenda/amsterdams-kleinkunst-festival-akf-2026": {
-   "opgehaaldOp": "2026-11-01T04:42:13.863Z",
+   "opgehaaldOp": "2026-11-08T04:43:52.804Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Amsterdams Kleinkunst Festival (AKF)",
@@ -338,7 +338,7 @@
    }
   },
   "https://www.mimik.nl/agenda/circus-treurdier-die-bloemkool": {
-   "opgehaaldOp": "2026-11-01T04:42:10.750Z",
+   "opgehaaldOp": "2026-11-08T04:43:49.667Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Circus Treurdier",
@@ -433,7 +433,7 @@
    }
   },
   "https://www.mimik.nl/agenda/collectief-plankton-de-mens": {
-   "opgehaaldOp": "2026-11-01T04:42:17.848Z",
+   "opgehaaldOp": "2026-11-08T04:43:56.716Z",
    "data": {
     "categorie": "Fysiek theater",
     "kop": "Collectief Plankton",
@@ -796,7 +796,7 @@
    }
   },
   "https://www.mimik.nl/agenda/een-begin-sabine-van-kuipers": {
-   "opgehaaldOp": "2026-11-07T04:44:26.352Z",
+   "opgehaaldOp": "2026-11-08T04:43:42.687Z",
    "data": {
     "categorie": "Theater",
     "kop": "Een begin – Sabine van Kuipers",
@@ -815,7 +815,7 @@
    }
   },
   "https://www.mimik.nl/agenda/een-kijkje-in-het-onderwijs-van-de-toekomst": {
-   "opgehaaldOp": "2026-11-01T04:42:22.744Z",
+   "opgehaaldOp": "2026-11-08T04:44:01.664Z",
    "data": {
     "categorie": "Te gast",
     "kop": "Een kijkje in het onderwijs van de toekomst",
@@ -1610,7 +1610,7 @@
    }
   },
   "https://www.mimik.nl/agenda/firma-mes": {
-   "opgehaaldOp": "2026-11-01T04:42:14.768Z",
+   "opgehaaldOp": "2026-11-08T04:43:53.694Z",
    "data": {
     "categorie": "Theater",
     "kop": "Firma Mes",
@@ -1686,7 +1686,7 @@
    }
   },
   "https://www.mimik.nl/agenda/freek-de-jonge": {
-   "opgehaaldOp": "2026-11-01T04:42:20.762Z",
+   "opgehaaldOp": "2026-11-08T04:43:59.684Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Freek de Jonge",
@@ -1775,7 +1775,7 @@
    }
   },
   "https://www.mimik.nl/agenda/gershwin-bonevacia": {
-   "opgehaaldOp": "2026-11-01T04:42:15.793Z",
+   "opgehaaldOp": "2026-11-08T04:43:54.889Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Gershwin Bonevacia",
@@ -2212,21 +2212,13 @@
    }
   },
   "https://www.mimik.nl/agenda/knit-cinema-wicker": {
-   "opgehaaldOp": "2026-11-07T04:44:29.505Z",
+   "opgehaaldOp": "2026-11-08T04:43:44.575Z",
    "data": {
     "categorie": "Special",
     "kop": "Knit Cinema: Wicker",
     "onder": "i.s.m. Dol-op-Wol",
-    "eersteStart": "2026-11-08T00:00:00.0000000",
+    "eersteStart": "2026-11-08T19:30:00.0000000",
     "speeldata": [
-     {
-      "datum": "2026-11-08",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
-     },
      {
       "datum": "2026-11-08",
       "tijd": "19:30",
@@ -2323,7 +2315,7 @@
    }
   },
   "https://www.mimik.nl/agenda/laura-van-dolron-de-zachte-waarheid": {
-   "opgehaaldOp": "2026-11-07T04:44:23.489Z",
+   "opgehaaldOp": "2026-11-08T04:43:39.560Z",
    "data": {
     "categorie": "Theater",
     "kop": "Laura van Dolron",
@@ -2532,7 +2524,7 @@
    }
   },
   "https://www.mimik.nl/agenda/millennium-jazz-orchestra-januari-27": {
-   "opgehaaldOp": "2026-11-01T04:42:11.795Z",
+   "opgehaaldOp": "2026-11-08T04:43:50.694Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Millennium Jazz Orchestra | januari",
@@ -2627,7 +2619,7 @@
    }
   },
   "https://www.mimik.nl/agenda/mimik-xs-november": {
-   "opgehaaldOp": "2026-11-01T04:42:21.731Z",
+   "opgehaaldOp": "2026-11-08T04:44:00.807Z",
    "data": {
     "categorie": "Theater",
     "kop": "MIMIK XS | november",
@@ -2797,7 +2789,7 @@
    }
   },
   "https://www.mimik.nl/agenda/nazanin-taheri-george-tobal-producties": {
-   "opgehaaldOp": "2026-11-01T04:42:07.763Z",
+   "opgehaaldOp": "2026-11-08T04:43:46.691Z",
    "data": {
     "categorie": "Theater",
     "kop": "Nazanin Taheri & George Tobal Producties",
@@ -2973,7 +2965,7 @@
    }
   },
   "https://www.mimik.nl/agenda/patsy-kroonenberg": {
-   "opgehaaldOp": "2026-11-01T04:42:16.754Z",
+   "opgehaaldOp": "2026-11-08T04:43:55.691Z",
    "data": {
     "categorie": "Theater",
     "kop": "Patsy Kroonenberg",
@@ -3011,7 +3003,7 @@
    }
   },
   "https://www.mimik.nl/agenda/pieter-verelst": {
-   "opgehaaldOp": "2026-11-01T04:42:19.880Z",
+   "opgehaaldOp": "2026-11-08T04:43:58.800Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Pieter Verelst",
@@ -3732,7 +3724,7 @@
    }
   },
   "https://www.mimik.nl/agenda/sezgin-gulec-nieuw-programma": {
-   "opgehaaldOp": "2026-11-01T04:42:18.813Z",
+   "opgehaaldOp": "2026-11-08T04:43:57.698Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Sezgin Gülec",
@@ -3770,7 +3762,7 @@
    }
   },
   "https://www.mimik.nl/agenda/silbersee-sterre-konijn-via-inferno": {
-   "opgehaaldOp": "2026-11-07T04:44:27.683Z",
+   "opgehaaldOp": "2026-11-08T04:43:43.847Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Silbersee & Sterre Konijn",
@@ -4003,7 +3995,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tent-van-het-oosten-maart": {
-   "opgehaaldOp": "2026-11-01T04:42:12.861Z",
+   "opgehaaldOp": "2026-11-08T04:43:51.714Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Tent van het Oosten | maart",
@@ -4368,7 +4360,7 @@
    }
   },
   "https://www.mimik.nl/agenda/theatergroep-aluin-moeder-aarde": {
-   "opgehaaldOp": "2026-11-01T04:42:08.782Z",
+   "opgehaaldOp": "2026-11-08T04:43:47.697Z",
    "data": {
     "categorie": "Theater",
     "kop": "Theatergroep Aluin",
@@ -4444,7 +4436,7 @@
    }
   },
   "https://www.mimik.nl/agenda/van-vleuten-en-van-muiswinkel-10-11": {
-   "opgehaaldOp": "2026-11-07T04:44:24.657Z",
+   "opgehaaldOp": "2026-11-08T04:43:40.807Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Van Vleuten en van Muiswinkel",
@@ -4463,7 +4455,7 @@
    }
   },
   "https://www.mimik.nl/agenda/van-vleuten-en-van-muiswinkel-11-11": {
-   "opgehaaldOp": "2026-11-07T04:44:25.254Z",
+   "opgehaaldOp": "2026-11-08T04:43:41.754Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Van Vleuten en van Muiswinkel",
@@ -4520,7 +4512,7 @@
    }
   },
   "https://www.mimik.nl/agenda/via-rudolphi-producties-belangelozen": {
-   "opgehaaldOp": "2026-11-01T04:42:06.681Z",
+   "opgehaaldOp": "2026-11-08T04:43:45.693Z",
    "data": {
     "categorie": "Theater",
     "kop": "Via Rudolphi Producties",
@@ -4666,7 +4658,7 @@
    }
   },
   "https://www.mimik.nl/agenda/werkplaats-walhalla-danielle-deddens": {
-   "opgehaaldOp": "2026-11-01T04:42:10.004Z",
+   "opgehaaldOp": "2026-11-08T04:43:48.797Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Werkplaats Walhalla & Daniëlle Deddens",
