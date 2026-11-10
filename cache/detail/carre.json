@@ -42,7 +42,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/andreas-vollenweider": {
-   "opgehaaldOp": "2026-11-03T04:06:11.535Z",
+   "opgehaaldOp": "2026-11-10T04:06:06.010Z",
    "data": {
     "naam": "Andreas Vollenweider & Friends",
     "events": [
@@ -138,7 +138,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/bonnie-prince-billy": {
-   "opgehaaldOp": "2026-11-09T04:05:25.556Z",
+   "opgehaaldOp": "2026-11-10T04:05:56.028Z",
    "data": {
     "naam": "Bonnie 'Prince' Billy",
     "events": [
@@ -370,23 +370,23 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/everybody-knows-leonard-cohen": {
-   "opgehaaldOp": "2026-11-04T04:06:15.417Z",
+   "opgehaaldOp": "2026-11-10T04:06:03.020Z",
    "data": {
     "naam": "Everybody Knows Leonard Cohen",
     "events": [
      {
       "id": "37161",
       "start": "2027-02-05T20:00:00+01:00",
-      "salesStatus": "sales_not_started",
+      "salesStatus": "on_sale",
       "statusID": null,
       "soort": "Voorstelling",
-      "salesUrl": null
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37161&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37161%26upsellids%3D37163%252C37162&saleschannelid=2&skinid=10007&withauthentication=no&signature=320ff660ced0d73377fa38be643dda6629d918bd8edf79e92589d2bcc6ee550a"
      }
     ]
    }
   },
   "https://carre.nl/api/render/voorstelling/evita": {
-   "opgehaaldOp": "2026-11-07T04:06:21.844Z",
+   "opgehaaldOp": "2026-11-10T04:05:59.606Z",
    "data": {
     "naam": "Evita",
     "events": [
@@ -978,7 +978,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/idfa-in-carre-2026": {
-   "opgehaaldOp": "2026-11-09T04:05:26.554Z",
+   "opgehaaldOp": "2026-11-10T04:05:57.006Z",
    "data": {
     "naam": "IDFA 2026",
     "events": [
@@ -1090,23 +1090,15 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
-   "opgehaaldOp": "2026-11-09T04:05:28.554Z",
+   "opgehaaldOp": "2026-11-10T04:06:00.014Z",
    "data": {
     "naam": "Jochem Myjer",
     "events": [
      {
-      "id": "36567",
-      "start": "2026-11-09T20:00:00+01:00",
-      "salesStatus": "on_sale",
-      "statusID": "waiting_list",
-      "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36567&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36567%26upsellids%3D36635%252C36615%252C36605%252C36625&saleschannelid=2&skinid=1&withauthentication=no&signature=ef5b03f88ab71ae2bc1d40eb88777d5f025ed833ccec34a288db8dd481a23e3a"
-     },
-     {
       "id": "36568",
       "start": "2026-11-10T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "waiting_list",
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36568&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36568%26upsellids%3D36636%252C36616%252C36606%252C36626&saleschannelid=2&skinid=1&withauthentication=no&signature=9e4f3a75391ad5e17298e9673d1e7ce1e4b5bd08563abc837f333185db9fd0cc"
      },
@@ -1154,7 +1146,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/julien-clerc-une-vie": {
-   "opgehaaldOp": "2026-11-03T04:06:08.548Z",
+   "opgehaaldOp": "2026-11-10T04:06:02.010Z",
    "data": {
     "naam": "Julien Clerc",
     "events": [
@@ -1234,7 +1226,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/liefdesbrieven": {
-   "opgehaaldOp": "2026-11-09T04:05:27.554Z",
+   "opgehaaldOp": "2026-11-10T04:05:58.018Z",
    "data": {
     "naam": "Liefdesbrieven",
     "events": [
@@ -1298,7 +1290,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/mabel-matiz-2027": {
-   "opgehaaldOp": "2026-11-03T04:06:10.542Z",
+   "opgehaaldOp": "2026-11-10T04:06:05.037Z",
    "data": {
     "naam": "Mabel Matiz",
     "events": [
@@ -1682,7 +1674,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/sara-kroos-prikkelarme-kermis": {
-   "opgehaaldOp": "2026-11-03T04:06:07.548Z",
+   "opgehaaldOp": "2026-11-10T04:06:01.009Z",
    "data": {
     "naam": "Sara Kroos",
     "events": [
@@ -1698,7 +1690,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/severina-2027": {
-   "opgehaaldOp": "2026-11-03T04:06:09.538Z",
+   "opgehaaldOp": "2026-11-10T04:06:04.007Z",
    "data": {
     "naam": "Severina",
     "events": [
