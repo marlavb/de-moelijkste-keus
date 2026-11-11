@@ -242,7 +242,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/damien-rice-25th-anniversary-tour": {
-   "opgehaaldOp": "2026-11-04T04:06:18.425Z",
+   "opgehaaldOp": "2026-11-11T04:06:15.688Z",
    "data": {
     "naam": "Damien Rice",
     "events": [
@@ -354,7 +354,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/esther-perel-2027": {
-   "opgehaaldOp": "2026-11-04T04:06:16.422Z",
+   "opgehaaldOp": "2026-11-11T04:06:13.685Z",
    "data": {
     "naam": "Esther Perel",
     "events": [
@@ -362,9 +362,17 @@
       "id": "37069",
       "start": "2027-02-17T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "waiting_list",
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37069&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37069%26upsellids%3D37071%252C37070&saleschannelid=2&skinid=1&withauthentication=no&signature=46f8c9d21776bc54cf3fc3e25a76d81eda62703e8d17e2c170c92f9d0901e0fa"
+     },
+     {
+      "id": "37128",
+      "start": "2027-02-18T20:00:00+01:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37128&flow=basketwithcheckout&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Fcarre.nl%2Fagenda&saleschannelid=2&skinid=1&withauthentication=no&signature=c77ed7cc1ee9ddc8ffdef2ad433cccaee9c07b6072efd6f20054276a4f1e7e98"
      }
     ]
    }
@@ -386,7 +394,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/evita": {
-   "opgehaaldOp": "2026-11-10T04:05:59.606Z",
+   "opgehaaldOp": "2026-11-11T04:06:08.685Z",
    "data": {
     "naam": "Evita",
     "events": [
@@ -858,18 +866,10 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/herman-van-veen-vandaag": {
-   "opgehaaldOp": "2026-11-08T04:06:42.452Z",
+   "opgehaaldOp": "2026-11-11T04:06:12.723Z",
    "data": {
     "naam": "Herman van Veen",
     "events": [
-     {
-      "id": "36668",
-      "start": "2026-11-08T15:00:00+01:00",
-      "salesStatus": "on_sale",
-      "statusID": "last_chance",
-      "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36668&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36668%26upsellids%3D35862%252C35858%252C35860&saleschannelid=2&skinid=1&withauthentication=no&signature=14397de456eb7ada0fdde853da4102ec7671cb8c021ae647c51b53cec054a689"
-     },
      {
       "id": "37075",
       "start": "2027-01-13T20:00:00+01:00",
@@ -954,7 +954,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/high-class-bitch": {
-   "opgehaaldOp": "2026-11-04T04:06:17.430Z",
+   "opgehaaldOp": "2026-11-11T04:06:14.751Z",
    "data": {
     "naam": "Daniël Arends - High Class Bitch",
     "events": [
@@ -978,7 +978,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/idfa-in-carre-2026": {
-   "opgehaaldOp": "2026-11-10T04:05:57.006Z",
+   "opgehaaldOp": "2026-11-11T04:06:06.696Z",
    "data": {
     "naam": "IDFA 2026",
     "events": [
@@ -1122,7 +1122,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/joe-jackson-2026": {
-   "opgehaaldOp": "2026-11-04T04:06:12.420Z",
+   "opgehaaldOp": "2026-11-11T04:06:10.682Z",
    "data": {
     "naam": "Joe Jackson",
     "events": [
@@ -1162,7 +1162,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/kasper-van-der-laan-ruim": {
-   "opgehaaldOp": "2026-11-04T04:06:19.427Z",
+   "opgehaaldOp": "2026-11-11T04:06:16.698Z",
    "data": {
     "naam": "Kasper van der Laan",
     "events": [
@@ -1226,7 +1226,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/liefdesbrieven": {
-   "opgehaaldOp": "2026-11-10T04:05:58.018Z",
+   "opgehaaldOp": "2026-11-11T04:06:07.688Z",
    "data": {
     "naam": "Liefdesbrieven",
     "events": [
@@ -1234,7 +1234,7 @@
       "id": "36260",
       "start": "2026-11-16T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": null,
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36260&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36260%26upsellids%3D36264%252C36263%252C36261&saleschannelid=2&skinid=1&withauthentication=no&signature=64172f1a325f679768f90dad19081d1caba91a7358058625fcdb4e6a320851e7"
      }
@@ -1554,7 +1554,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/pieter-derks-ja-leuk": {
-   "opgehaaldOp": "2026-11-04T04:06:11.419Z",
+   "opgehaaldOp": "2026-11-11T04:06:09.683Z",
    "data": {
     "naam": "Pieter Derks",
     "events": [
@@ -1570,7 +1570,7 @@
       "id": "36670",
       "start": "2026-11-20T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": "waiting_list",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36670&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36670%26upsellids%3D35229%252C35231%252C34251&saleschannelid=2&skinid=1&withauthentication=no&signature=08987bd69606492cce4ae009d66b35a20637174a29213aa5f5548aa08a923dfd"
      }
@@ -1722,7 +1722,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/syml-metropole-orkest": {
-   "opgehaaldOp": "2026-11-04T04:06:13.412Z",
+   "opgehaaldOp": "2026-11-11T04:06:11.683Z",
    "data": {
     "naam": "Metropole Orkest met SYML",
     "events": [

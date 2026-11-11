@@ -2,7 +2,7 @@
  "theaterId": "mimik",
  "items": {
   "https://www.mimik.nl/agenda/80-angry-journalists": {
-   "opgehaaldOp": "2026-10-12T03:48:46.575Z",
+   "opgehaaldOp": "2026-11-11T04:44:02.244Z",
    "data": {
     "categorie": "Movies that Matter",
     "kop": "80 Angry Journalists",
@@ -113,39 +113,207 @@
    }
   },
   "https://www.mimik.nl/agenda/all-of-a-sudden": {
-   "opgehaaldOp": "2026-10-12T03:49:17.332Z",
+   "opgehaaldOp": "2026-11-11T04:44:14.117Z",
    "data": {
     "categorie": "Film",
     "kop": "All of a Sudden",
     "onder": "Ryusuke Hamaguchi",
-    "eersteStart": "2026-10-29T00:00:00.0000000",
+    "eersteStart": "2026-11-11T19:30:00.0000000",
     "speeldata": [
      {
-      "datum": "2026-10-29",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
+      "datum": "2026-11-11",
+      "tijd": "19:30",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 14,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389319"
+     },
+     {
+      "datum": "2026-11-12",
+      "tijd": "10:40",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 14,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390578"
+     },
+     {
+      "datum": "2026-11-13",
+      "tijd": "13:00",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 14,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390579"
+     },
+     {
+      "datum": "2026-11-14",
+      "tijd": "13:00",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 14,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390580"
+     },
+     {
+      "datum": "2026-11-15",
+      "tijd": "19:30",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 14,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390581"
+     },
+     {
+      "datum": "2026-11-16",
+      "tijd": "10:50",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 14,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390585"
+     },
+     {
+      "datum": "2026-11-16",
+      "tijd": "19:30",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 14,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390582"
+     },
+     {
+      "datum": "2026-11-17",
+      "tijd": "14:50",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 14,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390584"
+     },
+     {
+      "datum": "2026-11-18",
+      "tijd": "10:30",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 14,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390583"
      }
     ]
    }
   },
   "https://www.mimik.nl/agenda/amarga-navidad": {
-   "opgehaaldOp": "2026-10-12T03:49:15.439Z",
+   "opgehaaldOp": "2026-11-11T04:44:13.124Z",
    "data": {
     "categorie": "Film",
     "kop": "Amarga Navidad",
     "onder": "Pedro Almodóvar",
-    "eersteStart": "2026-11-05T00:00:00.0000000",
+    "eersteStart": "2026-11-11T10:30:00.0000000",
     "speeldata": [
      {
-      "datum": "2026-11-05",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
+      "datum": "2026-11-11",
+      "tijd": "10:30",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389335"
+     },
+     {
+      "datum": "2026-11-11",
+      "tijd": "20:50",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389334"
+     },
+     {
+      "datum": "2026-11-12",
+      "tijd": "18:40",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390586"
+     },
+     {
+      "datum": "2026-11-13",
+      "tijd": "11:10",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390592"
+     },
+     {
+      "datum": "2026-11-13",
+      "tijd": "20:50",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390589"
+     },
+     {
+      "datum": "2026-11-14",
+      "tijd": "13:40",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390596"
+     },
+     {
+      "datum": "2026-11-14",
+      "tijd": "18:50",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390590"
+     },
+     {
+      "datum": "2026-11-15",
+      "tijd": "15:10",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390593"
+     },
+     {
+      "datum": "2026-11-16",
+      "tijd": "10:40",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390594"
+     },
+     {
+      "datum": "2026-11-16",
+      "tijd": "17:10",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390591"
+     },
+     {
+      "datum": "2026-11-17",
+      "tijd": "13:40",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390595"
+     },
+     {
+      "datum": "2026-11-17",
+      "tijd": "18:40",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390588"
+     },
+     {
+      "datum": "2026-11-18",
+      "tijd": "12:00",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390597"
+     },
+     {
+      "datum": "2026-11-18",
+      "tijd": "21:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390587"
      }
     ]
    }
@@ -332,7 +500,7 @@
    }
   },
   "https://www.mimik.nl/agenda/castle-in-the-sky": {
-   "opgehaaldOp": "2026-10-12T03:49:21.440Z",
+   "opgehaaldOp": "2026-11-11T04:44:17.213Z",
    "data": {
     "categorie": "MIMIK x Japan",
     "kop": "Castle In The Sky",
@@ -519,20 +687,52 @@
    }
   },
   "https://www.mimik.nl/agenda/coward": {
-   "opgehaaldOp": "2026-10-12T03:49:02.460Z",
+   "opgehaaldOp": "2026-11-11T04:44:06.342Z",
    "data": {
     "categorie": "Queer",
     "kop": "Coward",
     "onder": "Lukas Dhont",
-    "eersteStart": "2026-10-22T00:00:00.0000000",
+    "eersteStart": "2026-11-11T16:30:00.0000000",
     "speeldata": [
      {
-      "datum": "2026-10-22",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
+      "datum": "2026-11-11",
+      "tijd": "16:30",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389349"
+     },
+     {
+      "datum": "2026-11-13",
+      "tijd": "10:30",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390615"
+     },
+     {
+      "datum": "2026-11-16",
+      "tijd": "13:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390618"
+     },
+     {
+      "datum": "2026-11-17",
+      "tijd": "15:10",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390616"
+     },
+     {
+      "datum": "2026-11-18",
+      "tijd": "11:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390617"
      }
     ]
    }
@@ -557,7 +757,7 @@
    }
   },
   "https://www.mimik.nl/agenda/de-dansers": {
-   "opgehaaldOp": "2026-11-04T04:46:06.022Z",
+   "opgehaaldOp": "2026-11-11T04:43:56.105Z",
    "data": {
     "categorie": "Dans",
     "kop": "De Dansers",
@@ -630,7 +830,7 @@
    }
   },
   "https://www.mimik.nl/agenda/de-ronde-deroo": {
-   "opgehaaldOp": "2026-11-04T04:46:04.022Z",
+   "opgehaaldOp": "2026-11-11T04:43:54.107Z",
    "data": {
     "categorie": "Theater",
     "kop": "De Ronde / Deroo",
@@ -763,9 +963,9 @@
    }
   },
   "https://www.mimik.nl/agenda/dragon-ball-super-broly-ov": {
-   "opgehaaldOp": "2026-10-12T03:49:09.466Z",
+   "opgehaaldOp": "2026-11-11T04:44:09.242Z",
    "data": {
-    "categorie": "Film",
+    "categorie": "MIMIK x Japan",
     "kop": "Dragon Ball Super: Broly OV",
     "onder": null,
     "eersteStart": "2027-03-11T00:00:00.0000000",
@@ -828,7 +1028,7 @@
    }
   },
   "https://www.mimik.nl/agenda/een-begin-sabine-van-kuipers": {
-   "opgehaaldOp": "2026-11-10T04:41:57.709Z",
+   "opgehaaldOp": "2026-11-11T04:43:49.112Z",
    "data": {
     "categorie": "Theater",
     "kop": "Een begin – Sabine van Kuipers",
@@ -847,7 +1047,7 @@
    }
   },
   "https://www.mimik.nl/agenda/een-kijkje-in-het-onderwijs-van-de-toekomst": {
-   "opgehaaldOp": "2026-11-08T04:44:01.664Z",
+   "opgehaaldOp": "2026-11-11T04:43:51.113Z",
    "data": {
     "categorie": "Te gast",
     "kop": "Een kijkje in het onderwijs van de toekomst",
@@ -1026,7 +1226,7 @@
    }
   },
   "https://www.mimik.nl/agenda/eva-van-manen": {
-   "opgehaaldOp": "2026-11-04T04:46:07.030Z",
+   "opgehaaldOp": "2026-11-11T04:43:57.229Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Eva van Manen",
@@ -2117,7 +2317,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kim-karssen-10044665": {
-   "opgehaaldOp": "2026-11-04T04:46:02.046Z",
+   "opgehaaldOp": "2026-11-11T04:43:52.261Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Kim Karssen",
@@ -2212,11 +2412,11 @@
    }
   },
   "https://www.mimik.nl/agenda/koolhovens-keuze-vrijheid-missing": {
-   "opgehaaldOp": "2026-10-12T03:48:42.326Z",
+   "opgehaaldOp": "2026-11-11T04:43:59.308Z",
    "data": {
     "categorie": "Koolhovens Keuze",
-    "kop": "Koolhovens Keuze Vrijheid: Missing",
-    "onder": "Costa-Gavras",
+    "kop": "Koolhovens Keuze: Vrijheid",
+    "onder": "Missing",
     "eersteStart": "2026-12-04T00:00:00.0000000",
     "speeldata": [
      {
@@ -2296,7 +2496,7 @@
    }
   },
   "https://www.mimik.nl/agenda/laura-van-dolron-de-zachte-waarheid": {
-   "opgehaaldOp": "2026-11-10T04:41:54.561Z",
+   "opgehaaldOp": "2026-11-11T04:43:47.048Z",
    "data": {
     "categorie": "Theater",
     "kop": "Laura van Dolron",
@@ -2467,20 +2667,36 @@
    }
   },
   "https://www.mimik.nl/agenda/maspalomas": {
-   "opgehaaldOp": "2026-10-12T03:49:12.547Z",
+   "opgehaaldOp": "2026-11-11T04:44:11.342Z",
    "data": {
     "categorie": "Queer",
     "kop": "Maspalomas",
     "onder": "Jose Mari Goenaga",
-    "eersteStart": "2026-10-29T00:00:00.0000000",
+    "eersteStart": "2026-11-11T16:10:00.0000000",
     "speeldata": [
      {
-      "datum": "2026-10-29",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
+      "datum": "2026-11-11",
+      "tijd": "16:10",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389366"
+     },
+     {
+      "datum": "2026-11-13",
+      "tijd": "10:50",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390636"
+     },
+     {
+      "datum": "2026-11-16",
+      "tijd": "12:30",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390637"
      }
     ]
    }
@@ -2581,7 +2797,7 @@
    }
   },
   "https://www.mimik.nl/agenda/mimik-xs-februari": {
-   "opgehaaldOp": "2026-11-04T04:46:08.001Z",
+   "opgehaaldOp": "2026-11-11T04:43:58.103Z",
    "data": {
     "categorie": "Theater",
     "kop": "MIMIK XS | februari",
@@ -2638,7 +2854,7 @@
    }
   },
   "https://www.mimik.nl/agenda/molly-vs-the-machines": {
-   "opgehaaldOp": "2026-10-12T03:48:44.445Z",
+   "opgehaaldOp": "2026-11-11T04:44:00.378Z",
    "data": {
     "categorie": "Movies that Matter",
     "kop": "Molly Vs The Machines",
@@ -2665,7 +2881,7 @@
    }
   },
   "https://www.mimik.nl/agenda/muganga": {
-   "opgehaaldOp": "2026-10-12T03:48:45.604Z",
+   "opgehaaldOp": "2026-11-11T04:44:01.107Z",
    "data": {
     "categorie": "Movies that Matter",
     "kop": "Muganga",
@@ -2711,60 +2927,36 @@
    }
   },
   "https://www.mimik.nl/agenda/naza": {
-   "opgehaaldOp": "2026-10-12T03:49:07.443Z",
+   "opgehaaldOp": "2026-11-11T04:44:07.220Z",
    "data": {
     "categorie": "Film",
     "kop": "Naza",
     "onder": "Yuval Abraham & Rachel Szor",
-    "eersteStart": "2026-10-12T17:00:00.0000000",
+    "eersteStart": "2026-11-11T14:50:00.0000000",
     "speeldata": [
      {
-      "datum": "2026-10-12",
-      "tijd": "17:00",
-      "zaal": "Theaterzaal",
+      "datum": "2026-11-11",
+      "tijd": "14:50",
+      "zaal": "Filmzaal 2",
       "prijs": "€ 13,00",
       "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385773"
+      "href": "https://www.mimik.nl/tickets?programId=10389372"
      },
      {
-      "datum": "2026-10-12",
-      "tijd": "19:00",
-      "zaal": "Filmzaal 4",
-      "prijs": "€ 13,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385767"
-     },
-     {
-      "datum": "2026-10-13",
-      "tijd": "15:40",
-      "zaal": "Filmzaal 4",
-      "prijs": "€ 13,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385772"
-     },
-     {
-      "datum": "2026-10-13",
-      "tijd": "19:00",
-      "zaal": "Filmzaal 4",
-      "prijs": "€ 13,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385768"
-     },
-     {
-      "datum": "2026-10-14",
-      "tijd": "13:00",
+      "datum": "2026-11-15",
+      "tijd": "18:40",
       "zaal": "Filmzaal 1",
       "prijs": "€ 13,00",
       "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385774"
+      "href": "https://www.mimik.nl/tickets?programId=10390638"
      },
      {
-      "datum": "2026-10-14",
-      "tijd": "19:00",
-      "zaal": "Filmzaal 4",
+      "datum": "2026-11-18",
+      "tijd": "16:30",
+      "zaal": "Filmzaal 1",
       "prijs": "€ 13,00",
       "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385769"
+      "href": "https://www.mimik.nl/tickets?programId=10390639"
      }
     ]
    }
@@ -2862,7 +3054,7 @@
    }
   },
   "https://www.mimik.nl/agenda/osamu-tezukas-metropolis": {
-   "opgehaaldOp": "2026-10-12T03:49:19.578Z",
+   "opgehaaldOp": "2026-11-11T04:44:16.251Z",
    "data": {
     "categorie": "MIMIK x Japan",
     "kop": "Osamu Tezuka’s Metropolis",
@@ -3022,20 +3214,44 @@
    }
   },
   "https://www.mimik.nl/agenda/primetime": {
-   "opgehaaldOp": "2026-10-12T03:49:10.438Z",
+   "opgehaaldOp": "2026-11-11T04:44:10.251Z",
    "data": {
     "categorie": "Film",
     "kop": "Primetime",
     "onder": "Lance Oppenheim",
-    "eersteStart": "2026-10-29T00:00:00.0000000",
+    "eersteStart": "2026-11-11T21:00:00.0000000",
     "speeldata": [
      {
-      "datum": "2026-10-29",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
+      "datum": "2026-11-11",
+      "tijd": "21:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389383"
+     },
+     {
+      "datum": "2026-11-15",
+      "tijd": "21:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390644"
+     },
+     {
+      "datum": "2026-11-17",
+      "tijd": "21:10",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390643"
+     },
+     {
+      "datum": "2026-11-18",
+      "tijd": "21:10",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390642"
      }
     ]
    }
@@ -3571,25 +3787,6 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/rundfunk-wagyu-try-out": {
-   "opgehaaldOp": "2026-10-21T03:47:17.792Z",
-   "data": {
-    "categorie": "Cabaret",
-    "kop": "Rundfunk",
-    "onder": "Wagyu | try-out",
-    "eersteStart": "2026-10-21T20:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-10-21",
-      "tijd": "20:00",
-      "zaal": "Theaterzaal",
-      "prijs": "€ 23,00",
-      "knop": "Uitverkocht",
-      "href": null
-     }
-    ]
-   }
-  },
   "https://www.mimik.nl/agenda/sadettin-k-kameleon": {
    "opgehaaldOp": "2026-11-09T04:41:09.162Z",
    "data": {
@@ -3686,20 +3883,52 @@
    }
   },
   "https://www.mimik.nl/agenda/sense-and-sensibility": {
-   "opgehaaldOp": "2026-10-12T03:48:57.333Z",
+   "opgehaaldOp": "2026-11-11T04:44:04.216Z",
    "data": {
     "categorie": "Film",
     "kop": "Sense and Sensibility",
     "onder": "Georgia Oakley",
-    "eersteStart": "2026-10-13T20:40:00.0000000",
+    "eersteStart": "2026-11-11T10:50:00.0000000",
     "speeldata": [
      {
-      "datum": "2026-10-13",
-      "tijd": "20:40",
+      "datum": "2026-11-11",
+      "tijd": "10:50",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389388"
+     },
+     {
+      "datum": "2026-11-12",
+      "tijd": "10:30",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390663"
+     },
+     {
+      "datum": "2026-11-13",
+      "tijd": "10:40",
       "zaal": "Filmzaal 4",
       "prijs": "€ 13,00",
       "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10383889"
+      "href": "https://www.mimik.nl/tickets?programId=10390664"
+     },
+     {
+      "datum": "2026-11-16",
+      "tijd": "15:30",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390665"
+     },
+     {
+      "datum": "2026-11-17",
+      "tijd": "10:50",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390666"
      }
     ]
    }
@@ -3743,7 +3972,7 @@
    }
   },
   "https://www.mimik.nl/agenda/silbersee-sterre-konijn-via-inferno": {
-   "opgehaaldOp": "2026-11-10T04:41:58.713Z",
+   "opgehaaldOp": "2026-11-11T04:43:50.240Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Silbersee & Sterre Konijn",
@@ -3846,7 +4075,7 @@
    }
   },
   "https://www.mimik.nl/agenda/steamboy": {
-   "opgehaaldOp": "2026-10-12T03:49:18.576Z",
+   "opgehaaldOp": "2026-11-11T04:44:15.262Z",
    "data": {
     "categorie": "MIMIK x Japan",
     "kop": "Steamboy",
@@ -4033,7 +4262,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tg-tiefschnee": {
-   "opgehaaldOp": "2026-11-04T04:46:05.038Z",
+   "opgehaaldOp": "2026-11-11T04:43:55.108Z",
    "data": {
     "categorie": "Theater",
     "kop": "TG Tiefschnee",
@@ -4071,20 +4300,52 @@
    }
   },
   "https://www.mimik.nl/agenda/the-beloved": {
-   "opgehaaldOp": "2026-10-12T03:49:22.438Z",
+   "opgehaaldOp": "2026-11-11T04:44:18.449Z",
    "data": {
     "categorie": "Film",
     "kop": "The Beloved",
     "onder": "Rodrigo Sorogoyen",
-    "eersteStart": "2026-10-15T00:00:00.0000000",
+    "eersteStart": "2026-11-11T16:50:00.0000000",
     "speeldata": [
      {
-      "datum": "2026-10-15",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
+      "datum": "2026-11-11",
+      "tijd": "16:50",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389395"
+     },
+     {
+      "datum": "2026-11-13",
+      "tijd": "13:40",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390670"
+     },
+     {
+      "datum": "2026-11-16",
+      "tijd": "20:30",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390669"
+     },
+     {
+      "datum": "2026-11-17",
+      "tijd": "15:50",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390671"
+     },
+     {
+      "datum": "2026-11-18",
+      "tijd": "10:50",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390672"
      }
     ]
    }
@@ -4395,7 +4656,7 @@
    }
   },
   "https://www.mimik.nl/agenda/van-die-mensen": {
-   "opgehaaldOp": "2026-11-04T04:46:03.028Z",
+   "opgehaaldOp": "2026-11-11T04:43:53.214Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Van Die Mensen",
@@ -4433,7 +4694,7 @@
    }
   },
   "https://www.mimik.nl/agenda/van-vleuten-en-van-muiswinkel-11-11": {
-   "opgehaaldOp": "2026-11-10T04:41:56.631Z",
+   "opgehaaldOp": "2026-11-11T04:43:48.110Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Van Vleuten en van Muiswinkel",
@@ -4466,25 +4727,6 @@
       "prijs": "€ 20,50",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10350430"
-     }
-    ]
-   }
-  },
-  "https://www.mimik.nl/agenda/verhalen-uit-de-magische-tuin-6": {
-   "opgehaaldOp": "2026-10-21T03:47:22.804Z",
-   "data": {
-    "categorie": "Junior",
-    "kop": "Verhalen uit de Magische tuin (6+)",
-    "onder": "David Súkup",
-    "eersteStart": "2026-10-21T14:50:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-10-21",
-      "tijd": "14:50",
-      "zaal": "Filmzaal 2",
-      "prijs": "€ 9,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10386451"
      }
     ]
    }
@@ -4528,20 +4770,60 @@
    }
   },
   "https://www.mimik.nl/agenda/vier-minus-drei": {
-   "opgehaaldOp": "2026-10-12T03:49:08.439Z",
+   "opgehaaldOp": "2026-11-11T04:44:08.346Z",
    "data": {
     "categorie": "Film",
     "kop": "Vier minus Drei",
     "onder": "Adrian Goiginger",
-    "eersteStart": "2026-11-05T00:00:00.0000000",
+    "eersteStart": "2026-11-11T18:30:00.0000000",
     "speeldata": [
      {
-      "datum": "2026-11-05",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
+      "datum": "2026-11-11",
+      "tijd": "18:30",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389412"
+     },
+     {
+      "datum": "2026-11-12",
+      "tijd": "16:20",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390694"
+     },
+     {
+      "datum": "2026-11-13",
+      "tijd": "16:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390695"
+     },
+     {
+      "datum": "2026-11-16",
+      "tijd": "18:10",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390696"
+     },
+     {
+      "datum": "2026-11-17",
+      "tijd": "16:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390697"
+     },
+     {
+      "datum": "2026-11-18",
+      "tijd": "16:20",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390698"
      }
     ]
    }
@@ -4585,52 +4867,52 @@
    }
   },
   "https://www.mimik.nl/agenda/wen-er-maar-aan": {
-   "opgehaaldOp": "2026-10-12T03:48:56.553Z",
+   "opgehaaldOp": "2026-11-11T04:44:03.250Z",
    "data": {
     "categorie": "Film",
     "kop": "Wen Er Maar Aan",
     "onder": "Albert-Jan van Rees",
-    "eersteStart": "2026-10-12T14:20:00.0000000",
+    "eersteStart": "2026-11-11T16:00:00.0000000",
     "speeldata": [
      {
-      "datum": "2026-10-12",
-      "tijd": "14:20",
+      "datum": "2026-11-11",
+      "tijd": "16:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389416"
+     },
+     {
+      "datum": "2026-11-14",
+      "tijd": "16:30",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390699"
+     },
+     {
+      "datum": "2026-11-15",
+      "tijd": "18:50",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390702"
+     },
+     {
+      "datum": "2026-11-16",
+      "tijd": "16:20",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390700"
+     },
+     {
+      "datum": "2026-11-18",
+      "tijd": "16:50",
       "zaal": "Filmzaal 4",
       "prijs": "€ 13,00",
       "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385821"
-     },
-     {
-      "datum": "2026-10-12",
-      "tijd": "18:50",
-      "zaal": "Filmzaal 1",
-      "prijs": "€ 13,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385817"
-     },
-     {
-      "datum": "2026-10-13",
-      "tijd": "20:30",
-      "zaal": "Filmzaal 1",
-      "prijs": "€ 13,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385818"
-     },
-     {
-      "datum": "2026-10-14",
-      "tijd": "14:50",
-      "zaal": "Filmzaal 1",
-      "prijs": "€ 13,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385820"
-     },
-     {
-      "datum": "2026-10-14",
-      "tijd": "20:30",
-      "zaal": "Filmzaal 1",
-      "prijs": "€ 13,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10385819"
+      "href": "https://www.mimik.nl/tickets?programId=10390701"
      }
     ]
    }
@@ -4714,20 +4996,140 @@
    }
   },
   "https://www.mimik.nl/agenda/wild-horse-nine": {
-   "opgehaaldOp": "2026-10-12T03:49:14.435Z",
+   "opgehaaldOp": "2026-11-11T04:44:12.367Z",
    "data": {
     "categorie": "Film",
     "kop": "Wild Horse Nine",
     "onder": "Martin McDonagh",
-    "eersteStart": "2026-11-05T00:00:00.0000000",
+    "eersteStart": "2026-11-11T13:40:00.0000000",
     "speeldata": [
      {
-      "datum": "2026-11-05",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
+      "datum": "2026-11-11",
+      "tijd": "13:40",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389435"
+     },
+     {
+      "datum": "2026-11-11",
+      "tijd": "20:30",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389432"
+     },
+     {
+      "datum": "2026-11-12",
+      "tijd": "14:20",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390710"
+     },
+     {
+      "datum": "2026-11-12",
+      "tijd": "21:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390709"
+     },
+     {
+      "datum": "2026-11-13",
+      "tijd": "13:30",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390712"
+     },
+     {
+      "datum": "2026-11-13",
+      "tijd": "20:30",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390711"
+     },
+     {
+      "datum": "2026-11-14",
+      "tijd": "16:10",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390713"
+     },
+     {
+      "datum": "2026-11-14",
+      "tijd": "20:30",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390714"
+     },
+     {
+      "datum": "2026-11-15",
+      "tijd": "15:50",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390719"
+     },
+     {
+      "datum": "2026-11-15",
+      "tijd": "20:30",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390720"
+     },
+     {
+      "datum": "2026-11-16",
+      "tijd": "14:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390721"
+     },
+     {
+      "datum": "2026-11-16",
+      "tijd": "21:00",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390715"
+     },
+     {
+      "datum": "2026-11-17",
+      "tijd": "12:30",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390722"
+     },
+     {
+      "datum": "2026-11-17",
+      "tijd": "20:40",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390716"
+     },
+     {
+      "datum": "2026-11-18",
+      "tijd": "14:10",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390718"
+     },
+     {
+      "datum": "2026-11-18",
+      "tijd": "20:50",
+      "zaal": "Filmzaal 1",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390717"
      }
     ]
    }
@@ -4817,20 +5219,52 @@
    }
   },
   "https://www.mimik.nl/agenda/youri": {
-   "opgehaaldOp": "2026-10-12T03:48:58.448Z",
+   "opgehaaldOp": "2026-11-11T04:44:05.344Z",
    "data": {
     "categorie": "Film",
     "kop": "Youri",
     "onder": "Sander Burger",
-    "eersteStart": "2026-10-15T00:00:00.0000000",
+    "eersteStart": "2026-11-11T12:40:00.0000000",
     "speeldata": [
      {
-      "datum": "2026-10-15",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
+      "datum": "2026-11-11",
+      "tijd": "12:40",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389443"
+     },
+     {
+      "datum": "2026-11-12",
+      "tijd": "13:30",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390723"
+     },
+     {
+      "datum": "2026-11-14",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390724"
+     },
+     {
+      "datum": "2026-11-15",
+      "tijd": "10:40",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390725"
+     },
+     {
+      "datum": "2026-11-18",
+      "tijd": "15:50",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10390726"
      }
     ]
    }
