@@ -319,7 +319,7 @@
    }
   },
   "https://www.mimik.nl/agenda/amsterdams-kleinkunst-festival-akf-2026": {
-   "opgehaaldOp": "2026-11-08T04:43:52.804Z",
+   "opgehaaldOp": "2026-11-12T04:40:05.081Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Amsterdams Kleinkunst Festival (AKF)",
@@ -424,7 +424,7 @@
    }
   },
   "https://www.mimik.nl/agenda/bambie-speelt-bambi": {
-   "opgehaaldOp": "2026-11-05T04:44:30.670Z",
+   "opgehaaldOp": "2026-11-12T04:40:13.070Z",
    "data": {
     "categorie": "Fysiek theater",
     "kop": "Bambie speelt Bambi",
@@ -925,7 +925,7 @@
    }
   },
   "https://www.mimik.nl/agenda/dood-paard-tjernobyl": {
-   "opgehaaldOp": "2026-11-05T04:44:26.550Z",
+   "opgehaaldOp": "2026-11-12T04:40:09.001Z",
    "data": {
     "categorie": "Theater",
     "kop": "Dood Paard",
@@ -1028,7 +1028,7 @@
    }
   },
   "https://www.mimik.nl/agenda/een-begin-sabine-van-kuipers": {
-   "opgehaaldOp": "2026-11-11T04:43:49.112Z",
+   "opgehaaldOp": "2026-11-12T04:40:06.075Z",
    "data": {
     "categorie": "Theater",
     "kop": "Een begin – Sabine van Kuipers",
@@ -1047,7 +1047,7 @@
    }
   },
   "https://www.mimik.nl/agenda/een-kijkje-in-het-onderwijs-van-de-toekomst": {
-   "opgehaaldOp": "2026-11-11T04:43:51.113Z",
+   "opgehaaldOp": "2026-11-12T04:40:07.904Z",
    "data": {
     "categorie": "Te gast",
     "kop": "Een kijkje in het onderwijs van de toekomst",
@@ -1085,7 +1085,7 @@
    }
   },
   "https://www.mimik.nl/agenda/elfie-tromp-aai-poesje": {
-   "opgehaaldOp": "2026-11-05T04:44:31.653Z",
+   "opgehaaldOp": "2026-11-12T04:40:14.092Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Elfie Tromp",
@@ -1104,7 +1104,7 @@
    }
   },
   "https://www.mimik.nl/agenda/elias-de-bruyne": {
-   "opgehaaldOp": "2026-11-05T04:44:32.541Z",
+   "opgehaaldOp": "2026-11-12T04:40:15.149Z",
    "data": {
     "categorie": "Fysiek theater",
     "kop": "Elias de Bruyne",
@@ -1855,7 +1855,7 @@
    }
   },
   "https://www.mimik.nl/agenda/flip-noorman": {
-   "opgehaaldOp": "2026-11-05T04:44:33.524Z",
+   "opgehaaldOp": "2026-11-12T04:40:15.970Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Flip Noorman",
@@ -1912,7 +1912,7 @@
    }
   },
   "https://www.mimik.nl/agenda/gabbro-in-gabbro-as-we-walk": {
-   "opgehaaldOp": "2026-11-05T04:44:35.648Z",
+   "opgehaaldOp": "2026-11-12T04:40:18.090Z",
    "data": {
     "categorie": "Special",
     "kop": "Gabbro in Gabbro / As We Walk",
@@ -2336,7 +2336,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kim-schuddeboom": {
-   "opgehaaldOp": "2026-11-05T04:44:27.572Z",
+   "opgehaaldOp": "2026-11-12T04:40:10.029Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Kim Schuddeboom",
@@ -2348,8 +2348,8 @@
       "tijd": "20:00",
       "zaal": "Theaterzaal",
       "prijs": "€ 24,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10350359"
+      "knop": "Uitverkocht",
+      "href": null
      }
     ]
    }
@@ -2496,7 +2496,7 @@
    }
   },
   "https://www.mimik.nl/agenda/laura-van-dolron-de-zachte-waarheid": {
-   "opgehaaldOp": "2026-11-11T04:43:47.048Z",
+   "opgehaaldOp": "2026-11-12T04:40:03.969Z",
    "data": {
     "categorie": "Theater",
     "kop": "Laura van Dolron",
@@ -2702,7 +2702,7 @@
    }
   },
   "https://www.mimik.nl/agenda/millennium-jazz-orchestra-april-27": {
-   "opgehaaldOp": "2026-11-05T04:44:28.558Z",
+   "opgehaaldOp": "2026-11-12T04:40:11.012Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Millennium Jazz Orchestra | april",
@@ -3035,7 +3035,7 @@
    }
   },
   "https://www.mimik.nl/agenda/orkaterde-nieuwkomers-dolorosa": {
-   "opgehaaldOp": "2026-11-05T04:44:29.660Z",
+   "opgehaaldOp": "2026-11-12T04:40:12.088Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Orkater/De Nieuwkomers",
@@ -3768,25 +3768,6 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/ronald-goedemondt": {
-   "opgehaaldOp": "2026-10-22T03:52:32.540Z",
-   "data": {
-    "categorie": "Cabaret",
-    "kop": "Ronald Goedemondt",
-    "onder": "Mijn Lieve Achterdocht",
-    "eersteStart": "2026-10-22T20:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-10-22",
-      "tijd": "20:00",
-      "zaal": "Theaterzaal",
-      "prijs": "€ 25,00",
-      "knop": "Uitverkocht",
-      "href": null
-     }
-    ]
-   }
-  },
   "https://www.mimik.nl/agenda/sadettin-k-kameleon": {
    "opgehaaldOp": "2026-11-09T04:41:09.162Z",
    "data": {
@@ -3972,7 +3953,7 @@
    }
   },
   "https://www.mimik.nl/agenda/silbersee-sterre-konijn-via-inferno": {
-   "opgehaaldOp": "2026-11-11T04:43:50.240Z",
+   "opgehaaldOp": "2026-11-12T04:40:07.083Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Silbersee & Sterre Konijn",
@@ -4055,25 +4036,6 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/stand-up": {
-   "opgehaaldOp": "2026-10-16T03:52:58.317Z",
-   "data": {
-    "categorie": "Film",
-    "kop": "Stand Up",
-    "onder": "Mari Sanders",
-    "eersteStart": "2026-11-12T00:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-11-12",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
-     }
-    ]
-   }
-  },
   "https://www.mimik.nl/agenda/steamboy": {
    "opgehaaldOp": "2026-11-11T04:44:15.262Z",
    "data": {
@@ -4102,7 +4064,7 @@
    }
   },
   "https://www.mimik.nl/agenda/studio-figur-dawn-collective": {
-   "opgehaaldOp": "2026-11-05T04:44:34.660Z",
+   "opgehaaldOp": "2026-11-12T04:40:17.083Z",
    "data": {
     "categorie": "Junior",
     "kop": "Studio Figur - Dawn Collective",
@@ -5130,25 +5092,6 @@
       "prijs": "€ 13,00",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10390717"
-     }
-    ]
-   }
-  },
-  "https://www.mimik.nl/agenda/wildwood": {
-   "opgehaaldOp": "2026-10-16T03:52:53.169Z",
-   "data": {
-    "categorie": "Film",
-    "kop": "Wildwood",
-    "onder": "Travis Knight",
-    "eersteStart": "2026-10-22T00:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-10-22",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
      }
     ]
    }
