@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (65 ok, 5 terugval, 10 gepauzeerd, 1 leeg)
-- Voorstellingen (titel per theater): **7213**
-- Speeldata: **9999**
-- Laatste refresh: **11 november 2026, 05:44** (Amsterdamse tijd)
+- Theaters: **81** (66 ok, 4 terugval, 10 gepauzeerd, 1 leeg)
+- Voorstellingen (titel per theater): **7203**
+- Speeldata: **9984**
+- Laatste refresh: **12 november 2026, 05:40** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -443,9 +443,9 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | VU Griffioen | Amsterdam | ja | ok |
 | Kennemer Theater | Beverwijk | – | gepauzeerd sinds 2026-10-01 |
 | Theater de Omval | Diemen | ja | ok |
-| Schuur | Haarlem | ja | terugval |
+| Schuur | Haarlem | ja | ok |
 | Cpunt | Hoofddorp | nee | ok |
-| Zaantheater | Zaandam | ja | terugval |
+| Zaantheater | Zaandam | ja | ok |
 
 **Zuid-Holland** (13)
 
@@ -523,7 +523,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| Theater Orpheus | Apeldoorn | deels | ok |
+| Theater Orpheus | Apeldoorn | deels | terugval |
 | Huis Oostpool | Arnhem | ja | ok |
 | Musis Arnhem | Arnhem | deels | ok |
 | Stadstheater Arnhem | Arnhem | – | leeg |
