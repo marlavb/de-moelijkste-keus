@@ -27,8 +27,27 @@
     }
    ]
   },
+  "https://www.schouwburghengelo.nl/cruise-control-muziektheatergroep-a-muse/13-11-2026-20-30": {
+   "opgehaaldOp": "2026-11-13T04:41:19.326Z",
+   "data": [
+    {
+     "regel": "Vr 13 nov. 2026 - 20:30 uur - Middenzaal",
+     "prijs": "€ 18,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10098",
+     "showid": "10098"
+    },
+    {
+     "regel": "Za 14 nov. 2026 - 20:30 uur - Middenzaal",
+     "prijs": "€ 18,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10099",
+     "showid": "10099"
+    }
+   ]
+  },
   "https://www.schouwburghengelo.nl/double-you-be-flat/30-01-2027-19-30": {
-   "opgehaaldOp": "2026-11-06T04:42:43.744Z",
+   "opgehaaldOp": "2026-11-13T04:41:20.477Z",
    "data": [
     {
      "regel": "Za 30 jan. 2027 - 19:30 uur - Middenzaal - ongeplaceerd",
@@ -54,7 +73,7 @@
    ]
   },
   "https://www.schouwburghengelo.nl/gouden-jaren-twents-theater/01-04-2027-20-00": {
-   "opgehaaldOp": "2026-11-06T04:42:46.643Z",
+   "opgehaaldOp": "2026-11-13T04:41:23.377Z",
    "data": [
     {
      "regel": "Do 01 apr. 2027 - 20:00 uur - Rabozaal",
@@ -125,7 +144,7 @@
    ]
   },
   "https://www.schouwburghengelo.nl/the-illusionists-hans-klok-e.a./25-03-2027-20-00": {
-   "opgehaaldOp": "2026-11-06T04:42:45.693Z",
+   "opgehaaldOp": "2026-11-13T04:41:22.405Z",
    "data": [
     {
      "regel": "Do 25 mrt. 2027 - 20:00 uur - Rabozaal",
@@ -144,7 +163,7 @@
    ]
   },
   "https://www.schouwburghengelo.nl/the-sunshine-boys-bert-visscher-en-martin-van-waardenberg/16-03-2027-20-00": {
-   "opgehaaldOp": "2026-11-06T04:42:44.693Z",
+   "opgehaaldOp": "2026-11-13T04:41:21.385Z",
    "data": [
     {
      "regel": "Di 16 mrt. 2027 - 20:00 uur - Rabozaal",
