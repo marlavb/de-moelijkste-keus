@@ -46,6 +46,18 @@
     }
    ]
   },
+  "https://www.schouwburghengelo.nl/cruise-control-muziektheatergroep-a-muse/14-11-2026-20-30": {
+   "opgehaaldOp": "2026-11-14T04:38:12.942Z",
+   "data": [
+    {
+     "regel": "Za 14 nov. 2026 - 20:30 uur - Middenzaal",
+     "prijs": "€ 18,50",
+     "knop": "Bestellen",
+     "bestel": "https://bestellen.schouwburghengelo.nl/bestel/10099",
+     "showid": "10099"
+    }
+   ]
+  },
   "https://www.schouwburghengelo.nl/double-you-be-flat/30-01-2027-19-30": {
    "opgehaaldOp": "2026-11-13T04:41:20.477Z",
    "data": [
