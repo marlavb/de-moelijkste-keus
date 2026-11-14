@@ -13,9 +13,9 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
 
 <!-- AUTO:aantallen:start -->
 - Theaters: **81** (65 ok, 5 terugval, 10 gepauzeerd, 1 leeg)
-- Voorstellingen (titel per theater): **7176**
-- Speeldata: **9950**
-- Laatste refresh: **13 november 2026, 05:43** (Amsterdamse tijd)
+- Voorstellingen (titel per theater): **7061**
+- Speeldata: **9779**
+- Laatste refresh: **14 november 2026, 05:40** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -432,7 +432,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | DeLaMar | Amsterdam | ja | ok |
 | Frascati | Amsterdam | ja | ok |
 | Koninklijk Theater Carré | Amsterdam | nee | ok |
-| Muziekgebouw aan 't IJ | Amsterdam | ja | terugval |
+| Muziekgebouw aan 't IJ | Amsterdam | ja | ok |
 | Plein Theater | Amsterdam | nee | ok |
 | Podium Mozaïek | Amsterdam | ja | ok |
 | Scala Theater | Amsterdam | ja | ok |
@@ -445,7 +445,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater de Omval | Diemen | ja | ok |
 | Schuur | Haarlem | ja | ok |
 | Cpunt | Hoofddorp | nee | ok |
-| Zaantheater | Zaandam | ja | ok |
+| Zaantheater | Zaandam | ja | terugval |
 
 **Zuid-Holland** (13)
 
