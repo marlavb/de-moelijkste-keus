@@ -194,7 +194,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/cem-adrian-2027": {
-   "opgehaaldOp": "2026-11-08T04:06:45.326Z",
+   "opgehaaldOp": "2026-11-15T04:06:50.244Z",
    "data": {
     "naam": "Cem Adrian",
     "events": [
@@ -210,7 +210,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/chris-de-burgh-2027": {
-   "opgehaaldOp": "2026-11-08T04:06:46.316Z",
+   "opgehaaldOp": "2026-11-15T04:06:51.257Z",
    "data": {
     "naam": "Chris de Burgh",
     "events": [
@@ -410,7 +410,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/evita": {
-   "opgehaaldOp": "2026-11-14T04:06:19.045Z",
+   "opgehaaldOp": "2026-11-15T04:06:44.248Z",
    "data": {
     "naam": "Evita",
     "events": [
@@ -434,7 +434,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/foil-arms-and-hog-smithereens": {
-   "opgehaaldOp": "2026-11-08T04:06:47.317Z",
+   "opgehaaldOp": "2026-11-15T04:06:52.245Z",
    "data": {
     "naam": "Foil Arms and Hog",
     "events": [
@@ -442,9 +442,17 @@
       "id": "37053",
       "start": "2027-05-15T20:00:00+02:00",
       "salesStatus": "on_sale",
-      "statusID": null,
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37053&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37053%26upsellids%3D37057%252C37055&saleschannelid=2&skinid=10007&withauthentication=no&signature=598ca3df7f255519f81802f6cf848a1c4f83e4238f12a779fbf27210fa99de7f"
+     },
+     {
+      "id": "37054",
+      "start": "2027-05-16T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37054&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37054%26upsellids%3D37058&saleschannelid=2&skinid=10007&withauthentication=no&signature=2170c58d017afea9c2a91f486f6eba8561a224209c85c797fd927a2b84a5189b"
      }
     ]
    }
@@ -1106,7 +1114,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
-   "opgehaaldOp": "2026-11-14T04:06:21.050Z",
+   "opgehaaldOp": "2026-11-15T04:06:46.244Z",
    "data": {
     "naam": "Jochem Myjer",
     "events": [
@@ -1250,31 +1258,31 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/lisa-ostermann-de-baas": {
-   "opgehaaldOp": "2026-11-08T04:06:43.546Z",
+   "opgehaaldOp": "2026-11-15T04:06:48.245Z",
    "data": {
     "naam": "Lisa Ostermann",
     "events": [
      {
-      "id": "35873",
+      "id": "37184",
       "start": "2027-01-18T20:00:00+01:00",
       "salesStatus": "on_sale",
       "statusID": "waiting_list",
       "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35873&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35873%26upsellids%3D35877%252C35879%252C35875&saleschannelid=2&skinid=1&withauthentication=no&signature=9d6db953a3d9018fefff093727b200413ff33d09a78082a5bdb0c9c368c4f052"
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37184&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37184%26upsellids%3D35877%252C35879%252C35875&saleschannelid=2&skinid=1&withauthentication=no&signature=39028fa17de759dcc902a417459b4f4df852149d8ded85da3abf56c672832d24"
      },
      {
-      "id": "35874",
+      "id": "37185",
       "start": "2027-01-19T20:00:00+01:00",
       "salesStatus": "on_sale",
       "statusID": "waiting_list",
       "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35874&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35874%26upsellids%3D35878%252C35880%252C35876&saleschannelid=2&skinid=1&withauthentication=no&signature=65fbdee7bb2fbfd078489b23fc1357e29d0de18c93bb700e0679312a8f1a69c1"
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37185&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37185%26upsellids%3D35878%252C35880%252C35876&saleschannelid=2&skinid=1&withauthentication=no&signature=537ea73f5fb6ab2871369bcc2551c3cd946a77f887c98a0f4d2d96e3d009e4b9"
      }
     ]
    }
   },
   "https://carre.nl/api/render/voorstelling/loreena-mckennitt-the-mask-and-mirror-tour": {
-   "opgehaaldOp": "2026-11-08T04:06:44.318Z",
+   "opgehaaldOp": "2026-11-15T04:06:49.245Z",
    "data": {
     "naam": "Loreena McKennitt",
     "events": [
@@ -1578,7 +1586,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/pieter-derks-ja-leuk": {
-   "opgehaaldOp": "2026-11-14T04:06:20.058Z",
+   "opgehaaldOp": "2026-11-15T04:06:45.250Z",
    "data": {
     "naam": "Pieter Derks",
     "events": [
@@ -1666,7 +1674,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/rufus-wainwright-metropole-orkest": {
-   "opgehaaldOp": "2026-11-08T04:06:41.313Z",
+   "opgehaaldOp": "2026-11-15T04:06:47.251Z",
    "data": {
     "naam": "Rufus Wainwright & Metropole Orkest",
     "events": [
