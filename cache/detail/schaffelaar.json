@@ -40,7 +40,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/a-tribute-to-john-denver/": {
-   "opgehaaldOp": "2026-11-13T04:39:21.141Z",
+   "opgehaaldOp": "2026-11-16T04:35:08.698Z",
    "data": {
     "titel": "A Tribute to John Denver",
     "onder": null,
@@ -102,7 +102,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/aimabele-schoften/": {
-   "opgehaaldOp": "2026-11-13T04:38:00.123Z",
+   "opgehaaldOp": "2026-11-16T04:34:54.581Z",
    "data": {
     "titel": "Aimabele Schoften",
     "onder": "Wijncabaret: Grand Cru",
@@ -343,7 +343,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/beach-boys-best-reprise/": {
-   "opgehaaldOp": "2026-11-13T04:38:12.262Z",
+   "opgehaaldOp": "2026-11-16T04:34:56.679Z",
    "data": {
     "titel": "Beach Boys' Best (Reprise)",
     "onder": "Legendary Albums Live",
@@ -568,7 +568,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/boban-braspenning/": {
-   "opgehaaldOp": "2026-11-09T04:37:55.623Z",
+   "opgehaaldOp": "2026-11-16T04:35:09.549Z",
    "data": {
     "titel": "Boban Braspenning",
     "onder": "BRUTO",
@@ -873,7 +873,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/dance-centre-amersfoort/": {
-   "opgehaaldOp": "2026-11-09T04:37:58.693Z",
+   "opgehaaldOp": "2026-11-16T04:35:12.698Z",
    "data": {
     "titel": "Dance Centre Amersfoort",
     "onder": "‘POP ICONS’",
@@ -1155,7 +1155,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/de-mega-sint-show-2026-1/": {
-   "opgehaaldOp": "2026-11-15T04:38:33.763Z",
+   "opgehaaldOp": "2026-11-16T04:34:52.576Z",
    "data": {
     "titel": "De Mega Sint Show 2026",
     "onder": "Chaos in de cadeaufabriek",
@@ -1201,7 +1201,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/de-meute/": {
-   "opgehaaldOp": "2026-11-09T04:37:59.741Z",
+   "opgehaaldOp": "2026-11-16T04:35:13.692Z",
    "data": {
     "titel": "De Meute",
     "onder": "We hebben het gezellig",
@@ -1661,16 +1661,21 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/francis-van-broekhuizen/": {
-   "opgehaaldOp": "2026-11-09T04:37:57.792Z",
+   "opgehaaldOp": "2026-11-16T04:35:11.793Z",
    "data": {
     "titel": "Francis van Broekhuizen",
     "onder": "Magical Opera",
     "genres": [
      "muziek"
     ],
-    "zaal": "BDUmedia Grote Zaal",
-    "prijs": "Normaal € 34,50",
+    "zaal": null,
+    "prijs": null,
     "rijen": [
+     {
+      "datum": null,
+      "knop": null,
+      "href": null
+     },
      {
       "datum": "za. 20-03-2027 | 20:00",
       "knop": "Kaarten",
@@ -1977,7 +1982,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/ice/": {
-   "opgehaaldOp": "2026-11-09T04:37:56.784Z",
+   "opgehaaldOp": "2026-11-16T04:35:10.765Z",
    "data": {
     "titel": "ICE",
     "onder": null,
@@ -2025,7 +2030,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/iris-rulkens/": {
-   "opgehaaldOp": "2026-11-13T04:38:27.107Z",
+   "opgehaaldOp": "2026-11-16T04:34:58.754Z",
    "data": {
     "titel": "Iris Rulkens",
     "onder": "Van Harte",
@@ -3040,7 +3045,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/niels-geusebroek/": {
-   "opgehaaldOp": "2026-11-13T04:38:44.148Z",
+   "opgehaaldOp": "2026-11-16T04:35:02.580Z",
    "data": {
     "titel": "Niels Geusebroek",
     "onder": "Because of You",
@@ -3451,7 +3456,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/opvoeden-hoe-dan/": {
-   "opgehaaldOp": "2026-11-13T04:38:33.183Z",
+   "opgehaaldOp": "2026-11-16T04:35:01.658Z",
    "data": {
     "titel": "Opvoeden, hoe dan...!?",
     "onder": "Ilse van den Heuvel & Marieke van Ginneken",
@@ -3525,7 +3530,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/peter-heerschop/": {
-   "opgehaaldOp": "2026-11-13T04:38:29.324Z",
+   "opgehaaldOp": "2026-11-16T04:35:00.665Z",
    "data": {
     "titel": "Peter Heerschop",
     "onder": "Lieve Marianne",
@@ -3672,7 +3677,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/queen-must-go-on/": {
-   "opgehaaldOp": "2026-11-13T04:38:48.704Z",
+   "opgehaaldOp": "2026-11-16T04:35:04.188Z",
    "data": {
     "titel": "Queen Must Go On",
     "onder": "All About the Hits",
@@ -3684,7 +3689,7 @@
     "rijen": [
      {
       "datum": "wo. 23-12-2026 | 20:00",
-      "knop": "Uitverkocht",
+      "knop": "Laatste kaarten",
       "href": "https://apps.ticketmatic.com/widgets/schaffelaartheater/addtickets?l=NL&returnurl=https%3a%2f%2fschaffelaartheater.nl%2fagenda%2f&skinid=1&event=12178&flow=basketwithcheckout&reservemoretickets=yes&saleschannelid=2&extraevents=&edit=yes&oncompletion=orderdetail&accesskey=4a7d51a228f1d9cdda0cf251&signature=d64fde761d901560c772747f91da446ea23c660b39934a6d6874405ee9b75da1"
      }
     ]
@@ -3938,7 +3943,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/roel-jos-maalderink/": {
-   "opgehaaldOp": "2026-11-13T04:39:19.136Z",
+   "opgehaaldOp": "2026-11-16T04:35:07.681Z",
    "data": {
     "titel": "Roel & Jos Maalderink",
     "onder": "Verbroedering",
@@ -4144,7 +4149,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/someone-like-her/": {
-   "opgehaaldOp": "2026-11-13T04:38:23.134Z",
+   "opgehaaldOp": "2026-11-16T04:34:57.577Z",
    "data": {
     "titel": "Someone Like Her",
     "onder": "Tribute to Adele (Reprise)",
@@ -4283,7 +4288,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/steyn-de-leeuwe/": {
-   "opgehaaldOp": "2026-11-09T04:38:01.775Z",
+   "opgehaaldOp": "2026-11-16T04:35:15.230Z",
    "data": {
     "titel": "Steyn de Leeuwe",
     "onder": "Moonlight Motel",
@@ -4530,7 +4535,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/the-fortunate-sons/": {
-   "opgehaaldOp": "2026-11-09T04:38:00.753Z",
+   "opgehaaldOp": "2026-11-16T04:35:14.674Z",
    "data": {
     "titel": "The Fortunate Sons",
     "onder": "The Best of CCR",
@@ -4585,7 +4590,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/the-nextstreet-boys/": {
-   "opgehaaldOp": "2026-11-14T04:36:21.495Z",
+   "opgehaaldOp": "2026-11-16T04:34:53.430Z",
    "data": {
     "titel": "The Nextstreet Boys",
     "onder": "A Backstreet Boys Tribute",
@@ -4685,7 +4690,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/this-is-tina-a-tribute-to-tina-turner/": {
-   "opgehaaldOp": "2026-11-13T04:38:56.136Z",
+   "opgehaaldOp": "2026-11-16T04:35:06.202Z",
    "data": {
     "titel": "This is TINA! A Tribute to Tina Turner",
     "onder": "Simply the Best",
@@ -4846,7 +4851,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/top-2000-live/": {
-   "opgehaaldOp": "2026-11-13T04:38:28.121Z",
+   "opgehaaldOp": "2026-11-16T04:34:59.680Z",
    "data": {
     "titel": "Top 2000 Live",
     "onder": "Listen to the Music",
@@ -4916,7 +4921,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/two-wieners/": {
-   "opgehaaldOp": "2026-11-13T04:38:55.131Z",
+   "opgehaaldOp": "2026-11-16T04:35:05.728Z",
    "data": {
     "titel": "Two Wieners",
     "onder": "The Everly Brothers Unplugged",
@@ -5033,7 +5038,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/verrassingsvoorstelling-muziek/": {
-   "opgehaaldOp": "2026-11-13T04:38:03.161Z",
+   "opgehaaldOp": "2026-11-16T04:34:55.537Z",
    "data": {
     "titel": "Verrassingsvoorstelling Muziek",
     "onder": "Nationaal Theaterweekend",
@@ -5071,7 +5076,7 @@
    }
   },
   "https://schaffelaartheater.nl/agenda/verrassingsvoorstelling-zaterdag-show/": {
-   "opgehaaldOp": "2026-11-13T04:38:46.230Z",
+   "opgehaaldOp": "2026-11-16T04:35:03.661Z",
    "data": {
     "titel": "Verrassingsvoorstelling Zaterdag Show",
     "onder": "Nationaal Theaterweekend",

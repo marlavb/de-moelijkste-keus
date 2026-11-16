@@ -319,7 +319,7 @@
    }
   },
   "https://www.mimik.nl/agenda/amsterdams-kleinkunst-festival-akf-2026": {
-   "opgehaaldOp": "2026-11-15T04:41:59.881Z",
+   "opgehaaldOp": "2026-11-16T04:38:15.259Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Amsterdams Kleinkunst Festival (AKF)",
@@ -405,7 +405,7 @@
    }
   },
   "https://www.mimik.nl/agenda/andre-manuel": {
-   "opgehaaldOp": "2026-11-09T04:41:17.165Z",
+   "opgehaaldOp": "2026-11-16T04:38:27.248Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "André Manuel",
@@ -1095,7 +1095,7 @@
    }
   },
   "https://www.mimik.nl/agenda/een-kijkje-in-het-onderwijs-van-de-toekomst": {
-   "opgehaaldOp": "2026-11-15T04:42:01.906Z",
+   "opgehaaldOp": "2026-11-16T04:38:17.253Z",
    "data": {
     "categorie": "Te gast",
     "kop": "Een kijkje in het onderwijs van de toekomst",
@@ -1795,11 +1795,11 @@
    }
   },
   "https://www.mimik.nl/agenda/filmcursus-vrouwen-in-film": {
-   "opgehaaldOp": "2026-10-17T03:47:55.472Z",
+   "opgehaaldOp": "2026-11-16T04:38:33.400Z",
    "data": {
     "categorie": "Filmcursus",
     "kop": "Filmcursus: Vrouwen in film",
-    "onder": null,
+    "onder": "Door filmwetenschapper en -journalist Timna Rauch",
     "eersteStart": "2026-11-24T00:00:00.0000000",
     "speeldata": [
      {
@@ -1815,8 +1815,8 @@
       "tijd": "19:00",
       "zaal": "Filmzaal 4",
       "prijs": "€ 13,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10387088"
+      "knop": "Uitverkocht",
+      "href": null
      },
      {
       "datum": "2026-12-01",
@@ -2014,7 +2014,7 @@
    }
   },
   "https://www.mimik.nl/agenda/groen-en-van-lien": {
-   "opgehaaldOp": "2026-11-09T04:41:12.168Z",
+   "opgehaaldOp": "2026-11-16T04:38:22.259Z",
    "data": {
     "categorie": "Junior",
     "kop": "Groen en van Lien",
@@ -2062,7 +2062,7 @@
    }
   },
   "https://www.mimik.nl/agenda/het-nut-geplaceerd": {
-   "opgehaaldOp": "2026-11-15T04:42:01.300Z",
+   "opgehaaldOp": "2026-11-16T04:38:16.232Z",
    "data": {
     "categorie": "Theater",
     "kop": "Het NUT",
@@ -2146,7 +2146,7 @@
    }
   },
   "https://www.mimik.nl/agenda/izaline-calister-rum-and-coca-cola": {
-   "opgehaaldOp": "2026-11-15T04:41:57.921Z",
+   "opgehaaldOp": "2026-11-16T04:38:13.398Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Izaline Calister",
@@ -2184,7 +2184,7 @@
    }
   },
   "https://www.mimik.nl/agenda/jip-smit": {
-   "opgehaaldOp": "2026-11-09T04:41:19.148Z",
+   "opgehaaldOp": "2026-11-16T04:38:29.291Z",
    "data": {
     "categorie": "Theater",
     "kop": "Jip Smit",
@@ -2279,7 +2279,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kees-prins": {
-   "opgehaaldOp": "2026-11-09T04:41:11.143Z",
+   "opgehaaldOp": "2026-11-16T04:38:21.228Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Kees Prins",
@@ -2553,7 +2553,7 @@
    }
   },
   "https://www.mimik.nl/agenda/louis-janssens": {
-   "opgehaaldOp": "2026-11-09T04:41:16.244Z",
+   "opgehaaldOp": "2026-11-16T04:38:26.426Z",
    "data": {
     "categorie": "Theater",
     "kop": "Louis Janssens",
@@ -2591,7 +2591,7 @@
    }
   },
   "https://www.mimik.nl/agenda/luuk-weggemans": {
-   "opgehaaldOp": "2026-11-09T04:41:10.193Z",
+   "opgehaaldOp": "2026-11-16T04:38:20.267Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Luuk Weggemans",
@@ -2610,7 +2610,7 @@
    }
   },
   "https://www.mimik.nl/agenda/marie-koet": {
-   "opgehaaldOp": "2026-11-09T04:41:18.170Z",
+   "opgehaaldOp": "2026-11-16T04:38:28.252Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Marie Koet",
@@ -2629,7 +2629,7 @@
    }
   },
   "https://www.mimik.nl/agenda/martijn-crins-kooiapen": {
-   "opgehaaldOp": "2026-11-09T04:41:14.177Z",
+   "opgehaaldOp": "2026-11-16T04:38:24.248Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Martijn Crins",
@@ -2759,7 +2759,7 @@
    }
   },
   "https://www.mimik.nl/agenda/mime-wave": {
-   "opgehaaldOp": "2026-11-09T04:41:20.253Z",
+   "opgehaaldOp": "2026-11-16T04:38:30.251Z",
    "data": {
     "categorie": "Junior",
     "kop": "Mime Wave",
@@ -2778,7 +2778,7 @@
    }
   },
   "https://www.mimik.nl/agenda/mimik-xs-april": {
-   "opgehaaldOp": "2026-11-09T04:41:21.228Z",
+   "opgehaaldOp": "2026-11-16T04:38:31.260Z",
    "data": {
     "categorie": "Theater",
     "kop": "MIMIK XS | april",
@@ -3081,7 +3081,7 @@
    }
   },
   "https://www.mimik.nl/agenda/oscar-smit": {
-   "opgehaaldOp": "2026-11-09T04:41:15.237Z",
+   "opgehaaldOp": "2026-11-16T04:38:25.257Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Oscar Smit",
@@ -3750,7 +3750,7 @@
    }
   },
   "https://www.mimik.nl/agenda/sadettin-k-kameleon": {
-   "opgehaaldOp": "2026-11-09T04:41:09.162Z",
+   "opgehaaldOp": "2026-11-16T04:38:19.262Z",
    "data": {
     "categorie": "Theater",
     "kop": "Sadettin K.",
@@ -4256,7 +4256,7 @@
    }
   },
   "https://www.mimik.nl/agenda/the-ambush-party-orchestra": {
-   "opgehaaldOp": "2026-11-09T04:41:08.227Z",
+   "opgehaaldOp": "2026-11-16T04:38:18.249Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "The Ambush Party Orchestra",
@@ -4326,7 +4326,7 @@
    }
   },
   "https://www.mimik.nl/agenda/the-big-bike-film-night-2026": {
-   "opgehaaldOp": "2026-11-09T04:41:22.173Z",
+   "opgehaaldOp": "2026-11-16T04:38:32.251Z",
    "data": {
     "categorie": "Te gast",
     "kop": "The Big Bike Film Night",
@@ -4538,7 +4538,7 @@
    }
   },
   "https://www.mimik.nl/agenda/theater-kwikstaart-dwars-door-het-beton": {
-   "opgehaaldOp": "2026-11-15T04:41:58.960Z",
+   "opgehaaldOp": "2026-11-16T04:38:14.010Z",
    "data": {
     "categorie": "Junior",
     "kop": "Theater Kwikstaart",
@@ -4576,7 +4576,7 @@
    }
   },
   "https://www.mimik.nl/agenda/theater-utrecht": {
-   "opgehaaldOp": "2026-11-09T04:41:13.252Z",
+   "opgehaaldOp": "2026-11-16T04:38:23.403Z",
    "data": {
     "categorie": "Theater",
     "kop": "Theater Utrecht",
