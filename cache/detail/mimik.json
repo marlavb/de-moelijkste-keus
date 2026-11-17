@@ -94,7 +94,7 @@
    }
   },
   "https://www.mimik.nl/agenda/alex-ploeg-2027": {
-   "opgehaaldOp": "2026-11-10T04:42:10.831Z",
+   "opgehaaldOp": "2026-11-17T04:40:46.569Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Alex Ploeg",
@@ -319,7 +319,7 @@
    }
   },
   "https://www.mimik.nl/agenda/amsterdams-kleinkunst-festival-akf-2026": {
-   "opgehaaldOp": "2026-11-16T04:38:15.259Z",
+   "opgehaaldOp": "2026-11-17T04:40:35.564Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Amsterdams Kleinkunst Festival (AKF)",
@@ -877,6 +877,16 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/de-manager": {
+   "opgehaaldOp": "2026-11-17T04:40:39.547Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "De Manager",
+    "onder": "LAATSTE WEEK",
+    "eersteStart": "2026-11-19T16:30:00.0000000",
+    "speeldata": []
+   }
+  },
   "https://www.mimik.nl/agenda/de-ronde-deroo": {
    "opgehaaldOp": "2026-11-11T04:43:54.107Z",
    "data": {
@@ -897,7 +907,7 @@
    }
   },
   "https://www.mimik.nl/agenda/de-theatertroep-vier-crematies-en-een-scheiding": {
-   "opgehaaldOp": "2026-11-10T04:42:08.662Z",
+   "opgehaaldOp": "2026-11-17T04:40:44.600Z",
    "data": {
     "categorie": "Theater",
     "kop": "De Theatertroep",
@@ -1095,7 +1105,7 @@
    }
   },
   "https://www.mimik.nl/agenda/een-kijkje-in-het-onderwijs-van-de-toekomst": {
-   "opgehaaldOp": "2026-11-16T04:38:17.253Z",
+   "opgehaaldOp": "2026-11-17T04:40:37.488Z",
    "data": {
     "categorie": "Te gast",
     "kop": "Een kijkje in het onderwijs van de toekomst",
@@ -1209,7 +1219,7 @@
    }
   },
   "https://www.mimik.nl/agenda/esther-apituley": {
-   "opgehaaldOp": "2026-11-10T04:42:04.609Z",
+   "opgehaaldOp": "2026-11-17T04:40:42.577Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Esther Apituley",
@@ -2062,7 +2072,7 @@
    }
   },
   "https://www.mimik.nl/agenda/het-nut-geplaceerd": {
-   "opgehaaldOp": "2026-11-16T04:38:16.232Z",
+   "opgehaaldOp": "2026-11-17T04:40:36.462Z",
    "data": {
     "categorie": "Theater",
     "kop": "Het NUT",
@@ -2146,7 +2156,7 @@
    }
   },
   "https://www.mimik.nl/agenda/izaline-calister-rum-and-coca-cola": {
-   "opgehaaldOp": "2026-11-16T04:38:13.398Z",
+   "opgehaaldOp": "2026-11-17T04:40:33.408Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Izaline Calister",
@@ -2439,7 +2449,7 @@
    }
   },
   "https://www.mimik.nl/agenda/korzo-breaking-generations": {
-   "opgehaaldOp": "2026-11-10T04:42:03.630Z",
+   "opgehaaldOp": "2026-11-17T04:40:41.571Z",
    "data": {
     "categorie": "Dans",
     "kop": "Korzo",
@@ -2534,7 +2544,7 @@
    }
   },
   "https://www.mimik.nl/agenda/leids-cabaret-festival-2027": {
-   "opgehaaldOp": "2026-11-10T04:42:07.703Z",
+   "opgehaaldOp": "2026-11-17T04:40:43.572Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Leids Cabaret Festival",
@@ -2546,8 +2556,8 @@
       "tijd": "20:00",
       "zaal": "Theaterzaal",
       "prijs": "€ 19,50",
-      "knop": "Uitverkocht",
-      "href": null
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350408"
      }
     ]
    }
@@ -3119,7 +3129,7 @@
    }
   },
   "https://www.mimik.nl/agenda/patrick-nederkoorn-nieuw-programma": {
-   "opgehaaldOp": "2026-11-10T04:42:02.622Z",
+   "opgehaaldOp": "2026-11-17T04:40:40.596Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Patrick Nederkoorn",
@@ -3839,7 +3849,7 @@
    }
   },
   "https://www.mimik.nl/agenda/schwung": {
-   "opgehaaldOp": "2026-11-10T04:42:11.829Z",
+   "opgehaaldOp": "2026-11-17T04:40:47.548Z",
    "data": {
     "categorie": "Theater",
     "kop": "Schwung",
@@ -4096,7 +4106,7 @@
    }
   },
   "https://www.mimik.nl/agenda/studio-sibling": {
-   "opgehaaldOp": "2026-11-10T04:42:23.890Z",
+   "opgehaaldOp": "2026-11-17T04:40:48.570Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Studio Sibling",
@@ -4161,7 +4171,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tent-van-het-oosten-januari": {
-   "opgehaaldOp": "2026-11-10T04:42:09.729Z",
+   "opgehaaldOp": "2026-11-17T04:40:45.649Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Tent van het Oosten | januari",
@@ -4538,7 +4548,7 @@
    }
   },
   "https://www.mimik.nl/agenda/theater-kwikstaart-dwars-door-het-beton": {
-   "opgehaaldOp": "2026-11-16T04:38:14.010Z",
+   "opgehaaldOp": "2026-11-17T04:40:34.551Z",
    "data": {
     "categorie": "Junior",
     "kop": "Theater Kwikstaart",
@@ -4723,6 +4733,25 @@
       "prijs": "€ 20,50",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10350430"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/vers-vuig-2026": {
+   "opgehaaldOp": "2026-11-17T04:40:38.571Z",
+   "data": {
+    "categorie": "Woordkunst",
+    "kop": "Vers & Vuig",
+    "onder": "Bekijk het eens van de zondige kant",
+    "eersteStart": "2026-12-29T20:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-29",
+      "tijd": "20:00",
+      "zaal": "Theaterzaal",
+      "prijs": "€ 10,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350447"
      }
     ]
    }
