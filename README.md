@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (65 ok, 5 terugval, 10 gepauzeerd, 1 leeg)
-- Voorstellingen (titel per theater): **7032**
-- Speeldata: **9792**
-- Laatste refresh: **17 november 2026, 05:40** (Amsterdamse tijd)
+- Theaters: **81** (63 ok, 7 terugval, 10 gepauzeerd, 1 leeg)
+- Voorstellingen (titel per theater): **7052**
+- Speeldata: **9808**
+- Laatste refresh: **18 november 2026, 05:45** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -432,12 +432,12 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | DeLaMar | Amsterdam | ja | ok |
 | Frascati | Amsterdam | ja | ok |
 | Koninklijk Theater Carré | Amsterdam | nee | ok |
-| Muziekgebouw aan 't IJ | Amsterdam | ja | ok |
+| Muziekgebouw aan 't IJ | Amsterdam | ja | terugval |
 | Plein Theater | Amsterdam | nee | ok |
 | Podium Mozaïek | Amsterdam | ja | ok |
 | Scala Theater | Amsterdam | ja | ok |
 | Stadsschouwburg Amsterdam | Amsterdam | nee | ok |
-| Theater Bellevue | Amsterdam | ja | ok |
+| Theater Bellevue | Amsterdam | ja | terugval |
 | Theater De Krakeling | Amsterdam | ja | ok |
 | Theater de Meervaart | Amsterdam | ja | ok |
 | VU Griffioen | Amsterdam | ja | ok |
@@ -445,7 +445,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater de Omval | Diemen | ja | ok |
 | Schuur | Haarlem | ja | ok |
 | Cpunt | Hoofddorp | nee | ok |
-| Zaantheater | Zaandam | ja | terugval |
+| Zaantheater | Zaandam | ja | ok |
 
 **Zuid-Holland** (13)
 
@@ -479,7 +479,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| Corrosia | Almere | deels | ok |
+| Corrosia | Almere | deels | terugval |
 | Kunstlinie | Almere | deels | ok |
 
 **Limburg** (9)
