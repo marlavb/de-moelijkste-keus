@@ -154,7 +154,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/boudchart-2027": {
-   "opgehaaldOp": "2026-11-13T04:06:24.880Z",
+   "opgehaaldOp": "2026-11-18T04:09:15.115Z",
    "data": {
     "naam": "Boudchart",
     "events": [
@@ -258,7 +258,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/damien-rice-25th-anniversary-tour": {
-   "opgehaaldOp": "2026-11-11T04:06:15.688Z",
+   "opgehaaldOp": "2026-11-18T04:09:19.090Z",
    "data": {
     "naam": "Damien Rice",
     "events": [
@@ -370,7 +370,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/esther-perel-2027": {
-   "opgehaaldOp": "2026-11-11T04:06:13.685Z",
+   "opgehaaldOp": "2026-11-18T04:09:16.085Z",
    "data": {
     "naam": "Esther Perel",
     "events": [
@@ -378,7 +378,7 @@
       "id": "37069",
       "start": "2027-02-17T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": "waiting_list",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37069&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37069%26upsellids%3D37071%252C37070&saleschannelid=2&skinid=1&withauthentication=no&signature=46f8c9d21776bc54cf3fc3e25a76d81eda62703e8d17e2c170c92f9d0901e0fa"
      },
@@ -890,7 +890,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/herman-van-veen-vandaag": {
-   "opgehaaldOp": "2026-11-11T04:06:12.723Z",
+   "opgehaaldOp": "2026-11-18T04:09:14.091Z",
    "data": {
     "naam": "Herman van Veen",
     "events": [
@@ -978,7 +978,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/high-class-bitch": {
-   "opgehaaldOp": "2026-11-11T04:06:14.751Z",
+   "opgehaaldOp": "2026-11-18T04:09:18.085Z",
    "data": {
     "naam": "Daniël Arends - High Class Bitch",
     "events": [
@@ -1114,7 +1114,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
-   "opgehaaldOp": "2026-11-17T04:06:10.241Z",
+   "opgehaaldOp": "2026-11-18T04:09:09.080Z",
    "data": {
     "naam": "Jochem Myjer",
     "events": [
@@ -1138,7 +1138,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/joe-jackson-2026": {
-   "opgehaaldOp": "2026-11-11T04:06:10.682Z",
+   "opgehaaldOp": "2026-11-18T04:09:12.080Z",
    "data": {
     "naam": "Joe Jackson",
     "events": [
@@ -1178,10 +1178,26 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/kasper-van-der-laan-ruim": {
-   "opgehaaldOp": "2026-11-11T04:06:16.698Z",
+   "opgehaaldOp": "2026-11-18T04:09:20.092Z",
    "data": {
     "naam": "Kasper van der Laan",
     "events": [
+     {
+      "id": "36198",
+      "start": "2027-05-26T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36198&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36198%26upsellids%3D36203%252C36204%252C36202&saleschannelid=2&skinid=1&withauthentication=no&signature=2b14293274626ff204c35486f0ceba46cef4c8fd29d1d267c90941b0eed12927"
+     },
+     {
+      "id": "36200",
+      "start": "2027-05-27T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": "waiting_list",
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36200&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36200%26upsellids%3D36208%252C36211%252C36205&saleschannelid=2&skinid=1&withauthentication=no&signature=9a8296fe57a6d8bf13e503d5ea14f752d3f2a724964a0ccced172512549aab7d"
+     },
      {
       "id": "36199",
       "start": "2027-05-28T20:00:00+02:00",
@@ -1322,7 +1338,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/matthew-bourne-the-car-man": {
-   "opgehaaldOp": "2026-11-14T04:06:22.156Z",
+   "opgehaaldOp": "2026-11-18T04:09:11.269Z",
    "data": {
     "naam": "Matthew Bourne's The Car Man",
     "events": [
@@ -1418,7 +1434,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/micha-wertheim-voor-iedereen": {
-   "opgehaaldOp": "2026-11-13T04:06:27.892Z",
+   "opgehaaldOp": "2026-11-18T04:09:17.085Z",
    "data": {
     "naam": "Micha Wertheim",
     "events": [
@@ -1466,7 +1482,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/patrick-laureij-kintsugi": {
-   "opgehaaldOp": "2026-11-17T04:06:11.246Z",
+   "opgehaaldOp": "2026-11-18T04:09:10.081Z",
    "data": {
     "naam": "Patrick Laureij",
     "events": [
@@ -1586,7 +1602,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/pieter-derks-ja-leuk": {
-   "opgehaaldOp": "2026-11-17T04:06:09.252Z",
+   "opgehaaldOp": "2026-11-18T04:09:08.081Z",
    "data": {
     "naam": "Pieter Derks",
     "events": [
@@ -1754,7 +1770,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/syml-metropole-orkest": {
-   "opgehaaldOp": "2026-11-11T04:06:11.683Z",
+   "opgehaaldOp": "2026-11-18T04:09:13.087Z",
    "data": {
     "naam": "Metropole Orkest met SYML",
     "events": [
@@ -1762,9 +1778,9 @@
       "id": "37125",
       "start": "2026-12-04T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "waiting_list",
+      "statusID": "last_chance",
       "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37125&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37125%26upsellids%3D35830%252C35829&saleschannelid=2&skinid=1&withauthentication=no&signature=16b8b35ad3b096672ef53a3f4ed8076fd15153e76f8b3dc3433218545b3a1183"
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37125&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37125%26upsellids%3D37194%252C35830%252C35829%252C37195&saleschannelid=2&skinid=1&withauthentication=no&signature=d937e44ba7a8ab7543b7b8173fd6b29a87308a7e0c1083ba3fff32f0c2c93bd6"
      }
     ]
    }

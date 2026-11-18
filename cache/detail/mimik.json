@@ -319,7 +319,7 @@
    }
   },
   "https://www.mimik.nl/agenda/amsterdams-kleinkunst-festival-akf-2026": {
-   "opgehaaldOp": "2026-11-17T04:40:35.564Z",
+   "opgehaaldOp": "2026-11-18T04:44:51.049Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Amsterdams Kleinkunst Festival (AKF)",
@@ -805,7 +805,7 @@
    }
   },
   "https://www.mimik.nl/agenda/de-dansers": {
-   "opgehaaldOp": "2026-11-11T04:43:56.105Z",
+   "opgehaaldOp": "2026-11-18T04:45:00.874Z",
    "data": {
     "categorie": "Dans",
     "kop": "De Dansers",
@@ -888,7 +888,7 @@
    }
   },
   "https://www.mimik.nl/agenda/de-ronde-deroo": {
-   "opgehaaldOp": "2026-11-11T04:43:54.107Z",
+   "opgehaaldOp": "2026-11-18T04:44:58.814Z",
    "data": {
     "categorie": "Theater",
     "kop": "De Ronde / Deroo",
@@ -1047,6 +1047,33 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/dune-part-one-re-issue": {
+   "opgehaaldOp": "2026-11-18T04:44:53.815Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Dune: Part One re-issue",
+    "onder": "LAATSTE WEEK",
+    "eersteStart": "2026-12-12T13:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-12",
+      "tijd": "13:00",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10392059"
+     },
+     {
+      "datum": "2026-12-13",
+      "tijd": "15:50",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10392058"
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/dune-part-three": {
    "opgehaaldOp": "2026-10-27T04:45:53.532Z",
    "data": {
@@ -1066,21 +1093,29 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/dz-on-stage-borstkanker": {
-   "opgehaaldOp": "2026-10-27T04:45:46.525Z",
+  "https://www.mimik.nl/agenda/dune-part-two": {
+   "opgehaaldOp": "2026-11-18T04:44:54.864Z",
    "data": {
-    "categorie": "Te gast",
-    "kop": "DZ on Stage",
-    "onder": null,
-    "eersteStart": "2026-10-27T20:00:00.0000000",
+    "categorie": "Film",
+    "kop": "Dune: Part Two",
+    "onder": "LAATSTE WEEK",
+    "eersteStart": "2026-12-12T16:20:00.0000000",
     "speeldata": [
      {
-      "datum": "2026-10-27",
-      "tijd": "20:00",
-      "zaal": "Theaterzaal",
-      "prijs": "€ 5,00",
+      "datum": "2026-12-12",
+      "tijd": "16:20",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
       "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10382932"
+      "href": "https://www.mimik.nl/tickets?programId=10392063"
+     },
+     {
+      "datum": "2026-12-13",
+      "tijd": "20:10",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10392062"
      }
     ]
    }
@@ -1105,7 +1140,7 @@
    }
   },
   "https://www.mimik.nl/agenda/een-kijkje-in-het-onderwijs-van-de-toekomst": {
-   "opgehaaldOp": "2026-11-17T04:40:37.488Z",
+   "opgehaaldOp": "2026-11-18T04:44:52.994Z",
    "data": {
     "categorie": "Te gast",
     "kop": "Een kijkje in het onderwijs van de toekomst",
@@ -1265,7 +1300,7 @@
    }
   },
   "https://www.mimik.nl/agenda/eva-van-manen": {
-   "opgehaaldOp": "2026-11-11T04:43:57.229Z",
+   "opgehaaldOp": "2026-11-18T04:45:01.864Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Eva van Manen",
@@ -2072,7 +2107,7 @@
    }
   },
   "https://www.mimik.nl/agenda/het-nut-geplaceerd": {
-   "opgehaaldOp": "2026-11-17T04:40:36.462Z",
+   "opgehaaldOp": "2026-11-18T04:44:52.061Z",
    "data": {
     "categorie": "Theater",
     "kop": "Het NUT",
@@ -2128,6 +2163,25 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/ijb-special-extra": {
+   "opgehaaldOp": "2026-11-18T04:44:55.709Z",
+   "data": {
+    "categorie": "Special",
+    "kop": "IJB-Special Extra",
+    "onder": "Watermanagement in de toekomst",
+    "eersteStart": "2026-12-01T15:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-01",
+      "tijd": "15:00",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 10,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10391010"
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/inu-oh": {
    "opgehaaldOp": "2026-11-10T04:42:25.796Z",
    "data": {
@@ -2156,7 +2210,7 @@
    }
   },
   "https://www.mimik.nl/agenda/izaline-calister-rum-and-coca-cola": {
-   "opgehaaldOp": "2026-11-17T04:40:33.408Z",
+   "opgehaaldOp": "2026-11-18T04:44:47.618Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Izaline Calister",
@@ -2327,7 +2381,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kim-karssen-10044665": {
-   "opgehaaldOp": "2026-11-11T04:43:52.261Z",
+   "opgehaaldOp": "2026-11-18T04:44:56.851Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Kim Karssen",
@@ -2807,7 +2861,7 @@
    }
   },
   "https://www.mimik.nl/agenda/mimik-xs-februari": {
-   "opgehaaldOp": "2026-11-11T04:43:58.103Z",
+   "opgehaaldOp": "2026-11-18T04:45:02.899Z",
    "data": {
     "categorie": "Theater",
     "kop": "MIMIK XS | februari",
@@ -4228,7 +4282,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tent-van-het-oosten-november": {
-   "opgehaaldOp": "2026-11-14T04:39:49.536Z",
+   "opgehaaldOp": "2026-11-18T04:44:50.192Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Tent van het Oosten | november",
@@ -4247,7 +4301,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tg-tiefschnee": {
-   "opgehaaldOp": "2026-11-11T04:43:55.108Z",
+   "opgehaaldOp": "2026-11-18T04:44:59.833Z",
    "data": {
     "categorie": "Theater",
     "kop": "TG Tiefschnee",
@@ -4548,7 +4602,7 @@
    }
   },
   "https://www.mimik.nl/agenda/theater-kwikstaart-dwars-door-het-beton": {
-   "opgehaaldOp": "2026-11-17T04:40:34.551Z",
+   "opgehaaldOp": "2026-11-18T04:44:48.674Z",
    "data": {
     "categorie": "Junior",
     "kop": "Theater Kwikstaart",
@@ -4662,7 +4716,7 @@
    }
   },
   "https://www.mimik.nl/agenda/van-die-mensen": {
-   "opgehaaldOp": "2026-11-11T04:43:53.214Z",
+   "opgehaaldOp": "2026-11-18T04:44:57.834Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Van Die Mensen",
