@@ -319,7 +319,7 @@
    }
   },
   "https://www.mimik.nl/agenda/amsterdams-kleinkunst-festival-akf-2026": {
-   "opgehaaldOp": "2026-11-18T04:44:51.049Z",
+   "opgehaaldOp": "2026-11-19T04:46:06.431Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Amsterdams Kleinkunst Festival (AKF)",
@@ -424,7 +424,7 @@
    }
   },
   "https://www.mimik.nl/agenda/bambie-speelt-bambi": {
-   "opgehaaldOp": "2026-11-12T04:40:13.070Z",
+   "opgehaaldOp": "2026-11-19T04:46:12.210Z",
    "data": {
     "categorie": "Fysiek theater",
     "kop": "Bambie speelt Bambi",
@@ -983,7 +983,7 @@
    }
   },
   "https://www.mimik.nl/agenda/dood-paard-tjernobyl": {
-   "opgehaaldOp": "2026-11-12T04:40:09.001Z",
+   "opgehaaldOp": "2026-11-19T04:46:08.338Z",
    "data": {
     "categorie": "Theater",
     "kop": "Dood Paard",
@@ -1159,7 +1159,7 @@
    }
   },
   "https://www.mimik.nl/agenda/elfie-tromp-aai-poesje": {
-   "opgehaaldOp": "2026-11-12T04:40:14.092Z",
+   "opgehaaldOp": "2026-11-19T04:46:13.437Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Elfie Tromp",
@@ -1178,7 +1178,7 @@
    }
   },
   "https://www.mimik.nl/agenda/elias-de-bruyne": {
-   "opgehaaldOp": "2026-11-12T04:40:15.149Z",
+   "opgehaaldOp": "2026-11-19T04:46:14.333Z",
    "data": {
     "categorie": "Fysiek theater",
     "kop": "Elias de Bruyne",
@@ -1929,7 +1929,7 @@
    }
   },
   "https://www.mimik.nl/agenda/flip-noorman": {
-   "opgehaaldOp": "2026-11-12T04:40:15.970Z",
+   "opgehaaldOp": "2026-11-19T04:46:15.307Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Flip Noorman",
@@ -1986,7 +1986,7 @@
    }
   },
   "https://www.mimik.nl/agenda/gabbro-in-gabbro-as-we-walk": {
-   "opgehaaldOp": "2026-11-12T04:40:18.090Z",
+   "opgehaaldOp": "2026-11-19T04:46:17.425Z",
    "data": {
     "categorie": "Special",
     "kop": "Gabbro in Gabbro / As We Walk",
@@ -2107,7 +2107,7 @@
    }
   },
   "https://www.mimik.nl/agenda/het-nut-geplaceerd": {
-   "opgehaaldOp": "2026-11-18T04:44:52.061Z",
+   "opgehaaldOp": "2026-11-19T04:46:07.205Z",
    "data": {
     "categorie": "Theater",
     "kop": "Het NUT",
@@ -2140,25 +2140,6 @@
       "prijs": null,
       "knop": null,
       "href": null
-     }
-    ]
-   }
-  },
-  "https://www.mimik.nl/agenda/hyperpoezie-2026": {
-   "opgehaaldOp": "2026-10-28T04:45:23.870Z",
-   "data": {
-    "categorie": "Woordkunst",
-    "kop": "HYPERPOËZIE",
-    "onder": "PROTECT ME FROM WHAT I WANT",
-    "eersteStart": "2026-10-28T20:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-10-28",
-      "tijd": "20:00",
-      "zaal": "Theaterzaal",
-      "prijs": "€ 19,50",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10350435"
      }
     ]
    }
@@ -2210,7 +2191,7 @@
    }
   },
   "https://www.mimik.nl/agenda/izaline-calister-rum-and-coca-cola": {
-   "opgehaaldOp": "2026-11-18T04:44:47.618Z",
+   "opgehaaldOp": "2026-11-19T04:46:03.152Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Izaline Calister",
@@ -2323,25 +2304,6 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/kassett-dansblok": {
-   "opgehaaldOp": "2026-10-29T04:43:42.204Z",
-   "data": {
-    "categorie": "Dans",
-    "kop": "KASSETT & DansBlok",
-    "onder": "Knooppunt",
-    "eersteStart": "2026-10-29T20:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-10-29",
-      "tijd": "20:00",
-      "zaal": "Theaterzaal",
-      "prijs": "€ 21,50",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10350437"
-     }
-    ]
-   }
-  },
   "https://www.mimik.nl/agenda/kees-prins": {
    "opgehaaldOp": "2026-11-16T04:38:21.228Z",
    "data": {
@@ -2400,7 +2362,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kim-schuddeboom": {
-   "opgehaaldOp": "2026-11-12T04:40:10.029Z",
+   "opgehaaldOp": "2026-11-19T04:46:09.339Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Kim Schuddeboom",
@@ -2766,7 +2728,7 @@
    }
   },
   "https://www.mimik.nl/agenda/millennium-jazz-orchestra-april-27": {
-   "opgehaaldOp": "2026-11-12T04:40:11.012Z",
+   "opgehaaldOp": "2026-11-19T04:46:10.412Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Millennium Jazz Orchestra | april",
@@ -3099,7 +3061,7 @@
    }
   },
   "https://www.mimik.nl/agenda/orkaterde-nieuwkomers-dolorosa": {
-   "opgehaaldOp": "2026-11-12T04:40:12.088Z",
+   "opgehaaldOp": "2026-11-19T04:46:11.450Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Orkater/De Nieuwkomers",
@@ -4141,7 +4103,7 @@
    }
   },
   "https://www.mimik.nl/agenda/studio-figur-dawn-collective": {
-   "opgehaaldOp": "2026-11-12T04:40:17.083Z",
+   "opgehaaldOp": "2026-11-19T04:46:16.416Z",
    "data": {
     "categorie": "Junior",
     "kop": "Studio Figur - Dawn Collective",
@@ -4282,7 +4244,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tent-van-het-oosten-november": {
-   "opgehaaldOp": "2026-11-18T04:44:50.192Z",
+   "opgehaaldOp": "2026-11-19T04:46:05.492Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Tent van het Oosten | november",
@@ -4602,7 +4564,7 @@
    }
   },
   "https://www.mimik.nl/agenda/theater-kwikstaart-dwars-door-het-beton": {
-   "opgehaaldOp": "2026-11-18T04:44:48.674Z",
+   "opgehaaldOp": "2026-11-19T04:46:04.322Z",
    "data": {
     "categorie": "Junior",
     "kop": "Theater Kwikstaart",

@@ -226,7 +226,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/claudia-de-breij-oudejaarsconference": {
-   "opgehaaldOp": "2026-11-12T04:06:02.357Z",
+   "opgehaaldOp": "2026-11-19T04:12:50.323Z",
    "data": {
     "naam": "Claudia de Breij",
     "events": [
@@ -322,7 +322,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/dolf-jansen-schaamteloos": {
-   "opgehaaldOp": "2026-11-12T04:06:03.341Z",
+   "opgehaaldOp": "2026-11-19T04:12:51.330Z",
    "data": {
     "naam": "Dolf Jansen",
     "events": [
@@ -458,7 +458,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/had-ik-maar-nooit-zo-aardig-gedaan": {
-   "opgehaaldOp": "2026-11-12T04:06:06.343Z",
+   "opgehaaldOp": "2026-11-19T04:12:54.308Z",
    "data": {
     "naam": "Daniël Arends - Had ik maar nooit zo aardig gedaan",
     "events": [
@@ -1090,7 +1090,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jenny-arean": {
-   "opgehaaldOp": "2026-11-12T04:06:04.350Z",
+   "opgehaaldOp": "2026-11-19T04:12:52.310Z",
    "data": {
     "naam": "Jenny Arean",
     "events": [
@@ -1109,12 +1109,20 @@
       "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37082&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37082%26upsellids%3D37084%252C37085%252C37083&saleschannelid=2&skinid=1&withauthentication=no&signature=6a01d0515de05b29aec614aa6adb2164a6e2de24e081b9640275b76e101fad38"
+     },
+     {
+      "id": "37180",
+      "start": "2027-05-14T20:00:00+02:00",
+      "salesStatus": "on_sale",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37180&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37180%26upsellids%3D37182%252C37183%252C37181&saleschannelid=2&skinid=1&withauthentication=no&signature=7224fe771270421a148f72a8c5b7d4013d37519b4e61d4358d82efb11420ebad"
      }
     ]
    }
   },
   "https://carre.nl/api/render/voorstelling/jochem-myjer-net-alsof": {
-   "opgehaaldOp": "2026-11-18T04:09:09.080Z",
+   "opgehaaldOp": "2026-11-19T04:12:47.326Z",
    "data": {
     "naam": "Jochem Myjer",
     "events": [
@@ -1338,7 +1346,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/matthew-bourne-the-car-man": {
-   "opgehaaldOp": "2026-11-18T04:09:11.269Z",
+   "opgehaaldOp": "2026-11-19T04:12:49.406Z",
    "data": {
     "naam": "Matthew Bourne's The Car Man",
     "events": [
@@ -1346,7 +1354,7 @@
       "id": "36242",
       "start": "2026-11-25T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": null,
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36242&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36242%26upsellids%3D36119%252C36117%252C36118&saleschannelid=2&skinid=1&withauthentication=no&signature=18148b5cfa8959f958ada50c6d9c38444fcc10e2bf7e91e9f3d2a8cbe8099f86"
      },
@@ -1450,7 +1458,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/micky-overman-2027": {
-   "opgehaaldOp": "2026-11-12T04:06:05.338Z",
+   "opgehaaldOp": "2026-11-19T04:12:53.303Z",
    "data": {
     "naam": "Micky Overman",
     "events": [
@@ -1466,7 +1474,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/oh-wonder-2027": {
-   "opgehaaldOp": "2026-11-12T04:06:07.365Z",
+   "opgehaaldOp": "2026-11-19T04:12:56.311Z",
    "data": {
     "naam": "Oh Wonder",
     "events": [
@@ -1482,7 +1490,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/patrick-laureij-kintsugi": {
-   "opgehaaldOp": "2026-11-18T04:09:10.081Z",
+   "opgehaaldOp": "2026-11-19T04:12:48.310Z",
    "data": {
     "naam": "Patrick Laureij",
     "events": [
@@ -2349,6 +2357,22 @@
       "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35797&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35797%26upsellids%3D36086%252C36019%252C36065&saleschannelid=2&skinid=1&withauthentication=no&signature=4f2025cc7e720b9ad7ee99d030647bd026b6f69565d99cb3408da2e3cd3dee79"
+     }
+    ]
+   }
+  },
+  "https://carre.nl/api/render/voorstelling/wies": {
+   "opgehaaldOp": "2026-11-19T04:12:55.299Z",
+   "data": {
+    "naam": "WIES",
+    "events": [
+     {
+      "id": "37187",
+      "start": "2027-04-24T20:00:00+02:00",
+      "salesStatus": "sales_not_started",
+      "statusID": null,
+      "soort": "Voorstelling",
+      "salesUrl": null
      }
     ]
    }
