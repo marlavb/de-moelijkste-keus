@@ -13,9 +13,9 @@ worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewe
 
 <!-- AUTO:aantallen:start -->
 - Theaters: **81** (63 ok, 7 terugval, 10 gepauzeerd, 1 leeg)
-- Voorstellingen (titel per theater): **7052**
-- Speeldata: **9808**
-- Laatste refresh: **18 november 2026, 05:45** (Amsterdamse tijd)
+- Voorstellingen (titel per theater): **7007**
+- Speeldata: **9751**
+- Laatste refresh: **19 november 2026, 05:46** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -425,19 +425,19 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Bostheater | Amstelveen | nee | ok |
 | De Landing | Amstelveen | deels | ok |
 | Schouwburg Amstelveen | Amstelveen | ja | ok |
-| Amsterdams Marionetten Theater | Amsterdam | ja | ok |
+| Amsterdams Marionetten Theater | Amsterdam | ja | terugval |
 | Bijlmer Parktheater | Amsterdam | ja | ok |
 | CC Amstel | Amsterdam | ja | ok |
 | De Kleine Komedie | Amsterdam | nee | ok |
 | DeLaMar | Amsterdam | ja | ok |
 | Frascati | Amsterdam | ja | ok |
 | Koninklijk Theater Carré | Amsterdam | nee | ok |
-| Muziekgebouw aan 't IJ | Amsterdam | ja | terugval |
+| Muziekgebouw aan 't IJ | Amsterdam | ja | ok |
 | Plein Theater | Amsterdam | nee | ok |
 | Podium Mozaïek | Amsterdam | ja | ok |
 | Scala Theater | Amsterdam | ja | ok |
 | Stadsschouwburg Amsterdam | Amsterdam | nee | ok |
-| Theater Bellevue | Amsterdam | ja | terugval |
+| Theater Bellevue | Amsterdam | ja | ok |
 | Theater De Krakeling | Amsterdam | ja | ok |
 | Theater de Meervaart | Amsterdam | ja | ok |
 | VU Griffioen | Amsterdam | ja | ok |
@@ -458,7 +458,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Zaal 3 | Den Haag | ja | terugval |
 | Theater Ins Blau | Leiden | ja | ok |
 | Theater Koningshof | Maassluis | deels | ok |
-| De Muze | Noordwijk | deels | ok |
+| De Muze | Noordwijk | deels | terugval |
 | Maas theater en dans | Rotterdam | ja | ok |
 | Theater Rotterdam (TR25 Schouwburg) | Rotterdam | – | gepauzeerd sinds 2026-10-14 |
 | Theater Rotterdam (TR8 William Boothlaan) | Rotterdam | – | gepauzeerd sinds 2026-10-14 |
