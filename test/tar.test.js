@@ -27,7 +27,9 @@ test('TAR: agenda + lijst-endpoint, Happy Hour/residenties/workshops weg, maker,
       if (url.includes('/wp-json/tar/v1/list')) return r.fulfill({ status: 200, contentType: 'application/json', body: lijst });
       return r.fulfill({ status: 200, contentType: 'text/html', body: agenda });
     });
-    shows = await scrapeTar({ page, theater, robots: { isAllowed: () => true }, waitForTurn: async () => {}, log: (m) => logs.push(m), warn: (m) => logs.push(`WARN ${m}`) });
+    // De fixture is van 7 okt 2026; zonder vaste referentie schuift "05.11"
+    // na de speeldata naar het volgende jaar (de test faalde vanaf nov 2026).
+    shows = await scrapeTar({ page, theater, robots: { isAllowed: () => true }, waitForTurn: async () => {}, log: (m) => logs.push(m), warn: (m) => logs.push(`WARN ${m}`), referentie: new Date('2026-10-07T12:00:00Z') });
   } finally {
     await browser.close();
   }

@@ -51,15 +51,25 @@ function isPodiumpasEligible(soort) {
  *   afweging als bij Karavaan.
  * - Boekingsknop is een JS-aanroep (javascript:openTicketing(...)), geen
  *   directe URL — reserverenUrl valt terug op de detailpagina.
+ * - Sanity check (20 nov 2026): geeft de agendapagina geen OK-status, of
+ *   staat er geen enkele kaart (.item-inner), dan een exception in plaats
+ *   van stil 0 (sinds 18 nov gaf de pagina geen 200 en vonden we 0 kaarten,
+ *   zonder DIAGNOSE). Met de exception logt de nachtrun een DIAGNOSE-regel.
+ *
+ * `referentie`: de datum vanaf waar het jaar van "28 aug" wordt bepaald
+ * (standaard nu; de test zet de dag van de fixture).
  */
-export async function scrapeCorrosia({ page, theater, robots, waitForTurn, log }) {
+export async function scrapeCorrosia({ page, theater, robots, waitForTurn, log, referentie = new Date() }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
     return [];
   }
 
   await waitForTurn();
-  await page.goto(theater.agendaUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  const antwoord = await page.goto(theater.agendaUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  if (!antwoord || !antwoord.ok()) {
+    throw new Error(`agendapagina gaf HTTP ${antwoord?.status() ?? '?'} op ${theater.agendaUrl} — site veranderd of geblokkeerd?`);
+  }
 
   const rawItems = await page.evaluate(() => {
     return Array.from(document.querySelectorAll('.item-inner')).map((el) => {
@@ -81,8 +91,11 @@ export async function scrapeCorrosia({ page, theater, robots, waitForTurn, log }
   });
 
   log(`${rawItems.length} voorstellingen gevonden op de agendapagina`);
+  if (rawItems.length === 0) {
+    throw new Error(`geen agendakaarten (.item-inner) op ${theater.agendaUrl} — site veranderd of geblokkeerd?`);
+  }
 
-  const parseDay = createDutchAbbrevDayParser();
+  const parseDay = createDutchAbbrevDayParser(referentie);
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();
   const shows = [];

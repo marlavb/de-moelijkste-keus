@@ -469,6 +469,12 @@ export const THEATERS = [
     agendaUrl: 'https://www.hnt.nl/nl/voorstellingen',
     podiumpas: true,
     podiumpasReserveren: HNT_RESERVEREN,
+    // Gepauzeerd: sinds 7 nov 2026 krijgt onze scraper in CI een 403 met
+    // een botcontrole ("Establishing a secure connection...", DIAGNOSE op
+    // https://www.hnt.nl/nl/voorstellingen; Koninklijke Schouwburg, Theater
+    // aan het Spui en Zaal 3 delen die pagina). Zelfde botcontrole als
+    // TR25/TR8. We omzeilen dat niet. Terugzetten = deze regel weghalen.
+    gepauzeerd: { sinds: '2026-11-07', reden: '403 botcontrole sinds 7 nov' },
   },
   {
     id: 'theateraanhetspui',
@@ -480,6 +486,12 @@ export const THEATERS = [
     agendaUrl: 'https://www.hnt.nl/nl/voorstellingen',
     podiumpas: true,
     podiumpasReserveren: HNT_RESERVEREN,
+    // Gepauzeerd: sinds 7 nov 2026 krijgt onze scraper in CI een 403 met
+    // een botcontrole ("Establishing a secure connection...", DIAGNOSE op
+    // https://www.hnt.nl/nl/voorstellingen; Koninklijke Schouwburg, Theater
+    // aan het Spui en Zaal 3 delen die pagina). Zelfde botcontrole als
+    // TR25/TR8. We omzeilen dat niet. Terugzetten = deze regel weghalen.
+    gepauzeerd: { sinds: '2026-11-07', reden: '403 botcontrole sinds 7 nov' },
   },
   {
     id: 'zaal3',
@@ -491,6 +503,12 @@ export const THEATERS = [
     agendaUrl: 'https://www.hnt.nl/nl/voorstellingen',
     podiumpas: true,
     podiumpasReserveren: HNT_RESERVEREN,
+    // Gepauzeerd: sinds 7 nov 2026 krijgt onze scraper in CI een 403 met
+    // een botcontrole ("Establishing a secure connection...", DIAGNOSE op
+    // https://www.hnt.nl/nl/voorstellingen; Koninklijke Schouwburg, Theater
+    // aan het Spui en Zaal 3 delen die pagina). Zelfde botcontrole als
+    // TR25/TR8. We omzeilen dat niet. Terugzetten = deze regel weghalen.
+    gepauzeerd: { sinds: '2026-11-07', reden: '403 botcontrole sinds 7 nov' },
   },
   {
     id: 'tr25',
@@ -1014,6 +1032,11 @@ export const THEATERS = [
     podiumpas: true,
     // ~19 agendapagina's × 5 s crawl-delay ≈ 1,5 min.
     budgetMinuten: 5,
+    // Gepauzeerd: sinds 12 nov 2026 krijgt onze scraper in CI een 403 met
+    // een botcontrole ("Establishing a secure connection...", DIAGNOSE op
+    // https://www.orpheus.nl/voorstellingen). Zelfde botcontrole als
+    // TR25/TR8. We omzeilen dat niet. Terugzetten = deze regel weghalen.
+    gepauzeerd: { sinds: '2026-11-12', reden: '403 botcontrole sinds 12 nov' },
   },
   // Bron Podiumpas: https://podiumpas.nl/waar-te-besteden en
   // https://www.agnietenhof.nl/kaartverkoopinformatie-jxyz (7 okt 2026): alleen
