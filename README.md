@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (63 ok, 7 terugval, 10 gepauzeerd, 1 leeg)
-- Voorstellingen (titel per theater): **7007**
-- Speeldata: **9751**
-- Laatste refresh: **19 november 2026, 05:46** (Amsterdamse tijd)
+- Theaters: **81** (62 ok, 8 terugval, 10 gepauzeerd, 1 leeg)
+- Voorstellingen (titel per theater): **6962**
+- Speeldata: **9687**
+- Laatste refresh: **20 november 2026, 05:43** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -425,15 +425,15 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Bostheater | Amstelveen | nee | ok |
 | De Landing | Amstelveen | deels | ok |
 | Schouwburg Amstelveen | Amstelveen | ja | ok |
-| Amsterdams Marionetten Theater | Amsterdam | ja | terugval |
+| Amsterdams Marionetten Theater | Amsterdam | ja | ok |
 | Bijlmer Parktheater | Amsterdam | ja | ok |
 | CC Amstel | Amsterdam | ja | ok |
-| De Kleine Komedie | Amsterdam | nee | ok |
+| De Kleine Komedie | Amsterdam | nee | terugval |
 | DeLaMar | Amsterdam | ja | ok |
 | Frascati | Amsterdam | ja | ok |
 | Koninklijk Theater Carré | Amsterdam | nee | ok |
 | Muziekgebouw aan 't IJ | Amsterdam | ja | ok |
-| Plein Theater | Amsterdam | nee | ok |
+| Plein Theater | Amsterdam | nee | terugval |
 | Podium Mozaïek | Amsterdam | ja | ok |
 | Scala Theater | Amsterdam | ja | ok |
 | Stadsschouwburg Amsterdam | Amsterdam | nee | ok |
@@ -457,8 +457,8 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater aan het Spui | Den Haag | ja | terugval |
 | Zaal 3 | Den Haag | ja | terugval |
 | Theater Ins Blau | Leiden | ja | ok |
-| Theater Koningshof | Maassluis | deels | ok |
-| De Muze | Noordwijk | deels | terugval |
+| Theater Koningshof | Maassluis | deels | terugval |
+| De Muze | Noordwijk | deels | ok |
 | Maas theater en dans | Rotterdam | ja | ok |
 | Theater Rotterdam (TR25 Schouwburg) | Rotterdam | – | gepauzeerd sinds 2026-10-14 |
 | Theater Rotterdam (TR8 William Boothlaan) | Rotterdam | – | gepauzeerd sinds 2026-10-14 |
