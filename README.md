@@ -12,7 +12,7 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (62 ok, 8 terugval, 10 gepauzeerd, 1 leeg)
+- Theaters: **81** (62 ok, 4 terugval, 14 gepauzeerd, 1 leeg)
 - Voorstellingen (titel per theater): **6962**
 - Speeldata: **9687**
 - Laatste refresh: **20 november 2026, 05:43** (Amsterdamse tijd)
@@ -453,9 +453,9 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 |---|---|---|---|
 | Theater het Kruispunt | Barendrecht | – | gepauzeerd sinds 2026-09-28 |
 | Isala theater | Capelle aan den IJssel | – | gepauzeerd sinds 2026-09-28 |
-| Koninklijke Schouwburg | Den Haag | ja | terugval |
-| Theater aan het Spui | Den Haag | ja | terugval |
-| Zaal 3 | Den Haag | ja | terugval |
+| Koninklijke Schouwburg | Den Haag | ja | gepauzeerd sinds 2026-11-07 |
+| Theater aan het Spui | Den Haag | ja | gepauzeerd sinds 2026-11-07 |
+| Zaal 3 | Den Haag | ja | gepauzeerd sinds 2026-11-07 |
 | Theater Ins Blau | Leiden | ja | ok |
 | Theater Koningshof | Maassluis | deels | terugval |
 | De Muze | Noordwijk | deels | ok |
@@ -523,7 +523,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| Theater Orpheus | Apeldoorn | deels | terugval |
+| Theater Orpheus | Apeldoorn | deels | gepauzeerd sinds 2026-11-12 |
 | Huis Oostpool | Arnhem | ja | ok |
 | Musis Arnhem | Arnhem | deels | ok |
 | Stadstheater Arnhem | Arnhem | – | leeg |
