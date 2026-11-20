@@ -56,7 +56,9 @@ function leesArtikelen(html) {
  * HTML-rijen, `hasMore`), net als de knop "meer laden" op de site. Samen ~6
  * verzoeken. Geen statuslabels behalve de ticketknop.
  */
-export async function scrapeTar({ page, theater, robots, waitForTurn, log, warn }) {
+// `referentie`: de datum vanaf waar het jaar van "05.11" wordt bepaald
+// (standaard nu; de test zet de dag van de fixture).
+export async function scrapeTar({ page, theater, robots, waitForTurn, log, warn, referentie = new Date() }) {
   if (!robots.isAllowed(AGENDA_PATH)) {
     log(`robots.txt verbiedt ${AGENDA_PATH} op ${theater.baseUrl} — sla over.`);
     return [];
@@ -87,7 +89,7 @@ export async function scrapeTar({ page, theater, robots, waitForTurn, log, warn 
   }
   if (rijen.length < total) warn(`${rijen.length} van ${total} speeldata gelezen — lijst-endpoint veranderd?`);
 
-  const parseDay = createNumericDayParser();
+  const parseDay = createNumericDayParser(referentie);
   const buildId = createIdBuilder();
   const opgehaaldOp = new Date().toISOString();
   const shows = [];
