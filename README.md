@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (62 ok, 4 terugval, 14 gepauzeerd, 1 leeg)
-- Voorstellingen (titel per theater): **6962**
-- Speeldata: **9687**
-- Laatste refresh: **20 november 2026, 05:43** (Amsterdamse tijd)
+- Theaters: **81** (65 ok, 1 terugval, 14 gepauzeerd, 1 leeg)
+- Voorstellingen (titel per theater): **6465**
+- Speeldata: **8950**
+- Laatste refresh: **21 november 2026, 05:41** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -428,12 +428,12 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Amsterdams Marionetten Theater | Amsterdam | ja | ok |
 | Bijlmer Parktheater | Amsterdam | ja | ok |
 | CC Amstel | Amsterdam | ja | ok |
-| De Kleine Komedie | Amsterdam | nee | terugval |
+| De Kleine Komedie | Amsterdam | nee | ok |
 | DeLaMar | Amsterdam | ja | ok |
 | Frascati | Amsterdam | ja | ok |
 | Koninklijk Theater Carré | Amsterdam | nee | ok |
 | Muziekgebouw aan 't IJ | Amsterdam | ja | ok |
-| Plein Theater | Amsterdam | nee | terugval |
+| Plein Theater | Amsterdam | nee | ok |
 | Podium Mozaïek | Amsterdam | ja | ok |
 | Scala Theater | Amsterdam | ja | ok |
 | Stadsschouwburg Amsterdam | Amsterdam | nee | ok |
@@ -453,11 +453,11 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 |---|---|---|---|
 | Theater het Kruispunt | Barendrecht | – | gepauzeerd sinds 2026-09-28 |
 | Isala theater | Capelle aan den IJssel | – | gepauzeerd sinds 2026-09-28 |
-| Koninklijke Schouwburg | Den Haag | ja | gepauzeerd sinds 2026-11-07 |
-| Theater aan het Spui | Den Haag | ja | gepauzeerd sinds 2026-11-07 |
-| Zaal 3 | Den Haag | ja | gepauzeerd sinds 2026-11-07 |
+| Koninklijke Schouwburg | Den Haag | – | gepauzeerd sinds 2026-11-07 |
+| Theater aan het Spui | Den Haag | – | gepauzeerd sinds 2026-11-07 |
+| Zaal 3 | Den Haag | – | gepauzeerd sinds 2026-11-07 |
 | Theater Ins Blau | Leiden | ja | ok |
-| Theater Koningshof | Maassluis | deels | terugval |
+| Theater Koningshof | Maassluis | deels | ok |
 | De Muze | Noordwijk | deels | ok |
 | Maas theater en dans | Rotterdam | ja | ok |
 | Theater Rotterdam (TR25 Schouwburg) | Rotterdam | – | gepauzeerd sinds 2026-10-14 |
@@ -523,7 +523,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 
 | Theater | Stad | Podiumpas | Status |
 |---|---|---|---|
-| Theater Orpheus | Apeldoorn | deels | gepauzeerd sinds 2026-11-12 |
+| Theater Orpheus | Apeldoorn | – | gepauzeerd sinds 2026-11-12 |
 | Huis Oostpool | Arnhem | ja | ok |
 | Musis Arnhem | Arnhem | deels | ok |
 | Stadstheater Arnhem | Arnhem | – | leeg |
