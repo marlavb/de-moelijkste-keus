@@ -26,7 +26,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/agnes-obel": {
-   "opgehaaldOp": "2026-11-14T04:06:30.054Z",
+   "opgehaaldOp": "2026-11-21T04:06:14.850Z",
    "data": {
     "naam": "Agnes Obel",
     "events": [
@@ -34,7 +34,7 @@
       "id": "36657",
       "start": "2027-09-27T20:00:00+02:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": "waiting_list",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36657&flow=return&oncompletion=return&promocode=FLOWERS&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36657%26upsellids%3D36984%252C36983&saleschannelid=2&skinid=10010&withauthentication=no&signature=1dbc22aa9fea73888dfb10e580b9d50874b74a02490a42a2465828683353260f"
      }
@@ -58,7 +58,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/ashton-brothers": {
-   "opgehaaldOp": "2026-11-14T04:06:26.049Z",
+   "opgehaaldOp": "2026-11-21T04:06:10.885Z",
    "data": {
     "naam": "Ashton Brothers",
     "events": [
@@ -90,7 +90,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/bianca-del-rio-2027": {
-   "opgehaaldOp": "2026-11-14T04:06:27.048Z",
+   "opgehaaldOp": "2026-11-21T04:06:11.850Z",
    "data": {
     "naam": "Bianca Del Rio",
     "events": [
@@ -106,7 +106,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/billy-ocean-2027": {
-   "opgehaaldOp": "2026-11-14T04:06:31.050Z",
+   "opgehaaldOp": "2026-11-21T04:06:15.853Z",
    "data": {
     "naam": "Billy Ocean",
     "events": [
@@ -122,7 +122,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/blancowhite": {
-   "opgehaaldOp": "2026-11-14T04:06:25.232Z",
+   "opgehaaldOp": "2026-11-21T04:06:09.855Z",
    "data": {
     "naam": "Blanco White",
     "events": [
@@ -170,7 +170,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/brabo-leone": {
-   "opgehaaldOp": "2026-11-14T04:06:32.053Z",
+   "opgehaaldOp": "2026-11-21T04:06:16.888Z",
    "data": {
     "naam": "Brabo Leone",
     "events": [
@@ -282,7 +282,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/de-proefkeuken-en-de-wc-van-tijd": {
-   "opgehaaldOp": "2026-11-14T04:06:24.070Z",
+   "opgehaaldOp": "2026-11-21T04:06:08.855Z",
    "data": {
     "naam": "Proefkeuken",
     "events": [
@@ -410,25 +410,17 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/evita": {
-   "opgehaaldOp": "2026-11-16T04:04:36.843Z",
+   "opgehaaldOp": "2026-11-21T04:06:06.848Z",
    "data": {
     "naam": "Evita",
     "events": [
      {
-      "id": "36508",
-      "start": "2026-11-17T20:00:00+01:00",
-      "salesStatus": "on_sale",
-      "statusID": "last_chance",
-      "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36508&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36508%26upsellids%3D35084%252C35087%252C35086%252C35085&saleschannelid=2&skinid=1&withauthentication=no&signature=d74513d39c8ca46a54361b0424add40e2995aeffe91e2400034c053c424e58c3"
-     },
-     {
       "id": "36509",
-      "start": "2026-11-18T20:00:00+01:00",
+      "start": "2027-01-11T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "last_chance",
+      "statusID": "waiting_list",
       "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36509&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36509%26upsellids%3D35090%252C35089%252C35088%252C35091&saleschannelid=2&skinid=1&withauthentication=no&signature=ba35a04afa4fda90389a517e988e990311f17909b5ce6578994600af9a7be5bd"
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36509&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36509%26upsellids%3D35090%252C37198%252C37197%252C35091&saleschannelid=2&skinid=1&withauthentication=no&signature=249e074701881c405b62ba21414238a0ea8cc02c7c8c33de0a0050d6895ef30e"
      }
     ]
    }
@@ -1362,7 +1354,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/matthew-bourne-the-car-man": {
-   "opgehaaldOp": "2026-11-20T04:05:18.172Z",
+   "opgehaaldOp": "2026-11-21T04:06:05.993Z",
    "data": {
     "naam": "Matthew Bourne's The Car Man",
     "events": [
@@ -1378,7 +1370,7 @@
       "id": "36671",
       "start": "2026-11-26T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": null,
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36671&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36671%26upsellids%3D36127%252C36123%252C36120%252C36133&saleschannelid=2&skinid=1&withauthentication=no&signature=05d6f279c8555791c626e2400b1c26805e87eae045147493689053c183a76a2c"
      },
@@ -1506,7 +1498,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/patrick-laureij-kintsugi": {
-   "opgehaaldOp": "2026-11-20T04:05:17.000Z",
+   "opgehaaldOp": "2026-11-21T04:06:04.876Z",
    "data": {
     "naam": "Patrick Laureij",
     "events": [
@@ -1650,7 +1642,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/rayen-panday": {
-   "opgehaaldOp": "2026-11-14T04:06:29.063Z",
+   "opgehaaldOp": "2026-11-21T04:06:13.860Z",
    "data": {
     "naam": "Rayen Panday",
     "events": [
@@ -1666,7 +1658,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/rhythm-flow-ish": {
-   "opgehaaldOp": "2026-11-14T04:06:28.055Z",
+   "opgehaaldOp": "2026-11-21T04:06:12.881Z",
    "data": {
     "naam": "ISH - Rhythm & Flow",
     "events": [
@@ -1730,7 +1722,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/ruth-jacott": {
-   "opgehaaldOp": "2026-11-14T04:06:23.047Z",
+   "opgehaaldOp": "2026-11-21T04:06:07.880Z",
    "data": {
     "naam": "Ruth Jacott",
     "events": [

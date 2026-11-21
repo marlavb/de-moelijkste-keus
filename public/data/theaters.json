@@ -251,7 +251,10 @@
         "toelichting": "Telefonisch of per mail, vanaf 30 dagen voor de voorstelling."
       },
       "lat": 52.08189,
-      "lng": 4.31582
+      "lng": 4.31582,
+      "gepauzeerd": true,
+      "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
+      "meldingLink": "https://www.hnt.nl/nl/voorstellingen"
     },
     "theateraanhetspui": {
       "naam": "Theater aan het Spui",
@@ -263,7 +266,10 @@
         "toelichting": "Telefonisch of per mail, vanaf 30 dagen voor de voorstelling."
       },
       "lat": 52.07621,
-      "lng": 4.31677
+      "lng": 4.31677,
+      "gepauzeerd": true,
+      "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
+      "meldingLink": "https://www.hnt.nl/nl/voorstellingen"
     },
     "zaal3": {
       "naam": "Zaal 3",
@@ -275,7 +281,10 @@
         "toelichting": "Telefonisch of per mail, vanaf 30 dagen voor de voorstelling."
       },
       "lat": 52.07664,
-      "lng": 4.29116
+      "lng": 4.29116,
+      "gepauzeerd": true,
+      "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
+      "meldingLink": "https://www.hnt.nl/nl/voorstellingen"
     },
     "tr25": {
       "naam": "Theater Rotterdam (TR25 Schouwburg)",
@@ -593,7 +602,10 @@
       "stad": "Apeldoorn",
       "podiumpas": true,
       "lat": 52.21971,
-      "lng": 5.95295
+      "lng": 5.95295,
+      "gepauzeerd": true,
+      "melding": "Agenda tijdelijk niet beschikbaar. Bekijk de voorstellingen op de website van het theater.",
+      "meldingLink": "https://www.orpheus.nl/voorstellingen"
     },
     "agnietenhof": {
       "naam": "Schouwburg Agnietenhof",

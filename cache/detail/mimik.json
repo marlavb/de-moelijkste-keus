@@ -47,6 +47,33 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/a-little-gray-wolf-will-come-met-qa-met-regisseur-zhanna-agalakova": {
+   "opgehaaldOp": "2026-11-21T04:41:21.979Z",
+   "data": {
+    "categorie": "Met Q&A",
+    "kop": "A Little Gray Wolf Will Come (met Q&A met regisseur Zhanna Agalakova)",
+    "onder": "Zhanna Agalakova",
+    "eersteStart": "2026-11-28T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-28",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": "2026-11-28",
+      "tijd": "19:00",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10389102"
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/a-little-grey-wolf-will-come-met-qa-met-regisseur-zhanna-agalakova": {
    "opgehaaldOp": "2026-11-03T04:45:15.822Z",
    "data": {
@@ -481,7 +508,7 @@
    }
   },
   "https://www.mimik.nl/agenda/cameretten": {
-   "opgehaaldOp": "2026-11-14T04:39:54.435Z",
+   "opgehaaldOp": "2026-11-21T04:41:30.101Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Cameretten",
@@ -651,7 +678,7 @@
    }
   },
   "https://www.mimik.nl/agenda/club-lam-dolle-mina": {
-   "opgehaaldOp": "2026-11-14T04:39:52.421Z",
+   "opgehaaldOp": "2026-11-21T04:41:28.119Z",
    "data": {
     "categorie": "Theater",
     "kop": "Club Lam",
@@ -689,7 +716,7 @@
    }
   },
   "https://www.mimik.nl/agenda/compagnie-red-yellow-blue": {
-   "opgehaaldOp": "2026-11-14T04:39:59.384Z",
+   "opgehaaldOp": "2026-11-21T04:41:34.975Z",
    "data": {
     "categorie": "Theater",
     "kop": "Compagnie Red Yellow & Blue",
@@ -975,7 +1002,7 @@
    }
   },
   "https://www.mimik.nl/agenda/dorine-wiersma": {
-   "opgehaaldOp": "2026-11-14T04:39:55.504Z",
+   "opgehaaldOp": "2026-11-21T04:41:31.227Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Dorine Wiersma",
@@ -1170,7 +1197,7 @@
    }
   },
   "https://www.mimik.nl/agenda/ellen-ten-damme": {
-   "opgehaaldOp": "2026-11-14T04:39:47.407Z",
+   "opgehaaldOp": "2026-11-21T04:41:24.074Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Ellen ten Damme",
@@ -1189,7 +1216,7 @@
    }
   },
   "https://www.mimik.nl/agenda/emma-buysse-luna-joosten-guyland": {
-   "opgehaaldOp": "2026-11-14T04:39:56.487Z",
+   "opgehaaldOp": "2026-11-21T04:41:32.092Z",
    "data": {
     "categorie": "Theater",
     "kop": "Emma Buysse & Luna Joosten",
@@ -1208,7 +1235,7 @@
    }
   },
   "https://www.mimik.nl/agenda/eric-vloeimans": {
-   "opgehaaldOp": "2026-11-14T04:39:53.414Z",
+   "opgehaaldOp": "2026-11-21T04:41:29.187Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Eric Vloeimans",
@@ -2164,7 +2191,7 @@
    }
   },
   "https://www.mimik.nl/agenda/izaline-calister-rum-and-coca-cola": {
-   "opgehaaldOp": "2026-11-20T04:43:14.293Z",
+   "opgehaaldOp": "2026-11-21T04:41:16.922Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Izaline Calister",
@@ -2259,7 +2286,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kamagurka": {
-   "opgehaaldOp": "2026-11-14T04:39:51.433Z",
+   "opgehaaldOp": "2026-11-21T04:41:27.135Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Kamagurka",
@@ -2373,7 +2400,7 @@
    }
   },
   "https://www.mimik.nl/agenda/klein-amsterdam-producties": {
-   "opgehaaldOp": "2026-11-14T04:40:00.414Z",
+   "opgehaaldOp": "2026-11-21T04:41:36.080Z",
    "data": {
     "categorie": "Junior",
     "kop": "Klein Amsterdam Producties",
@@ -2739,7 +2766,7 @@
    }
   },
   "https://www.mimik.nl/agenda/millennium-jazz-orchestra-november-26": {
-   "opgehaaldOp": "2026-11-14T04:39:50.450Z",
+   "opgehaaldOp": "2026-11-21T04:41:26.129Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Millennium Jazz Orchestra | november",
@@ -2815,7 +2842,7 @@
    }
   },
   "https://www.mimik.nl/agenda/mimik-xs-november": {
-   "opgehaaldOp": "2026-11-20T04:43:18.471Z",
+   "opgehaaldOp": "2026-11-21T04:41:20.972Z",
    "data": {
     "categorie": "Theater",
     "kop": "MIMIK XS | november",
@@ -3194,7 +3221,7 @@
    }
   },
   "https://www.mimik.nl/agenda/poezieboys-theatergroep-echo": {
-   "opgehaaldOp": "2026-11-14T04:39:48.399Z",
+   "opgehaaldOp": "2026-11-21T04:41:25.068Z",
    "data": {
     "categorie": "Woordkunst",
     "kop": "Poezieboys & theatergroep ECHO",
@@ -4141,7 +4168,7 @@
    }
   },
   "https://www.mimik.nl/agenda/ta-joela": {
-   "opgehaaldOp": "2026-11-14T04:39:57.421Z",
+   "opgehaaldOp": "2026-11-21T04:41:33.087Z",
    "data": {
     "categorie": "Theater",
     "kop": "Ta Joela",
@@ -4198,7 +4225,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tent-van-het-oosten-mei": {
-   "opgehaaldOp": "2026-11-14T04:39:58.415Z",
+   "opgehaaldOp": "2026-11-21T04:41:33.973Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Tent van het Oosten | mei",
@@ -4217,7 +4244,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tent-van-het-oosten-november": {
-   "opgehaaldOp": "2026-11-20T04:43:16.471Z",
+   "opgehaaldOp": "2026-11-21T04:41:19.245Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Tent van het Oosten | november",
@@ -4537,7 +4564,7 @@
    }
   },
   "https://www.mimik.nl/agenda/theater-kwikstaart-dwars-door-het-beton": {
-   "opgehaaldOp": "2026-11-20T04:43:15.339Z",
+   "opgehaaldOp": "2026-11-21T04:41:17.858Z",
    "data": {
     "categorie": "Junior",
     "kop": "Theater Kwikstaart",
@@ -4764,25 +4791,6 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/via-rudolphi-producties-het-debuut-26": {
-   "opgehaaldOp": "2026-10-30T04:45:50.867Z",
-   "data": {
-    "categorie": "Theater",
-    "kop": "Via Rudolphi Producties",
-    "onder": "Het Debuut 2026",
-    "eersteStart": "2026-10-30T20:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-10-30",
-      "tijd": "20:00",
-      "zaal": "Theaterzaal",
-      "prijs": "€ 17,50",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10350439"
-     }
-    ]
-   }
-  },
   "https://www.mimik.nl/agenda/vier-minus-drei": {
    "opgehaaldOp": "2026-11-11T04:44:08.346Z",
    "data": {
@@ -4843,7 +4851,7 @@
    }
   },
   "https://www.mimik.nl/agenda/viggo-waas-eddie-b-wahr": {
-   "opgehaaldOp": "2026-11-14T04:39:46.416Z",
+   "opgehaaldOp": "2026-11-21T04:41:23.075Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Viggo Waas & Eddie B. Wahr",
@@ -4932,7 +4940,7 @@
    }
   },
   "https://www.mimik.nl/agenda/werkplaats-walhalla-danielle-deddens": {
-   "opgehaaldOp": "2026-11-15T04:42:06.149Z",
+   "opgehaaldOp": "2026-11-21T04:41:19.977Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Werkplaats Walhalla & Daniëlle Deddens",

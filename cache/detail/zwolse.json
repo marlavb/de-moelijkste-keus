@@ -94,7 +94,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/aladdin-de-musical": {
-   "opgehaaldOp": "2026-11-14T04:38:49.193Z",
+   "opgehaaldOp": "2026-11-21T04:40:27.688Z",
    "data": {
     "speeldata": [
      {
@@ -153,7 +153,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/alleen-maar-lieve-jongens-8plus": {
-   "opgehaaldOp": "2026-11-14T04:39:33.016Z",
+   "opgehaaldOp": "2026-11-21T04:41:07.551Z",
    "data": {
     "speeldata": [
      {
@@ -170,7 +170,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/amsterdam-burlesque-revue": {
-   "opgehaaldOp": "2026-11-14T04:39:38.810Z",
+   "opgehaaldOp": "2026-11-21T04:41:13.641Z",
    "data": {
     "speeldata": [
      {
@@ -204,7 +204,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/amsterdam-sinfonietta-ish-dance-collective": {
-   "opgehaaldOp": "2026-11-14T04:39:21.117Z",
+   "opgehaaldOp": "2026-11-21T04:40:55.638Z",
    "data": {
     "speeldata": [
      {
@@ -238,7 +238,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/anastasia-zwols-muziektheater": {
-   "opgehaaldOp": "2026-11-14T04:38:54.214Z",
+   "opgehaaldOp": "2026-11-21T04:40:32.700Z",
    "data": {
     "speeldata": [
      {
@@ -271,7 +271,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/anton-de-kom-mijn-vader": {
-   "opgehaaldOp": "2026-11-14T04:39:37.651Z",
+   "opgehaaldOp": "2026-11-21T04:41:11.903Z",
    "data": {
     "speeldata": [
      {
@@ -390,7 +390,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/banger-dan-ik-7plus": {
-   "opgehaaldOp": "2026-11-14T04:39:13.015Z",
+   "opgehaaldOp": "2026-11-21T04:40:47.511Z",
    "data": {
     "speeldata": [
      {
@@ -441,7 +441,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/beatrice-de-graaf-en-rik-peels": {
-   "opgehaaldOp": "2026-11-14T04:39:38.002Z",
+   "opgehaaldOp": "2026-11-21T04:41:12.551Z",
    "data": {
     "speeldata": [
      {
@@ -475,7 +475,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/behind-the-wall-conny-janssen-danst": {
-   "opgehaaldOp": "2026-11-14T04:39:29.124Z",
+   "opgehaaldOp": "2026-11-21T04:41:03.648Z",
    "data": {
     "speeldata": [
      {
@@ -543,7 +543,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/bleren-onder-de-peperbusse": {
-   "opgehaaldOp": "2026-11-14T04:39:15.973Z",
+   "opgehaaldOp": "2026-11-21T04:40:50.580Z",
    "data": {
     "speeldata": [
      {
@@ -551,8 +551,8 @@
       "datum": "do 14 jan '27",
       "tijd": "20.00 uur",
       "prijs": "€ 12,50",
-      "knop": "Bestel 16 nov",
-      "url": ""
+      "knop": "Bestellen",
+      "url": "https://apps.ticketmatic.com/widgets/zwolsetheaters/addtickets?edit=yes&event=73833&extraevents=73578&flow=basketwithcheckout&oncompletion=orderdetail&panels=customer%2cdelivery%2cpayment%2cvoucher&reservemoretickets=yes&returnurl=https%3a%2f%2fwww.zwolsetheaters.nl%2fprogramma%2f2026-2027%2fbleren-onder-de-peperbusse&saleschannelid=10000&skinid=10000&withauthentication=no&accesskey=eeff706e435ec82af08cd751&signature=7849d0af4e409bdea1bd93a0d4cc41a38f214fe3f9502b23f15f95f90d0d08f1&l=nl"
      }
     ],
     "locatie": "Schouwburg Odeon - Hanzestrohmzaal",
@@ -653,7 +653,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/britta-maria": {
-   "opgehaaldOp": "2026-11-14T04:39:18.105Z",
+   "opgehaaldOp": "2026-11-21T04:40:52.630Z",
    "data": {
     "speeldata": [
      {
@@ -721,7 +721,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/burger-koekoek-zzuit-in-sio": {
-   "opgehaaldOp": "2026-11-14T04:39:15.003Z",
+   "opgehaaldOp": "2026-11-21T04:40:49.496Z",
    "data": {
     "speeldata": [
      {
@@ -822,7 +822,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/cats": {
-   "opgehaaldOp": "2026-11-14T04:38:56.669Z",
+   "opgehaaldOp": "2026-11-21T04:40:35.124Z",
    "data": {
     "speeldata": [
      {
@@ -896,7 +896,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/christian-van-eijkelenburg": {
-   "opgehaaldOp": "2026-11-14T04:39:10.141Z",
+   "opgehaaldOp": "2026-11-21T04:40:43.617Z",
    "data": {
     "speeldata": [
      {
@@ -1049,7 +1049,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/daniel-arends-high-class-bitch": {
-   "opgehaaldOp": "2026-11-14T04:39:22.080Z",
+   "opgehaaldOp": "2026-11-21T04:40:56.599Z",
    "data": {
     "speeldata": [
      {
@@ -1117,7 +1117,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/de-alternatieve-nachtmis": {
-   "opgehaaldOp": "2026-11-14T04:39:11.146Z",
+   "opgehaaldOp": "2026-11-21T04:40:44.629Z",
    "data": {
     "speeldata": [
      {
@@ -1312,7 +1312,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/de-matthaeus-phion": {
-   "opgehaaldOp": "2026-11-14T04:39:27.090Z",
+   "opgehaaldOp": "2026-11-21T04:41:01.657Z",
    "data": {
     "speeldata": [
      {
@@ -1412,23 +1412,6 @@
     "prijzen": "normaal: € 25,-; CJP: € 22,-"
    }
   },
-  "https://www.zwolsetheaters.nl/programma/2026-2027/de-sekszusjes": {
-   "opgehaaldOp": "2026-10-30T04:44:56.897Z",
-   "data": {
-    "speeldata": [
-     {
-      "id": 72529,
-      "datum": "wo 04 nov '26",
-      "tijd": "20.30 uur",
-      "prijs": "Van € 18,- tot € 21,-",
-      "knop": "Bestellen",
-      "url": "https://apps.ticketmatic.com/widgets/zwolsetheaters/addtickets?edit=yes&event=72529&extraevents=72727%2c72928&flow=basketwithcheckout&oncompletion=orderdetail&panels=customer%2cdelivery%2cpayment%2cvoucher&reservemoretickets=yes&returnurl=https%3a%2f%2fwww.zwolsetheaters.nl%2fprogramma%2f2026-2027%2fde-sekszusjes&saleschannelid=10000&skinid=10000&withauthentication=no&accesskey=eeff706e435ec82af08cd751&signature=906ec4f92ca5a95e5b68c0a9bd891cd5a9771b3e6ebab341442b8ede0591495d&l=nl"
-     }
-    ],
-    "locatie": "Schouwburg Odeon - Dommerholtzaal",
-    "prijzen": "normaal: € 21,-; CJP: € 18,-"
-   }
-  },
   "https://www.zwolsetheaters.nl/programma/2026-2027/de-stilte-een-stem-geven": {
    "opgehaaldOp": "2026-11-15T04:41:22.780Z",
    "data": {
@@ -1464,7 +1447,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/de-tussentijdcapsule": {
-   "opgehaaldOp": "2026-11-17T04:40:04.017Z",
+   "opgehaaldOp": "2026-11-21T04:40:46.680Z",
    "data": {
     "speeldata": [
      {
@@ -1665,24 +1648,24 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/diggy-dex": {
-   "opgehaaldOp": "2026-11-14T04:39:02.122Z",
+   "opgehaaldOp": "2026-11-21T04:40:35.577Z",
    "data": {
     "speeldata": [
      {
       "id": 71994,
       "datum": "za 21 nov '26",
       "tijd": "20.00 uur",
-      "prijs": "Van € 37,50 tot € 44,50",
-      "knop": "Wachtlijst",
+      "prijs": "Van € 23,- tot € 44,50",
+      "knop": "Laatste kaarten",
       "url": "https://apps.ticketmatic.com/widgets/zwolsetheaters/addtickets?edit=yes&event=71994&extraevents=72000%2c72001&flow=basketwithcheckout&oncompletion=orderdetail&panels=customer%2cdelivery%2cpayment%2cvoucher&reservemoretickets=yes&returnurl=https%3a%2f%2fwww.zwolsetheaters.nl%2fprogramma%2f2026-2027%2fdiggy-dex&saleschannelid=10000&skinid=10000&withauthentication=no&accesskey=eeff706e435ec82af08cd751&signature=7edf586221f2671409780a480cb6de5f8e56a18dd3fa6600a608828c5bbfbe32&l=nl"
      }
     ],
     "locatie": "Theater de Spiegel - Mateboerzaal",
-    "prijzen": "normaal: Van € 37,50 tot € 44,50"
+    "prijzen": "normaal: Van € 23,- tot € 44,50"
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/djangan": {
-   "opgehaaldOp": "2026-11-14T04:39:32.096Z",
+   "opgehaaldOp": "2026-11-21T04:41:06.644Z",
    "data": {
     "speeldata": [
      {
@@ -1730,39 +1713,6 @@
     ],
     "locatie": "Schouwburg Odeon - Dommerholtzaal",
     "prijzen": "volwassenen: € 14,50"
-   }
-  },
-  "https://www.zwolsetheaters.nl/programma/2026-2027/een-doodgewoon-weekend": {
-   "opgehaaldOp": "2026-10-30T04:44:43.907Z",
-   "data": {
-    "speeldata": [
-     {
-      "id": 73771,
-      "datum": "vr 30 okt '26",
-      "tijd": "14.30 uur",
-      "prijs": "€ 10,-",
-      "knop": "Laatste kaarten",
-      "url": "https://apps.ticketmatic.com/widgets/zwolsetheaters/addtickets?edit=yes&event=73771&extraevents=&flow=basketwithcheckout&oncompletion=orderdetail&panels=customer%2cdelivery%2cpayment%2cvoucher&reservemoretickets=yes&returnurl=https%3a%2f%2fwww.zwolsetheaters.nl%2fprogramma%2f2026-2027%2feen-doodgewoon-weekend&saleschannelid=10000&skinid=10000&withauthentication=no&accesskey=eeff706e435ec82af08cd751&signature=0840e9cb42099567c573ae299adaaca44ade7103e4b7b5694ab668ee6d2ea204&l=nl"
-     },
-     {
-      "id": 73772,
-      "datum": "za 31 okt '26",
-      "tijd": "19.30 uur",
-      "prijs": "€ 10,-",
-      "knop": "Bestellen",
-      "url": "https://apps.ticketmatic.com/widgets/zwolsetheaters/addtickets?edit=yes&event=73772&extraevents=&flow=basketwithcheckout&oncompletion=orderdetail&panels=customer%2cdelivery%2cpayment%2cvoucher&reservemoretickets=yes&returnurl=https%3a%2f%2fwww.zwolsetheaters.nl%2fprogramma%2f2026-2027%2feen-doodgewoon-weekend&saleschannelid=10000&skinid=10000&withauthentication=no&accesskey=eeff706e435ec82af08cd751&signature=798252ccbc0ce338f715c150fbd5c439e434957d3bafd7aa42f893efbc2f8acf&l=nl"
-     },
-     {
-      "id": 73773,
-      "datum": "zo 01 nov '26",
-      "tijd": "14.30 uur",
-      "prijs": "€ 10,-",
-      "knop": "Bestellen",
-      "url": "https://apps.ticketmatic.com/widgets/zwolsetheaters/addtickets?edit=yes&event=73773&extraevents=&flow=basketwithcheckout&oncompletion=orderdetail&panels=customer%2cdelivery%2cpayment%2cvoucher&reservemoretickets=yes&returnurl=https%3a%2f%2fwww.zwolsetheaters.nl%2fprogramma%2f2026-2027%2feen-doodgewoon-weekend&saleschannelid=10000&skinid=10000&withauthentication=no&accesskey=eeff706e435ec82af08cd751&signature=d43f9226876aab389b3bbbd80016ebc7b9efa848aa231e72c296a166ec23d9f7&l=nl"
-     }
-    ],
-    "locatie": "Schouwburg Odeon - Papenstraattheater",
-    "prijzen": "normaal: € 10,-"
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/een-groter-verhaal": {
@@ -1816,7 +1766,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/efteling-vertelt-baron-1898": {
-   "opgehaaldOp": "2026-11-14T04:38:50.022Z",
+   "opgehaaldOp": "2026-11-21T04:40:28.513Z",
    "data": {
     "speeldata": [
      {
@@ -1841,7 +1791,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/eigenlijk-viggo-waas-ea": {
-   "opgehaaldOp": "2026-11-14T04:39:36.102Z",
+   "opgehaaldOp": "2026-11-21T04:41:10.652Z",
    "data": {
     "speeldata": [
      {
@@ -1994,7 +1944,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/francois-joubert-caillet-en-philippe-grisvard-organisatie-oude-muziek": {
-   "opgehaaldOp": "2026-11-14T04:39:19.003Z",
+   "opgehaaldOp": "2026-11-21T04:40:53.531Z",
    "data": {
     "speeldata": [
      {
@@ -2079,7 +2029,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/guido-weijers": {
-   "opgehaaldOp": "2026-11-14T04:39:05.123Z",
+   "opgehaaldOp": "2026-11-21T04:40:38.637Z",
    "data": {
     "speeldata": [
      {
@@ -2230,7 +2180,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/het-zwanenmeer": {
-   "opgehaaldOp": "2026-11-14T04:39:12.106Z",
+   "opgehaaldOp": "2026-11-21T04:40:45.635Z",
    "data": {
     "speeldata": [
      {
@@ -2679,7 +2629,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/jimmy-nelson": {
-   "opgehaaldOp": "2026-11-14T04:39:24.078Z",
+   "opgehaaldOp": "2026-11-21T04:40:58.649Z",
    "data": {
     "speeldata": [
      {
@@ -2696,7 +2646,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/joanne-telesford": {
-   "opgehaaldOp": "2026-11-14T04:39:04.103Z",
+   "opgehaaldOp": "2026-11-21T04:40:37.634Z",
    "data": {
     "speeldata": [
      {
@@ -2730,7 +2680,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/joosen-en-de-jager": {
-   "opgehaaldOp": "2026-11-14T04:39:28.134Z",
+   "opgehaaldOp": "2026-11-21T04:41:02.675Z",
    "data": {
     "speeldata": [
      {
@@ -2764,7 +2714,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/juliet": {
-   "opgehaaldOp": "2026-11-14T04:39:35.068Z",
+   "opgehaaldOp": "2026-11-21T04:41:09.646Z",
    "data": {
     "speeldata": [
      {
@@ -2931,7 +2881,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/kerst-met-mahler-6-phion": {
-   "opgehaaldOp": "2026-11-14T04:39:09.152Z",
+   "opgehaaldOp": "2026-11-21T04:40:42.678Z",
    "data": {
     "speeldata": [
      {
@@ -3033,7 +2983,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/kylian-introdans": {
-   "opgehaaldOp": "2026-11-14T04:38:52.217Z",
+   "opgehaaldOp": "2026-11-21T04:40:30.671Z",
    "data": {
     "speeldata": [
      {
@@ -3126,7 +3076,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/lets-flow-maas-theater-en-dans": {
-   "opgehaaldOp": "2026-11-14T04:39:07.136Z",
+   "opgehaaldOp": "2026-11-21T04:40:40.647Z",
    "data": {
     "speeldata": [
      {
@@ -3457,7 +3407,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/marije-bruinsma": {
-   "opgehaaldOp": "2026-11-14T04:39:26.000Z",
+   "opgehaaldOp": "2026-11-21T04:41:00.765Z",
    "data": {
     "speeldata": [
      {
@@ -3525,7 +3475,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/maya-show-1plus": {
-   "opgehaaldOp": "2026-11-14T04:38:53.007Z",
+   "opgehaaldOp": "2026-11-21T04:40:31.543Z",
    "data": {
     "speeldata": [
      {
@@ -3550,7 +3500,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/meester-mark": {
-   "opgehaaldOp": "2026-11-14T04:39:31.094Z",
+   "opgehaaldOp": "2026-11-21T04:41:05.628Z",
    "data": {
     "speeldata": [
      {
@@ -3923,7 +3873,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/nederlands-kamerkoor-vespers-rachmaninov": {
-   "opgehaaldOp": "2026-11-14T04:39:02.998Z",
+   "opgehaaldOp": "2026-11-21T04:40:36.520Z",
    "data": {
     "speeldata": [
      {
@@ -3957,7 +3907,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/neil-yount-tribute-band-zzuit-in-sio": {
-   "opgehaaldOp": "2026-11-14T04:39:33.993Z",
+   "opgehaaldOp": "2026-11-21T04:41:08.544Z",
    "data": {
     "speeldata": [
      {
@@ -4161,7 +4111,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/nu-is-het-nog-rustig-8plus-theater-artemis": {
-   "opgehaaldOp": "2026-11-14T04:39:14.186Z",
+   "opgehaaldOp": "2026-11-21T04:40:48.654Z",
    "data": {
     "speeldata": [
      {
@@ -4228,7 +4178,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/op-zoek-naar-bezoek-4plus": {
-   "opgehaaldOp": "2026-11-14T04:38:55.014Z",
+   "opgehaaldOp": "2026-11-21T04:40:33.505Z",
    "data": {
     "speeldata": [
      {
@@ -4447,7 +4397,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/pieter-jouke": {
-   "opgehaaldOp": "2026-11-14T04:39:20.103Z",
+   "opgehaaldOp": "2026-11-21T04:40:54.625Z",
    "data": {
     "speeldata": [
      {
@@ -4650,7 +4600,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/ratas-del-viejo-mundo-organisatie-oude-muziek": {
-   "opgehaaldOp": "2026-11-14T04:39:30.030Z",
+   "opgehaaldOp": "2026-11-21T04:41:04.599Z",
    "data": {
     "speeldata": [
      {
@@ -4981,7 +4931,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/roxeanne-hazes": {
-   "opgehaaldOp": "2026-11-14T04:39:23.111Z",
+   "opgehaaldOp": "2026-11-21T04:40:57.638Z",
    "data": {
     "speeldata": [
      {
@@ -4989,7 +4939,7 @@
       "datum": "vr 26 feb '27",
       "tijd": "20.00 uur",
       "prijs": "Van € 24,50 tot € 34,50",
-      "knop": "Laatste kaarten",
+      "knop": "Wachtlijst",
       "url": "https://apps.ticketmatic.com/widgets/zwolsetheaters/addtickets?edit=yes&event=72069&extraevents=72077%2c72078&flow=basketwithcheckout&oncompletion=orderdetail&panels=customer%2cdelivery%2cpayment%2cvoucher&reservemoretickets=yes&returnurl=https%3a%2f%2fwww.zwolsetheaters.nl%2fprogramma%2f2026-2027%2froxeanne-hazes&saleschannelid=10000&skinid=10000&withauthentication=no&accesskey=eeff706e435ec82af08cd751&signature=51a778d492b59cbc8bf921cfd2fba32ecd2f6bec3a3d254564109b5b8bd22588&l=nl"
      }
     ],
@@ -5015,7 +4965,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/sadettin-k": {
-   "opgehaaldOp": "2026-11-14T04:39:17.112Z",
+   "opgehaaldOp": "2026-11-21T04:40:51.698Z",
    "data": {
     "speeldata": [
      {
@@ -5189,23 +5139,6 @@
     ],
     "locatie": "Schouwburg Odeon - Hanzestrohmzaal",
     "prijzen": "normaal: Van € 10,- tot € 25,-"
-   }
-  },
-  "https://www.zwolsetheaters.nl/programma/2026-2027/soekarno": {
-   "opgehaaldOp": "2026-10-30T04:44:55.869Z",
-   "data": {
-    "speeldata": [
-     {
-      "id": 72203,
-      "datum": "wo 04 nov '26",
-      "tijd": "20.00 uur",
-      "prijs": "Van € 19,- tot € 29,50",
-      "knop": "Bestellen",
-      "url": "https://apps.ticketmatic.com/widgets/zwolsetheaters/addtickets?edit=yes&event=72203&extraevents=72727%2c72928&flow=basketwithcheckout&oncompletion=orderdetail&panels=customer%2cdelivery%2cpayment%2cvoucher&reservemoretickets=yes&returnurl=https%3a%2f%2fwww.zwolsetheaters.nl%2fprogramma%2f2026-2027%2fsoekarno&saleschannelid=10000&skinid=10000&withauthentication=no&accesskey=eeff706e435ec82af08cd751&signature=3f41a25b5cc4141293376e5efac891630683c2809838569587bcaf358c2aeb5c&l=nl"
-     }
-    ],
-    "locatie": "Schouwburg Odeon - Hanzestrohmzaal",
-    "prijzen": "normaal: Van € 19,- tot € 29,50; CJP: € 25,-"
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/spitters-emma-van-het-verzet": {
@@ -5651,7 +5584,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/the-dutch-tenors": {
-   "opgehaaldOp": "2026-11-14T04:39:25.129Z",
+   "opgehaaldOp": "2026-11-21T04:40:59.675Z",
    "data": {
     "speeldata": [
      {
@@ -5752,7 +5685,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/the-sunshine-boys": {
-   "opgehaaldOp": "2026-11-14T04:38:51.215Z",
+   "opgehaaldOp": "2026-11-21T04:40:29.696Z",
    "data": {
     "speeldata": [
      {
@@ -5972,7 +5905,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/timzingt": {
-   "opgehaaldOp": "2026-11-14T04:39:05.988Z",
+   "opgehaaldOp": "2026-11-21T04:40:39.498Z",
    "data": {
     "speeldata": [
      {
@@ -6183,7 +6116,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/vlamousse": {
-   "opgehaaldOp": "2026-11-14T04:39:08.101Z",
+   "opgehaaldOp": "2026-11-21T04:40:41.646Z",
    "data": {
     "speeldata": [
      {
@@ -6561,7 +6494,7 @@
    }
   },
   "https://www.zwolsetheaters.nl/programma/2026-2027/workshop-ridder-vechten-6plus": {
-   "opgehaaldOp": "2026-11-14T04:38:48.069Z",
+   "opgehaaldOp": "2026-11-21T04:40:26.576Z",
    "data": {
     "speeldata": [
      {
