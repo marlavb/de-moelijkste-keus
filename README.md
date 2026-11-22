@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (65 ok, 1 terugval, 14 gepauzeerd, 1 leeg)
-- Voorstellingen (titel per theater): **6465**
-- Speeldata: **8950**
-- Laatste refresh: **21 november 2026, 05:41** (Amsterdamse tijd)
+- Theaters: **81** (3 terugval, 63 ok, 14 gepauzeerd, 1 leeg)
+- Voorstellingen (titel per theater): **6430**
+- Speeldata: **8891**
+- Laatste refresh: **22 november 2026, 05:39** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -429,7 +429,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Bijlmer Parktheater | Amsterdam | ja | ok |
 | CC Amstel | Amsterdam | ja | ok |
 | De Kleine Komedie | Amsterdam | nee | ok |
-| DeLaMar | Amsterdam | ja | ok |
+| DeLaMar | Amsterdam | ja | terugval |
 | Frascati | Amsterdam | ja | ok |
 | Koninklijk Theater Carré | Amsterdam | nee | ok |
 | Muziekgebouw aan 't IJ | Amsterdam | ja | ok |
@@ -437,7 +437,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Podium Mozaïek | Amsterdam | ja | ok |
 | Scala Theater | Amsterdam | ja | ok |
 | Stadsschouwburg Amsterdam | Amsterdam | nee | ok |
-| Theater Bellevue | Amsterdam | ja | ok |
+| Theater Bellevue | Amsterdam | ja | terugval |
 | Theater De Krakeling | Amsterdam | ja | ok |
 | Theater de Meervaart | Amsterdam | ja | ok |
 | VU Griffioen | Amsterdam | ja | ok |
