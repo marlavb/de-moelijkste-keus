@@ -194,7 +194,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/cem-adrian-2027": {
-   "opgehaaldOp": "2026-11-15T04:06:50.244Z",
+   "opgehaaldOp": "2026-11-22T04:05:39.242Z",
    "data": {
     "naam": "Cem Adrian",
     "events": [
@@ -210,7 +210,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/chris-de-burgh-2027": {
-   "opgehaaldOp": "2026-11-15T04:06:51.257Z",
+   "opgehaaldOp": "2026-11-22T04:05:40.234Z",
    "data": {
     "naam": "Chris de Burgh",
     "events": [
@@ -442,7 +442,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/foil-arms-and-hog-smithereens": {
-   "opgehaaldOp": "2026-11-15T04:06:52.245Z",
+   "opgehaaldOp": "2026-11-22T04:05:41.240Z",
    "data": {
     "naam": "Foil Arms and Hog",
     "events": [
@@ -1290,7 +1290,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/lisa-ostermann-de-baas": {
-   "opgehaaldOp": "2026-11-15T04:06:48.245Z",
+   "opgehaaldOp": "2026-11-22T04:05:37.240Z",
    "data": {
     "naam": "Lisa Ostermann",
     "events": [
@@ -1298,7 +1298,7 @@
       "id": "37184",
       "start": "2027-01-18T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "waiting_list",
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37184&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37184%26upsellids%3D35877%252C35879%252C35875&saleschannelid=2&skinid=1&withauthentication=no&signature=39028fa17de759dcc902a417459b4f4df852149d8ded85da3abf56c672832d24"
      },
@@ -1306,7 +1306,7 @@
       "id": "37185",
       "start": "2027-01-19T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "waiting_list",
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37185&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37185%26upsellids%3D35878%252C35880%252C35876&saleschannelid=2&skinid=1&withauthentication=no&signature=537ea73f5fb6ab2871369bcc2551c3cd946a77f887c98a0f4d2d96e3d009e4b9"
      }
@@ -1314,7 +1314,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/loreena-mckennitt-the-mask-and-mirror-tour": {
-   "opgehaaldOp": "2026-11-15T04:06:49.245Z",
+   "opgehaaldOp": "2026-11-22T04:05:38.230Z",
    "data": {
     "naam": "Loreena McKennitt",
     "events": [
@@ -1354,7 +1354,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/matthew-bourne-the-car-man": {
-   "opgehaaldOp": "2026-11-21T04:06:05.993Z",
+   "opgehaaldOp": "2026-11-22T04:05:35.359Z",
    "data": {
     "naam": "Matthew Bourne's The Car Man",
     "events": [
@@ -1402,7 +1402,7 @@
       "id": "36681",
       "start": "2026-11-29T14:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": null,
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=36681&flow=return&oncompletion=return&promocode=regulier&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D36681%26upsellids%3D36132%252C36140%252C36138&saleschannelid=2&skinid=1&withauthentication=no&signature=dfa7c0266b24444e69f0a42d313bd8a497b48a942fa39a4ea0a1f51098fc1bbc"
      },
@@ -1498,7 +1498,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/patrick-laureij-kintsugi": {
-   "opgehaaldOp": "2026-11-21T04:06:04.876Z",
+   "opgehaaldOp": "2026-11-22T04:05:34.264Z",
    "data": {
     "naam": "Patrick Laureij",
     "events": [
@@ -1706,7 +1706,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/rufus-wainwright-metropole-orkest": {
-   "opgehaaldOp": "2026-11-15T04:06:47.251Z",
+   "opgehaaldOp": "2026-11-22T04:05:36.231Z",
    "data": {
     "naam": "Rufus Wainwright & Metropole Orkest",
     "events": [
@@ -1714,7 +1714,7 @@
       "id": "37175",
       "start": "2027-01-08T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "waiting_list",
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37175&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37175%26upsellids%3D35383%252C35382&saleschannelid=2&skinid=1&withauthentication=no&signature=4e3969b32a0ff8ee9bfb2e14265864712203b4e0af71605f0a80f2461c311e84"
      }
