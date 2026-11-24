@@ -74,33 +74,6 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/a-little-grey-wolf-will-come-met-qa-met-regisseur-zhanna-agalakova": {
-   "opgehaaldOp": "2026-11-03T04:45:15.822Z",
-   "data": {
-    "categorie": "Met Q&A",
-    "kop": "A Little Grey Wolf Will Come (met Q&A met regisseur Zhanna Agalakova)",
-    "onder": "Zhanna Agalakova",
-    "eersteStart": "2026-11-28T00:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-11-28",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
-     },
-     {
-      "datum": "2026-11-28",
-      "tijd": "19:00",
-      "zaal": "Filmzaal 4",
-      "prijs": "€ 13,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10389102"
-     }
-    ]
-   }
-  },
   "https://www.mimik.nl/agenda/a-talent-for-murder": {
    "opgehaaldOp": "2026-11-04T04:46:00.086Z",
    "data": {
@@ -121,7 +94,7 @@
    }
   },
   "https://www.mimik.nl/agenda/alex-ploeg-2027": {
-   "opgehaaldOp": "2026-11-17T04:40:46.569Z",
+   "opgehaaldOp": "2026-11-24T04:49:01.072Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Alex Ploeg",
@@ -503,6 +476,25 @@
       "prijs": "€ 18,50",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10355840"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/camembert-family-quiz": {
+   "opgehaaldOp": "2026-11-24T04:48:54.058Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Camembert (Family Quiz)",
+    "onder": "Matthieu Rumani",
+    "eersteStart": "2026-12-24T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-24",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
      }
     ]
    }
@@ -907,7 +899,7 @@
    }
   },
   "https://www.mimik.nl/agenda/de-theatertroep-vier-crematies-en-een-scheiding": {
-   "opgehaaldOp": "2026-11-17T04:40:44.600Z",
+   "opgehaaldOp": "2026-11-24T04:48:59.324Z",
    "data": {
     "categorie": "Theater",
     "kop": "De Theatertroep",
@@ -940,6 +932,33 @@
       "prijs": "€ 18,50",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10390005"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/dikkie-dik-en-de-verdwenen-knuffel-3": {
+   "opgehaaldOp": "2026-11-24T04:48:51.248Z",
+   "data": {
+    "categorie": "Junior",
+    "kop": "Dikkie Dik en de verdwenen knuffel (3+)",
+    "onder": "Joost van den Bosch",
+    "eersteStart": "2026-11-29T11:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-11-29",
+      "tijd": "11:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 9,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10392656"
+     },
+     {
+      "datum": "2026-12-02",
+      "tijd": "15:00",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 9,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10392657"
      }
     ]
    }
@@ -1235,7 +1254,7 @@
    }
   },
   "https://www.mimik.nl/agenda/esther-apituley": {
-   "opgehaaldOp": "2026-11-17T04:40:42.577Z",
+   "opgehaaldOp": "2026-11-24T04:48:57.070Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Esther Apituley",
@@ -2058,35 +2077,6 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/hamnet": {
-   "opgehaaldOp": "2026-11-03T04:45:12.573Z",
-   "data": {
-    "categorie": "Film",
-    "kop": "Hamnet",
-    "onder": "LAATSTE WEEK",
-    "eersteStart": "2026-11-10T14:00:00.0000000",
-    "speeldata": []
-   }
-  },
-  "https://www.mimik.nl/agenda/het-nut-2026": {
-   "opgehaaldOp": "2026-11-03T04:45:27.541Z",
-   "data": {
-    "categorie": "Theater",
-    "kop": "Het NUT",
-    "onder": "Als vader vechten is",
-    "eersteStart": "2026-11-20T20:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-11-20",
-      "tijd": "20:00",
-      "zaal": "Theaterzaal",
-      "prijs": "€ 18,50",
-      "knop": "Afgelast",
-      "href": null
-     }
-    ]
-   }
-  },
   "https://www.mimik.nl/agenda/het-nut-geplaceerd": {
    "opgehaaldOp": "2026-11-20T04:43:17.440Z",
    "data": {
@@ -2125,8 +2115,18 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/i-swear": {
+   "opgehaaldOp": "2026-11-24T04:48:52.069Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "I Swear",
+    "onder": "LAATSTE WEEK",
+    "eersteStart": "2026-12-01T13:45:00.0000000",
+    "speeldata": []
+   }
+  },
   "https://www.mimik.nl/agenda/ijb-special-extra": {
-   "opgehaaldOp": "2026-11-23T04:40:10.501Z",
+   "opgehaaldOp": "2026-11-24T04:48:48.949Z",
    "data": {
     "categorie": "Special",
     "kop": "IJB-Special Extra",
@@ -2446,7 +2446,7 @@
    }
   },
   "https://www.mimik.nl/agenda/korzo-breaking-generations": {
-   "opgehaaldOp": "2026-11-17T04:40:41.571Z",
+   "opgehaaldOp": "2026-11-24T04:48:56.066Z",
    "data": {
     "categorie": "Dans",
     "kop": "Korzo",
@@ -2541,7 +2541,7 @@
    }
   },
   "https://www.mimik.nl/agenda/leids-cabaret-festival-2027": {
-   "opgehaaldOp": "2026-11-17T04:40:43.572Z",
+   "opgehaaldOp": "2026-11-24T04:48:58.059Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Leids Cabaret Festival",
@@ -2553,8 +2553,8 @@
       "tijd": "20:00",
       "zaal": "Theaterzaal",
       "prijs": "€ 19,50",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10350408"
+      "knop": "Uitverkocht",
+      "href": null
      }
     ]
    }
@@ -2747,7 +2747,7 @@
    }
   },
   "https://www.mimik.nl/agenda/millennium-jazz-orchestra-november-26": {
-   "opgehaaldOp": "2026-11-23T04:39:53.505Z",
+   "opgehaaldOp": "2026-11-24T04:48:47.096Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Millennium Jazz Orchestra | november",
@@ -2823,7 +2823,7 @@
    }
   },
   "https://www.mimik.nl/agenda/mimik-xs-november": {
-   "opgehaaldOp": "2026-11-23T04:39:54.486Z",
+   "opgehaaldOp": "2026-11-24T04:48:47.942Z",
    "data": {
     "categorie": "Theater",
     "kop": "MIMIK XS | november",
@@ -3107,7 +3107,7 @@
    }
   },
   "https://www.mimik.nl/agenda/patrick-nederkoorn-nieuw-programma": {
-   "opgehaaldOp": "2026-11-17T04:40:40.596Z",
+   "opgehaaldOp": "2026-11-24T04:48:55.077Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Patrick Nederkoorn",
@@ -3827,7 +3827,7 @@
    }
   },
   "https://www.mimik.nl/agenda/schwung": {
-   "opgehaaldOp": "2026-11-17T04:40:47.548Z",
+   "opgehaaldOp": "2026-11-24T04:49:02.053Z",
    "data": {
     "categorie": "Theater",
     "kop": "Schwung",
@@ -4037,6 +4037,16 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/stand-up": {
+   "opgehaaldOp": "2026-11-24T04:48:53.058Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Stand Up",
+    "onder": "Mari Sanders",
+    "eersteStart": "2026-11-30T19:00:00.0000000",
+    "speeldata": []
+   }
+  },
   "https://www.mimik.nl/agenda/steamboy": {
    "opgehaaldOp": "2026-11-11T04:44:15.262Z",
    "data": {
@@ -4084,7 +4094,7 @@
    }
   },
   "https://www.mimik.nl/agenda/studio-sibling": {
-   "opgehaaldOp": "2026-11-17T04:40:48.570Z",
+   "opgehaaldOp": "2026-11-24T04:49:03.079Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Studio Sibling",
@@ -4149,7 +4159,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tent-van-het-oosten-januari": {
-   "opgehaaldOp": "2026-11-17T04:40:45.649Z",
+   "opgehaaldOp": "2026-11-24T04:48:59.953Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Tent van het Oosten | januari",
@@ -4206,7 +4216,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tent-van-het-oosten-november": {
-   "opgehaaldOp": "2026-11-23T04:39:51.441Z",
+   "opgehaaldOp": "2026-11-24T04:48:44.846Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Tent van het Oosten | november",
@@ -4850,6 +4860,16 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/vos-en-haas-redden-het-bos-4": {
+   "opgehaaldOp": "2026-11-24T04:48:50.064Z",
+   "data": {
+    "categorie": "Film, Junior",
+    "kop": "Vos en Haas Redden het Bos (4+)",
+    "onder": "LAATSTE WEEK",
+    "eersteStart": "2026-11-28T11:15:00.0000000",
+    "speeldata": []
+   }
+  },
   "https://www.mimik.nl/agenda/wen-er-maar-aan": {
    "opgehaaldOp": "2026-11-11T04:44:03.250Z",
    "data": {
@@ -4902,7 +4922,7 @@
    }
   },
   "https://www.mimik.nl/agenda/werkplaats-walhalla-danielle-deddens": {
-   "opgehaaldOp": "2026-11-23T04:39:52.609Z",
+   "opgehaaldOp": "2026-11-24T04:48:45.813Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Werkplaats Walhalla & Daniëlle Deddens",
