@@ -74,11 +74,11 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/amsterdam-sinfonietta-breder-dan-klassiek": {
-   "opgehaaldOp": "2026-11-18T04:42:21.300Z",
+   "opgehaaldOp": "2026-11-25T04:40:09.458Z",
    "data": {
     "plek": "Musis, Parkzaal",
-    "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55123/115494/",
-    "knop": "Laatste tickets",
+    "ticket": "",
+    "knop": "Uitverkocht",
     "notitie": null
    }
   },
@@ -173,7 +173,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/aya-brrrothers -6": {
-   "opgehaaldOp": "2026-11-18T04:42:17.336Z",
+   "opgehaaldOp": "2026-11-25T04:40:05.573Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "",
@@ -272,7 +272,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/calefax-joris-luyendijk-in-calefax-land": {
-   "opgehaaldOp": "2026-11-18T04:42:36.170Z",
+   "opgehaaldOp": "2026-11-25T04:40:24.455Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55365/116176/",
@@ -299,7 +299,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/cello-octet-sophie-van-winden-coda": {
-   "opgehaaldOp": "2026-11-18T04:42:14.316Z",
+   "opgehaaldOp": "2026-11-25T04:40:02.800Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55697/116388/",
@@ -398,7 +398,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/conny-janssen-danst-behind-the-wall": {
-   "opgehaaldOp": "2026-11-18T04:42:24.168Z",
+   "opgehaaldOp": "2026-11-25T04:40:12.485Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56500/117363/",
@@ -416,7 +416,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/daniel-arends-had-ik-maar-nooit-zo-aardig-gedaan": {
-   "opgehaaldOp": "2026-11-18T04:42:30.309Z",
+   "opgehaaldOp": "2026-11-25T04:40:18.577Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "",
@@ -470,7 +470,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/de-nog-grotere-slijmmusical-6": {
-   "opgehaaldOp": "2026-11-18T04:42:40.155Z",
+   "opgehaaldOp": "2026-11-25T04:40:28.432Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56626/117640/",
@@ -776,7 +776,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/het-nationale-theater-big-pharma": {
-   "opgehaaldOp": "2026-11-18T04:42:41.181Z",
+   "opgehaaldOp": "2026-11-25T04:40:29.472Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56594/117601/",
@@ -938,7 +938,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/jelle-amersfoort-de-gele-duikmachine-4": {
-   "opgehaaldOp": "2026-11-18T04:42:37.629Z",
+   "opgehaaldOp": "2026-11-25T04:40:25.880Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56909/118022/",
@@ -956,7 +956,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/jimmy-nelson": {
-   "opgehaaldOp": "2026-11-18T04:42:34.142Z",
+   "opgehaaldOp": "2026-11-25T04:40:22.446Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://www.ticketmaster.nl/event/1877628531?brand=nl_musis",
@@ -992,7 +992,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/kalpanarts-winged": {
-   "opgehaaldOp": "2026-11-18T04:42:16.165Z",
+   "opgehaaldOp": "2026-11-25T04:40:04.751Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "",
@@ -1028,7 +1028,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/kerstconcert-grootkoor-gelderland-met-carina-petersen": {
-   "opgehaaldOp": "2026-11-18T04:42:18.150Z",
+   "opgehaaldOp": "2026-11-25T04:40:06.539Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/59956/122321/",
@@ -1046,7 +1046,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/klassiek-open-podium": {
-   "opgehaaldOp": "2026-11-18T04:42:20.147Z",
+   "opgehaaldOp": "2026-11-25T04:40:08.462Z",
    "data": {
     "plek": "Musis, Parkfoyer",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/36783/117856/",
@@ -1163,7 +1163,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/lunchconcert-op-het-orgel-3": {
-   "opgehaaldOp": "2026-11-18T04:42:44.142Z",
+   "opgehaaldOp": "2026-11-25T04:40:32.591Z",
    "data": {
     "plek": "Musis, Balkonzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55376/115928/",
@@ -1217,7 +1217,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/matt-simons": {
-   "opgehaaldOp": "2026-11-18T04:42:42.152Z",
+   "opgehaaldOp": "2026-11-25T04:40:30.458Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://www.ticketmaster.nl/event/matt-simons-tickets/174097180",
@@ -1307,7 +1307,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/menno-lagerwey-math-with-menno-havo-a": {
-   "opgehaaldOp": "2026-11-18T04:42:37.996Z",
+   "opgehaaldOp": "2026-11-25T04:40:26.317Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/61472/124670/",
@@ -1334,7 +1334,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/merijn-van-de-laar-de-meest-slaapverwekkende-voorstelling-van-het-jaar": {
-   "opgehaaldOp": "2026-11-18T04:42:39.054Z",
+   "opgehaaldOp": "2026-11-25T04:40:27.466Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56414/117256/",
@@ -1343,7 +1343,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/micha-wertheim-voor-iedereen": {
-   "opgehaaldOp": "2026-11-18T04:42:25.330Z",
+   "opgehaaldOp": "2026-11-25T04:40:13.605Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56832/117921/",
@@ -1352,7 +1352,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/micky-overman-theatertour": {
-   "opgehaaldOp": "2026-11-18T04:42:27.168Z",
+   "opgehaaldOp": "2026-11-25T04:40:15.459Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/57368/118599/",
@@ -1370,7 +1370,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/music-wonders-of-the-beatles": {
-   "opgehaaldOp": "2026-11-18T04:42:45.152Z",
+   "opgehaaldOp": "2026-11-25T04:40:33.438Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://www.ticketmaster.nl/event/1665772831?brand=nl_musis",
@@ -1433,7 +1433,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/nazanin-taheri-de-surpriseshow": {
-   "opgehaaldOp": "2026-11-18T04:42:26.166Z",
+   "opgehaaldOp": "2026-11-25T04:40:14.635Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56431/117274/",
@@ -1487,7 +1487,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/nederlands-kamerorkest-cappella-amsterdam-mattheus-passion": {
-   "opgehaaldOp": "2026-11-18T04:42:33.157Z",
+   "opgehaaldOp": "2026-11-25T04:40:21.474Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55137/118066/",
@@ -1631,7 +1631,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/orkest-phion-het-requiem-van-mozart": {
-   "opgehaaldOp": "2026-11-18T04:42:43.308Z",
+   "opgehaaldOp": "2026-11-25T04:40:31.448Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56065/116840/",
@@ -1703,7 +1703,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/pianoduo-scholtes-janssens-lente": {
-   "opgehaaldOp": "2026-11-18T04:42:35.147Z",
+   "opgehaaldOp": "2026-11-25T04:40:23.569Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/55249/115815/",
@@ -1775,7 +1775,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/prinses-christina-concours-regiofinale-midden-klassiek-concours": {
-   "opgehaaldOp": "2026-11-18T04:42:22.987Z",
+   "opgehaaldOp": "2026-11-25T04:40:11.335Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/50373/123870/",
@@ -1802,7 +1802,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/productiehuis-flow-titus-muizelaar-y-m-p-beckett-50-cent": {
-   "opgehaaldOp": "2026-11-18T04:42:15.156Z",
+   "opgehaaldOp": "2026-11-25T04:40:03.577Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/46060/117237/",
@@ -1883,7 +1883,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/rob-kemps-laat-me-niet-alleen": {
-   "opgehaaldOp": "2026-11-18T04:42:31.198Z",
+   "opgehaaldOp": "2026-11-25T04:40:19.640Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56919/118037/",
@@ -1901,7 +1901,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/romijn-conen-vallicht": {
-   "opgehaaldOp": "2026-11-18T04:42:28.341Z",
+   "opgehaaldOp": "2026-11-25T04:40:16.500Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56803/117878/",
@@ -2090,7 +2090,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/the-dirty-daddies-2027": {
-   "opgehaaldOp": "2026-11-18T04:42:19.142Z",
+   "opgehaaldOp": "2026-11-25T04:40:07.446Z",
    "data": {
     "plek": "Musis, Arnhem, Parkzaal",
     "ticket": "https://www.ticketmaster.nl/event/1618251639?brand=nl_musis",
@@ -2171,7 +2171,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/theater-oostpool-dropdebeat-truckvoorstelling": {
-   "opgehaaldOp": "2026-11-18T04:42:32.336Z",
+   "opgehaaldOp": "2026-11-25T04:40:20.468Z",
    "data": {
     "plek": "Musis, Theatertruck",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/60269/122794/",
@@ -2198,7 +2198,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/theater-stof-het-kleurenmonster-3": {
-   "opgehaaldOp": "2026-11-18T04:42:29.137Z",
+   "opgehaaldOp": "2026-11-25T04:40:17.573Z",
    "data": {
     "plek": "Musis, Muzenzaal",
     "ticket": "",
@@ -2324,7 +2324,7 @@
    }
   },
   "https://www.musisenstadstheater.nl/nl/agenda/wim-helsen-be-welkom-ongemak": {
-   "opgehaaldOp": "2026-11-18T04:42:22.513Z",
+   "opgehaaldOp": "2026-11-25T04:40:10.793Z",
    "data": {
     "plek": "Musis, Parkzaal",
     "ticket": "https://tix.musisenstadstheater.nl/nl/buyingflow/tickets/56831/117916/",

@@ -797,7 +797,7 @@
    }
   },
   "https://www.mimik.nl/agenda/de-dansers": {
-   "opgehaaldOp": "2026-11-18T04:45:00.874Z",
+   "opgehaaldOp": "2026-11-25T04:42:49.069Z",
    "data": {
     "categorie": "Dans",
     "kop": "De Dansers",
@@ -869,6 +869,44 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/de-kerst-van-ernest-celestine": {
+   "opgehaaldOp": "2026-11-25T04:42:42.040Z",
+   "data": {
+    "categorie": "Film, Junior",
+    "kop": "De Kerst van Ernest & Célestine",
+    "onder": "Aurélie Raphaël",
+    "eersteStart": "2026-12-09T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-09",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/de-magische-jungle-5": {
+   "opgehaaldOp": "2026-11-25T04:42:38.027Z",
+   "data": {
+    "categorie": "Film, Junior",
+    "kop": "De Magische Jungle (5+)",
+    "onder": null,
+    "eersteStart": "2026-12-16T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-16",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/de-manager": {
    "opgehaaldOp": "2026-11-17T04:40:39.547Z",
    "data": {
@@ -880,7 +918,7 @@
    }
   },
   "https://www.mimik.nl/agenda/de-ronde-deroo": {
-   "opgehaaldOp": "2026-11-18T04:44:58.814Z",
+   "opgehaaldOp": "2026-11-25T04:42:47.100Z",
    "data": {
     "categorie": "Theater",
     "kop": "De Ronde / Deroo",
@@ -936,8 +974,27 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/dikkie-dik-3-dikkie-dik-krijgt-bezoek-3": {
+   "opgehaaldOp": "2026-11-25T04:42:40.268Z",
+   "data": {
+    "categorie": "Film, Junior",
+    "kop": "Dikkie Dik 3: Dikkie Dik krijgt bezoek (3+)",
+    "onder": "Joost van den Bosch",
+    "eersteStart": "2026-12-16T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-16",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/dikkie-dik-en-de-verdwenen-knuffel-3": {
-   "opgehaaldOp": "2026-11-24T04:48:51.248Z",
+   "opgehaaldOp": "2026-11-25T04:42:30.994Z",
    "data": {
     "categorie": "Junior",
     "kop": "Dikkie Dik en de verdwenen knuffel (3+)",
@@ -1043,6 +1100,33 @@
       "prijs": "€ 13,00",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10383628"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/dune-part-one": {
+   "opgehaaldOp": "2026-11-25T04:42:37.078Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Dune: Part One",
+    "onder": "Denis Villeneuve",
+    "eersteStart": "2026-12-12T13:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-12",
+      "tijd": "13:00",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10392059"
+     },
+     {
+      "datum": "2026-12-13",
+      "tijd": "15:50",
+      "zaal": "Filmzaal 4",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10392058"
      }
     ]
    }
@@ -1300,7 +1384,7 @@
    }
   },
   "https://www.mimik.nl/agenda/eva-van-manen": {
-   "opgehaaldOp": "2026-11-18T04:45:01.864Z",
+   "opgehaaldOp": "2026-11-25T04:42:50.057Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Eva van Manen",
@@ -2126,7 +2210,7 @@
    }
   },
   "https://www.mimik.nl/agenda/ijb-special-extra": {
-   "opgehaaldOp": "2026-11-24T04:48:48.949Z",
+   "opgehaaldOp": "2026-11-25T04:42:36.088Z",
    "data": {
     "categorie": "Special",
     "kop": "IJB-Special Extra",
@@ -2324,7 +2408,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kim-karssen-10044665": {
-   "opgehaaldOp": "2026-11-18T04:44:56.851Z",
+   "opgehaaldOp": "2026-11-25T04:42:44.934Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Kim Karssen",
@@ -2747,7 +2831,7 @@
    }
   },
   "https://www.mimik.nl/agenda/millennium-jazz-orchestra-november-26": {
-   "opgehaaldOp": "2026-11-24T04:48:47.096Z",
+   "opgehaaldOp": "2026-11-25T04:42:34.039Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Millennium Jazz Orchestra | november",
@@ -2804,7 +2888,7 @@
    }
   },
   "https://www.mimik.nl/agenda/mimik-xs-februari": {
-   "opgehaaldOp": "2026-11-18T04:45:02.899Z",
+   "opgehaaldOp": "2026-11-25T04:42:51.023Z",
    "data": {
     "categorie": "Theater",
     "kop": "MIMIK XS | februari",
@@ -2823,7 +2907,7 @@
    }
   },
   "https://www.mimik.nl/agenda/mimik-xs-november": {
-   "opgehaaldOp": "2026-11-24T04:48:47.942Z",
+   "opgehaaldOp": "2026-11-25T04:42:35.184Z",
    "data": {
     "categorie": "Theater",
     "kop": "MIMIK XS | november",
@@ -2860,6 +2944,25 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/missie-muizenjacht-6": {
+   "opgehaaldOp": "2026-11-25T04:42:41.231Z",
+   "data": {
+    "categorie": "Film, Junior",
+    "kop": "Missie Muizenjacht (6+)",
+    "onder": "Henrik Martin Dahlsbakken",
+    "eersteStart": "2026-12-09T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-09",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/molly-vs-the-machines": {
    "opgehaaldOp": "2026-11-11T04:44:00.378Z",
    "data": {
@@ -2878,6 +2981,25 @@
      },
      {
       "datum": "2026-11-30",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/mouse": {
+   "opgehaaldOp": "2026-11-25T04:42:42.939Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Mouse",
+    "onder": "Kelly O’Sullivan",
+    "eersteStart": "2026-12-17T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-17",
       "tijd": null,
       "zaal": null,
       "prijs": null,
@@ -4216,7 +4338,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tent-van-het-oosten-november": {
-   "opgehaaldOp": "2026-11-24T04:48:44.846Z",
+   "opgehaaldOp": "2026-11-25T04:42:32.041Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Tent van het Oosten | november",
@@ -4235,7 +4357,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tg-tiefschnee": {
-   "opgehaaldOp": "2026-11-18T04:44:59.833Z",
+   "opgehaaldOp": "2026-11-25T04:42:48.041Z",
    "data": {
     "categorie": "Theater",
     "kop": "TG Tiefschnee",
@@ -4516,6 +4638,25 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/the-year-of-the-ghost": {
+   "opgehaaldOp": "2026-11-25T04:42:39.187Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "The Year of the Ghost",
+    "onder": "Louis HotHotHot",
+    "eersteStart": "2026-12-10T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-10",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/theater-bellevue": {
    "opgehaaldOp": "2026-11-20T04:43:24.453Z",
    "data": {
@@ -4649,8 +4790,27 @@
     ]
    }
   },
+  "https://www.mimik.nl/agenda/tristan-forever": {
+   "opgehaaldOp": "2026-11-25T04:42:44.049Z",
+   "data": {
+    "categorie": "Film",
+    "kop": "Tristan Forever",
+    "onder": "Tobias Nölle",
+    "eersteStart": "2026-12-24T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-24",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     }
+    ]
+   }
+  },
   "https://www.mimik.nl/agenda/van-die-mensen": {
-   "opgehaaldOp": "2026-11-18T04:44:57.834Z",
+   "opgehaaldOp": "2026-11-25T04:42:46.044Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Van Die Mensen",
@@ -4922,7 +5082,7 @@
    }
   },
   "https://www.mimik.nl/agenda/werkplaats-walhalla-danielle-deddens": {
-   "opgehaaldOp": "2026-11-24T04:48:45.813Z",
+   "opgehaaldOp": "2026-11-25T04:42:33.044Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Werkplaats Walhalla & Daniëlle Deddens",
