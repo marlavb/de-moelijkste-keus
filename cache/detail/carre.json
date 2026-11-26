@@ -226,7 +226,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/claudia-de-breij-oudejaarsconference": {
-   "opgehaaldOp": "2026-11-19T04:12:50.323Z",
+   "opgehaaldOp": "2026-11-26T04:06:07.037Z",
    "data": {
     "naam": "Claudia de Breij",
     "events": [
@@ -244,7 +244,7 @@
       "salesStatus": "on_sale",
       "statusID": "waiting_list",
       "soort": "Voorstelling",
-      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35755&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D35755%26upsellids%3D35762&saleschannelid=2&skinid=1&withauthentication=no&signature=1591cd0c18edc36aea2fb34b4f1ef8b43340244e868480b278a0b7283338620e"
+      "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=35755&flow=basketwithcheckout&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Fcarre.nl%2Fagenda&saleschannelid=2&skinid=1&withauthentication=no&signature=4ca679318ba8dbfc6dff601ac0cfcaaabb733b75bced14530bb5d46f605a06bc"
      },
      {
       "id": "37127",
@@ -322,7 +322,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/dolf-jansen-schaamteloos": {
-   "opgehaaldOp": "2026-11-19T04:12:51.330Z",
+   "opgehaaldOp": "2026-11-26T04:06:08.032Z",
    "data": {
     "naam": "Dolf Jansen",
     "events": [
@@ -466,7 +466,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/had-ik-maar-nooit-zo-aardig-gedaan": {
-   "opgehaaldOp": "2026-11-19T04:12:54.308Z",
+   "opgehaaldOp": "2026-11-26T04:06:11.059Z",
    "data": {
     "naam": "Daniël Arends - Had ik maar nooit zo aardig gedaan",
     "events": [
@@ -1098,7 +1098,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/jenny-arean": {
-   "opgehaaldOp": "2026-11-19T04:12:52.310Z",
+   "opgehaaldOp": "2026-11-26T04:06:09.032Z",
    "data": {
     "naam": "Jenny Arean",
     "events": [
@@ -1154,7 +1154,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/joe-jackson-2026": {
-   "opgehaaldOp": "2026-11-25T04:06:17.188Z",
+   "opgehaaldOp": "2026-11-26T04:06:05.051Z",
    "data": {
     "naam": "Joe Jackson",
     "events": [
@@ -1466,7 +1466,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/micky-overman-2027": {
-   "opgehaaldOp": "2026-11-19T04:12:53.303Z",
+   "opgehaaldOp": "2026-11-26T04:06:10.047Z",
    "data": {
     "naam": "Micky Overman",
     "events": [
@@ -1482,7 +1482,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/oh-wonder-2027": {
-   "opgehaaldOp": "2026-11-19T04:12:56.311Z",
+   "opgehaaldOp": "2026-11-26T04:06:12.032Z",
    "data": {
     "naam": "Oh Wonder",
     "events": [
@@ -1498,7 +1498,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/patrick-laureij-kintsugi": {
-   "opgehaaldOp": "2026-11-25T04:06:16.212Z",
+   "opgehaaldOp": "2026-11-26T04:06:04.061Z",
    "data": {
     "naam": "Patrick Laureij",
     "events": [
@@ -1730,7 +1730,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/sara-kroos-prikkelarme-kermis": {
-   "opgehaaldOp": "2026-11-24T04:12:35.255Z",
+   "opgehaaldOp": "2026-11-26T04:06:06.037Z",
    "data": {
     "naam": "Sara Kroos",
     "events": [

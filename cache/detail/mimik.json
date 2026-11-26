@@ -424,7 +424,7 @@
    }
   },
   "https://www.mimik.nl/agenda/bambie-speelt-bambi": {
-   "opgehaaldOp": "2026-11-19T04:46:12.210Z",
+   "opgehaaldOp": "2026-11-26T04:41:05.172Z",
    "data": {
     "categorie": "Fysiek theater",
     "kop": "Bambie speelt Bambi",
@@ -955,25 +955,6 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/dial-q-filmquiz-2026": {
-   "opgehaaldOp": "2026-11-04T04:45:51.058Z",
-   "data": {
-    "categorie": "Quiz",
-    "kop": "Dial Q Filmquiz",
-    "onder": "DialQ Filmquiz",
-    "eersteStart": "2027-02-07T15:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2027-02-07",
-      "tijd": "15:00",
-      "zaal": "Theaterzaal",
-      "prijs": "€ 18,50",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10390005"
-     }
-    ]
-   }
-  },
   "https://www.mimik.nl/agenda/dikkie-dik-3-dikkie-dik-krijgt-bezoek-3": {
    "opgehaaldOp": "2026-11-25T04:42:40.268Z",
    "data": {
@@ -994,7 +975,7 @@
    }
   },
   "https://www.mimik.nl/agenda/dikkie-dik-en-de-verdwenen-knuffel-3": {
-   "opgehaaldOp": "2026-11-25T04:42:30.994Z",
+   "opgehaaldOp": "2026-11-26T04:40:55.178Z",
    "data": {
     "categorie": "Junior",
     "kop": "Dikkie Dik en de verdwenen knuffel (3+)",
@@ -1040,7 +1021,7 @@
    }
   },
   "https://www.mimik.nl/agenda/dood-paard-tjernobyl": {
-   "opgehaaldOp": "2026-11-19T04:46:08.338Z",
+   "opgehaaldOp": "2026-11-26T04:41:01.241Z",
    "data": {
     "categorie": "Theater",
     "kop": "Dood Paard",
@@ -1243,7 +1224,7 @@
    }
   },
   "https://www.mimik.nl/agenda/elfie-tromp-aai-poesje": {
-   "opgehaaldOp": "2026-11-19T04:46:13.437Z",
+   "opgehaaldOp": "2026-11-26T04:40:58.266Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Elfie Tromp",
@@ -1262,7 +1243,7 @@
    }
   },
   "https://www.mimik.nl/agenda/elias-de-bruyne": {
-   "opgehaaldOp": "2026-11-19T04:46:14.333Z",
+   "opgehaaldOp": "2026-11-26T04:41:06.171Z",
    "data": {
     "categorie": "Fysiek theater",
     "kop": "Elias de Bruyne",
@@ -2013,7 +1994,7 @@
    }
   },
   "https://www.mimik.nl/agenda/flip-noorman": {
-   "opgehaaldOp": "2026-11-19T04:46:15.307Z",
+   "opgehaaldOp": "2026-11-26T04:41:06.946Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Flip Noorman",
@@ -2070,7 +2051,7 @@
    }
   },
   "https://www.mimik.nl/agenda/gabbro-in-gabbro-as-we-walk": {
-   "opgehaaldOp": "2026-11-19T04:46:17.425Z",
+   "opgehaaldOp": "2026-11-26T04:41:09.276Z",
    "data": {
     "categorie": "Special",
     "kop": "Gabbro in Gabbro / As We Walk",
@@ -2210,7 +2191,7 @@
    }
   },
   "https://www.mimik.nl/agenda/ijb-special-extra": {
-   "opgehaaldOp": "2026-11-25T04:42:36.088Z",
+   "opgehaaldOp": "2026-11-26T04:41:00.190Z",
    "data": {
     "categorie": "Special",
     "kop": "IJB-Special Extra",
@@ -2312,25 +2293,6 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/joep-van-deudekom-rob-urgert-oudejaarskwis": {
-   "opgehaaldOp": "2026-11-04T04:45:44.958Z",
-   "data": {
-    "categorie": "Cabaret",
-    "kop": "Joep van Deudekom & Rob Urgert",
-    "onder": "De Grote Oudejaarskwis 2026 | try-out",
-    "eersteStart": "2026-11-04T20:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-11-04",
-      "tijd": "20:00",
-      "zaal": "Theaterzaal",
-      "prijs": "€ 23,50",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10350446"
-     }
-    ]
-   }
-  },
   "https://www.mimik.nl/agenda/johan-goossens": {
    "opgehaaldOp": "2026-11-20T04:43:32.577Z",
    "data": {
@@ -2427,7 +2389,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kim-schuddeboom": {
-   "opgehaaldOp": "2026-11-19T04:46:09.339Z",
+   "opgehaaldOp": "2026-11-26T04:41:02.245Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Kim Schuddeboom",
@@ -2439,8 +2401,8 @@
       "tijd": "20:00",
       "zaal": "Theaterzaal",
       "prijs": "€ 24,00",
-      "knop": "Uitverkocht",
-      "href": null
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10350359"
      }
     ]
    }
@@ -2793,7 +2755,7 @@
    }
   },
   "https://www.mimik.nl/agenda/millennium-jazz-orchestra-april-27": {
-   "opgehaaldOp": "2026-11-19T04:46:10.412Z",
+   "opgehaaldOp": "2026-11-26T04:41:02.943Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Millennium Jazz Orchestra | april",
@@ -2831,7 +2793,7 @@
    }
   },
   "https://www.mimik.nl/agenda/millennium-jazz-orchestra-november-26": {
-   "opgehaaldOp": "2026-11-25T04:42:34.039Z",
+   "opgehaaldOp": "2026-11-26T04:40:57.237Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Millennium Jazz Orchestra | november",
@@ -2907,7 +2869,7 @@
    }
   },
   "https://www.mimik.nl/agenda/mimik-xs-november": {
-   "opgehaaldOp": "2026-11-25T04:42:35.184Z",
+   "opgehaaldOp": "2026-11-26T04:40:59.290Z",
    "data": {
     "categorie": "Theater",
     "kop": "MIMIK XS | november",
@@ -2919,8 +2881,8 @@
       "tijd": "20:00",
       "zaal": "Theaterzaal",
       "prijs": "€ 10,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10355931"
+      "knop": "Afgelast",
+      "href": null
      }
     ]
    }
@@ -3145,7 +3107,7 @@
    }
   },
   "https://www.mimik.nl/agenda/orkaterde-nieuwkomers-dolorosa": {
-   "opgehaaldOp": "2026-11-19T04:46:11.450Z",
+   "opgehaaldOp": "2026-11-26T04:41:04.290Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Orkater/De Nieuwkomers",
@@ -4056,25 +4018,6 @@
     ]
    }
   },
-  "https://www.mimik.nl/agenda/shaun-het-schaap-het-beest-van-de-boerderij-6": {
-   "opgehaaldOp": "2026-11-01T04:42:04.756Z",
-   "data": {
-    "categorie": "Junior",
-    "kop": "Shaun het Schaap: Het Beest van de Boerderij (6+)",
-    "onder": "Steve Cox",
-    "eersteStart": "2026-11-01T12:30:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-11-01",
-      "tijd": "12:30",
-      "zaal": "Filmzaal 2",
-      "prijs": "€ 9,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10381187"
-     }
-    ]
-   }
-  },
   "https://www.mimik.nl/agenda/silbersee-sterre-konijn-via-inferno": {
    "opgehaaldOp": "2026-11-14T04:39:43.490Z",
    "data": {
@@ -4197,7 +4140,7 @@
    }
   },
   "https://www.mimik.nl/agenda/studio-figur-dawn-collective": {
-   "opgehaaldOp": "2026-11-19T04:46:16.416Z",
+   "opgehaaldOp": "2026-11-26T04:41:08.272Z",
    "data": {
     "categorie": "Junior",
     "kop": "Studio Figur - Dawn Collective",
@@ -4209,8 +4152,8 @@
       "tijd": "15:00",
       "zaal": "Theaterzaal",
       "prijs": "€ 0,00",
-      "knop": "Reserveer",
-      "href": "https://www.mimik.nl/tickets?programId=10350461"
+      "knop": "Uitverkocht",
+      "href": null
      }
     ]
    }
@@ -4532,25 +4475,6 @@
     "speeldata": [
      {
       "datum": "2026-12-10",
-      "tijd": null,
-      "zaal": null,
-      "prijs": null,
-      "knop": null,
-      "href": null
-     }
-    ]
-   }
-  },
-  "https://www.mimik.nl/agenda/the-devils": {
-   "opgehaaldOp": "2026-10-28T04:45:31.906Z",
-   "data": {
-    "categorie": "Film",
-    "kop": "The Devils",
-    "onder": "Ken Russell",
-    "eersteStart": "2026-11-12T00:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-11-12",
       "tijd": null,
       "zaal": null,
       "prijs": null,
@@ -5082,7 +5006,7 @@
    }
   },
   "https://www.mimik.nl/agenda/werkplaats-walhalla-danielle-deddens": {
-   "opgehaaldOp": "2026-11-25T04:42:33.044Z",
+   "opgehaaldOp": "2026-11-26T04:40:56.259Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Werkplaats Walhalla & Daniëlle Deddens",
