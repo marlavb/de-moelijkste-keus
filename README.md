@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (65 ok, 1 terugval, 14 gepauzeerd, 1 leeg)
-- Voorstellingen (titel per theater): **6347**
-- Speeldata: **8782**
-- Laatste refresh: **26 november 2026, 05:41** (Amsterdamse tijd)
+- Theaters: **81** (62 ok, 4 terugval, 14 gepauzeerd, 1 leeg)
+- Voorstellingen (titel per theater): **6313**
+- Speeldata: **8735**
+- Laatste refresh: **27 november 2026, 05:43** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -425,7 +425,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Bostheater | Amstelveen | nee | ok |
 | De Landing | Amstelveen | deels | ok |
 | Schouwburg Amstelveen | Amstelveen | ja | ok |
-| Amsterdams Marionetten Theater | Amsterdam | ja | ok |
+| Amsterdams Marionetten Theater | Amsterdam | ja | terugval |
 | Bijlmer Parktheater | Amsterdam | ja | ok |
 | CC Amstel | Amsterdam | ja | ok |
 | De Kleine Komedie | Amsterdam | nee | ok |
@@ -445,7 +445,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater de Omval | Diemen | ja | ok |
 | Schuur | Haarlem | ja | ok |
 | Cpunt | Hoofddorp | nee | ok |
-| Zaantheater | Zaandam | ja | ok |
+| Zaantheater | Zaandam | ja | terugval |
 
 **Zuid-Holland** (13)
 
@@ -458,7 +458,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Zaal 3 | Den Haag | – | gepauzeerd sinds 2026-11-07 |
 | Theater Ins Blau | Leiden | ja | ok |
 | Theater Koningshof | Maassluis | deels | ok |
-| De Muze | Noordwijk | deels | ok |
+| De Muze | Noordwijk | deels | terugval |
 | Maas theater en dans | Rotterdam | ja | ok |
 | Theater Rotterdam (TR25 Schouwburg) | Rotterdam | – | gepauzeerd sinds 2026-10-14 |
 | Theater Rotterdam (TR8 William Boothlaan) | Rotterdam | – | gepauzeerd sinds 2026-10-14 |
