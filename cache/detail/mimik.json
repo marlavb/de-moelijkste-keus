@@ -500,7 +500,7 @@
    }
   },
   "https://www.mimik.nl/agenda/cameretten": {
-   "opgehaaldOp": "2026-11-21T04:41:30.101Z",
+   "opgehaaldOp": "2026-11-28T04:40:35.260Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Cameretten",
@@ -670,7 +670,7 @@
    }
   },
   "https://www.mimik.nl/agenda/club-lam-dolle-mina": {
-   "opgehaaldOp": "2026-11-21T04:41:28.119Z",
+   "opgehaaldOp": "2026-11-28T04:40:33.622Z",
    "data": {
     "categorie": "Theater",
     "kop": "Club Lam",
@@ -708,7 +708,7 @@
    }
   },
   "https://www.mimik.nl/agenda/compagnie-red-yellow-blue": {
-   "opgehaaldOp": "2026-11-21T04:41:34.975Z",
+   "opgehaaldOp": "2026-11-28T04:40:40.512Z",
    "data": {
     "categorie": "Theater",
     "kop": "Compagnie Red Yellow & Blue",
@@ -773,6 +773,68 @@
       "prijs": "€ 13,00",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10390617"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/dag-van-de-korte-film-2026": {
+   "opgehaaldOp": "2026-11-28T04:40:27.335Z",
+   "data": {
+    "categorie": "Special",
+    "kop": "Dag van de Korte Film 2026",
+    "onder": null,
+    "eersteStart": "2026-12-21T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-21",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": "2026-12-21",
+      "tijd": "14:40",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10393024"
+     },
+     {
+      "datum": "2026-12-21",
+      "tijd": "19:00",
+      "zaal": "Filmzaal 3",
+      "prijs": "€ 13,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10393023"
+     }
+    ]
+   }
+  },
+  "https://www.mimik.nl/agenda/dag-van-de-korte-film-kids-2026": {
+   "opgehaaldOp": "2026-11-28T04:40:28.333Z",
+   "data": {
+    "categorie": "Special",
+    "kop": "Europees kinderprogramma Dag van de Korte Film 2026 (4+)",
+    "onder": null,
+    "eersteStart": "2026-12-21T00:00:00.0000000",
+    "speeldata": [
+     {
+      "datum": "2026-12-21",
+      "tijd": null,
+      "zaal": null,
+      "prijs": null,
+      "knop": null,
+      "href": null
+     },
+     {
+      "datum": "2026-12-21",
+      "tijd": "13:30",
+      "zaal": "Filmzaal 2",
+      "prijs": "€ 9,00",
+      "knop": "Tickets",
+      "href": "https://www.mimik.nl/tickets?programId=10393025"
      }
     ]
    }
@@ -975,7 +1037,7 @@
    }
   },
   "https://www.mimik.nl/agenda/dikkie-dik-en-de-verdwenen-knuffel-3": {
-   "opgehaaldOp": "2026-11-27T04:42:28.614Z",
+   "opgehaaldOp": "2026-11-28T04:40:21.571Z",
    "data": {
     "categorie": "Junior",
     "kop": "Dikkie Dik en de verdwenen knuffel (3+)",
@@ -1056,7 +1118,7 @@
    }
   },
   "https://www.mimik.nl/agenda/dorine-wiersma": {
-   "opgehaaldOp": "2026-11-21T04:41:31.227Z",
+   "opgehaaldOp": "2026-11-28T04:40:36.331Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Dorine Wiersma",
@@ -1256,7 +1318,7 @@
    }
   },
   "https://www.mimik.nl/agenda/elfie-tromp-aai-poesje": {
-   "opgehaaldOp": "2026-11-27T04:42:31.688Z",
+   "opgehaaldOp": "2026-11-28T04:40:24.113Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Elfie Tromp",
@@ -1294,7 +1356,7 @@
    }
   },
   "https://www.mimik.nl/agenda/ellen-ten-damme": {
-   "opgehaaldOp": "2026-11-21T04:41:24.074Z",
+   "opgehaaldOp": "2026-11-28T04:40:30.236Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Ellen ten Damme",
@@ -1313,7 +1375,7 @@
    }
   },
   "https://www.mimik.nl/agenda/emma-buysse-luna-joosten-guyland": {
-   "opgehaaldOp": "2026-11-21T04:41:32.092Z",
+   "opgehaaldOp": "2026-11-28T04:40:37.255Z",
    "data": {
     "categorie": "Theater",
     "kop": "Emma Buysse & Luna Joosten",
@@ -1332,7 +1394,7 @@
    }
   },
   "https://www.mimik.nl/agenda/eric-vloeimans": {
-   "opgehaaldOp": "2026-11-21T04:41:29.187Z",
+   "opgehaaldOp": "2026-11-28T04:40:34.677Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Eric Vloeimans",
@@ -2223,7 +2285,7 @@
    }
   },
   "https://www.mimik.nl/agenda/ijb-special-extra": {
-   "opgehaaldOp": "2026-11-27T04:42:34.667Z",
+   "opgehaaldOp": "2026-11-28T04:40:26.274Z",
    "data": {
     "categorie": "Special",
     "kop": "IJB-Special Extra",
@@ -2345,7 +2407,7 @@
    }
   },
   "https://www.mimik.nl/agenda/kamagurka": {
-   "opgehaaldOp": "2026-11-21T04:41:27.135Z",
+   "opgehaaldOp": "2026-11-28T04:40:32.549Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Kamagurka",
@@ -2467,7 +2529,7 @@
    }
   },
   "https://www.mimik.nl/agenda/klein-amsterdam-producties": {
-   "opgehaaldOp": "2026-11-21T04:41:36.080Z",
+   "opgehaaldOp": "2026-11-28T04:40:41.494Z",
    "data": {
     "categorie": "Junior",
     "kop": "Klein Amsterdam Producties",
@@ -2603,25 +2665,6 @@
       "prijs": "€ 21,50",
       "knop": "Tickets",
       "href": "https://www.mimik.nl/tickets?programId=10296553"
-     }
-    ]
-   }
-  },
-  "https://www.mimik.nl/agenda/lebbis-satan-is-moe": {
-   "opgehaaldOp": "2026-11-06T04:44:28.095Z",
-   "data": {
-    "categorie": "Cabaret",
-    "kop": "Lebbis",
-    "onder": "Satan is moe | try-out",
-    "eersteStart": "2026-11-06T20:00:00.0000000",
-    "speeldata": [
-     {
-      "datum": "2026-11-06",
-      "tijd": "20:00",
-      "zaal": "Theaterzaal",
-      "prijs": "€ 21,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10350451"
      }
     ]
    }
@@ -2833,7 +2876,7 @@
    }
   },
   "https://www.mimik.nl/agenda/millennium-jazz-orchestra-november-26": {
-   "opgehaaldOp": "2026-11-27T04:42:30.660Z",
+   "opgehaaldOp": "2026-11-28T04:40:23.554Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Millennium Jazz Orchestra | november",
@@ -3307,7 +3350,7 @@
    }
   },
   "https://www.mimik.nl/agenda/poezieboys-theatergroep-echo": {
-   "opgehaaldOp": "2026-11-21T04:41:25.068Z",
+   "opgehaaldOp": "2026-11-28T04:40:31.211Z",
    "data": {
     "categorie": "Woordkunst",
     "kop": "Poezieboys & theatergroep ECHO",
@@ -4302,7 +4345,7 @@
    }
   },
   "https://www.mimik.nl/agenda/ta-joela": {
-   "opgehaaldOp": "2026-11-21T04:41:33.087Z",
+   "opgehaaldOp": "2026-11-28T04:40:38.385Z",
    "data": {
     "categorie": "Theater",
     "kop": "Ta Joela",
@@ -4359,7 +4402,7 @@
    }
   },
   "https://www.mimik.nl/agenda/tent-van-het-oosten-mei": {
-   "opgehaaldOp": "2026-11-21T04:41:33.973Z",
+   "opgehaaldOp": "2026-11-28T04:40:39.619Z",
    "data": {
     "categorie": "Theaterconcert",
     "kop": "Tent van het Oosten | mei",
@@ -4736,7 +4779,7 @@
    }
   },
   "https://www.mimik.nl/agenda/theater-utrecht": {
-   "opgehaaldOp": "2026-11-27T04:42:32.938Z",
+   "opgehaaldOp": "2026-11-28T04:40:25.319Z",
    "data": {
     "categorie": "Theater",
     "kop": "Theater Utrecht",
@@ -4748,8 +4791,8 @@
       "tijd": "20:00",
       "zaal": "Theaterzaal",
       "prijs": "€ 22,00",
-      "knop": "Tickets",
-      "href": "https://www.mimik.nl/tickets?programId=10350416"
+      "knop": "Uitverkocht",
+      "href": null
      }
     ]
    }
@@ -5004,7 +5047,7 @@
    }
   },
   "https://www.mimik.nl/agenda/viggo-waas-eddie-b-wahr": {
-   "opgehaaldOp": "2026-11-21T04:41:23.075Z",
+   "opgehaaldOp": "2026-11-28T04:40:29.113Z",
    "data": {
     "categorie": "Cabaret",
     "kop": "Viggo Waas & Eddie B. Wahr",
@@ -5103,7 +5146,7 @@
    }
   },
   "https://www.mimik.nl/agenda/werkplaats-walhalla-danielle-deddens": {
-   "opgehaaldOp": "2026-11-27T04:42:29.545Z",
+   "opgehaaldOp": "2026-11-28T04:40:22.645Z",
    "data": {
     "categorie": "Muziektheater",
     "kop": "Werkplaats Walhalla & Daniëlle Deddens",

@@ -26,7 +26,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/agnes-obel": {
-   "opgehaaldOp": "2026-11-21T04:06:14.850Z",
+   "opgehaaldOp": "2026-11-28T04:06:30.775Z",
    "data": {
     "naam": "Agnes Obel",
     "events": [
@@ -58,7 +58,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/ashton-brothers": {
-   "opgehaaldOp": "2026-11-21T04:06:10.885Z",
+   "opgehaaldOp": "2026-11-28T04:06:26.783Z",
    "data": {
     "naam": "Ashton Brothers",
     "events": [
@@ -90,7 +90,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/bianca-del-rio-2027": {
-   "opgehaaldOp": "2026-11-21T04:06:11.850Z",
+   "opgehaaldOp": "2026-11-28T04:06:27.770Z",
    "data": {
     "naam": "Bianca Del Rio",
     "events": [
@@ -106,7 +106,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/billy-ocean-2027": {
-   "opgehaaldOp": "2026-11-21T04:06:15.853Z",
+   "opgehaaldOp": "2026-11-28T04:06:31.787Z",
    "data": {
     "naam": "Billy Ocean",
     "events": [
@@ -122,7 +122,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/blancowhite": {
-   "opgehaaldOp": "2026-11-21T04:06:09.855Z",
+   "opgehaaldOp": "2026-11-28T04:06:25.770Z",
    "data": {
     "naam": "Blanco White",
     "events": [
@@ -170,7 +170,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/brabo-leone": {
-   "opgehaaldOp": "2026-11-21T04:06:16.888Z",
+   "opgehaaldOp": "2026-11-28T04:06:32.779Z",
    "data": {
     "naam": "Brabo Leone",
     "events": [
@@ -226,7 +226,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/claudia-de-breij-oudejaarsconference": {
-   "opgehaaldOp": "2026-11-26T04:06:07.037Z",
+   "opgehaaldOp": "2026-11-28T04:06:21.768Z",
    "data": {
     "naam": "Claudia de Breij",
     "events": [
@@ -234,7 +234,7 @@
       "id": "37126",
       "start": "2026-12-05T20:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "waiting_list",
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37126&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37126%26upsellids%3D35757%252C35758%252C35756&saleschannelid=2&skinid=1&withauthentication=no&signature=f11758fd765c2c1102cb4c39bc48c936d65459a47ea5e95c9d146d21369e9c81"
      },
@@ -250,7 +250,7 @@
       "id": "37127",
       "start": "2026-12-06T19:00:00+01:00",
       "salesStatus": "on_sale",
-      "statusID": "waiting_list",
+      "statusID": "last_chance",
       "soort": "Voorstelling",
       "salesUrl": "https://apps.ticketmatic.com/widgets/carre/addtickets?accesskey=45a90548bf45e9e949aaf57d&edit=yes&event=37127&flow=return&oncompletion=return&requiredfields=customertitle&reservemoretickets=yes&returnurl=https%3A%2F%2Forders.carre.nl%2Fhandle%3Ffrom_event%3D37127%26upsellids%3D35760%252C35761%252C35759&saleschannelid=2&skinid=1&withauthentication=no&signature=19e9fccd5c7d5722b6273ccdb01d94a4f896f11478b78879c70b1a0042938f13"
      }
@@ -282,7 +282,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/de-proefkeuken-en-de-wc-van-tijd": {
-   "opgehaaldOp": "2026-11-21T04:06:08.855Z",
+   "opgehaaldOp": "2026-11-28T04:06:24.769Z",
    "data": {
     "naam": "Proefkeuken",
     "events": [
@@ -410,7 +410,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/evita": {
-   "opgehaaldOp": "2026-11-21T04:06:06.848Z",
+   "opgehaaldOp": "2026-11-28T04:06:22.762Z",
    "data": {
     "naam": "Evita",
     "events": [
@@ -1162,7 +1162,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/joe-jackson-2026": {
-   "opgehaaldOp": "2026-11-27T04:06:40.385Z",
+   "opgehaaldOp": "2026-11-28T04:06:18.766Z",
    "data": {
     "naam": "Joe Jackson",
     "events": [
@@ -1506,7 +1506,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/patrick-laureij-kintsugi": {
-   "opgehaaldOp": "2026-11-27T04:06:39.396Z",
+   "opgehaaldOp": "2026-11-28T04:06:17.784Z",
    "data": {
     "naam": "Patrick Laureij",
     "events": [
@@ -1642,7 +1642,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/rayen-panday": {
-   "opgehaaldOp": "2026-11-21T04:06:13.860Z",
+   "opgehaaldOp": "2026-11-28T04:06:29.777Z",
    "data": {
     "naam": "Rayen Panday",
     "events": [
@@ -1658,7 +1658,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/rhythm-flow-ish": {
-   "opgehaaldOp": "2026-11-21T04:06:12.881Z",
+   "opgehaaldOp": "2026-11-28T04:06:28.774Z",
    "data": {
     "naam": "ISH - Rhythm & Flow",
     "events": [
@@ -1722,7 +1722,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/ruth-jacott": {
-   "opgehaaldOp": "2026-11-21T04:06:07.880Z",
+   "opgehaaldOp": "2026-11-28T04:06:23.766Z",
    "data": {
     "naam": "Ruth Jacott",
     "events": [
@@ -1738,7 +1738,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/sara-kroos-prikkelarme-kermis": {
-   "opgehaaldOp": "2026-11-27T04:06:41.385Z",
+   "opgehaaldOp": "2026-11-28T04:06:19.765Z",
    "data": {
     "naam": "Sara Kroos",
     "events": [
@@ -1786,7 +1786,7 @@
    }
   },
   "https://carre.nl/api/render/voorstelling/syml-metropole-orkest": {
-   "opgehaaldOp": "2026-11-27T04:06:42.385Z",
+   "opgehaaldOp": "2026-11-28T04:06:20.772Z",
    "data": {
     "naam": "Metropole Orkest met SYML",
     "events": [
