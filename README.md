@@ -12,10 +12,10 @@ Repo: `de-moelijkste-keus`. De blokken tussen `AUTO`-markers hieronder
 worden automatisch bijgewerkt (zie [Automatisch bijgewerkt](#automatisch-bijgewerkt)).
 
 <!-- AUTO:aantallen:start -->
-- Theaters: **81** (62 ok, 4 terugval, 14 gepauzeerd, 1 leeg)
-- Voorstellingen (titel per theater): **6313**
-- Speeldata: **8735**
-- Laatste refresh: **27 november 2026, 05:43** (Amsterdamse tijd)
+- Theaters: **81** (60 ok, 6 terugval, 14 gepauzeerd, 1 leeg)
+- Voorstellingen (titel per theater): **6270**
+- Speeldata: **8674**
+- Laatste refresh: **28 november 2026, 05:40** (Amsterdamse tijd)
 <!-- AUTO:aantallen:end -->
 
 ## Functies
@@ -445,7 +445,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater de Omval | Diemen | ja | ok |
 | Schuur | Haarlem | ja | ok |
 | Cpunt | Hoofddorp | nee | ok |
-| Zaantheater | Zaandam | ja | terugval |
+| Zaantheater | Zaandam | ja | ok |
 
 **Zuid-Holland** (13)
 
@@ -457,7 +457,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Theater aan het Spui | Den Haag | – | gepauzeerd sinds 2026-11-07 |
 | Zaal 3 | Den Haag | – | gepauzeerd sinds 2026-11-07 |
 | Theater Ins Blau | Leiden | ja | ok |
-| Theater Koningshof | Maassluis | deels | ok |
+| Theater Koningshof | Maassluis | ja | ok |
 | De Muze | Noordwijk | deels | terugval |
 | Maas theater en dans | Rotterdam | ja | ok |
 | Theater Rotterdam (TR25 Schouwburg) | Rotterdam | – | gepauzeerd sinds 2026-10-14 |
@@ -505,9 +505,9 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | Kattendans | Bergeijk | deels | ok |
 | Parktheater Eindhoven | Eindhoven | – | gepauzeerd sinds 2026-10-06 |
 | Het Speelhuis | Helmond | onbekend | ok |
-| De Link | Tilburg | ja | ok |
+| De Link | Tilburg | ja | terugval |
 | Paradox | Tilburg | deels | ok |
-| S.M.E.T. | Tilburg | ja | ok |
+| S.M.E.T. | Tilburg | ja | terugval |
 | Schouwburg Concertzaal | Tilburg | onbekend | ok |
 | Theater De Nieuwe Vorst | Tilburg | ja | ok |
 | Markant Theater Maashorst | Uden | deels | ok |
@@ -544,7 +544,7 @@ voorstellingen in de data). De app toont `ja` en `deels` als "Podiumpas",
 | MIMIK | Deventer | ja | ok |
 | De Reggehof | Goor | ja | ok |
 | Schouwburg Hengelo | Hengelo | deels | ok |
-| Rabo Theater De Meenthe | Steenwijk | deels | ok |
+| Rabo Theater De Meenthe | Steenwijk | deels | terugval |
 | Schouwburg Odeon | Zwolle | deels | ok |
 | Theater de Spiegel | Zwolle | deels | ok |
 <!-- AUTO:theaters:end -->
